@@ -1,0 +1,752 @@
+{% comment %}
+  ============================================================
+  NatureCell – Augustkampagne: gratis eksfolieringshandske
+  Sektion: nc-august-campaign-banner.liquid
+  Version: 1.0
+
+  Formål:
+  - Forside-banner der fortæller om augusttilbuddet: gratis
+    Exfoliating Handske (129 kr.) ved køb over 900 kr.,
+    500 stk. efter først til mølle.
+  - Sender videre til hudpleje-kollektionen og sampakkerne.
+
+  Anbefalet placering:
+  - Forsiden, direkte under hero/slideshow.
+
+  Noter:
+  - Farvepaletten er låst i sektionen (NatureCell Design System).
+    Der må ikke introduceres andre hex-værdier.
+  - Fin print-linjen i bunden er et compliance-krav. Efterlades
+    feltet tomt, falder sektionen tilbage til standardteksten,
+    så linjen aldrig kan forsvinde.
+  - Tællerbaren vises kun når "Vis tæller" er slået til OG antal
+    hentede er større end 0. Tallet skal komme fra en reel kilde,
+    ikke fra et gæt: et forkert tal er en markedsføringsretlig risiko.
+  - Gave-mekanikken (auto-tilføjelse ved 900 kr., loft på 500 stk.,
+    én pr. ordre) hører i kurv-/rabatlogikken, ikke her. Når de 500
+    er uddelt, skjules sektionen i temaeditoren.
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  assign product = section.settings.product
+
+  assign eyebrow = section.settings.eyebrow
+  assign eyebrow_secondary = section.settings.eyebrow_secondary
+  assign heading = section.settings.heading
+  assign body = section.settings.body
+
+  assign cta_primary_text = section.settings.cta_primary_text
+  assign cta_primary_url = section.settings.cta_primary_url
+  assign cta_secondary_text = section.settings.cta_secondary_text
+  assign cta_secondary_url = section.settings.cta_secondary_url
+
+  assign packshot = section.settings.image
+  if packshot == blank and product != blank
+    assign packshot = product.featured_image
+  endif
+
+  assign packshot_alt = section.settings.image_alt
+  if packshot_alt == blank
+    if product != blank
+      assign packshot_alt = product.title
+    else
+      assign packshot_alt = 'NatureCell Exfoliating Handske'
+    endif
+  endif
+
+  assign badge_title = section.settings.badge_title
+  assign badge_value = section.settings.badge_value
+  if badge_value == blank and product != blank
+    assign badge_price = product.price | money_without_trailing_zeros
+    assign badge_value = 'Værdi ' | append: badge_price
+  endif
+
+  assign glove_total = section.settings.glove_total
+  assign glove_claimed = section.settings.glove_claimed
+  if glove_claimed > glove_total
+    assign glove_claimed = glove_total
+  endif
+  assign glove_left = glove_total | minus: glove_claimed
+  assign progress_width = 0
+  if glove_total > 0
+    assign progress_width = glove_claimed | times: 100.0 | divided_by: glove_total | round
+  endif
+
+  assign show_progress = false
+  if section.settings.show_progress and glove_claimed > 0
+    assign show_progress = true
+  endif
+
+  assign default_fine_print = 'Tilbuddet gælder fra 1. til og med 31. august 2026, eller indtil de 500 handsker er givet ud. Én handske pr. ordre. Kan ikke byttes til kontanter. Vores produkter er hudpleje, ikke medicin.'
+  assign fine_print = section.settings.fine_print | default: default_fine_print
+
+  comment
+    Brandguiden foreskriver Philosopher til overskrifter og Roboto Flex til
+    brødtekst. Ingen af dem findes i Shopifys fontbibliotek, så de hentes
+    fra Google Fonts, præcis som designsystemet gør det. Slås "Brug brandets
+    egne fonte" fra, bruger sektionen temaets egne fonte i stedet, og der
+    hentes intet eksternt.
+  endcomment
+  assign use_brand_fonts = section.settings.use_brand_fonts
+
+  comment
+    Officielt hvidt logo-lockup fra NatureCell Design System, uploadet til
+    butikkens Files. Bruges når der ikke er valgt et logo i sektionens
+    indstillinger. Logoet må kun være hvidt, sage eller stone.
+  endcomment
+  assign logo_fallback_url = 'https://cdn.shopify.com/s/files/1/0600/7111/6981/files/nc-logo-lockup-white.svg?v=1785536646'
+-%}
+
+{% style %}
+  {%- if use_brand_fonts -%}
+    @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap');
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .nc-aug {
+    {%- if use_brand_fonts %}
+    --nc-aug-font-display: 'Philosopher', Georgia, 'Times New Roman', serif;
+    --nc-aug-font-body: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
+    --nc-aug-weight-display: 700;
+    --nc-aug-weight-body: 400;
+    {%- else %}
+    --nc-aug-font-display: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+    --nc-aug-font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+    --nc-aug-weight-display: {{ settings.heading_font.weight }};
+    --nc-aug-weight-body: {{ settings.body_font.weight }};
+    {%- endif %}
+    box-sizing: border-box;
+    width: 100%;
+    padding: clamp(32px, 5vw, 80px) clamp(16px, 4vw, 56px);
+    background: #f6f4ee;
+    font-family: var(--nc-aug-font-body);
+    font-weight: var(--nc-aug-weight-body);
+    font-style: normal;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug *,
+  #shopify-section-{{ section.id }} .nc-aug *::before,
+  #shopify-section-{{ section.id }} .nc-aug *::after {
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__card {
+    position: relative;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    background: #3e5d58;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__wash {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 82% 20%, rgba(128, 160, 151, 0.55) 0%, rgba(62, 93, 88, 0) 62%);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__row {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(32px, 4vw, 56px);
+    padding: clamp(32px, 4.5vw, 64px) clamp(24px, 4.5vw, 64px) clamp(30px, 4vw, 60px);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__text {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 2.2vw, 26px);
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__eyebrow {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ddbfa3;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__eyebrow--muted {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__eyebrow-line {
+    width: 44px;
+    height: 1px;
+    background: rgba(221, 191, 163, 0.5);
+    flex: none;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__heading {
+    margin: 0;
+    font-family: var(--nc-aug-font-display);
+    font-weight: var(--nc-aug-weight-display);
+    font-style: normal;
+    font-size: clamp(30px, 4.1vw, 52px);
+    line-height: 1.12;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #ffffff;
+    max-width: 16ch;
+    text-wrap: pretty;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__body {
+    margin: 0;
+    font-size: clamp(15px, 1.3vw, 17px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 48ch;
+    text-wrap: pretty;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 420px;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__progress-labels {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__progress-left {
+    color: #ddbfa3;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__progress-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #ddbfa3;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__ctas {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 15px 32px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 140ms cubic-bezier(0.4, 0, 0.2, 1), color 140ms cubic-bezier(0.4, 0, 0.2, 1), border-color 140ms cubic-bezier(0.4, 0, 0.2, 1), transform 140ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 140ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn--primary {
+    background: #ffffff;
+    color: #3e5d58;
+    border-color: #ffffff;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn--primary:hover,
+  #shopify-section-{{ section.id }} .nc-aug__btn--primary:focus-visible {
+    background: #f6f4ee;
+    border-color: #f6f4ee;
+    color: #3e5d58;
+    transform: translateY(-1px);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn--secondary {
+    background: transparent;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn--secondary:hover,
+  #shopify-section-{{ section.id }} .nc-aug__btn--secondary:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #ffffff;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn:active {
+    transform: translateY(0);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__chip {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 6px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__media {
+    position: relative;
+    flex: 1 1 340px;
+    min-width: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    aspect-ratio: 1.15 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__packshot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: clamp(18px, 2.4vw, 30px);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__bubble {
+    position: absolute;
+    top: clamp(12px, 1.6vw, 20px);
+    right: clamp(12px, 1.6vw, 20px);
+    width: clamp(104px, 11vw, 136px);
+    height: clamp(104px, 11vw, 136px);
+    border-radius: 999px;
+    background: #f9b5c4;
+    box-shadow: 0 12px 28px rgba(44, 70, 61, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transform: none;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__bubble-title {
+    font-family: var(--nc-aug-font-display);
+    font-weight: var(--nc-aug-weight-display);
+    font-style: normal;
+    font-size: clamp(22px, 2.2vw, 27px);
+    line-height: 1;
+    color: #84334e;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__bubble-value {
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #84334e;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__footer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 16px clamp(24px, 4.5vw, 64px);
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__fine-print {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 78ch;
+  }
+
+  #shopify-section-{{ section.id }} .nc-aug__logo {
+    height: 20px;
+    width: auto;
+    opacity: 0.85;
+    flex: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .nc-aug__btn {
+      transition: none;
+    }
+
+    #shopify-section-{{ section.id }} .nc-aug__btn:hover,
+    #shopify-section-{{ section.id }} .nc-aug__btn:focus-visible,
+    #shopify-section-{{ section.id }} .nc-aug__btn:active {
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+<section class="nc-aug" aria-label="{{ section.settings.aria_label | default: 'Augustkampagne' | escape }}">
+  <div class="nc-aug__card">
+    <div class="nc-aug__wash" aria-hidden="true"></div>
+
+    <div class="nc-aug__row">
+      <div class="nc-aug__text">
+        {%- if eyebrow != blank or eyebrow_secondary != blank -%}
+          <div class="nc-aug__eyebrow-row">
+            {%- if eyebrow != blank -%}
+              <p class="nc-aug__eyebrow">{{ eyebrow }}</p>
+            {%- endif -%}
+            {%- if eyebrow != blank and eyebrow_secondary != blank -%}
+              <span class="nc-aug__eyebrow-line" aria-hidden="true"></span>
+            {%- endif -%}
+            {%- if eyebrow_secondary != blank -%}
+              <p class="nc-aug__eyebrow nc-aug__eyebrow--muted">{{ eyebrow_secondary }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if heading != blank -%}
+          <h2 class="nc-aug__heading">{{ heading }}</h2>
+        {%- endif -%}
+
+        {%- if body != blank -%}
+          <p class="nc-aug__body">{{ body }}</p>
+        {%- endif -%}
+
+        {%- if show_progress -%}
+          <div class="nc-aug__progress">
+            <div class="nc-aug__progress-labels">
+              <span>{{ glove_claimed }} af {{ glove_total }} handsker er hentet</span>
+              <span class="nc-aug__progress-left">{{ glove_left }} tilbage</span>
+            </div>
+            <div
+              class="nc-aug__progress-track"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="{{ glove_total }}"
+              aria-valuenow="{{ glove_claimed }}"
+              aria-label="Antal hentede handsker"
+            >
+              <div class="nc-aug__progress-fill" style="width: {{ progress_width }}%;"></div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if cta_primary_text != blank or cta_secondary_text != blank -%}
+          <div class="nc-aug__ctas">
+            {%- if cta_primary_text != blank -%}
+              <a class="nc-aug__btn nc-aug__btn--primary" href="{{ cta_primary_url | default: routes.all_products_collection_url }}">
+                {{ cta_primary_text }}
+              </a>
+            {%- endif -%}
+            {%- if cta_secondary_text != blank -%}
+              <a class="nc-aug__btn nc-aug__btn--secondary" href="{{ cta_secondary_url | default: routes.all_products_collection_url }}">
+                {{ cta_secondary_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- assign chips = section.settings.chip_1 | append: '|' | append: section.settings.chip_2 | append: '|' | append: section.settings.chip_3 | split: '|' -%}
+        {%- if chips.size > 0 -%}
+          <ul class="nc-aug__chips">
+            {%- for chip in chips -%}
+              {%- assign chip_text = chip | strip -%}
+              {%- if chip_text != blank -%}
+                <li class="nc-aug__chip">{{ chip_text }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="nc-aug__media">
+        {%- if packshot != blank -%}
+          {{
+            packshot
+            | image_url: width: 960
+            | image_tag:
+              class: 'nc-aug__packshot',
+              alt: packshot_alt,
+              widths: '320, 480, 640, 800, 960',
+              sizes: '(min-width: 990px) 480px, 90vw',
+              loading: 'lazy'
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'nc-aug__packshot placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if badge_title != blank or badge_value != blank -%}
+          <div class="nc-aug__bubble">
+            {%- if badge_title != blank -%}
+              <span class="nc-aug__bubble-title">{{ badge_title }}</span>
+            {%- endif -%}
+            {%- if badge_value != blank -%}
+              <span class="nc-aug__bubble-value">{{ badge_value }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="nc-aug__footer">
+      <p class="nc-aug__fine-print">{{ fine_print }}</p>
+      {%- if section.settings.logo != blank -%}
+        <img
+          class="nc-aug__logo"
+          src="{{ section.settings.logo | image_url: height: 40 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ section.settings.logo.width }}"
+          height="{{ section.settings.logo.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <img
+          class="nc-aug__logo"
+          src="{{ logo_fallback_url }}"
+          alt="{{ shop.name | escape }}"
+          width="709"
+          height="283"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NC augustkampagne banner",
+  "tag": "section",
+  "class": "nc-august-campaign-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Kampagnebanner til forsiden: gratis eksfolieringshandske ved køb over 900 kr. Farverne er låst til NatureCells designsystem. Skjul sektionen når kampagnen slutter, eller når alle handsker er uddelt."
+    },
+    {
+      "type": "header",
+      "content": "Tekst"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Overlinje",
+      "default": "Augustkampagne"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_secondary",
+      "label": "Overlinje, sekundær",
+      "default": "Kun de første 500"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "default": "Gratis eksfolieringshandske ved køb over 900 kr."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Brødtekst",
+      "default": "Hele august lægger vi vores Exfoliating Handske i kurven, når du handler for 900 kr. eller mere. Den fjerner nænsomt døde hudceller, så din daglige pleje får de bedste betingelser. Vi har 500 stk., og de gives efter først til mølle.",
+      "info": "Ingen medicinske påstande. Kort tankestreg, aldrig lang."
+    },
+    {
+      "type": "header",
+      "content": "Knapper"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_text",
+      "label": "Primær knap: tekst",
+      "default": "Shop hudpleje"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primær knap: link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "Sekundær knap: tekst",
+      "default": "Se sampakker"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Sekundær knap: link"
+    },
+    {
+      "type": "header",
+      "content": "Chips"
+    },
+    {
+      "type": "text",
+      "id": "chip_1",
+      "label": "Chip 1",
+      "default": "Fri fragt over 399 kr."
+    },
+    {
+      "type": "text",
+      "id": "chip_2",
+      "label": "Chip 2",
+      "default": "Handsken lægges automatisk i kurven"
+    },
+    {
+      "type": "text",
+      "id": "chip_3",
+      "label": "Chip 3",
+      "default": "Gælder til og med 31. august"
+    },
+    {
+      "type": "header",
+      "content": "Produkt og billede"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Gaveprodukt",
+      "info": "Bruges til packshot og til værdien i boblen. Vælg Exfoliating Handske."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Billede, overstyring",
+      "info": "Efterlad tomt for at bruge produktets eget billede."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt-tekst, overstyring"
+    },
+    {
+      "type": "text",
+      "id": "badge_title",
+      "label": "Boble: overskrift",
+      "default": "Gratis"
+    },
+    {
+      "type": "text",
+      "id": "badge_value",
+      "label": "Boble: værdi",
+      "info": "Efterlad tomt for automatisk at bruge gaveproduktets pris i shoppen."
+    },
+    {
+      "type": "header",
+      "content": "Tæller"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "Vis tæller",
+      "default": false,
+      "info": "Vises kun når antal hentede er over 0. Tallet skal komme fra en reel kilde, ellers skal tælleren være slået fra."
+    },
+    {
+      "type": "number",
+      "id": "glove_total",
+      "label": "Antal handsker i kampagnen",
+      "default": 500
+    },
+    {
+      "type": "number",
+      "id": "glove_claimed",
+      "label": "Antal hentede handsker",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Bund"
+    },
+    {
+      "type": "textarea",
+      "id": "fine_print",
+      "label": "Fin print",
+      "default": "Tilbuddet gælder fra 1. til og med 31. august 2026, eller indtil de 500 handsker er givet ud. Én handske pr. ordre. Kan ikke byttes til kontanter. Vores produkter er hudpleje, ikke medicin.",
+      "info": "Compliance-krav. Må ikke forkortes. Tømmes feltet, vises standardteksten alligevel."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo, overstyring",
+      "info": "Efterlad tomt for at bruge det officielle hvide logo-lockup fra butikkens Files. Logoet må kun være hvidt, sage eller stone."
+    },
+    {
+      "type": "header",
+      "content": "Typografi"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_brand_fonts",
+      "label": "Brug brandets egne fonte",
+      "default": true,
+      "info": "Henter Philosopher og Roboto Flex fra Google Fonts, som brandguiden foreskriver. Slå fra for at bruge temaets egne fonte uden eksterne kald."
+    },
+    {
+      "type": "header",
+      "content": "Tilgængelighed"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Sektionens aria-label",
+      "default": "Augustkampagne"
+    }
+  ],
+  "presets": [
+    {
+      "name": "NC augustkampagne banner",
+      "settings": {
+        "cta_primary_url": "/collections/cbd-hudpleje",
+        "cta_secondary_url": "/collections/sampakker"
+      }
+    }
+  ]
+}
+{% endschema %}
