@@ -39,7 +39,9 @@ skygge, states og responsiv opførsel er hentet 1:1 fra handoff'en:
 - Packshot på hvid flade, `aspect-ratio 1.15/1`, `object-fit: contain`.
 - Gratis-boblen i pink `#F9B5C4` med berry tekst `#84334E`, aldrig roteret,
   eneste skygge i sektionen: `0 12px 28px rgba(44,70,61,0.18)`.
-- Bundstribe med fin print og hvidt logo-lockup.
+- Bundstribe med fin print. Handoff'en havde et hvidt logo-lockup nederst til
+  højre, men det er bevidst udeladt: det tilføjede ikke noget på et banner, der
+  allerede står på brandets egen forside.
 
 Alt er fluid via `clamp()` og `flex-wrap`, ingen media queries, bortset fra
 `prefers-reduced-motion`, hvor hover-transform og transitions slås fra.
@@ -70,7 +72,10 @@ Værd at vide:
   ordre) hører i kurv-/rabatlogikken og er ikke en del af sektionen. Når de 500 er
   uddelt, eller kampagnen slutter, skjules sektionen i temaeditoren.
 
-## To bevidste afvigelser fra handoff'en
+## Bevidste afvigelser fra handoff'en
+
+**Logo.** Logoet i bundstriben er fjernet efter aftale. Bundstriben indeholder nu
+kun fin print.
 
 **Fonte.** Brandguiden foreskriver Philosopher til overskrifter og Roboto Flex til
 brødtekst. Ingen af dem findes i Shopifys fontbibliotek (temaet kører i dag
@@ -80,17 +85,16 @@ til som standard. Slås den fra, bruger sektionen temaets egne fonte, og der
 hentes intet eksternt, hvilket kan være relevant af hensyn til Cookiebot og
 tredjepartskald.
 
-**Logo.** Det officielle hvide logo-lockup er uploadet til butikkens Files som
-`nc-logo-lockup-white.svg` og bruges som standard i bundstriben. Der er også en
-image_picker-indstilling, hvis logoet skal skiftes.
-
 ## Verifikation
 
-- Sektionsfilen på temaet er byte-identisk med filen i dette repo (md5
-  `cc19e6920fcbea2711ebf6aa194b7e6f`).
-- `templates/index.json` er sammenlignet felt for felt med versionen før
-  ændringen: eneste forskel er den tilføjede sektion og dens plads i `order`.
-  Ingen eksisterende sektion, blok eller indstilling er ændret.
+- Første version af sektionen blev lagt op og verificeret byte-identisk med
+  repoet, og `templates/index.json` blev sammenlignet felt for felt med versionen
+  før ændringen: eneste forskel var den tilføjede sektion og dens plads i `order`.
+  Ingen eksisterende sektion, blok eller indstilling blev ændret.
+- Denne revision (brødtekst "vores nye Exfoliating Handske" og logo fjernet) er
+  endnu ikke lagt op på temaet: Shopify-connectoren skiftede undervejs til en
+  anden butik, så skrivningen blev afvist. Filerne her i repoet er den gældende
+  version og skal lægges op, når connectoren peger på Naturecell.dk igen.
 - Selve storefront-renderingen er ikke set i browser fra dette miljø, fordi
   naturecell.dk og Shopifys CDN ikke kan nås gennem proxyen. Sektionen skal
   derfor gennemses i temaeditorens preview.

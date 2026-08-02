@@ -89,13 +89,6 @@
     hentes intet eksternt.
   endcomment
   assign use_brand_fonts = section.settings.use_brand_fonts
-
-  comment
-    Officielt hvidt logo-lockup fra NatureCell Design System, uploadet til
-    butikkens Files. Bruges når der ikke er valgt et logo i sektionens
-    indstillinger. Logoet må kun være hvidt, sage eller stone.
-  endcomment
-  assign logo_fallback_url = 'https://cdn.shopify.com/s/files/1/0600/7111/6981/files/nc-logo-lockup-white.svg?v=1785536646'
 -%}
 
 {% style %}
@@ -391,11 +384,6 @@
 
   #shopify-section-{{ section.id }} .nc-aug__footer {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     padding: 16px clamp(24px, 4.5vw, 64px);
   }
@@ -406,13 +394,6 @@
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.7);
     max-width: 78ch;
-  }
-
-  #shopify-section-{{ section.id }} .nc-aug__logo {
-    height: 20px;
-    width: auto;
-    opacity: 0.85;
-    flex: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -534,25 +515,6 @@
 
     <div class="nc-aug__footer">
       <p class="nc-aug__fine-print">{{ fine_print }}</p>
-      {%- if section.settings.logo != blank -%}
-        <img
-          class="nc-aug__logo"
-          src="{{ section.settings.logo | image_url: height: 40 }}"
-          alt="{{ shop.name | escape }}"
-          width="{{ section.settings.logo.width }}"
-          height="{{ section.settings.logo.height }}"
-          loading="lazy"
-        >
-      {%- else -%}
-        <img
-          class="nc-aug__logo"
-          src="{{ logo_fallback_url }}"
-          alt="{{ shop.name | escape }}"
-          width="709"
-          height="283"
-          loading="lazy"
-        >
-      {%- endif -%}
     </div>
   </div>
 </section>
@@ -593,7 +555,7 @@
       "type": "textarea",
       "id": "body",
       "label": "Brødtekst",
-      "default": "Hele august lægger vi vores Exfoliating Handske i kurven, når du handler for 900 kr. eller mere. Den fjerner nænsomt døde hudceller, så din daglige pleje får de bedste betingelser. Vi har 500 stk., og de gives efter først til mølle.",
+      "default": "Hele august lægger vi vores nye Exfoliating Handske i kurven, når du handler for 900 kr. eller mere. Den fjerner nænsomt døde hudceller, så din daglige pleje får de bedste betingelser. Vi har 500 stk., og de gives efter først til mølle.",
       "info": "Ingen medicinske påstande. Kort tankestreg, aldrig lang."
     },
     {
@@ -710,12 +672,6 @@
       "label": "Fin print",
       "default": "Tilbuddet gælder fra 1. til og med 31. august 2026, eller indtil de 500 handsker er givet ud. Én handske pr. ordre. Kan ikke byttes til kontanter. Vores produkter er hudpleje, ikke medicin.",
       "info": "Compliance-krav. Må ikke forkortes. Tømmes feltet, vises standardteksten alligevel."
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo, overstyring",
-      "info": "Efterlad tomt for at bruge det officielle hvide logo-lockup fra butikkens Files. Logoet må kun være hvidt, sage eller stone."
     },
     {
       "type": "header",
