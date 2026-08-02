@@ -52,8 +52,8 @@ ikke kan introduceres hex-værdier uden for designsystemet.
 
 Tekst (overlinjer, overskrift, brødtekst), de to knapper med links, tre chips,
 gaveprodukt, billed- og alt-tekst-overstyring, boblens overskrift og værdi,
-tæller (antal i kampagnen, antal hentede, vis/skjul), fin print, logo-overstyring,
-fontvalg og aria-label.
+tæller (antal i kampagnen, antal hentede, vis/skjul), fin print, fontvalg og
+aria-label.
 
 Standardværdier er sat, så sektionen er komplet i det øjeblik den tilføjes.
 
@@ -87,14 +87,17 @@ tredjepartskald.
 
 ## Verifikation
 
-- Første version af sektionen blev lagt op og verificeret byte-identisk med
-  repoet, og `templates/index.json` blev sammenlignet felt for felt med versionen
-  før ændringen: eneste forskel var den tilføjede sektion og dens plads i `order`.
-  Ingen eksisterende sektion, blok eller indstilling blev ændret.
-- Denne revision (brødtekst "vores nye Exfoliating Handske" og logo fjernet) er
-  endnu ikke lagt op på temaet: Shopify-connectoren skiftede undervejs til en
-  anden butik, så skrivningen blev afvist. Filerne her i repoet er den gældende
-  version og skal lægges op, når connectoren peger på Naturecell.dk igen.
+- Butikken er verificeret som Naturecell.dk umiddelbart før hver skrivning, ikke
+  kun én gang: Cowork-connectoren skiftede butik midt i arbejdet, og en skrivning
+  blev afvist af Shopify, fordi tema-ID'et ikke fandtes i den anden butik. Intet
+  landede et forkert sted.
+- `sections/nc-august-campaign-banner.liquid` på temaet er byte-identisk med
+  filen i dette repo (md5 `5aac621a919f8bc7eef1a2c649816e36`), og der er nul
+  logo-referencer tilbage i filen.
+- `templates/index.json` på temaet svarer felt for felt til versionen i dette
+  repo, og er sammenlignet med forsiden før ændringen: eneste forskel er den
+  tilføjede sektion og dens plads i `order`. Ingen eksisterende sektion, blok
+  eller indstilling er ændret.
 - Selve storefront-renderingen er ikke set i browser fra dette miljø, fordi
   naturecell.dk og Shopifys CDN ikke kan nås gennem proxyen. Sektionen skal
   derfor gennemses i temaeditorens preview.
