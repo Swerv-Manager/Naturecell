@@ -1,34 +1,93 @@
-{% comment %} Simpel sidehero: eyebrow, overskrift, intro. Bruges paa undersider. {% endcomment %}
+{% comment %}
+  Sidehero med tre varianter fra designet:
+  - "plain": enkel eyebrow/overskrift/intro paa papir (som hidtil)
+  - "sage": fuldbred sage-500-baand med hvid tekst (om os, ingredienser)
+  - "image": moerkt baand med baggrundsbillede og overlay (Om CBD)
+{% endcomment %}
+
+{%- liquid
+  assign tone = section.settings.tone | default: 'plain'
+-%}
 
 {%- style -%}
-  .nc-pagehero { padding: clamp(36px, 5vw, 64px) 0 clamp(10px, 2vw, 20px); }
-  .nc-pagehero__inner { max-width: 70ch; }
-  .nc-pagehero--center .nc-pagehero__inner { margin: 0 auto; text-align: center; }
+  #shopify-section-{{ section.id }} .nc-pagehero { padding: clamp(36px, 5vw, 64px) 0 clamp(10px, 2vw, 20px); }
+  #shopify-section-{{ section.id }} .nc-pagehero__inner { max-width: 70ch; }
+  #shopify-section-{{ section.id }} .nc-pagehero--center .nc-pagehero__inner { margin: 0 auto; text-align: center; }
+
+  #shopify-section-{{ section.id }} .nc-pagehero--band { position: relative; padding: clamp(52px, 7vw, 104px) 0; background: var(--sage-500); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__inner { max-width: 62ch; position: relative; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band h1 { margin: 0; color: var(--cloud); font-size: clamp(34px, 4.4vw, 56px); line-height: 1.1; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__intro { margin: 18px 0 0; color: rgba(255, 255, 255, 0.88); font-size: clamp(15px, 1.3vw, 17px); line-height: 1.7; max-width: 54ch; }
+
+  #shopify-section-{{ section.id }} .nc-pagehero--image { background: var(--sage-800); }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg { position: absolute; inset: 0; opacity: 0.35; }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40, 64, 59, 0.55) 0%, rgba(40, 64, 59, 0.1) 70%); }
 {%- endstyle -%}
 
-<div class="nc-pagehero {% if section.settings.center %}nc-pagehero--center{% endif %}">
-  <div class="nc-container">
-    <div class="nc-pagehero__inner">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-      {%- endif -%}
-      <h1>{{ section.settings.heading | default: page.title }}</h1>
-      {%- if section.settings.intro != blank -%}
-        <p>{{ section.settings.intro }}</p>
-      {%- endif -%}
+{%- if tone == 'plain' -%}
+  <div class="nc-pagehero {% if section.settings.center %}nc-pagehero--center{% endif %}">
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p>{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
     </div>
   </div>
-</div>
+{%- else -%}
+  <div class="nc-pagehero--band {% if tone == 'image' %}nc-pagehero--image{% endif %} nc-on-dark">
+    {%- if tone == 'image' -%}
+      <div class="nc-pagehero__bg" aria-hidden="true">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 2200 | image_tag: alt: '', loading: 'eager', sizes: '100vw' }}
+        {%- elsif section.settings.image_url contains '//' -%}
+          <img src="{{ section.settings.image_url }}" alt="" loading="eager" width="2200" height="800">
+        {%- elsif section.settings.image_url != blank -%}
+          <img src="{{ section.settings.image_url | asset_url }}" alt="" loading="eager" width="2200" height="800">
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow" style="margin-bottom: 14px;">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="nc-pagehero__intro">{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Side-hero",
   "tag": "section",
   "settings": [
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Variant",
+      "options": [
+        { "value": "plain", "label": "Enkel (papir)" },
+        { "value": "sage", "label": "Sage-bånd" },
+        { "value": "image", "label": "Mørkt bånd med billede" }
+      ],
+      "default": "plain"
+    },
     { "type": "text", "id": "eyebrow", "label": "Overlinje" },
     { "type": "text", "id": "heading", "label": "Overskrift", "info": "Tom = sidens titel" },
     { "type": "textarea", "id": "intro", "label": "Intro" },
-    { "type": "checkbox", "id": "center", "label": "Centrér", "default": false }
+    { "type": "checkbox", "id": "center", "label": "Centrér (kun enkel variant)", "default": false },
+    { "type": "image_picker", "id": "image", "label": "Baggrundsbillede (kun billedvariant)" },
+    { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }
   ],
   "presets": [ { "name": "Side-hero" } ]
 }

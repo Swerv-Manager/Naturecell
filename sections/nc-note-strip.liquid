@@ -1,0 +1,32 @@
+{% comment %}
+  Lille compliance-strib: centreret, daempet tekst paa creme-baggrund.
+  Bruges nederst paa Om CBD-siden.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-notestrip { background: var(--paper-2); padding: clamp(22px, 3vw, 36px) 0; }
+  #shopify-section-{{ section.id }} .nc-notestrip p { margin: 0 auto; max-width: 82ch; text-align: center; font-size: 13.5px; line-height: 1.7; color: var(--ink-500); }
+{%- endstyle -%}
+
+<div class="nc-notestrip">
+  <div class="nc-container">
+    <p>{{ section.settings.text }}</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "NC notestrib",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Tekst",
+      "default": "NatureCells produkter er kosmetiske. De er ikke medicin og kan ikke diagnosticere, behandle eller kurere sygdomme. Rådfør dig altid med egen læge, før du starter på et nyt program.",
+      "info": "Compliance-krav. Må ikke fjernes."
+    }
+  ],
+  "presets": [ { "name": "NC notestrib" } ]
+}
+{% endschema %}

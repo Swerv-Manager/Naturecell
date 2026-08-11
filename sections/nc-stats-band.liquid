@@ -1,0 +1,54 @@
+{% comment %}
+  Statistikbaand fra om os-designet: fire noegletal paa creme-baggrund
+  (2019 / Vegansk / 100% / 4,8/5).
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-stats { background: var(--paper-2); padding: clamp(36px, 5vw, 64px) 0; }
+  #shopify-section-{{ section.id }} .nc-stats__grid { display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: repeat(2, 1fr); text-align: center; }
+  @media (min-width: 800px) { #shopify-section-{{ section.id }} .nc-stats__grid { grid-template-columns: repeat(4, 1fr); } }
+  #shopify-section-{{ section.id }} .nc-stats__num { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 3.2vw, 42px); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-stats__label { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.5; color: var(--ink-500); max-width: 26ch; margin-left: auto; margin-right: auto; }
+{%- endstyle -%}
+
+<div class="nc-stats">
+  <div class="nc-container">
+    <div class="nc-stats__grid">
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <span class="nc-stats__num">{{ block.settings.num }}</span>
+          <span class="nc-stats__label">{{ block.settings.label }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "NC statistikbånd",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Nøgletal",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Tal", "default": "2019" },
+        { "type": "text", "id": "label", "label": "Etiket", "default": "Først godkendt til salg i Danmark" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NC statistikbånd",
+      "blocks": [
+        { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt til salg i Danmark" } },
+        { "type": "stat", "settings": { "num": "Vegansk", "label": "Plantebaseret & uden syntetisk parfume" } },
+        { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion & test" } },
+        { "type": "stat", "settings": { "num": "4,8/5", "label": "2.143 anmeldelser på Trustpilot" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

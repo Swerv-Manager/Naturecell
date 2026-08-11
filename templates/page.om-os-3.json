@@ -1,27 +1,86 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Vores historie", "heading": "Danmarks første — og stadig drevet af én familie", "intro": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Bag det hele står Lizbeth Falk og Allan Gamborg." } },
-    "story": {
-      "type": "nc-story",
-      "settings": { "eyebrow": "Grundlæggerne", "heading": "Hudpleje vi selv bruger", "body": "Idéen opstod gennem Allans familieforbindelse til Møllerup Gods på Djursland, som var blandt de første i Danmark med tilladelse til at dyrke industriel hamp. Sammen med Lizbeth blev den viden oversat til hudpleje, man kan stå inde for: dokumentation og åbenhed, ikke løfter.", "cta_text": "", "caption_title": "Lizbeth Falk & Allan Gamborg", "caption_sub": "Grundlæggere af NatureCell" },
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "tone": "sage",
+        "eyebrow": "Vores historie",
+        "heading": "Vi var de første — og vi gør det ærligt.",
+        "intro": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Vi er en familiedrevet virksomhed med rødder på Møllerup Gods, bygget på ærlighed frem for løfter."
+      }
+    },
+    "familien": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "sage50",
+        "media_side": "left",
+        "ratio": "4 / 3",
+        "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053",
+        "eyebrow": "Mød familien bag",
+        "heading": "Ægte mennesker. Ægte dansk hudpleje.",
+        "text": "<p>Vi er Lizbeth og Allan — en dansk familie med rødder på Møllerup Gods. Vi står selv bag hvert valg: råvarerne, formuleringerne og den ærlige måde, vi taler til dig på.</p>",
+        "quote": "Vi lover ikke mirakler — vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag."
+      }
+    },
+    "timeline": {
+      "type": "nc-timeline",
+      "settings": {
+        "eyebrow": "Vores rejse",
+        "heading": "Fra idé til Danmarks førende CBD-hudpleje",
+        "cta_text": "Shop NatureCell →",
+        "cta_url": "/collections/cbd-hudpleje"
+      },
+      "blocks": {
+        "m2026": { "type": "milestone", "settings": { "year": "2026", "title": "Et komplet univers", "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053" } },
+        "m2021": { "type": "milestone", "settings": { "year": "2021", "title": "Løvens Hule", "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
+        "m2019": { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972" } },
+        "m2018": { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "image_url": "nc-founders.webp" } }
+      },
+      "block_order": ["m2026", "m2021", "m2019", "m2018"]
+    },
+    "loefte": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "paper",
+        "heading": "Vi lover ikke mirakler",
+        "text": "<p>I stedet lader vi vores kunder fortælle om deres egne oplevelser. Vores produkter er plantebaserede — CBD i samspil med glycerin, mandelolie, hampolie, squalane, aloe vera, sheasmør og agurkeekstrakt. Vegansk og uden syntetisk parfume.</p><p>Vores CBD-olie produceres på GMP- og ISO-certificerede faciliteter i Danmark. Det er sådan, vi bygger tryghed: dansk produktion, dansk test og fuld åbenhed.</p>"
+      }
+    },
+    "moellerup": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "paper",
+        "media_side": "left",
+        "ratio": "1 / 1",
+        "image_url": "https://naturecell.dk/cdn/shop/articles/Billede_af_Anne_Sophie_Gamborg_og_Allan_Falk_Gamborg_cc5b96e7-f77f-46c0-958e-5d64cb69441f.jpg?v=1767017225",
+        "eyebrow": "Hvor det startede",
+        "heading": "Rødder på Møllerup Gods",
+        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland — med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>"
+      }
+    },
+    "stats": {
+      "type": "nc-stats-band",
       "blocks": {
         "s1": { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt til salg i Danmark" } },
         "s2": { "type": "stat", "settings": { "num": "Vegansk", "label": "Plantebaseret & uden syntetisk parfume" } },
-        "s3": { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion & test" } }
+        "s3": { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion & test" } },
+        "s4": { "type": "stat", "settings": { "num": "4,8/5", "label": "2.143 anmeldelser på Trustpilot" } }
       },
-      "block_order": ["s1", "s2", "s3"]
+      "block_order": ["s1", "s2", "s3", "s4"]
     },
-    "timeline": { "type": "nc-timeline" },
-    "faq": {
-      "type": "nc-faq",
-      "settings": { "eyebrow": "Spørgsmål & svar", "heading": "Ofte stillede spørgsmål" },
-      "blocks": {
-        "q1": { "type": "qa", "settings": { "q": "Er NatureCell dansk?", "a": "<p>Ja. NatureCell er familieejet, og produkterne udvikles og testes i Danmark.</p>" } },
-        "q2": { "type": "qa", "settings": { "q": "Hvem står bag NatureCell?", "a": "<p>Lizbeth Falk og Allan Gamborg. Når du handler hos NatureCell, er det os du møder.</p>" } },
-        "q3": { "type": "qa", "settings": { "q": "Hvad betyder Løvens Hule-investeringen?", "a": "<p>Jesper Buch trådte ind som investor efter vores tur i Løvens Hule. Det gav kapital og erfaring til at nå bredere ud, men vi arbejder på samme måde som altid.</p>" } }
-      },
-      "block_order": ["q1", "q2", "q3"]
+    "familie2": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "sage50",
+        "media_side": "left",
+        "ratio": "1 / 1",
+        "image_url": "nc-founders.webp",
+        "eyebrow": "Familien bag",
+        "heading": "Drevet af en dansk familie",
+        "text": "<p>NatureCell er familiedrevet. Vi står selv bag hver beslutning — fra råvarer og formuleringer til den måde, vi taler med vores kunder på. Vi lover ikke mirakler; vi lover ærlighed, dansk produktion og produkter, vi selv bruger hver dag.</p>",
+        "quote": "Vi bygger NatureCell på tillid — én ærlig kundeoplevelse ad gangen."
+      }
     }
   },
-  "order": ["hero", "story", "timeline", "faq"]
+  "order": ["hero", "familien", "timeline", "loefte", "moellerup", "stats", "familie2"]
 }

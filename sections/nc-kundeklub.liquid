@@ -1,84 +1,145 @@
-{% comment %} Kundeklub fra designet: fire fordele, tre trin og tilmelding. {% endcomment %}
+{% comment %}
+  Kundeklub 1:1 fra NatureCell.dc.html: sage-hero med to knapper,
+  fire fordelskort med ikon-cirkler, "Saadan virker det" med tre
+  nummererede trin paa lys sage-bund, og tilmelding med e-mailfelt.
+{% endcomment %}
 
 {%- style -%}
-  .nc-klub__perks { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: clamp(32px, 4vw, 52px); }
-  .nc-klub__perk { background: var(--cloud); border-radius: var(--radius-lg); padding: clamp(20px, 2.6vw, 28px); box-shadow: var(--shadow-xs); }
-  .nc-klub__perk svg { color: var(--sage-500); margin-bottom: 10px; }
-  .nc-klub__perk h3 { font-size: 18px; margin-bottom: 6px; }
-  .nc-klub__perk p { margin: 0; font-size: 14px; color: var(--ink-700); }
+  .nc-klub__hero { background: var(--sage-500); padding: clamp(48px, 7vw, 96px) 0; }
+  .nc-klub__hero-inner { max-width: 60ch; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .nc-klub__hero h1 { margin: 0; color: var(--cloud); font-size: clamp(34px, 4.4vw, 56px); line-height: 1.08; }
+  .nc-klub__hero p { margin: 0; color: rgba(255, 255, 255, 0.88); font-size: clamp(15px, 1.3vw, 17px); line-height: 1.7; max-width: 52ch; }
+  .nc-klub__hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
 
-  .nc-klub__steps { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: clamp(32px, 4vw, 52px); }
-  .nc-klub__step strong { display: block; font-family: var(--font-display); font-size: 30px; color: var(--sage-300); }
-  .nc-klub__step h3 { font-size: 18px; margin: 6px 0; }
-  .nc-klub__step p { margin: 0; font-size: 14px; color: var(--ink-700); }
+  .nc-klub__head { text-align: center; max-width: 62ch; margin: 0 auto clamp(26px, 3.6vw, 44px); }
+  .nc-klub__head h2 { margin: 0; font-size: clamp(26px, 3vw, 38px); }
 
-  .nc-klub__cta { background: var(--nc-hero-bg); border-radius: var(--radius-xl); padding: clamp(28px, 4vw, 52px); text-align: center; color: var(--cloud); }
-  .nc-klub__cta h2 { color: var(--cloud); }
-  .nc-klub__cta form { display: flex; gap: 8px; max-width: 420px; margin: 18px auto 0; }
+  .nc-klub__perks { display: grid; gap: clamp(14px, 2vw, 24px); grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .nc-klub__perk { background: var(--cloud); border-radius: var(--radius-lg); padding: clamp(22px, 2.8vw, 32px); box-shadow: var(--shadow-xs); }
+  .nc-klub__perk-icon { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; background: var(--sage-100); color: var(--sage-700); margin-bottom: 18px; }
+  .nc-klub__perk h3 { font-size: 19px; margin: 0 0 8px; }
+  .nc-klub__perk p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-700); }
+
+  .nc-klub__how { background: var(--sage-50); padding: clamp(44px, 6vw, 80px) 0; margin-top: clamp(40px, 5vw, 72px); }
+  .nc-klub__steps { display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); text-align: center; }
+  .nc-klub__step strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 3vw, 38px); color: var(--sage-400); letter-spacing: 0.04em; }
+  .nc-klub__step h3 { font-size: 19px; margin: 10px 0 8px; }
+  .nc-klub__step p { margin: 0 auto; font-size: 14.5px; line-height: 1.65; color: var(--ink-700); max-width: 34ch; }
+
+  .nc-klub__signup { padding: clamp(44px, 6vw, 80px) 0; text-align: center; }
+  .nc-klub__signup h2 { margin: 0; font-size: clamp(26px, 3vw, 38px); }
+  .nc-klub__signup > .nc-container > p { margin: 12px auto 0; color: var(--ink-700); max-width: 52ch; }
+  .nc-klub__form { display: flex; gap: 10px; max-width: 440px; margin: clamp(20px, 2.6vw, 30px) auto 0; }
+  .nc-klub__form .nc-input { flex: 1; min-width: 0; }
+  .nc-klub__fine { margin: 14px auto 0; font-size: 12.5px; color: var(--ink-500); }
 {%- endstyle -%}
 
-<section class="nc-section" style="padding-top: 10px;">
-  <div class="nc-container">
-    <div class="nc-klub__perks">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'perk' -%}
-          <div class="nc-klub__perk" {{ block.shopify_attributes }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              {%- case block.settings.icon -%}
-                {%- when 'star' -%}<path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/>
-                {%- when 'percent' -%}<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
-                {%- when 'gift' -%}<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3.5 8 4.6 8.4 8 12 8ZM12 8s1.5-4.5 4-3.4S15.6 8 12 8Z"/>
-                {%- else -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
-              {%- endcase -%}
-            </svg>
-            <h3>{{ block.settings.title }}</h3>
-            <p>{{ block.settings.text }}</p>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+<div class="nc-klub">
+  <div class="nc-klub__hero nc-on-dark">
+    <div class="nc-container">
+      <div class="nc-klub__hero-inner">
+        <p class="nc-eyebrow" style="margin: 0;">{{ section.settings.hero_eyebrow }}</p>
+        <h1>{{ section.settings.hero_heading }}</h1>
+        <p>{{ section.settings.hero_text }}</p>
+        <div class="nc-klub__hero-ctas">
+          <a class="nc-btn nc-btn--light" href="#nc-klub-tilmeld">{{ section.settings.hero_cta1 }}</a>
+          <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_login_url }}">{{ section.settings.hero_cta2 }}</a>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <h2>{{ section.settings.steps_heading }}</h2>
-    <div class="nc-klub__steps">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'step' -%}
-          <div class="nc-klub__step" {{ block.shopify_attributes }}>
-            <strong>{{ block.settings.num }}</strong>
-            <h3>{{ block.settings.title }}</h3>
-            <p>{{ block.settings.text }}</p>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+  <div class="nc-section">
+    <div class="nc-container">
+      <div class="nc-klub__head">
+        <p class="nc-eyebrow">{{ section.settings.perks_eyebrow }}</p>
+        <h2>{{ section.settings.perks_heading }}</h2>
+      </div>
+      <div class="nc-klub__perks">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' -%}
+            <div class="nc-klub__perk" {{ block.shopify_attributes }}>
+              <span class="nc-klub__perk-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  {%- case block.settings.icon -%}
+                    {%- when 'star' -%}<path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/>
+                    {%- when 'percent' -%}<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
+                    {%- when 'gift' -%}<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3.5 8 4.6 8.4 8 12 8ZM12 8s1.5-4.5 4-3.4S15.6 8 12 8Z"/>
+                    {%- else -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                  {%- endcase -%}
+                </svg>
+              </span>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     </div>
+  </div>
 
-    <div class="nc-klub__cta nc-on-dark">
-      <p class="nc-eyebrow">{{ section.settings.cta_eyebrow }}</p>
+  <div class="nc-klub__how">
+    <div class="nc-container">
+      <div class="nc-klub__head" style="margin-bottom: clamp(24px, 3vw, 40px);">
+        <h2>{{ section.settings.steps_heading }}</h2>
+      </div>
+      <div class="nc-klub__steps">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' -%}
+            <div class="nc-klub__step" {{ block.shopify_attributes }}>
+              <strong>{{ block.settings.num }}</strong>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="nc-klub__signup" id="nc-klub-tilmeld">
+    <div class="nc-container">
       <h2>{{ section.settings.cta_heading }}</h2>
       <p>{{ section.settings.cta_text }}</p>
       {%- form 'customer' -%}
         <input type="hidden" name="contact[tags]" value="newsletter,kundeklub">
-        <div style="display: flex; gap: 8px; max-width: 420px; margin: 18px auto 0;">
+        <div class="nc-klub__form">
           <label class="nc-visually-hidden" for="nc-klub-email">E-mail</label>
           <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="din@email.dk" autocomplete="email" required>
-          <button class="nc-btn nc-btn--light" type="submit">Meld dig ind</button>
+          <button class="nc-btn nc-btn--sage" type="submit">{{ section.settings.cta_button }}</button>
         </div>
         {%- if form.posted_successfully? -%}
-          <p role="status" style="margin-top: 10px;">Velkommen i klubben. Tjek din indbakke.</p>
+          <p role="status" style="margin-top: 12px; color: var(--sage-700);">Velkommen i klubben. Tjek din indbakke.</p>
+        {%- elsif form.errors -%}
+          <p role="alert" style="margin-top: 12px;">Tjek din e-mailadresse og prøv igen.</p>
         {%- endif -%}
       {%- endform -%}
+      <p class="nc-klub__fine">{{ section.settings.cta_fine }}</p>
     </div>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
   "name": "Kundeklub",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "steps_heading", "label": "Trin, overskrift", "default": "Sådan fungerer det" },
-    { "type": "text", "id": "cta_eyebrow", "label": "CTA, overlinje", "default": "Kundeklub" },
-    { "type": "text", "id": "cta_heading", "label": "CTA, overskrift", "default": "Meld dig ind i dag" },
-    { "type": "textarea", "id": "cta_text", "label": "CTA, tekst", "default": "Gratis medlemskab. Point på hvert køb og 10% på din første ordre." }
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Overlinje", "default": "Bliv medlem · Gratis" },
+    { "type": "text", "id": "hero_heading", "label": "Overskrift", "default": "NatureCell Kundeklub" },
+    { "type": "textarea", "id": "hero_text", "label": "Tekst", "default": "Bliv en del af klubben og få mere ud af din hudpleje. Optjen point på hvert køb, få 10% velkomstrabat, en fødselsdagsgave og tidlig adgang til nyheder og medlemspriser." },
+    { "type": "text", "id": "hero_cta1", "label": "Primær knap", "default": "Bliv medlem →" },
+    { "type": "text", "id": "hero_cta2", "label": "Sekundær knap", "default": "Allerede medlem? Log ind" },
+    { "type": "header", "content": "Fordele" },
+    { "type": "text", "id": "perks_eyebrow", "label": "Overlinje", "default": "Medlemsfordele" },
+    { "type": "text", "id": "perks_heading", "label": "Overskrift", "default": "Fordele der plejer dig" },
+    { "type": "header", "content": "Sådan virker det" },
+    { "type": "text", "id": "steps_heading", "label": "Overskrift", "default": "Sådan virker det" },
+    { "type": "header", "content": "Tilmelding" },
+    { "type": "text", "id": "cta_heading", "label": "Overskrift", "default": "Meld dig ind på 30 sekunder" },
+    { "type": "textarea", "id": "cta_text", "label": "Tekst", "default": "Tilmeld dig med din e-mail og få 10% på din første ordre med det samme." },
+    { "type": "text", "id": "cta_button", "label": "Knaptekst", "default": "Bliv medlem" },
+    { "type": "text", "id": "cta_fine", "label": "Fin print", "default": "Gratis medlemskab · afmeld når som helst · vi deler ikke dine data." }
   ],
   "blocks": [
     {
@@ -96,7 +157,7 @@
       "settings": [
         { "type": "text", "id": "num", "label": "Nummer", "default": "01" },
         { "type": "text", "id": "title", "label": "Titel", "default": "Meld dig ind" },
-        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail. Det tager under et minut." }
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail — det tager under et minut." }
       ]
     }
   ],
@@ -108,7 +169,7 @@
         { "type": "perk", "settings": { "icon": "percent", "title": "10% velkomstrabat", "text": "Få 10% på din første ordre, når du melder dig ind i klubben." } },
         { "type": "perk", "settings": { "icon": "gift", "title": "Fødselsdagsgave", "text": "En lille overraskelse i din indbakke i din fødselsdagsmåned." } },
         { "type": "perk", "settings": { "icon": "clock", "title": "Tidlig adgang", "text": "Vær først med nyheder, kampagner og eksklusive medlemspriser." } },
-        { "type": "step", "settings": { "num": "01", "title": "Meld dig ind", "text": "Tilmeld dig gratis med din e-mail. Det tager under et minut." } },
+        { "type": "step", "settings": { "num": "01", "title": "Meld dig ind", "text": "Tilmeld dig gratis med din e-mail — det tager under et minut." } },
         { "type": "step", "settings": { "num": "02", "title": "Handl som vanligt", "text": "Optjen point automatisk på hvert køb i webshoppen." } },
         { "type": "step", "settings": { "num": "03", "title": "Indløs & nyd", "text": "Brug dine point og fordele på din næste hudplejerutine." } }
       ]

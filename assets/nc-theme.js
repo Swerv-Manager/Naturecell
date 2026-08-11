@@ -140,6 +140,7 @@
     document.documentElement.classList.remove('nc-lock');
   }
   window.ncOpenCart = openDrawer;
+  window.ncRefreshCart = function (open) { return refreshCart(open); };
 
   function refreshCart(open) {
     return fetch(window.Shopify && window.Shopify.routes ? window.Shopify.routes.root + '?sections=nc-cart-drawer' : '/?sections=nc-cart-drawer')

@@ -1,0 +1,164 @@
+{% comment %}
+  Ingrediensside 1:1 fra NatureCell.dc.html: soegefelt + chips der
+  hopper til hver ingrediens, og en fuld sektion pr. ingrediens med
+  kategori-pill, navn, INCI i kursiv, funktions-chips, indledning,
+  broedtekst, "Derfor bruger vi den"-kort og hoejt billede.
+  Sektionerne skifter baggrund og billedside.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-ing__tools { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--border-soft, var(--ink-100)); padding: 16px 0; }
+  #shopify-section-{{ section.id }} .nc-ing__tools-inner { display: flex; flex-direction: column; gap: 12px; }
+  #shopify-section-{{ section.id }} .nc-ing__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  #shopify-section-{{ section.id }} .nc-ing__item { padding: clamp(44px, 6vw, 84px) 0; }
+  #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) { background: var(--paper-2); }
+  #shopify-section-{{ section.id }} .nc-ing__grid { display: grid; gap: clamp(24px, 4vw, 64px); grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 900px) {
+    #shopify-section-{{ section.id }} .nc-ing__grid { grid-template-columns: 220px 1fr; }
+    #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) .nc-ing__grid { grid-template-columns: 1fr 220px; }
+    #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) .nc-ing__media { order: 2; }
+  }
+  #shopify-section-{{ section.id }} .nc-ing__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); aspect-ratio: 3 / 7; max-height: 480px; }
+  #shopify-section-{{ section.id }} .nc-ing__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  #shopify-section-{{ section.id }} .nc-ing__pill { display: inline-flex; padding: 5px 13px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--cloud); background: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-ing__pill--sand { background: var(--sand-500); color: var(--ink-900); }
+  #shopify-section-{{ section.id }} .nc-ing__pill--stone { background: var(--stone-500, #8C8F8F); }
+  #shopify-section-{{ section.id }} .nc-ing__pill--mauve { background: #B07A7F; }
+  #shopify-section-{{ section.id }} .nc-ing__body h2 { margin: 14px 0 2px; font-size: clamp(30px, 3.4vw, 42px); }
+  #shopify-section-{{ section.id }} .nc-ing__latin { margin: 0 0 14px; font-style: italic; font-size: 14px; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-ing__fns { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  #shopify-section-{{ section.id }} .nc-ing__intro { margin: 0 0 16px; font-family: var(--font-display); font-size: clamp(18px, 1.7vw, 21px); line-height: 1.55; color: var(--ink-900); max-width: 62ch; }
+  #shopify-section-{{ section.id }} .nc-ing__text p { margin: 0 0 14px; line-height: 1.75; color: var(--ink-700); max-width: 68ch; }
+  #shopify-section-{{ section.id }} .nc-ing__why { max-width: 620px; margin-top: 22px; border: 1px solid var(--border-soft, var(--ink-100)); border-radius: var(--radius-lg); background: var(--cloud); padding: clamp(18px, 2.4vw, 26px); }
+  #shopify-section-{{ section.id }} .nc-ing__why strong { display: block; margin-bottom: 12px; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-ing__why ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  #shopify-section-{{ section.id }} .nc-ing__why li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-ing__why svg { flex: none; margin-top: 3px; color: var(--sage-500); }
+{%- endstyle -%}
+
+<div data-nc-ingredients>
+  <div class="nc-ing__tools">
+    <div class="nc-container">
+      <div class="nc-ing__tools-inner">
+        <div class="nc-blogtools__search" style="flex-basis: 320px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
+          <label class="nc-visually-hidden" for="nc-ing-search">Søg efter en ingrediens</label>
+          <input id="nc-ing-search" type="search" placeholder="Søg efter en ingrediens ..." data-nc-ing-search autocomplete="off">
+        </div>
+        <div class="nc-ing__chips">
+          {%- for block in section.blocks -%}
+            <a class="nc-chip" href="#ing-{{ block.settings.name | handleize }}">{{ block.settings.name }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- for block in section.blocks -%}
+    <div
+      class="nc-ing__item"
+      id="ing-{{ block.settings.name | handleize }}"
+      data-nc-ing-item
+      data-nc-search-text="{{ block.settings.name | downcase | escape }} {{ block.settings.latin | downcase | escape }} {{ block.settings.category | downcase | escape }} {{ block.settings.functions | downcase | escape }}"
+      {{ block.shopify_attributes }}
+    >
+      <div class="nc-container">
+        <div class="nc-ing__grid">
+          <div class="nc-ing__media">
+            {%- assign ing_alt = block.settings.name | escape -%}
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 480 | image_tag: alt: ing_alt, loading: 'lazy', sizes: '220px' }}
+            {%- elsif block.settings.image_url contains '//' -%}
+              <img src="{{ block.settings.image_url }}" alt="{{ ing_alt }}" loading="lazy" width="220" height="513">
+            {%- elsif block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url | asset_url }}" alt="{{ ing_alt }}" loading="lazy" width="220" height="513">
+            {%- endif -%}
+          </div>
+          <div class="nc-ing__body">
+            {%- if block.settings.category != blank -%}
+              <span class="nc-ing__pill nc-ing__pill--{{ block.settings.category_tone }}">{{ block.settings.category }}</span>
+            {%- endif -%}
+            <h2>{{ block.settings.name }}</h2>
+            {%- if block.settings.latin != blank -%}
+              <p class="nc-ing__latin">{{ block.settings.latin }}</p>
+            {%- endif -%}
+            {%- if block.settings.functions != blank -%}
+              <div class="nc-ing__fns">
+                {%- assign fns = block.settings.functions | split: ',' -%}
+                {%- for fn in fns -%}
+                  <span class="nc-chip" style="pointer-events: none; text-transform: uppercase; font-size: 11px; letter-spacing: var(--tracking-wider);">{{ fn | strip }}</span>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.intro != blank -%}
+              <p class="nc-ing__intro">{{ block.settings.intro }}</p>
+            {%- endif -%}
+            <div class="nc-ing__text">{{ block.settings.body }}</div>
+            {%- if block.settings.benefits != blank -%}
+              <div class="nc-ing__why">
+                <strong>Derfor bruger vi den</strong>
+                <ul>
+                  {%- assign benefit_rows = block.settings.benefits | newline_to_br | split: '<br />' -%}
+                  {%- for row in benefit_rows -%}
+                    {%- assign row_text = row | strip -%}
+                    {%- if row_text != blank -%}
+                      <li>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        {{ row_text }}
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function () {
+    var wrap = document.querySelector('[data-nc-ingredients]');
+    if (!wrap) return;
+    var input = wrap.querySelector('[data-nc-ing-search]');
+    var items = wrap.querySelectorAll('[data-nc-ing-item]');
+    if (!input) return;
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      items.forEach(function (el) {
+        el.hidden = q && (el.getAttribute('data-nc-search-text') || '').indexOf(q) === -1;
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "NC ingredienser",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediens",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Navn", "default": "CBD" },
+        { "type": "text", "id": "latin", "label": "INCI-navn", "default": "Cannabidiol" },
+        { "type": "text", "id": "category", "label": "Kategori-pill", "default": "Balance" },
+        { "type": "select", "id": "category_tone", "label": "Pill-farve", "options": [ { "value": "sage", "label": "Sage" }, { "value": "sand", "label": "Sand" }, { "value": "stone", "label": "Stone" }, { "value": "mauve", "label": "Mauve" } ], "default": "sage" },
+        { "type": "text", "id": "functions", "label": "Funktioner (kommasepareret)", "default": "Skin conditioning, Antioxidant" },
+        { "type": "textarea", "id": "intro", "label": "Indledning" },
+        { "type": "richtext", "id": "body", "label": "Brødtekst" },
+        { "type": "textarea", "id": "benefits", "label": "Derfor bruger vi den (én pr. linje)" },
+        { "type": "image_picker", "id": "image", "label": "Billede" },
+        { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "NC ingredienser" } ]
+}
+{% endschema %}
