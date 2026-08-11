@@ -85,6 +85,7 @@
     "august_banner": {
       "type": "nc-august-campaign-banner",
       "settings": {
+        "product": "exfoliating-hanske",
         "cta_primary_url": "/collections/cbd-hudpleje",
         "cta_secondary_url": "/collections/sampakker"
       }
