@@ -1,0 +1,37 @@
+{% comment %} USP-baand paa sage-groen: loeb af butiks-USP'er med ikoner. {% endcomment %}
+
+{%- style -%}
+  .nc-uspband { background: var(--nc-hero-bg); color: var(--cloud); padding: 13px 0; overflow: hidden; }
+  .nc-uspband__item { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; padding: 0 clamp(16px, 3vw, 34px); white-space: nowrap; }
+  .nc-uspband__item svg { flex: none; opacity: 0.9; }
+{%- endstyle -%}
+
+<div class="nc-uspband nc-marqwrap" aria-label="Fordele ved at handle hos NatureCell">
+  <div class="nc-rail" style="animation-duration: 40s;">
+    {%- assign items = section.settings.items | newline_to_br | split: '<br />' -%}
+    {%- for i in (1..2) -%}
+      {%- for item in items -%}
+        <span class="nc-uspband__item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          {{ item | strip }}
+        </span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "USP-bånd",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Punkter (ét pr. linje)",
+      "default": "Fri fragt over 399 kr.\nDansk produktion & test\nVegansk & plantebaseret\ne-mærket webshop · tryg handel\n30 dages returret"
+    }
+  ],
+  "presets": [ { "name": "USP-bånd" } ]
+}
+{% endschema %}

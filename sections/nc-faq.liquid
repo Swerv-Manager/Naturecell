@@ -1,0 +1,83 @@
+{% comment %}
+  FAQ-accordion fra designet. Bruges paa produktsider, kollektioner og
+  FAQ-siden. Grupper laves med overskrift-blokke.
+{% endcomment %}
+
+{%- style -%}
+  .nc-faqsec__wrap { max-width: 780px; margin: 0 auto; }
+  .nc-faqsec__group { margin: 26px 0 10px; }
+{%- endstyle -%}
+
+<section class="nc-section" id="faq">
+  <div class="nc-container">
+    <div class="nc-faqsec__wrap">
+      <div class="nc-section-head nc-section-head--center" style="margin-bottom: 8px;">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.subtext != blank -%}
+          <p>{{ section.settings.subtext }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="nc-acc">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'group' -%}
+            <h3 class="nc-eyebrow nc-faqsec__group" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h3>
+          {%- else -%}
+            <details class="nc-acc__item" {% if forloop.first and section.settings.open_first %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="nc-acc__head">
+                {{ block.settings.q }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="nc-acc__body">{{ block.settings.a }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Spørgsmål & svar" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Ofte stillede spørgsmål" },
+    { "type": "textarea", "id": "subtext", "label": "Undertekst" },
+    { "type": "checkbox", "id": "open_first", "label": "Åbn første spørgsmål", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Spørgsmål",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Spørgsmål", "default": "Hvad er CBD-hudpleje?" },
+        { "type": "richtext", "id": "a", "label": "Svar", "default": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "Gruppeoverskrift",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Overskrift", "default": "CBD & lovgivning" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "qa", "settings": { "q": "Hvad er CBD-hudpleje?", "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" } },
+        { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>" } },
+        { "type": "qa", "settings": { "q": "Passer produkterne til alle hudtyper?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning til tør, fedtet, kombineret, moden, sensitiv og uren hud.</p>" } },
+        { "type": "qa", "settings": { "q": "Er produkterne veganske?", "a": "<p>Ja. Veganske, uden syntetisk parfume og udviklet i Danmark.</p>" } },
+        { "type": "qa", "settings": { "q": "Hvad koster fragt?", "a": "<p>Fri fragt ved køb over 399 kr.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

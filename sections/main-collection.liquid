@@ -1,36 +1,56 @@
 {% comment %}
-  Kollektionsside, skelet: titel, beskrivelse, produktgrid, paginering.
+  Kollektionsside fra NatureCell.dc.html: titel + beskrivelse,
+  filterchips (kollektionslinks + tag-filtre), soegefelt (Shopify-soeg),
+  grid med sampakker foerst-sortering via kollektionens egen sortering,
+  paginering og SEO-bundtekst med FAQ (egne sektioner nedenfor).
 {% endcomment %}
 
 {%- style -%}
-  .nc-collection__header {
-    max-width: 64ch;
-    margin-bottom: clamp(24px, 3vw, 44px);
-  }
-
-  .nc-collection__description {
-    color: rgba(44, 70, 61, 0.82);
-  }
+  .nc-coll__header { max-width: 68ch; margin-bottom: 18px; }
+  .nc-coll__header p { color: var(--ink-700); }
+  .nc-coll__chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+  .nc-coll__count { font-size: 13.5px; color: var(--ink-500); margin: 0 0 16px; }
 {%- endstyle -%}
 
 <div class="nc-section">
   <div class="nc-container">
-    <header class="nc-collection__header">
+    <header class="nc-coll__header">
       <h1>{{ collection.title }}</h1>
       {%- if collection.description != blank -%}
-        <div class="nc-collection__description">{{ collection.description }}</div>
+        <div>{{ collection.description }}</div>
       {%- endif -%}
     </header>
 
+    {%- if section.settings.show_chips -%}
+      <div class="nc-coll__chips" aria-label="Kategorier">
+        {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
+        {%- for chip in chips -%}
+          {%- assign parts = chip | strip | split: '|' -%}
+          {%- if parts[0] != blank and parts[1] != blank -%}
+            {%- assign chip_url = parts[1] | strip -%}
+            <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if current_tags -%}
+      <p class="nc-coll__count">
+        Filtreret: {{ current_tags | join: ', ' }} · <a href="{{ collection.url }}">Nulstil</a>
+      </p>
+    {%- endif -%}
+
     {%- paginate collection.products by 24 -%}
+      <p class="nc-coll__count">{{ collection.products_count }} produkter</p>
+
       {%- if collection.products.size > 0 -%}
-        <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
+        <ul class="nc-grid">
           {%- for product in collection.products -%}
             <li>{% render 'nc-product-card', product: product %}</li>
           {%- endfor -%}
         </ul>
       {%- else -%}
-        <p>Der er ingen produkter i denne kollektion endnu.</p>
+        <p>Ingen produkter matchede. Prøv at nulstille filteret.</p>
       {%- endif -%}
 
       {%- if paginate.pages > 1 -%}
@@ -46,6 +66,14 @@
 {
   "name": "Kollektion",
   "tag": "section",
-  "settings": []
+  "settings": [
+    { "type": "checkbox", "id": "show_chips", "label": "Vis kategorichips", "default": true },
+    {
+      "type": "textarea",
+      "id": "chips",
+      "label": "Chips (én pr. linje: Tekst | /url)",
+      "default": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje\nSampakker | /collections/sampakker\nCBD Drops | /collections/cbd-olie\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+    }
+  ]
 }
 {% endschema %}

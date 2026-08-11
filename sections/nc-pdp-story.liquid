@@ -1,0 +1,70 @@
+{% comment %}
+  Produktside: to redaktionelle blokke ("Derfor elsker vores kunder den"
+  og "Sådan bruger du den") med produktbilleder, skiftevis venstre/hoejre.
+  Tekst fra metafelter (nc.story_1 / nc.usage) med fallback.
+{% endcomment %}
+
+{%- liquid
+  assign gimgs = product.images
+  assign img_a = gimgs[1] | default: product.featured_image
+  assign img_b = product.featured_image
+-%}
+
+{%- style -%}
+  .nc-pdpstory { display: flex; flex-direction: column; gap: clamp(36px, 5vw, 64px); }
+  .nc-pdpstory__row { display: grid; gap: clamp(24px, 4vw, 56px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 900px) {
+    .nc-pdpstory__row { grid-template-columns: 1fr 1fr; }
+    .nc-pdpstory__row--flip .nc-pdpstory__media { order: 2; }
+  }
+  .nc-pdpstory__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--nc-product-tint); aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; }
+  .nc-pdpstory__media img { max-width: 82%; max-height: 82%; object-fit: contain; }
+  .nc-pdpstory__text h2 { font-size: clamp(24px, 2.6vw, 32px); }
+  .nc-pdpstory__text p { max-width: 52ch; }
+{%- endstyle -%}
+
+<section class="nc-section">
+  <div class="nc-container">
+    <div class="nc-pdpstory">
+      <div class="nc-pdpstory__row">
+        <div class="nc-pdpstory__media">
+          {%- if img_a -%}
+            {{ img_a | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy' }}
+          {%- endif -%}
+        </div>
+        <div class="nc-pdpstory__text">
+          <p class="nc-eyebrow">{{ section.settings.eyebrow_1 }}</p>
+          <h2>{{ product.metafields.nc.story_title.value | default: section.settings.heading_1 }}</h2>
+          <p>{{ product.metafields.nc.story.value | default: product.description | strip_html | truncate: 420 }}</p>
+        </div>
+      </div>
+
+      <div class="nc-pdpstory__row nc-pdpstory__row--flip">
+        <div class="nc-pdpstory__media">
+          {%- if img_b -%}
+            {{ img_b | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy' }}
+          {%- endif -%}
+        </div>
+        <div class="nc-pdpstory__text">
+          <p class="nc-eyebrow">{{ section.settings.eyebrow_2 }}</p>
+          <h2>{{ section.settings.heading_2 }}</h2>
+          <p>{{ product.metafields.nc.usage.value | default: section.settings.usage_fallback }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produkt-fortælling",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow_1", "label": "Blok 1: overlinje", "default": "Derfor elsker vores kunder den" },
+    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback)", "default": "En fast del af rutinen" },
+    { "type": "text", "id": "eyebrow_2", "label": "Blok 2: overlinje", "default": "Sådan bruger du den" },
+    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift", "default": "En enkel del af din daglige rutine" },
+    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "default": "Påfør på ren, tør hud morgen og/eller aften. Til udvortes brug. Opbevares køligt og mørkt." }
+  ]
+}
+{% endschema %}

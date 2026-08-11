@@ -1,8 +1,32 @@
 {
   "sections": {
-    "main": {
-      "type": "main-product"
-    }
+    "main": { "type": "main-product" },
+    "uspband": { "type": "nc-usp-band" },
+    "story": { "type": "nc-pdp-story" },
+    "videos": {
+      "type": "nc-video-rail",
+      "blocks": {
+        "v1": { "type": "video", "settings": { "name": "Mette", "youtube_id": "VRJSZeNlCoQ" } },
+        "v2": { "type": "video", "settings": { "name": "Christian", "youtube_id": "RHGezLkTcO8" } },
+        "v3": { "type": "video", "settings": { "name": "Astrid", "youtube_id": "7_Bpx7LJIGc" } },
+        "v4": { "type": "video", "settings": { "name": "Vivi", "youtube_id": "HwVoEwGZmyc" } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4"]
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": { "heading": "Ofte stillede spørgsmål" },
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "q": "Passer produktet til min hudtype?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning og passer til tør, fedtet, kombineret, moden, sensitiv og uren hud. Er din hud meget reaktiv, så start med ét produkt ad gangen.</p>" } },
+        "q2": { "type": "qa", "settings": { "q": "Er produktet vegansk og uden parfume?", "a": "<p>Ja. Vores produkter er veganske og uden tilsatte syntetiske duftstoffer. Duften kommer alene fra de naturlige ingredienser.</p>" } },
+        "q3": { "type": "qa", "settings": { "q": "Hvor produceres det?", "a": "<p>Det udvikles og produceres på GMP- og ISO-certificerede faciliteter i Danmark.</p>" } },
+        "q4": { "type": "qa", "settings": { "q": "Hvor hurtigt ser jeg resultater?", "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler. Du kan læse rigtige kunders egne oplevelser under kundecases.</p>" } },
+        "q5": { "type": "qa", "settings": { "q": "Hvordan opbevarer jeg det?", "a": "<p>Køligt og mørkt, og luk godt efter brug. Produktet er til udvortes brug.</p>" } },
+        "q6": { "type": "qa", "settings": { "q": "Hvad koster fragt, og kan jeg returnere?", "a": "<p>Fri fragt ved køb over 399 kr. Du har 30 dages returret på uåbnede varer.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
+    },
+    "related": { "type": "nc-related" }
   },
-  "order": ["main"]
+  "order": ["main", "uspband", "story", "videos", "faq", "related"]
 }
