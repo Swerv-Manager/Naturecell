@@ -86,7 +86,7 @@
                 "price": {{ p.price | money | json }},
                 "rating": {{ p.metafields.reviews.rating.value.rating | default: 4.5 | json }},
                 "areas": {{ areas | split: ',' | json }},
-                "needs": {{ p.metafields.nc.needs.value | default: '' | json }}
+                "needs": {{ p.metafields.ncell.needs.value | default: '' | json }}
               }{% unless forloop.last %},{% endunless %}
             {%- endfor -%}
           {%- endif -%}

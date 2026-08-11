@@ -34,8 +34,8 @@
         </div>
         <div class="nc-pdpstory__text">
           <p class="nc-eyebrow">{{ section.settings.eyebrow_1 }}</p>
-          <h2>{{ product.metafields.nc.story_title.value | default: section.settings.heading_1 }}</h2>
-          <p>{{ product.metafields.nc.story.value | default: product.description | strip_html | truncate: 420 }}</p>
+          <h2>{{ product.metafields.ncell.story_title.value | default: section.settings.heading_1 }}</h2>
+          <p>{{ product.metafields.ncell.story.value | default: product.description | strip_html | truncate: 420 }}</p>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
         <div class="nc-pdpstory__text">
           <p class="nc-eyebrow">{{ section.settings.eyebrow_2 }}</p>
           <h2>{{ section.settings.heading_2 }}</h2>
-          <p>{{ product.metafields.nc.usage.value | default: section.settings.usage_fallback }}</p>
+          <p>{{ product.metafields.ncell.usage.value | default: section.settings.usage_fallback }}</p>
         </div>
       </div>
     </div>

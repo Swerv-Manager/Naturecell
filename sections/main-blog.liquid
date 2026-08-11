@@ -141,7 +141,7 @@
               assign has_video = true
             endif
             assign clean_title = article.title | split: ' | ' | first
-            assign person = article.metafields.nc.name | default: ''
+            assign person = article.metafields.ncell.name | default: ''
           -%}
 
           <li data-nc-blog-item data-nc-search-text="{{ clean_title | downcase | escape }} {{ person | downcase | escape }} {{ article.tags | join: ' ' | downcase | escape }}">

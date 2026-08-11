@@ -4,7 +4,7 @@
   avatar med kundens navn, medie med play-cirkel. Broedtekst med drop cap
   og citat-callouts, tag-chips, og "Produkterne bag resultatet"-baand med
   Tilfoej hele rutinen. Navn/citat/produkter laeses fra artiklens
-  metafelter nc.name, nc.quote og nc.products.
+  metafelter ncell.name, ncell.quote og ncell.products.
   Artikel: tilbage-link, tag-eyebrow, stor rubrik, herobillede, lead og
   broedtekst i tekstkolonne, plus "Laes ogsaa".
 {% endcomment %}
@@ -16,9 +16,9 @@
   endif
 
   assign clean_title = article.title | split: ' | ' | first
-  assign person = article.metafields.nc.name | default: ''
-  assign quote = article.metafields.nc.quote | default: ''
-  assign case_products = article.metafields.nc.products.value
+  assign person = article.metafields.ncell.name | default: ''
+  assign quote = article.metafields.ncell.quote | default: ''
+  assign case_products = article.metafields.ncell.products.value
 
   assign area_label = ''
   for tag in article.tags
@@ -252,7 +252,7 @@
   "name": "Artikel",
   "tag": "section",
   "settings": [
-    { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet nc.products (produktliste) på artiklen." },
+    { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet ncell.products (produktliste) på artiklen." },
     { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips under artiklen", "default": true }
   ]
 }
