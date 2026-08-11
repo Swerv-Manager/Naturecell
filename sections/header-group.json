@@ -3,7 +3,28 @@
   "name": "Header",
   "sections": {
     "header": {
-      "type": "nc-header"
+      "type": "nc-header",
+      "settings": {
+        "best_collection": "cbd-hudpleje"
+      },
+      "blocks": {
+        "area_ansigt": { "type": "area", "settings": { "label": "Ansigt", "desc": "Creme, serum & rens", "url": "/collections/cbd-ansigtspleje" } },
+        "area_haender": { "type": "area", "settings": { "label": "Hænder", "desc": "Tørre, slidte hænder", "url": "/collections/cbd-handpleje" } },
+        "area_krop": { "type": "area", "settings": { "label": "Krop", "desc": "Lotion & olie", "url": "/collections/cbd-kropspleje" } },
+        "area_foedder": { "type": "area", "settings": { "label": "Fødder", "desc": "Tørre hæle & fødder", "url": "/collections/cbd-fodpleje" } },
+        "area_haar": { "type": "area", "settings": { "label": "Hår", "desc": "Shampoo & pleje", "url": "/collections/cbd-haarpleje" } },
+        "area_herre": { "type": "area", "settings": { "label": "Herre", "desc": "ALFALAB til mænd", "url": "/collections/herre-hudpleje" } },
+        "need_toer": { "type": "need", "settings": { "label": "Tør hud", "desc": "Nærende fugt", "url": "/collections/cbd-hudpleje" } },
+        "need_fugt": { "type": "need", "settings": { "label": "Fugt", "desc": "Boost & balance", "url": "/collections/cbd-hudpleje" } },
+        "need_moden": { "type": "need", "settings": { "label": "Moden hud", "desc": "Fasthed & glød", "url": "/collections/cbd-hudpleje" } },
+        "need_sensitiv": { "type": "need", "settings": { "label": "Sensitiv hud", "desc": "Mild & rolig", "url": "/collections/cbd-hudpleje" } },
+        "need_uren": { "type": "need", "settings": { "label": "Uren hud", "desc": "Rens & balance", "url": "/collections/cbd-hudpleje" } },
+        "need_genopbygning": { "type": "need", "settings": { "label": "Genopbygning", "desc": "Reparation", "url": "/collections/cbd-hudpleje" } }
+      },
+      "block_order": [
+        "area_ansigt", "area_haender", "area_krop", "area_foedder", "area_haar", "area_herre",
+        "need_toer", "need_fugt", "need_moden", "need_sensitiv", "need_uren", "need_genopbygning"
+      ]
     }
   },
   "order": ["header"]

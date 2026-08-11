@@ -1,0 +1,115 @@
+/* ===========================================================================
+   NatureCell Denmark — Color tokens  (OFFICIAL BrandGuide palette)
+   ---------------------------------------------------------------------------
+   "Vægtning af farvebrug": the calm GREENS + NEUTRALS dominate the visual
+   field; the warm/pink ACCENTS are used only discreetly, for balance & focus.
+   Never heavy, loud or visually cluttered.
+
+   Official swatches:
+     80a097 sage (primary)   3e5d58 deep green     8c8f8f stone-grey
+     ddbfa3 sand             d5d1c3 light stone     ffffff white
+     b07a7f mauve            f9b5c4 pink            84334e berry
+   =========================================================================== */
+
+:root {
+  /* --- Brand green scale (anchored on official 80a097 + 3e5d58) -------- */
+  --sage-900: #28403B;
+  --sage-800: #324E48;
+  --sage-700: #3E5D58;   /* OFFICIAL deep green — display text, dark panels */
+  --sage-600: #5A7A72;   /* hover / pressed */
+  --sage-500: #80A097;   /* OFFICIAL primary sage */
+  --sage-400: #9AB4AC;
+  --sage-300: #B6C9C2;
+  --sage-200: #D2DFDB;
+  --sage-100: #E7EEEB;   /* pale sage surface tint */
+  --sage-50:  #F2F6F4;
+
+  /* --- Stone-grey (official 8c8f8f) ----------------------------------- */
+  --stone-600: #6F7271;
+  --stone-500: #8C8F8F;  /* OFFICIAL grey-green neutral */
+  --stone-300: #B9BBB8;
+  --stone-100: #E4E4E0;
+
+  /* --- Warm neutrals (official sand ddbfa3 + light stone d5d1c3) ------- */
+  --sand-500:  #DDBFA3;  /* OFFICIAL sand / tan */
+  --sand-300:  #E8D6C3;
+  --sand-100:  #F4Ece3;
+  --linen-500: #D5D1C3;  /* OFFICIAL light stone */
+  --linen-300: #E3E0D6;
+  --linen-100: #F1EFE8;
+
+  /* --- Paper / page neutrals (warm, never stark) ---------------------- */
+  --paper:    #F6F4EE;   /* primary page background */
+  --paper-2:  #FBFAF5;   /* raised cards on paper */
+  --cloud:    #FFFFFF;   /* OFFICIAL white — product photography ground */
+
+  /* --- Ink / greyscale (green-tinted charcoals) ----------------------- */
+  --ink-900:  #233330;   /* primary text (near deep-green) */
+  --ink-700:  #3C4744;
+  --ink-500:  #5E6764;
+  --ink-400:  #828A87;
+  --ink-300:  #AAB0AD;
+  --ink-200:  #D3D6D1;
+  --ink-100:  #E7E8E2;
+
+  /* --- Accent colours — use SPARINGLY (balance & focus only) ----------- */
+  --accent-mauve: #B07A7F;  /* OFFICIAL */
+  --accent-pink:  #F9B5C4;  /* OFFICIAL */
+  --accent-berry: #84334E;  /* OFFICIAL — deepest accent, sale flags */
+
+  /* --- Legacy packaging "thread" hairlines (sampled from packs) -------- */
+  /* The single diagonal line on each pack. Kept for packaging fidelity.  */
+  --thread-mauve:    var(--accent-mauve);
+  --thread-pink:     var(--accent-pink);
+  --thread-sand:     var(--sand-500);
+  --thread-sage:     var(--sage-400);
+
+  /* --- Semantic status ------------------------------------------------- */
+  --success: #3E5D58;
+  --warning: #B89169;
+  --danger:  #84334E;
+  --info:    #8C8F8F;
+  --sale:    #84334E;   /* berry — "SPAR %" flags */
+
+  /* =====================================================================
+     SEMANTIC ALIASES — reach for these in product/UI code
+     ===================================================================== */
+
+  /* Surfaces */
+  --surface-page:      var(--paper);
+  --surface-card:      var(--cloud);
+  --surface-raised:    var(--paper-2);
+  --surface-sage:      var(--sage-100);
+  --surface-sage-deep: var(--sage-500);
+  --surface-green-deep: var(--sage-700);
+  --surface-sand:      var(--sand-100);
+  --surface-ink:       var(--ink-900);
+  --surface-photo:     var(--cloud);
+
+  /* Text */
+  --text-strong:    var(--ink-900);
+  --text-body:      var(--ink-700);
+  --text-muted:     var(--ink-500);
+  --text-faint:     var(--ink-400);
+  --text-on-sage:   var(--cloud);
+  --text-on-ink:    var(--paper);
+  --text-brand:     var(--sage-700);
+
+  /* Lines & borders */
+  --border-soft:    var(--ink-100);
+  --border-default: var(--ink-200);
+  --border-strong:  var(--ink-300);
+  --border-sage:    var(--sage-200);
+
+  /* Interactive (primary = sage) */
+  --action:           var(--sage-500);
+  --action-hover:     var(--sage-600);
+  --action-pressed:   var(--sage-700);
+  --action-contrast:  var(--cloud);
+  --focus-ring:       var(--sage-600);
+
+  /* Brand mark colours */
+  --brand-sage:     var(--sage-500);
+  --brand-green:    var(--sage-700);
+  --brand-ink:      var(--ink-900);
+}

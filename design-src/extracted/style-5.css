@@ -1,0 +1,59 @@
+/* ===========================================================================
+   NatureCell Denmark — Base layer
+   Light, opinionated resets + a few text-role helpers. Optional for consumers
+   but keeps specimens and UI kits consistent.
+   =========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Text roles ------------------------------------------------------- */
+.nc-eyebrow {
+  font-family: var(--type-eyebrow-family);
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+.nc-display {
+  font-family: var(--type-display-family);
+  font-weight: var(--type-display-weight);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.nc-heading {
+  font-family: var(--type-heading-family);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.nc-body { font-family: var(--font-body); color: var(--text-body); }
+
+.nc-editorial {
+  font-family: var(--type-editorial-family);
+  font-weight: var(--type-editorial-weight);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+
+/* --- The DENMARK lockup spacing helper -------------------------------- */
+.nc-spaced { letter-spacing: var(--tracking-widest); text-transform: uppercase; }
+
+a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }

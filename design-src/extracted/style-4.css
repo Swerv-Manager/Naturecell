@@ -1,0 +1,42 @@
+/* ===========================================================================
+   NatureCell Denmark — Radii, borders, shadows, motion
+   Soft, organic, low-contrast. Shadows are barely-there and warm-tinted,
+   never hard drop-shadows. Corners are gently rounded — calm, not playful.
+   =========================================================================== */
+
+:root {
+  /* --- Radii ---------------------------------------------------------- */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   12px;    /* default cards, inputs */
+  --radius-lg:   18px;    /* feature cards, media */
+  --radius-xl:   28px;    /* hero panels */
+  --radius-pill: 999px;   /* buttons, chips, pills */
+  --radius-circle: 50%;
+
+  /* --- Borders -------------------------------------------------------- */
+  --border-hairline: 1px solid var(--border-default);
+  --border-soft-1:   1px solid var(--border-soft);
+  --border-sage-1:   1px solid var(--border-sage);
+
+  /* --- Shadows — soft, green-tinted, diffuse -------------------------- */
+  --shadow-xs:  0 1px 2px rgba(62, 93, 88, 0.06);
+  --shadow-sm:  0 2px 8px rgba(62, 93, 88, 0.07);
+  --shadow-md:  0 6px 20px rgba(62, 93, 88, 0.09);
+  --shadow-lg:  0 14px 40px rgba(62, 93, 88, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(128, 160, 151, 0.35);
+
+  /* --- Motion — gentle, never bouncy ---------------------------------- */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-soft:  cubic-bezier(0.4, 0, 0.2, 1);       /* @kind other */
+  --dur-fast:   140ms;  /* @kind other */
+  --dur-base:   240ms;  /* @kind other */
+  --dur-slow:   420ms;  /* @kind other */
+
+  /* --- Z-index -------------------------------------------------------- */
+  --z-base:    1;     /* @kind other */
+  --z-sticky:  100;   /* @kind other */
+  --z-overlay: 1000;  /* @kind other */
+  --z-modal:   1100;  /* @kind other */
+  --z-toast:   1200;  /* @kind other */
+}

@@ -3,7 +3,33 @@
   "name": "Footer",
   "sections": {
     "footer": {
-      "type": "nc-footer"
+      "type": "nc-footer",
+      "blocks": {
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "links_text": "Alle produkter | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+          }
+        },
+        "om": {
+          "type": "menu",
+          "settings": {
+            "heading": "Om NatureCell",
+            "links_text": "Vores historie | /pages/om-os\nOm CBD | /pages/om-cbd\nIngredienser | /pages/ingredienser\nKundecases | /blogs/kundecases\nArtikler | /blogs/artikler\nKundeklub | /pages/kundeklub"
+          }
+        },
+        "service": {
+          "type": "menu",
+          "settings": {
+            "heading": "Kundeservice",
+            "links_text": "Kontakt & åbningstider | /pages/kontakt\nOfte stillede spørgsmål | /pages/faq\nHudpleje-quiz | /pages/hudpleje-quiz\nGavekort | /collections/gavekort\nHandelsbetingelser | /policies/terms-of-service\nPrivatlivspolitik | /policies/privacy-policy",
+            "heading_2": "Erhverv",
+            "links_text_2": "B2B login | /pages/b2b\nBliv forhandler | /pages/forhandlere"
+          }
+        }
+      },
+      "block_order": ["shop", "om", "service"]
     }
   },
   "order": ["footer"]

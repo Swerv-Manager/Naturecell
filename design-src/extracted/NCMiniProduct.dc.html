@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/naturecell-design-system-52829db1-0f36-43fb-be73-a051a3b8e03c/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/naturecell-design-system-52829db1-0f36-43fb-be73-a051a3b8e03c/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/naturecell-design-system-52829db1-0f36-43fb-be73-a051a3b8e03c/tokens/effects.css">
+</helmet>
+<sc-if value="{{ isMega }}" hint-placeholder-val="{{ true }}">
+  <button type="button" onClick="{{ open }}" style="border:1px solid var(--border-soft);background:var(--cloud);border-radius:var(--radius-lg);cursor:pointer;padding:14px;display:flex;gap:13px;align-items:center;text-align:left;width:100%;" style-hover="border-color:var(--sage-400)">
+    <div style="width:62px;height:62px;flex:none;background:var(--nc-product-tint, color-mix(in srgb, var(--sage-700) 10%, #FFFFFF));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;padding:7px;"><img src="{{ item.img }}" alt="{{ item.name }}" style="max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;" /></div>
+    <div style="display:flex;flex-direction:column;gap:3px;">
+      <span style="font-family:var(--font-display);font-size:15px;color:var(--sage-700);line-height:1.2;">{{ item.name }}</span>
+      <span style="font-size:13px;font-weight:600;color:var(--sage-700);">{{ item.priceLabel }}</span>
+    </div>
+  </button>
+</sc-if>
+<sc-if value="{{ isRow }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;gap:14px;align-items:center;border:1px solid var(--border-soft);background:var(--cloud);border-radius:var(--radius-lg);padding:14px;width:100%;">
+    <button type="button" onClick="{{ open }}" style="border:none;background:var(--nc-product-tint, color-mix(in srgb, var(--sage-700) 10%, #FFFFFF));border-radius:var(--radius-md);cursor:pointer;width:72px;height:72px;flex:none;display:flex;align-items:center;justify-content:center;padding:8px;"><img src="{{ item.img }}" alt="{{ item.name }}" style="max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;" /></button>
+    <div style="display:flex;flex-direction:column;gap:5px;flex:1;">
+      <span style="font-family:var(--font-display);font-size:15px;line-height:1.2;color:var(--sage-700);">{{ item.name }}</span>
+      <span style="font-size:13px;font-weight:600;color:var(--sage-700);">{{ item.priceLabel }}</span>
+      <button type="button" onClick="{{ add }}" style="align-self:flex-start;border:1.5px solid var(--sage-500);background:none;cursor:pointer;color:var(--sage-700);font-family:var(--font-body);font-weight:600;font-size:12.5px;padding:6px 13px;border-radius:999px;margin-top:2px;">Tilføj</button>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:260,&quot;height&quot;:92},&quot;item&quot;:{&quot;editor&quot;:null,&quot;default&quot;:{}},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mega&quot;,&quot;caserow&quot;],&quot;default&quot;:&quot;mega&quot;},&quot;onOpen&quot;:{&quot;editor&quot;:null},&quot;onAdd&quot;:{&quot;editor&quot;:null}}">
+class Component extends DCLogic {
+  renderVals() {
+    const it = this.props.item || {};
+    const k = this.props.kind || 'mega';
+    return {
+      item: it,
+      isMega: k === 'mega',
+      isRow: k === 'caserow',
+      open: () => { if (this.props.onOpen) this.props.onOpen(); },
+      add: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (this.props.onAdd) this.props.onAdd(); },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<svg id="Lag_1" data-name="Lag 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs></defs>
+  <g>
+    <path fill="#80A097" class="cls-2" d="M30,57.68c15.29,0,27.68-12.39,27.68-27.68S45.29,2.32,30,2.32,2.32,14.71,2.32,30s12.39,27.68,27.68,27.68"></path>
+    <path fill="#ffffff" class="cls-1" d="M29.47,38.43c5.73,0,10.37-4.64,10.37-10.37s-4.64-10.37-10.37-10.37-10.37,4.64-10.37,10.37,4.64,10.37,10.37,10.37Z"></path>
+  </g>
+  <line fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="cls-1" x1="29.47" y1="38.36" x2="29.47" y2="52.62"></line>
+  <line fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="cls-1" x1="35.14" y1="44.51" x2="23.8" y2="44.51"></line>
+  <line fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="cls-1" x1="37.4" y1="20.53" x2="45.21" y2="12.72"></line>
+  <line fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="cls-1" x1="46.64" y1="12.1" x2="37.38" y2="12.1"></line>
+  <line fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="cls-1" x1="45.79" y1="11.25" x2="45.79" y2="20.51"></line>
+</svg>

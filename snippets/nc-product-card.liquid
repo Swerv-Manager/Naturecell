@@ -1,6 +1,7 @@
 {% comment %}
-  Produktkort med billede nr. 2 ved hover
-  (godkendt designbeslutning i #naturecell-hjemmeside, 04-08-2026).
+  Produktkort fra NatureCell.dc.html: medie paa produkt-tint med
+  billede nr. 2 ved hover, SPAR/SAMPAKKE-badges, favorit-hjerte,
+  hurtig-laeg-i-kurv, eyebrow, titel, stoerrelse, rating og pris.
 
   Brug: {% render 'nc-product-card', product: product %}
 {% endcomment %}
@@ -12,16 +13,55 @@
     assign hover_image = product.images[1]
   endif
 
-  assign primary_class = 'nc-product-card__image--primary'
+  assign primary_class = 'nc-img-primary'
   if hover_image != blank
-    assign primary_class = 'nc-product-card__image--primary has-hover-image'
+    assign primary_class = 'nc-img-primary has-hover'
+  endif
+  assign primary_alt = primary_image.alt | default: product.title
+
+  assign is_bundle = false
+  if product.tags contains 'pakker' or product.tags contains 'Pakker' or product.tags contains 'bundle'
+    assign is_bundle = true
   endif
 
-  assign primary_alt = primary_image.alt | default: product.title
+  assign eyebrow = 'NatureCell'
+  if product.title contains 'ALFALAB'
+    assign eyebrow = 'ALFALAB'
+  endif
+  if is_bundle
+    assign eyebrow = eyebrow | append: ' Sampakke'
+  endif
+
+  assign v = product.selected_or_first_available_variant
+  assign on_sale = false
+  if v.compare_at_price > v.price
+    assign on_sale = true
+    assign save_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+  endif
+
+  assign title_parts = product.title | split: ' | '
+  assign card_title = title_parts[0]
+  assign card_sub = title_parts[1]
+
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
 -%}
 
-<a class="nc-product-card" href="{{ product.url }}">
+<div class="nc-product-card">
   <div class="nc-product-card__media">
+    <div class="nc-product-card__tags">
+      {%- if on_sale and settings.show_save_badge -%}
+        <span class="nc-tag nc-tag--sale">Spar {{ save_pct }}%</span>
+      {%- endif -%}
+      {%- if is_bundle -%}
+        <span class="nc-tag nc-tag--sage">Sampakke</span>
+      {%- endif -%}
+    </div>
+
+    <button class="nc-product-card__fav" data-nc-fav="{{ product.handle }}" aria-label="Gem {{ card_title | escape }} som favorit">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    </button>
+
     {%- if primary_image != blank -%}
       {{
         primary_image
@@ -30,32 +70,51 @@
           class: primary_class,
           alt: primary_alt,
           widths: '240, 360, 480, 720',
-          sizes: '(min-width: 990px) 300px, 45vw',
+          sizes: '(min-width: 990px) 300px, 46vw',
           loading: 'lazy'
       }}
       {%- if hover_image != blank -%}
         {{
           hover_image
           | image_url: width: 720
-          | image_tag:
-            class: 'nc-product-card__image--hover',
-            alt: '',
-            widths: '240, 360, 480, 720',
-            sizes: '(min-width: 990px) 300px, 45vw',
-            loading: 'lazy'
+          | image_tag: class: 'nc-img-hover', alt: '', widths: '240, 360, 480, 720', sizes: '(min-width: 990px) 300px, 46vw', loading: 'lazy'
         }}
       {%- endif -%}
     {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'nc-product-card__image--primary placeholder-svg' }}
+      {{ 'product-1' | placeholder_svg_tag: 'nc-img-primary placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if product.available and product.has_only_default_variant -%}
+      <button class="nc-product-card__add" data-nc-add="{{ v.id }}" aria-label="Læg {{ card_title | escape }} i kurven">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
     {%- endif -%}
   </div>
 
-  <h3 class="nc-product-card__title">{{ product.title }}</h3>
-
-  <span class="nc-product-card__price">
-    {% render 'nc-price', product: product %}
-    {%- unless product.available %}
-      <span class="nc-product-card__soldout">Udsolgt</span>
-    {%- endunless -%}
-  </span>
-</a>
+  <div class="nc-product-card__info">
+    <span class="nc-product-card__eyebrow">{{ eyebrow }}</span>
+    <h3 class="nc-product-card__title"><a href="{{ product.url }}">{{ card_title }}</a></h3>
+    {%- if card_sub != blank -%}
+      <span class="nc-product-card__size">{{ card_sub }}</span>
+    {%- endif -%}
+    {%- if rating != blank and rating_count != blank -%}
+      <span class="nc-product-card__rating">
+        <span class="nc-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+          {%- endfor -%}
+        </span>
+        ({{ rating_count }})
+        <span class="nc-visually-hidden">Bedømt {{ rating }} ud af 5</span>
+      </span>
+    {%- endif -%}
+    <span class="nc-product-card__price{% if on_sale %} is-sale{% endif %}">
+      {%- if product.price_varies -%}Fra {% endif -%}
+      {{ v.price | money }}
+      {%- if on_sale -%}
+        <s class="nc-product-card__compare"><span class="nc-visually-hidden">Normalpris </span>{{ v.compare_at_price | money }}</s>
+      {%- endif -%}
+      {%- unless product.available %} · Udsolgt{% endunless -%}
+    </span>
+  </div>
+</div>

@@ -1,468 +1,495 @@
 /* ============================================================
-   NatureCell tema: basis-stilark
-   Tokens er hentet 1:1 fra NatureCell Design System
-   (naturecell-design-system-52829db1), som de allerede er
-   dokumenteret i sections/nc-august-campaign-banner.liquid.
-   Farvepaletten er laast: Ingen hex-vaerdier uden for systemet.
-
-   Vaerdier markeret "afventer tokens" bekraeftes mod
-   _ds/tokens/*.css naar design-handoff-filerne ligger i repoet.
+   NatureCell tema — designsystem og basiskomponenter
+   Oversat 1:1 fra NatureCell Design System (52829db1) og
+   NatureCell.dc.html (godkendt 10-08-2026).
+   Farverne er laast: ingen hex uden for systemet.
    ============================================================ */
 
+/* --- Webfonts (selvhostet, OFL-licens; ingen eksterne kald) --- */
+@font-face {
+  font-family: 'Philosopher';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("nc-philosopher-regular.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Philosopher';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("nc-philosopher-bold.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Philosopher';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("nc-philosopher-italic.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: 300 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("nc-robotoflex.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: 300 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("nc-robotoflex-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --- Tokens --- */
 :root {
-  /* Farver */
-  --nc-paper: #f6f4ee;
-  --nc-green: #3e5d58;
-  --nc-ink: #2c463d; /* afventer tokens: udledt af systemets skyggefarve rgba(44,70,61) */
-  --nc-sand: #ddbfa3;
-  --nc-pink: #f9b5c4;
-  --nc-berry: #84334e;
-  --nc-white: #ffffff;
-  --nc-sage-wash: rgba(128, 160, 151, 0.55);
+  /* Groenne skala (officiel: 80a097 + 3e5d58) */
+  --sage-900: #28403B;
+  --sage-800: #324E48;
+  --sage-700: #3E5D58;
+  --sage-600: #657D79; /* runtime-vaerdi fra godkendt design */
+  --sage-500: #80A097;
+  --sage-400: #9AB4AC;
+  --sage-300: #B6C9C2;
+  --sage-200: #D2DFDB;
+  --sage-100: #D9E3E0; /* runtime-vaerdi */
+  --sage-50:  #E6ECEA; /* runtime-vaerdi */
 
-  /* Form */
-  --nc-radius-card: 18px;
-  --nc-radius-media: 14px;
-  --nc-radius-pill: 999px;
-  --nc-shadow-soft: 0 12px 28px rgba(44, 70, 61, 0.18);
-  --nc-content-max: 1240px;
+  --stone-600: #6F7271;
+  --stone-500: #8C8F8F;
+  --stone-300: #B9BBB8;
+  --stone-100: #E4E4E0;
 
-  /* Bevaegelse */
-  --nc-dur-fast: 140ms;
-  --nc-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --sand-500: #DDBFA3;
+  --sand-300: #E8D6C3;
+  --sand-100: #F4ECE3;
+  --linen-500: #D5D1C3;
+  --linen-300: #E3E0D6;
+  --linen-100: #F1EFE8;
 
-  /* Typografi (Philosopher/Roboto Flex saettes i theme.liquid) */
-  --nc-font-display: 'Philosopher', Georgia, 'Times New Roman', serif;
-  --nc-font-body: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
-  --nc-weight-display: 700;
+  --paper:   #F6F4EE;
+  --paper-2: #FBFAF5;
+  --cloud:   #FFFFFF;
+
+  --ink-900: #233330;
+  --ink-700: #516D69; /* runtime broedtekst */
+  --ink-500: #788E8A; /* runtime daempet */
+  --ink-400: #828A87;
+  --ink-300: #AAB0AD;
+  --ink-200: #D3D6D1;
+  --ink-100: #E7E8E2;
+
+  --accent-mauve: #B07A7F;
+  --accent-pink:  #F9B5C4;
+  --accent-berry: #84334E;
+  --sale: #84334E;
+
+  /* Sektionsbaggrunde fra godkendt design */
+  --nc-announce: #3E5D58;
+  --nc-footer-bg: #80A097;
+  --nc-trust-bg: #F2F6F5;
+  --nc-lifestyle-bg: #E6ECEA;
+  --nc-bestsellers-bg: #F2F6F5;
+  --nc-testimonials-bg: #E6ECEA;
+  --nc-foundervid-bg: #F2F6F5;
+  --nc-founder-bg: #F2F6F5;
+  --nc-reviews-bg: #E6ECEA;
+  --nc-hero-bg: #80A097;
+  --nc-product-tint: #ECF0EE; /* color-mix(3E5D58 10%, hvid) */
+
+  /* Semantik */
+  --surface-page: var(--paper);
+  --surface-card: var(--cloud);
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-brand: var(--sage-700);
+  --text-on-sage: var(--cloud);
+  --border-soft: var(--ink-100);
+  --border-default: var(--ink-200);
+  --border-sage: var(--sage-200);
+  --action: var(--sage-500);
+  --action-hover: var(--sage-600);
+  --focus-ring: var(--sage-600);
+
+  /* Typografi */
+  --font-display: 'Philosopher', Georgia, 'Times New Roman', serif;
+  --font-body: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
+  --weight-display: 400; /* Philosopher Regular er default for overskrifter */
+  --weight-heading: 700;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+  --tracking-tight: -0.01em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+  --tracking-widest: 0.24em;
+
+  /* Rytme og layout */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-9: 4rem;
+  --space-10: 5rem;
+  --space-12: 7.5rem;
+  --container-max: 1240px;
+  --container-text: 680px;
+  --gutter: clamp(16px, 4vw, 24px);
+  --section-y: clamp(48px, 7vw, 80px);
+
+  /* Form, skygge, bevaegelse */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --shadow-xs: 0 1px 2px rgba(62, 93, 88, 0.06);
+  --shadow-sm: 0 2px 8px rgba(62, 93, 88, 0.07);
+  --shadow-md: 0 6px 20px rgba(62, 93, 88, 0.09);
+  --shadow-lg: 0 14px 40px rgba(62, 93, 88, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(128, 160, 151, 0.35);
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* --- Basis --- */
+*, *::before, *::after { box-sizing: border-box; }
 
-html {
-  -webkit-text-size-adjust: 100%;
-}
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--nc-paper);
-  color: var(--nc-ink);
-  font-family: var(--nc-font-body);
-  font-size: clamp(15px, 1.3vw, 17px);
-  line-height: 1.65;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  margin: 0 0 0.5em;
-  font-family: var(--nc-font-display);
-  font-weight: var(--nc-weight-display);
-  line-height: 1.12;
-  color: var(--nc-ink);
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--sage-700);
+  margin: 0 0 0.4em;
   text-wrap: pretty;
 }
 
-h1 {
-  font-size: clamp(30px, 4.1vw, 52px);
+h1 { font-size: clamp(2rem, 4vw, var(--text-4xl)); }
+h2 { font-size: clamp(1.65rem, 3vw, var(--text-3xl)); }
+h3 { font-size: var(--text-xl); }
+
+p { margin: 0 0 1em; }
+
+a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+img { max-width: 100%; height: auto; }
+
+button { font-family: inherit; }
+
+/* --- Tekstroller --- */
+.nc-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-brand);
+  margin: 0 0 12px;
 }
 
-h2 {
-  font-size: clamp(26px, 3.2vw, 40px);
-}
+.nc-editorial { font-family: var(--font-display); font-style: italic; }
 
-h3 {
-  font-size: clamp(20px, 2.2vw, 27px);
-}
+.nc-spaced { letter-spacing: var(--tracking-widest); text-transform: uppercase; }
 
-p {
-  margin: 0 0 1em;
-}
-
-a {
-  color: inherit;
-  text-underline-offset: 2px;
-  transition: color var(--nc-dur-fast) var(--nc-ease-soft), opacity var(--nc-dur-fast) var(--nc-ease-soft);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Layoutramme */
+/* --- Layout --- */
 .nc-container {
   width: 100%;
-  max-width: var(--nc-content-max);
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 56px);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 
-.nc-section {
-  padding: clamp(32px, 5vw, 80px) 0;
-}
+.nc-section { padding-top: var(--section-y); padding-bottom: var(--section-y); }
 
-/* Overlinje */
-.nc-eyebrow {
-  margin: 0 0 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--nc-green);
-}
+.nc-section-head { max-width: 640px; }
 
-/* Knapper: pille-form fra designsystemet */
+.nc-section-head--center { margin-left: auto; margin-right: auto; text-align: center; }
+
+/* --- Knapper --- */
 .nc-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-height: 44px;
-  padding: 15px 32px;
-  border-radius: var(--nc-radius-pill);
+  padding: 13px 28px;
+  border-radius: var(--radius-pill);
   border: 1.5px solid transparent;
-  font-family: inherit;
-  font-size: 18px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    background-color var(--nc-dur-fast) var(--nc-ease-soft),
-    color var(--nc-dur-fast) var(--nc-ease-soft),
-    border-color var(--nc-dur-fast) var(--nc-ease-soft),
-    transform var(--nc-dur-fast) var(--nc-ease-soft),
-    box-shadow var(--nc-dur-fast) var(--nc-ease-soft);
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft);
 }
 
-.nc-btn:hover,
-.nc-btn:focus-visible {
-  transform: translateY(-1px);
+.nc-btn:hover, .nc-btn:focus-visible { transform: translateY(-1px); }
+.nc-btn:active { transform: translateY(0); }
+.nc-btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+.nc-btn--primary { background: var(--sage-700); color: var(--cloud); border-color: var(--sage-700); }
+.nc-btn--primary:hover, .nc-btn--primary:focus-visible { background: var(--sage-800); border-color: var(--sage-800); color: var(--cloud); }
+
+.nc-btn--sage { background: var(--sage-500); color: var(--cloud); border-color: var(--sage-500); }
+.nc-btn--sage:hover, .nc-btn--sage:focus-visible { background: var(--sage-600); border-color: var(--sage-600); color: var(--cloud); }
+
+.nc-btn--light { background: var(--cloud); color: var(--sage-700); border-color: var(--cloud); }
+.nc-btn--light:hover, .nc-btn--light:focus-visible { background: var(--paper); border-color: var(--paper); color: var(--sage-700); }
+
+.nc-btn--outline { background: transparent; color: var(--sage-700); border-color: var(--border-default); }
+.nc-btn--outline:hover, .nc-btn--outline:focus-visible { border-color: var(--sage-700); color: var(--sage-700); background: rgba(62, 93, 88, 0.05); }
+
+.nc-on-dark .nc-btn--outline { color: var(--cloud); border-color: rgba(255, 255, 255, 0.45); }
+.nc-on-dark .nc-btn--outline:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--cloud); color: var(--cloud); }
+
+/* Rund ikonknap (pil, plus, luk) */
+.nc-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-default);
+  background: var(--cloud);
+  color: var(--sage-700);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
 }
 
-.nc-btn:active {
-  transform: translateY(0);
-}
+.nc-iconbtn:hover, .nc-iconbtn:focus-visible { border-color: var(--sage-500); color: var(--sage-500); transform: translateY(-1px); }
+.nc-iconbtn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.nc-iconbtn--solid { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+.nc-iconbtn--solid:hover, .nc-iconbtn--solid:focus-visible { background: var(--sage-600); border-color: var(--sage-600); color: var(--cloud); }
 
-.nc-btn:focus-visible {
-  outline: 2px solid var(--nc-green);
-  outline-offset: 3px;
-}
-
-.nc-btn--primary {
-  background: var(--nc-green);
-  color: var(--nc-white);
-  border-color: var(--nc-green);
-}
-
-.nc-btn--primary:hover,
-.nc-btn--primary:focus-visible {
-  background: var(--nc-ink);
-  border-color: var(--nc-ink);
-  color: var(--nc-white);
-}
-
-.nc-btn--outline {
-  background: transparent;
-  color: var(--nc-green);
-  border-color: rgba(44, 70, 61, 0.45);
-}
-
-.nc-btn--outline:hover,
-.nc-btn--outline:focus-visible {
-  background: rgba(44, 70, 61, 0.08);
-  border-color: var(--nc-green);
-  color: var(--nc-green);
-}
-
-/* Paa moerk (groen) flade */
-.nc-on-dark .nc-btn--primary {
-  background: var(--nc-white);
-  color: var(--nc-green);
-  border-color: var(--nc-white);
-}
-
-.nc-on-dark .nc-btn--primary:hover,
-.nc-on-dark .nc-btn--primary:focus-visible {
-  background: var(--nc-paper);
-  border-color: var(--nc-paper);
-  color: var(--nc-green);
-}
-
-.nc-on-dark .nc-btn--outline {
-  color: var(--nc-white);
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
-.nc-on-dark .nc-btn--outline:hover,
-.nc-on-dark .nc-btn--outline:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--nc-white);
-  color: var(--nc-white);
-}
-
-/* Chips */
+/* --- Chips --- */
 .nc-chip {
   display: inline-flex;
   align-items: center;
-  padding: 6px 13px;
-  border: 1px solid rgba(44, 70, 61, 0.42);
-  border-radius: var(--nc-radius-pill);
-  font-size: 12px;
-  line-height: 1.4;
-  letter-spacing: 0.06em;
-}
-
-/* Kort */
-.nc-card {
-  background: var(--nc-white);
-  border-radius: var(--nc-radius-card);
-  overflow: hidden;
-}
-
-/* Produktkort */
-.nc-product-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-700);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.2;
   text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft);
 }
 
-.nc-product-card__media {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--nc-radius-media);
-  overflow: hidden;
-  background: var(--nc-white);
+.nc-chip:hover { border-color: var(--sage-500); color: var(--sage-700); }
+.nc-chip.is-active { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+
+/* Lille etiket-pille (områdechip på kort, SAMPAKKE, SPAR %) */
+.nc-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
 }
 
-.nc-product-card__media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: clamp(12px, 1.6vw, 20px);
-  transition: opacity var(--nc-dur-fast) var(--nc-ease-soft);
-}
+.nc-tag--light { background: rgba(255, 255, 255, 0.92); color: var(--sage-700); }
+.nc-tag--sage { background: var(--sage-100); color: var(--sage-700); }
+.nc-tag--sale { background: var(--sale); color: var(--cloud); }
 
-/* Billede nr. 2 vises ved hover, jf. godkendt designbeslutning 04-08-2026 */
-.nc-product-card__media img.nc-product-card__image--hover {
-  opacity: 0;
-}
+/* --- Kort --- */
+.nc-card { background: var(--surface-card); border-radius: var(--radius-lg); overflow: hidden; }
 
-.nc-product-card:hover .nc-product-card__media img.nc-product-card__image--hover,
-.nc-product-card:focus-visible .nc-product-card__media img.nc-product-card__image--hover {
-  opacity: 1;
-}
-
-.nc-product-card:hover .nc-product-card__media img.nc-product-card__image--primary.has-hover-image,
-.nc-product-card:focus-visible .nc-product-card__media img.nc-product-card__image--primary.has-hover-image {
-  opacity: 0;
-}
-
-.nc-product-card__title {
-  margin: 0;
-  font-family: var(--nc-font-display);
-  font-weight: var(--nc-weight-display);
-  font-size: clamp(17px, 1.6vw, 20px);
-  line-height: 1.25;
-  color: var(--nc-ink);
-}
-
-.nc-product-card__price {
-  font-size: 15px;
-  color: rgba(44, 70, 61, 0.82);
-}
-
-/* Pris */
-.nc-price__compare {
-  margin-left: 8px;
-  text-decoration: line-through;
-  color: rgba(44, 70, 61, 0.55);
-}
-
-/* Grid */
-.nc-grid {
-  display: grid;
-  gap: clamp(20px, 2.4vw, 32px);
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-}
-
-/* Formularer */
-.nc-input,
-.nc-select,
-.nc-textarea {
+/* --- Formularer --- */
+.nc-input, .nc-select, .nc-textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid rgba(44, 70, 61, 0.35);
-  border-radius: 10px;
-  background: var(--nc-white);
-  color: var(--nc-ink);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--cloud);
+  color: var(--ink-900);
   font-family: inherit;
   font-size: 16px;
+  line-height: 1.4;
 }
 
-.nc-input:focus-visible,
-.nc-select:focus-visible,
-.nc-textarea:focus-visible {
-  outline: 2px solid var(--nc-green);
-  outline-offset: 2px;
+.nc-input:focus-visible, .nc-select:focus-visible, .nc-textarea:focus-visible {
+  outline: none;
+  border-color: var(--sage-500);
+  box-shadow: var(--shadow-focus);
 }
 
 .nc-label {
   display: block;
   margin-bottom: 6px;
-  font-size: 13px;
+  font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
+  color: var(--ink-700);
 }
 
-/* Paginering (bruges af kollektion, blog og soegning) */
-.nc-pagination {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: clamp(28px, 4vw, 48px);
-  flex-wrap: wrap;
-}
+/* --- Produktkort --- */
+.nc-product-card { position: relative; display: flex; flex-direction: column; background: var(--cloud); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); transition: box-shadow var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft); }
+.nc-product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
-.nc-pagination a,
-.nc-pagination span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
-  padding: 0 12px;
-  border-radius: var(--nc-radius-pill);
-  border: 1px solid rgba(44, 70, 61, 0.35);
-  text-decoration: none;
-  font-size: 14px;
-}
+.nc-product-card__media { position: relative; display: block; aspect-ratio: 1 / 1; background: var(--nc-product-tint); }
+.nc-product-card__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: clamp(14px, 2vw, 26px); transition: opacity var(--dur-base) var(--ease-soft); }
+.nc-product-card__media img.nc-img-hover { opacity: 0; }
+.nc-product-card:hover .nc-product-card__media img.nc-img-hover,
+.nc-product-card:focus-within .nc-product-card__media img.nc-img-hover { opacity: 1; }
+.nc-product-card:hover .nc-product-card__media img.nc-img-primary.has-hover,
+.nc-product-card:focus-within .nc-product-card__media img.nc-img-primary.has-hover { opacity: 0; }
 
-.nc-pagination span.current {
-  background: var(--nc-green);
-  border-color: var(--nc-green);
-  color: var(--nc-white);
-}
+.nc-product-card__tags { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; z-index: 2; }
 
-/* Artikelkort (bruges af blog og soegning) */
-.nc-blog__card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  text-decoration: none;
-}
+.nc-product-card__fav { position: absolute; top: 10px; right: 10px; z-index: 2; width: 38px; height: 38px; border: 0; border-radius: var(--radius-pill); background: var(--cloud); color: var(--ink-500); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
+.nc-product-card__fav:hover { color: var(--accent-berry); transform: scale(1.06); }
+.nc-product-card__fav.is-active { color: var(--accent-berry); }
+.nc-product-card__fav.is-active svg { fill: currentColor; }
 
-.nc-blog__media {
-  aspect-ratio: 3 / 2;
-  border-radius: var(--nc-radius-media);
-  overflow: hidden;
-  background: var(--nc-white);
-}
+.nc-product-card__add { position: absolute; right: 12px; bottom: 12px; z-index: 2; width: 42px; height: 42px; border: 0; border-radius: var(--radius-pill); background: var(--sage-500); color: var(--cloud); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: background-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
+.nc-product-card__add:hover { background: var(--sage-600); transform: translateY(-1px); }
 
-.nc-blog__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.nc-product-card__info { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 18px; }
+.nc-product-card__eyebrow { font-size: var(--text-2xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
+.nc-product-card__title { margin: 0; font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-lg); line-height: var(--leading-snug); color: var(--sage-700); }
+.nc-product-card__title a { color: inherit; text-decoration: none; }
+.nc-product-card__title a::after { content: ''; position: absolute; inset: 0; }
+.nc-product-card__size { font-size: var(--text-sm); color: var(--ink-500); }
+.nc-product-card__rating { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-sm); color: var(--ink-500); }
+.nc-product-card__price { margin-top: 6px; font-size: var(--text-lg); font-weight: 700; color: var(--ink-900); }
+.nc-product-card__price.is-sale { color: var(--sale); }
+.nc-product-card__compare { margin-left: 8px; font-size: var(--text-sm); font-weight: 400; color: var(--ink-400); text-decoration: line-through; }
 
-.nc-blog__title {
-  margin: 0;
-  font-size: clamp(18px, 1.8vw, 22px);
-}
+/* Stjerner */
+.nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+.nc-stars svg { width: 15px; height: 15px; fill: currentColor; }
 
-.nc-blog__excerpt {
-  margin: 0;
-  font-size: 14px;
-  color: rgba(44, 70, 61, 0.82);
-}
+/* --- Grid og rails --- */
+.nc-grid { display: grid; gap: clamp(16px, 2vw, 24px); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0; padding: 0; }
 
-/* Tabel (bruges af kurv, konto og ordre) */
-.nc-cart__table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.nc-rail-wrap { position: relative; }
+.nc-rail-scroll { display: flex; gap: clamp(16px, 2vw, 24px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
+.nc-rail-scroll::-webkit-scrollbar { display: none; }
+.nc-rail-scroll > * { flex: 0 0 min(280px, 78vw); scroll-snap-align: start; }
 
-.nc-cart__table th {
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--nc-green);
-  padding: 0 12px 12px 0;
-  border-bottom: 1px solid rgba(44, 70, 61, 0.18);
-}
+/* --- Marquee --- */
+@keyframes nc-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes nc-marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.nc-marqwrap { overflow: hidden; }
+.nc-rail { display: flex; gap: 20px; width: max-content; animation: nc-marquee 60s linear infinite; }
+.nc-rail--rev { animation-name: nc-marquee-rev; }
+.nc-marqwrap:hover .nc-rail { animation-play-state: paused; }
 
-.nc-cart__table td {
-  padding: 16px 12px 16px 0;
-  border-bottom: 1px solid rgba(44, 70, 61, 0.12);
-  vertical-align: middle;
-}
+@keyframes nc-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Scrollbar-styling til vandrette lister --- */
+.nc-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+.nc-scroll::-webkit-scrollbar-thumb { background: var(--sage-300); border-radius: 3px; }
+
+/* --- Accordion --- */
+.nc-acc { border-top: 1px solid var(--border-soft); }
+.nc-acc__item { border-bottom: 1px solid var(--border-soft); }
+.nc-acc__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 18px 2px; background: none; border: 0; text-align: left; font-family: var(--font-body); font-size: var(--text-md); font-weight: 600; color: var(--ink-900); cursor: pointer; }
+.nc-acc__head svg { flex: none; transition: transform var(--dur-base) var(--ease-soft); color: var(--sage-600); }
+.nc-acc__item[open] .nc-acc__head svg, .nc-acc__item.is-open .nc-acc__head svg { transform: rotate(180deg); }
+.nc-acc__body { padding: 0 2px 18px; color: var(--ink-700); }
+.nc-acc__head::-webkit-details-marker { display: none; }
+summary.nc-acc__head { list-style: none; }
+
+/* --- Paginering --- */
+.nc-pagination { display: flex; justify-content: center; gap: 8px; margin-top: clamp(28px, 4vw, 48px); flex-wrap: wrap; }
+.nc-pagination a, .nc-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; min-height: 42px; padding: 0 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-default); text-decoration: none; font-size: var(--text-sm); color: var(--ink-700); }
+.nc-pagination span.current { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+
+/* --- Artikelindhold (blogs, sider) --- */
+.nc-article-body { font-family: var(--font-body); font-size: 17px; line-height: 1.8; color: var(--ink-700); }
+.nc-article-body h1 { font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.15; color: var(--sage-700); margin: 30px 0 8px; }
+.nc-article-body h2 { font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; color: var(--sage-700); margin: 34px 0 8px; }
+.nc-article-body h3 { font-family: var(--font-display); font-weight: 400; font-size: 21px; line-height: 1.25; color: var(--sage-700); margin: 26px 0 6px; }
+.nc-article-body p { margin: 14px 0; }
+.nc-article-body ul, .nc-article-body ol { margin: 14px 0; padding-left: 22px; }
+.nc-article-body li { margin: 6px 0; }
+.nc-article-body a { color: var(--sage-700); text-decoration: underline; }
+.nc-article-body img { max-width: 100%; height: auto; border-radius: var(--radius-lg); margin: 20px 0; display: block; }
+.nc-article-body strong { color: var(--sage-700); font-weight: 600; }
+.nc-article-body iframe { max-width: 100%; border-radius: var(--radius-lg); }
+
+/* Foerste bogstav i lead-afsnit (kundecases) */
+.nc-lead::first-letter { font-family: var(--font-display); font-size: 3.6em; line-height: 0.82; float: left; margin: 6px 12px 0 0; color: var(--sage-600); font-weight: 400; }
+
+/* --- Tabeller (kurv, konto) --- */
+.nc-table { width: 100%; border-collapse: collapse; }
+.nc-table th { text-align: left; font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700); padding: 0 12px 12px 0; border-bottom: 1px solid var(--border-default); }
+.nc-table td { padding: 16px 12px 16px 0; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
 
 @media (max-width: 749px) {
-  .nc-cart__table thead {
-    display: none;
-  }
-
-  .nc-cart__table tr {
-    display: block;
-    padding: 12px 0;
-  }
-
-  .nc-cart__table td {
-    display: block;
-    border: 0;
-    padding: 4px 0;
-  }
+  .nc-table--stack thead { display: none; }
+  .nc-table--stack tr { display: block; padding: 12px 0; }
+  .nc-table--stack td { display: block; border: 0; padding: 4px 0; }
 }
 
-/* Skip-link */
-.nc-skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 100;
-  padding: 12px 20px;
-  background: var(--nc-white);
-  color: var(--nc-ink);
-}
+/* --- Utility --- */
+.nc-skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; padding: 12px 20px; background: var(--cloud); color: var(--ink-900); }
+.nc-skip-link:focus { left: 0; }
 
-.nc-skip-link:focus {
-  left: 0;
-}
+.nc-visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-/* Utility */
-.nc-visually-hidden {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+.nc-on-dark { color: rgba(255, 255, 255, 0.88); }
+.nc-on-dark h1, .nc-on-dark h2, .nc-on-dark h3 { color: var(--cloud); }
+.nc-on-dark .nc-eyebrow { color: var(--sand-500); }
 
+/* --- Reduceret bevaegelse --- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .nc-btn:hover,
-  .nc-btn:focus-visible,
-  .nc-btn:active {
-    transform: none;
-  }
+  *, *::before, *::after { transition-duration: 0ms !important; animation-play-state: paused !important; }
+  .nc-btn:hover, .nc-btn:focus-visible, .nc-btn:active, .nc-iconbtn:hover { transform: none; }
+  .nc-rail { animation: none !important; }
 }

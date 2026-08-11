@@ -59,6 +59,18 @@
     ]
   },
   {
+    "name": "Produktkort",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_save_badge",
+        "label": "Vis besparelses-badge (Spar X%)",
+        "default": true,
+        "info": "Viser kun badge når produktet har en førpris i Shopify. Førprisen skal kunne dokumenteres som 30 dages normalpris (§ 9 a)."
+      }
+    ]
+  },
+  {
     "name": "Farver",
     "settings": [
       {

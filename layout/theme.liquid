@@ -23,23 +23,22 @@
     {%- endif -%}
 
     {%- comment -%}
-      Brandguiden foreskriver Philosopher til overskrifter og Roboto Flex til
-      broedtekst. Ingen af dem findes i Shopifys fontbibliotek, saa de hentes
-      fra Google Fonts, praecis som designsystemet goer det. Kan slaas fra af
-      hensyn til Cookiebot og tredjepartskald.
+      Brandets fonte (Philosopher + Roboto Flex) er selvhostede i temaet,
+      saa der ikke sker eksterne kald (Cookiebot-hensyn).
     {%- endcomment -%}
-    {%- if settings.use_brand_fonts -%}
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap" rel="stylesheet">
-    {%- endif -%}
+    {{ 'nc-philosopher-regular.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'nc-robotoflex.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
 
     {{ 'nc-theme.css' | asset_url | stylesheet_tag }}
+
+    <style>
+      html.nc-lock { overflow: hidden; }
+    </style>
 
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="template-{{ request.page_type | handle }}">
     <a class="nc-skip-link" href="#nc-main">Gå til indholdet</a>
 
     {% sections 'header-group' %}
@@ -49,5 +48,9 @@
     </main>
 
     {% sections 'footer-group' %}
+
+    {% section 'nc-cart-drawer' %}
+
+    <script src="{{ 'nc-theme.js' | asset_url }}" defer></script>
   </body>
 </html>
