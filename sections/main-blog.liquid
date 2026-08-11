@@ -69,12 +69,19 @@
               {%- assign area_names = 'Ansigt,Hænder,Krop,Fødder' | split: ',' -%}
               {%- for area in area_names -%}
                 {%- assign area_dc = area | downcase -%}
+                {%- assign chip_tag = '' -%}
                 {%- for tag in blog.all_tags -%}
                   {%- assign tag_dc = tag | downcase -%}
                   {%- if tag_dc == area_dc -%}
-                    <a class="nc-chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ area }}</a>
+                    {%- assign chip_tag = tag -%}
+                    {%- break -%}
+                  {%- elsif chip_tag == blank and tag_dc contains area_dc -%}
+                    {%- assign chip_tag = tag -%}
                   {%- endif -%}
                 {%- endfor -%}
+                {%- if chip_tag != blank -%}
+                  <a class="nc-chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area }}</a>
+                {%- endif -%}
               {%- endfor -%}
             {%- else -%}
               {%- for tag in blog.all_tags limit: 15 -%}
