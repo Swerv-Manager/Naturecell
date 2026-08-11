@@ -1,0 +1,185 @@
+<div>p3</div>
+{% schema %}
+{
+  "name": "Hero probe p3",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product_slide",
+      "name": "Produkt-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Danmarks første godkendte CBD-hudpleje"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Ægte pleje, til al slags hud"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler. Vi lader vores kunder fortælle om deres egne oplevelser."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Primær knap",
+          "default": "Shop nu →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Primær knap: link"
+        },
+        {
+          "type": "text",
+          "id": "cta2_text",
+          "label": "Sekundær knap",
+          "default": "Se kundecases"
+        },
+        {
+          "type": "url",
+          "id": "cta2_url",
+          "label": "Sekundær knap: link"
+        },
+        {
+          "type": "text",
+          "id": "trust_text",
+          "label": "Trust-linje",
+          "default": "<strong>4,8/5</strong> · 2.143 anmeldelser på Trustpilot",
+          "info": "Tallene skal matche jeres aktuelle Trustpilot-score."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Packshot"
+        }
+      ]
+    },
+    {
+      "type": "image_slide",
+      "name": "Billed-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Plantebaseret & dansk"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "CBD i samspil med ren botanik"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume. Udviklet og testet i Danmark."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Knap",
+          "default": "Udforsk produkterne →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Knap: link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Baggrundsbillede"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Fallback-asset (avanceret)",
+          "info": "Filnavn i temaets assets, bruges når intet billede er valgt."
+        }
+      ]
+    },
+    {
+      "type": "split_slide",
+      "name": "Split-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Investering i Løvens Hule"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Jesper Buch er trådt ind som investor"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Knap",
+          "default": "Læs historien →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Knap: link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Fallback-asset (avanceret)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero-karrusel",
+      "blocks": [
+        {
+          "type": "product_slide"
+        },
+        {
+          "type": "image_slide"
+        },
+        {
+          "type": "image_slide",
+          "settings": {
+            "eyebrow": "Ægte oplevelser",
+            "heading": "Vi lader vores kunder fortælle",
+            "body": "Vi lover ikke mirakler. Læs ægte kundecases, med billeder, video og produkterne de bruger.",
+            "cta_text": "Se kundecases →",
+            "fallback_asset": "nc-hero-kunder.jpg"
+          }
+        },
+        {
+          "type": "split_slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
