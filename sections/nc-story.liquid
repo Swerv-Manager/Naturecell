@@ -43,7 +43,7 @@
         {%- if section.settings.image != blank -%}
           {{ section.settings.image | image_url: width: 1200 | image_tag: alt: section.settings.caption_title, widths: '600, 900, 1200', loading: 'lazy' }}
         {%- else -%}
-          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy">
+          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy" width="1200" height="1500">
         {%- endif -%}
         <div class="nc-story__caption">
           <strong>{{ section.settings.caption_title }}</strong>

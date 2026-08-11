@@ -48,14 +48,14 @@
           {%- if section.settings.image_2 != blank -%}
             {{ section.settings.image_2 | image_url: width: 1000 | image_tag: alt: '', loading: 'lazy' }}
           {%- elsif section.settings.image_2_url != blank -%}
-            <img src="{{ section.settings.image_2_url }}" alt="" loading="lazy">
+            <img src="{{ section.settings.image_2_url }}" alt="" loading="lazy" width="1000" height="750">
           {%- endif -%}
         </div>
         <div>
           {%- if section.settings.image_3 != blank -%}
             {{ section.settings.image_3 | image_url: width: 1000 | image_tag: alt: '', loading: 'lazy' }}
           {%- elsif section.settings.image_3_url != blank -%}
-            <img src="{{ section.settings.image_3_url }}" alt="" loading="lazy">
+            <img src="{{ section.settings.image_3_url }}" alt="" loading="lazy" width="1000" height="750">
           {%- endif -%}
         </div>
       </div>

@@ -111,7 +111,7 @@
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 2200 | image_tag: class: 'nc-hero__bg', alt: '', widths: '800, 1200, 1600, 2200', sizes: '100vw', loading: 'lazy' }}
             {%- elsif block.settings.fallback_asset != blank -%}
-              <img class="nc-hero__bg" src="{{ block.settings.fallback_asset | asset_url }}" alt="" loading="lazy">
+              <img class="nc-hero__bg" src="{{ block.settings.fallback_asset | asset_url }}" alt="" loading="lazy" width="2200" height="1400">
             {%- endif -%}
             <div class="nc-hero__wash" aria-hidden="true"></div>
             <div class="nc-hero__inner nc-hero__inner--stack">
@@ -141,7 +141,7 @@
                 {%- if block.settings.image != blank -%}
                   {{ block.settings.image | image_url: width: 1040 | image_tag: alt: block.settings.heading, widths: '520, 780, 1040', loading: 'lazy' }}
                 {%- elsif block.settings.fallback_asset != blank -%}
-                  <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ block.settings.heading | escape }}" loading="lazy">
+                  <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ block.settings.heading | escape }}" loading="lazy" width="1040" height="780">
                 {%- endif -%}
               </div>
             </div>
