@@ -1,0 +1,56 @@
+{% comment %} Artikelside, skelet. Bruges bl.a. til kundecases. {% endcomment %}
+
+{%- style -%}
+  .nc-article {
+    max-width: 72ch;
+  }
+
+  .nc-article__meta {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: rgba(44, 70, 61, 0.65);
+  }
+
+  .nc-article__image {
+    border-radius: var(--nc-radius-card);
+    overflow: hidden;
+    margin: clamp(20px, 2.6vw, 32px) 0;
+  }
+
+  .nc-article__content {
+    color: rgba(44, 70, 61, 0.82);
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <article class="nc-article">
+      <p class="nc-article__meta">
+        {{ article.published_at | date: '%d.%m.%Y' }}
+        {%- if blog.title != blank %} · <a href="{{ blog.url }}">{{ blog.title }}</a>{% endif -%}
+      </p>
+      <h1>{{ article.title }}</h1>
+
+      {%- if article.image -%}
+        {%- assign article_alt = article.image.alt | default: article.title -%}
+        <div class="nc-article__image">
+          {{
+            article.image
+            | image_url: width: 1400
+            | image_tag: alt: article_alt, sizes: '(min-width: 900px) 720px, 92vw'
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="nc-article__content">{{ article.content }}</div>
+    </article>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Artikel",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

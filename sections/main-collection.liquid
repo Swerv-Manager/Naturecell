@@ -1,0 +1,51 @@
+{% comment %}
+  Kollektionsside, skelet: titel, beskrivelse, produktgrid, paginering.
+{% endcomment %}
+
+{%- style -%}
+  .nc-collection__header {
+    max-width: 64ch;
+    margin-bottom: clamp(24px, 3vw, 44px);
+  }
+
+  .nc-collection__description {
+    color: rgba(44, 70, 61, 0.82);
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <header class="nc-collection__header">
+      <h1>{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="nc-collection__description">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- paginate collection.products by 24 -%}
+      {%- if collection.products.size > 0 -%}
+        <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
+          {%- for product in collection.products -%}
+            <li>{% render 'nc-product-card', product: product %}</li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p>Der er ingen produkter i denne kollektion endnu.</p>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="nc-pagination" aria-label="Sider">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kollektion",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

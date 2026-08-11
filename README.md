@@ -1,103 +1,68 @@
-# NatureCell – forside-sektion: augustkampagne med eksfolieringshandske
+# NatureCell – nyt Shopify-tema
 
-Dette repo indeholder de temafiler, der er ændret for at bygge kampagnesektionen
-"Gratis eksfolieringshandske ved køb over 900 kr." til forsiden på naturecell.dk.
-
-Det er ikke et fuldt tema-mirror, kun de filer opgaven berører.
-
-## Hvor er det lagt op
+Dette repo indeholder det nye tema til naturecell.dk, bygget ud fra
+Claude Design-projektet `NatureCell.dc.html` (godkendt af NatureCell
+10. august 2026).
 
 | | |
 |---|---|
 | Butik | Naturecell.dk |
-| Tema | Kopi af Swerv // Produkt title opdeling (ID `204657721682`, upubliceret) |
-| Live tema | Swerv // Produkt title opdeling (ID `201401368914`) er urørt |
+| Tema i Shopify | Swerv // Nyt tema (under udvikling) |
+| Udviklingsbranch | `claude/naturecell-shopify-theme-bx3dlc` |
+| Designkilde | claude.ai/design, projekt `652604f6-bce4-4375-bfb3-1de9f9a09aee` |
 
-## Filer
+## Status
 
-| Fil | Hvad |
-|---|---|
-| `sections/nc-august-campaign-banner.liquid` | Selve sektionen. Nyoprettet. |
-| `templates/index.json` | Forsiden, med sektionen indsat som nr. 3, direkte under hero-slideshowet. |
+**Skelet.** Temaets fundament er på plads: layout, header/footer,
+alle standard-skabeloner (produkt, kollektion, kurv, søgning, blog,
+artikel, side, 404, kundekonto, gavekort) og designsystemets tokens
+låst i `assets/nc-theme.css`. Den endelige sidekomposition oversættes
+1:1 fra `NatureCell.dc.html`, når design-handoff-filerne ligger i
+`design/`-mappen (se `design/README.md` for præcis filliste).
 
-Sektionen er også tilgængelig under "Tilføj sektion" i temaeditoren som
-**NC augustkampagne banner**, hvis den skal bruges andre steder eller flyttes.
+## Designsystem
 
-## Sådan er designet oversat
+Tokens er hentet fra NatureCell Design System
+(`naturecell-design-system-52829db1`), som allerede dokumenteret i
+`sections/nc-august-campaign-banner.liquid`:
 
-Designet kommer fra handoff-pakken `design_handoff_august_glove_banner`
-(Design Component mod NatureCell Design System). Farver, spacing, radier,
-skygge, states og responsiv opførsel er hentet 1:1 fra handoff'en:
+- Farver: paper `#F6F4EE`, grøn `#3E5D58`, ink `#2C463D`, sand `#DDBFA3`,
+  pink `#F9B5C4`, berry `#84334E`. Paletten er låst i koden; der er
+  bevidst ingen farveindstillinger i temaeditoren.
+- Fonte: Philosopher (overskrifter) og Roboto Flex (brødtekst) via
+  Google Fonts, med indstilling til at slå eksterne kald fra
+  (Cookiebot-hensyn).
+- Form: kort-radius 18px, medie-radius 14px, pille-knapper 999px,
+  indhold maks. 1240px, skygge `0 12px 28px rgba(44,70,61,0.18)`.
+- Bevægelse: 140ms `cubic-bezier(0.4, 0, 0.2, 1)`, slået fra ved
+  `prefers-reduced-motion`.
+- Produktkort viser billede nr. 2 ved hover (godkendt 04-08-2026).
 
-- Bannerkort `#3E5D58`, radius 18px, dekorativ sage-wash øverst til højre.
-- Sidebaggrund `--paper` `#F6F4EE`, indhold maks. 1240px.
-- Eyebrow i sand `#DDBFA3`, H2 i display-fonten, brødtekst i hvid 82%.
-- Primær CTA hvid med grøn tekst, sekundær outline i hvid 45%. Pille-form,
-  `padding 15px 32px`, mindst 44px høj, hover `translateY(-1px)`,
-  `140ms cubic-bezier(0.4, 0, 0.2, 1)` (`--dur-fast` / `--ease-soft`).
-- Tre chips i outline, `letter-spacing .06em`, ikke uppercase.
-- Packshot på hvid flade, `aspect-ratio 1.15/1`, `object-fit: contain`.
-- Gratis-boblen i pink `#F9B5C4` med berry tekst `#84334E`, aldrig roteret,
-  eneste skygge i sektionen: `0 12px 28px rgba(44,70,61,0.18)`.
-- Bundstribe med fin print. Handoff'en havde et hvidt logo-lockup nederst til
-  højre, men det er bevidst udeladt: det tilføjede ikke noget på et banner, der
-  allerede står på brandets egen forside.
+## Struktur
 
-Alt er fluid via `clamp()` og `flex-wrap`, ingen media queries, bortset fra
-`prefers-reduced-motion`, hvor hover-transform og transitions slås fra.
-Paletten er låst i sektionen: der er bevidst ingen farveindstillinger, så der
-ikke kan introduceres hex-værdier uden for designsystemet.
+```
+assets/nc-theme.css            Tokens + basiskomponenter (knapper, chips, kort, grid, form)
+layout/theme.liquid            Dokumentramme, fonte, header/footer-grupper
+sections/nc-header.liquid      Header med annonceringslinje (skelet, megamenu afventer design)
+sections/nc-footer.liquid      Footer med kontakt, nyhedsbrev, compliance-linje
+sections/main-*.liquid         Standard-skabelonernes indhold
+sections/nc-featured-collection.liquid  Produktgrid med hover-billede
+sections/nc-august-campaign-banner.liquid  Augustkampagnen (uændret fra tidligere opgave)
+templates/                     JSON-skabeloner + kundekonto + gavekort
+design/                        Drop-mappe til design-handoff-filerne
+```
 
-## Indstillinger i temaeditoren
+## Compliance indbygget i temaet
 
-Tekst (overlinjer, overskrift, brødtekst), de to knapper med links, tre chips,
-gaveprodukt, billed- og alt-tekst-overstyring, boblens overskrift og værdi,
-tæller (antal i kampagnen, antal hentede, vis/skjul), fin print, fontvalg og
-aria-label.
+- Footerens disclaimer-linje ("NatureCells produkter er ikke medicin…")
+  er et fast felt med default, så den ikke forsvinder ved et uheld.
+- Prisvisningen skriver aldrig "SPAR X %" automatisk: besparelsesudsagn
+  kræver dokumenteret 30-dages normalpris (§ 9 a) og er en redaktionel
+  beslutning, ikke temaets.
+- Ingen tankestreger i kundevendte standardtekster.
 
-Standardværdier er sat, så sektionen er komplet i det øjeblik den tilføjes.
+## Historik
 
-Værd at vide:
-
-- **Boblens værdi** er tom som standard og udfyldes automatisk med gaveproduktets
-  faktiske pris i shoppen, altså "Værdi 129 kr." fra
-  `exfoliating-hanske` (129,00 kr., aktiv, 1.090 på lager pr. 31. juli 2026).
-  Ændrer prisen sig, følger boblen med af sig selv.
-- **Fin print** er et compliance-krav. Tømmes feltet, falder sektionen tilbage til
-  standardteksten, så linjen ikke kan forsvinde ved et uheld.
-- **Tælleren** vises kun når den er slået til OG antal hentede er over 0. Tallet
-  skal komme fra en reel kilde, ikke et gæt: et forkert tal er en
-  markedsføringsretlig risiko. Den er slået fra som standard.
-- **Gave-mekanikken** (automatisk tilføjelse ved 900 kr., loft på 500 stk., én pr.
-  ordre) hører i kurv-/rabatlogikken og er ikke en del af sektionen. Når de 500 er
-  uddelt, eller kampagnen slutter, skjules sektionen i temaeditoren.
-
-## Bevidste afvigelser fra handoff'en
-
-**Logo.** Logoet i bundstriben er fjernet efter aftale. Bundstriben indeholder nu
-kun fin print.
-
-**Fonte.** Brandguiden foreskriver Philosopher til overskrifter og Roboto Flex til
-brødtekst. Ingen af dem findes i Shopifys fontbibliotek (temaet kører i dag
-Tenor Sans og Twentieth Century), så de hentes fra Google Fonts, præcis som
-designsystemet selv gør det. Indstillingen **Brug brandets egne fonte** er slået
-til som standard. Slås den fra, bruger sektionen temaets egne fonte, og der
-hentes intet eksternt, hvilket kan være relevant af hensyn til Cookiebot og
-tredjepartskald.
-
-## Verifikation
-
-- Butikken er verificeret som Naturecell.dk umiddelbart før hver skrivning, ikke
-  kun én gang: Cowork-connectoren skiftede butik midt i arbejdet, og en skrivning
-  blev afvist af Shopify, fordi tema-ID'et ikke fandtes i den anden butik. Intet
-  landede et forkert sted.
-- `sections/nc-august-campaign-banner.liquid` på temaet er byte-identisk med
-  filen i dette repo (md5 `5aac621a919f8bc7eef1a2c649816e36`), og der er nul
-  logo-referencer tilbage i filen.
-- `templates/index.json` på temaet svarer felt for felt til versionen i dette
-  repo, og er sammenlignet med forsiden før ændringen: eneste forskel er den
-  tilføjede sektion og dens plads i `order`. Ingen eksisterende sektion, blok
-  eller indstilling er ændret.
-- Selve storefront-renderingen er ikke set i browser fra dette miljø, fordi
-  naturecell.dk og Shopifys CDN ikke kan nås gennem proxyen. Sektionen skal
-  derfor gennemses i temaeditorens preview.
+Augustkampagne-sektionen (`nc-august-campaign-banner.liquid`) og dens
+placering på den gamle forside er dokumenteret i git-historikken på
+branchen `claude/naturecell-forside-sektion-8xrl6u`.

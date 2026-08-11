@@ -1,0 +1,38 @@
+<div class="nc-section">
+  <div class="nc-container">
+    <h1>Min konto</h1>
+    <p>
+      {{ customer.name }} · <a href="{{ routes.account_logout_url }}">Log ud</a>
+    </p>
+
+    <h2 style="font-size: 22px;">Ordrer</h2>
+    {%- if customer.orders.size > 0 -%}
+      <table class="nc-cart__table">
+        <thead>
+          <tr>
+            <th scope="col">Ordre</th>
+            <th scope="col">Dato</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+              <td>{{ order.created_at | date: '%d.%m.%Y' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    {%- else -%}
+      <p>Du har ingen ordrer endnu.</p>
+    {%- endif -%}
+
+    <p style="margin-top: 24px;">
+      <a href="{{ routes.account_addresses_url }}">Adresser ({{ customer.addresses_count }})</a>
+    </p>
+  </div>
+</div>

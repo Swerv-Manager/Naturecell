@@ -1,0 +1,28 @@
+{% comment %}
+  Prisvisning. Foer-pris vises kun som gennemstreget belob.
+  Ingen "SPAR X %"-tekst her: besparelsesudsagn kraever dokumenteret
+  30-dages normalpris (prismaerkningsbekendtgoerelsen, paragraf 9 a)
+  og maa ikke genereres automatisk af temaet.
+
+  Brug: {% render 'nc-price', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign target = product.selected_or_first_available_variant | default: product
+-%}
+
+<span class="nc-price">
+  <span class="nc-price__current">
+    {%- if product.price_varies -%}
+      Fra {{ product.price_min | money }}
+    {%- else -%}
+      {{ target.price | money }}
+    {%- endif -%}
+  </span>
+  {%- if target.compare_at_price > target.price -%}
+    <s class="nc-price__compare">
+      <span class="nc-visually-hidden">Normalpris</span>
+      {{ target.compare_at_price | money }}
+    </s>
+  {%- endif -%}
+</span>

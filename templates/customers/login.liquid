@@ -1,0 +1,43 @@
+<div class="nc-section">
+  <div class="nc-container" style="max-width: 480px;">
+    <h1>Log ind</h1>
+
+    {%- form 'customer_login' -%}
+      {%- if form.errors -%}
+        <p role="alert">Din e-mail eller adgangskode er forkert.</p>
+      {%- endif -%}
+
+      <p>
+        <label class="nc-label" for="nc-login-email">E-mail</label>
+        <input id="nc-login-email" class="nc-input" type="email" name="customer[email]" autocomplete="email" required>
+      </p>
+      <p>
+        <label class="nc-label" for="nc-login-password">Adgangskode</label>
+        <input id="nc-login-password" class="nc-input" type="password" name="customer[password]" autocomplete="current-password" required>
+      </p>
+      <p>
+        <button class="nc-btn nc-btn--primary" type="submit">Log ind</button>
+      </p>
+      <p>
+        <a href="#recover">Glemt adgangskode?</a> ·
+        <a href="{{ routes.account_register_url }}">Opret konto</a>
+      </p>
+    {%- endform -%}
+
+    <div id="recover">
+      <h2 style="font-size: 22px;">Nulstil adgangskode</h2>
+      {%- form 'recover_customer_password' -%}
+        {%- if form.posted_successfully? -%}
+          <p role="status">Vi har sendt dig en e-mail med et link til at nulstille din adgangskode.</p>
+        {%- endif -%}
+        <p>
+          <label class="nc-label" for="nc-recover-email">E-mail</label>
+          <input id="nc-recover-email" class="nc-input" type="email" name="email" autocomplete="email" required>
+        </p>
+        <p>
+          <button class="nc-btn nc-btn--outline" type="submit">Send link</button>
+        </p>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

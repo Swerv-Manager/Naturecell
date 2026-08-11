@@ -1,0 +1,50 @@
+{% comment %}
+  Blogoversigt, skelet. Bruges bl.a. til kundecases og journal.
+{% endcomment %}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <header style="margin-bottom: clamp(24px, 3vw, 44px);">
+      <h1>{{ blog.title }}</h1>
+    </header>
+
+    {%- paginate blog.articles by 12 -%}
+      <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
+        {%- for article in blog.articles -%}
+          <li>
+            <a class="nc-blog__card" href="{{ article.url }}">
+              {%- if article.image -%}
+                {%- assign article_alt = article.image.alt | default: article.title -%}
+                <div class="nc-blog__media">
+                  {{
+                    article.image
+                    | image_url: width: 720
+                    | image_tag: alt: article_alt, loading: 'lazy'
+                  }}
+                </div>
+              {%- endif -%}
+              <h2 class="nc-blog__title">{{ article.title }}</h2>
+              {%- if article.excerpt != blank -%}
+                <p class="nc-blog__excerpt">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="nc-pagination" aria-label="Sider">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

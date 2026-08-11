@@ -1,0 +1,31 @@
+<div class="nc-section">
+  <div class="nc-container" style="max-width: 480px;">
+    <h1>Opret konto</h1>
+
+    {%- form 'create_customer' -%}
+      {%- if form.errors -%}
+        <p role="alert">Kontoen kunne ikke oprettes. Tjek felterne og prøv igen.</p>
+      {%- endif -%}
+
+      <p>
+        <label class="nc-label" for="nc-reg-first">Fornavn</label>
+        <input id="nc-reg-first" class="nc-input" type="text" name="customer[first_name]" autocomplete="given-name">
+      </p>
+      <p>
+        <label class="nc-label" for="nc-reg-last">Efternavn</label>
+        <input id="nc-reg-last" class="nc-input" type="text" name="customer[last_name]" autocomplete="family-name">
+      </p>
+      <p>
+        <label class="nc-label" for="nc-reg-email">E-mail</label>
+        <input id="nc-reg-email" class="nc-input" type="email" name="customer[email]" autocomplete="email" required>
+      </p>
+      <p>
+        <label class="nc-label" for="nc-reg-password">Adgangskode</label>
+        <input id="nc-reg-password" class="nc-input" type="password" name="customer[password]" autocomplete="new-password" required>
+      </p>
+      <p>
+        <button class="nc-btn nc-btn--primary" type="submit">Opret konto</button>
+      </p>
+    {%- endform -%}
+  </div>
+</div>

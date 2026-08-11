@@ -1,0 +1,23 @@
+<div class="nc-section">
+  <div class="nc-container" style="max-width: 480px;">
+    <h1>Aktivér din konto</h1>
+
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}
+        <p role="alert">Kontoen kunne ikke aktiveres. Prøv igen.</p>
+      {%- endif -%}
+      <p>
+        <label class="nc-label" for="nc-activate-password">Adgangskode</label>
+        <input id="nc-activate-password" class="nc-input" type="password" name="customer[password]" autocomplete="new-password" required>
+      </p>
+      <p>
+        <label class="nc-label" for="nc-activate-confirm">Gentag adgangskode</label>
+        <input id="nc-activate-confirm" class="nc-input" type="password" name="customer[password_confirmation]" autocomplete="new-password" required>
+      </p>
+      <p>
+        <button class="nc-btn nc-btn--primary" type="submit" name="commit">Aktivér konto</button>
+        <button class="nc-btn nc-btn--outline" type="submit" name="decline">Afvis invitation</button>
+      </p>
+    {%- endform -%}
+  </div>
+</div>

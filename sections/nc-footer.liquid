@@ -1,0 +1,263 @@
+{% comment %}
+  Footer: brand, kontakt, menuer, nyhedsbrev, betalingsikoner og
+  compliance-linje. Skelet-version; endelig komposition kommer fra
+  design-handoff'en (opdateret footer godkendt 04-08/10-08-2026).
+{% endcomment %}
+
+{%- style -%}
+  .nc-footer {
+    background: var(--nc-green);
+    color: rgba(255, 255, 255, 0.82);
+    margin-top: clamp(40px, 6vw, 96px);
+  }
+
+  .nc-footer a {
+    color: var(--nc-white);
+  }
+
+  .nc-footer__grid {
+    display: grid;
+    gap: clamp(28px, 4vw, 56px);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    padding: clamp(40px, 5vw, 72px) 0 clamp(28px, 3vw, 40px);
+  }
+
+  .nc-footer__logo img {
+    display: block;
+    width: auto;
+    height: 36px;
+    margin-bottom: 16px;
+  }
+
+  .nc-footer__logo-text {
+    display: block;
+    margin-bottom: 16px;
+    font-family: var(--nc-font-display);
+    font-weight: var(--nc-weight-display);
+    font-size: 22px;
+    color: var(--nc-white);
+  }
+
+  .nc-footer__heading {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--nc-sand);
+    font-family: var(--nc-font-body);
+  }
+
+  .nc-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .nc-footer__body {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .nc-footer__newsletter-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .nc-footer__newsletter-form .nc-input {
+    flex: 1 1 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: var(--nc-white);
+  }
+
+  .nc-footer__newsletter-form .nc-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .nc-footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 18px 0 26px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .nc-footer__fine-print {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 78ch;
+  }
+
+  .nc-footer__payments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .nc-footer__payments svg {
+    height: 24px;
+    width: auto;
+  }
+{%- endstyle -%}
+
+<footer class="nc-footer nc-on-dark">
+  <div class="nc-container">
+    <div class="nc-footer__grid">
+      <div>
+        {%- if settings.logo_white != blank -%}
+          <div class="nc-footer__logo">
+            {{
+              settings.logo_white
+              | image_url: width: 360
+              | image_tag: alt: shop.name, widths: '180, 360', loading: 'lazy'
+            }}
+          </div>
+        {%- else -%}
+          <span class="nc-footer__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+        <div class="nc-footer__body">{{ section.settings.brand_text }}</div>
+      </div>
+
+      <div>
+        <h2 class="nc-footer__heading">{{ section.settings.menu_heading }}</h2>
+        <ul class="nc-footer__body">
+          {%- for link in section.settings.menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="nc-footer__heading">Kontakt</h2>
+        <div class="nc-footer__body">{{ section.settings.contact_text }}</div>
+        {%- if settings.social_facebook != blank or settings.social_instagram != blank -%}
+          <ul class="nc-footer__body" style="margin-top: 12px;">
+            {%- if settings.social_instagram != blank -%}
+              <li><a href="{{ settings.social_instagram }}">Instagram</a></li>
+            {%- endif -%}
+            {%- if settings.social_facebook != blank -%}
+              <li><a href="{{ settings.social_facebook }}">Facebook</a></li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div>
+        <h2 class="nc-footer__heading">{{ section.settings.newsletter_heading }}</h2>
+        <div class="nc-footer__body">
+          <p>{{ section.settings.newsletter_text }}</p>
+          {%- form 'customer', class: 'nc-footer__newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label class="nc-visually-hidden" for="nc-newsletter-email">E-mail</label>
+            <input
+              id="nc-newsletter-email"
+              class="nc-input"
+              type="email"
+              name="contact[email]"
+              placeholder="Din e-mail"
+              autocomplete="email"
+              required
+            >
+            <button class="nc-btn nc-btn--primary" type="submit">Tilmeld</button>
+            {%- if form.posted_successfully? -%}
+              <p role="status">Tak for din tilmelding.</p>
+            {%- elsif form.errors -%}
+              <p role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="nc-footer__bottom">
+      <p class="nc-footer__fine-print">
+        {{ section.settings.compliance_text }}
+        <br>
+        &copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal_name }}
+      </p>
+      {%- unless section.settings.hide_payment_icons -%}
+        <div class="nc-footer__payments" aria-label="Betalingsmetoder">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag }}
+          {%- endfor -%}
+        </div>
+      {%- endunless -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "class": "nc-footer-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "brand_text",
+      "label": "Om brandet",
+      "default": "<p>Dansk hudpleje, udviklet med omtanke. Når du handler hos NatureCell, er det os du møder; Lizbeth og Allan.</p>"
+    },
+    {
+      "type": "text",
+      "id": "menu_heading",
+      "label": "Menuoverskrift",
+      "default": "Genveje"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Footermenu",
+      "default": "footer"
+    },
+    {
+      "type": "richtext",
+      "id": "contact_text",
+      "label": "Kontaktoplysninger",
+      "default": "<p>NatureCell Denmark ApS<br>Lille Nyhavn 10, 2. tv.<br>8660 Skanderborg<br>CVR 42256013<br><a href=\"mailto:hello@naturecell.dk\">hello@naturecell.dk</a><br><a href=\"tel:+4540550042\">+45 40 55 00 42</a></p>"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Nyhedsbrev, overskrift",
+      "default": "Nyhedsbrev"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Nyhedsbrev, tekst",
+      "default": "Få nyheder, inspiration og eksklusive tilbud direkte i din indbakke."
+    },
+    {
+      "type": "textarea",
+      "id": "compliance_text",
+      "label": "Compliance-linje",
+      "default": "NatureCells produkter er ikke medicin og kan ikke diagnosticere, behandle eller kurere sygdomme.",
+      "info": "Compliance-krav. Må ikke fjernes."
+    },
+    {
+      "type": "text",
+      "id": "legal_name",
+      "label": "Juridisk navn",
+      "default": "NatureCell Denmark ApS"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_payment_icons",
+      "label": "Skjul betalingsikoner",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,201 @@
+{% comment %}
+  Produktside, skelet. Galleri, titel, pris, variantvalg, koebsknap
+  og beskrivelse. Endelig komposition (bl.a. kundevideoer, USP-raekke,
+  anbefalinger) kommer fra design-handoff'en.
+{% endcomment %}
+
+{%- style -%}
+  .nc-product {
+    display: grid;
+    gap: clamp(28px, 4vw, 64px);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .nc-product {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: start;
+    }
+  }
+
+  .nc-product__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nc-product__featured {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--nc-radius-card);
+    overflow: hidden;
+    background: var(--nc-white);
+  }
+
+  .nc-product__featured img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: clamp(16px, 2.4vw, 30px);
+  }
+
+  .nc-product__thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nc-product__thumbs img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border-radius: var(--nc-radius-media);
+    background: var(--nc-white);
+    padding: 8px;
+  }
+
+  .nc-product__info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .nc-product__title {
+    margin: 0;
+  }
+
+  .nc-product__price {
+    font-size: clamp(19px, 1.8vw, 23px);
+  }
+
+  .nc-product__form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .nc-product__qty {
+    max-width: 120px;
+  }
+
+  .nc-product__description {
+    color: rgba(44, 70, 61, 0.82);
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <div class="nc-product">
+      <div class="nc-product__gallery">
+        <div class="nc-product__featured">
+          {%- if product.selected_or_first_available_variant.featured_image -%}
+            {{
+              product.selected_or_first_available_variant.featured_image
+              | image_url: width: 1200
+              | image_tag: alt: product.title, widths: '480, 720, 960, 1200', sizes: '(min-width: 900px) 620px, 92vw'
+            }}
+          {%- elsif product.featured_image -%}
+            {{
+              product.featured_image
+              | image_url: width: 1200
+              | image_tag: alt: product.title, widths: '480, 720, 960, 1200', sizes: '(min-width: 900px) 620px, 92vw'
+            }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <ul class="nc-product__thumbs">
+            {%- for image in product.images limit: 8 -%}
+              {%- assign thumb_alt = image.alt | default: product.title -%}
+              <li>
+                {{
+                  image
+                  | image_url: width: 240
+                  | image_tag: alt: thumb_alt, loading: 'lazy'
+                }}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="nc-product__info">
+        {%- if product.vendor != blank and product.vendor != shop.name -%}
+          <p class="nc-eyebrow">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="nc-product__title">{{ product.title }}</h1>
+
+        <div class="nc-product__price">
+          {% render 'nc-price', product: product %}
+        </div>
+
+        {%- form 'product', product, class: 'nc-product__form' -%}
+          {%- comment -%}
+            Variantvalg uden JavaScript: valg af variant genindlaeser siden
+            via ?variant=. Robust skelet; designet afgoer den endelige
+            variantvaelger.
+          {%- endcomment -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- else -%}
+            <div>
+              <label class="nc-label" for="nc-variant-select">Variant</label>
+              <select
+                id="nc-variant-select"
+                class="nc-select"
+                name="id"
+                onchange="if (this.form) { const u = new URL(window.location.href); u.searchParams.set('variant', this.value); window.location.href = u.toString(); }"
+              >
+                {%- for variant in product.variants -%}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                    {% unless variant.available %}disabled{% endunless %}
+                  >
+                    {{ variant.title }} · {{ variant.price | money }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+
+          <div class="nc-product__qty">
+            <label class="nc-label" for="nc-qty">Antal</label>
+            <input id="nc-qty" class="nc-input" type="number" name="quantity" min="1" value="1">
+          </div>
+
+          <button
+            class="nc-btn nc-btn--primary"
+            type="submit"
+            name="add"
+            {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+          >
+            {%- if product.selected_or_first_available_variant.available -%}
+              Læg i kurv
+            {%- else -%}
+              Udsolgt
+            {%- endif -%}
+          </button>
+        {%- endform -%}
+
+        <div class="nc-product__description">
+          {{ product.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Produkt",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Mærket {{ tags }}",
+      "page": "Side {{ page }}"
+    },
+    "404": {
+      "title": "Siden findes ikke"
+    },
+    "pagination": {
+      "previous": "Forrige",
+      "next": "Næste"
+    }
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "continue_shopping": "Fortsæt med at handle"
+      }
+    }
+  }
+}

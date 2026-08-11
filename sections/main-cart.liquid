@@ -1,0 +1,128 @@
+{% comment %} Kurv, skelet. {% endcomment %}
+
+{%- style -%}
+  .nc-cart__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nc-cart__item img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: var(--nc-radius-media);
+    background: var(--nc-white);
+    padding: 6px;
+  }
+
+  .nc-cart__item a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nc-cart__qty {
+    width: 80px;
+  }
+
+  .nc-cart__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .nc-cart__subtotal {
+    font-size: clamp(18px, 1.8vw, 22px);
+    font-family: var(--nc-font-display);
+    font-weight: var(--nc-weight-display);
+  }
+
+  .nc-cart__note {
+    font-size: 12px;
+    color: rgba(44, 70, 61, 0.65);
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <h1>Kurv</h1>
+
+    {%- if cart.item_count > 0 -%}
+      {%- form 'cart', cart -%}
+        <table class="nc-cart__table">
+          <thead>
+            <tr>
+              <th scope="col">Vare</th>
+              <th scope="col">Antal</th>
+              <th scope="col">Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr>
+                <td>
+                  <div class="nc-cart__item">
+                    {%- if item.image -%}
+                      {{ item.image | image_url: width: 144 | image_tag: alt: item.title, loading: 'lazy' }}
+                    {%- endif -%}
+                    <div>
+                      <a href="{{ item.url }}">{{ item.product.title }}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
+                      {%- endunless -%}
+                      <div>
+                        <a href="{{ item.url_to_remove }}" style="font-size: 13px;">Fjern</a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <label class="nc-visually-hidden" for="nc-cart-qty-{{ forloop.index }}">Antal</label>
+                  <input
+                    id="nc-cart-qty-{{ forloop.index }}"
+                    class="nc-input nc-cart__qty"
+                    type="number"
+                    name="updates[]"
+                    min="0"
+                    value="{{ item.quantity }}"
+                  >
+                </td>
+                <td>{{ item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="nc-cart__footer">
+          <div class="nc-cart__subtotal">Subtotal: {{ cart.total_price | money }}</div>
+          <p class="nc-cart__note">{{ section.settings.shipping_note }}</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="nc-btn nc-btn--outline" type="submit" name="update">Opdatér kurv</button>
+            <button class="nc-btn nc-btn--primary" type="submit" name="checkout">Gå til kassen</button>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- else -%}
+      <p>Din kurv er tom.</p>
+      <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">Se alle produkter</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kurv",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "shipping_note",
+      "label": "Fragtnote",
+      "default": "Fragt beregnes ved kassen. Gratis levering ved ordrer over 399 kr.",
+      "info": "Hold beløbsgrænsen i sync med butikkens faktiske fragtindstillinger."
+    }
+  ]
+}
+{% endschema %}

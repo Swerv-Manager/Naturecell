@@ -1,0 +1,104 @@
+{% comment %}
+  Udvalgt kollektion: overskrift + produktgrid + "Se alle"-link.
+  Bruger produktkortet med billede nr. 2 ved hover.
+{% endcomment %}
+
+{%- liquid
+  assign collection = section.settings.collection
+  assign limit = section.settings.limit | default: 4
+-%}
+
+{%- style -%}
+  .nc-featured__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(20px, 2.6vw, 36px);
+  }
+
+  .nc-featured__head h2 {
+    margin: 0;
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <div class="nc-featured__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.heading | default: collection.title }}</h2>
+      </div>
+      {%- if collection != blank -%}
+        <a class="nc-btn nc-btn--outline" href="{{ collection.url }}">{{ section.settings.link_text }}</a>
+      {%- endif -%}
+    </div>
+
+    <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
+      {%- if collection != blank -%}
+        {%- for product in collection.products limit: limit -%}
+          <li>{% render 'nc-product-card', product: product %}</li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <li>
+            <div class="nc-product-card">
+              <div class="nc-product-card__media">
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <h3 class="nc-product-card__title">Produkt</h3>
+            </div>
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Udvalgt kollektion",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Overlinje"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "info": "Efterlad tom for at bruge kollektionens navn."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Kollektion"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Antal produkter",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Linktekst",
+      "default": "Se alle"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Udvalgt kollektion"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+{% comment %}
+  Produktkort med billede nr. 2 ved hover
+  (godkendt designbeslutning i #naturecell-hjemmeside, 04-08-2026).
+
+  Brug: {% render 'nc-product-card', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign primary_image = product.featured_image
+  assign hover_image = blank
+  if product.images.size > 1
+    assign hover_image = product.images[1]
+  endif
+
+  assign primary_class = 'nc-product-card__image--primary'
+  if hover_image != blank
+    assign primary_class = 'nc-product-card__image--primary has-hover-image'
+  endif
+
+  assign primary_alt = primary_image.alt | default: product.title
+-%}
+
+<a class="nc-product-card" href="{{ product.url }}">
+  <div class="nc-product-card__media">
+    {%- if primary_image != blank -%}
+      {{
+        primary_image
+        | image_url: width: 720
+        | image_tag:
+          class: primary_class,
+          alt: primary_alt,
+          widths: '240, 360, 480, 720',
+          sizes: '(min-width: 990px) 300px, 45vw',
+          loading: 'lazy'
+      }}
+      {%- if hover_image != blank -%}
+        {{
+          hover_image
+          | image_url: width: 720
+          | image_tag:
+            class: 'nc-product-card__image--hover',
+            alt: '',
+            widths: '240, 360, 480, 720',
+            sizes: '(min-width: 990px) 300px, 45vw',
+            loading: 'lazy'
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'nc-product-card__image--primary placeholder-svg' }}
+    {%- endif -%}
+  </div>
+
+  <h3 class="nc-product-card__title">{{ product.title }}</h3>
+
+  <span class="nc-product-card__price">
+    {% render 'nc-price', product: product %}
+    {%- unless product.available %}
+      <span class="nc-product-card__soldout">Udsolgt</span>
+    {%- endunless -%}
+  </span>
+</a>

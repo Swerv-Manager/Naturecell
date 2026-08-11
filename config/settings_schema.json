@@ -1,0 +1,70 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "NatureCell",
+    "theme_version": "0.1.0",
+    "theme_author": "Swerv Digital",
+    "theme_documentation_url": "https://github.com/Swerv-Manager/Naturecell",
+    "theme_support_url": "https://swerv.dk"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Wordmark til lys baggrund (header)."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_white",
+        "label": "Logo, hvidt",
+        "info": "Hvidt wordmark til grøn baggrund (footer)."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Typografi",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_brand_fonts",
+        "label": "Brug brandets egne fonte",
+        "default": true,
+        "info": "Henter Philosopher og Roboto Flex fra Google Fonts, som brandguiden foreskriver. Slå fra for at undgå eksterne kald af hensyn til Cookiebot."
+      }
+    ]
+  },
+  {
+    "name": "Sociale medier",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "info": "https://www.instagram.com/naturecell_dk"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "info": "https://www.facebook.com/NatureCellDK"
+      }
+    ]
+  },
+  {
+    "name": "Farver",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Farvepaletten er med vilje låst til NatureCells designsystem (paper, grøn, sand, pink, berry) og styres i temaets kode, så der ikke kan introduceres farver uden for systemet."
+      }
+    ]
+  }
+]

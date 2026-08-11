@@ -1,0 +1,78 @@
+{% comment %} Soegeside, skelet. {% endcomment %}
+
+{%- style -%}
+  .nc-search__form {
+    display: flex;
+    gap: 10px;
+    max-width: 560px;
+    margin: 0 0 clamp(24px, 3vw, 44px);
+  }
+
+  .nc-search__form .nc-input {
+    flex: 1;
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <h1>Søg</h1>
+
+    <form class="nc-search__form" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="nc-visually-hidden" for="nc-search-input">Søg</label>
+      <input
+        id="nc-search-input"
+        class="nc-input"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Søg efter produkter"
+      >
+      <button class="nc-btn nc-btn--primary" type="submit">Søg</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <p>{{ search.results_count }} resultater for "{{ search.terms | escape }}"</p>
+
+        {%- paginate search.results by 24 -%}
+          <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
+            {%- for item in search.results -%}
+              <li>
+                {%- case item.object_type -%}
+                  {%- when 'product' -%}
+                    {% render 'nc-product-card', product: item %}
+                  {%- when 'article' -%}
+                    <a class="nc-blog__card" href="{{ item.url }}">
+                      <h2 class="nc-blog__title">{{ item.title }}</h2>
+                      <p class="nc-blog__excerpt">Artikel</p>
+                    </a>
+                  {%- when 'page' -%}
+                    <a class="nc-blog__card" href="{{ item.url }}">
+                      <h2 class="nc-blog__title">{{ item.title }}</h2>
+                      <p class="nc-blog__excerpt">Side</p>
+                    </a>
+                {%- endcase -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="nc-pagination" aria-label="Sider">
+              {{ paginate | default_pagination }}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <p>Ingen resultater for "{{ search.terms | escape }}". Prøv et andet søgeord.</p>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Søgning",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

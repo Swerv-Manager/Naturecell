@@ -1,0 +1,28 @@
+{% comment %} Standardside, skelet. {% endcomment %}
+
+{%- style -%}
+  .nc-page {
+    max-width: 72ch;
+  }
+
+  .nc-page__content {
+    color: rgba(44, 70, 61, 0.82);
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <article class="nc-page">
+      <h1>{{ page.title }}</h1>
+      <div class="nc-page__content">{{ page.content }}</div>
+    </article>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Side",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

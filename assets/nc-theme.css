@@ -1,0 +1,468 @@
+/* ============================================================
+   NatureCell tema: basis-stilark
+   Tokens er hentet 1:1 fra NatureCell Design System
+   (naturecell-design-system-52829db1), som de allerede er
+   dokumenteret i sections/nc-august-campaign-banner.liquid.
+   Farvepaletten er laast: Ingen hex-vaerdier uden for systemet.
+
+   Vaerdier markeret "afventer tokens" bekraeftes mod
+   _ds/tokens/*.css naar design-handoff-filerne ligger i repoet.
+   ============================================================ */
+
+:root {
+  /* Farver */
+  --nc-paper: #f6f4ee;
+  --nc-green: #3e5d58;
+  --nc-ink: #2c463d; /* afventer tokens: udledt af systemets skyggefarve rgba(44,70,61) */
+  --nc-sand: #ddbfa3;
+  --nc-pink: #f9b5c4;
+  --nc-berry: #84334e;
+  --nc-white: #ffffff;
+  --nc-sage-wash: rgba(128, 160, 151, 0.55);
+
+  /* Form */
+  --nc-radius-card: 18px;
+  --nc-radius-media: 14px;
+  --nc-radius-pill: 999px;
+  --nc-shadow-soft: 0 12px 28px rgba(44, 70, 61, 0.18);
+  --nc-content-max: 1240px;
+
+  /* Bevaegelse */
+  --nc-dur-fast: 140ms;
+  --nc-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Typografi (Philosopher/Roboto Flex saettes i theme.liquid) */
+  --nc-font-display: 'Philosopher', Georgia, 'Times New Roman', serif;
+  --nc-font-body: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
+  --nc-weight-display: 700;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--nc-paper);
+  color: var(--nc-ink);
+  font-family: var(--nc-font-body);
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.65;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 0.5em;
+  font-family: var(--nc-font-display);
+  font-weight: var(--nc-weight-display);
+  line-height: 1.12;
+  color: var(--nc-ink);
+  text-wrap: pretty;
+}
+
+h1 {
+  font-size: clamp(30px, 4.1vw, 52px);
+}
+
+h2 {
+  font-size: clamp(26px, 3.2vw, 40px);
+}
+
+h3 {
+  font-size: clamp(20px, 2.2vw, 27px);
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 2px;
+  transition: color var(--nc-dur-fast) var(--nc-ease-soft), opacity var(--nc-dur-fast) var(--nc-ease-soft);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Layoutramme */
+.nc-container {
+  width: 100%;
+  max-width: var(--nc-content-max);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 56px);
+}
+
+.nc-section {
+  padding: clamp(32px, 5vw, 80px) 0;
+}
+
+/* Overlinje */
+.nc-eyebrow {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nc-green);
+}
+
+/* Knapper: pille-form fra designsystemet */
+.nc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 15px 32px;
+  border-radius: var(--nc-radius-pill);
+  border: 1.5px solid transparent;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--nc-dur-fast) var(--nc-ease-soft),
+    color var(--nc-dur-fast) var(--nc-ease-soft),
+    border-color var(--nc-dur-fast) var(--nc-ease-soft),
+    transform var(--nc-dur-fast) var(--nc-ease-soft),
+    box-shadow var(--nc-dur-fast) var(--nc-ease-soft);
+}
+
+.nc-btn:hover,
+.nc-btn:focus-visible {
+  transform: translateY(-1px);
+}
+
+.nc-btn:active {
+  transform: translateY(0);
+}
+
+.nc-btn:focus-visible {
+  outline: 2px solid var(--nc-green);
+  outline-offset: 3px;
+}
+
+.nc-btn--primary {
+  background: var(--nc-green);
+  color: var(--nc-white);
+  border-color: var(--nc-green);
+}
+
+.nc-btn--primary:hover,
+.nc-btn--primary:focus-visible {
+  background: var(--nc-ink);
+  border-color: var(--nc-ink);
+  color: var(--nc-white);
+}
+
+.nc-btn--outline {
+  background: transparent;
+  color: var(--nc-green);
+  border-color: rgba(44, 70, 61, 0.45);
+}
+
+.nc-btn--outline:hover,
+.nc-btn--outline:focus-visible {
+  background: rgba(44, 70, 61, 0.08);
+  border-color: var(--nc-green);
+  color: var(--nc-green);
+}
+
+/* Paa moerk (groen) flade */
+.nc-on-dark .nc-btn--primary {
+  background: var(--nc-white);
+  color: var(--nc-green);
+  border-color: var(--nc-white);
+}
+
+.nc-on-dark .nc-btn--primary:hover,
+.nc-on-dark .nc-btn--primary:focus-visible {
+  background: var(--nc-paper);
+  border-color: var(--nc-paper);
+  color: var(--nc-green);
+}
+
+.nc-on-dark .nc-btn--outline {
+  color: var(--nc-white);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.nc-on-dark .nc-btn--outline:hover,
+.nc-on-dark .nc-btn--outline:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--nc-white);
+  color: var(--nc-white);
+}
+
+/* Chips */
+.nc-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 13px;
+  border: 1px solid rgba(44, 70, 61, 0.42);
+  border-radius: var(--nc-radius-pill);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+/* Kort */
+.nc-card {
+  background: var(--nc-white);
+  border-radius: var(--nc-radius-card);
+  overflow: hidden;
+}
+
+/* Produktkort */
+.nc-product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nc-product-card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--nc-radius-media);
+  overflow: hidden;
+  background: var(--nc-white);
+}
+
+.nc-product-card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: clamp(12px, 1.6vw, 20px);
+  transition: opacity var(--nc-dur-fast) var(--nc-ease-soft);
+}
+
+/* Billede nr. 2 vises ved hover, jf. godkendt designbeslutning 04-08-2026 */
+.nc-product-card__media img.nc-product-card__image--hover {
+  opacity: 0;
+}
+
+.nc-product-card:hover .nc-product-card__media img.nc-product-card__image--hover,
+.nc-product-card:focus-visible .nc-product-card__media img.nc-product-card__image--hover {
+  opacity: 1;
+}
+
+.nc-product-card:hover .nc-product-card__media img.nc-product-card__image--primary.has-hover-image,
+.nc-product-card:focus-visible .nc-product-card__media img.nc-product-card__image--primary.has-hover-image {
+  opacity: 0;
+}
+
+.nc-product-card__title {
+  margin: 0;
+  font-family: var(--nc-font-display);
+  font-weight: var(--nc-weight-display);
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.25;
+  color: var(--nc-ink);
+}
+
+.nc-product-card__price {
+  font-size: 15px;
+  color: rgba(44, 70, 61, 0.82);
+}
+
+/* Pris */
+.nc-price__compare {
+  margin-left: 8px;
+  text-decoration: line-through;
+  color: rgba(44, 70, 61, 0.55);
+}
+
+/* Grid */
+.nc-grid {
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* Formularer */
+.nc-input,
+.nc-select,
+.nc-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(44, 70, 61, 0.35);
+  border-radius: 10px;
+  background: var(--nc-white);
+  color: var(--nc-ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.nc-input:focus-visible,
+.nc-select:focus-visible,
+.nc-textarea:focus-visible {
+  outline: 2px solid var(--nc-green);
+  outline-offset: 2px;
+}
+
+.nc-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Paginering (bruges af kollektion, blog og soegning) */
+.nc-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: clamp(28px, 4vw, 48px);
+  flex-wrap: wrap;
+}
+
+.nc-pagination a,
+.nc-pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--nc-radius-pill);
+  border: 1px solid rgba(44, 70, 61, 0.35);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nc-pagination span.current {
+  background: var(--nc-green);
+  border-color: var(--nc-green);
+  color: var(--nc-white);
+}
+
+/* Artikelkort (bruges af blog og soegning) */
+.nc-blog__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nc-blog__media {
+  aspect-ratio: 3 / 2;
+  border-radius: var(--nc-radius-media);
+  overflow: hidden;
+  background: var(--nc-white);
+}
+
+.nc-blog__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nc-blog__title {
+  margin: 0;
+  font-size: clamp(18px, 1.8vw, 22px);
+}
+
+.nc-blog__excerpt {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(44, 70, 61, 0.82);
+}
+
+/* Tabel (bruges af kurv, konto og ordre) */
+.nc-cart__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nc-cart__table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nc-green);
+  padding: 0 12px 12px 0;
+  border-bottom: 1px solid rgba(44, 70, 61, 0.18);
+}
+
+.nc-cart__table td {
+  padding: 16px 12px 16px 0;
+  border-bottom: 1px solid rgba(44, 70, 61, 0.12);
+  vertical-align: middle;
+}
+
+@media (max-width: 749px) {
+  .nc-cart__table thead {
+    display: none;
+  }
+
+  .nc-cart__table tr {
+    display: block;
+    padding: 12px 0;
+  }
+
+  .nc-cart__table td {
+    display: block;
+    border: 0;
+    padding: 4px 0;
+  }
+}
+
+/* Skip-link */
+.nc-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 12px 20px;
+  background: var(--nc-white);
+  color: var(--nc-ink);
+}
+
+.nc-skip-link:focus {
+  left: 0;
+}
+
+/* Utility */
+.nc-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .nc-btn:hover,
+  .nc-btn:focus-visible,
+  .nc-btn:active {
+    transform: none;
+  }
+}

@@ -1,0 +1,189 @@
+{% comment %}
+  Header: annonceringslinje, logo, hovedmenu, soeg/konto/kurv.
+  Skelet-version. Megamenuens endelige udformning kommer fra
+  design-handoff'en (NatureCell.dc.html) og bygges naar
+  designfilerne ligger i repoet.
+{% endcomment %}
+
+{%- style -%}
+  .nc-announcement {
+    background: var(--nc-green);
+    color: var(--nc-white);
+    text-align: center;
+    padding: 9px 16px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .nc-header {
+    background: var(--nc-paper);
+    border-bottom: 1px solid rgba(44, 70, 61, 0.12);
+  }
+
+  .nc-header__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 72px;
+  }
+
+  .nc-header__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .nc-header__logo img {
+    display: block;
+    width: auto;
+    height: {{ section.settings.logo_height | default: 32 }}px;
+  }
+
+  .nc-header__logo-text {
+    font-family: var(--nc-font-display);
+    font-weight: var(--nc-weight-display);
+    font-size: 24px;
+    color: var(--nc-ink);
+  }
+
+  .nc-header__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(14px, 2vw, 28px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nc-header__nav a {
+    text-decoration: none;
+    font-size: 15px;
+    color: var(--nc-ink);
+  }
+
+  .nc-header__nav a:hover,
+  .nc-header__nav a:focus-visible {
+    color: var(--nc-green);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .nc-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .nc-header__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--nc-ink);
+  }
+
+  .nc-header__cart-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: var(--nc-radius-pill);
+    background: var(--nc-green);
+    color: var(--nc-white);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 749px) {
+    .nc-header__row {
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
+
+    .nc-header__nav {
+      order: 3;
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.settings.announcement != blank -%}
+  <div class="nc-announcement">{{ section.settings.announcement }}</div>
+{%- endif -%}
+
+<header class="nc-header">
+  <div class="nc-container">
+    <div class="nc-header__row">
+      <a class="nc-header__logo" href="{{ routes.root_url }}">
+        {%- if settings.logo != blank -%}
+          {{
+            settings.logo
+            | image_url: width: 360
+            | image_tag: alt: shop.name, widths: '180, 360', loading: 'eager'
+          }}
+        {%- else -%}
+          <span class="nc-header__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      <nav class="nc-header__nav" aria-label="Hovedmenu">
+        <ul>
+          {%- for link in section.settings.menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <div class="nc-header__actions">
+        <a class="nc-header__action" href="{{ routes.search_url }}">Søg</a>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="nc-header__action" href="{{ routes.account_url }}">Konto</a>
+        {%- endif -%}
+        <a class="nc-header__action" href="{{ routes.cart_url }}">
+          Kurv
+          <span class="nc-header__cart-count" aria-label="Antal varer i kurven">{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "header",
+  "class": "nc-header-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Skelet-header. Den endelige megamenu og mobilnavigation bygges ud fra design-handoff'en."
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Annonceringslinje",
+      "default": "Gratis levering ved ordrer over 399 kr."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Hovedmenu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logohøjde",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ]
+}
+{% endschema %}

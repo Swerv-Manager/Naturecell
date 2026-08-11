@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f4ee">
+
+    <title>
+      {{- page_title -}}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; Side {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      Brandguiden foreskriver Philosopher til overskrifter og Roboto Flex til
+      broedtekst. Ingen af dem findes i Shopifys fontbibliotek, saa de hentes
+      fra Google Fonts, praecis som designsystemet goer det. Kan slaas fra af
+      hensyn til Cookiebot og tredjepartskald.
+    {%- endcomment -%}
+    {%- if settings.use_brand_fonts -%}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap" rel="stylesheet">
+    {%- endif -%}
+
+    {{ 'nc-theme.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    <a class="nc-skip-link" href="#nc-main">Gå til indholdet</a>
+
+    {% sections 'header-group' %}
+
+    <main id="nc-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<div class="nc-section">
+  <div class="nc-container">
+    <p><a href="{{ routes.account_url }}">Tilbage til konto</a></p>
+    <h1>Ordre {{ order.name }}</h1>
+    <p>Afgivet {{ order.created_at | date: '%d.%m.%Y' }}</p>
+
+    <table class="nc-cart__table">
+      <thead>
+        <tr>
+          <th scope="col">Vare</th>
+          <th scope="col">Antal</th>
+          <th scope="col">Pris</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td>{{ line_item.title }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+
+    <p style="margin-top: 20px;">
+      Subtotal: {{ order.line_items_subtotal_price | money }}<br>
+      {%- for shipping_method in order.shipping_methods -%}
+        Fragt ({{ shipping_method.title }}): {{ shipping_method.price | money }}<br>
+      {%- endfor -%}
+      {%- for tax_line in order.tax_lines -%}
+        {{ tax_line.title }}: {{ tax_line.price | money }}<br>
+      {%- endfor -%}
+      <strong>Total: {{ order.total_price | money }}</strong>
+    </p>
+  </div>
+</div>

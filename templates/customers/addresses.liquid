@@ -1,0 +1,21 @@
+<div class="nc-section">
+  <div class="nc-container" style="max-width: 640px;">
+    <p><a href="{{ routes.account_url }}">Tilbage til konto</a></p>
+    <h1>Adresser</h1>
+
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div style="padding: 16px 0; border-bottom: 1px solid rgba(44,70,61,0.12);">
+          {%- if address == customer.default_address -%}
+            <p class="nc-eyebrow">Standardadresse</p>
+          {%- endif -%}
+          {{ address | format_address }}
+        </div>
+      {%- endfor -%}
+    {%- endpaginate -%}
+
+    <p style="margin-top: 20px; font-size: 14px; color: rgba(44,70,61,0.65);">
+      Adresser tilføjes og redigeres under kassen eller via kundeservice, indtil den fulde adressebog er bygget ud fra designet.
+    </p>
+  </div>
+</div>
