@@ -159,6 +159,15 @@
           {%- endif -%}
         </div>
 
+        {%- comment -%}
+          App-blokke (fx Katching bundles til maengderabat). Placeres i
+          temaeditoren mellem pris og koebsknap, hvor designets
+          maengdevaelger sidder.
+        {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- render block -%}
+        {%- endfor -%}
+
         {%- form 'product', product, data-nc-product-form: '' -%}
           {%- unless product.has_only_default_variant -%}
             <div>
@@ -237,6 +246,9 @@
 {
   "name": "Produkt",
   "tag": "section",
+  "blocks": [
+    { "type": "@app" }
+  ],
   "settings": [
     { "type": "checkbox", "id": "show_badges", "label": "Vis claim-badges", "default": true },
     {
