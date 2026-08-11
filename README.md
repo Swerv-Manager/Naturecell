@@ -13,12 +13,21 @@ Claude Design-projektet `NatureCell.dc.html` (godkendt af NatureCell
 
 ## Status
 
-**Skelet.** Temaets fundament er på plads: layout, header/footer,
-alle standard-skabeloner (produkt, kollektion, kurv, søgning, blog,
-artikel, side, 404, kundekonto, gavekort) og designsystemets tokens
-låst i `assets/nc-theme.css`. Den endelige sidekomposition oversættes
-1:1 fra `NatureCell.dc.html`, når design-handoff-filerne ligger i
-`design/`-mappen (se `design/README.md` for præcis filliste).
+**Implementeret og lagt op på temaet "Swerv // Nyt tema (under
+udvikling)" (ID 205218971986).** Designet fra NatureCell.dc.html er
+oversat 1:1: forside (hero-karrusel, trust-bar, presse-marquee, shop
+efter område/behov, livsstilsbånd med ritual-video, bestsellers,
+kundecases-rail, anmeldelses-marquee, historie-strib), produktside
+(galleri, badges, accordion, USP-bånd, fortælling, kundevideoer, FAQ,
+relaterede), kollektioner med SEO-bundtekst og FAQ, kundecases- og
+artikel-blogs, samt alle undersider (FAQ, kontakt, kundeklub, quiz,
+favoritter, om os med tidslinje, B2B, forhandlere). Designkilderne
+ligger i `design-src/` (udpakket fra det leverede offline-bundle).
+
+Kendte udeståender: Horizon-restfiler på temaet kan ikke slettes via
+API (policy) — ryd op via admin, eller endnu bedre: forbind temaet til
+GitHub-branchen, så synker den automatisk. `locales/da.default.json`
+kan først lægges op, når Horizons `en.default.json` er fjernet.
 
 ## Designsystem
 
