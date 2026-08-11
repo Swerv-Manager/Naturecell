@@ -73,7 +73,7 @@
           {%- if settings.logo_white != blank -%}
             {{ settings.logo_white | image_url: width: 460 | image_tag: alt: shop.name, widths: '230, 460', loading: 'lazy' }}
           {%- else -%}
-            {{ 'nc-logo-wordmark-white.png' | asset_url | image_tag: alt: shop.name, loading: 'lazy' }}
+            <img src="{{ 'nc-logo-wordmark-white.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="230" height="56">
           {%- endif -%}
         </div>
         <p>{{ section.settings.brand_text }}</p>
