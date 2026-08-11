@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Kundeklub", "heading": "Fordele der følger med", "intro": "Gratis medlemskab med point på hvert køb, velkomstrabat og tidlig adgang til nyheder.", "center": true } },
+    "klub": { "type": "nc-kundeklub" }
+  },
+  "order": ["hero", "klub"]
+}
