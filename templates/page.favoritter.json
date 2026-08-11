@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Gemt til senere", "heading": "Dine favoritter", "center": true } },
+    "favs": { "type": "nc-favoritter" }
+  },
+  "order": ["hero", "favs"]
+}

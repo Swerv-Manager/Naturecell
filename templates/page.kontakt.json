@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Kundeservice", "heading": "Kontakt & åbningstider", "intro": "Vi er en dansk virksomhed med dansk kundeservice. Skriv, ring eller kig forbi butikken i Skanderborg." } },
+    "kontakt": { "type": "nc-kontakt" }
+  },
+  "order": ["hero", "kontakt"]
+}

@@ -1,49 +1,127 @@
-{% comment %} Artikelside, skelet. Bruges bl.a. til kundecases. {% endcomment %}
+{% comment %}
+  Artikelside fra designet. Kundecases faar case-hero med fakta og
+  drop cap-lead; artikler faar klassisk redaktionelt layout. Begge
+  bruger .nc-article-body-typografien fra designsystemet.
+{% endcomment %}
+
+{%- liquid
+  assign is_case = false
+  if blog.handle == 'kundecases'
+    assign is_case = true
+  endif
+-%}
 
 {%- style -%}
-  .nc-article {
-    max-width: 72ch;
-  }
+  .nc-art { max-width: var(--container-text); margin: 0 auto; }
+  .nc-art__meta { font-size: 13px; letter-spacing: var(--tracking-wide); color: var(--ink-500); }
+  .nc-art__meta a { color: var(--sage-700); }
+  .nc-art__hero { border-radius: var(--radius-xl); overflow: hidden; margin: clamp(18px, 2.6vw, 30px) 0; }
+  .nc-art__hero img { display: block; width: 100%; height: auto; }
 
-  .nc-article__meta {
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    color: rgba(44, 70, 61, 0.65);
+  .nc-casehero { background: var(--nc-hero-bg); color: var(--cloud); border-radius: var(--radius-xl); overflow: hidden; margin-bottom: clamp(24px, 3.4vw, 44px); }
+  .nc-casehero__grid { display: grid; gap: 0; grid-template-columns: 1fr; }
+  @media (min-width: 900px) {
+    .nc-casehero__grid { grid-template-columns: 1fr 1fr; }
   }
+  .nc-casehero__body { padding: clamp(24px, 4vw, 52px); display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .nc-casehero__body h1 { margin: 0; color: var(--cloud); font-size: clamp(28px, 3.4vw, 44px); }
+  .nc-casehero__body .nc-eyebrow { color: var(--sand-500); margin: 0; }
+  .nc-casehero__media { min-height: 300px; }
+  .nc-casehero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .nc-casehero__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-top: 10px; }
+  .nc-casehero__fact small { display: block; font-size: 11px; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: rgba(246, 244, 238, 0.7); }
+  .nc-casehero__fact strong { font-family: var(--font-display); font-weight: 400; font-size: 17px; }
 
-  .nc-article__image {
-    border-radius: var(--nc-radius-card);
-    overflow: hidden;
-    margin: clamp(20px, 2.6vw, 32px) 0;
-  }
-
-  .nc-article__content {
-    color: rgba(44, 70, 61, 0.82);
-  }
+  .nc-art__products { background: var(--nc-lifestyle-bg); border-radius: var(--radius-xl); padding: clamp(22px, 3.4vw, 40px); margin-top: clamp(30px, 4vw, 52px); }
+  .nc-art__more { margin-top: clamp(36px, 5vw, 64px); }
 {%- endstyle -%}
 
 <div class="nc-section">
   <div class="nc-container">
-    <article class="nc-article">
-      <p class="nc-article__meta">
-        {{ article.published_at | date: '%d.%m.%Y' }}
-        {%- if blog.title != blank %} · <a href="{{ blog.url }}">{{ blog.title }}</a>{% endif -%}
-      </p>
-      <h1>{{ article.title }}</h1>
+    {%- if is_case -%}
+      <div class="nc-casehero">
+        <div class="nc-casehero__grid">
+          <div class="nc-casehero__body">
+            <p class="nc-eyebrow">Kundecase</p>
+            <h1>{{ article.title }}</h1>
+            <div class="nc-casehero__facts">
+              {%- assign area_label = '' -%}
+              {%- for tag in article.tags -%}
+                {%- assign lt = tag | downcase -%}
+                {%- if lt == 'ansigt' or lt == 'haender' or lt == 'foedder' or lt == 'krop' or lt == 'haar' -%}
+                  {%- assign area_label = lt | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if area_label != blank -%}
+                <div class="nc-casehero__fact"><small>Område</small><strong>{{ area_label }}</strong></div>
+              {%- endif -%}
+              <div class="nc-casehero__fact"><small>Fortalt af</small><strong>{{ article.author }}</strong></div>
+              <div class="nc-casehero__fact"><small>Format</small><strong>{% if article.content contains 'youtube' %}Video + tekst{% else %}Kundehistorie{% endif %}</strong></div>
+            </div>
+          </div>
+          <div class="nc-casehero__media">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 1200 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 900px) 620px, 94vw' }}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
 
-      {%- if article.image -%}
-        {%- assign article_alt = article.image.alt | default: article.title -%}
-        <div class="nc-article__image">
-          {{
-            article.image
-            | image_url: width: 1400
-            | image_tag: alt: article_alt, sizes: '(min-width: 900px) 720px, 92vw'
-          }}
+    <article class="nc-art">
+      {%- unless is_case -%}
+        <p class="nc-art__meta">
+          {{ article.published_at | date: '%d.%m.%Y' }} · <a href="{{ blog.url }}">{{ blog.title }}</a>
+        </p>
+        <h1>{{ article.title }}</h1>
+        {%- if article.image -%}
+          <div class="nc-art__hero">
+            {{ article.image | image_url: width: 1400 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 900px) 680px, 94vw' }}
+          </div>
+        {%- endif -%}
+      {%- endunless -%}
+
+      <div class="nc-article-body {% if is_case %}nc-case-body{% endif %}">
+        {{ article.content }}
+      </div>
+    </article>
+
+    {%- if is_case and section.settings.show_products -%}
+      {%- assign case_products = article.metafields.nc.products.value -%}
+      {%- if case_products != blank -%}
+        <div class="nc-art__products">
+          <p class="nc-eyebrow">Produkterne i rutinen</p>
+          <h2 style="margin-top: 0;">Det brugte {{ article.author | split: ' ' | first }}</h2>
+          <ul class="nc-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+            {%- for p in case_products limit: 4 -%}
+              <li>{% render 'nc-product-card', product: p %}</li>
+            {%- endfor -%}
+          </ul>
         </div>
       {%- endif -%}
+    {%- endif -%}
 
-      <div class="nc-article__content">{{ article.content }}</div>
-    </article>
+    <div class="nc-art__more">
+      <h2>{% if is_case %}Flere kundecases{% else %}Læs også{% endif %}</h2>
+      <ul class="nc-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+        {%- assign shown = 0 -%}
+        {%- for a in blog.articles -%}
+          {%- if a.id != article.id and shown < 3 -%}
+            <li>
+              <a class="nc-case-card" href="{{ a.url }}">
+                <span class="nc-case-card__media" style="aspect-ratio: 16 / 11;">
+                  {%- if a.image -%}
+                    {{ a.image | image_url: width: 560 | image_tag: alt: a.title, loading: 'lazy' }}
+                  {%- endif -%}
+                </span>
+                <h3 class="nc-case-card__title">{{ a.title }}</h3>
+              </a>
+            </li>
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -51,6 +129,8 @@
 {
   "name": "Artikel",
   "tag": "section",
-  "settings": []
+  "settings": [
+    { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet nc.products (produktliste) på artiklen." }
+  ]
 }
 {% endschema %}

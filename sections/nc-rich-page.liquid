@@ -1,0 +1,51 @@
+{% comment %}
+  Indholdssektioner til tekstsider (vilkaar, privatliv, b2b,
+  forhandlere): kort med overskrift + tekst i to kolonner.
+{% endcomment %}
+
+{%- style -%}
+  .nc-richpage { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 980px; }
+  .nc-richpage__card { background: var(--cloud); border-radius: var(--radius-lg); padding: clamp(20px, 2.6vw, 30px); box-shadow: var(--shadow-xs); }
+  .nc-richpage__card h3 { font-size: 19px; margin-bottom: 8px; }
+  .nc-richpage__card p { margin: 0; font-size: 14.5px; color: var(--ink-700); }
+{%- endstyle -%}
+
+<section class="nc-section" style="padding-top: 10px;">
+  <div class="nc-container">
+    <div class="nc-richpage">
+      {%- for block in section.blocks -%}
+        <div class="nc-richpage__card" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.heading }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.cta_text != blank -%}
+      <p style="margin-top: 26px;">
+        <a class="nc-btn nc-btn--primary" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Indholdskort",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "cta_text", "label": "Knap" },
+    { "type": "url", "id": "cta_url", "label": "Knap: link" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Kort",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Overskrift", "default": "Overskrift" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tekst" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Indholdskort" } ]
+}
+{% endschema %}

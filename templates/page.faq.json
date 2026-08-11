@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": { "eyebrow": "Kundeservice", "heading": "Ofte stillede spørgsmål", "intro": "Find hurtige svar om CBD, produkterne, levering og butikken. Skriv til os, hvis dit spørgsmål ikke er her.", "center": true }
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": { "eyebrow": "", "heading": "", "open_first": true },
+      "blocks": {
+        "g1": { "type": "group", "settings": { "heading": "CBD & lovgivning" } },
+        "g1q1": { "type": "qa", "settings": { "q": "Er CBD lovligt i hudpleje i Danmark?", "a": "<p>Ja. CBD er en tilladt kosmetisk ingrediens under EU's kosmetikforordning. NatureCell fik som de første i Danmark tilladelse til at tilsætte CBD i hudpleje i 2019.</p>" } },
+        "g1q2": { "type": "qa", "settings": { "q": "Kan man blive påvirket af CBD-hudpleje?", "a": "<p>Nej. CBD er ikke psykoaktivt. Produkterne er kosmetiske, til udvortes brug, og har ingen berusende effekt.</p>" } },
+        "g1q3": { "type": "qa", "settings": { "q": "Hvad er forskellen på CBD og THC?", "a": "<p>CBD (cannabidiol) er ikke psykoaktivt og må anvendes i kosmetik i EU. THC er det psykoaktive stof i cannabis og anvendes ikke i vores produkter.</p>" } },
+        "g1q4": { "type": "qa", "settings": { "q": "Hvad er forskellen på hampolie og CBD?", "a": "<p>Hampolie presses af hampefrø og indeholder fedtsyrer og vitaminer. CBD udvindes fra plantens blade og blomster og er en cannabinoid. Begge kan indgå i hudpleje med hver sin funktion.</p>" } },
+        "g2": { "type": "group", "settings": { "heading": "Produkter & brug" } },
+        "g2q1": { "type": "qa", "settings": { "q": "Hvor skal jeg starte, hvis jeg er ny?", "a": "<p>Komplet CBD Hudpleje er et godt startpunkt: rens, olie, dagcreme og natcreme. Alt du behøver til en fast rutine morgen og aften. Du kan også tage vores hudpleje-quiz.</p>" } },
+        "g2q2": { "type": "qa", "settings": { "q": "Hvor hurtigt ser jeg resultater?", "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler. Vi lader vores kunder fortælle om deres egne oplevelser.</p>" } },
+        "g2q3": { "type": "qa", "settings": { "q": "Kan produkterne bruges på sensitiv hud?", "a": "<p>Ja. Serien er udviklet som en one-size-fits-all løsning til alle hudtyper, også tør, moden og sensitiv hud. Produkterne er uden syntetisk parfume.</p>" } },
+        "g2q4": { "type": "qa", "settings": { "q": "Kan jeg kombinere NatureCell med min nuværende hudpleje?", "a": "<p>Ja. CBD-hudpleje kan indgå i de fleste rutiner og bruges sammen med andre produkter.</p>" } },
+        "g2q5": { "type": "qa", "settings": { "q": "Hvordan opbevarer jeg produkterne?", "a": "<p>Køligt og mørkt, og luk godt efter brug. Produkterne er til udvortes brug. Undgå direkte kontakt med øjnene.</p>" } },
+        "g2q6": { "type": "qa", "settings": { "q": "Er dag- og natcreme testet?", "a": "<p>Ja. Vores dag- og natcreme er dermatologisk testet af Dermatest og har opnået højeste vurdering (\"Sehr Gut\").</p>" } },
+        "g3": { "type": "group", "settings": { "heading": "Ingredienser & kvalitet" } },
+        "g3q1": { "type": "qa", "settings": { "q": "Er produkterne veganske?", "a": "<p>Ja. Alle NatureCell-produkter er veganske og uden tilsatte syntetiske duftstoffer.</p>" } },
+        "g3q2": { "type": "qa", "settings": { "q": "Hvor produceres NatureCell?", "a": "<p>Cremerne er dansk-producerede, og vores CBD/olie fremstilles på GMP- og ISO-certificerede faciliteter, for dokumenteret kvalitet og sporbarhed.</p>" } },
+        "g3q3": { "type": "qa", "settings": { "q": "Hvilke hovedingredienser bruger I?", "a": "<p>CBD og CBG i samspil med hyaluronsyre, urea, sheasmør, squalane, aloe vera, mandelolie, niacinamid og E-vitamin. Du kan læse om hver enkelt ingrediens på vores ingrediensside.</p>" } },
+        "g3q4": { "type": "qa", "settings": { "q": "Tester I på dyr?", "a": "<p>Nej. Dyreforsøg med kosmetik er forbudt i EU, og vores produkter er veganske.</p>" } },
+        "g4": { "type": "group", "settings": { "heading": "Levering & returnering" } },
+        "g4q1": { "type": "qa", "settings": { "q": "Hvad koster fragt?", "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender hver dag, og webshoppen er e-mærket for tryg handel.</p>" } },
+        "g4q2": { "type": "qa", "settings": { "q": "Hvor lang er leveringstiden?", "a": "<p>Typisk 1-3 hverdage med vores fragtpartnere. Du modtager altid track & trace, så du kan følge din pakke.</p>" } },
+        "g4q3": { "type": "qa", "settings": { "q": "Kan jeg returnere min ordre?", "a": "<p>Ja. Du har 14 dages fortrydelsesret fra du modtager ordren. Kosmetik med brudt forsegling kan af hygiejnehensyn ikke altid tages retur. Kontakt os, så finder vi en løsning.</p>" } },
+        "g4q4": { "type": "qa", "settings": { "q": "Hvilke betalingsmuligheder har I?", "a": "<p>Vi modtager de mest udbredte betalingskort og MobilePay. Beløbet trækkes først, når din ordre afsendes.</p>" } },
+        "g5": { "type": "group", "settings": { "heading": "Butik & kontakt" } },
+        "g5q1": { "type": "qa", "settings": { "q": "Kan jeg se produkterne fysisk?", "a": "<p>Ja. NatureCell har shop-in-shop i Butik Lille Nyhavn, Lille Nyhavn 4-7, 8660 Skanderborg. Kom forbi og få personlig vejledning.</p>" } },
+        "g5q2": { "type": "qa", "settings": { "q": "Hvordan kontakter jeg jer?", "a": "<p>Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42 mandag til fredag 9.00-15.00. Vi er en dansk virksomhed med dansk kundeservice.</p>" } },
+        "g5q3": { "type": "qa", "settings": { "q": "Hvor kan jeg ellers købe NatureCell?", "a": "<p>Ud over webshoppen finder du NatureCell hos Matas samt i udvalgte helsekostbutikker og klinikker landet over.</p>" } },
+        "g6": { "type": "group", "settings": { "heading": "Kundeklub & B2B" } },
+        "g6q1": { "type": "qa", "settings": { "q": "Hvad får jeg i Kundeklubben?", "a": "<p>Gratis medlemskab med 10% velkomstrabat, point på hvert køb, en fødselsdagsgave og tidlig adgang til nyheder og medlemspriser.</p>" } },
+        "g6q2": { "type": "qa", "settings": { "q": "Hvordan bliver jeg forhandler?", "a": "<p>Sælger du i butik eller klinik? Kontakt os via B2B-siden og anmod om adgang, så vender vi tilbage med dine priser og betingelser.</p>" } },
+        "g6q3": { "type": "qa", "settings": { "q": "Kan jeg få et gavekort?", "a": "<p>Ja. Vores digitale gavekort sendes på e-mail, kan bruges på hele sortimentet og gælder i 3 år.</p>" } }
+      },
+      "block_order": ["g1", "g1q1", "g1q2", "g1q3", "g1q4", "g2", "g2q1", "g2q2", "g2q3", "g2q4", "g2q5", "g2q6", "g3", "g3q1", "g3q2", "g3q3", "g3q4", "g4", "g4q1", "g4q2", "g4q3", "g4q4", "g5", "g5q1", "g5q2", "g5q3", "g6", "g6q1", "g6q2", "g6q3"]
+    }
+  },
+  "order": ["hero", "faq"]
+}

@@ -1,0 +1,118 @@
+{% comment %} Kundeklub fra designet: fire fordele, tre trin og tilmelding. {% endcomment %}
+
+{%- style -%}
+  .nc-klub__perks { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: clamp(32px, 4vw, 52px); }
+  .nc-klub__perk { background: var(--cloud); border-radius: var(--radius-lg); padding: clamp(20px, 2.6vw, 28px); box-shadow: var(--shadow-xs); }
+  .nc-klub__perk svg { color: var(--sage-500); margin-bottom: 10px; }
+  .nc-klub__perk h3 { font-size: 18px; margin-bottom: 6px; }
+  .nc-klub__perk p { margin: 0; font-size: 14px; color: var(--ink-700); }
+
+  .nc-klub__steps { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: clamp(32px, 4vw, 52px); }
+  .nc-klub__step strong { display: block; font-family: var(--font-display); font-size: 30px; color: var(--sage-300); }
+  .nc-klub__step h3 { font-size: 18px; margin: 6px 0; }
+  .nc-klub__step p { margin: 0; font-size: 14px; color: var(--ink-700); }
+
+  .nc-klub__cta { background: var(--nc-hero-bg); border-radius: var(--radius-xl); padding: clamp(28px, 4vw, 52px); text-align: center; color: var(--cloud); }
+  .nc-klub__cta h2 { color: var(--cloud); }
+  .nc-klub__cta form { display: flex; gap: 8px; max-width: 420px; margin: 18px auto 0; }
+{%- endstyle -%}
+
+<section class="nc-section" style="padding-top: 10px;">
+  <div class="nc-container">
+    <div class="nc-klub__perks">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'perk' -%}
+          <div class="nc-klub__perk" {{ block.shopify_attributes }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'star' -%}<path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/>
+                {%- when 'percent' -%}<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
+                {%- when 'gift' -%}<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3.5 8 4.6 8.4 8 12 8ZM12 8s1.5-4.5 4-3.4S15.6 8 12 8Z"/>
+                {%- else -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+              {%- endcase -%}
+            </svg>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <h2>{{ section.settings.steps_heading }}</h2>
+    <div class="nc-klub__steps">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'step' -%}
+          <div class="nc-klub__step" {{ block.shopify_attributes }}>
+            <strong>{{ block.settings.num }}</strong>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="nc-klub__cta nc-on-dark">
+      <p class="nc-eyebrow">{{ section.settings.cta_eyebrow }}</p>
+      <h2>{{ section.settings.cta_heading }}</h2>
+      <p>{{ section.settings.cta_text }}</p>
+      {%- form 'customer' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,kundeklub">
+        <div style="display: flex; gap: 8px; max-width: 420px; margin: 18px auto 0;">
+          <label class="nc-visually-hidden" for="nc-klub-email">E-mail</label>
+          <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="din@email.dk" autocomplete="email" required>
+          <button class="nc-btn nc-btn--light" type="submit">Meld dig ind</button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p role="status" style="margin-top: 10px;">Velkommen i klubben. Tjek din indbakke.</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kundeklub",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "steps_heading", "label": "Trin, overskrift", "default": "Sådan fungerer det" },
+    { "type": "text", "id": "cta_eyebrow", "label": "CTA, overlinje", "default": "Kundeklub" },
+    { "type": "text", "id": "cta_heading", "label": "CTA, overskrift", "default": "Meld dig ind i dag" },
+    { "type": "textarea", "id": "cta_text", "label": "CTA, tekst", "default": "Gratis medlemskab. Point på hvert køb og 10% på din første ordre." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Fordel",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Ikon", "options": [ { "value": "star", "label": "Stjerne" }, { "value": "percent", "label": "Procent" }, { "value": "gift", "label": "Gave" }, { "value": "clock", "label": "Ur" } ], "default": "star" },
+        { "type": "text", "id": "title", "label": "Titel", "default": "Optjen point" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tjen point på hvert køb og indløs dem til rabat på din næste ordre." }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Trin",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Nummer", "default": "01" },
+        { "type": "text", "id": "title", "label": "Titel", "default": "Meld dig ind" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail. Det tager under et minut." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kundeklub",
+      "blocks": [
+        { "type": "perk", "settings": { "icon": "star", "title": "Optjen point", "text": "Tjen point på hvert køb og indløs dem til rabat på din næste ordre." } },
+        { "type": "perk", "settings": { "icon": "percent", "title": "10% velkomstrabat", "text": "Få 10% på din første ordre, når du melder dig ind i klubben." } },
+        { "type": "perk", "settings": { "icon": "gift", "title": "Fødselsdagsgave", "text": "En lille overraskelse i din indbakke i din fødselsdagsmåned." } },
+        { "type": "perk", "settings": { "icon": "clock", "title": "Tidlig adgang", "text": "Vær først med nyheder, kampagner og eksklusive medlemspriser." } },
+        { "type": "step", "settings": { "num": "01", "title": "Meld dig ind", "text": "Tilmeld dig gratis med din e-mail. Det tager under et minut." } },
+        { "type": "step", "settings": { "num": "02", "title": "Handl som vanligt", "text": "Optjen point automatisk på hvert køb i webshoppen." } },
+        { "type": "step", "settings": { "num": "03", "title": "Indløs & nyd", "text": "Brug dine point og fordele på din næste hudplejerutine." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

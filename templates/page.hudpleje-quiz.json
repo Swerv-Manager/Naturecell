@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Hudpleje-quiz", "heading": "Find din rutine", "center": true } },
+    "quiz": { "type": "nc-quiz", "settings": { "collection": "cbd-hudpleje" } }
+  },
+  "order": ["hero", "quiz"]
+}

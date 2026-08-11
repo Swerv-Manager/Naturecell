@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Erhverv", "heading": "B2B login", "intro": "Sælger du NatureCell i butik eller klinik? Log ind og se dine engrospriser, eller anmod om en B2B-konto." } },
+    "cards": {
+      "type": "nc-rich-page",
+      "settings": { "cta_text": "Kontakt os om B2B", "cta_url": "/pages/kontakt" },
+      "blocks": {
+        "c1": { "type": "card", "settings": { "heading": "Egne engrospriser", "text": "Dine egne engrospriser og rabatter, styret af os." } },
+        "c2": { "type": "card", "settings": { "heading": "Nem genbestilling", "text": "Hurtig genbestilling og samlet fakturering." } },
+        "c3": { "type": "card", "settings": { "heading": "Materiale & træning", "text": "Markedsføringsmateriale og produkttræning til dit team." } },
+        "c4": { "type": "card", "settings": { "heading": "Dokumenteret kvalitet", "text": "Dansk produktion, GMP- & ISO-certificeret." } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"]
+    }
+  },
+  "order": ["hero", "cards"]
+}

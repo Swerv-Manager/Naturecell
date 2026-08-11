@@ -1,31 +1,107 @@
 {% comment %}
-  Blogoversigt, skelet. Bruges bl.a. til kundecases og journal.
+  Blogoversigt fra designet. Bruges til baade kundecases og artikler:
+  kundecases faar omraadechips og case-kort, artikler faar featured
+  artikel oeverst og tag-chips.
 {% endcomment %}
+
+{%- liquid
+  assign is_cases = false
+  if blog.handle == 'kundecases'
+    assign is_cases = true
+  endif
+-%}
+
+{%- style -%}
+  .nc-blogidx__head { max-width: 64ch; margin-bottom: 22px; }
+  .nc-blogidx__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(24px, 3vw, 36px); }
+
+  .nc-featart { display: grid; gap: clamp(18px, 3vw, 40px); grid-template-columns: 1fr; border-radius: var(--radius-xl); overflow: hidden; background: var(--cloud); box-shadow: var(--shadow-sm); margin-bottom: clamp(28px, 4vw, 44px); text-decoration: none; }
+  @media (min-width: 900px) {
+    .nc-featart { grid-template-columns: 1.15fr 1fr; }
+  }
+  .nc-featart__media { aspect-ratio: 16 / 10; background: var(--sage-100); }
+  .nc-featart__media img { width: 100%; height: 100%; object-fit: cover; }
+  .nc-featart__body { display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: clamp(20px, 3vw, 40px); }
+  .nc-featart__body h2 { margin: 0; font-size: clamp(24px, 2.6vw, 34px); }
+  .nc-featart__body p { margin: 0; color: var(--ink-700); }
+{%- endstyle -%}
 
 <div class="nc-section">
   <div class="nc-container">
-    <header style="margin-bottom: clamp(24px, 3vw, 44px);">
+    <header class="nc-blogidx__head">
+      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
       <h1>{{ blog.title }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
     </header>
 
-    {%- paginate blog.articles by 12 -%}
-      <ul class="nc-grid" style="list-style: none; margin: 0; padding: 0;">
-        {%- for article in blog.articles -%}
-          <li>
-            <a class="nc-blog__card" href="{{ article.url }}">
-              {%- if article.image -%}
-                {%- assign article_alt = article.image.alt | default: article.title -%}
-                <div class="nc-blog__media">
-                  {{
-                    article.image
-                    | image_url: width: 720
-                    | image_tag: alt: article_alt, loading: 'lazy'
-                  }}
-                </div>
+    {%- if blog.all_tags.size > 0 and section.settings.show_tags -%}
+      <div class="nc-blogidx__chips" aria-label="Filtrér efter emne">
+        <a class="nc-chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">Alle</a>
+        {%- for tag in blog.all_tags limit: 12 -%}
+          {%- assign lt = tag | downcase -%}
+          {%- unless lt == 'video' -%}
+            <a class="nc-chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">
+              {{- tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize -}}
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- paginate blog.articles by 13 -%}
+      {%- unless is_cases or current_tags or current_page > 1 -%}
+        {%- assign feat = blog.articles.first -%}
+        {%- if feat -%}
+          <a class="nc-featart" href="{{ feat.url }}">
+            <span class="nc-featart__media">
+              {%- if feat.image -%}
+                {{ feat.image | image_url: width: 1400 | image_tag: alt: feat.title, loading: 'eager', sizes: '(min-width: 900px) 660px, 94vw' }}
               {%- endif -%}
-              <h2 class="nc-blog__title">{{ article.title }}</h2>
-              {%- if article.excerpt != blank -%}
-                <p class="nc-blog__excerpt">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+            </span>
+            <span class="nc-featart__body">
+              <span class="nc-eyebrow" style="margin: 0;">Seneste</span>
+              <h2>{{ feat.title }}</h2>
+              <p>{{ feat.excerpt_or_content | strip_html | truncate: 180 }}</p>
+              <span class="nc-btn nc-btn--outline" style="align-self: flex-start;">Læs artiklen →</span>
+            </span>
+          </a>
+        {%- endif -%}
+      {%- endunless -%}
+
+      <ul class="nc-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+        {%- for article in blog.articles -%}
+          {%- if is_cases == false and current_tags == blank and current_page == 1 and forloop.first -%}
+            {%- continue -%}
+          {%- endif -%}
+          <li>
+            <a class="nc-case-card" href="{{ article.url }}">
+              <span class="nc-case-card__media" {% unless is_cases %}style="aspect-ratio: 16 / 11;"{% endunless %}>
+                {%- if article.image -%}
+                  {{ article.image | image_url: width: 640 | image_tag: alt: article.title, loading: 'lazy' }}
+                {%- endif -%}
+                {%- assign area_tag = '' -%}
+                {%- for tag in article.tags -%}
+                  {%- assign lt = tag | downcase -%}
+                  {%- if lt == 'ansigt' or lt == 'haender' or lt == 'hænder' or lt == 'foedder' or lt == 'fødder' or lt == 'krop' or lt == 'haar' or lt == 'hår' -%}
+                    {%- assign area_tag = tag -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if area_tag != blank -%}
+                  <span class="nc-tag nc-tag--light nc-case-card__area">{{ area_tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize }}</span>
+                {%- endif -%}
+                {%- if is_cases and article.content contains 'youtube' -%}
+                  <span class="nc-case-card__play" aria-hidden="true">
+                    <span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                  </span>
+                {%- endif -%}
+              </span>
+              <h3 class="nc-case-card__title">{{ article.title }}</h3>
+              {%- if is_cases -%}
+                <span class="nc-case-card__who">{{ article.author }}</span>
+              {%- else -%}
+                <span class="nc-case-card__who">{{ article.published_at | date: '%d.%m.%Y' }}</span>
               {%- endif -%}
             </a>
           </li>
@@ -45,6 +121,10 @@
 {
   "name": "Blog",
   "tag": "section",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Ægte oplevelser" },
+    { "type": "textarea", "id": "intro", "label": "Introtekst", "default": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger." },
+    { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips", "default": true }
+  ]
 }
 {% endschema %}

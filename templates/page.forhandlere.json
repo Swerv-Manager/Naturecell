@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Erhverv", "heading": "Her finder du NatureCell", "intro": "Ud over webshoppen finder du NatureCell hos udvalgte forhandlere landet over." } },
+    "cards": {
+      "type": "nc-rich-page",
+      "settings": { "cta_text": "Bliv forhandler", "cta_url": "/pages/kontakt" },
+      "blocks": {
+        "c1": { "type": "card", "settings": { "heading": "NatureCell · Lille Nyhavn", "text": "Vores egen butik i Skanderborg. Kom forbi og få personlig vejledning." } },
+        "c2": { "type": "card", "settings": { "heading": "Matas", "text": "Udvalgte NatureCell-produkter i Matas-butikker og på matas.dk." } },
+        "c3": { "type": "card", "settings": { "heading": "Helsekost & specialbutikker", "text": "Førende helsekostbutikker landet over fører dele af serien." } },
+        "c4": { "type": "card", "settings": { "heading": "Klinikker & kosmetologer", "text": "Hudplejeklinikker og kosmetologer bruger og forhandler NatureCell." } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"]
+    }
+  },
+  "order": ["hero", "cards"]
+}

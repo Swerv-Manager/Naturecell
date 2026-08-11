@@ -1,0 +1,23 @@
+{% comment %} Favoritside: klient-renderet fra localStorage ('nc_favs'). {% endcomment %}
+
+<section class="nc-section" style="padding-top: 10px;" data-nc-fav-page>
+  <div class="nc-container">
+    <div data-nc-fav-empty hidden style="text-align: center; padding: 40px 0;">
+      <h2>Ingen favoritter endnu</h2>
+      <p>Tryk på hjertet på et produkt, så gemmer vi det her til dig.</p>
+      <a class="nc-btn nc-btn--primary" href="{{ section.settings.shop_url | default: '/collections/cbd-hudpleje' }}">Shop nu</a>
+    </div>
+    <ul class="nc-grid" data-nc-fav-grid></ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Favoritter",
+  "tag": "section",
+  "settings": [
+    { "type": "url", "id": "shop_url", "label": "Shop-link" }
+  ],
+  "presets": [ { "name": "Favoritter" } ]
+}
+{% endschema %}
