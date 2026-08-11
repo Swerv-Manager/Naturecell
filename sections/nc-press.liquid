@@ -1,0 +1,39 @@
+{% comment %} "Omtalt i"-marquee fra designet: pressenavne i Philosopher, loop. {% endcomment %}
+
+{%- style -%}
+  .nc-press { padding: clamp(28px, 4vw, 44px) 0; }
+  .nc-press .nc-eyebrow { text-align: center; color: var(--ink-500); }
+  .nc-press__name { font-family: var(--font-display); font-size: clamp(22px, 2.6vw, 32px); color: var(--ink-300); white-space: nowrap; padding: 0 clamp(14px, 2.6vw, 30px); }
+{%- endstyle -%}
+
+<section class="nc-press" aria-label="Omtalt i medierne">
+  <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+  <div class="nc-marqwrap">
+    <div class="nc-rail" style="animation-duration: {{ section.settings.speed | default: 60 }}s;">
+      {%- assign names = section.settings.names | split: ',' -%}
+      {%- for i in (1..2) -%}
+        {%- for name in names -%}
+          <span class="nc-press__name">{{ name | strip }}</span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Omtalt i",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Omtalt i" },
+    {
+      "type": "textarea",
+      "id": "names",
+      "label": "Navne (kommasepareret)",
+      "default": "Berlingske, Politiken, Femina, Euroman, Costume, Børsen, Løvens Hule, ALT for damerne, Woman, Bo Bedre"
+    },
+    { "type": "range", "id": "speed", "label": "Hastighed", "min": 20, "max": 120, "step": 5, "unit": "s", "default": 60 }
+  ],
+  "presets": [ { "name": "Omtalt i" } ]
+}
+{% endschema %}

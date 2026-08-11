@@ -1,0 +1,57 @@
+{% comment %} Trust-bar under hero, fra designet. {% endcomment %}
+
+{%- style -%}
+  .nc-trust { background: var(--nc-trust-bg); border-bottom: 1px solid rgba(62, 93, 88, 0.06); }
+  .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 10px 28px; padding: 15px 0; }
+  .nc-trust__item { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--ink-700); }
+  .nc-trust__item svg { color: var(--sage-600); flex: none; }
+  @media (max-width: 749px) {
+    .nc-trust__row { justify-content: flex-start; }
+  }
+{%- endstyle -%}
+
+<div class="nc-trust">
+  <div class="nc-container">
+    <div class="nc-trust__row">
+      {%- for block in section.blocks -%}
+        <span class="nc-trust__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon == 'shield' -%}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/></svg>
+          {%- else -%}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          {%- endif -%}
+          {{ block.settings.label }}
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust-bar",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Punkt",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tekst", "default": "Godkendt i Danmark · 2019" },
+        { "type": "select", "id": "icon", "label": "Ikon", "options": [ { "value": "check", "label": "Flueben" }, { "value": "shield", "label": "Skjold" } ], "default": "check" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust-bar",
+      "blocks": [
+        { "type": "item", "settings": { "label": "Godkendt i Danmark · 2019", "icon": "check" } },
+        { "type": "item", "settings": { "label": "Vegansk & plantebaseret", "icon": "shield" } },
+        { "type": "item", "settings": { "label": "e-mærket webshop", "icon": "shield" } },
+        { "type": "item", "settings": { "label": "GMP- & ISO-certificeret", "icon": "check" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

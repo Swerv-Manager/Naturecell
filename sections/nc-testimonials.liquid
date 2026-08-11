@@ -1,0 +1,118 @@
+{% comment %}
+  "Det siger vores kunder" fra designet: centreret overskrift,
+  samlet rating-linje og to modsat-loebende marquee-raekker af
+  anmeldelseskort.
+{% endcomment %}
+
+{%- style -%}
+  .nc-testi { background: var(--nc-testimonials-bg); overflow: hidden; }
+  .nc-testi__agg { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 6px; font-size: 15px; color: var(--ink-700); }
+  .nc-testi__agg strong { color: var(--ink-900); }
+  .nc-testi__rows { display: flex; flex-direction: column; gap: 18px; margin-top: clamp(26px, 3vw, 40px); }
+  .nc-testi .nc-rail { animation-duration: 80s; }
+  .nc-testi__card { width: 340px; flex: none; background: var(--cloud); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow-xs); }
+  .nc-testi__card p { margin: 10px 0 12px; font-size: 15px; line-height: 1.6; color: var(--ink-700); }
+  .nc-testi__card strong { display: block; font-size: 14px; color: var(--ink-900); }
+  .nc-testi__card small { font-size: 12.5px; color: var(--ink-500); }
+{%- endstyle -%}
+
+<section class="nc-testi nc-section">
+  <div class="nc-section-head nc-section-head--center" style="padding: 0 var(--gutter);">
+    <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2>{{ section.settings.heading }}</h2>
+    {%- if section.settings.agg_text != blank -%}
+      <div class="nc-testi__agg">
+        <span class="nc-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+          {%- endfor -%}
+        </span>
+        <span>{{ section.settings.agg_text }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="nc-testi__rows">
+    {%- assign half = section.blocks.size | divided_by: 2 -%}
+    <div class="nc-marqwrap">
+      <div class="nc-rail">
+        {%- for i in (1..2) -%}
+          {%- for block in section.blocks limit: half -%}
+            <div class="nc-testi__card" {{ block.shopify_attributes }}>
+              <span class="nc-stars" aria-hidden="true">
+                {%- for s in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                {%- endfor -%}
+              </span>
+              <p>"{{ block.settings.text }}"</p>
+              <strong>{{ block.settings.name }}</strong>
+              <small>{{ block.settings.meta }}</small>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="nc-marqwrap">
+      <div class="nc-rail nc-rail--rev">
+        {%- for i in (1..2) -%}
+          {%- for block in section.blocks offset: half -%}
+            <div class="nc-testi__card">
+              <span class="nc-stars" aria-hidden="true">
+                {%- for s in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                {%- endfor -%}
+              </span>
+              <p>"{{ block.settings.text }}"</p>
+              <strong>{{ block.settings.name }}</strong>
+              <small>{{ block.settings.meta }}</small>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Anmeldelser",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Anmeldelser" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Det siger vores kunder" },
+    { "type": "text", "id": "agg_text", "label": "Samlet rating", "default": "4,8 ud af 5 · 2.143 anmeldelser", "info": "Skal matche jeres aktuelle, dokumenterbare tal." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Anmeldelse",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Citat", "default": "Jeg er vild med olien. Den trækker hurtigt ind og min hud føles blød hele dagen." },
+        { "type": "text", "id": "name", "label": "Navn", "default": "Mette K." },
+        { "type": "text", "id": "meta", "label": "Meta", "default": "Verificeret køb · CBD Hudplejeolie" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anmeldelser",
+      "blocks": [
+        { "type": "review", "settings": { "text": "Jeg er vild med olien. Den trækker hurtigt ind og min hud føles blød hele dagen.", "name": "Mette K.", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        { "type": "review", "settings": { "text": "Hele sættet er bare gennemtænkt. Fragten var hurtig, og jeg sparede en del på pakken.", "name": "Lars P.", "meta": "Verificeret køb · Komplet pakke" } },
+        { "type": "review", "settings": { "text": "Endelig en dagcreme der ikke strammer. Let og fugtgivende. Den er fast i min rutine nu.", "name": "Camilla B.", "meta": "Verificeret køb · Dagcreme" } },
+        { "type": "review", "settings": { "text": "Bruger den efter træning hver dag. Ingen parfume, bare god pleje.", "name": "Jonas H.", "meta": "Verificeret køb · Bodylotion" } },
+        { "type": "review", "settings": { "text": "Serummet giver lige det ekstra fugt min hud manglede. Mærkbar forskel.", "name": "Rikke S.", "meta": "Verificeret køb · Serum" } },
+        { "type": "review", "settings": { "text": "Tryg handel og dansk produktion. Det betyder noget for mig.", "name": "Thomas E.", "meta": "Verificeret køb · CBD Drops" } },
+        { "type": "review", "settings": { "text": "Efter kun 3 uger med olien ser min hud meget roligere og mere ensartet ud. Fantastisk.", "name": "Bente", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        { "type": "review", "settings": { "text": "Min hud føltes rød og irriteret. Efter en måned føles den mere rolig og velplejet.", "name": "Emma", "meta": "Verificeret køb · Komplet pakke" } },
+        { "type": "review", "settings": { "text": "Jeg brugte olien før cremen. Efter et par måneder føltes huden mere jævn. Helt vildt.", "name": "Birte", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        { "type": "review", "settings": { "text": "Jeg bruger rens og olie hver aften. Min hud føles nu mere i balance.", "name": "Julie", "meta": "Verificeret køb · CBD Rensegel" } },
+        { "type": "review", "settings": { "text": "Allerede fra første påføring føltes min hud mere rolig og i bedre balance.", "name": "Sally", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        { "type": "review", "settings": { "text": "Efter en måneds brug virkede huden mere rolig og velplejet. Jeg har kun godt at sige.", "name": "Karin", "meta": "Verificeret køb · CBD Håndcreme" } },
+        { "type": "review", "settings": { "text": "NatureCells CBD hudpleje har gjort en forskel for min hud. Rigtig gode produkter.", "name": "Jan", "meta": "Verificeret køb · Komplet pakke" } },
+        { "type": "review", "settings": { "text": "Natcremen er blevet mit lille aftenritual. Huden føles mere udhvilet om morgenen.", "name": "Pernille M.", "meta": "Verificeret køb · Natcreme" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

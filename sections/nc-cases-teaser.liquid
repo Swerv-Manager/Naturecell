@@ -1,0 +1,93 @@
+{% comment %}
+  Kundecases-teaser fra designet: overskrift + intro, pile, "Se alle
+  cases"-knap og vandret rail af case-kort fra kundecases-bloggen.
+{% endcomment %}
+
+{%- style -%}
+  .nc-caseteaser__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: clamp(22px, 3vw, 32px); }
+  .nc-caseteaser__head p { max-width: 52ch; margin: 0; }
+  .nc-caseteaser__nav { display: flex; align-items: center; gap: 10px; }
+
+  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
+  .nc-case-card__media { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); }
+  .nc-case-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-soft); }
+  .nc-case-card:hover .nc-case-card__media img { transform: scale(1.03); }
+  .nc-case-card__area { position: absolute; top: 12px; left: 12px; }
+  .nc-case-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .nc-case-card__play span { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.92); color: var(--sage-700); box-shadow: var(--shadow-md); }
+  .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.25; color: var(--sage-700); }
+  .nc-case-card__who { font-size: 13.5px; color: var(--ink-500); }
+{%- endstyle -%}
+
+<section class="nc-section">
+  <div class="nc-container" data-nc-railwrap>
+    <div class="nc-caseteaser__head">
+      <div>
+        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.subtext }}</p>
+      </div>
+      <div class="nc-caseteaser__nav">
+        <button class="nc-iconbtn" data-nc-rail-prev aria-label="Rul tilbage">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="nc-iconbtn" data-nc-rail-next aria-label="Rul frem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+        </button>
+        {%- if section.settings.blog != blank -%}
+          <a class="nc-btn nc-btn--outline" href="{{ section.settings.blog.url }}">Se alle cases →</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.blog != blank -%}
+      <div class="nc-rail-scroll nc-scroll" data-nc-railscroll>
+        {%- for article in section.settings.blog.articles limit: section.settings.limit -%}
+          <a class="nc-case-card" href="{{ article.url }}">
+            <span class="nc-case-card__media">
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 640 | image_tag: alt: article.title, loading: 'lazy' }}
+              {%- endif -%}
+              {%- assign area_tag = '' -%}
+              {%- for tag in article.tags -%}
+                {%- assign lt = tag | downcase -%}
+                {%- if lt == 'ansigt' or lt == 'haender' or lt == 'hænder' or lt == 'foedder' or lt == 'fødder' or lt == 'krop' or lt == 'haar' or lt == 'hår' -%}
+                  {%- assign area_tag = tag -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if area_tag != blank -%}
+                <span class="nc-tag nc-tag--light nc-case-card__area">{{ area_tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize }}</span>
+              {%- endif -%}
+              {%- if article.tags contains 'video' or article.content contains 'youtube' -%}
+                <span class="nc-case-card__play" aria-hidden="true">
+                  <span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </span>
+                </span>
+              {%- endif -%}
+            </span>
+            <h3 class="nc-case-card__title">{{ article.title }}</h3>
+            <span class="nc-case-card__who">{{ article.author }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p>Vælg kundecases-bloggen i sektionens indstillinger.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kundecases-teaser",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Ægte oplevelser" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Kundecases" },
+    { "type": "textarea", "id": "subtext", "label": "Undertekst", "default": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger." },
+    { "type": "blog", "id": "blog", "label": "Blog", "info": "Vælg kundecases-bloggen." },
+    { "type": "range", "id": "limit", "label": "Antal", "min": 4, "max": 12, "step": 1, "default": 10 }
+  ],
+  "presets": [ { "name": "Kundecases-teaser" } ]
+}
+{% endschema %}

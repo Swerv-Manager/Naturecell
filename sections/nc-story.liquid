@@ -1,0 +1,92 @@
+{% comment %}
+  "Vores historie"-strib fra designet: tekst + noegletal + CTA til
+  venstre, grundlaeggerfoto med billedtekst til hoejre.
+{% endcomment %}
+
+{%- style -%}
+  .nc-story__grid { display: grid; gap: clamp(28px, 5vw, 64px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 900px) {
+    .nc-story__grid { grid-template-columns: 1fr 1.05fr; }
+  }
+  .nc-story__stats { display: flex; gap: clamp(20px, 3vw, 40px); flex-wrap: wrap; margin: 22px 0 26px; }
+  .nc-story__stat { border-left: 1px solid var(--border-default); padding-left: clamp(14px, 2vw, 24px); }
+  .nc-story__stat:first-child { border-left: 0; padding-left: 0; }
+  .nc-story__stat strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 2.6vw, 32px); color: var(--sage-700); }
+  .nc-story__stat span { font-size: 13px; color: var(--ink-500); }
+  .nc-story__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
+  .nc-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .nc-story__caption { position: absolute; left: 22px; bottom: 18px; color: var(--cloud); text-shadow: 0 1px 12px rgba(35, 51, 48, 0.55); }
+  .nc-story__caption strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 20px; }
+  .nc-story__caption span { font-size: 13px; }
+{%- endstyle -%}
+
+<section class="nc-section">
+  <div class="nc-container">
+    <div class="nc-story__grid">
+      <div>
+        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.body }}</p>
+        <div class="nc-story__stats">
+          {%- for block in section.blocks -%}
+            <div class="nc-story__stat" {{ block.shopify_attributes }}>
+              <strong>{{ block.settings.num }}</strong>
+              <span>{{ block.settings.label }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.cta_text != blank -%}
+          <a class="nc-btn nc-btn--primary" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+        {%- endif -%}
+      </div>
+      <div class="nc-story__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: alt: section.settings.caption_title, widths: '600, 900, 1200', loading: 'lazy' }}
+        {%- else -%}
+          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy">
+        {%- endif -%}
+        <div class="nc-story__caption">
+          <strong>{{ section.settings.caption_title }}</strong>
+          <span>{{ section.settings.caption_sub }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vores historie-strib",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Vores historie" },
+    { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "Danmarks første — og stadig drevet af én familie" },
+    { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk produktion og rigtige oplevelser frem for løfter." },
+    { "type": "text", "id": "cta_text", "label": "Knap", "default": "Læs vores historie →" },
+    { "type": "url", "id": "cta_url", "label": "Knap: link" },
+    { "type": "image_picker", "id": "image", "label": "Billede", "info": "Standard: grundlæggerfotoet fra designet." },
+    { "type": "text", "id": "caption_title", "label": "Billedtekst", "default": "Lizbeth Falk & Allan Gamborg" },
+    { "type": "text", "id": "caption_sub", "label": "Billedtekst, undertekst", "default": "Grundlæggere af NatureCell" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Nøgletal",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Tal", "default": "2019" },
+        { "type": "text", "id": "label", "label": "Etiket", "default": "Først godkendt i DK" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vores historie-strib",
+      "blocks": [
+        { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt i DK" } },
+        { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion" } },
+        { "type": "stat", "settings": { "num": "7.000+", "label": "Glade kunder" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

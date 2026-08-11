@@ -1,5 +1,35 @@
 {
   "sections": {
+    "hero": {
+      "type": "nc-hero",
+      "blocks": {
+        "slide1": { "type": "product_slide", "settings": { "cta_url": "/collections/cbd-hudpleje", "cta2_url": "/blogs/kundecases" } },
+        "slide2": { "type": "image_slide", "settings": { "cta_url": "/collections/cbd-hudpleje", "fallback_asset": "nc-hero-botanik.jpg" } },
+        "slide3": {
+          "type": "image_slide",
+          "settings": {
+            "eyebrow": "Ægte oplevelser",
+            "heading": "Vi lader vores kunder fortælle",
+            "body": "Vi lover ikke mirakler. Læs ægte kundecases, med billeder, video og produkterne de bruger.",
+            "cta_text": "Se kundecases →",
+            "cta_url": "/blogs/kundecases",
+            "fallback_asset": "nc-hero-kunder.jpg"
+          }
+        },
+        "slide4": { "type": "split_slide", "settings": { "cta_url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "fallback_asset": "nc-hero-jesper-buch.jpg" } }
+      },
+      "block_order": ["slide1", "slide2", "slide3", "slide4"]
+    },
+    "trust": {
+      "type": "nc-trust-bar",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "label": "Godkendt i Danmark · 2019", "icon": "check" } },
+        "t2": { "type": "item", "settings": { "label": "Vegansk & plantebaseret", "icon": "shield" } },
+        "t3": { "type": "item", "settings": { "label": "e-mærket webshop", "icon": "shield" } },
+        "t4": { "type": "item", "settings": { "label": "GMP- & ISO-certificeret", "icon": "check" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
     "august_banner": {
       "type": "nc-august-campaign-banner",
       "settings": {
@@ -7,16 +37,68 @@
         "cta_secondary_url": "/collections/sampakker"
       }
     },
-    "featured": {
-      "type": "nc-featured-collection",
+    "press": { "type": "nc-press" },
+    "shoptabs": {
+      "type": "nc-shop-tabs",
+      "blocks": {
+        "a1": { "type": "area", "settings": { "label": "Ansigt", "desc": "Creme, serum & rens", "url": "/collections/cbd-ansigtspleje" } },
+        "a2": { "type": "area", "settings": { "label": "Hænder", "desc": "Tørre, slidte hænder", "url": "/collections/cbd-handpleje" } },
+        "a3": { "type": "area", "settings": { "label": "Krop", "desc": "Lotion & olie", "url": "/collections/cbd-kropspleje" } },
+        "a4": { "type": "area", "settings": { "label": "Fødder", "desc": "Tørre hæle & fødder", "url": "/collections/cbd-fodpleje" } },
+        "a5": { "type": "area", "settings": { "label": "Hår", "desc": "Shampoo & pleje", "url": "/collections/cbd-haarpleje" } },
+        "a6": { "type": "area", "settings": { "label": "Herre", "desc": "ALFALAB til mænd", "url": "/collections/herre-hudpleje" } },
+        "n1": { "type": "need", "settings": { "label": "Tør hud", "desc": "Nærende fugt", "url": "/collections/cbd-hudpleje" } },
+        "n2": { "type": "need", "settings": { "label": "Fugt", "desc": "Boost & balance", "url": "/collections/cbd-hudpleje" } },
+        "n3": { "type": "need", "settings": { "label": "Moden hud", "desc": "Fasthed & glød", "url": "/collections/cbd-hudpleje" } },
+        "n4": { "type": "need", "settings": { "label": "Sensitiv hud", "desc": "Mild & rolig", "url": "/collections/cbd-hudpleje" } },
+        "n5": { "type": "need", "settings": { "label": "Uren hud", "desc": "Rens & balance", "url": "/collections/cbd-hudpleje" } },
+        "n6": { "type": "need", "settings": { "label": "Genopbygning", "desc": "Reparation", "url": "/collections/cbd-hudpleje" } }
+      },
+      "block_order": ["a1", "a2", "a3", "a4", "a5", "a6", "n1", "n2", "n3", "n4", "n5", "n6"]
+    },
+    "lifestyle": { "type": "nc-lifestyle" },
+    "bestsellers": {
+      "type": "nc-bestsellers",
       "settings": {
-        "eyebrow": "Hudpleje",
-        "heading": "Vores hudpleje",
         "collection": "cbd-hudpleje",
-        "limit": 4,
+        "limit": 8,
         "link_text": "Se alle"
       }
+    },
+    "cases": {
+      "type": "nc-cases-teaser",
+      "settings": { "blog": "kundecases", "limit": 10 }
+    },
+    "testimonials": {
+      "type": "nc-testimonials",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "text": "Jeg er vild med olien. Den trækker hurtigt ind og min hud føles blød hele dagen.", "name": "Mette K.", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        "r2": { "type": "review", "settings": { "text": "Hele sættet er bare gennemtænkt. Fragten var hurtig, og jeg sparede en del på pakken.", "name": "Lars P.", "meta": "Verificeret køb · Komplet pakke" } },
+        "r3": { "type": "review", "settings": { "text": "Endelig en dagcreme der ikke strammer. Let og fugtgivende. Den er fast i min rutine nu.", "name": "Camilla B.", "meta": "Verificeret køb · Dagcreme" } },
+        "r4": { "type": "review", "settings": { "text": "Bruger den efter træning hver dag. Ingen parfume, bare god pleje.", "name": "Jonas H.", "meta": "Verificeret køb · Bodylotion" } },
+        "r5": { "type": "review", "settings": { "text": "Serummet giver lige det ekstra fugt min hud manglede. Mærkbar forskel.", "name": "Rikke S.", "meta": "Verificeret køb · Serum" } },
+        "r6": { "type": "review", "settings": { "text": "Tryg handel og dansk produktion. Det betyder noget for mig.", "name": "Thomas E.", "meta": "Verificeret køb · CBD Drops" } },
+        "r7": { "type": "review", "settings": { "text": "Efter kun 3 uger med olien ser min hud meget roligere og mere ensartet ud. Fantastisk.", "name": "Bente", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        "r8": { "type": "review", "settings": { "text": "Min hud føltes rød og irriteret. Efter en måned føles den mere rolig og velplejet.", "name": "Emma", "meta": "Verificeret køb · Komplet pakke" } },
+        "r9": { "type": "review", "settings": { "text": "Jeg brugte olien før cremen. Efter et par måneder føltes huden mere jævn. Helt vildt.", "name": "Birte", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        "r10": { "type": "review", "settings": { "text": "Jeg bruger rens og olie hver aften. Min hud føles nu mere i balance.", "name": "Julie", "meta": "Verificeret køb · CBD Rensegel" } },
+        "r11": { "type": "review", "settings": { "text": "Allerede fra første påføring føltes min hud mere rolig og i bedre balance.", "name": "Sally", "meta": "Verificeret køb · CBD Hudplejeolie" } },
+        "r12": { "type": "review", "settings": { "text": "Efter en måneds brug virkede huden mere rolig og velplejet. Jeg har kun godt at sige.", "name": "Karin", "meta": "Verificeret køb · CBD Håndcreme" } },
+        "r13": { "type": "review", "settings": { "text": "NatureCells CBD hudpleje har gjort en forskel for min hud. Rigtig gode produkter.", "name": "Jan", "meta": "Verificeret køb · Komplet pakke" } },
+        "r14": { "type": "review", "settings": { "text": "Natcremen er blevet mit lille aftenritual. Huden føles mere udhvilet om morgenen.", "name": "Pernille M.", "meta": "Verificeret køb · Natcreme" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13", "r14"]
+    },
+    "story": {
+      "type": "nc-story",
+      "settings": { "cta_url": "/pages/om-os" },
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt i DK" } },
+        "s2": { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion" } },
+        "s3": { "type": "stat", "settings": { "num": "7.000+", "label": "Glade kunder" } }
+      },
+      "block_order": ["s1", "s2", "s3"]
     }
   },
-  "order": ["august_banner", "featured"]
+  "order": ["hero", "trust", "august_banner", "press", "shoptabs", "lifestyle", "bestsellers", "cases", "testimonials", "story"]
 }

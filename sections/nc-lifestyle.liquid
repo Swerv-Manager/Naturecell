@@ -1,0 +1,88 @@
+{% comment %}
+  "Et øjeblik for dig — hver dag" fra designet: centreret overskrift,
+  stort medie (video eller billede) til venstre og to billeder til hoejre.
+{% endcomment %}
+
+{%- style -%}
+  .nc-lifestyle { background: var(--nc-lifestyle-bg); }
+  .nc-lifestyle__grid { display: grid; gap: clamp(14px, 1.8vw, 22px); grid-template-columns: 1fr; margin-top: clamp(24px, 3vw, 40px); }
+  @media (min-width: 900px) {
+    .nc-lifestyle__grid { grid-template-columns: 1.2fr 1fr; }
+  }
+  .nc-lifestyle__main { position: relative; border-radius: var(--radius-lg); overflow: hidden; min-height: 320px; background: var(--sage-200); }
+  .nc-lifestyle__main video, .nc-lifestyle__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .nc-lifestyle__caption { position: absolute; left: 22px; bottom: 18px; z-index: 2; color: var(--cloud); text-shadow: 0 1px 12px rgba(35, 51, 48, 0.5); }
+  .nc-lifestyle__caption small { display: block; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+  .nc-lifestyle__caption strong { font-family: var(--font-display); font-weight: 400; font-size: 20px; }
+  .nc-lifestyle__side { display: grid; gap: clamp(14px, 1.8vw, 22px); grid-template-rows: 1fr 1fr; }
+  .nc-lifestyle__side > div { position: relative; border-radius: var(--radius-lg); overflow: hidden; min-height: 150px; background: var(--sage-200); }
+  .nc-lifestyle__side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+{%- endstyle -%}
+
+<section class="nc-lifestyle nc-section">
+  <div class="nc-container">
+    <div class="nc-section-head nc-section-head--center">
+      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.subtext }}</p>
+    </div>
+
+    <div class="nc-lifestyle__grid">
+      <div class="nc-lifestyle__main">
+        {%- if section.settings.video != blank -%}
+          {{ section.settings.video | video_tag: autoplay: true, muted: true, loop: true, playsinline: true, controls: false }}
+        {%- elsif section.settings.use_asset_video -%}
+          <video autoplay muted loop playsinline aria-label="{{ section.settings.main_caption_title | escape }}">
+            <source src="{{ 'nc-ritual-video.mp4' | asset_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.main_image != blank -%}
+          {{ section.settings.main_image | image_url: width: 1400 | image_tag: alt: section.settings.main_caption_title, loading: 'lazy' }}
+        {%- endif -%}
+        <div class="nc-lifestyle__caption">
+          <small>{{ section.settings.main_caption_eyebrow }}</small>
+          <strong>{{ section.settings.main_caption_title }}</strong>
+        </div>
+      </div>
+      <div class="nc-lifestyle__side">
+        <div>
+          {%- if section.settings.image_2 != blank -%}
+            {{ section.settings.image_2 | image_url: width: 1000 | image_tag: alt: '', loading: 'lazy' }}
+          {%- elsif section.settings.image_2_url != blank -%}
+            <img src="{{ section.settings.image_2_url }}" alt="" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div>
+          {%- if section.settings.image_3 != blank -%}
+            {{ section.settings.image_3 | image_url: width: 1000 | image_tag: alt: '', loading: 'lazy' }}
+          {%- elsif section.settings.image_3_url != blank -%}
+            <img src="{{ section.settings.image_3_url }}" alt="" loading="lazy">
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Livsstilsbånd",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Ægte ritualer" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Et øjeblik for dig — hver dag" },
+    { "type": "textarea", "id": "subtext", "label": "Undertekst", "default": "Ægte hudpleje handler ikke kun om resultater, men om følelsen undervejs. Mærk teksturen, duften og roen, og gør plejen til dit daglige pusterum." },
+    { "type": "header", "content": "Stort medie" },
+    { "type": "video", "id": "video", "label": "Video" },
+    { "type": "checkbox", "id": "use_asset_video", "label": "Brug designets ritual-video", "default": true, "info": "Temaets indbyggede klip, indtil en video vælges ovenfor." },
+    { "type": "image_picker", "id": "main_image", "label": "Billede (hvis ingen video)" },
+    { "type": "text", "id": "main_caption_eyebrow", "label": "Billedtekst, overlinje", "default": "Se ritualet" },
+    { "type": "text", "id": "main_caption_title", "label": "Billedtekst", "default": "Naturlig CBD-hudpleje" },
+    { "type": "header", "content": "Sidebilleder" },
+    { "type": "image_picker", "id": "image_2", "label": "Billede 2" },
+    { "type": "text", "id": "image_2_url", "label": "Billede 2, URL-fallback", "default": "https://naturecell.dk/cdn/shop/files/NatureCell_CBD_skincare_billed_pige_ser_paa_produkterne_kopier.webp?v=1757145901" },
+    { "type": "image_picker", "id": "image_3", "label": "Billede 3" },
+    { "type": "text", "id": "image_3_url", "label": "Billede 3, URL-fallback", "default": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053" }
+  ],
+  "presets": [ { "name": "Livsstilsbånd" } ]
+}
+{% endschema %}
