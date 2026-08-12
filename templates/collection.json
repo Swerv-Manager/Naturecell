@@ -1,10 +1,49 @@
 {
   "sections": {
     "main": { "type": "main-collection" },
-    "seo": { "type": "nc-seo-text" },
+    "seo": {
+      "type": "nc-seo-text",
+      "settings": {
+        "heading": "NatureCell – dansk CBD-hudpleje til hele familien",
+        "body": "<p>NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Hele sortimentet er bygget på CBD (cannabidiol) i samspil med naturlige planteolier, antioxidanter og fugtgivende ingredienser – veganske, uden syntetisk parfume og udviklet i Danmark.</p><p>Serien er tænkt som en one-size-fits-all løsning, der passer til alle hudtyper: tør, fedtet, kombineret, moden, sensitiv og uren hud. Vi lover ikke mirakler – vi lader vores kunder fortælle om deres egne oplevelser, og du kan læse deres historier under kundecases.</p><p>Uanset om du søger CBD creme, CBD hudplejeolie, dagcreme, natcreme, håndcreme eller fodcreme, finder du det i sortimentet. Alle produkter er kosmetiske, plantebaserede og produceret i Danmark – og du kan filtrere efter både område og behov for hurtigt at finde det rigtige.</p>",
+        "links": ""
+      },
+      "blocks": {
+        "t1": {
+          "type": "topic",
+          "settings": {
+            "heading": "Sådan vælger du den rigtige hudpleje",
+            "text": "Start med hudens behov frem for produktnavnet. Er huden tør og stram, skal du have fugt og fedt – en fugtighedscreme morgen og aften plus en olie som sidste trin. Er huden fedtet eller uren, holder du en let creme og en mild rensegel. Er huden moden, prioriterer du næring, antioxidanter og en rigere natcreme. Du kan filtrere sortimentet efter både område og behov på én gang."
+          }
+        },
+        "t2": {
+          "type": "topic",
+          "settings": {
+            "heading": "Ingredienserne der gør forskellen",
+            "text": "CBD (cannabidiol) er seriens omdrejningspunkt og kombineres med hyaluronsyre og urea, der binder fugt, sheasmør og mandelolie, der blødgør og beskytter, samt niacinamide og E-vitamin, der understøtter en ensartet, velplejet hud. Alt er plantebaseret, vegansk og uden syntetisk parfume – du kan læse om hver enkelt ingrediens på vores ingrediensside."
+          }
+        },
+        "t3": {
+          "type": "topic",
+          "settings": {
+            "heading": "Dansk hudpleje du kan regne med",
+            "text": "NatureCell® er et dansk familieejet brand og den første CBD-hudplejeserie godkendt til salg i Danmark. Produktionen sker på GMP- og ISO-certificerede faciliteter, webshoppen er e-mærket, og vi lover ikke mirakler – vi lader vores kunder fortælle deres egne historier under kundecases."
+          }
+        }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    },
     "faq": {
       "type": "nc-faq",
-      "settings": { "heading": "Ofte stillede spørgsmål", "eyebrow": "Spørgsmål & svar" },
+      "settings": {
+        "heading": "Ofte stillede spørgsmål",
+        "eyebrow": "",
+        "open_first": false,
+        "compact": true,
+        "links_label": "Populære søgninger",
+        "links": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nNatcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nSerum med hyaluronsyre | /collections/cbd-ansigtspleje\nHudpleje til tør hud | /collections/cbd-hudpleje/tor-hud\nHudpleje til moden hud | /collections/cbd-hudpleje/moden-hud\nHudpleje til uren hud | /collections/cbd-hudpleje/uren-hud\nMild hudpleje til sensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje",
+        "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
+      },
       "blocks": {
         "q1": { "type": "qa", "settings": { "q": "Hvad er CBD-hudpleje?", "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" } },
         "q2": { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>" } },

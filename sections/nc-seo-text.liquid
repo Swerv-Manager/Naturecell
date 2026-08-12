@@ -6,37 +6,44 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-seotext { background: var(--paper-2); border-top: 1px solid var(--border-soft); }
-  .nc-seotext__lead { max-width: 72ch; }
-  .nc-seotext__blocks { display: grid; gap: clamp(18px, 2.6vw, 30px); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: clamp(22px, 3vw, 34px); }
-  .nc-seotext__blocks h3 { font-size: 19px; margin-bottom: 6px; }
-  .nc-seotext__blocks p { font-size: 14.5px; color: var(--ink-700); margin: 0; }
+  .nc-seotext { background: var(--paper); border-top: 1px solid var(--border-soft); }
+  .nc-seotext__cols { display: grid; gap: clamp(28px, 4.5vw, 64px); align-items: start; }
+  @media (min-width: 900px) { .nc-seotext__cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .nc-seotext__lead { max-width: 62ch; }
+  .nc-seotext__lead p { color: var(--ink-700); }
+  .nc-seotext__blocks { display: grid; gap: clamp(16px, 2vw, 22px); grid-template-columns: 1fr; }
+  .nc-seotext__card { background: var(--cloud); border-radius: var(--radius-lg, 16px); padding: clamp(20px, 2.4vw, 28px) clamp(22px, 2.6vw, 30px); box-shadow: var(--shadow-sm); }
+  .nc-seotext__card h3 { font-size: 19px; margin: 0 0 8px; color: var(--sage-700); }
+  .nc-seotext__card p { font-size: 14.5px; line-height: 1.7; color: var(--ink-700); margin: 0; }
   .nc-seotext__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3vw, 34px); }
 {%- endstyle -%}
 
 <section class="nc-seotext nc-section">
   <div class="nc-container">
-    <div class="nc-seotext__lead">
-      <h2>{{ section.settings.heading }}</h2>
-      {{ section.settings.body }}
-    </div>
-
     {%- assign has_blocks = false -%}
     {%- for block in section.blocks -%}
       {%- if block.type == 'topic' -%}{%- assign has_blocks = true -%}{%- endif -%}
     {%- endfor -%}
-    {%- if has_blocks -%}
-      <div class="nc-seotext__blocks">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'topic' -%}
-            <div {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.heading }}</h3>
-              <p>{{ block.settings.text }}</p>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+
+    <div class="nc-seotext__cols">
+      <div class="nc-seotext__lead">
+        <h2>{{ section.settings.heading }}</h2>
+        {{ section.settings.body }}
       </div>
-    {%- endif -%}
+
+      {%- if has_blocks -%}
+        <div class="nc-seotext__blocks">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'topic' -%}
+              <div class="nc-seotext__card" {{ block.shopify_attributes }}>
+                <h3>{{ block.settings.heading }}</h3>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
 
     {%- if section.settings.links != blank -%}
       <div class="nc-seotext__links">
@@ -58,7 +65,7 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "NatureCell – dansk CBD-hudpleje til hele familien" },
-    { "type": "richtext", "id": "body", "label": "Brødtekst", "default": "<p>NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Hele sortimentet er bygget på CBD (cannabidiol) i samspil med naturlige planteolier, antioxidanter og fugtgivende ingredienser. Veganske, uden syntetisk parfume og udviklet i Danmark.</p><p>Serien er tænkt som en one-size-fits-all løsning, der passer til alle hudtyper: tør, fedtet, kombineret, moden, sensitiv og uren hud. Vi lover ikke mirakler. Vi lader vores kunder fortælle om deres egne oplevelser, og du kan læse deres historier under kundecases.</p>" },
+    { "type": "richtext", "id": "body", "label": "Brødtekst", "default": "<p>NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Hele sortimentet er bygget på CBD (cannabidiol) i samspil med naturlige planteolier, antioxidanter og fugtgivende ingredienser – veganske, uden syntetisk parfume og udviklet i Danmark.</p><p>Serien er tænkt som en one-size-fits-all løsning, der passer til alle hudtyper: tør, fedtet, kombineret, moden, sensitiv og uren hud. Vi lover ikke mirakler – vi lader vores kunder fortælle om deres egne oplevelser, og du kan læse deres historier under kundecases.</p><p>Uanset om du søger CBD creme, CBD hudplejeolie, dagcreme, natcreme, håndcreme eller fodcreme, finder du det i sortimentet. Alle produkter er kosmetiske, plantebaserede og produceret i Danmark – og du kan filtrere efter både område og behov for hurtigt at finde det rigtige.</p>" },
     { "type": "textarea", "id": "links", "label": "Interne links (én pr. linje: Tekst | /url)", "default": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje" }
   ],
   "blocks": [

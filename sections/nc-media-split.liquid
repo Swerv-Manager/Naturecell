@@ -19,7 +19,8 @@
 {%- style -%}
   #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(44px, 6vw, 84px) 0; }
   #shopify-section-{{ section.id }} .nc-msplit--paper { background: var(--paper); }
-  #shopify-section-{{ section.id }} .nc-msplit--sage50 { background: var(--sage-50); }
+  {%- comment -%} Designets --sage-50 er #F2F6F4 (naer-hvid); temaets globale --sage-50 er moerkere, saa baandet bruger designvaerdien direkte. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit--sage50 { background: #F2F6F4; }
   #shopify-section-{{ section.id }} .nc-msplit--cream { background: var(--paper-2); }
   #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: clamp(24px, 4.4vw, 72px); grid-template-columns: 1fr; align-items: center; }
   @media (min-width: 900px) {
@@ -29,6 +30,7 @@
   #shopify-section-{{ section.id }} .nc-msplit__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); aspect-ratio: {{ section.settings.ratio | default: '1 / 1' }}; box-shadow: var(--shadow-sm); }
   #shopify-section-{{ section.id }} .nc-msplit__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
   #shopify-section-{{ section.id }} .nc-msplit__body { max-width: 60ch; }
+  #shopify-section-{{ section.id }} .nc-msplit__grid:not(.nc-msplit__grid--media) .nc-msplit__body { max-width: 62ch; margin: 0 auto; }
   #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin: 0 0 16px; font-size: clamp(26px, 3vw, 38px); line-height: 1.15; }
   #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 14px; line-height: 1.75; color: var(--ink-700); }
   #shopify-section-{{ section.id }} .nc-msplit__text p:last-child { margin-bottom: 0; }

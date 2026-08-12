@@ -41,7 +41,12 @@
 
   assign title_parts = product.title | split: ' | '
   assign card_title = title_parts[0]
-  assign card_sub = title_parts[1]
+  assign card_sub = product.metafields.ncell.size.value | default: title_parts[1]
+
+  assign show_badge = true
+  if settings.show_save_badge == false
+    assign show_badge = false
+  endif
 
   assign rating = product.metafields.reviews.rating.value
   assign rating_count = product.metafields.reviews.rating_count.value
@@ -50,7 +55,7 @@
 <div class="nc-product-card">
   <div class="nc-product-card__media">
     <div class="nc-product-card__tags">
-      {%- if on_sale and settings.show_save_badge -%}
+      {%- if on_sale and show_badge -%}
         <span class="nc-tag nc-tag--sale">Spar {{ save_pct }}%</span>
       {%- endif -%}
       {%- if is_bundle -%}

@@ -1,17 +1,30 @@
 {% comment %}
   FAQ-accordion fra designet. Bruges paa produktsider, kollektioner og
-  FAQ-siden. Grupper laves med overskrift-blokke.
+  FAQ-siden. Grupper laves med overskrift-blokke. Kompakt tilstand
+  (kollektionssider): lille venstrestillet overskrift + 2-kolonne grid,
+  alle lukkede, plus valgfri "Populaere soegninger"-chips og disclaimer.
 {% endcomment %}
 
 {%- style -%}
   .nc-faqsec__wrap { max-width: 780px; margin: 0 auto; }
   .nc-faqsec__group { margin: 26px 0 10px; }
+  .nc-faqsec--compact .nc-faqsec__wrap { max-width: none; margin: 0; }
+  .nc-faqsec--compact .nc-section-head { max-width: none; text-align: left; }
+  .nc-faqsec--compact .nc-section-head h2 { font-size: 18px; }
+  .nc-faqsec--compact .nc-acc { border-top: 0; }
+  @media (min-width: 860px) {
+    .nc-faqsec--compact .nc-acc { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(36px, 5vw, 72px); align-items: start; }
+  }
+  .nc-faqsec__links-block { margin-top: clamp(30px, 4vw, 48px); }
+  .nc-faqsec__links-label { margin-bottom: 12px; }
+  .nc-faqsec__links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .nc-faqsec__disclaimer { max-width: 78ch; margin: clamp(22px, 3vw, 32px) 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
 {%- endstyle -%}
 
-<section class="nc-section" id="faq">
+<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %}" id="faq">
   <div class="nc-container">
     <div class="nc-faqsec__wrap">
-      <div class="nc-section-head nc-section-head--center" style="margin-bottom: 8px;">
+      <div class="nc-section-head {% unless section.settings.compact %}nc-section-head--center{% endunless %}" style="margin-bottom: 8px;">
         {%- if section.settings.eyebrow != blank -%}
           <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
         {%- endif -%}
@@ -36,6 +49,27 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+
+      {%- if section.settings.links != blank -%}
+        <div class="nc-faqsec__links-block">
+          {%- if section.settings.links_label != blank -%}
+            <p class="nc-eyebrow nc-faqsec__links-label">{{ section.settings.links_label }}</p>
+          {%- endif -%}
+          <div class="nc-faqsec__links">
+            {%- assign rows = section.settings.links | newline_to_br | split: '<br />' -%}
+            {%- for row in rows -%}
+              {%- assign parts = row | strip | split: '|' -%}
+              {%- if parts[0] != blank and parts[1] != blank -%}
+                <a class="nc-chip" href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.disclaimer != blank -%}
+        <p class="nc-faqsec__disclaimer">{{ section.settings.disclaimer }}</p>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -48,7 +82,11 @@
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Spørgsmål & svar" },
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Ofte stillede spørgsmål" },
     { "type": "textarea", "id": "subtext", "label": "Undertekst" },
-    { "type": "checkbox", "id": "open_first", "label": "Åbn første spørgsmål", "default": true }
+    { "type": "checkbox", "id": "open_first", "label": "Åbn første spørgsmål", "default": true },
+    { "type": "checkbox", "id": "compact", "label": "Kompakt (lille overskrift, 2 kolonner)", "default": false },
+    { "type": "text", "id": "links_label", "label": "Label over chips", "default": "Populære søgninger" },
+    { "type": "textarea", "id": "links", "label": "Chips (én pr. linje: Tekst | /url)" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer-tekst" }
   ],
   "blocks": [
     {

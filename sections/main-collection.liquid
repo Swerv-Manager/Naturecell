@@ -1,19 +1,39 @@
 {% comment %}
-  Kollektionsside fra NatureCell.dc.html: titel + beskrivelse,
-  filterchips (kollektionslinks + tag-filtre), soegefelt (Shopify-soeg),
-  grid med sampakker foerst-sortering via kollektionens egen sortering,
-  paginering og SEO-bundtekst med FAQ (egne sektioner nedenfor).
+  Kollektionsside fra NatureCell.dc.html: brødkrumme, titel + beskrivelse,
+  søgefelt (Shopify-søg), tre labelede filterrækker (OMRÅDE / BEHOV /
+  SORTIMENT), grid med sampakker først-sortering via kollektionens egen
+  sortering, paginering og SEO-bundtekst med FAQ (egne sektioner nedenfor).
 {% endcomment %}
 
 {%- style -%}
-  .nc-coll__header { max-width: 68ch; margin-bottom: 18px; }
+  .nc-coll__crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-500); margin: 0 0 18px; }
+  .nc-coll__crumbs a { color: var(--ink-500); text-decoration: none; }
+  .nc-coll__crumbs a:hover { color: var(--sage-700); }
+  .nc-coll__header { max-width: 68ch; margin-bottom: 22px; }
   .nc-coll__header p { color: var(--ink-700); }
-  .nc-coll__chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
-  .nc-coll__count { font-size: 13.5px; color: var(--ink-500); margin: 0 0 16px; }
+  .nc-coll__toolbar { border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 22px 0 20px; margin: 0 0 14px; }
+  .nc-coll__search { display: flex; align-items: center; gap: 10px; width: min(520px, 100%); padding: 11px 18px; margin: 0 0 20px; background: var(--cloud); border: 1px solid var(--border-default); border-radius: var(--radius-pill); color: var(--ink-500); }
+  .nc-coll__search svg { flex: none; }
+  .nc-coll__search input { flex: 1; min-width: 0; border: 0; background: none; font-family: var(--font-body); font-size: 14px; color: var(--ink-900); outline: none; }
+  .nc-coll__search input::placeholder { color: var(--ink-500); }
+  .nc-coll__filter-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin: 0 0 12px; }
+  .nc-coll__filter-row:last-child { margin-bottom: 0; }
+  .nc-coll__filter-row--sort { border-top: 1px dashed var(--border-default); padding-top: 16px; margin-top: 16px; }
+  .nc-coll__filter-label { flex: none; min-width: 74px; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
+  .nc-coll__row-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .nc-coll__count { font-size: 13.5px; color: var(--ink-500); text-align: right; margin: 0 0 10px; }
 {%- endstyle -%}
 
 <div class="nc-section">
   <div class="nc-container">
+    {%- if section.settings.show_breadcrumb -%}
+      <nav class="nc-coll__crumbs" aria-label="Brødkrumme">
+        <a href="{{ routes.root_url }}">Forside</a>
+        <span aria-hidden="true">/</span>
+        <span>{{ collection.title | capitalize }}</span>
+      </nav>
+    {%- endif -%}
+
     <header class="nc-coll__header">
       <h1>{{ collection.title }}</h1>
       {%- if collection.description != blank -%}
@@ -21,26 +41,75 @@
       {%- endif -%}
     </header>
 
-    {%- if section.settings.show_chips -%}
-      <div class="nc-coll__chips" aria-label="Kategorier">
-        {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
-        {%- for chip in chips -%}
-          {%- assign parts = chip | strip | split: '|' -%}
-          {%- if parts[0] != blank and parts[1] != blank -%}
-            {%- assign chip_url = parts[1] | strip -%}
-            <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+    {%- if section.settings.show_search or section.settings.show_chips -%}
+      <div class="nc-coll__toolbar">
+        {%- if section.settings.show_search -%}
+          <form class="nc-coll__search" action="{{ routes.search_url }}" method="get" role="search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" name="q" placeholder="{{ section.settings.search_placeholder | escape }}" aria-label="{{ section.settings.search_placeholder | escape }}">
+            <input type="hidden" name="type" value="product">
+          </form>
+        {%- endif -%}
+
+        {%- if section.settings.show_chips -%}
+          {%- if section.settings.chips != blank -%}
+            <div class="nc-coll__filter-row" aria-label="{{ section.settings.chips_label | escape }}">
+              <span class="nc-coll__filter-label">{{ section.settings.chips_label }}</span>
+              <div class="nc-coll__row-chips">
+                {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
+                {%- for chip in chips -%}
+                  {%- assign parts = chip | strip | split: '|' -%}
+                  {%- if parts[0] != blank and parts[1] != blank -%}
+                    {%- assign chip_url = parts[1] | strip -%}
+                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
           {%- endif -%}
-        {%- endfor -%}
+
+          {%- if section.settings.need_chips != blank -%}
+            <div class="nc-coll__filter-row" aria-label="{{ section.settings.need_label | escape }}">
+              <span class="nc-coll__filter-label">{{ section.settings.need_label }}</span>
+              <div class="nc-coll__row-chips">
+                {%- assign chips = section.settings.need_chips | newline_to_br | split: '<br />' -%}
+                {%- for chip in chips -%}
+                  {%- assign parts = chip | strip | split: '|' -%}
+                  {%- if parts[0] != blank and parts[1] != blank -%}
+                    {%- assign chip_url = parts[1] | strip -%}
+                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.sort_chips != blank -%}
+            <div class="nc-coll__filter-row nc-coll__filter-row--sort" aria-label="{{ section.settings.sort_label | escape }}">
+              <span class="nc-coll__filter-label">{{ section.settings.sort_label }}</span>
+              <div class="nc-coll__row-chips">
+                {%- assign chips = section.settings.sort_chips | newline_to_br | split: '<br />' -%}
+                {%- for chip in chips -%}
+                  {%- assign parts = chip | strip | split: '|' -%}
+                  {%- if parts[0] != blank and parts[1] != blank -%}
+                    {%- assign chip_url = parts[1] | strip -%}
+                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
       </div>
     {%- endif -%}
 
     {%- if current_tags -%}
-      <p class="nc-coll__count">
+      <p class="nc-coll__count" style="text-align: left;">
         Filtreret: {{ current_tags | join: ', ' }} · <a href="{{ collection.url }}">Nulstil</a>
       </p>
     {%- endif -%}
 
-    {%- paginate collection.products by 24 -%}
+    {%- paginate collection.products by 28 -%}
       <p class="nc-coll__count">{{ collection.products_count }} produkter</p>
 
       {%- if collection.products.size > 0 -%}
@@ -67,12 +136,30 @@
   "name": "Kollektion",
   "tag": "section",
   "settings": [
-    { "type": "checkbox", "id": "show_chips", "label": "Vis kategorichips", "default": true },
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Vis brødkrumme", "default": true },
+    { "type": "checkbox", "id": "show_search", "label": "Vis søgefelt", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Placeholder i søgefeltet", "default": "Søg på produkt, ingrediens, behov ..." },
+    { "type": "checkbox", "id": "show_chips", "label": "Vis filterrækker", "default": true },
+    { "type": "text", "id": "chips_label", "label": "Label for 1. række", "default": "Område" },
     {
       "type": "textarea",
       "id": "chips",
-      "label": "Chips (én pr. linje: Tekst | /url)",
-      "default": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje\nSampakker | /collections/sampakker\nCBD Drops | /collections/cbd-olie\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+      "label": "Chips, 1. række (én pr. linje: Tekst | /url)",
+      "default": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje\nIntim | /collections/cbd-hudpleje/intim"
+    },
+    { "type": "text", "id": "need_label", "label": "Label for 2. række", "default": "Behov" },
+    {
+      "type": "textarea",
+      "id": "need_chips",
+      "label": "Chips, 2. række (én pr. linje: Tekst | /url)",
+      "default": "Tør hud | /collections/cbd-hudpleje/tor-hud\nFugt | /collections/cbd-hudpleje/fugt\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nUren hud | /collections/cbd-hudpleje/uren-hud\nGenopbygning | /collections/cbd-hudpleje/genopbygning"
+    },
+    { "type": "text", "id": "sort_label", "label": "Label for 3. række", "default": "Sortiment" },
+    {
+      "type": "textarea",
+      "id": "sort_chips",
+      "label": "Chips, 3. række (én pr. linje: Tekst | /url)",
+      "default": "Hele sortimentet | /collections/cbd-hudpleje\n♂ Herre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
     }
   ]
 }

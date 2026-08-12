@@ -14,7 +14,7 @@
       "settings": {
         "tone": "sage50",
         "media_side": "left",
-        "ratio": "4 / 3",
+        "ratio": "16 / 10",
         "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053",
         "eyebrow": "Mød familien bag",
         "heading": "Ægte mennesker. Ægte dansk hudpleje.",
@@ -31,10 +31,10 @@
         "cta_url": "/collections/cbd-hudpleje"
       },
       "blocks": {
-        "m2026": { "type": "milestone", "settings": { "year": "2026", "title": "Et komplet univers", "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053" } },
+        "m2026": { "type": "milestone", "settings": { "year": "2026", "title": "Et komplet univers", "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.", "url": "/collections/cbd-hudpleje", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053" } },
         "m2021": { "type": "milestone", "settings": { "year": "2021", "title": "Løvens Hule", "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
-        "m2019": { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972" } },
-        "m2018": { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "image_url": "nc-founders.webp" } }
+        "m2019": { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "url": "/blogs/artikler", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972" } },
+        "m2018": { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "url": "/blogs/artikler", "image_url": "nc-founders.webp" } }
       },
       "block_order": ["m2026", "m2021", "m2019", "m2018"]
     },

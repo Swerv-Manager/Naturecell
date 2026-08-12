@@ -9,7 +9,7 @@
           "type": "menu",
           "settings": {
             "heading": "Shop",
-            "links_text": "Alle produkter | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+            "links_text": "Alle produkter | /collections/cbd-hudpleje\nCBD Hudpleje | /collections/cbd-hudpleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
           }
         },
         "om": {

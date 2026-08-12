@@ -21,6 +21,7 @@
   assign case_products = article.metafields.ncell.products.value
 
   assign area_label = ''
+  assign area_tag = ''
   for tag in article.tags
     assign lt = tag | downcase
     if area_label == blank
@@ -33,6 +34,9 @@
       elsif lt == 'krop'
         assign area_label = 'Krop'
       endif
+      if area_label != blank
+        assign area_tag = tag
+      endif
     endif
   endfor
 
@@ -40,16 +44,37 @@
   if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
     assign has_video = true
   endif
+
+  comment
+    Kundecase: video-embed skal staa lige efter intro-afsnittet (som i
+    designet), ikke hvor den ligger i CMS-indholdet. Loeft foerste iframe
+    ud og saet den ind efter foerste <p>.
+  endcomment
+  assign body_html = article.content
+  if is_case and body_html contains '<iframe'
+    assign embed_split = body_html | split: '<iframe'
+    assign embed_rest = embed_split[1] | split: '</iframe>'
+    assign embed_html = '<div class="nc-art__embed"><iframe' | append: embed_rest[0] | append: '</iframe></div>'
+    assign intro_split = embed_split[0] | split: '</p>'
+    assign intro_html = intro_split[0] | append: '</p>'
+    assign after_intro = embed_split[0] | remove_first: intro_html
+    assign body_html = intro_html | append: embed_html | append: after_intro
+    if embed_rest.size > 1
+      assign body_html = body_html | append: embed_rest[1]
+    endif
+  endif
 -%}
 
 {%- style -%}
-  .nc-casehero { background: var(--sage-500); color: rgba(255, 255, 255, 0.88); padding: clamp(20px, 3vw, 32px) 0 clamp(36px, 5vw, 64px); }
+  .nc-casehero { position: relative; background: var(--sage-500); color: rgba(255, 255, 255, 0.88); padding: clamp(20px, 3vw, 32px) 0 clamp(36px, 5vw, 64px); }
+  .nc-casehero__fab { position: absolute; right: clamp(16px, 2vw, 30px); bottom: clamp(22px, 3.2vw, 46px); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--sage-700); color: var(--cloud); box-shadow: var(--shadow-md); cursor: pointer; }
+  .nc-casehero__fab svg { display: block; }
   .nc-casehero .nc-backlink { color: rgba(255, 255, 255, 0.85); }
   .nc-casehero__grid { display: grid; gap: clamp(24px, 4vw, 56px); grid-template-columns: 1fr; align-items: center; margin-top: clamp(18px, 3vw, 40px); }
   @media (min-width: 900px) { .nc-casehero__grid { grid-template-columns: 1fr 1fr; } }
   .nc-casehero__pill { display: inline-flex; padding: 6px 13px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.16); color: var(--cloud); font-size: 10.5px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
-  .nc-casehero__body { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-  .nc-casehero__body h1 { margin: 0; color: var(--cloud); font-size: clamp(30px, 3.8vw, 48px); line-height: 1.12; }
+  .nc-casehero__body { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 518px; }
+  .nc-casehero__body h1 { margin: 0; color: var(--cloud); font-size: clamp(30px, 3.8vw, 48px); line-height: 1.12; text-wrap: wrap; }
   .nc-casehero__quote { margin: 0; font-family: var(--font-display); font-style: italic; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.92); }
   .nc-casehero__person { display: flex; align-items: center; gap: 12px; }
   .nc-casehero__person strong { display: block; font-size: 15px; color: var(--cloud); font-weight: 600; }
@@ -69,16 +94,20 @@
   .nc-art__hero { border-radius: var(--radius-xl); overflow: hidden; margin-bottom: clamp(20px, 3vw, 34px); aspect-ratio: 16 / 9; background: var(--sage-100); }
   .nc-art__hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .nc-article-body--lead > p:first-of-type { font-family: var(--font-display); font-size: 20.5px; line-height: 1.6; color: var(--ink-900); }
+  .nc-art__embed { margin: 28px 0 36px; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: #000; }
+  .nc-art__embed iframe { display: block; width: 100%; height: 100%; border: 0; }
 
   .nc-art__tags { display: flex; flex-wrap: wrap; gap: 8px; max-width: var(--container-text); margin: clamp(26px, 3.4vw, 40px) auto 0; padding-top: 20px; border-top: 1px solid var(--border-soft, var(--ink-100)); }
 
-  .nc-caseprods { background: var(--sage-500); padding: clamp(40px, 6vw, 76px) 0; margin-top: clamp(36px, 5vw, 64px); text-align: center; }
+  .nc-caseprods { background: var(--sage-500); padding: clamp(40px, 6vw, 76px) 0; margin-top: clamp(36px, 5vw, 64px); margin-bottom: calc(-1 * var(--section-y)); text-align: center; }
   .nc-caseprods__eyebrow { margin: 0 0 12px; font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: rgba(255, 255, 255, 0.75); }
   .nc-caseprods h2 { margin: 0; color: var(--cloud); font-size: clamp(26px, 3vw, 38px); }
-  .nc-caseprods__sub { margin: 12px auto 0; max-width: 52ch; color: rgba(255, 255, 255, 0.82); }
-  .nc-caseprods__grid { display: grid; gap: clamp(14px, 2vw, 24px); grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: clamp(24px, 3.4vw, 40px) auto 0; list-style: none; padding: 0; text-align: left; }
-  @media (max-width: 640px) { .nc-caseprods__grid { grid-template-columns: 1fr; max-width: 360px; } }
+  .nc-caseprods__sub { margin: 12px auto 0; max-width: none; color: rgba(255, 255, 255, 0.82); }
+  .nc-caseprods__grid { display: grid; gap: clamp(14px, 2vw, 24px); grid-template-columns: repeat(4, minmax(0, 1fr)); margin: clamp(24px, 3.4vw, 40px) 0 0; list-style: none; padding: 0; text-align: left; }
+  @media (max-width: 900px) { .nc-caseprods__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .nc-caseprods__grid { grid-template-columns: 1fr; } }
   .nc-caseprods__ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: clamp(22px, 3vw, 34px); }
+  .nc-caseprods.nc-on-dark .nc-product-card__title { color: var(--sage-700); }
 
   .nc-art__more { margin-top: clamp(36px, 5vw, 64px); }
   .nc-art__more h2 { margin-bottom: clamp(16px, 2.4vw, 26px); }
@@ -121,10 +150,13 @@
         </div>
       </div>
     </div>
+    <button class="nc-casehero__fab" type="button" aria-label="Se farverne fra casen">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+    </button>
   </div>
 {%- endif -%}
 
-<div class="nc-section" {% if is_case %}style="padding-top: clamp(28px, 4vw, 48px);"{% endif %}>
+<div class="nc-section" {% if is_case %}style="padding-top: clamp(28px, 4vw, 48px); padding-bottom: 0;"{% endif %}>
   <div class="nc-container">
     <article class="nc-art">
       {%- if is_case -%}
@@ -153,13 +185,14 @@
       {%- endif -%}
 
       <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead{% endif %}">
-        {{ article.content }}
+        {{ body_html }}
       </div>
     </article>
 
     {%- if article.tags.size > 0 and section.settings.show_tags -%}
       <div class="nc-art__tags">
         {%- for tag in article.tags limit: 6 -%}
+          {%- if is_case and tag == area_tag -%}{%- continue -%}{%- endif -%}
           <a class="nc-chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
         {%- endfor -%}
       </div>
@@ -167,11 +200,11 @@
   </div>
 
   {%- if is_case and section.settings.show_products and case_products != blank -%}
-    {%- assign first_name = person | default: article.author | split: ' ' | first -%}
+    {%- assign routine_name = person | default: article.author -%}
     <div class="nc-caseprods nc-on-dark">
       <div class="nc-container">
-        <p class="nc-caseprods__eyebrow">{{ first_name }}s rutine</p>
-        <h2>Produkterne bag {{ first_name }}s resultat</h2>
+        <p class="nc-caseprods__eyebrow">{{ routine_name }}s rutine</p>
+        <h2>Produkterne bag {{ routine_name }}s resultat</h2>
         <p class="nc-caseprods__sub">Shop præcis den rutine — enkeltvis, eller saml hele sættet med ét klik.</p>
         <ul class="nc-caseprods__grid">
           {%- assign case_variant_ids = '' -%}
