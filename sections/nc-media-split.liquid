@@ -30,6 +30,16 @@
   }
   #shopify-section-{{ section.id }} .nc-msplit__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); aspect-ratio: {{ section.settings.ratio | default: '1 / 1' }}; box-shadow: var(--shadow-sm); }
   #shopify-section-{{ section.id }} .nc-msplit__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  {%- if section.settings.media_max != blank -%}
+  {%- comment -%} Maalt i det godkendte design (om os): billedet er smallere end sit gridspor
+      og ligger ind mod teksten, saa luften ender paa ydersiden. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit__media { width: 100%; max-width: {{ section.settings.media_max }}px; justify-self: end; }
+  #shopify-section-{{ section.id }} .nc-msplit__grid--right .nc-msplit__media { justify-self: start; }
+  @media (max-width: 899px) { #shopify-section-{{ section.id }} .nc-msplit__media { justify-self: start; } }
+  {%- endif -%}
+  {%- if section.settings.focal != blank -%}
+  #shopify-section-{{ section.id }} .nc-msplit__media img { object-position: {{ section.settings.focal }}; }
+  {%- endif -%}
   #shopify-section-{{ section.id }} .nc-msplit__body { max-width: 60ch; }
   #shopify-section-{{ section.id }} .nc-msplit__grid:not(.nc-msplit__grid--media) .nc-msplit__body { max-width: 62ch; margin: 0 auto; }
   {%- comment -%} Designets h2 i disse sektioner: clamp(19-21, ~3vw, 30-34) paa én linje. {%- endcomment -%}
@@ -109,6 +119,8 @@
     },
     { "type": "select", "id": "media_side", "label": "Billedside", "options": [ { "value": "left", "label": "Venstre" }, { "value": "right", "label": "Højre" } ], "default": "left" },
     { "type": "text", "id": "ratio", "label": "Billedformat (CSS aspect-ratio)", "default": "1 / 1", "info": "Fx 1 / 1 eller 4 / 3" },
+    { "type": "text", "id": "media_max", "label": "Billedets maks. bredde (px)", "info": "Tom = fuldt gridspor. Fx 505" },
+    { "type": "text", "id": "focal", "label": "Billedets fokuspunkt (CSS object-position)", "info": "Fx left center. Tom = center" },
     { "type": "image_picker", "id": "image", "label": "Billede" },
     { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" },
     { "type": "text", "id": "eyebrow", "label": "Overlinje" },

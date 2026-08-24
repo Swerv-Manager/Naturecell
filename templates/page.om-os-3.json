@@ -19,7 +19,8 @@
         "eyebrow": "Mød familien bag",
         "heading": "Ægte mennesker. Ægte dansk hudpleje.",
         "text": "<p>Vi er Lizbeth og Allan — en dansk familie med rødder på Møllerup Gods. Vi står selv bag hvert valg: råvarerne, formuleringerne og den ærlige måde, vi taler til dig på.</p>",
-        "quote": "Vi lover ikke mirakler — vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag."
+        "quote": "Vi lover ikke mirakler — vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag.",
+        "media_max": "510"
       }
     },
     "timeline": {
@@ -31,12 +32,53 @@
         "cta_url": "/collections/cbd-hudpleje"
       },
       "blocks": {
-        "m2026": { "type": "milestone", "settings": { "year": "2026", "title": "Et komplet univers", "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.", "url": "/collections/cbd-hudpleje", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053" } },
-        "m2021": { "type": "milestone", "settings": { "year": "2021", "title": "Løvens Hule", "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
-        "m2019": { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "url": "/blogs/artikler", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972" } },
-        "m2018": { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "url": "/blogs/artikler", "image_url": "nc-founders.webp" } }
+        "m2026": {
+          "type": "milestone",
+          "settings": {
+            "year": "2026",
+            "title": "Et komplet univers",
+            "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.",
+            "url": "/collections/cbd-hudpleje",
+            "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053"
+          }
+        },
+        "m2021": {
+          "type": "milestone",
+          "settings": {
+            "year": "2021",
+            "title": "Løvens Hule",
+            "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.",
+            "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule",
+            "image_url": "nc-lovens-hule.webp"
+          }
+        },
+        "m2019": {
+          "type": "milestone",
+          "settings": {
+            "year": "2019",
+            "title": "Først godkendt i DK",
+            "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.",
+            "url": "/blogs/artikler",
+            "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972"
+          }
+        },
+        "m2018": {
+          "type": "milestone",
+          "settings": {
+            "year": "2018",
+            "title": "Idéen fødes",
+            "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.",
+            "url": "/blogs/artikler",
+            "image_url": "nc-founders.webp"
+          }
+        }
       },
-      "block_order": ["m2026", "m2021", "m2019", "m2018"]
+      "block_order": [
+        "m2026",
+        "m2021",
+        "m2019",
+        "m2018"
+      ]
     },
     "loefte": {
       "type": "nc-media-split",
@@ -55,18 +97,48 @@
         "image_url": "https://naturecell.dk/cdn/shop/articles/Billede_af_Anne_Sophie_Gamborg_og_Allan_Falk_Gamborg_cc5b96e7-f77f-46c0-958e-5d64cb69441f.jpg?v=1767017225",
         "eyebrow": "Hvor det startede",
         "heading": "Rødder på Møllerup Gods",
-        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland — med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>"
+        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland — med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>",
+        "media_max": "505"
       }
     },
     "stats": {
       "type": "nc-stats-band",
       "blocks": {
-        "s1": { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt til salg i Danmark" } },
-        "s2": { "type": "stat", "settings": { "num": "Vegansk", "label": "Plantebaseret & uden syntetisk parfume" } },
-        "s3": { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion & test" } },
-        "s4": { "type": "stat", "settings": { "num": "4,8/5", "label": "2.143 anmeldelser på Trustpilot" } }
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "num": "2019",
+            "label": "Først godkendt til salg i Danmark"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "num": "Vegansk",
+            "label": "Plantebaseret & uden syntetisk parfume"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "num": "100%",
+            "label": "Dansk produktion & test"
+          }
+        },
+        "s4": {
+          "type": "stat",
+          "settings": {
+            "num": "4,8/5",
+            "label": "2.143 anmeldelser på Trustpilot"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4"]
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
     },
     "familie2": {
       "type": "nc-media-split",
@@ -78,9 +150,19 @@
         "eyebrow": "Familien bag",
         "heading": "Drevet af en dansk familie",
         "text": "<p>NatureCell er familiedrevet. Vi står selv bag hver beslutning — fra råvarer og formuleringer til den måde, vi taler med vores kunder på. Vi lover ikke mirakler; vi lover ærlighed, dansk produktion og produkter, vi selv bruger hver dag.</p>",
-        "quote": "Vi bygger NatureCell på tillid — én ærlig kundeoplevelse ad gangen."
+        "quote": "Vi bygger NatureCell på tillid — én ærlig kundeoplevelse ad gangen.",
+        "media_max": "455",
+        "focal": "left center"
       }
     }
   },
-  "order": ["hero", "familien", "timeline", "loefte", "moellerup", "stats", "familie2"]
+  "order": [
+    "hero",
+    "familien",
+    "timeline",
+    "loefte",
+    "moellerup",
+    "stats",
+    "familie2"
+  ]
 }

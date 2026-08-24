@@ -95,6 +95,15 @@
   .nc-art__hero { border-radius: var(--radius-xl); overflow: hidden; margin-bottom: clamp(20px, 3vw, 34px); aspect-ratio: 16 / 9; background: var(--sage-100); }
   .nc-art__hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .nc-article-body--lead > p:first-of-type { font-family: var(--font-display); font-size: 20.5px; line-height: 1.6; color: var(--ink-900); }
+  /* Artikel (ikke case): herobilledet spaender hele artikelkolonnen, mens
+     broedtekst + CTA staar i en smallere, centreret kolonne (som i designet). */
+  .nc-art__inset { max-width: 69%; margin-left: auto; margin-right: auto; }
+  @media (max-width: 640px) { .nc-art__inset { max-width: 100%; } }
+  /* Disclaimer-afsnittet ("Denne artikel er en del af...") matcher broedtekst
+     i stoerrelse/farve og faar en tynd delelinje over sig. */
+  .nc-article-body--lead > p:last-of-type:not(:first-of-type) { margin: 26px 0 0; padding-top: 20px; border-top: 1px solid var(--border-soft, var(--ink-100)); font-size: 17px; line-height: 1.8; color: var(--ink-700); }
+  .nc-art__cta-row { margin-top: 16px; }
+  .nc-art__cta-row .nc-btn { font-size: 13.5px; min-height: 40px; padding: 11px 22px; }
   .nc-art__embed { margin: 28px 0 36px; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: #000; }
   .nc-art__embed iframe { display: block; width: 100%; height: 100%; border: 0; }
 
@@ -188,12 +197,23 @@
         {%- endif -%}
       {%- endif -%}
 
-      <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead{% endif %}">
+      <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead nc-art__inset{% endif %}">
         {{ body_html }}
       </div>
+
+      {%- unless is_case -%}
+        {%- if section.settings.show_cta -%}
+          <div class="nc-art__cta-row nc-art__inset">
+            <a class="nc-btn nc-btn--sage" href="{{ section.settings.cta_url | default: article.url }}">
+              {{ section.settings.cta_label | default: 'Læs hele artiklen på naturecell.dk' }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+          </div>
+        {%- endif -%}
+      {%- endunless -%}
     </article>
 
-    {%- if article.tags.size > 0 and section.settings.show_tags -%}
+    {%- if is_case and article.tags.size > 0 and section.settings.show_tags -%}
       <div class="nc-art__tags{% if is_case %} nc-art__tags--case{% endif %}">
         {%- for tag in article.tags limit: 6 -%}
           {%- if is_case and tag == area_tag -%}{%- continue -%}{%- endif -%}
@@ -290,7 +310,10 @@
   "tag": "section",
   "settings": [
     { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet ncell.products (produktliste) på artiklen." },
-    { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips under artiklen", "default": true }
+    { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips under artiklen", "default": true, "info": "Vises kun på kundecases." },
+    { "type": "checkbox", "id": "show_cta", "label": "Vis CTA-knap efter artiklen", "default": true },
+    { "type": "text", "id": "cta_label", "label": "CTA-tekst", "default": "Læs hele artiklen på naturecell.dk" },
+    { "type": "url", "id": "cta_url", "label": "CTA-link", "info": "Tom = artiklens egen adresse." }
   ]
 }
 {% endschema %}

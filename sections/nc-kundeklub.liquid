@@ -12,6 +12,7 @@
   .nc-klub__hero p { margin: 0; color: rgba(246, 244, 238, 0.85); font-size: 18px; line-height: 1.7; max-width: 560px; }
   .nc-klub__hero .nc-eyebrow { font-size: var(--text-xs); line-height: 1.4; letter-spacing: var(--tracking-wider); }
   .nc-klub__hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .nc-klub__hero-ctas .nc-btn { padding-top: 16px; padding-bottom: 16px; min-height: 50px; }
 
   .nc-klub__perksec { padding: clamp(43px, 5vw, 72px) 0 clamp(17px, 6vw, 28px); }
   .nc-klub__head { text-align: center; max-width: 62ch; margin: 0 auto 40px; }
@@ -23,19 +24,40 @@
   .nc-klub__perk h3 { font-size: 20px; margin: 0 0 20px; }
   .nc-klub__perk p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-500); }
 
-  .nc-klub__how { background: var(--sage-50); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: clamp(35px, 6vw, 64px) 0; }
+  .nc-klub__how { background: var(--sage-50); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: clamp(50px, 7vw, 94px) 0 clamp(35px, 6vw, 64px); }
   .nc-klub__how .nc-klub__head h2 { font-size: clamp(19px, 2.9vw, 30px); }
   .nc-klub__steps { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(47%, 220px), 1fr)); text-align: center; max-width: 900px; margin: 0 auto; }
   .nc-klub__step strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(21px, 3.3vw, 34px); color: var(--sage-400); letter-spacing: 0.04em; }
   .nc-klub__step h3 { font-size: 19px; margin: 8px 0; }
   .nc-klub__step p { margin: 0 auto; font-size: 14px; line-height: 1.6; color: var(--ink-500); max-width: 280px; }
 
-  .nc-klub__signup { padding: clamp(40px, 6vw, 72px) 0; text-align: center; }
+  .nc-klub__signup { padding: clamp(40px, 6vw, 72px) 0 clamp(8px, 1vw, 12px); text-align: center; }
   .nc-klub__signup h2 { margin: 0; font-size: clamp(19px, 2.9vw, 30px); }
   .nc-klub__signup > .nc-container > p { margin: 18px auto 0; font-size: 16px; line-height: 1.7; color: var(--ink-500); max-width: 560px; }
   .nc-klub__form { display: flex; gap: 10px; max-width: 440px; margin: 18px auto 0; }
   .nc-klub__form .nc-input { flex: 1; min-width: 0; border-radius: var(--radius-pill); }
   .nc-klub__fine { margin: 22px auto 0; font-size: 12.5px; color: var(--ink-400); }
+
+  /* Sideskopede justeringer, saa kundeklub-siden matcher det godkendte design:
+     nyhedsbrevsknappen i footeren er moerk sage med lys pil, og sprogvaelgeren
+     er én omkranset pille hvor det aktive DA-segment er sage-udfyldt i fuld
+     hoejde og flugter med pillens venstre kant. */
+  .nc-footer__form .nc-iconbtn { background: var(--sage-700, #3E5D58); border-color: var(--sage-700, #3E5D58); color: var(--paper, #F6F4EE); }
+  .nc-footer__form .nc-iconbtn:hover, .nc-footer__form .nc-iconbtn:focus-visible { background: var(--sage-800, #33504b); border-color: var(--sage-800, #33504b); color: var(--paper, #F6F4EE); }
+  .nc-langs { background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); padding: 0; align-items: stretch; overflow: hidden; }
+  .nc-langs a { border-radius: 0; padding: 6px 12px; margin: 0; color: var(--sage-600, #4F6E68); }
+  .nc-langs a + a { border-left: 1px solid rgba(62, 93, 88, 0.16); }
+  .nc-langs a.is-active { background: var(--sage-500, #80A097); color: var(--cloud, #FDFDFB); }
+
+  /* Kundeklub-navpunktet: baade stjerne og tekst i dyb sage. */
+  .nc-header__link[href*="kundeklub"] { color: var(--sage-700, #3E5D58); }
+  .nc-header__link[href*="kundeklub"] .nc-header__star { color: var(--sage-700, #3E5D58); }
+
+  /* Footer-rytme: kompaktere linkkolonner og smallere brandkolonne som i designet.
+     Hoejere specificitet, da footerens eget style-blok kommer senere i kaskaden. */
+  .nc-footer .nc-footer__grid ul { gap: 5px; }
+  .nc-footer .nc-footer__grid ul a { line-height: 1.5; }
+  .nc-footer .nc-footer__grid .nc-footer__brand p { max-width: 190px; }
 {%- endstyle -%}
 
 <div class="nc-klub">

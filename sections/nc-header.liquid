@@ -51,6 +51,7 @@
     cursor: pointer;
   }
   .nc-header__link:hover, .nc-header__link:focus-visible { color: var(--sage-600); }
+  a.nc-header__link.is-current { background: var(--sage-100); border-radius: var(--radius-pill); color: var(--sage-700); padding: 10px 14px; }
   .nc-header__link svg { transition: transform var(--dur-fast) var(--ease-soft); }
   .nc-header__link[aria-expanded="true"] svg { transform: rotate(180deg); }
   .nc-header__star { color: var(--sage-500); }
@@ -88,9 +89,9 @@
   }
   .nc-header__count.is-empty { display: none; }
 
-  .nc-langs { display: none; align-items: center; background: var(--sage-50); border-radius: var(--radius-pill); padding: 3px; margin-right: 6px; }
-  .nc-langs a { display: inline-block; padding: 4px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; text-decoration: none; color: var(--ink-500); }
-  .nc-langs a.is-active { background: var(--ink-900); color: var(--cloud); }
+  .nc-langs { display: none; align-items: stretch; background: transparent; border: 1px solid rgba(62, 93, 88, 0.28); border-radius: var(--radius-pill); overflow: hidden; margin-right: 6px; }
+  .nc-langs a { display: inline-flex; align-items: center; padding: 6px 12px; font-size: 12px; font-weight: 600; text-decoration: none; color: var(--sage-600); }
+    .nc-langs a.is-active { background: var(--sage-500); color: var(--cloud); }
 
   .nc-header__burger { display: inline-flex; }
 
@@ -192,8 +193,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </button>
           </li>
-          <li><a class="nc-header__link" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a></li>
-          <li><a class="nc-header__link" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a></li>
+          <li><a class="nc-header__link{% if request.path contains '/blogs/kundecases' %} is-current{% endif %}" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a></li>
+          <li><a class="nc-header__link{% if request.path contains '/blogs/artikler' %} is-current{% endif %}" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a></li>
           <li class="nc-dd">
             <a class="nc-header__link" href="{{ section.settings.about_url | default: '/pages/om-os' }}" aria-haspopup="true">
               Om os
@@ -243,7 +244,7 @@
           </a>
         {%- endif -%}
         <button class="nc-header__action" data-nc-cart-open aria-label="Kurv">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7V6a6 6 0 0 1 12 0v1"/><path d="M4 7h16l-1.2 13.2a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8Z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z"/><path d="M5 7.4 12 12l7-4.6"/></svg>
           <span class="nc-header__count {% if cart.item_count == 0 %}is-empty{% endif %}" data-nc-cart-count>{{ cart.item_count }}</span>
         </button>
       </div>
