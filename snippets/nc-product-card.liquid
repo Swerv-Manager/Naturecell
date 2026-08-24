@@ -25,12 +25,21 @@
   endif
 
   assign eyebrow = 'NatureCell'
-  if product.title contains 'ALFALAB'
+  if product.vendor != blank
+    assign eyebrow = product.vendor
+  elsif product.title contains 'ALFALAB'
     assign eyebrow = 'ALFALAB'
   endif
-  if is_bundle
-    assign eyebrow = eyebrow | append: ' Sampakke'
+  if product.type contains 'Kosttilskud'
+    unless eyebrow contains 'Kosttilskud'
+      assign eyebrow = eyebrow | append: ' Kosttilskud'
+    endunless
   endif
+  unless eyebrow contains 'Sampakke' or eyebrow contains 'Kosttilskud'
+    if is_bundle
+      assign eyebrow = eyebrow | append: ' Sampakke'
+    endif
+  endunless
 
   assign v = product.selected_or_first_available_variant
   assign on_sale = false

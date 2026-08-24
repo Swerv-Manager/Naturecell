@@ -10,7 +10,7 @@
   .nc-faqsec__group { margin: 26px 0 10px; }
   .nc-faqsec--compact .nc-faqsec__wrap { max-width: none; margin: 0; }
   .nc-faqsec--compact .nc-section-head { max-width: none; text-align: left; }
-  .nc-faqsec--compact .nc-section-head h2 { font-size: 18px; }
+  .nc-faqsec--compact .nc-section-head h2 { font-size: 18px; font-weight: var(--weight-heading, 700); color: var(--sage-700); }
   .nc-faqsec--compact .nc-acc { border-top: 0; }
   @media (min-width: 860px) {
     .nc-faqsec--compact .nc-acc { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(36px, 5vw, 72px); align-items: start; }
@@ -18,7 +18,7 @@
   .nc-faqsec__links-block { margin-top: clamp(30px, 4vw, 48px); }
   .nc-faqsec__links-label { margin-bottom: 12px; }
   .nc-faqsec__links { display: flex; flex-wrap: wrap; gap: 8px; }
-  .nc-faqsec__disclaimer { max-width: 78ch; margin: clamp(22px, 3vw, 32px) 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
+  .nc-faqsec__disclaimer { max-width: 46rem; margin: clamp(22px, 3vw, 32px) 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
 {%- endstyle -%}
 
 <section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %}" id="faq">

@@ -512,15 +512,15 @@ summary.nc-acc__head { list-style: none; }
 .nc-ccard__video { position: absolute; top: 10px; right: 10px; z-index: 1; display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: var(--radius-pill); background: rgba(35, 51, 48, 0.78); color: var(--cloud); font-size: 10.5px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
 .nc-ccard__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
 .nc-ccard__play span { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, 0.88); color: var(--sage-700); box-shadow: var(--shadow-sm); }
-.nc-ccard__title { margin: 12px 0 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.25; color: var(--sage-700); }
+.nc-ccard__title { margin: 14px 0 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
 .nc-ccard:hover .nc-ccard__title { color: var(--sage-900); }
-.nc-ccard__who { display: block; margin-top: 3px; font-size: 13px; color: var(--ink-500); }
+.nc-ccard__who { display: block; margin-top: 5px; font-size: 14px; line-height: 1.15; color: var(--ink-500); }
 .nc-ccard__excerpt { margin: 8px 0 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-700); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .nc-ccard__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--ink-900); }
 .nc-ccard:hover .nc-ccard__more { color: var(--sage-700); }
 
 /* --- Blogvaerktoejer: chips + soegning --- */
-.nc-blogtools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: clamp(20px, 3vw, 32px) 0 clamp(22px, 3vw, 34px); }
+.nc-blogtools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: clamp(20px, 3vw, 32px) 0 clamp(18px, 2.4vw, 26px); }
 .nc-blogtools__chips { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 auto; min-width: 0; }
 .nc-blogtools__search { position: relative; flex: 0 1 260px; min-width: 200px; }
 .nc-blogtools__search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-400); pointer-events: none; }
@@ -528,7 +528,7 @@ summary.nc-acc__head { list-style: none; }
 .nc-blogtools__search input:focus-visible { outline: 2px solid var(--sage-500); outline-offset: 1px; }
 
 /* --- Artikeltypografi: citater & lead --- */
-.nc-article-body blockquote { margin: 30px 0; padding: 18px 22px; border: 0; border-left: 3px solid var(--sage-700); border-radius: 0; background: #E3E9E4; font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.6; color: var(--sage-800); }
+.nc-article-body blockquote { margin: 30px 0; padding: 18px 22px; border: 0; border-left: 3px solid var(--sage-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--sage-50); font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.6; color: var(--sage-800); }
 .nc-article-body blockquote p { margin: 0; }
 .nc-article-body blockquote p + p { margin-top: 10px; }
 .nc-case-body > p:first-of-type::first-letter { float: left; font-family: var(--font-display); font-size: 58px; line-height: 0.9; padding: 4px 10px 0 0; color: var(--sage-700); }

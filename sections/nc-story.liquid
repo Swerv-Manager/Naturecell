@@ -4,26 +4,33 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-story__grid { display: grid; gap: clamp(28px, 5vw, 64px); grid-template-columns: 1fr; align-items: center; }
+  .nc-story.nc-section { padding-top: clamp(50px, 6vw, 90px); padding-bottom: clamp(50px, 6vw, 90px); }
+  .nc-story__grid { display: grid; gap: clamp(26px, 5vw, 64px); grid-template-columns: 1fr; align-items: center; }
   @media (min-width: 900px) {
-    .nc-story__grid { grid-template-columns: 1fr 1.05fr; }
+    .nc-story__grid { grid-template-columns: 1fr 1fr; }
   }
-  .nc-story__stats { display: flex; gap: clamp(20px, 3vw, 40px); flex-wrap: wrap; margin: 22px 0 26px; }
-  .nc-story__stat { border-left: 1px solid var(--border-default); padding-left: clamp(14px, 2vw, 24px); }
-  .nc-story__stat:first-child { border-left: 0; padding-left: 0; }
-  .nc-story__stat strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 2.6vw, 32px); color: var(--sage-700); }
-  .nc-story__stat span { font-size: 13px; color: var(--ink-500); }
-  .nc-story__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
-  .nc-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .nc-story__caption { position: absolute; left: 22px; bottom: 18px; color: var(--cloud); text-shadow: 0 1px 12px rgba(35, 51, 48, 0.55); }
-  .nc-story__caption strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 20px; }
-  .nc-story__caption span { font-size: 13px; }
+  .nc-story__text { display: flex; flex-direction: column; gap: 20px; max-width: 500px; }
+  .nc-story__text .nc-eyebrow { margin: 0; }
+  .nc-story__text h2 { margin: 0; font-size: clamp(34px, 4vw, 52px); line-height: 1.06; letter-spacing: -0.01em; }
+  .nc-story__text > p { margin: 0; font-size: 17px; line-height: 1.75; }
+  .nc-story__stats { display: flex; gap: 14px; flex-wrap: wrap; margin: 4px 0 0; }
+  .nc-story__stat { display: flex; flex-direction: column; gap: 2px; padding-right: 22px; border-right: 1px solid var(--border-default); }
+  .nc-story__stat:last-child { border-right: 0; padding-right: 0; }
+  .nc-story__stat strong { font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: 1; color: var(--sage-700); }
+  .nc-story__stat span { font-size: 12.5px; color: var(--ink-500); }
+  .nc-story__cta { align-self: flex-start; margin-top: 10px; }
+  .nc-story__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 4 / 3; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4); }
+  .nc-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 43% 22%; }
+  .nc-story__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(40, 64, 59, 0.55), transparent 45%); pointer-events: none; }
+  .nc-story__caption { position: absolute; left: 22px; bottom: 20px; z-index: 1; color: var(--paper); }
+  .nc-story__caption strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.2; }
+  .nc-story__caption span { display: block; font-size: 13px; color: rgba(246, 244, 238, 0.85); margin-top: 2px; }
 {%- endstyle -%}
 
-<section class="nc-section">
+<section class="nc-section nc-story">
   <div class="nc-container">
     <div class="nc-story__grid">
-      <div>
+      <div class="nc-story__text">
         <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
         <h2>{{ section.settings.heading }}</h2>
         <p>{{ section.settings.body }}</p>
@@ -36,7 +43,7 @@
           {%- endfor -%}
         </div>
         {%- if section.settings.cta_text != blank -%}
-          <a class="nc-btn nc-btn--primary" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+          <a class="nc-btn nc-btn--primary nc-story__cta" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
         {%- endif -%}
       </div>
       <div class="nc-story__media">

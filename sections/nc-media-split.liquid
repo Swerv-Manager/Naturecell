@@ -17,12 +17,13 @@
 -%}
 
 {%- style -%}
-  #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(44px, 6vw, 84px) 0; }
+  {%- comment -%} Designets sektionspadding: clamp(31-35, 6vw, 56-64) — strammere end foer. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(32px, 4.5vw, 60px) 0; }
   #shopify-section-{{ section.id }} .nc-msplit--paper { background: var(--paper); }
-  {%- comment -%} Designets --sage-50 er #F2F6F4 (naer-hvid); temaets globale --sage-50 er moerkere, saa baandet bruger designvaerdien direkte. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-msplit--sage50 { background: #F2F6F4; }
+  {%- comment -%} Maalt i det godkendte design (om os + om CBD): det lyse sage-baand er #E6ECEA = temaets --sage-50. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit--sage50 { background: var(--sage-50); }
   #shopify-section-{{ section.id }} .nc-msplit--cream { background: var(--paper-2); }
-  #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: clamp(24px, 4.4vw, 72px); grid-template-columns: 1fr; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: clamp(24px, 3vw, 44px); grid-template-columns: 1fr; align-items: center; }
   @media (min-width: 900px) {
     #shopify-section-{{ section.id }} .nc-msplit__grid--media { grid-template-columns: 1fr 1.08fr; }
     #shopify-section-{{ section.id }} .nc-msplit__grid--right .nc-msplit__media { order: 2; }
@@ -31,10 +32,11 @@
   #shopify-section-{{ section.id }} .nc-msplit__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
   #shopify-section-{{ section.id }} .nc-msplit__body { max-width: 60ch; }
   #shopify-section-{{ section.id }} .nc-msplit__grid:not(.nc-msplit__grid--media) .nc-msplit__body { max-width: 62ch; margin: 0 auto; }
-  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin: 0 0 16px; font-size: clamp(26px, 3vw, 38px); line-height: 1.15; }
+  {%- comment -%} Designets h2 i disse sektioner: clamp(19-21, ~3vw, 30-34) paa én linje. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin: 0 0 14px; font-size: clamp(20px, 2.9vw, 31px); line-height: 1.12; }
   #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 14px; line-height: 1.75; color: var(--ink-700); }
   #shopify-section-{{ section.id }} .nc-msplit__text p:last-child { margin-bottom: 0; }
-  #shopify-section-{{ section.id }} .nc-msplit__quote { margin: 18px 0 0; font-family: var(--font-display); font-style: italic; font-size: 18px; line-height: 1.6; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-msplit__quote { margin: 16px 0 0; font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.5; color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-msplit__callout { display: flex; gap: 12px; margin-top: 22px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--sage-50); font-size: 14.5px; line-height: 1.65; color: var(--ink-700); }
   #shopify-section-{{ section.id }} .nc-msplit--sage50 .nc-msplit__callout { background: var(--cloud); }
   #shopify-section-{{ section.id }} .nc-msplit__callout svg { flex: none; margin-top: 2px; color: var(--sage-700); }

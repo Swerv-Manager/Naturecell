@@ -6,6 +6,8 @@
 {% endcomment %}
 
 {%- style -%}
+  .nc-coll-main.nc-section { padding-top: calc(var(--section-y) / 2); }
+  .nc-coll__header h1 { font-size: clamp(2rem, 3vw, 2.5rem); }
   .nc-coll__crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-500); margin: 0 0 18px; }
   .nc-coll__crumbs a { color: var(--ink-500); text-decoration: none; }
   .nc-coll__crumbs a:hover { color: var(--sage-700); }
@@ -22,9 +24,11 @@
   .nc-coll__filter-label { flex: none; min-width: 74px; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
   .nc-coll__row-chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .nc-coll__count { font-size: 13.5px; color: var(--ink-500); text-align: right; margin: 0 0 10px; }
+  .nc-chip__mars { flex: none; width: 12px; height: 12px; color: var(--ink-900); opacity: 1; }
+  .nc-chip.is-active .nc-chip__mars { color: currentColor; }
 {%- endstyle -%}
 
-<div class="nc-section">
+<div class="nc-section nc-coll-main">
   <div class="nc-container">
     {%- if section.settings.show_breadcrumb -%}
       <nav class="nc-coll__crumbs" aria-label="Brødkrumme">
@@ -93,7 +97,15 @@
                   {%- assign parts = chip | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
                     {%- assign chip_url = parts[1] | strip -%}
-                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+                    {%- assign chip_label = parts[0] | strip -%}
+                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">
+                      {%- if chip_label contains '♂' -%}
+                        <svg class="nc-chip__mars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="6"/><path d="m14.5 9.5 6-6"/><path d="M15 3h6v6"/></svg>
+                        {{- chip_label | remove: '♂' | strip -}}
+                      {%- else -%}
+                        {{- chip_label -}}
+                      {%- endif -%}
+                    </a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>

@@ -8,15 +8,19 @@
   .nc-caseteaser__head p { max-width: 52ch; margin: 0; }
   .nc-caseteaser__nav { display: flex; align-items: center; gap: 10px; }
 
-  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
+  .nc-caseteaser__rail { gap: 20px; padding-bottom: 12px; }
+  .nc-caseteaser__rail > * { flex: 0 0 min(300px, 78vw); }
+
+  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 14px; text-decoration: none; }
+  .nc-case-card__meta { display: flex; flex-direction: column; gap: 5px; }
   .nc-case-card__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); }
   .nc-case-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-soft); }
   .nc-case-card:hover .nc-case-card__media img { transform: scale(1.03); }
   .nc-case-card__area { position: absolute; top: 12px; left: 12px; }
   .nc-case-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
   .nc-case-card__play span { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.92); color: var(--sage-700); box-shadow: var(--shadow-md); }
-  .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.25; color: var(--sage-700); }
-  .nc-case-card__who { font-size: 13.5px; color: var(--ink-500); }
+  .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.2; color: var(--sage-700); }
+  .nc-case-card__who { font-size: 14px; color: var(--ink-500); }
 {%- endstyle -%}
 
 <section class="nc-section">
@@ -41,7 +45,7 @@
     </div>
 
     {%- if section.settings.blog != blank -%}
-      <div class="nc-rail-scroll nc-scroll" data-nc-railscroll>
+      <div class="nc-rail-scroll nc-scroll nc-caseteaser__rail" data-nc-railscroll>
         {%- for article in section.settings.blog.articles limit: section.settings.limit -%}
           <a class="nc-case-card" href="{{ article.url }}">
             <span class="nc-case-card__media">
@@ -66,8 +70,10 @@
                 </span>
               {%- endif -%}
             </span>
-            <h3 class="nc-case-card__title">{{ article.title }}</h3>
-            <span class="nc-case-card__who">{{ article.author }}</span>
+            <div class="nc-case-card__meta">
+              <h3 class="nc-case-card__title">{{ article.title }}</h3>
+              <span class="nc-case-card__who">{{ article.metafields.ncell.name | default: article.author }}</span>
+            </div>
           </a>
         {%- endfor -%}
       </div>
