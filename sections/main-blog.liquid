@@ -112,7 +112,7 @@
             <span class="nc-featart__body">
               <span class="nc-featart__pill">Nyeste{% if feat.tags.first %} · {{ feat.tags.first }}{% endif %}</span>
               <h2>{{ feat.title | split: ' | ' | first }}</h2>
-              <p>{{ feat.excerpt_or_content | strip_html | truncate: 220 }}</p>
+              <p>{{ feat.excerpt_or_content | strip_html | truncate: 300 }}</p>
               <span class="nc-featart__more">Læs mere <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             </span>
           </a>
@@ -178,7 +178,7 @@
                   <span class="nc-ccard__who">{{ person }}</span>
                 {%- endif -%}
               {%- else -%}
-                <p class="nc-ccard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 150 }}</p>
+                <p class="nc-ccard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 260 }}</p>
                 <span class="nc-ccard__more">Læs mere <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
               {%- endif -%}
             </a>

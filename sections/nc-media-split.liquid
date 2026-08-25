@@ -52,6 +52,31 @@
   #shopify-section-{{ section.id }} .nc-msplit__callout svg { flex: none; margin-top: 2px; color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-msplit__callout p { margin: 0; }
   #shopify-section-{{ section.id }} .nc-msplit__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  {%- if section.settings.media_col != blank -%}
+  {%- comment -%} Maalt i det godkendte design (om os): mediekolonnen er fast, teksten faar resten. {%- endcomment -%}
+  @media (min-width: 900px) {
+    #shopify-section-{{ section.id }} .nc-msplit__grid--media { grid-template-columns: {{ section.settings.media_col }}px 1fr; }
+  }
+  {%- endif -%}
+  {%- if section.settings.text_max != blank -%}
+  {%- comment -%} Designets tekstmaal i px, saa linjeskiftene matcher 1:1. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit .nc-msplit__grid .nc-msplit__body { max-width: {{ section.settings.text_max }}px; }
+  {%- endif -%}
+  {%- if section.settings.quote_size != blank -%}
+  #shopify-section-{{ section.id }} .nc-msplit__quote { font-size: {{ section.settings.quote_size }}px; }
+  {%- endif -%}
+  {%- unless has_media -%}
+  {%- comment -%} Maalt i det godkendte design (om os, "Vi lover ikke mirakler"): mere luft over
+      og under overskriften/afsnittene, men naesten ingen bundpadding foer naeste sektion. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(40px, 5.4vw, 77px) 0 12px; }
+  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin-bottom: 33px; font-size: clamp(21px, 3.1vw, 33px); }
+  #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 25px; font-size: 17px; }
+  {%- endunless -%}
+  {%- if section.settings.flush_bottom -%}
+  {%- comment -%} Footeren har margin-top: var(--section-y); i designet ligger denne sektion
+      helt op ad footeren, saa vi udligner den margin her. {%- endcomment -%}
+  #shopify-section-{{ section.id }} { margin-bottom: calc(-1 * var(--section-y)); }
+  {%- endif -%}
 {%- endstyle -%}
 
 <div class="nc-msplit nc-msplit--{{ tone }}">
@@ -120,6 +145,10 @@
     { "type": "select", "id": "media_side", "label": "Billedside", "options": [ { "value": "left", "label": "Venstre" }, { "value": "right", "label": "Højre" } ], "default": "left" },
     { "type": "text", "id": "ratio", "label": "Billedformat (CSS aspect-ratio)", "default": "1 / 1", "info": "Fx 1 / 1 eller 4 / 3" },
     { "type": "text", "id": "media_max", "label": "Billedets maks. bredde (px)", "info": "Tom = fuldt gridspor. Fx 505" },
+    { "type": "text", "id": "media_col", "label": "Mediekolonnens bredde (px, desktop)", "info": "Tom = 1fr/1.08fr. Fx 574" },
+    { "type": "text", "id": "text_max", "label": "Tekstkolonnens maks. bredde (px)", "info": "Tom = 60ch (62ch uden billede)" },
+    { "type": "text", "id": "quote_size", "label": "Citatets skriftstørrelse (px)", "info": "Tom = 19" },
+    { "type": "checkbox", "id": "flush_bottom", "label": "Træk footeren helt op til sektionen", "default": false },
     { "type": "text", "id": "focal", "label": "Billedets fokuspunkt (CSS object-position)", "info": "Fx left center. Tom = center" },
     { "type": "image_picker", "id": "image", "label": "Billede" },
     { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" },

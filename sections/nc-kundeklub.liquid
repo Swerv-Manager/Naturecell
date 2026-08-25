@@ -40,13 +40,12 @@
 
   /* Sideskopede justeringer, saa kundeklub-siden matcher det godkendte design:
      nyhedsbrevsknappen i footeren er moerk sage med lys pil, og sprogvaelgeren
-     er én omkranset pille hvor det aktive DA-segment er sage-udfyldt i fuld
-     hoejde og flugter med pillens venstre kant. */
-  .nc-footer__form .nc-iconbtn { background: var(--sage-700, #3E5D58); border-color: var(--sage-700, #3E5D58); color: var(--paper, #F6F4EE); }
-  .nc-footer__form .nc-iconbtn:hover, .nc-footer__form .nc-iconbtn:focus-visible { background: var(--sage-800, #33504b); border-color: var(--sage-800, #33504b); color: var(--paper, #F6F4EE); }
-  .nc-langs { background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); padding: 0; align-items: stretch; overflow: hidden; }
-  .nc-langs a { border-radius: 0; padding: 6px 12px; margin: 0; color: var(--sage-600, #4F6E68); }
-  .nc-langs a + a { border-left: 1px solid rgba(62, 93, 88, 0.16); }
+     er én omkranset kapsel uden indre skillelinjer, hvor det aktive DA-segment
+     er en fuldt afrundet sage-pille med lille luft til kapslens kant. */
+  .nc-footer .nc-footer__form .nc-iconbtn { background: var(--sage-700, #3E5D58); border-color: var(--sage-700, #3E5D58); color: var(--paper, #F6F4EE); }
+  .nc-footer .nc-footer__form .nc-iconbtn:hover, .nc-footer .nc-footer__form .nc-iconbtn:focus-visible { background: var(--sage-800, #33504b); border-color: var(--sage-800, #33504b); color: var(--paper, #F6F4EE); }
+  .nc-langs { background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); padding: 3px; align-items: center; overflow: hidden; }
+  .nc-langs a { border-radius: var(--radius-pill, 999px); padding: 4px 11px; margin: 0; color: var(--sage-600, #4F6E68); }
   .nc-langs a.is-active { background: var(--sage-500, #80A097); color: var(--cloud, #FDFDFB); }
 
   /* Kundeklub-navpunktet: baade stjerne og tekst i dyb sage. */
@@ -58,6 +57,18 @@
   .nc-footer .nc-footer__grid ul { gap: 5px; }
   .nc-footer .nc-footer__grid ul a { line-height: 1.5; }
   .nc-footer .nc-footer__grid .nc-footer__brand p { max-width: 190px; }
+
+  /* Footer-nyhedsbrev: fuld pille-form paa e-mailfeltet og plads nok til hele
+     placeholderen "din@email.dk" (bredere nyhedsbrevskolonne + slankere pilknap). */
+  .nc-footer .nc-footer__grid { grid-template-columns: 1.3fr repeat(3, minmax(140px, 1fr)) minmax(158px, 1.05fr); }
+  .nc-footer .nc-footer__form .nc-input { border-radius: var(--radius-pill, 999px); padding-left: 14px; padding-right: 6px; font-size: 15px; }
+  .nc-footer .nc-footer__form .nc-iconbtn { padding: 0 13px; }
+
+  /* Footer-bundlinje: lysere footer-krop (#85A49B) og en moerkere fuldbreddes
+     baandfarve (#80A097) bag copyright/disclaimer-raekken som i designet. */
+  .nc-footer.nc-on-dark { background: #85A49B; }
+  .nc-footer .nc-footer__bottom { background: var(--nc-footer-bg, #80A097); box-shadow: 0 0 0 100vmax var(--nc-footer-bg, #80A097); clip-path: inset(0 -100vmax); }
+  .nc-footer .nc-footer__bottom p { max-width: 80ch; }
 {%- endstyle -%}
 
 <div class="nc-klub">

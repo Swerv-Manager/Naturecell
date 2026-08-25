@@ -34,19 +34,21 @@
     color: var(--cloud);
   }
 
-  .nc-footer ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; line-height: 1.45; }
+  .nc-footer ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; font-size: 14px; line-height: 1.4; }
 
-  .nc-footer__news p { margin: 0 0 12px; font-size: 14.5px; }
+  .nc-footer__news p { margin: 0 0 12px; font-size: 14px; }
   .nc-footer__form { display: flex; gap: 6px; }
-  .nc-footer__form .nc-input { padding-left: 12px; padding-right: 10px; }
   .nc-footer__form .nc-input {
+    flex: 1;
+    font-size: 14px;
+    padding: 11px 10px 11px 14px;
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(246, 244, 238, 0.4);
     color: var(--cloud);
     min-width: 0;
   }
   .nc-footer__form .nc-input::placeholder { color: rgba(255, 255, 255, 0.65); }
-  .nc-footer__form .nc-iconbtn { flex: none; width: auto; padding: 0 18px; border-radius: var(--radius-pill); background: var(--sage-700); border-color: var(--sage-700); color: #fff; }
+  .nc-footer__form .nc-iconbtn { flex: none; width: auto; padding: 0 14px; border-radius: var(--radius-pill); background: var(--sage-700); border-color: var(--sage-700); color: #fff; }
   .nc-footer__form .nc-iconbtn:hover { background: var(--sage-600); border-color: var(--sage-600); }
 
   .nc-footer__bottom {
