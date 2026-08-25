@@ -20,13 +20,21 @@
   @media (min-width: 860px) {
     .nc-faqsec--compact .nc-acc { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(36px, 5vw, 72px); align-items: start; }
   }
+  /* PDP-variant (valgfri): Philosopher-spoergsmaal som i godkendt PDP-design */
+  .nc-faqsec--display.nc-section { padding-top: clamp(38px, 5vw, 64px); padding-bottom: clamp(48px, 6vw, 80px); }
+  .nc-faqsec--display .nc-faqsec__wrap { max-width: 712px; }
+  .nc-faqsec--display .nc-section-head h2 { margin-bottom: 24px; font-size: clamp(19px, 2.9vw, 30px); font-weight: 400; color: var(--sage-700); }
+  .nc-faqsec--display .nc-acc__head { font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 22px; color: var(--sage-700); }
+  .nc-faqsec--display .nc-acc__body p:last-child { margin-bottom: 0; }
+  .nc-faqsec--display .nc-acc__head svg { color: var(--ink-400); }
+  .nc-faqsec--display .nc-acc__body { padding: 0 2px 20px; font-size: 15px; line-height: 1.7; color: var(--ink-700); }
   .nc-faqsec__links-block { margin-top: clamp(30px, 4vw, 48px); }
   .nc-faqsec__links-label { margin-bottom: 12px; }
   .nc-faqsec__links { display: flex; flex-wrap: wrap; gap: 8px; }
   .nc-faqsec__disclaimer { max-width: 46rem; margin: clamp(22px, 3vw, 32px) 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
 {%- endstyle -%}
 
-<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %}" id="faq">
+<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %} {% if section.settings.display_style %}nc-faqsec--display{% endif %}" id="faq">
   <div class="nc-container">
     <div class="nc-faqsec__wrap">
       <div class="nc-section-head {% unless section.settings.compact %}nc-section-head--center{% endunless %}" style="margin-bottom: 8px;">
@@ -46,7 +54,7 @@
           {%- else -%}
             <details class="nc-acc__item" {% if forloop.first and section.settings.open_first %}open{% endif %} {{ block.shopify_attributes }}>
               <summary class="nc-acc__head">
-                {{ block.settings.q }}
+                {{ block.settings.q | replace: '[produkt]', product.title }}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
               <div class="nc-acc__body">{{ block.settings.a }}</div>
@@ -89,6 +97,7 @@
     { "type": "textarea", "id": "subtext", "label": "Undertekst" },
     { "type": "checkbox", "id": "open_first", "label": "Åbn første spørgsmål", "default": true },
     { "type": "checkbox", "id": "compact", "label": "Kompakt (lille overskrift, 2 kolonner)", "default": false },
+    { "type": "checkbox", "id": "display_style", "label": "PDP-stil (Philosopher-spørgsmål, smal)", "default": false },
     { "type": "text", "id": "links_label", "label": "Label over chips", "default": "Populære søgninger" },
     { "type": "textarea", "id": "links", "label": "Chips (én pr. linje: Tekst | /url)" },
     { "type": "textarea", "id": "disclaimer", "label": "Disclaimer-tekst" }

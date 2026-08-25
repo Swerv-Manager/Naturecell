@@ -1,7 +1,8 @@
 {% comment %}
-  Produktside: to redaktionelle blokke ("Derfor elsker vores kunder den"
-  og "Sådan bruger du den") med produktbilleder, skiftevis venstre/hoejre.
-  Tekst fra metafelter (nc.story_1 / nc.usage) med fallback.
+  Produktside: to redaktionelle splits 1:1 fra NatureCell.dc.html —
+  "Derfor elsker vores kunder den" (billede venstre) og "Sådan bruger
+  du den" (billede hoejre). Tekst fra metafelter (ncell.story_title /
+  ncell.story / ncell.usage) med sektionsindstillinger som fallback.
 {% endcomment %}
 
 {%- liquid
@@ -11,46 +12,41 @@
 -%}
 
 {%- style -%}
-  .nc-pdpstory { display: flex; flex-direction: column; gap: clamp(36px, 5vw, 64px); }
-  .nc-pdpstory__row { display: grid; gap: clamp(24px, 4vw, 56px); grid-template-columns: 1fr; align-items: center; }
-  @media (min-width: 900px) {
-    .nc-pdpstory__row { grid-template-columns: 1fr 1fr; }
-    .nc-pdpstory__row--flip .nc-pdpstory__media { order: 2; }
+  #shopify-section-{{ section.id }} .nc-pdpstory { border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__inner { max-width: 1140px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); display: grid; gap: clamp(28px, 5vw, 48px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 700px) {
+    #shopify-section-{{ section.id }} .nc-pdpstory__inner { grid-template-columns: 1fr 1fr; }
+    #shopify-section-{{ section.id }} .nc-pdpstory--flip .nc-pdpstory__media { order: 2; }
   }
-  .nc-pdpstory__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--nc-product-tint); aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; }
-  .nc-pdpstory__media img { max-width: 82%; max-height: 82%; object-fit: contain; }
-  .nc-pdpstory__text h2 { font-size: clamp(24px, 2.6vw, 32px); }
-  .nc-pdpstory__text p { max-width: 52ch; }
+  #shopify-section-{{ section.id }} .nc-pdpstory__media { width: 100%; height: 400px; border-radius: 18px; object-fit: contain; background: var(--sage-50); padding: 20px; display: block; }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text { display: flex; flex-direction: column; gap: 14px; }
+  #shopify-section-{{ section.id }} .nc-pdpstory__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(20px, 3.1vw, 32px); line-height: 1.1; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--ink-700); }
 {%- endstyle -%}
 
-<section class="nc-section">
-  <div class="nc-container">
-    <div class="nc-pdpstory">
-      <div class="nc-pdpstory__row">
-        <div class="nc-pdpstory__media">
-          {%- if img_a -%}
-            {{ img_a | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy' }}
-          {%- endif -%}
-        </div>
-        <div class="nc-pdpstory__text">
-          <p class="nc-eyebrow">{{ section.settings.eyebrow_1 }}</p>
-          <h2>{{ product.metafields.ncell.story_title.value | default: section.settings.heading_1 }}</h2>
-          <p>{{ product.metafields.ncell.story.value | default: product.description | strip_html | truncate: 420 }}</p>
-        </div>
-      </div>
+<section class="nc-pdpstory">
+  <div class="nc-pdpstory__inner">
+    {%- if img_a -%}
+      {{ img_a | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
+    {%- endif -%}
+    <div class="nc-pdpstory__text">
+      <span class="nc-pdpstory__eyebrow">{{ section.settings.eyebrow_1 }}</span>
+      <h2>{{ product.metafields.ncell.story_title.value | default: section.settings.heading_1 }}</h2>
+      <p>{{ product.metafields.ncell.story.value | default: product.description | strip_html | truncate: 420 }}</p>
+    </div>
+  </div>
+</section>
 
-      <div class="nc-pdpstory__row nc-pdpstory__row--flip">
-        <div class="nc-pdpstory__media">
-          {%- if img_b -%}
-            {{ img_b | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy' }}
-          {%- endif -%}
-        </div>
-        <div class="nc-pdpstory__text">
-          <p class="nc-eyebrow">{{ section.settings.eyebrow_2 }}</p>
-          <h2>{{ section.settings.heading_2 }}</h2>
-          <p>{{ product.metafields.ncell.usage.value | default: section.settings.usage_fallback }}</p>
-        </div>
-      </div>
+<section class="nc-pdpstory nc-pdpstory--flip">
+  <div class="nc-pdpstory__inner">
+    {%- if img_b -%}
+      {{ img_b | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
+    {%- endif -%}
+    <div class="nc-pdpstory__text">
+      <span class="nc-pdpstory__eyebrow">{{ section.settings.eyebrow_2 }}</span>
+      <h2>{{ product.metafields.ncell.usage_title.value | default: section.settings.heading_2 }}</h2>
+      <p>{{ product.metafields.ncell.usage.value | default: section.settings.usage_fallback }}</p>
     </div>
   </div>
 </section>
@@ -61,10 +57,10 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "eyebrow_1", "label": "Blok 1: overlinje", "default": "Derfor elsker vores kunder den" },
-    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback)", "default": "En fast del af rutinen" },
+    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback)", "default": "Vores mest elskede — Vidunder Olien" },
     { "type": "text", "id": "eyebrow_2", "label": "Blok 2: overlinje", "default": "Sådan bruger du den" },
-    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift", "default": "En enkel del af din daglige rutine" },
-    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "default": "Påfør på ren, tør hud morgen og/eller aften. Til udvortes brug. Opbevares køligt og mørkt." }
+    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift (fallback)", "default": "Et par dråber er alt der skal til" },
+    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "default": "Dryp et par dråber i håndfladen og massér blidt ind i ren hud morgen og/eller aften — alene eller under din creme. Kan også blandes i din lotion eller creme." }
   ]
 }
 {% endschema %}

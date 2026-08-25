@@ -1,38 +1,86 @@
-{% comment %} Relaterede produkter: Shopify-anbefalinger med kollektion som fallback. {% endcomment %}
+{% comment %}
+  Produktside: "Passer godt sammen med"-rail 1:1 fra NatureCell.dc.html.
+  Overskrift til venstre, runde pil-knapper til hoejre, produktkort i
+  vandret rail. Shopify-anbefalinger med kollektion som fallback
+  (uden sampakker), samme kort-snippet som resten af butikken.
+{% endcomment %}
 
-<section class="nc-section" style="background: var(--nc-bestsellers-bg);">
-  <div class="nc-container">
-    <div style="margin-bottom: clamp(20px, 3vw, 32px);">
-      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-      <h2 style="margin: 0;">{{ section.settings.heading }}</h2>
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-relrail { padding: 72px 0 clamp(48px, 6vw, 80px); }
+  #shopify-section-{{ section.id }} .nc-relrail__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+  #shopify-section-{{ section.id }} .nc-relrail__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 28px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-relrail__nav { display: flex; gap: 8px; }
+  #shopify-section-{{ section.id }} .nc-relrail__nav button { width: 42px; height: 42px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--cloud); color: var(--ink-700); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  #shopify-section-{{ section.id }} .nc-relrail__nav button:hover { background: var(--sage-50); border-color: var(--sage-400); }
+  #shopify-section-{{ section.id }} .nc-relrail__rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(min(47%, 248px), 1fr); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 12px; }
+  #shopify-section-{{ section.id }} .nc-relrail__rail::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .nc-relrail__rail > * { scroll-snap-align: start; }
+  /* Korttitler som i designets NCProductCard: ingen tracking, almindelig ombrydning.
+     max-width matcher designets ombrydning ("Collagen med / hyaluronsyre"). */
+  #shopify-section-{{ section.id }} .nc-product-card__title { letter-spacing: normal; text-wrap: wrap; max-width: 210px; }
+  /* Tekstblokkens lodrette rytme som designets NCProductCard:
+     gap 7px, rating +2px, pris efter 17px (7 gap + 10 margin), padding 18/18/20. */
+  #shopify-section-{{ section.id }} .nc-product-card__info { gap: 7px; padding: 18px 18px 20px; }
+  #shopify-section-{{ section.id }} .nc-product-card__rating { margin-top: 2px; }
+  #shopify-section-{{ section.id }} .nc-product-card__price { margin-top: 10px; }
+{%- endstyle -%}
+
+<div class="nc-relrail">
+  <div class="nc-container" data-nc-railwrap>
+    <div class="nc-relrail__head">
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="nc-relrail__nav">
+        <button type="button" data-nc-rail-prev aria-label="Forrige">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button type="button" data-nc-rail-next aria-label="Næste">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
     </div>
 
-    <ul class="nc-grid">
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
-        {%- for rec in recommendations.products limit: section.settings.limit -%}
-          <li>{% render 'nc-product-card', product: rec %}</li>
+    <div class="nc-relrail__rail" data-nc-railscroll>
+      {%- assign pinned_size = section.settings.pinned | size -%}
+      {%- if pinned_size > 0 -%}
+        {%- for item in section.settings.pinned limit: section.settings.limit -%}
+          {%- if item.title -%}
+            <div>{% render 'nc-product-card', product: item %}</div>
+          {%- else -%}
+            {%- assign pinned_product = all_products[item] -%}
+            {%- if pinned_product.title -%}
+              <div>{% render 'nc-product-card', product: pinned_product %}</div>
+            {%- endif -%}
+          {%- endif -%}
         {%- endfor -%}
-      {%- elsif product.collections.first -%}
+      {%- elsif recommendations.performed and recommendations.products_count > 0 -%}
+        {%- for rec in recommendations.products limit: section.settings.limit -%}
+          <div>{% render 'nc-product-card', product: rec %}</div>
+        {%- endfor -%}
+      {%- elsif product.collections.first or collection -%}
+        {%- assign src = product.collections.first | default: collection -%}
         {%- assign shown = 0 -%}
-        {%- for p in product.collections.first.products -%}
-          {%- if p.id != product.id and shown < section.settings.limit -%}
-            <li>{% render 'nc-product-card', product: p %}</li>
+        {%- for p in src.products -%}
+          {%- assign skip = false -%}
+          {%- if p.id == product.id -%}{%- assign skip = true -%}{%- endif -%}
+          {%- if p.tags contains 'pakker' or p.tags contains 'bundle' -%}{%- assign skip = true -%}{%- endif -%}
+          {%- if skip == false and shown < section.settings.limit -%}
+            <div>{% render 'nc-product-card', product: p %}</div>
             {%- assign shown = shown | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
-    </ul>
+    </div>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
   "name": "Relaterede produkter",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Passer godt sammen" },
-    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Andre har også kigget på" },
-    { "type": "range", "id": "limit", "label": "Antal", "min": 2, "max": 8, "step": 1, "default": 4 }
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Passer godt sammen med" },
+    { "type": "product_list", "id": "pinned", "label": "Faste produkter (overstyrer anbefalinger)", "limit": 10 },
+    { "type": "range", "id": "limit", "label": "Antal", "min": 2, "max": 10, "step": 1, "default": 10 }
   ]
 }
 {% endschema %}

@@ -1,0 +1,74 @@
+{% comment %}
+  Produktside: ambassadoer-split 1:1 fra NatureCell.dc.html.
+  "AMBASSADØR"-pill, citatoverskrift, broedtekst, avatar med navn/rolle,
+  billede til hoejre med playknap.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-pdpamb { background: var(--nc-founder-bg, var(--paper-2)); border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-pdpamb__inner { max-width: 1100px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); display: grid; gap: clamp(28px, 5vw, 48px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 700px) {
+    #shopify-section-{{ section.id }} .nc-pdpamb__inner { grid-template-columns: 1fr 1fr; }
+  }
+  #shopify-section-{{ section.id }} .nc-pdpamb__text { display: flex; flex-direction: column; gap: 16px; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__pill { display: inline-flex; align-self: flex-start; background: var(--sage-100); color: var(--sage-700); font-weight: 600; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 13px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__text h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(21px, 3.3vw, 34px); line-height: 1.1; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__text > p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-pdpamb__who { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--sage-200); flex: none; overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__who-name { display: flex; flex-direction: column; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__who-name strong { font-weight: 600; font-size: 14px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdpamb__who-name span { font-size: 12.5px; color: var(--ink-400); }
+  #shopify-section-{{ section.id }} .nc-pdpamb__media { position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-pdpamb__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+{%- endstyle -%}
+
+<section class="nc-pdpamb">
+  <div class="nc-pdpamb__inner">
+    <div class="nc-pdpamb__text">
+      <span class="nc-pdpamb__pill">{{ section.settings.pill }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.body }}</p>
+      <div class="nc-pdpamb__who">
+        <span class="nc-pdpamb__avatar">
+          {%- if section.settings.avatar != blank -%}
+            {{ section.settings.avatar | image_url: width: 120 | image_tag: alt: section.settings.name, loading: 'lazy' }}
+          {%- endif -%}
+        </span>
+        <span class="nc-pdpamb__who-name">
+          <strong>{{ section.settings.name }}</strong>
+          <span>{{ section.settings.role }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="nc-pdpamb__media">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1100 | image_tag: alt: section.settings.pill, loading: 'lazy' }}
+      {%- else -%}
+        <img src="{{ 'nc-founders.webp' | asset_url }}" alt="Ambassadør" loading="lazy" width="1200" height="900">
+      {%- endif -%}
+      <span class="nc-pdpamb__play" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produkt: ambassadør",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "pill", "label": "Pill", "default": "Ambassadør" },
+    { "type": "text", "id": "heading", "label": "Citat-overskrift", "default": "\"Min hud fortjener ærlige produkter\"" },
+    { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Jeg vil vide, hvad jeg smører på min hud. Det, jeg holder af ved NatureCell, er åbenheden — plantebaseret, dansk produceret og testet, uden store løfter. Det er blevet en fast del af min daglige rutine." },
+    { "type": "image_picker", "id": "avatar", "label": "Avatar" },
+    { "type": "text", "id": "name", "label": "Navn", "default": "Camilla Holm" },
+    { "type": "text", "id": "role", "label": "Rolle", "default": "Hudplejeentusiast" },
+    { "type": "image_picker", "id": "image", "label": "Billede (højre)" }
+  ],
+  "presets": [ { "name": "Produkt: ambassadør" } ]
+}
+{% endschema %}

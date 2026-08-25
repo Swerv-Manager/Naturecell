@@ -1,50 +1,46 @@
 {% comment %}
-  Videorail fra designet: "Hør vores kunder fortælle" — kort med
-  YouTube-thumbnail og playknap, aabner paa YouTube.
+  Produktside: moerkt sage-baand 1:1 fra NatureCell.dc.html —
+  "47.800+ danskere elsker NatureCell" med hoejrestillet note og
+  4 staaende videokort (YouTube-thumbnail, playknap, navn).
 {% endcomment %}
 
 {%- style -%}
-  .nc-vidrail { background: var(--nc-foundervid-bg); }
-  .nc-vidrail__card { position: relative; display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
-  .nc-vidrail__media { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); }
-  .nc-vidrail__media img { width: 100%; height: 100%; object-fit: cover; }
-  .nc-vidrail__media span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-  .nc-vidrail__media span i { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.92); color: var(--sage-700); box-shadow: var(--shadow-md); }
-  .nc-vidrail__name { font-family: var(--font-display); font-size: 17px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-vidband { background: var(--nc-pdpband-bg, var(--sage-500)); }
+  #shopify-section-{{ section.id }} .nc-vidband__inner { max-width: 1140px; margin: 0 auto; padding: clamp(33px, 6vw, 60px) var(--gutter); }
+  #shopify-section-{{ section.id }} .nc-vidband__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .nc-vidband__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: var(--leading-relaxed); color: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-vidband__note { font-size: 14px; color: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-vidband__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(47%, 220px), 1fr)); gap: 16px; }
+  #shopify-section-{{ section.id }} .nc-vidband__card { display: block; text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__media { display: block; position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3 / 4; cursor: pointer; }
+  #shopify-section-{{ section.id }} .nc-vidband__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-vidband__shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(40, 64, 59, 0.55)); pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__name { position: absolute; bottom: 12px; left: 12px; color: #fff; font-size: 13px; font-weight: 600; pointer-events: none; }
 {%- endstyle -%}
 
-<section class="nc-vidrail nc-section">
-  <div class="nc-container" data-nc-railwrap>
-    <div class="nc-best__head" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: clamp(20px, 3vw, 30px);">
-      <div>
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-        <h2 style="margin: 0;">{{ section.settings.heading }}</h2>
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <button class="nc-iconbtn" data-nc-rail-prev aria-label="Rul tilbage">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <button class="nc-iconbtn" data-nc-rail-next aria-label="Rul frem">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </button>
-      </div>
+<section class="nc-vidband">
+  <div class="nc-vidband__inner">
+    <div class="nc-vidband__head">
+      <h2>{{ section.settings.heading }}</h2>
+      <span class="nc-vidband__note">{{ section.settings.note }}</span>
     </div>
-
-    <div class="nc-rail-scroll nc-scroll" data-nc-railscroll>
+    <div class="nc-vidband__grid">
       {%- for block in section.blocks -%}
         {%- assign yt = block.settings.youtube_id -%}
-        <a class="nc-vidrail__card" href="https://www.youtube.com/watch?v={{ yt }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
-          <span class="nc-vidrail__media">
+        <a class="nc-vidband__card" href="https://www.youtube.com/watch?v={{ yt }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+          <span class="nc-vidband__media">
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 640 | image_tag: alt: block.settings.name, loading: 'lazy' }}
             {%- elsif yt != blank -%}
               <img src="https://img.youtube.com/vi/{{ yt }}/hqdefault.jpg" alt="{{ block.settings.name | escape }}" loading="lazy" width="480" height="360">
             {%- endif -%}
-            <span aria-hidden="true"><i>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </i></span>
+            <span class="nc-vidband__shade" aria-hidden="true"></span>
+            <span class="nc-vidband__play" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            <span class="nc-vidband__name">{{ block.settings.name }}</span>
           </span>
-          <span class="nc-vidrail__name">{{ block.settings.name }}</span>
         </a>
       {%- endfor -%}
     </div>
@@ -56,8 +52,8 @@
   "name": "Videorail",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Ægte oplevelser" },
-    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hør vores kunder fortælle" }
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "47.800+ danskere elsker NatureCell" },
+    { "type": "text", "id": "note", "label": "Note (højre)", "default": "94% vil anbefale os til en ven" }
   ],
   "blocks": [
     {

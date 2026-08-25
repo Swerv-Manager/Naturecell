@@ -1,0 +1,114 @@
+{% comment %}
+  Produktside: anmeldelsesbaand 1:1 fra NatureCell.dc.html.
+  Sage-50 baand med centreret stjernerække, "Hvad kunderne siger",
+  ratinglinje og to modsat-loebende raekker af anmeldelseskort.
+{% endcomment %}
+
+{%- liquid
+  assign title_parts = product.title | split: ' | '
+  assign main_title = title_parts[0]
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
+  assign rating_label = ''
+  if rating != blank and rating_count != blank
+    assign rating_str = rating.rating | default: rating | append: ''
+    assign rating_label = rating_str | replace: '.', ',' | append: '/5 · ' | append: rating_count | append: ' anmeldelser'
+  endif
+  assign row_a_count = 7
+  if section.blocks.size < 14
+    assign row_a_count = section.blocks.size | plus: 1 | divided_by: 2
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-pdprev { background: var(--nc-reviews-bg, var(--sage-50)); border-top: 1px solid var(--border-soft); padding: 60px 0; overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pdprev__head { max-width: var(--container-max); margin: 0 auto 36px; padding: 0 var(--gutter); text-align: center; }
+  #shopify-section-{{ section.id }} .nc-pdprev__stars { display: inline-flex; gap: 3px; margin-bottom: 10px; color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-pdprev__stars svg { fill: currentColor; }
+  #shopify-section-{{ section.id }} .nc-pdprev__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 28px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdprev__head p { margin: 6px 0 0; font-size: 14px; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-pdprev__row { position: relative; width: 100%; overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pdprev__row--a { margin-bottom: 20px; }
+  #shopify-section-{{ section.id }} .nc-pdprev__rail { display: flex; gap: 20px; width: max-content; }
+  #shopify-section-{{ section.id }} .nc-pdprev__row--a .nc-pdprev__rail { animation: nc-marquee-rev 60s linear infinite; }
+  #shopify-section-{{ section.id }} .nc-pdprev__row--b .nc-pdprev__rail { animation: nc-marquee 60s linear infinite; }
+  #shopify-section-{{ section.id }} .nc-pdprev__row:hover .nc-pdprev__rail { animation-play-state: paused; }
+  #shopify-section-{{ section.id }} .nc-pdprev__card { flex: none; width: 360px; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-pdprev__card-stars { display: flex; gap: 2px; color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-pdprev__card-stars svg { fill: currentColor; }
+  #shopify-section-{{ section.id }} .nc-pdprev__quote { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.6; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdprev__by { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
+  #shopify-section-{{ section.id }} .nc-pdprev__by strong { font-weight: 600; font-size: 14px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdprev__by span { font-size: 12.5px; color: var(--ink-400); }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .nc-pdprev__rail { animation: none !important; }
+  }
+{%- endstyle -%}
+
+{%- capture star16 -%}<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>{%- endcapture -%}
+
+<section class="nc-pdprev">
+  <div class="nc-pdprev__head">
+    <div class="nc-pdprev__stars" aria-hidden="true">
+      {%- for i in (1..5) -%}
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+      {%- endfor -%}
+    </div>
+    <h2>{{ section.settings.heading }}</h2>
+    {%- if rating_label != blank -%}
+      <p>{{ rating_label }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="nc-pdprev__row nc-pdprev__row--a">
+    <div class="nc-pdprev__rail">
+      {%- for i in (1..2) -%}
+        {%- for block in section.blocks limit: row_a_count -%}
+          <div class="nc-pdprev__card" {% if i == 2 %}aria-hidden="true"{% else %}{{ block.shopify_attributes }}{% endif %}>
+            <div class="nc-pdprev__card-stars" aria-hidden="true">{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}</div>
+            <p class="nc-pdprev__quote">"{{ block.settings.text | replace: '[produkt]', main_title }}"</p>
+            <div class="nc-pdprev__by"><strong>{{ block.settings.name }}</strong><span>{{ block.settings.meta }}</span></div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if section.blocks.size > row_a_count -%}
+    <div class="nc-pdprev__row nc-pdprev__row--b">
+      <div class="nc-pdprev__rail">
+        {%- for i in (1..2) -%}
+          {%- for block in section.blocks offset: row_a_count -%}
+            <div class="nc-pdprev__card" {% if i == 2 %}aria-hidden="true"{% else %}{{ block.shopify_attributes }}{% endif %}>
+              <div class="nc-pdprev__card-stars" aria-hidden="true">{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}</div>
+              <p class="nc-pdprev__quote">"{{ block.settings.text | replace: '[produkt]', main_title }}"</p>
+              <div class="nc-pdprev__by"><strong>{{ block.settings.name }}</strong><span>{{ block.settings.meta }}</span></div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Produkt: anmeldelser",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hvad kunderne siger" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Anmeldelse",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Navn", "default": "Mette K." },
+        { "type": "text", "id": "meta", "label": "Meta", "default": "Verificeret køb" },
+        { "type": "textarea", "id": "text", "label": "Tekst ([produkt] = produktnavn)", "default": "Jeg er så glad for [produkt]. Den er blevet helt fast i min rutine." }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Produkt: anmeldelser" } ]
+}
+{% endschema %}

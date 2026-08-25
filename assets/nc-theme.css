@@ -544,3 +544,7 @@ summary.nc-acc__head { list-style: none; }
   .nc-rail { animation: none !important; }
   .nc-ccard:hover .nc-ccard__media img { transform: none; }
 }
+
+/* --- PDP-scoped (kun produktsider): footer-brandtekst ombrydes i fire linjer
+   som i det godkendte produktdesign. Additiv regel; roerer ikke andre skabeloner. --- */
+.template-product .nc-footer__brand p:first-of-type { max-width: 206px; }
