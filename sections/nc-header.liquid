@@ -11,8 +11,8 @@
     color: rgba(255, 255, 255, 0.92);
     text-align: center;
     padding: 9px var(--gutter);
-    font-size: 13px;
-    letter-spacing: 0.03em;
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
   }
 
   .nc-header {
@@ -26,15 +26,16 @@
     display: flex;
     align-items: center;
     gap: clamp(14px, 2vw, 28px);
-    min-height: 76px;
+    min-height: 74px;
   }
 
   .nc-header__logo { display: inline-flex; align-items: center; flex: none; text-decoration: none; }
-  .nc-header__logo img { display: block; width: auto; height: {{ section.settings.logo_height | default: 40 }}px; }
+  .nc-header__logo img { display: block; width: auto; height: {{ section.settings.logo_height | default: 36 }}px; }
   .nc-header__logo-text { font-family: var(--font-display); font-size: 26px; color: var(--ink-900); }
 
   .nc-header__nav { display: none; flex: 1 1 auto; }
-  .nc-header__nav > ul { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 2.2vw, 32px); margin: 0; padding: 0; list-style: none; }
+  {%- comment -%} Maalt i designet: nav-klyngen er 486px bred ved 1440 — ~2px mere luft pr. punkt end foer. {%- endcomment -%}
+  .nc-header__nav > ul { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 2.3vw, 32px); margin: 0; padding: 0; list-style: none; }
   .nc-header__link {
     display: inline-flex;
     align-items: center;
@@ -46,7 +47,8 @@
     font-family: var(--font-body);
     font-size: 15px;
     font-weight: 500;
-    color: var(--ink-900);
+    letter-spacing: 0;
+    color: var(--sage-700);
     text-decoration: none;
     cursor: pointer;
   }
@@ -62,8 +64,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    width: 43px;
+    height: 43px;
     border-radius: var(--radius-pill);
     border: 0;
     background: none;
@@ -71,6 +73,8 @@
     text-decoration: none;
     cursor: pointer;
   }
+  /* Designet: soeg/kurv har padding 11px (43px), favoritter/konto padding 9px (39px) om 21px-ikoner */
+  .nc-header__action--sm { width: 39px; height: 39px; }
   .nc-header__action:hover, .nc-header__action:focus-visible { color: var(--sage-600); background: rgba(62, 93, 88, 0.06); }
   .nc-header__count {
     position: absolute;
@@ -89,8 +93,8 @@
   }
   .nc-header__count.is-empty { display: none; }
 
-  .nc-langs { display: none; align-items: stretch; background: transparent; border: 1px solid rgba(62, 93, 88, 0.28); border-radius: var(--radius-pill); overflow: hidden; margin-right: 6px; }
-  .nc-langs a { display: inline-flex; align-items: center; padding: 6px 12px; font-size: 12px; font-weight: 600; text-decoration: none; color: var(--sage-600); }
+  .nc-langs { display: none; align-items: stretch; background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); overflow: hidden; margin-right: 6px; }
+  .nc-langs a { display: inline-flex; align-items: center; padding: 6px 9px; font-size: 11px; font-weight: 600; line-height: normal; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-500); }
     .nc-langs a.is-active { background: var(--sage-500); color: var(--cloud); }
 
   .nc-header__burger { display: inline-flex; }
@@ -234,17 +238,17 @@
         <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="Søg">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
         </a>
-        <a class="nc-header__action" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="Favoritter">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <a class="nc-header__action nc-header__action--sm" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="Favoritter">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
           <span class="nc-header__count is-empty" data-nc-fav-count aria-hidden="true">0</span>
         </a>
         {%- if shop.customer_accounts_enabled -%}
-          <a class="nc-header__action" href="{{ routes.account_url }}" aria-label="Konto">
+          <a class="nc-header__action nc-header__action--sm" href="{{ routes.account_url }}" aria-label="Konto">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
           </a>
         {%- endif -%}
         <button class="nc-header__action" data-nc-cart-open aria-label="Kurv">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z"/><path d="M5 7.4 12 12l7-4.6"/></svg>
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           <span class="nc-header__count {% if cart.item_count == 0 %}is-empty{% endif %}" data-nc-cart-count>{{ cart.item_count }}</span>
         </button>
       </div>
@@ -384,7 +388,7 @@
       "max": 64,
       "step": 2,
       "unit": "px",
-      "default": 40
+      "default": 36
     },
     { "type": "header", "content": "Links" },
     { "type": "url", "id": "all_url", "label": "Alle produkter", "info": "Standard: /collections/cbd-hudpleje" },
