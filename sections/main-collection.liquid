@@ -14,7 +14,8 @@
   .nc-coll__header { max-width: 68ch; margin-bottom: 22px; }
   .nc-coll__header p { color: var(--ink-700); }
   .nc-coll__toolbar { border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 22px 0 20px; margin: 0 0 14px; }
-  .nc-coll__search { display: flex; align-items: center; gap: 10px; width: min(520px, 100%); padding: 11px 18px; margin: 0 0 20px; background: var(--cloud); border: 1px solid var(--border-default); border-radius: var(--radius-pill); color: var(--ink-500); }
+  {%- comment -%} Maalt i det godkendte design: soegefeltet er ~434px bredt ved 1440, ikke 514. {%- endcomment -%}
+  .nc-coll__search { display: flex; align-items: center; gap: 10px; width: min(440px, 100%); padding: 11px 18px; margin: 0 0 20px; background: var(--cloud); border: 1px solid var(--border-default); border-radius: var(--radius-pill); color: var(--ink-500); }
   .nc-coll__search svg { flex: none; }
   .nc-coll__search input { flex: 1; min-width: 0; border: 0; background: none; font-family: var(--font-body); font-size: 14px; color: var(--ink-900); outline: none; }
   .nc-coll__search input::placeholder { color: var(--ink-500); }

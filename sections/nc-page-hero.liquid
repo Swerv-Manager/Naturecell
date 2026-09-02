@@ -22,6 +22,15 @@
   {%- comment -%} Designets eyebrow paa sage-baandet er lys sage (sage-200), ikke sand. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-pagehero--band .nc-eyebrow { color: var(--sage-200); }
 
+  {%- comment -%} "soft": lyst sage-50-baand med moerk tekst (designets FAQ-side, template.html:2306-2312):
+      820px-kolonne inkl. 24px sidepadding, eyebrow 12px/0.14em sage-600, H1 clamp(29,4.5vw,46), intro 17px maks 560px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--soft { padding: clamp(35px, 6vw, 64px) 0; background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__inner { max-width: 772px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
+  {%- comment -%} Designets h1 saetter ingen line-height og arver derfor body'ens 1.7 — det giver baandets hoejde. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--soft h1 { margin: 0; font-size: clamp(29px, 4.5vw, 46px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__intro { margin: 0; max-width: 560px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
+
   #shopify-section-{{ section.id }} .nc-pagehero--image { background: var(--sage-800); }
   #shopify-section-{{ section.id }} .nc-pagehero__bg { position: absolute; inset: 0; opacity: 0.35; }
   #shopify-section-{{ section.id }} .nc-pagehero__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -38,6 +47,20 @@
         <h1>{{ section.settings.heading | default: page.title }}</h1>
         {%- if section.settings.intro != blank -%}
           <p>{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- elsif tone == 'soft' -%}
+  <div class="nc-pagehero--soft">
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="nc-pagehero__intro">{{ section.settings.intro }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -81,6 +104,7 @@
       "options": [
         { "value": "plain", "label": "Enkel (papir)" },
         { "value": "sage", "label": "Sage-bånd" },
+        { "value": "soft", "label": "Lyst sage-bånd (FAQ)" },
         { "value": "image", "label": "Mørkt bånd med billede" }
       ],
       "default": "plain"

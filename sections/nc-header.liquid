@@ -34,16 +34,17 @@
   .nc-header__logo-text { font-family: var(--font-display); font-size: 26px; color: var(--ink-900); }
 
   .nc-header__nav { display: none; flex: 1 1 auto; }
-  {%- comment -%} Maalt i designet: nav-klyngen er 486px bred ved 1440 — ~2px mere luft pr. punkt end foer. {%- endcomment -%}
-  .nc-header__nav > ul { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 2.3vw, 32px); margin: 0; padding: 0; list-style: none; }
+  {%- comment -%} Designets nav (template.html:1057): gap clamp(0px,0.5vw,6px) og knapper med padding 10px 14px + pille-radius. {%- endcomment -%}
+  .nc-header__nav > ul { display: flex; align-items: center; justify-content: center; gap: clamp(0px, 0.5vw, 6px); margin: 0; padding: 0; list-style: none; }
   .nc-header__link {
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
     gap: 6px;
-    padding: 10px 2px;
+    padding: 10px 14px;
     background: none;
     border: 0;
+    border-radius: var(--radius-pill);
     font-family: var(--font-body);
     font-size: 15px;
     font-weight: 500;
@@ -52,8 +53,9 @@
     text-decoration: none;
     cursor: pointer;
   }
-  .nc-header__link:hover, .nc-header__link:focus-visible { color: var(--sage-600); }
-  a.nc-header__link.is-current { background: var(--sage-100); border-radius: var(--radius-pill); color: var(--sage-700); padding: 10px 14px; }
+  {%- comment -%} Designet har ingen "aktiv side"-tilstand i navigationen — kun hover-pillen (sage-100). Pillen paa
+      "Kundecases" i designets skaermbillede er hover fra optagelsen, ikke en aktiv markering. {%- endcomment -%}
+  .nc-header__link:hover, .nc-header__link:focus-visible { background: var(--sage-100); color: var(--sage-700); }
   .nc-header__link svg { transition: transform var(--dur-fast) var(--ease-soft); }
   .nc-header__link[aria-expanded="true"] svg { transform: rotate(180deg); }
   .nc-header__star { color: var(--sage-500); }
@@ -197,8 +199,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </button>
           </li>
-          <li><a class="nc-header__link{% if request.path contains '/blogs/kundecases' %} is-current{% endif %}" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a></li>
-          <li><a class="nc-header__link{% if request.path contains '/blogs/artikler' %} is-current{% endif %}" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a></li>
+          <li><a class="nc-header__link" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a></li>
+          <li><a class="nc-header__link" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a></li>
           <li class="nc-dd">
             <a class="nc-header__link" href="{{ section.settings.about_url | default: '/pages/om-os' }}" aria-haspopup="true">
               Om os

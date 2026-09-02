@@ -38,21 +38,57 @@
   .nc-faqsec__links-label { margin-bottom: 12px; }
   .nc-faqsec__links { display: flex; flex-wrap: wrap; gap: 8px; }
   .nc-faqsec__disclaimer { max-width: 46rem; margin: clamp(22px, 3vw, 32px) 0 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
+  /* FAQ-siden: designets aabne liste (template.html:2313-2327) — alle svar synlige, ingen accordion.
+     Designet: kolonne 820px inkl. 24px sidepadding = 772px indhold. */
+  .nc-faqsec--list.nc-section { padding-top: clamp(14px, 5vw, 24px); padding-bottom: clamp(48px, 6vw, 80px); }
+  .nc-faqsec--list .nc-faqsec__wrap { max-width: 772px; }
+  .nc-faqsec--list .nc-faqsec__grp { margin-bottom: 44px; }
+  .nc-faqsec--list .nc-faqsec__grp h2 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: var(--leading-relaxed); letter-spacing: normal; color: var(--sage-700); }
+  .nc-faqsec--list .nc-faqsec__qa { border-top: 1px solid var(--border-soft); padding: 22px 2px; display: flex; flex-direction: column; gap: 8px; }
+  .nc-faqsec--list .nc-faqsec__qa h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.25; letter-spacing: normal; color: var(--sage-700); }
+  .nc-faqsec--list .nc-faqsec__qa p { margin: 0; font-size: 15.5px; line-height: 1.7; color: var(--ink-700); }
+  .nc-faqsec--list .nc-faqsec__note { border-top: 1px solid var(--border-soft); padding-top: 28px; margin-top: 8px; text-align: center; }
+  .nc-faqsec--list .nc-faqsec__note p { margin: 0; font-size: 15px; color: var(--ink-500); }
 {%- endstyle -%}
 
-<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %} {% if section.settings.display_style %}nc-faqsec--display{% endif %}" id="faq">
+<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %} {% if section.settings.display_style %}nc-faqsec--display{% endif %} {% if section.settings.list_style %}nc-faqsec--list{% endif %}" id="faq">
   <div class="nc-container">
     <div class="nc-faqsec__wrap">
+      {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank -%}
       <div class="nc-section-head {% unless section.settings.compact %}nc-section-head--center{% endunless %}" style="margin-bottom: 8px;">
         {%- if section.settings.eyebrow != blank -%}
           <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
         {%- endif -%}
-        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading }}</h2>
+        {%- endif -%}
         {%- if section.settings.subtext != blank -%}
           <p>{{ section.settings.subtext }}</p>
         {%- endif -%}
       </div>
+      {%- endif -%}
 
+      {%- if section.settings.list_style -%}
+      {%- comment -%} Aaben liste: gruppeoverskrift + alle spoergsmaal/svar synlige, som paa designets FAQ-side. {%- endcomment -%}
+      {%- assign grp_open = false -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'group' -%}
+          {%- if grp_open -%}</div>{%- endif -%}
+          <div class="nc-faqsec__grp" {{ block.shopify_attributes }}>
+            <h2>{{ block.settings.heading }}</h2>
+          {%- assign grp_open = true -%}
+        {%- else -%}
+          <div class="nc-faqsec__qa" {{ block.shopify_attributes }}>
+            <h3>{{ block.settings.q | replace: '[produkt]', product.title }}</h3>
+            {{ block.settings.a }}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if grp_open -%}</div>{%- endif -%}
+      {%- if section.settings.note != blank -%}
+        <div class="nc-faqsec__note"><p>{{ section.settings.note }}</p></div>
+      {%- endif -%}
+      {%- else -%}
       <div class="nc-acc">
         {%- for block in section.blocks -%}
           {%- if block.type == 'group' -%}
@@ -68,6 +104,7 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      {%- endif -%}
 
       {%- if section.settings.links != blank -%}
         <div class="nc-faqsec__links-block">
@@ -104,6 +141,8 @@
     { "type": "checkbox", "id": "open_first", "label": "Åbn første spørgsmål", "default": true },
     { "type": "checkbox", "id": "compact", "label": "Kompakt (lille overskrift, 2 kolonner)", "default": false },
     { "type": "checkbox", "id": "display_style", "label": "PDP-stil (Philosopher-spørgsmål, smal)", "default": false },
+    { "type": "checkbox", "id": "list_style", "label": "Åben liste (FAQ-siden: alle svar synlige, ingen accordion)", "default": false },
+    { "type": "text", "id": "note", "label": "Afsluttende note under listen (kun åben liste)" },
     { "type": "text", "id": "links_label", "label": "Label over chips", "default": "Populære søgninger" },
     { "type": "textarea", "id": "links", "label": "Chips (én pr. linje: Tekst | /url)" },
     { "type": "textarea", "id": "disclaimer", "label": "Disclaimer-tekst" }
