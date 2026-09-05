@@ -91,7 +91,20 @@
         <div class="nc-faqsec__note"><p>{{ section.settings.note }}</p></div>
       {%- endif -%}
       {%- else -%}
+      {%- comment -%} Kollektionssider: unik FAQ fra kollektionens metafelt ncell.faq (liste af metaobjektet faq_item); ellers sektionens blokke. {%- endcomment -%}
+      {%- assign mf_faq = collection.metafields.ncell.faq.value -%}
       <div class="nc-acc">
+        {%- if request.page_type == 'collection' and mf_faq != blank -%}
+          {%- for item in mf_faq -%}
+            <details class="nc-acc__item" {% if forloop.first and section.settings.open_first %}open{% endif %}>
+              <summary class="nc-acc__head">
+                {{ item.question }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="nc-acc__body">{{ item.answer | metafield_tag }}</div>
+            </details>
+          {%- endfor -%}
+        {%- else -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'group' -%}
             <h3 class="nc-eyebrow nc-faqsec__group" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h3>
@@ -105,6 +118,7 @@
             </details>
           {%- endif -%}
         {%- endfor -%}
+        {%- endif -%}
       </div>
       {%- endif -%}
 

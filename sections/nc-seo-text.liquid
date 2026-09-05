@@ -35,13 +35,36 @@
       {%- if block.type == 'topic' -%}{%- assign has_blocks = true -%}{%- endif -%}
     {%- endfor -%}
 
+    {%- comment -%}
+      Unikt indhold pr. kollektion kommer fra kollektionens metafelter (ét template for alle):
+      ncell.seo_heading (tekst), ncell.seo_body (rich text) og ncell.seo_topics (liste af
+      metaobjektet seo_topic med title + text). Er de tomme, bruges sektionens egne indstillinger.
+    {%- endcomment -%}
+    {%- liquid
+      assign mf_heading = collection.metafields.ncell.seo_heading.value
+      assign mf_body = collection.metafields.ncell.seo_body
+      assign mf_topics = collection.metafields.ncell.seo_topics.value
+    -%}
     <div class="nc-seotext__cols">
       <div class="nc-seotext__lead">
-        <h2>{{ section.settings.heading }}</h2>
-        {{ section.settings.body }}
+        <h2>{{ mf_heading | default: section.settings.heading }}</h2>
+        {%- if mf_body.value != blank -%}
+          {{ mf_body | metafield_tag }}
+        {%- else -%}
+          {{ section.settings.body }}
+        {%- endif -%}
       </div>
 
-      {%- if has_blocks -%}
+      {%- if mf_topics != blank -%}
+        <div class="nc-seotext__blocks">
+          {%- for topic in mf_topics -%}
+            <div class="nc-seotext__card">
+              <h3>{{ topic.title }}</h3>
+              <p>{{ topic.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- elsif has_blocks -%}
         <div class="nc-seotext__blocks">
           {%- for block in section.blocks -%}
             {%- if block.type == 'topic' -%}
