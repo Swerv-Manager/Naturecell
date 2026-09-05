@@ -1,0 +1,104 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection"
+    },
+    "seo": {
+      "type": "nc-seo-text",
+      "settings": {
+        "heading": "Sampakker: hele rutinen samlet i én pakke",
+        "body": "<p>NatureCells sampakker samler produkter, der er udviklet til at fungere sammen. Komplet CBD Hudpleje indeholder Rensegel, Dagcreme, Natcreme og Hudplejeolie 1000 mg, altså hele ansigtsrutinen morgen og aften. Startpakke PLUS er de tre første trin, og All Day CBD Skin Care samler Dagcreme og Natcreme.</p><p>Til hænder, krop og hår findes Hånd-Sampakken, Hel Kropspleje og Komplet Hårpleje. Pakkerne er en praktisk måde at komme i gang på, fordi produkterne passer sammen i konsistens og brug.</p><p>Alle produkter er kosmetiske, veganske, uden syntetisk parfume og produceret i Danmark. Vi lover ikke mirakler. Vi beskriver brugen og lader vores kunder fortælle om deres egne rutiner under kundecases.</p>",
+        "links": ""
+      },
+      "blocks": {
+        "t1": {
+          "type": "topic",
+          "settings": {
+            "heading": "Hvilken pakke passer til mig?",
+            "text": "Vil du have hele ansigtsrutinen, er Komplet CBD Hudpleje det oplagte valg. Er du ny, kan du starte med Startpakke PLUS eller All Day CBD Skin Care og bygge på senere."
+          }
+        },
+        "t2": {
+          "type": "topic",
+          "settings": {
+            "heading": "Sådan bruger du pakken",
+            "text": "Rens morgen og aften, følg op med Dagcreme om morgenen og Natcreme om aftenen, og slut af med et par dråber Hudplejeolie som sidste lag. Hver pakke følger samme enkle princip."
+          }
+        },
+        "t3": {
+          "type": "topic",
+          "settings": {
+            "heading": "Som gave",
+            "text": "Sampakkerne er en nem gave til en du har kær. Har du brug for at lade modtageren vælge selv, findes der også gavekort til hele sortimentet."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": {
+        "heading": "Ofte stillede spørgsmål",
+        "eyebrow": "",
+        "open_first": false,
+        "compact": true,
+        "links_label": "Populære søgninger",
+        "links": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nNatcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nSerum med hyaluronsyre | /collections/cbd-ansigtspleje\nHudpleje til tør hud | /collections/cbd-hudpleje/tor-hud\nHudpleje til moden hud | /collections/cbd-hudpleje/moden-hud\nHudpleje til uren hud | /collections/cbd-hudpleje/uren-hud\nMild hudpleje til sensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje",
+        "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
+      },
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "q": "Er pakkerne billigere end produkterne hver for sig?",
+            "a": "<p>Pakkeprisen fremgår altid på produktsiden sammen med de enkelte produkters normalpriser.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "q": "Kan jeg bytte et produkt i pakken?",
+            "a": "<p>Pakkerne har fast indhold. Vil du sammensætte selv, finder du alle produkter enkeltvis i sortimentet.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "q": "Passer pakkerne til alle hudtyper?",
+            "a": "<p>Serien er tænkt som en one-size-fits-all løsning. Er din hud meget reaktiv, kan du starte med ét produkt ad gangen.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "q": "Kan pakken sendes som gave?",
+            "a": "<p>Ja. Du kan også vælge et gavekort, hvis modtageren selv skal vælge.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad koster fragt?",
+            "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "seo",
+    "faq"
+  ]
+}

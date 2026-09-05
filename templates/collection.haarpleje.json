@@ -1,0 +1,104 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection"
+    },
+    "seo": {
+      "type": "nc-seo-text",
+      "settings": {
+        "heading": "CBD Hårpleje: shampoo og conditioner til hverdagen",
+        "body": "<p>NatureCells hårpleje består af Shampoo og Conditioner med CBD som en del af formuleringen, begge i 300 ml til daglig brug. Shampooen skummer let og skylles nemt ud, og Conditioneren efterlader håret blødt at rede igennem. Komplet Hårpleje samler de to i én pakke.</p><p>Produkterne er kosmetiske, veganske og uden syntetisk parfume. De er udviklet i Danmark og produceret på GMP- og ISO-certificerede faciliteter. Hårplejen deler formuleringsprincip med resten af serien: få, velvalgte ingredienser og en rutine, der er nem at holde fast i.</p><p>Vi lover ikke mirakler. Vi beskriver, hvordan produkterne føles at bruge, og lader vores kunder fortælle om deres egne oplevelser under kundecases.</p>",
+        "links": ""
+      },
+      "blocks": {
+        "t1": {
+          "type": "topic",
+          "settings": {
+            "heading": "Sådan bruger du Shampoo og Conditioner",
+            "text": "Fordel Shampooen i vådt hår og hovedbund, massér og skyl ud. Følg op med Conditioner fra midten af håret og ud i spidserne, lad den sidde et øjeblik, og skyl grundigt."
+          }
+        },
+        "t2": {
+          "type": "topic",
+          "settings": {
+            "heading": "Uden syntetisk parfume",
+            "text": "Ligesom resten af serien er hårplejen formuleret uden syntetisk parfume. Duften kommer fra ingredienserne, og oplevelsen er rolig og neutral."
+          }
+        },
+        "t3": {
+          "type": "topic",
+          "settings": {
+            "heading": "Passer til hele familien",
+            "text": "Shampoo og Conditioner kan bruges af hele husstanden og passer til en enkel rutine morgen eller aften. Læs om ingredienserne på vores ingrediensside."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": {
+        "heading": "Ofte stillede spørgsmål",
+        "eyebrow": "",
+        "open_first": false,
+        "compact": true,
+        "links_label": "Populære søgninger",
+        "links": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nNatcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nSerum med hyaluronsyre | /collections/cbd-ansigtspleje\nHudpleje til tør hud | /collections/cbd-hudpleje/tor-hud\nHudpleje til moden hud | /collections/cbd-hudpleje/moden-hud\nHudpleje til uren hud | /collections/cbd-hudpleje/uren-hud\nMild hudpleje til sensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje",
+        "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
+      },
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvor ofte kan jeg bruge Shampooen?",
+            "a": "<p>Den er lavet til daglig brug, men du bestemmer selv rytmen efter din hårtype og hverdag.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "q": "Er Conditioneren nødvendig?",
+            "a": "<p>Nej, men mange oplever, at håret er nemmere at rede igennem, når de bruger begge.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "q": "Er hårplejen uden parfume?",
+            "a": "<p>Ja. Begge produkter er uden syntetisk parfume og veganske.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad indeholder Komplet Hårpleje?",
+            "a": "<p>Pakken samler Shampoo og Conditioner i 300 ml.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad koster fragt?",
+            "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "seo",
+    "faq"
+  ]
+}

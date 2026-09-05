@@ -6,7 +6,7 @@
   som en enkelt kolonne.
 
   Designet saetter hver sektions maal inline (container, padding, grid,
-  billedhoejde, tekstafstande) — de spejles her via indstillinger med
+  billedhoejde, tekstafstande), de spejles her via indstillinger med
   samme vaerdier, saa hver instans kan matche sin sektion 1:1.
 {% endcomment %}
 
@@ -34,7 +34,7 @@
   #shopify-section-{{ section.id }} .nc-msplit { border-bottom: 1px solid var(--border-soft); }
   {%- endif -%}
   {%- if section.settings.container != blank -%}
-  {%- comment -%} Designets sektioner bruger egen max-width (1100/1120/1140/680) — ikke temaets 1240. {%- endcomment -%}
+  {%- comment -%} Designets sektioner bruger egen max-width (1100/1120/1140/680), ikke temaets 1240. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-container { max-width: {{ section.settings.container }}px; }
   {%- endif -%}
   #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: {{ section.settings.col_gap | default: 'clamp(24px, 3vw, 44px)' }}; grid-template-columns: 1fr; align-items: center; }

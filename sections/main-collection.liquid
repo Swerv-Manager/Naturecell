@@ -104,7 +104,9 @@
                   {%- assign parts = chip | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
                     {%- assign chip_url = parts[1] | strip -%}
-                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
+                    {%- comment -%} Behov-chips er tag-filtre (/collections/<handle>/<tag>): aktiv når tagget er valgt. {%- endcomment -%}
+                    {%- assign chip_tag = chip_url | split: '/' | last -%}
+                    <a class="nc-chip {% if chip_url == collection.url or current_tags contains chip_tag %}is-active{% endif %}" href="{{ chip_url }}">{{ parts[0] | strip }}</a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>

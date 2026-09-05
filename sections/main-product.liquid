@@ -178,7 +178,7 @@
           {%- endif -%}
         </span>
 
-        <div class="nc-pdp__desc">{{ product.description }}</div>
+        {%- comment -%} Beskrivelsen vises kun én gang: i "Beskrivelse"-accordionen under CTA'en (kundens ønske). {%- endcomment -%}
 
         {%- assign badge_lines = product.metafields.ncell.badges.value | default: section.settings.badges | newline_to_br | split: '<br />' -%}
         {%- if section.settings.show_badges and badge_lines.size > 0 -%}

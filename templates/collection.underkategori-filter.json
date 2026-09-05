@@ -1,6 +1,8 @@
 {
   "sections": {
-    "main": { "type": "main-collection" },
+    "main": {
+      "type": "main-collection"
+    },
     "seo": {
       "type": "nc-seo-text",
       "settings": {
@@ -31,7 +33,11 @@
           }
         }
       },
-      "block_order": ["t1", "t2", "t3"]
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
     },
     "faq": {
       "type": "nc-faq",
@@ -45,15 +51,62 @@
         "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
       },
       "blocks": {
-        "q1": { "type": "qa", "settings": { "q": "Hvad er CBD-hudpleje?", "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår som aktiv ingrediens sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" } },
-        "q2": { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>" } },
-        "q3": { "type": "qa", "settings": { "q": "Passer produkterne til alle hudtyper?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning til tør, fedtet, kombineret, moden, sensitiv og uren hud.</p>" } },
-        "q4": { "type": "qa", "settings": { "q": "Er produkterne veganske?", "a": "<p>Ja, veganske, uden syntetisk parfume og udviklet i Danmark.</p>" } },
-        "q5": { "type": "qa", "settings": { "q": "Hvad koster fragt?", "a": "<p>Fri fragt ved køb over 399 kr.</p>" } },
-        "q6": { "type": "qa", "settings": { "q": "Hvordan finder jeg det rigtige produkt?", "a": "<p>Filtrér efter område (ansigt, hænder, krop, fødder, hår) og efter behov (tør hud, fugt, moden hud, sensitiv, uren), du kan kombinere begge.</p>" } }
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad er CBD-hudpleje?",
+            "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår som aktiv ingrediens sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "q": "Er NatureCell godkendt i Danmark?",
+            "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "q": "Passer produkterne til alle hudtyper?",
+            "a": "<p>Serien er tænkt som en one-size-fits-all løsning til tør, fedtet, kombineret, moden, sensitiv og uren hud.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "q": "Er produkterne veganske?",
+            "a": "<p>Ja, veganske, uden syntetisk parfume og udviklet i Danmark.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad koster fragt?",
+            "a": "<p>Fri fragt ved køb over 399 kr.</p>"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvordan finder jeg det rigtige produkt?",
+            "a": "<p>Filtrér efter område (ansigt, hænder, krop, fødder, hår) og efter behov (tør hud, fugt, moden hud, sensitiv, uren), du kan kombinere begge.</p>"
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ]
     }
   },
-  "order": ["main", "seo", "faq"]
+  "order": [
+    "main",
+    "seo",
+    "faq"
+  ]
 }

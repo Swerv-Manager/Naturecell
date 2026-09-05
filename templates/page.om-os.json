@@ -4,7 +4,7 @@
       "type": "nc-om-os-hero",
       "settings": {
         "eyebrow": "Vores historie",
-        "heading": "Vi var de første — og vi gør det ærligt.",
+        "heading": "Vi var de første, og vi gør det ærligt.",
         "intro": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Vi er en familiedrevet virksomhed med rødder på Møllerup Gods, bygget på ærlighed frem for løfter."
       }
     },
@@ -17,8 +17,8 @@
         "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp",
         "eyebrow": "Mød familien bag",
         "heading": "Ægte mennesker. Ægte dansk hudpleje.",
-        "text": "<p>Vi er Lizbeth og Allan — en dansk familie med rødder på Møllerup Gods. Vi står selv bag hvert valg: råvarerne, formuleringerne og den ærlige måde, vi taler til dig på.</p>",
-        "quote": "Vi lover ikke mirakler — vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag.",
+        "text": "<p>Vi er Lizbeth og Allan, en dansk familie med rødder på Møllerup Gods. Vi står selv bag hvert valg: råvarerne, formuleringerne og den ærlige måde, vi taler til dig på.</p>",
+        "quote": "Vi lover ikke mirakler, vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag.",
         "border": "both",
         "container": "1120",
         "pad_y": "clamp(31px, 6vw, 56px) 0",
@@ -48,7 +48,7 @@
           "settings": {
             "year": "2026",
             "title": "Et komplet univers",
-            "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår — stadig dansk, stadig ærligt.",
+            "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår, stadig dansk, stadig ærligt.",
             "url": "/collections/cbd-hudpleje",
             "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp"
           }
@@ -96,7 +96,7 @@
       "settings": {
         "tone": "paper",
         "heading": "Vi lover ikke mirakler",
-        "text": "<p>I stedet lader vi vores kunder fortælle om deres egne oplevelser. Vores produkter er plantebaserede — CBD i samspil med glycerin, mandelolie, hampolie, squalane, aloe vera, sheasmør og agurkeekstrakt. Vegansk og uden syntetisk parfume.</p><p>Vores CBD-olie produceres på GMP- og ISO-certificerede faciliteter i Danmark. Det er sådan, vi bygger tryghed: dansk produktion, dansk test og fuld åbenhed.</p>",
+        "text": "<p>I stedet lader vi vores kunder fortælle om deres egne oplevelser. Vores produkter er plantebaserede. CBD i samspil med glycerin, mandelolie, hampolie, squalane, aloe vera, sheasmør og agurkeekstrakt. Vegansk og uden syntetisk parfume.</p><p>Vores CBD-olie produceres på GMP- og ISO-certificerede faciliteter i Danmark. Det er sådan, vi bygger tryghed: dansk produktion, dansk test og fuld åbenhed.</p>",
         "text_max": "632",
         "container": "680",
         "pad_y": "clamp(35px, 6vw, 64px) 0",
@@ -115,7 +115,7 @@
         "image_url": "https://naturecell.dk/cdn/shop/articles/Billede_af_Anne_Sophie_Gamborg_og_Allan_Falk_Gamborg_cc5b96e7-f77f-46c0-958e-5d64cb69441f.jpg?v=1767017225",
         "eyebrow": "Hvor det startede",
         "heading": "Rødder på Møllerup Gods",
-        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland — med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>",
+        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland, med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>",
         "container": "1100",
         "pad_y": "8px 0 64px",
         "cols": "1fr 1fr",
@@ -176,8 +176,8 @@
         "image_url": "nc-founders.webp",
         "eyebrow": "Familien bag",
         "heading": "Drevet af en dansk familie",
-        "text": "<p>NatureCell er familiedrevet. Vi står selv bag hver beslutning — fra råvarer og formuleringer til den måde, vi taler med vores kunder på. Vi lover ikke mirakler; vi lover ærlighed, dansk produktion og produkter, vi selv bruger hver dag.</p>",
-        "quote": "Vi bygger NatureCell på tillid — én ærlig kundeoplevelse ad gangen.",
+        "text": "<p>NatureCell er familiedrevet. Vi står selv bag hver beslutning, fra råvarer og formuleringer til den måde, vi taler med vores kunder på. Vi lover ikke mirakler; vi lover ærlighed, dansk produktion og produkter, vi selv bruger hver dag.</p>",
+        "quote": "Vi bygger NatureCell på tillid, én ærlig kundeoplevelse ad gangen.",
         "focal": "left center",
         "quote_size": "18",
         "flush_bottom": true,

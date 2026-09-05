@@ -13,7 +13,7 @@
   #shopify-section-{{ section.id }} .nc-pagehero { padding: clamp(36px, 5vw, 64px) 0 clamp(10px, 2vw, 20px); }
   #shopify-section-{{ section.id }} .nc-pagehero__inner { max-width: 70ch; }
   #shopify-section-{{ section.id }} .nc-pagehero--center .nc-pagehero__inner { margin: 0 auto; text-align: center; }
-  {%- comment -%} Designets enkle sidehoveder (kontakt m.fl.) har 12px mellem eyebrow og h1 — ikke sektionsafstanden paa 22px. {%- endcomment -%}
+  {%- comment -%} Designets enkle sidehoveder (kontakt m.fl.) har 12px mellem eyebrow og h1, ikke sektionsafstanden paa 22px. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-pagehero .nc-eyebrow { margin-bottom: 12px; }
 
   {%- comment -%} Baand-maal 1:1 fra designet: centreret 760px-kolonne (712px + 24px sidepadding), H1 clamp(38,5vw,58)/1.05, intro 18px maks 560px. {%- endcomment -%}
@@ -29,7 +29,7 @@
   #shopify-section-{{ section.id }} .nc-pagehero--soft { padding: clamp(35px, 6vw, 64px) 0; background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
   #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__inner { max-width: 772px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
   #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
-  {%- comment -%} Designets h1 saetter ingen line-height og arver derfor body'ens 1.7 — det giver baandets hoejde. {%- endcomment -%}
+  {%- comment -%} Designets h1 saetter ingen line-height og arver derfor body'ens 1.7, det giver baandets hoejde. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-pagehero--soft h1 { margin: 0; font-size: clamp(29px, 4.5vw, 46px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__intro { margin: 0; max-width: 560px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
 

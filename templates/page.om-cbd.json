@@ -5,7 +5,7 @@
       "settings": {
         "eyebrow": "Kom godt i gang med CBD",
         "heading": "Hvad er CBD?",
-        "intro": "Alt du behøver at vide om cannabidiol — hvad det er, hvorfor vi bruger det i hudpleje, og hvad der gør NatureCells CBD særlig.",
+        "intro": "Alt du behøver at vide om cannabidiol, hvad det er, hvorfor vi bruger det i hudpleje, og hvad der gør NatureCells CBD særlig.",
         "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972"
       }
     },
@@ -17,7 +17,7 @@
         "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972",
         "eyebrow": "En naturlig forbindelse",
         "heading": "Hvad er CBD?",
-        "text": "<p>CBD ekstraheres fra bladene på hampeplanten og kaldes en <strong>cannabinoid</strong> — en naturlig kemisk forbindelse, der findes i planter fra cannabisfamilien. Der findes mange forskellige typer cannabinoider.</p><p>Forskere har opdaget, at både mennesker og dyr har et såkaldt <strong>endocannabinoid-system</strong>, som kroppen selv producerer naturlige cannabinoider til. Det har gjort CBD til en særlig interessant ingrediens i hudpleje, fordi den deler strukturelle ligheder med de stoffer, kroppen selv danner.</p><p>CBD er rig på antioxidanter og fedtsyrer og anvendes i kosmetik for sine <strong>plejende og balancerende egenskaber</strong>, der kan bidrage til et mere harmonisk og velplejet udseende af huden.</p>",
+        "text": "<p>CBD ekstraheres fra bladene på hampeplanten og kaldes en <strong>cannabinoid</strong>, en naturlig kemisk forbindelse, der findes i planter fra cannabisfamilien. Der findes mange forskellige typer cannabinoider.</p><p>Forskere har opdaget, at både mennesker og dyr har et såkaldt <strong>endocannabinoid-system</strong>, som kroppen selv producerer naturlige cannabinoider til. Det har gjort CBD til en særlig interessant ingrediens i hudpleje, fordi den deler strukturelle ligheder med de stoffer, kroppen selv danner.</p><p>CBD er rig på antioxidanter og fedtsyrer og anvendes i kosmetik for sine <strong>plejende og balancerende egenskaber</strong>, der kan bidrage til et mere harmonisk og velplejet udseende af huden.</p>",
         "callout": "<p>CBD er en tilladt ingrediens i hudpleje under EU's kosmetiklovgivning. Allerede i <strong>2019 fik NatureCell tilladelse</strong> til at tilsætte CBD til vores hudpleje, da ingrediensen blev vurderet som kosmetisk og ikke medicinsk.</p>",
         "container": "1140",
         "pad_y": "clamp(46px, 6vw, 84px) 0",
@@ -40,7 +40,7 @@
         "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_CBD_skincare_billed_pige_ser_paa_produkterne_kopier.webp?v=1757145901",
         "eyebrow": "I harmoni med huden",
         "heading": "CBD i hudpleje",
-        "text": "<p>Huden er kroppens største organ og fungerer som vores naturlige barriere mod omgivelserne. CBD er en cannabinoid — et plantebaseret stof, som ligner nogle af de stoffer kroppen selv kan producere. Det gør CBD til en interessant ingrediens i hudpleje, da den arbejder i harmoni med hudens naturlige balance.</p><p>CBD er rig på antioxidanter og fedtsyrer — en kombination, der gør den til en særlig og værdsat ingrediens i moderne hudpleje. NatureCell kombinerer CBD med ingredienser af naturlig oprindelse for at give huden optimal pleje, fugt og et mere balanceret udtryk.</p>",
+        "text": "<p>Huden er kroppens største organ og fungerer som vores naturlige barriere mod omgivelserne. CBD er en cannabinoid, et plantebaseret stof, som ligner nogle af de stoffer kroppen selv kan producere. Det gør CBD til en interessant ingrediens i hudpleje, da den arbejder i harmoni med hudens naturlige balance.</p><p>CBD er rig på antioxidanter og fedtsyrer, en kombination, der gør den til en særlig og værdsat ingrediens i moderne hudpleje. NatureCell kombinerer CBD med ingredienser af naturlig oprindelse for at give huden optimal pleje, fugt og et mere balanceret udtryk.</p>",
         "container": "1140",
         "pad_y": "clamp(46px, 6vw, 84px) 0",
         "cols": "1fr 1fr",
@@ -97,7 +97,7 @@
           "type": "item",
           "settings": {
             "title": "Kombineret hud",
-            "text": "CBD bidrager til at bevare og balancere hudens naturlige tilstand, hvilket gør NatureCell CBD hudpleje velegnet til både tørre og fedtede områder. Huden efterlades med et mere harmonisk og ensartet udseende — uanset hudtype.",
+            "text": "CBD bidrager til at bevare og balancere hudens naturlige tilstand, hvilket gør NatureCell CBD hudpleje velegnet til både tørre og fedtede områder. Huden efterlades med et mere harmonisk og ensartet udseende, uanset hudtype.",
             "image_url": "https://naturecell.dk/cdn/shop/articles/DSF6043_9ae35b3a-2321-4a3e-a9b8-c36d2189200d.jpg?v=1774872279"
           }
         },
@@ -105,7 +105,7 @@
           "type": "item",
           "settings": {
             "title": "Rødme og irritation",
-            "text": "Det rige indhold af CBD kombineret med naturlige ingredienser som glycerin, mandelolie, hampolie og squalane plejer og beroliger huden ved rødme og tørhed. De fugtgivende ingredienser absorberes hurtigt og bidrager til at genoprette hudens fugtbalance. Kan også anvendes til at pleje huden efter f.eks. insektbid — og efterlader huden blød og velplejet.",
+            "text": "Det rige indhold af CBD kombineret med naturlige ingredienser som glycerin, mandelolie, hampolie og squalane plejer og beroliger huden ved rødme og tørhed. De fugtgivende ingredienser absorberes hurtigt og bidrager til at genoprette hudens fugtbalance. Kan også anvendes til at pleje huden efter f.eks. insektbid, og efterlader huden blød og velplejet.",
             "image_url": "https://naturecell.dk/cdn/shop/articles/kvinde_pigmentpletter_badevaerelse_aa646aae-9aec-4b09-ae91-921566456862.jpg?v=1780837322"
           }
         },
@@ -123,7 +123,7 @@
           "type": "item",
           "settings": {
             "title": "Følsom og sart hud",
-            "text": "Alle ingredienser i NatureCell CBD hudplejeserien er nøje udvalgt, så de passer til alle hudtyper — herunder også følsom og sart hud.",
+            "text": "Alle ingredienser i NatureCell CBD hudplejeserien er nøje udvalgt, så de passer til alle hudtyper, herunder også følsom og sart hud.",
             "image_url": "https://naturecell.dk/cdn/shop/articles/NatureCell_Lizbeth_Sortiment_1224_LilleNyhavn_fc947dc6-27a1-4a31-921a-a4ebabcb61ca.webp?v=1772980995"
           }
         },
@@ -131,7 +131,7 @@
           "type": "item",
           "settings": {
             "title": "Moden hud",
-            "text": "Det rige indhold af CBD, kendt for sine antioxidative egenskaber, kombineret med plejende ingredienser som ginkgo biloba, gulerodsolie, squalane samt vitaminerne C, E og F, bidrager til at reducere synligheden af fine linjer og give huden et glattere og mere ensartet udtryk. CBD hjælper med at pleje og styrke tør hud og bidrager til at bevare hudens elasticitet og smidighed — særligt velegnet til hud, der har været udsat for sol og tendens til ujævn hudtone eller pigmentpletter.",
+            "text": "Det rige indhold af CBD, kendt for sine antioxidative egenskaber, kombineret med plejende ingredienser som ginkgo biloba, gulerodsolie, squalane samt vitaminerne C, E og F, bidrager til at reducere synligheden af fine linjer og give huden et glattere og mere ensartet udtryk. CBD hjælper med at pleje og styrke tør hud og bidrager til at bevare hudens elasticitet og smidighed, særligt velegnet til hud, der har været udsat for sol og tendens til ujævn hudtone eller pigmentpletter.",
             "image_url": "https://naturecell.dk/cdn/shop/files/DAY_CREME.webp?v=1702043004",
             "link": "/blogs/artikler/moden-hud-hvilke-ingredienser-giver-fugt-og-smidighed",
             "link_label": "Læs mere om moden hud"
@@ -154,8 +154,8 @@
       "settings": {
         "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972",
         "eyebrow": "Hele serien",
-        "heading": "Én serie — til hele din rutine",
-        "text": "Rens, creme, olie og mere — plantebaseret CBD-hudpleje til ansigt og krop.",
+        "heading": "Én serie, til hele din rutine",
+        "text": "Rens, creme, olie og mere, plantebaseret CBD-hudpleje til ansigt og krop.",
         "cta_text": "Shop hudpleje →",
         "cta_url": "/collections/cbd-hudpleje"
       }
@@ -167,7 +167,7 @@
         "list_side": "right",
         "eyebrow": "Kvalitet i hvert led",
         "heading": "Ingredienser & egenskaber",
-        "sub": "Det, der gør NatureCells CBD-hudpleje særlig — fra mark til formulering."
+        "sub": "Det, der gør NatureCells CBD-hudpleje særlig, fra mark til formulering."
       },
       "blocks": {
         "e1": {
@@ -182,7 +182,7 @@
           "type": "item",
           "settings": {
             "title": "Hampfrøolie",
-            "text": "NatureCell-produkter er formuleret med vores egen koldpressede hampfrøolie — en olie rig på essentielle omega-fedtsyrer og proteiner. Den leverer antioxidanter (vitamin E), caroten (forløber for vitamin A), phytosteroler, phospholipider og en række mineraler som calcium, magnesium, svovl, kalium og fosfor, sammen med beskedne mængder jern og zink.",
+            "text": "NatureCell-produkter er formuleret med vores egen koldpressede hampfrøolie, en olie rig på essentielle omega-fedtsyrer og proteiner. Den leverer antioxidanter (vitamin E), caroten (forløber for vitamin A), phytosteroler, phospholipider og en række mineraler som calcium, magnesium, svovl, kalium og fosfor, sammen med beskedne mængder jern og zink.",
             "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Cannabis_Sativa_Leaf_Extract_180x480px.jpg?v=1762792242"
           }
         },
@@ -198,7 +198,7 @@
           "type": "item",
           "settings": {
             "title": "Full Spectrum industriel hamp",
-            "text": "NatureCell-produkter produceres med Full Spectrum industriel hampekstrakt, der indeholder mindre end 0,2% THC. Vores hel-plante-koncept betyder, at produkterne indeholder yderligere cannabinoider og terpener, der findes naturligt i hampeplanten — for maksimal effekt.",
+            "text": "NatureCell-produkter produceres med Full Spectrum industriel hampekstrakt, der indeholder mindre end 0,2% THC. Vores hel-plante-koncept betyder, at produkterne indeholder yderligere cannabinoider og terpener, der findes naturligt i hampeplanten, for maksimal effekt.",
             "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_CBG_180x480px.jpg?v=1762792242"
           }
         },
@@ -245,7 +245,7 @@
         "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp",
         "eyebrow": "Sådan starter du",
         "heading": "Kom godt i gang med CBD hudpleje",
-        "text": "<p>Serien er skabt som en one-size-fits-all løsning, der passer til alle hudtyper — tør, fedtet, kombineret, moden, følsom eller med tendens til urenheder. Et godt sted at starte er vores Komplet Sampakke, som indeholder de vigtigste produkter til daglig pleje og giver huden et solidt fundament af fugt, pleje og balance.</p><p>Begynd blot dér, hvor din hud har brug for pleje. Ved tørre pletter kan du tilføre et par dråber CBD Skin Oil 1000 mg før din dag- eller natcreme — eller blande olien i din bodylotion eller håndcreme. Til områder med ekstra behov kan du supplere med Eye Gel eller vores Re-New Balm, der giver huden et nærende og beskyttende lag.</p>",
+        "text": "<p>Serien er skabt som en one-size-fits-all løsning, der passer til alle hudtyper, tør, fedtet, kombineret, moden, følsom eller med tendens til urenheder. Et godt sted at starte er vores Komplet Sampakke, som indeholder de vigtigste produkter til daglig pleje og giver huden et solidt fundament af fugt, pleje og balance.</p><p>Begynd blot dér, hvor din hud har brug for pleje. Ved tørre pletter kan du tilføre et par dråber CBD Skin Oil 1000 mg før din dag- eller natcreme, eller blande olien i din bodylotion eller håndcreme. Til områder med ekstra behov kan du supplere med Eye Gel eller vores Re-New Balm, der giver huden et nærende og beskyttende lag.</p>",
         "cta1_text": "Se Komplet Sampakke →",
         "cta1_url": "/collections/sampakker",
         "cta2_text": "Shop al hudpleje",

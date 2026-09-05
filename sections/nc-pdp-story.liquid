@@ -1,5 +1,5 @@
 {% comment %}
-  Produktside: to redaktionelle splits 1:1 fra NatureCell.dc.html —
+  Produktside: to redaktionelle splits 1:1 fra NatureCell.dc.html -
   "Derfor elsker vores kunder den" (billede venstre) og "Sådan bruger
   du den" (billede hoejre). Tekst fra metafelter (ncell.story_title /
   ncell.story / ncell.usage) med sektionsindstillinger som fallback.
@@ -9,6 +9,20 @@
   assign gimgs = product.images
   assign img_a = gimgs[1] | default: product.featured_image
   assign img_b = product.featured_image
+  # Fallback-overskrift naar ncell.story_title er tomt: designets "Skabt til <omraade>" ud fra produktets omraade-tag
+  assign area_label = 'din daglige rutine'
+  if product.tags contains 'Ansigt' or product.tags contains 'ansigt'
+    assign area_label = 'ansigtet'
+  elsif product.tags contains 'Hænder' or product.tags contains 'hænder'
+    assign area_label = 'hænderne'
+  elsif product.tags contains 'Krop' or product.tags contains 'krop'
+    assign area_label = 'kroppen'
+  elsif product.tags contains 'Fødder' or product.tags contains 'fødder'
+    assign area_label = 'fødderne'
+  elsif product.tags contains 'Hår' or product.tags contains 'hår'
+    assign area_label = 'håret'
+  endif
+  assign story_title_fallback = section.settings.heading_1 | replace: '[område]', area_label
 -%}
 
 {%- style -%}
@@ -32,7 +46,7 @@
     {%- endif -%}
     <div class="nc-pdpstory__text">
       <span class="nc-pdpstory__eyebrow">{{ section.settings.eyebrow_1 }}</span>
-      <h2>{{ product.metafields.ncell.story_title.value | default: section.settings.heading_1 }}</h2>
+      <h2>{{ product.metafields.ncell.story_title.value | default: story_title_fallback }}</h2>
       <p>{{ product.metafields.ncell.story.value | default: product.description | strip_html | truncate: 420 }}</p>
     </div>
   </div>
@@ -57,10 +71,10 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "eyebrow_1", "label": "Blok 1: overlinje", "default": "Derfor elsker vores kunder den" },
-    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback)", "default": "Vores mest elskede — Vidunder Olien" },
+    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback, [område] = produktets område)", "info": "Bruges kun når produktets metafelt ncell.story_title er tomt.", "default": "Skabt til [område]" },
     { "type": "text", "id": "eyebrow_2", "label": "Blok 2: overlinje", "default": "Sådan bruger du den" },
-    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift (fallback)", "default": "Et par dråber er alt der skal til" },
-    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "default": "Dryp et par dråber i håndfladen og massér blidt ind i ren hud morgen og/eller aften — alene eller under din creme. Kan også blandes i din lotion eller creme." }
+    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift (fallback)", "info": "Bruges kun når ncell.usage_title er tomt.", "default": "En enkel del af din daglige rutine" },
+    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "info": "Bruges kun når ncell.usage er tomt. Hold den generel, så den passer alle produkter.", "default": "Påfør på ren hud morgen og/eller aften. Til udvortes brug. Opbevares køligt og mørkt." }
   ]
 }
 {% endschema %}

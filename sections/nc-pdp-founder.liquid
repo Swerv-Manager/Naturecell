@@ -11,6 +11,8 @@
   #shopify-section-{{ section.id }} .nc-pdpfv__inner h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: 1.12; letter-spacing: normal; color: var(--sage-700); max-width: 620px; text-wrap: wrap; }
   #shopify-section-{{ section.id }} .nc-pdpfv__card { position: relative; width: 100%; max-width: 760px; aspect-ratio: 16 / 9; border-radius: var(--radius-xl); overflow: hidden; background: var(--sage-100); box-shadow: var(--shadow-sm); }
   #shopify-section-{{ section.id }} .nc-pdpfv__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 43% 22%; }
+  #shopify-section-{{ section.id }} .nc-pdpfv__card video, #shopify-section-{{ section.id }} .nc-pdpfv__video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; background: #000; }
+  #shopify-section-{{ section.id }} .nc-pdpfv__card--video { background: #000; }
   #shopify-section-{{ section.id }} .nc-pdpfv__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(31, 45, 41, 0.15), rgba(31, 45, 41, 0.45)); }
   #shopify-section-{{ section.id }} .nc-pdpfv__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 74px; height: 74px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); }
   #shopify-section-{{ section.id }} .nc-pdpfv__soon { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(246, 244, 238, 0.92); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.04em; padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
@@ -23,17 +25,26 @@
   <div class="nc-pdpfv__inner">
     <span class="nc-pdpfv__eyebrow">{{ section.settings.eyebrow }}</span>
     <h2>{{ section.settings.heading | replace: '[produkt]', main_title }}</h2>
-    <div class="nc-pdpfv__card">
-      {%- if section.settings.poster != blank -%}
-        {{ section.settings.poster | image_url: width: 1520 | image_tag: alt: section.settings.poster_alt, loading: 'lazy' }}
+    {%- comment -%} Produktvideo: ncell.video (Shopify-fil) foretrækkes, ellers ncell.video_url (embed-URL); uden video vises posteren med "Video kommer snart". {%- endcomment -%}
+    {%- assign vid = product.metafields.ncell.video.value -%}
+    {%- assign vid_url = product.metafields.ncell.video_url.value -%}
+    <div class="nc-pdpfv__card{% if vid != blank or vid_url != blank %} nc-pdpfv__card--video{% endif %}">
+      {%- if vid != blank -%}
+        {{ vid | video_tag: controls: true, preload: 'metadata', class: 'nc-pdpfv__video' }}
+      {%- elsif vid_url != blank -%}
+        <iframe class="nc-pdpfv__video" src="{{ vid_url }}" title="{{ section.settings.heading | replace: '[produkt]', main_title | escape }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       {%- else -%}
-        <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.poster_alt | escape }}" loading="lazy" width="1520" height="855">
+        {%- if section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 1520 | image_tag: alt: section.settings.poster_alt, loading: 'lazy' }}
+        {%- else -%}
+          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.poster_alt | escape }}" loading="lazy" width="1520" height="855">
+        {%- endif -%}
+        <div class="nc-pdpfv__shade" aria-hidden="true"></div>
+        <div class="nc-pdpfv__play" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="nc-pdpfv__soon">{{ section.settings.pill }}</span>
       {%- endif -%}
-      <div class="nc-pdpfv__shade" aria-hidden="true"></div>
-      <div class="nc-pdpfv__play" aria-hidden="true">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-      <span class="nc-pdpfv__soon">{{ section.settings.pill }}</span>
     </div>
   </div>
 </section>

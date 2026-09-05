@@ -6,7 +6,7 @@
         "tone": "soft",
         "eyebrow": "Hjælp & svar",
         "heading": "Ofte stillede spørgsmål",
-        "intro": "Det, kunderne oftest spørger os om — CBD, kvalitet, brug og levering."
+        "intro": "Det, kunderne oftest spørger os om: CBD, kvalitet, brug og levering."
       }
     },
     "faq": {
@@ -16,7 +16,7 @@
         "heading": "",
         "open_first": false,
         "list_style": true,
-        "note": "Fandt du ikke svar? Skriv til vores danske kundeservice — vi hjælper gerne 💚"
+        "note": "Fandt du ikke svar? Skriv til vores danske kundeservice, vi hjælper gerne 💚"
       },
       "blocks": {
         "g1": {
@@ -63,21 +63,21 @@
           "type": "qa",
           "settings": {
             "q": "Hvor skal jeg starte, hvis jeg er ny?",
-            "a": "<p>Komplet CBD Hudpleje er et godt startpunkt: rens, olie, dagcreme og natcreme — alt du behøver til en fast rutine morgen og aften. Du kan også tage vores hudpleje-quiz.</p>"
+            "a": "<p>Komplet CBD Hudpleje er et godt startpunkt: rens, olie, dagcreme og natcreme, alt du behøver til en fast rutine morgen og aften. Du kan også tage vores hudpleje-quiz.</p>"
           }
         },
         "g2q2": {
           "type": "qa",
           "settings": {
             "q": "Hvor hurtigt ser jeg resultater?",
-            "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler — vi lader vores kunder fortælle om deres egne oplevelser.</p>"
+            "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser.</p>"
           }
         },
         "g2q3": {
           "type": "qa",
           "settings": {
             "q": "Kan produkterne bruges på sensitiv hud?",
-            "a": "<p>Ja. Serien er udviklet som en one-size-fits-all løsning til alle hudtyper — også tør, moden og sensitiv hud. Produkterne er uden syntetisk parfume.</p>"
+            "a": "<p>Ja. Serien er udviklet som en one-size-fits-all løsning til alle hudtyper, også tør, moden og sensitiv hud. Produkterne er uden syntetisk parfume.</p>"
           }
         },
         "g2q4": {
@@ -91,7 +91,7 @@
           "type": "qa",
           "settings": {
             "q": "Hvordan opbevarer jeg produkterne?",
-            "a": "<p>Køligt og mørkt, og luk godt efter brug. Produkterne er til udvortes brug — undgå direkte kontakt med øjnene.</p>"
+            "a": "<p>Køligt og mørkt, og luk godt efter brug. Produkterne er til udvortes brug, undgå direkte kontakt med øjnene.</p>"
           }
         },
         "g2q6": {
@@ -118,7 +118,7 @@
           "type": "qa",
           "settings": {
             "q": "Hvor produceres NatureCell?",
-            "a": "<p>Cremerne er dansk-producerede, og vores CBD/olie fremstilles på GMP- og ISO-certificerede faciliteter — for dokumenteret kvalitet og sporbarhed.</p>"
+            "a": "<p>Cremerne er dansk-producerede, og vores CBD/olie fremstilles på GMP- og ISO-certificerede faciliteter, for dokumenteret kvalitet og sporbarhed.</p>"
           }
         },
         "g3q3": {
@@ -152,14 +152,14 @@
           "type": "qa",
           "settings": {
             "q": "Hvor lang er leveringstiden?",
-            "a": "<p>Typisk 1–3 hverdage med vores fragtpartnere. Du modtager altid track &amp; trace, så du kan følge din pakke.</p>"
+            "a": "<p>Typisk 1-3 hverdage med vores fragtpartnere. Du modtager altid track &amp; trace, så du kan følge din pakke.</p>"
           }
         },
         "g4q3": {
           "type": "qa",
           "settings": {
             "q": "Kan jeg returnere min ordre?",
-            "a": "<p>Ja. Du har 14 dages fortrydelsesret fra du modtager ordren. Kosmetik med brudt forsegling kan af hygiejnehensyn ikke altid tages retur — kontakt os, så finder vi en løsning.</p>"
+            "a": "<p>Ja. Du har 14 dages fortrydelsesret fra du modtager ordren. Kosmetik med brudt forsegling kan af hygiejnehensyn ikke altid tages retur, kontakt os, så finder vi en løsning.</p>"
           }
         },
         "g4q4": {
@@ -179,14 +179,14 @@
           "type": "qa",
           "settings": {
             "q": "Kan jeg se produkterne fysisk?",
-            "a": "<p>Ja. NatureCell har shop-in-shop i Butik Lille Nyhavn, Lille Nyhavn 4-7, 8660 Skanderborg — kom forbi og få personlig vejledning.</p>"
+            "a": "<p>Ja. NatureCell har shop-in-shop i Butik Lille Nyhavn, Lille Nyhavn 4-7, 8660 Skanderborg, kom forbi og få personlig vejledning.</p>"
           }
         },
         "g5q2": {
           "type": "qa",
           "settings": {
             "q": "Hvordan kontakter jeg jer?",
-            "a": "<p>Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42 mandag–fredag 9.00–15.00. Vi er en dansk virksomhed med dansk kundeservice.</p>"
+            "a": "<p>Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42 mandag-fredag 9.00-15.00. Vi er en dansk virksomhed med dansk kundeservice.</p>"
           }
         },
         "g5q3": {
@@ -213,7 +213,7 @@
           "type": "qa",
           "settings": {
             "q": "Hvordan bliver jeg forhandler?",
-            "a": "<p>Sælger du i butik eller klinik? Opret en B2B-konto via “B2B login” og anmod om adgang — så vender vi tilbage med dine priser og betingelser.</p>"
+            "a": "<p>Sælger du i butik eller klinik? Opret en B2B-konto via “B2B login” og anmod om adgang, så vender vi tilbage med dine priser og betingelser.</p>"
           }
         },
         "g6q3": {

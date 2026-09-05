@@ -49,13 +49,13 @@
       "type": "nc-faq",
       "settings": { "eyebrow": "", "heading": "Ofte stillede spørgsmål", "open_first": true, "display_style": true },
       "blocks": {
-        "q1": { "type": "qa", "settings": { "q": "Hvordan bruger jeg hudplejeolien?", "a": "<p>Et par dråber i håndfladen, varm den mellem hænderne og tryk den ind i huden som sidste trin – morgen, aften eller kun om aftenen. Du kan også blande en dråbe i din creme.</p>" } },
+        "q1": { "type": "qa", "settings": { "q": "Hvordan bruger jeg hudplejeolien?", "a": "<p>Et par dråber i håndfladen, varm den mellem hænderne og tryk den ind i huden som sidste trin, morgen, aften eller kun om aftenen. Du kan også blande en dråbe i din creme.</p>" } },
         "q2": { "type": "qa", "settings": { "q": "Bliver huden fedtet af olien?", "a": "<p>Nej. Olien er let og trækker relativt hurtigt ind. Start med få dråber og justér efter, hvad din hud kan optage.</p>" } },
         "q3": { "type": "qa", "settings": { "q": "Hvad betyder 1000 mg?", "a": "<p>Det angiver mængden af CBD i flasken. Alle partier testes, og analysecertifikat findes pr. parti.</p>" } },
         "q4": { "type": "qa", "settings": { "q": "Passer [produkt] til min hudtype?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning og passer til tør, fedtet, kombineret, moden, sensitiv og uren hud. Er din hud meget reaktiv, så start med ét produkt ad gangen.</p>" } },
-        "q5": { "type": "qa", "settings": { "q": "Er produktet vegansk og uden parfume?", "a": "<p>Ja. Vores produkter er veganske og uden tilsatte syntetiske duftstoffer – duften kommer alene fra de naturlige ingredienser.</p>" } },
+        "q5": { "type": "qa", "settings": { "q": "Er produktet vegansk og uden parfume?", "a": "<p>Ja. Vores produkter er veganske og uden tilsatte syntetiske duftstoffer, duften kommer alene fra de naturlige ingredienser.</p>" } },
         "q6": { "type": "qa", "settings": { "q": "Hvor produceres det?", "a": "<p>Det udvikles og produceres på GMP- og ISO-certificerede faciliteter i Danmark.</p>" } },
-        "q7": { "type": "qa", "settings": { "q": "Hvor hurtigt ser jeg resultater?", "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler – du kan læse rigtige kunders egne oplevelser under kundecases.</p>" } },
+        "q7": { "type": "qa", "settings": { "q": "Hvor hurtigt ser jeg resultater?", "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler, du kan læse rigtige kunders egne oplevelser under kundecases.</p>" } },
         "q8": { "type": "qa", "settings": { "q": "Hvordan opbevarer jeg det?", "a": "<p>Køligt og mørkt, og luk godt efter brug. Produktet er til udvortes brug.</p>" } },
         "q9": { "type": "qa", "settings": { "q": "Hvad koster fragt, og kan jeg returnere?", "a": "<p>Fri fragt ved køb over 399 kr. Du har 30 dages returret på uåbnede varer.</p>" } }
       },

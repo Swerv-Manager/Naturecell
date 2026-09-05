@@ -91,7 +91,7 @@
                     <a class="nc-btn nc-btn--light" href="{{ block.settings.cta_url }}">{{ block.settings.cta_text }}</a>
                   {%- endif -%}
                   {%- if block.settings.cta2_text != blank -%}
-                    <a class="nc-btn nc-btn--outline" href="{{ block.settings.cta2_url }}">{{ block.settings.cta2_text }}</a>
+                    <a class="nc-btn nc-btn--outline-light" href="{{ block.settings.cta2_url }}">{{ block.settings.cta2_text }}</a>
                   {%- endif -%}
                 </div>
                 {%- if block.settings.trust_text != blank -%}
@@ -198,7 +198,7 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Danmarks første godkendte CBD-hudpleje" },
         { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "Ægte pleje, til al slags hud" },
-        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler — vi lader vores kunder fortælle om deres egne oplevelser." },
+        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser." },
         { "type": "text", "id": "cta_text", "label": "Primær knap", "default": "Shop nu →" },
         { "type": "url", "id": "cta_url", "label": "Primær knap: link" },
         { "type": "text", "id": "cta2_text", "label": "Sekundær knap", "default": "Se kundecases" },
@@ -213,7 +213,7 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Plantebaseret & dansk" },
         { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "CBD i samspil med ren botanik" },
-        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume — udviklet og testet i Danmark." },
+        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume, udviklet og testet i Danmark." },
         { "type": "text", "id": "cta_text", "label": "Knap", "default": "Udforsk produkterne →" },
         { "type": "url", "id": "cta_url", "label": "Knap: link" },
         { "type": "image_picker", "id": "image", "label": "Baggrundsbillede" },
@@ -226,7 +226,7 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Investering i Løvens Hule" },
         { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "Jesper Buch er trådt ind som investor" },
-        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell — sammen med grundlæggerne Lizbeth Falk og Allan Gamborg." },
+        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg." },
         { "type": "text", "id": "cta_text", "label": "Knap", "default": "Læs historien →" },
         { "type": "url", "id": "cta_url", "label": "Knap: link" },
         { "type": "image_picker", "id": "image", "label": "Billede" },
@@ -240,7 +240,7 @@
       "blocks": [
         { "type": "product_slide" },
         { "type": "image_slide" },
-        { "type": "image_slide", "settings": { "eyebrow": "Ægte oplevelser", "heading": "Vi lader vores kunder fortælle", "body": "Vi lover ikke mirakler. Læs ægte kundecases — med billeder, video og produkterne de bruger.", "cta_text": "Se kundecases →", "fallback_asset": "nc-hero-kunder.jpg" } },
+        { "type": "image_slide", "settings": { "eyebrow": "Ægte oplevelser", "heading": "Vi lader vores kunder fortælle", "body": "Vi lover ikke mirakler. Læs ægte kundecases, med billeder, video og produkterne de bruger.", "cta_text": "Se kundecases →", "fallback_asset": "nc-hero-kunder.jpg" } },
         { "type": "split_slide" }
       ]
     }

@@ -1,0 +1,104 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection"
+    },
+    "seo": {
+      "type": "nc-seo-text",
+      "settings": {
+        "heading": "CBD Ansigtspleje: en enkel rutine morgen og aften",
+        "body": "<p>NatureCells ansigtspleje er bygget op som en rutine, du kan holde fast i. Rensegel, dagcreme, natcreme, serum, eye gel og hudplejeolie er udviklet til at bruges sammen, så du kan starte med ét produkt og bygge på, når det passer dig. CBD indgår som en gennemgående del af formuleringen sammen med planteolier og fugtgivende ingredienser med naturlig oprindelse.</p><p>Alle produkter er kosmetiske, veganske og uden syntetisk parfume. De er udviklet i Danmark og produceret på GMP- og ISO-certificerede faciliteter. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark, og vi er stadig en familiedrevet virksomhed.</p><p>Vi lover ikke mirakler. Vi beskriver, hvordan produkterne føles at bruge, og lader vores kunder fortælle om deres egne oplevelser under kundecases.</p>",
+        "links": ""
+      },
+      "blocks": {
+        "t1": {
+          "type": "topic",
+          "settings": {
+            "heading": "Rutinen i tre trin",
+            "text": "Start med Rensegel morgen og aften. Følg op med Dagcreme om morgenen og Natcreme om aftenen. Ønsker du mere fugt i rutinen, lægger du Hyaluronic Serum under cremen, og slutter du af med et par dråber Hudplejeolie, får du et blødt sidste lag."
+          }
+        },
+        "t2": {
+          "type": "topic",
+          "settings": {
+            "heading": "Let konsistens uden fedtet fornemmelse",
+            "text": "Cremerne er formuleret med en let konsistens, der optages nemt, så de fungerer under makeup om morgenen og som et roligt sidste trin om aftenen. Eye Gel med CBG har en kølig, let tekstur til området omkring øjnene."
+          }
+        },
+        "t3": {
+          "type": "topic",
+          "settings": {
+            "heading": "Udviklet med omtanke i Danmark",
+            "text": "Hvert produkt er udvalgt til at passe ind i en travl hverdag: få trin, tydelig brug og ingredienser vi selv bruger. Du kan læse om hver enkelt ingrediens på vores ingrediensside og se rigtige rutiner under kundecases."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": {
+        "heading": "Ofte stillede spørgsmål",
+        "eyebrow": "",
+        "open_first": false,
+        "compact": true,
+        "links_label": "Populære søgninger",
+        "links": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nNatcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nSerum med hyaluronsyre | /collections/cbd-ansigtspleje\nHudpleje til tør hud | /collections/cbd-hudpleje/tor-hud\nHudpleje til moden hud | /collections/cbd-hudpleje/moden-hud\nHudpleje til uren hud | /collections/cbd-hudpleje/uren-hud\nMild hudpleje til sensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje",
+        "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
+      },
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvilket produkt skal jeg starte med?",
+            "a": "<p>Dagcreme er det enkleste startpunkt. Vil du have hele rutinen fra dag ét, er Komplet CBD Hudpleje samlet med Rensegel, Dagcreme, Natcreme og Hudplejeolie.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "q": "Kan jeg bruge produkterne sammen med min nuværende hudpleje?",
+            "a": "<p>Ja. Produkterne kan indgå i de fleste rutiner. Mange bruger fx Hudplejeolien som sidste trin oven på deres egen creme.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "q": "Er ansigtsplejen uden parfume?",
+            "a": "<p>Ja. Alle produkter er uden syntetisk parfume og veganske. Duften kommer alene fra ingredienserne.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad er forskellen på Dagcreme og Natcreme?",
+            "a": "<p>Dagcremen har den letteste konsistens og er tænkt til morgenrutinen, også under makeup. Natcremen er rigere og bruges som sidste trin om aftenen.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad koster fragt?",
+            "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "seo",
+    "faq"
+  ]
+}
