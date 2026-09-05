@@ -1,7 +1,8 @@
 {% comment %}
-  Blogoversigt 1:1 fra NatureCell.dc.html.
-  Kundecases: bleg groen hero, omraadechips + soegning, 4-kolonners
-  case-kort med omraade-tag, VIDEO-pill og play-cirkel, navn under titlen.
+  Blogoversigt 1:1 fra NatureCell.dc.html (template.html 1920-1962 kundecases,
+  2032-2088 artikler). Al maal-/farvedata er spejlet fra designets inline styles.
+  Kundecases: sage-50 hero, omraadechips + soegning, 4-kolonners case-kort med
+  omraade-tag, VIDEO-pill og play-cirkel, navn under titlen.
   Artikler: samme hero, tag-chips + soegning, featured "NYESTE"-kort og
   3-kolonners artikelkort med tag-pill paa billedet, uddrag og "Laes mere".
 {% endcomment %}
@@ -28,173 +29,222 @@
       assign intro = 'Guides, ekspertråd og historierne bag NatureCell — om CBD, hudpleje og en hud i balance. Resultater kan variere fra person til person.'
     endif
   endif
+
+  if is_cases
+    assign search_placeholder = 'Søg på område, navn …'
+    assign empty_text = 'Ingen cases matcher din søgning.'
+  else
+    assign search_placeholder = 'Søg i artikler …'
+    assign empty_text = 'Ingen artikler matcher din søgning.'
+  endif
 -%}
 
 {%- style -%}
-  .nc-band__title { font-size: clamp(30px, 3vw, 42px); }
+  /* Hero (design: section sage-50 + 1px border-soft, inner max 900, gap 14, alt arver body line-height 1.7) */
+  #shopify-section-{{ section.id }} .nc-blogidx__hero { background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__hero-in { max-width: 900px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) clamp(16px, 4vw, 24px); text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .nc-blogidx__eyebrow { margin: 0; font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 1.7; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-blogidx__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(29px, 4.5vw, 46px); line-height: 1.7; letter-spacing: -0.01em; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-blogidx__intro { margin: 0; max-width: 600px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
 
-  .nc-blogidx__grid { display: grid; gap: clamp(18px, 2.4vw, 26px); grid-template-columns: repeat(2, 1fr); list-style: none; margin: 0; padding: 0; }
-  .nc-blogidx__grid--cases { gap: clamp(16px, 2.2vw, 24px); }
-  @media (min-width: 700px) { .nc-blogidx__grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 990px) { .nc-blogidx__grid--cases { grid-template-columns: repeat(4, 1fr); } }
+  /* Indhold (design: max 1240, padding 36/24/80) */
+  #shopify-section-{{ section.id }} .nc-blogidx { max-width: 1240px; margin: 0 auto; padding: clamp(22px, 5vw, 36px) clamp(16px, 4vw, 24px) clamp(48px, 6vw, 80px); }
 
-  .nc-featart { display: grid; grid-template-columns: 1fr; border-radius: var(--radius-lg); overflow: hidden; background: var(--cloud); box-shadow: var(--shadow-sm); margin-bottom: clamp(26px, 3.6vw, 42px); text-decoration: none; color: inherit; }
-  .nc-featart:hover { text-decoration: none; }
-  @media (min-width: 900px) { .nc-featart { grid-template-columns: 1.05fr 1fr; } }
-  .nc-featart__media { position: relative; min-height: 260px; background: var(--sage-100); }
-  .nc-featart__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .nc-featart__body { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; padding: clamp(22px, 3.4vw, 48px); }
-  .nc-featart__pill { display: inline-flex; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--sage-50); color: var(--sage-700); font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
-  .nc-featart__body h2 { margin: 0; font-size: clamp(24px, 2.7vw, 34px); line-height: 1.2; color: var(--sage-700); }
-  .nc-featart__body p { margin: 0; color: var(--ink-700); line-height: 1.7; }
-  .nc-featart__more { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 600; color: var(--ink-900); }
-  .nc-featart:hover .nc-featart__more { color: var(--sage-700); }
+  /* Vaerktoejsraekke: chips + soegning (design: flex, space-between, gap 18, mb 28/30) */
+  #shopify-section-{{ section.id }} .nc-blogidx__tools { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: {% if is_cases %}28px{% else %}30px{% endif %}; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chips { display: flex; gap: {% if is_cases %}9px{% else %}8px{% endif %}; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip { display: inline-block; border: 1.5px solid var(--border-default); background: transparent; color: var(--ink-700); font-family: var(--font-body); font-weight: 600; font-size: {% if is_cases %}13.5px{% else %}13px{% endif %}; line-height: normal; padding: {% if is_cases %}8px 16px{% else %}7px 15px{% endif %}; border-radius: 999px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip:hover { border-color: var(--sage-500); color: var(--sage-700); text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip.is-active { border-color: var(--sage-500); background: var(--sage-500); color: #fff; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search { position: relative; display: flex; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search-ico { position: absolute; left: 14px; color: var(--ink-400); display: flex; pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input { border: 1px solid var(--border-default); background: var(--cloud); border-radius: 999px; padding: 10px 16px 10px 38px; font-family: var(--font-body); font-size: 14px; line-height: normal; outline: none; color: var(--sage-700); min-width: 240px; width: 240px; margin: 0; -webkit-appearance: none; appearance: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input::placeholder { color: var(--ink-400); opacity: 1; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input:focus-visible { outline: 2px solid var(--sage-500); outline-offset: 1px; }
 
-  .nc-blogidx__empty { padding: 40px 0; color: var(--ink-500); }
+  /* Featured "Nyeste"-kort (artikler) */
+  #shopify-section-{{ section.id }} .nc-blogidx__feat { display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; margin-bottom: 40px; border: 1px solid var(--border-soft); background: var(--cloud); border-radius: var(--radius-xl); overflow: hidden; text-align: left; text-decoration: none; color: inherit; line-height: normal; transition: border-color var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat:hover { border-color: var(--sage-400); text-decoration: none; }
+  @media (min-width: 900px) { #shopify-section-{{ section.id }} .nc-blogidx__feat { grid-template-columns: 1.15fr 1fr; } }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-media { position: relative; display: block; min-height: 340px; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-body { display: flex; flex-direction: column; gap: 16px; justify-content: center; padding: clamp(22px, 3vw, 40px); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-pill { align-self: flex-start; background: var(--sage-100); color: var(--sage-700); font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: 1.15; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-text { margin: 0; font-size: 16px; line-height: 1.7; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-more { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: normal; color: var(--sage-700); margin-top: 4px; }
+
+  /* Kort-grid (design: auto-fill minmax(min(47%,280px),1fr) gap 24 / minmax(min(47%,290px),1fr) gap 26) */
+  #shopify-section-{{ section.id }} .nc-blogidx__grid { display: grid; list-style: none; margin: 0; padding: 0; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid--cases { grid-template-columns: repeat(auto-fill, minmax(min(47%, 280px), 1fr)); gap: 24px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid--articles { grid-template-columns: repeat(auto-fill, minmax(min(47%, 290px), 1fr)); gap: 26px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid > li { min-width: 0; }
+
+  #shopify-section-{{ section.id }} .nc-bcard { display: flex; flex-direction: column; gap: 14px; padding: 0; text-align: left; text-decoration: none; color: inherit; line-height: normal; }
+  #shopify-section-{{ section.id }} .nc-bcard:hover { text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-bcard__media { position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-bcard__media--wide { aspect-ratio: 4 / 3; }
+  #shopify-section-{{ section.id }} .nc-bcard__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--dur-base) var(--ease-out); }
+  #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__media img { transform: scale(1.03); }
+  #shopify-section-{{ section.id }} .nc-bcard__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 54px; height: 54px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-bcard__tag { position: absolute; top: 12px; left: 12px; background: var(--paper); color: var(--sage-700); font-family: var(--font-body); font-size: 10.5px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-bcard__video { position: absolute; top: 12px; right: 12px; background: rgba(32, 38, 35, 0.6); color: #fff; font-family: var(--font-body); font-size: 10px; font-weight: 600; line-height: normal; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; display: flex; align-items: center; gap: 5px; }
+  #shopify-section-{{ section.id }} .nc-bcard__text { display: flex; flex-direction: column; gap: {% if is_cases %}5px{% else %}8px{% endif %}; }
+  #shopify-section-{{ section.id }} .nc-bcard__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: {% if is_cases %}1.2{% else %}1.25{% endif %}; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__title { color: var(--sage-900); }
+  #shopify-section-{{ section.id }} .nc-bcard__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-bcard__excerpt { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-bcard__more { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-weight: 600; font-size: 13.5px; line-height: normal; color: var(--sage-700); margin-top: 2px; }
+
+  #shopify-section-{{ section.id }} .nc-blogidx__empty { padding: 60px; text-align: center; color: var(--ink-400); font-size: 15px; margin: 0; }
+  #shopify-section-{{ section.id }} .nc-pagination { margin-top: 40px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__media img { transform: none; }
+  }
 {%- endstyle -%}
 
-<div class="nc-band nc-band--pale nc-band--center">
-  <div class="nc-container">
-    <p class="nc-band__eyebrow">{{ eyebrow }}</p>
-    <h1 class="nc-band__title">{{ blog.title }}</h1>
-    <p class="nc-band__intro">{{ intro }}</p>
+<section class="nc-blogidx__hero">
+  <div class="nc-blogidx__hero-in">
+    <span class="nc-blogidx__eyebrow">{{ eyebrow }}</span>
+    <h1 class="nc-blogidx__title">{{ blog.title }}</h1>
+    <p class="nc-blogidx__intro">{{ intro }}</p>
   </div>
-</div>
+</section>
 
-<div class="nc-section" style="padding-top: clamp(6px, 0.6vw, 8px); padding-bottom: 0;">
-  <div class="nc-container" data-nc-bloglist>
-    {%- paginate blog.articles by 24 -%}
-      <div class="nc-blogtools">
-        {%- if section.settings.show_tags -%}
-          <div class="nc-blogtools__chips" aria-label="Filtrér efter emne">
-            <a class="nc-chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}Alle cases{% else %}Alle{% endif %}</a>
-            {%- if is_cases -%}
-              {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
-              {%- for area in area_names -%}
-                {%- assign area_dc = area | downcase -%}
-                {%- assign chip_tag = '' -%}
-                {%- for tag in blog.all_tags -%}
-                  {%- assign tag_dc = tag | downcase -%}
-                  {%- if tag_dc == area_dc -%}
-                    {%- assign chip_tag = tag -%}
-                    {%- break -%}
-                  {%- elsif chip_tag == blank and tag_dc contains area_dc -%}
-                    {%- assign chip_tag = tag -%}
-                  {%- endif -%}
-                {%- endfor -%}
-                {%- if chip_tag != blank -%}
-                  <a class="nc-chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area }}</a>
+<section class="nc-blogidx nc-flush-footer" data-nc-bloglist>
+  {%- paginate blog.articles by 24 -%}
+    <div class="nc-blogidx__tools">
+      {%- if section.settings.show_tags -%}
+        <div class="nc-blogidx__chips" aria-label="Filtrér efter emne">
+          <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}Alle cases{% else %}Alle{% endif %}</a>
+          {%- if is_cases -%}
+            {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
+            {%- for area in area_names -%}
+              {%- assign area_dc = area | downcase -%}
+              {%- assign chip_tag = '' -%}
+              {%- for tag in blog.all_tags -%}
+                {%- assign tag_dc = tag | downcase -%}
+                {%- if tag_dc == area_dc -%}
+                  {%- assign chip_tag = tag -%}
+                  {%- break -%}
+                {%- elsif chip_tag == blank and tag_dc contains area_dc -%}
+                  {%- assign chip_tag = tag -%}
                 {%- endif -%}
               {%- endfor -%}
-            {%- else -%}
-              {%- for tag in blog.all_tags limit: 15 -%}
-                <a class="nc-chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
-              {%- endfor -%}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-        <div class="nc-blogtools__search">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
-          <label class="nc-visually-hidden" for="nc-blog-search">Søg</label>
-          <input id="nc-blog-search" type="search" placeholder="{% if is_cases %}Søg på område, navn ...{% else %}Søg i artikler ...{% endif %}" data-nc-blog-search autocomplete="off">
+              {%- if chip_tag == blank -%}
+                {%- assign chip_tag = area -%}
+              {%- endif -%}
+              <a class="nc-blogidx__chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for tag in blog.all_tags -%}
+              <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
+      {%- endif -%}
+      <div class="nc-blogidx__search">
+        <span class="nc-blogidx__search-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <label class="nc-visually-hidden" for="nc-blog-search">Søg</label>
+        <input id="nc-blog-search" type="search" placeholder="{{ search_placeholder }}" data-nc-blog-search autocomplete="off">
       </div>
+    </div>
 
-      {%- unless is_cases or current_tags or paginate.current_page > 1 -%}
-        {%- assign feat = blog.articles.first -%}
-        {%- if feat -%}
-          <a class="nc-featart" href="{{ feat.url }}">
-            <span class="nc-featart__media">
-              {%- if feat.image -%}
-                {{ feat.image | image_url: width: 1400 | image_tag: alt: feat.title, loading: 'eager', sizes: '(min-width: 900px) 620px, 94vw' }}
+    {%- unless is_cases or current_tags or paginate.current_page > 1 -%}
+      {%- assign feat = blog.articles.first -%}
+      {%- if feat -%}
+        <a class="nc-blogidx__feat" href="{{ feat.url }}">
+          <span class="nc-blogidx__feat-media">
+            {%- if feat.image -%}
+              {{ feat.image | image_url: width: 1400 | image_tag: alt: feat.title, loading: 'eager', sizes: '(min-width: 900px) 640px, 94vw' }}
+            {%- endif -%}
+          </span>
+          <span class="nc-blogidx__feat-body">
+            <span class="nc-blogidx__feat-pill">Nyeste{% if feat.tags.first %} · {{ feat.tags.first }}{% endif %}</span>
+            <h2 class="nc-blogidx__feat-title">{{ feat.title | split: ' | ' | first }}</h2>
+            <p class="nc-blogidx__feat-text">{{ feat.excerpt_or_content | strip_html | truncate: 320 }}</p>
+            <span class="nc-blogidx__feat-more">Læs mere <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      {%- endif -%}
+    {%- endunless -%}
+
+    <ul class="nc-blogidx__grid {% if is_cases %}nc-blogidx__grid--cases{% else %}nc-blogidx__grid--articles{% endif %}">
+      {%- for article in blog.articles -%}
+        {%- if is_cases == false and current_tags == blank and paginate.current_page == 1 and forloop.first -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- liquid
+          assign area_label = ''
+          for tag in article.tags
+            assign lt = tag | downcase
+            if area_label == blank
+              if lt contains 'ansigt'
+                assign area_label = 'Ansigt'
+              elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
+                assign area_label = 'Hænder'
+              elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
+                assign area_label = 'Fødder'
+              elsif lt == 'krop'
+                assign area_label = 'Krop'
+              endif
+            endif
+          endfor
+          assign has_video = false
+          if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
+            assign has_video = true
+          endif
+          assign clean_title = article.title | split: ' | ' | first
+          assign person = article.metafields.ncell.name | default: ''
+        -%}
+
+        <li data-nc-blog-item data-nc-search-text="{{ clean_title | downcase | escape }} {{ person | downcase | escape }} {{ article.tags | join: ' ' | downcase | escape }}">
+          <a class="nc-bcard" href="{{ article.url }}">
+            <span class="nc-bcard__media {% unless is_cases %}nc-bcard__media--wide{% endunless %}">
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 760 | image_tag: alt: article.title, loading: 'lazy', sizes: '(min-width: 990px) 380px, 46vw' }}
+              {%- endif -%}
+              {%- if is_cases -%}
+                {%- if has_video -%}
+                  <span class="nc-bcard__play" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                {%- endif -%}
+                {%- if area_label != blank -%}
+                  <span class="nc-bcard__tag">{{ area_label }}</span>
+                {%- endif -%}
+                {%- if has_video -%}
+                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Video</span>
+                {%- endif -%}
+              {%- elsif article.tags.first -%}
+                <span class="nc-bcard__tag">{{ article.tags.first }}</span>
               {%- endif -%}
             </span>
-            <span class="nc-featart__body">
-              <span class="nc-featart__pill">Nyeste{% if feat.tags.first %} · {{ feat.tags.first }}{% endif %}</span>
-              <h2>{{ feat.title | split: ' | ' | first }}</h2>
-              <p>{{ feat.excerpt_or_content | strip_html | truncate: 300 }}</p>
-              <span class="nc-featart__more">Læs mere <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            </span>
-          </a>
-        {%- endif -%}
-      {%- endunless -%}
-
-      <ul class="nc-blogidx__grid {% if is_cases %}nc-blogidx__grid--cases{% endif %}">
-        {%- for article in blog.articles -%}
-          {%- if is_cases == false and current_tags == blank and paginate.current_page == 1 and forloop.first -%}
-            {%- continue -%}
-          {%- endif -%}
-
-          {%- liquid
-            assign area_tag = ''
-            assign area_label = ''
-            for tag in article.tags
-              assign lt = tag | downcase
-              if area_label == blank
-                if lt contains 'ansigt'
-                  assign area_label = 'Ansigt'
-                  assign area_tag = tag
-                elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
-                  assign area_label = 'Hænder'
-                  assign area_tag = tag
-                elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
-                  assign area_label = 'Fødder'
-                  assign area_tag = tag
-                elsif lt == 'krop'
-                  assign area_label = 'Krop'
-                  assign area_tag = tag
-                endif
-              endif
-            endfor
-            assign has_video = false
-            if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
-              assign has_video = true
-            endif
-            assign clean_title = article.title | split: ' | ' | first
-            assign person = article.metafields.ncell.name | default: ''
-          -%}
-
-          <li data-nc-blog-item data-nc-search-text="{{ clean_title | downcase | escape }} {{ person | downcase | escape }} {{ article.tags | join: ' ' | downcase | escape }}">
-            <a class="nc-ccard" href="{{ article.url }}">
-              <span class="nc-ccard__media {% unless is_cases %}nc-ccard__media--wide{% endunless %}">
-                {%- if article.image -%}
-                  {{ article.image | image_url: width: 640 | image_tag: alt: article.title, loading: 'lazy', sizes: '(min-width: 990px) 300px, 46vw' }}
-                {%- endif -%}
-                {%- if is_cases -%}
-                  {%- if area_label != blank -%}
-                    <span class="nc-ccard__area">{{ area_label }}</span>
-                  {%- endif -%}
-                  {%- if has_video -%}
-                    <span class="nc-ccard__video"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Video</span>
-                    <span class="nc-ccard__play" aria-hidden="true"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span>
-                  {%- endif -%}
-                {%- elsif article.tags.first -%}
-                  <span class="nc-ccard__area">{{ article.tags.first }}</span>
-                {%- endif -%}
-              </span>
-              <h3 class="nc-ccard__title">{{ clean_title }}</h3>
+            <span class="nc-bcard__text">
+              <h3 class="nc-bcard__title">{{ clean_title }}</h3>
               {%- if is_cases -%}
                 {%- if person != blank -%}
-                  <span class="nc-ccard__who">{{ person }}</span>
+                  <span class="nc-bcard__who">{{ person }}</span>
                 {%- endif -%}
               {%- else -%}
-                <p class="nc-ccard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 260 }}</p>
-                <span class="nc-ccard__more">Læs mere <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                <p class="nc-bcard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 320 }}</p>
+                <span class="nc-bcard__more">Læs mere <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
               {%- endif -%}
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
-      <p class="nc-blogidx__empty" data-nc-blog-empty hidden>Ingen resultater. Prøv et andet søgeord.</p>
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <p class="nc-blogidx__empty" data-nc-blog-empty hidden>{{ empty_text }}</p>
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="nc-pagination" aria-label="Sider">
-          {{ paginate | default_pagination }}
-        </nav>
-      {%- endif -%}
-    {%- endpaginate -%}
-  </div>
-</div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="nc-pagination" aria-label="Sider">
+        {{ paginate | default_pagination }}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
 
 <script>
   (function () {

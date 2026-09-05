@@ -20,10 +20,12 @@
   #shopify-section-{{ section.id }} .nc-pdping__card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
   #shopify-section-{{ section.id }} .nc-pdping__media { position: relative; width: 100%; aspect-ratio: 1 / 1; background: var(--sage-50); overflow: hidden; }
   #shopify-section-{{ section.id }} .nc-pdping__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  #shopify-section-{{ section.id }} .nc-pdping__pill { position: absolute; left: 10px; bottom: 10px; background: var(--paper); color: var(--sage-700); font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-pdping__pill { position: absolute; left: 10px; bottom: 10px; background: var(--paper); color: var(--sage-700); font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; box-shadow: var(--shadow-sm); line-height: normal; }
   #shopify-section-{{ section.id }} .nc-pdping__meta { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 3px; line-height: normal; }
   #shopify-section-{{ section.id }} .nc-pdping__name { font-family: var(--font-display); font-weight: 400; font-size: 15px; color: var(--sage-700); line-height: 1.2; }
-  #shopify-section-{{ section.id }} .nc-pdping__fn { font-size: 12px; color: var(--ink-400); }
+  /* Designets kort er en <button> uden font-family: funktionslinjen arver browserens
+     knap-skrift (Arial-metrik) — ikke Roboto Flex. Spejles, saa bredden matcher (160px). */
+  #shopify-section-{{ section.id }} .nc-pdping__fn { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: var(--ink-400); }
 {%- endstyle -%}
 
 <div class="nc-pdping">

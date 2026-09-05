@@ -58,7 +58,9 @@
   .nc-header__link:hover, .nc-header__link:focus-visible { background: var(--sage-100); color: var(--sage-700); }
   .nc-header__link svg { transition: transform var(--dur-fast) var(--ease-soft); }
   .nc-header__link[aria-expanded="true"] svg { transform: rotate(180deg); }
-  .nc-header__star { color: var(--sage-500); }
+  {%- comment -%} Designet: 14px stjerne centreret i knappens inline-flex (ikke baseline-justeret). {%- endcomment -%}
+  .nc-header__star { display: inline-flex; align-items: center; color: var(--sage-500); }
+  .nc-header__star svg { display: block; }
 
   .nc-header__actions { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: none; }
   .nc-header__action {
@@ -77,6 +79,8 @@
   }
   /* Designet: soeg/kurv har padding 11px (43px), favoritter/konto padding 9px (39px) om 21px-ikoner */
   .nc-header__action--sm { width: 39px; height: 39px; }
+  /* Designets ikoner er inline-svg'er justeret paa tekstens baseline og sidder derfor 2px over knapmidten (maalt: y 65-83 vs. 67-85) */
+  .nc-header__action svg { position: relative; top: -2px; }
   .nc-header__action:hover, .nc-header__action:focus-visible { color: var(--sage-600); background: rgba(62, 93, 88, 0.06); }
   .nc-header__count {
     position: absolute;
@@ -216,7 +220,7 @@
           <li>
             <a class="nc-header__link" href="{{ section.settings.kundeklub_url | default: '/pages/kundeklub' }}">
               <span class="nc-header__star" aria-hidden="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
               </span>
               Kundeklub
             </a>
@@ -238,7 +242,7 @@
         {%- endif -%}
 
         <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="Søg">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </a>
         <a class="nc-header__action nc-header__action--sm" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="Favoritter">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
@@ -246,7 +250,7 @@
         </a>
         {%- if shop.customer_accounts_enabled -%}
           <a class="nc-header__action nc-header__action--sm" href="{{ routes.account_url }}" aria-label="Konto">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
           </a>
         {%- endif -%}
         <button class="nc-header__action" data-nc-cart-open aria-label="Kurv">

@@ -6,34 +6,49 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-coll-main.nc-section { padding-top: calc(var(--section-y) / 2); }
-  .nc-coll__header h1 { font-size: clamp(2rem, 3vw, 2.5rem); }
-  .nc-coll__crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-500); margin: 0 0 18px; }
-  .nc-coll__crumbs a { color: var(--ink-500); text-decoration: none; }
+  {%- comment -%}
+    Alle maal er spejlet 1:1 fra designets inline-styles (template.html 1540-1588):
+    section padding clamp(20px,5vw,34px) top / 0 bottom (SEO-sektionen leverer 72px),
+    broedkrumme 13px ink-400 + 18px, titel 40px sage-700, beskrivelse 16px/1.6 ink-500,
+    toolbar 18px 0 24px + 28px, soegefelt 43px, chips 13px/600 7px 15px 1.5px border,
+    raekke-gap 14px, taelling 13.5px + 16px, grid gap 20px.
+  {%- endcomment -%}
+  .nc-coll-main.nc-section { padding-top: clamp(20px, 5vw, 34px); padding-bottom: 0; }
+  .nc-coll__crumbs { display: flex; align-items: center; gap: 9px; font-size: 13px; line-height: 1.7; color: var(--ink-400); margin: 0 0 18px; }
+  .nc-coll__crumbs a { color: var(--ink-400); text-decoration: none; }
   .nc-coll__crumbs a:hover { color: var(--sage-700); }
-  .nc-coll__header { max-width: 68ch; margin-bottom: 22px; }
-  .nc-coll__header p { color: var(--ink-700); }
-  .nc-coll__toolbar { border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 22px 0 20px; margin: 0 0 14px; }
-  {%- comment -%} Maalt i det godkendte design: soegefeltet er ~434px bredt ved 1440, ikke 514. {%- endcomment -%}
-  .nc-coll__search { display: flex; align-items: center; gap: 10px; width: min(440px, 100%); padding: 11px 18px; margin: 0 0 20px; background: var(--cloud); border: 1px solid var(--border-default); border-radius: var(--radius-pill); color: var(--ink-500); }
+  .nc-coll__crumbs span:last-child { color: var(--ink-700); }
+  .nc-coll__header { max-width: 660px; margin: 0 0 26px; }
+  .nc-coll__header h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(25px, 3.9vw, 40px); line-height: 1.7; letter-spacing: -0.01em; color: var(--sage-700); text-transform: capitalize; }
+  .nc-coll__desc { margin: 10px 0 0; font-size: 16px; line-height: 1.6; color: var(--ink-500); }
+  .nc-coll__desc p { margin: 0; font-size: inherit; line-height: inherit; color: inherit; }
+  .nc-coll__toolbar { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: 18px 0 24px; margin: 0 0 28px; }
+  .nc-coll__search { display: flex; align-items: center; gap: 8px; width: min(440px, 100%); box-sizing: border-box; height: 43px; padding: 0 18px 0 16px; margin: 0; background: var(--cloud); border: 1px solid var(--border-default); border-radius: var(--radius-pill); color: var(--ink-400); }
   .nc-coll__search svg { flex: none; }
-  .nc-coll__search input { flex: 1; min-width: 0; border: 0; background: none; font-family: var(--font-body); font-size: 14px; color: var(--ink-900); outline: none; }
-  .nc-coll__search input::placeholder { color: var(--ink-500); }
-  .nc-coll__filter-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin: 0 0 12px; }
-  .nc-coll__filter-row:last-child { margin-bottom: 0; }
-  .nc-coll__filter-row--sort { border-top: 1px dashed var(--border-default); padding-top: 16px; margin-top: 16px; }
-  .nc-coll__filter-label { flex: none; min-width: 74px; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
-  .nc-coll__row-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .nc-coll__count { font-size: 13.5px; color: var(--ink-500); text-align: right; margin: 0 0 10px; }
-  .nc-chip__mars { flex: none; width: 12px; height: 12px; color: var(--ink-900); opacity: 1; }
-  .nc-chip.is-active .nc-chip__mars { color: currentColor; }
-  /* Kort-rytme fra godkendt design: kvadratisk medie, ens korthoejde pr.
-     raekke og pris fastgjort til kortets bund, saa prislinjer flugter */
+  .nc-coll__search input { flex: 1; min-width: 0; height: 17px; border: 0; padding: 0; background: none; font-family: var(--font-body); font-size: 14.5px; line-height: 17px; box-sizing: border-box; color: var(--sage-700); outline: none; }
+  .nc-coll__search input::placeholder { color: var(--ink-400); }
+  .nc-coll__filter-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0; }
+  .nc-coll__filter-row--sort { border-top: 1px dashed var(--border-default); padding-top: 14px; margin-top: 4px; }
+  .nc-coll__filter-label { flex: none; min-width: 64px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-400); }
+  .nc-coll__row-chips { display: contents; }
+  .nc-coll-main .nc-coll__filter-row .nc-chip { gap: 7px; padding: 7px 15px; border-width: 1.5px; font-size: 13px; font-weight: 600; line-height: 15px; color: var(--ink-700); }
+  .nc-coll-main .nc-coll__filter-row .nc-chip.is-active { color: #fff; }
+  .nc-coll__count { font-size: 13.5px; line-height: 24px; color: var(--ink-400); text-align: right; margin: 0 0 16px; }
+  .nc-chip__mars { flex: none; width: 13px; height: 13px; color: currentColor; opacity: 1; }
+  /* Grid og kort som i designet: gap 20px, kvadratisk medie, rating uden
+     ekstra top-margin, pris fastgjort til bunden (kroppen = 196px ved
+     een titellinje som i det godkendte design) */
+  .nc-coll-main .nc-grid { gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(47%, 238px), 1fr)); }
   .nc-coll-main .nc-grid > li { display: flex; }
   .nc-coll-main .nc-grid .nc-product-card { width: 100%; }
   .nc-coll-main .nc-product-card__media { aspect-ratio: 1 / 1; }
-  .nc-coll-main .nc-product-card__info { flex: 1 1 auto; padding-bottom: 32px; }
-  .nc-coll-main .nc-product-card__price { margin-top: auto; padding-top: 16px; }
+  .nc-coll-main .nc-product-card__info { flex: 1 1 auto; padding-bottom: 23px; }
+  .nc-coll-main .nc-product-card__rating { margin-top: 0; }
+  .nc-coll-main .nc-product-card__price { margin-top: auto; padding-top: 14px; }
+  .nc-coll__empty { border: 1px dashed var(--border-default); border-radius: var(--radius-lg); padding: clamp(31px, 6vw, 56px) clamp(16px, 4vw, 24px); text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .nc-coll__empty p { margin: 0; font-size: 15.5px; color: var(--ink-500); }
+  .nc-coll__empty a { display: inline-flex; border: 1.5px solid var(--sage-500); color: var(--sage-700); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: var(--radius-pill); text-decoration: none; }
+  .nc-coll-main .nc-pagination { margin-top: 40px; }
 {%- endstyle -%}
 
 <div class="nc-section nc-coll-main">
@@ -49,7 +64,7 @@
     <header class="nc-coll__header">
       <h1>{{ collection.title }}</h1>
       {%- if collection.description != blank -%}
-        <div>{{ collection.description }}</div>
+        <div class="nc-coll__desc">{{ collection.description }}</div>
       {%- endif -%}
     </header>
 
@@ -57,7 +72,7 @@
       <div class="nc-coll__toolbar">
         {%- if section.settings.show_search -%}
           <form class="nc-coll__search" action="{{ routes.search_url }}" method="get" role="search">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
             <input type="search" name="q" placeholder="{{ section.settings.search_placeholder | escape }}" aria-label="{{ section.settings.search_placeholder | escape }}">
             <input type="hidden" name="type" value="product">
           </form>
@@ -139,7 +154,11 @@
           {%- endfor -%}
         </ul>
       {%- else -%}
-        <p>Ingen produkter matchede. Prøv at nulstille filteret.</p>
+        <div class="nc-coll__empty">
+          <span style="color: var(--sage-400);"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <p>Ingen produkter matcher. Prøv en anden søgning eller nulstil filtrene.</p>
+          <a href="{{ collection.url }}">Nulstil filtre</a>
+        </div>
       {%- endif -%}
 
       {%- if paginate.pages > 1 -%}
@@ -158,7 +177,7 @@
   "settings": [
     { "type": "checkbox", "id": "show_breadcrumb", "label": "Vis brødkrumme", "default": true },
     { "type": "checkbox", "id": "show_search", "label": "Vis søgefelt", "default": true },
-    { "type": "text", "id": "search_placeholder", "label": "Placeholder i søgefeltet", "default": "Søg på produkt, ingrediens, behov ..." },
+    { "type": "text", "id": "search_placeholder", "label": "Placeholder i søgefeltet", "default": "Søg på produkt, ingrediens, behov …" },
     { "type": "checkbox", "id": "show_chips", "label": "Vis filterrækker", "default": true },
     { "type": "text", "id": "chips_label", "label": "Label for 1. række", "default": "Område" },
     {

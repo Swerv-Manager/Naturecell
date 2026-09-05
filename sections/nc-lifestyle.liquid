@@ -4,19 +4,21 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-lifestyle { background: var(--nc-lifestyle-bg); }
-  .nc-lifestyle .nc-section-head { max-width: 540px; }
-  .nc-lifestyle__grid { display: grid; gap: clamp(14px, 1.8vw, 22px); grid-template-columns: 1fr; margin-top: clamp(24px, 3vw, 40px); }
-  @media (min-width: 900px) {
-    .nc-lifestyle__grid { grid-template-columns: 1fr 1fr; }
-  }
-  .nc-lifestyle__main { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 11; min-height: 320px; background: var(--sage-100); box-shadow: var(--shadow-sm); }
-  .nc-lifestyle__main video, .nc-lifestyle__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* 1:1 fra designets LIFESTYLE-baand: sage-50 flade, 1px linje over, 76px top/bund, hoved gap 10 + 38 under */
+  .nc-lifestyle { background: var(--nc-lifestyle-bg); border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-lifestyle.nc-section { padding: clamp(42px, 6vw, 76px) 0; }
+  #shopify-section-{{ section.id }} .nc-lifestyle .nc-section-head { max-width: none; display: flex; flex-direction: column; gap: 10px; align-items: center; margin-bottom: 38px; }
+  #shopify-section-{{ section.id }} .nc-lifestyle .nc-eyebrow { margin: 0; line-height: 1.7; letter-spacing: 0.12em; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-lifestyle .nc-section-head h2 { margin: 0; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.08; letter-spacing: normal; text-wrap: wrap; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-lifestyle .nc-section-head p:not(.nc-eyebrow) { margin: 4px 0 0; max-width: 560px; font-size: 16px; line-height: 1.7; color: var(--ink-500); }
+  .nc-lifestyle__grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+  .nc-lifestyle__main { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 11; background: var(--sage-100); box-shadow: var(--shadow-sm); }
+  .nc-lifestyle__main video, .nc-lifestyle__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .nc-lifestyle__main::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(31, 45, 41, 0) 42%, rgba(31, 45, 41, 0.55) 100%); }
-  .nc-lifestyle__caption { position: absolute; left: 22px; bottom: 20px; z-index: 2; color: var(--cloud); }
-  .nc-lifestyle__caption small { display: block; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
-  .nc-lifestyle__caption strong { font-family: var(--font-display); font-weight: 400; font-size: 22px; }
-  .nc-lifestyle__side { display: grid; gap: clamp(14px, 1.8vw, 22px); grid-template-rows: 1fr 1fr; }
+  .nc-lifestyle__caption { position: absolute; left: 22px; bottom: 20px; z-index: 2; display: flex; flex-direction: column; gap: 2px; color: #fff; pointer-events: none; }
+  .nc-lifestyle__caption small { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 600; line-height: 1.7; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+  .nc-lifestyle__caption strong { font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.7; color: #fff; }
+  .nc-lifestyle__side { display: grid; gap: 20px; grid-template-rows: 1fr 1fr; }
   .nc-lifestyle__side > div { position: relative; border-radius: var(--radius-xl); overflow: hidden; min-height: 170px; background: var(--sage-100); box-shadow: var(--shadow-sm); }
   .nc-lifestyle__side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 {%- endstyle -%}

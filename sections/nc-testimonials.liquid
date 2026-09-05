@@ -5,19 +5,31 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-testi { background: var(--nc-testimonials-bg); overflow: hidden; }
-  .nc-testi__agg { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 6px; font-size: 15px; color: var(--ink-700); }
-  .nc-testi__agg strong { color: var(--ink-900); }
-  .nc-testi__rows { display: flex; flex-direction: column; gap: 18px; margin-top: clamp(26px, 3vw, 40px); }
-  .nc-testi .nc-rail { animation-duration: 80s; }
-  .nc-testi__card { width: 340px; flex: none; background: var(--cloud); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow-xs); }
-  .nc-testi__card p { margin: 10px 0 12px; font-size: 15px; line-height: 1.6; color: var(--ink-700); }
-  .nc-testi__card strong { display: block; font-size: 14px; color: var(--ink-900); }
-  .nc-testi__card small { font-size: 12.5px; color: var(--ink-500); }
+  /* 1:1 fra designets TESTIMONIALS: sage-50 flade, 1px linje over, 64px top/bund, hoved + 40 under, raekker gap 20 */
+  .nc-testi { background: var(--nc-testimonials-bg); border-top: 1px solid var(--border-soft); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-testi.nc-section { padding: clamp(37px, 7vw, 64px) 0; }
+  .nc-testi__head { max-width: var(--container-max); margin: 0 auto 40px; padding: 0 var(--gutter); text-align: center; }
+  /* Designets eyebrow er en inline span i en 16px/1.7 linjeboks (27.2px) */
+  #shopify-section-{{ section.id }} .nc-testi__head .nc-eyebrow { margin: 0; line-height: 27.2px; letter-spacing: 0.14em; color: var(--sage-600); }
+  .nc-testi__head h2 { margin: 10px 0 14px; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; color: var(--sage-700); }
+  .nc-testi__agg { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink-700); vertical-align: top; }
+  .nc-testi__agg .nc-stars { gap: 3px; color: var(--sage-500); }
+  .nc-testi__agg .nc-stars svg { width: 22px; height: 22px; }
+  .nc-testi__agg strong { color: var(--sage-700); }
+  .nc-testi__rows { display: flex; flex-direction: column; gap: 20px; }
+  .nc-testi .nc-rail { gap: 20px; animation-duration: 60s; }
+  /* Kort: 360px, hvid, 1px soft-kant, 24px padding, kolonne-gap 12, citat i Philosopher 16/1.6 sage-700 */
+  .nc-testi__card { display: flex; flex-direction: column; gap: 12px; width: 360px; flex: none; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); }
+  .nc-testi__card .nc-stars { gap: 2px; color: var(--sage-500); }
+  .nc-testi__card .nc-stars svg { width: 16px; height: 16px; }
+  .nc-testi__card p { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.6; color: var(--sage-700); }
+  .nc-testi__who { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
+  .nc-testi__card strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.7; color: var(--sage-700); }
+  .nc-testi__card small { display: block; font-size: 12.5px; line-height: 1.7; color: var(--ink-400); }
 {%- endstyle -%}
 
 <section class="nc-testi nc-section">
-  <div class="nc-section-head nc-section-head--center" style="padding: 0 var(--gutter);">
+  <div class="nc-testi__head">
     <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
     <h2>{{ section.settings.heading }}</h2>
     {%- if section.settings.agg_text != blank -%}
@@ -45,8 +57,10 @@
                 {%- endfor -%}
               </span>
               <p>"{{ block.settings.text }}"</p>
-              <strong>{{ block.settings.name }}</strong>
-              <small>{{ block.settings.meta }}</small>
+              <div class="nc-testi__who">
+                <strong>{{ block.settings.name }}</strong>
+                <small>{{ block.settings.meta }}</small>
+              </div>
             </div>
           {%- endfor -%}
         {%- endfor -%}
@@ -63,8 +77,10 @@
                 {%- endfor -%}
               </span>
               <p>"{{ block.settings.text }}"</p>
-              <strong>{{ block.settings.name }}</strong>
-              <small>{{ block.settings.meta }}</small>
+              <div class="nc-testi__who">
+                <strong>{{ block.settings.name }}</strong>
+                <small>{{ block.settings.meta }}</small>
+              </div>
             </div>
           {%- endfor -%}
         {%- endfor -%}
@@ -80,7 +96,7 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Anmeldelser" },
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Det siger vores kunder" },
-    { "type": "text", "id": "agg_text", "label": "Samlet rating", "default": "4,8 ud af 5 · 2.143 anmeldelser", "info": "Skal matche jeres aktuelle, dokumenterbare tal." }
+    { "type": "inline_richtext", "id": "agg_text", "label": "Samlet rating", "default": "<strong>4,8</strong> ud af 5 · <strong>2.143</strong> anmeldelser", "info": "Skal matche jeres aktuelle, dokumenterbare tal." }
   ],
   "blocks": [
     {

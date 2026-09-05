@@ -4,6 +4,10 @@
   callout-boks og op til to knapper. Billede til venstre eller hoejre,
   baggrund i papir, lys sage eller creme. Uden billede vises teksten
   som en enkelt kolonne.
+
+  Designet saetter hver sektions maal inline (container, padding, grid,
+  billedhoejde, tekstafstande) — de spejles her via indstillinger med
+  samme vaerdier, saa hver instans kan matche sin sektion 1:1.
 {% endcomment %}
 
 {%- liquid
@@ -14,25 +18,39 @@
   if img != blank or img_url != blank
     assign has_media = true
   endif
+  assign gap = section.settings.stack_gap | default: 14 | plus: 0
+  assign gap_plus = gap | plus: 6
 -%}
 
 {%- style -%}
-  {%- comment -%} Designets sektionspadding: clamp(31-35, 6vw, 56-64) — strammere end foer. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(32px, 4.5vw, 60px) 0; }
+  #shopify-section-{{ section.id }} .nc-msplit { padding: {{ section.settings.pad_y | default: 'clamp(32px, 4.5vw, 60px) 0' }}; }
   #shopify-section-{{ section.id }} .nc-msplit--paper { background: var(--paper); }
-  {%- comment -%} Maalt i det godkendte design (om os + om CBD): det lyse sage-baand er #E6ECEA = temaets --sage-50. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-msplit--sage50 { background: var(--sage-50); }
   #shopify-section-{{ section.id }} .nc-msplit--cream { background: var(--paper-2); }
-  #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: clamp(24px, 3vw, 44px); grid-template-columns: 1fr; align-items: center; }
+  {%- if section.settings.border == 'top' or section.settings.border == 'both' -%}
+  #shopify-section-{{ section.id }} .nc-msplit { border-top: 1px solid var(--border-soft); }
+  {%- endif -%}
+  {%- if section.settings.border == 'bottom' or section.settings.border == 'both' -%}
+  #shopify-section-{{ section.id }} .nc-msplit { border-bottom: 1px solid var(--border-soft); }
+  {%- endif -%}
+  {%- if section.settings.container != blank -%}
+  {%- comment -%} Designets sektioner bruger egen max-width (1100/1120/1140/680) — ikke temaets 1240. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-container { max-width: {{ section.settings.container }}px; }
+  {%- endif -%}
+  #shopify-section-{{ section.id }} .nc-msplit__grid { display: grid; gap: {{ section.settings.col_gap | default: 'clamp(24px, 3vw, 44px)' }}; grid-template-columns: 1fr; align-items: center; }
   @media (min-width: 900px) {
-    #shopify-section-{{ section.id }} .nc-msplit__grid--media { grid-template-columns: 1fr 1.08fr; }
+    #shopify-section-{{ section.id }} .nc-msplit__grid--media { grid-template-columns: {{ section.settings.cols | default: '1fr 1.08fr' }}; }
     #shopify-section-{{ section.id }} .nc-msplit__grid--right .nc-msplit__media { order: 2; }
   }
-  #shopify-section-{{ section.id }} .nc-msplit__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); aspect-ratio: {{ section.settings.ratio | default: '1 / 1' }}; box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-msplit__media { border-radius: var(--radius-{{ section.settings.media_radius | default: 'lg' }}); overflow: hidden; background: var(--sage-100); aspect-ratio: {{ section.settings.ratio | default: '1 / 1' }}; {% if section.settings.media_shadow != 'none' %}box-shadow: var(--shadow-{{ section.settings.media_shadow | default: 'sm' }});{% endif %} }
   #shopify-section-{{ section.id }} .nc-msplit__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  {%- if section.settings.media_h != blank -%}
+  {%- comment -%} Designets billeder har fast hoejde (width:100%; height:460px) paa desktop. {%- endcomment -%}
+  @media (min-width: 900px) {
+    #shopify-section-{{ section.id }} .nc-msplit__media { aspect-ratio: auto; height: {{ section.settings.media_h }}px; }
+  }
+  {%- endif -%}
   {%- if section.settings.media_max != blank -%}
-  {%- comment -%} Maalt i det godkendte design (om os): billedet er smallere end sit gridspor
-      og ligger ind mod teksten, saa luften ender paa ydersiden. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-msplit__media { width: 100%; max-width: {{ section.settings.media_max }}px; justify-self: end; }
   #shopify-section-{{ section.id }} .nc-msplit__grid--right .nc-msplit__media { justify-self: start; }
   @media (max-width: 899px) { #shopify-section-{{ section.id }} .nc-msplit__media { justify-self: start; } }
@@ -40,38 +58,33 @@
   {%- if section.settings.focal != blank -%}
   #shopify-section-{{ section.id }} .nc-msplit__media img { object-position: {{ section.settings.focal }}; }
   {%- endif -%}
-  #shopify-section-{{ section.id }} .nc-msplit__body { max-width: 60ch; }
-  #shopify-section-{{ section.id }} .nc-msplit__grid:not(.nc-msplit__grid--media) .nc-msplit__body { max-width: 62ch; margin: 0 auto; }
-  {%- comment -%} Designets h2 i disse sektioner: clamp(19-21, ~3vw, 30-34) paa én linje. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin: 0 0 14px; font-size: clamp(20px, 2.9vw, 31px); line-height: 1.12; }
-  #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 14px; line-height: 1.75; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-msplit__grid:not(.nc-msplit__grid--media) .nc-msplit__body { margin: 0 auto; }
+  {%- comment -%} Designets tekstkolonne er en flex-kolonne med gap; eyebrow-span'en arver ingen
+      linjehoejde (normal), saa afstandene spejles som margener af samme stoerrelse. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit__body .nc-eyebrow { margin: 0 0 {{ gap }}px; line-height: var(--leading-relaxed); font-size: 12px; letter-spacing: 0.12em; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin: 0 0 {{ gap }}px; font-size: {{ section.settings.h2_size | default: 'clamp(20px, 2.9vw, 31px)' }}; line-height: {{ section.settings.h2_lh | default: '1.12' }}; letter-spacing: normal; }
+  #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 {{ gap }}px; font-size: {{ section.settings.text_size | default: 16 }}px; line-height: {{ section.settings.text_lh | default: '1.75' }}; color: var(--ink-700); }
   #shopify-section-{{ section.id }} .nc-msplit__text p:last-child { margin-bottom: 0; }
-  #shopify-section-{{ section.id }} .nc-msplit__quote { margin: 16px 0 0; font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.5; color: var(--sage-700); }
-  #shopify-section-{{ section.id }} .nc-msplit__callout { display: flex; gap: 12px; margin-top: 22px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--sage-50); font-size: 14.5px; line-height: 1.65; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-msplit__text strong { font-weight: 600; }
+  #shopify-section-{{ section.id }} .nc-msplit__quote { margin: {{ gap }}px 0 0; font-family: var(--font-display); font-style: italic; font-size: {{ section.settings.quote_size | default: 19 }}px; line-height: {{ section.settings.quote_lh | default: '1.5' }}; color: var(--sage-700); }
+  {%- comment -%} Designets callout: sage-50, 1px sage-kant, radius-lg, 18/20 padding, margin-top 6 oven i kolonnens gap. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit__callout { display: flex; gap: 12px; align-items: flex-start; margin-top: {{ gap_plus }}px; padding: 18px 20px; border: 1px solid var(--border-sage); border-radius: var(--radius-lg); background: var(--sage-50); font-size: 14.5px; line-height: 1.65; color: var(--ink-700); }
   #shopify-section-{{ section.id }} .nc-msplit--sage50 .nc-msplit__callout { background: var(--cloud); }
-  #shopify-section-{{ section.id }} .nc-msplit__callout svg { flex: none; margin-top: 2px; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-msplit__callout svg { flex: none; margin-top: 1px; color: var(--sage-600); }
   #shopify-section-{{ section.id }} .nc-msplit__callout p { margin: 0; }
-  #shopify-section-{{ section.id }} .nc-msplit__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  #shopify-section-{{ section.id }} .nc-msplit__callout strong { font-weight: 600; }
+  #shopify-section-{{ section.id }} .nc-msplit__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: {{ gap_plus }}px; }
+  {%- comment -%} Designets knapper: 15px/600, padding 14px 28px, ingen kant (outline: 1.5px sage-500, tekst sage-700). {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-msplit__ctas .nc-btn { min-height: 0; padding: 14px 28px; line-height: normal; letter-spacing: normal; border-width: 0; }
+  #shopify-section-{{ section.id }} .nc-msplit__ctas .nc-btn--outline { border-width: 1.5px; border-color: var(--sage-500); color: var(--sage-700); }
   {%- if section.settings.media_col != blank -%}
-  {%- comment -%} Maalt i det godkendte design (om os): mediekolonnen er fast, teksten faar resten. {%- endcomment -%}
   @media (min-width: 900px) {
     #shopify-section-{{ section.id }} .nc-msplit__grid--media { grid-template-columns: {{ section.settings.media_col }}px 1fr; }
   }
   {%- endif -%}
   {%- if section.settings.text_max != blank -%}
-  {%- comment -%} Designets tekstmaal i px, saa linjeskiftene matcher 1:1. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-msplit .nc-msplit__grid .nc-msplit__body { max-width: {{ section.settings.text_max }}px; }
   {%- endif -%}
-  {%- if section.settings.quote_size != blank -%}
-  #shopify-section-{{ section.id }} .nc-msplit__quote { font-size: {{ section.settings.quote_size }}px; }
-  {%- endif -%}
-  {%- unless has_media -%}
-  {%- comment -%} Maalt i det godkendte design (om os, "Vi lover ikke mirakler"): mere luft over
-      og under overskriften/afsnittene, men naesten ingen bundpadding foer naeste sektion. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-msplit { padding: clamp(40px, 5.4vw, 77px) 0 12px; }
-  #shopify-section-{{ section.id }} .nc-msplit__body h2 { margin-bottom: 33px; font-size: clamp(21px, 3.1vw, 33px); }
-  #shopify-section-{{ section.id }} .nc-msplit__text p { margin: 0 0 25px; font-size: 17px; }
-  {%- endunless -%}
   {%- if section.settings.flush_bottom -%}
   {%- comment -%} Footeren har margin-top: var(--section-y); i designet ligger denne sektion
       helt op ad footeren, saa vi udligner den margin her. {%- endcomment -%}
@@ -103,11 +116,11 @@
         {%- endif -%}
         <div class="nc-msplit__text">{{ section.settings.text }}</div>
         {%- if section.settings.quote != blank -%}
-          <p class="nc-msplit__quote">"{{ section.settings.quote }}"</p>
+          <p class="nc-msplit__quote">{{ section.settings.quote_open | default: '"' }}{{ section.settings.quote }}{{ section.settings.quote_close | default: '"' }}</p>
         {%- endif -%}
         {%- if section.settings.callout != blank -%}
           <div class="nc-msplit__callout">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg>
             <div>{{ section.settings.callout }}</div>
           </div>
         {%- endif -%}
@@ -142,14 +155,33 @@
       ],
       "default": "paper"
     },
+    { "type": "select", "id": "border", "label": "Kantlinjer", "options": [ { "value": "none", "label": "Ingen" }, { "value": "top", "label": "Top" }, { "value": "bottom", "label": "Bund" }, { "value": "both", "label": "Top og bund" } ], "default": "none" },
     { "type": "select", "id": "media_side", "label": "Billedside", "options": [ { "value": "left", "label": "Venstre" }, { "value": "right", "label": "Højre" } ], "default": "left" },
+    { "type": "header", "content": "Mål (spejler designets inline-værdier)" },
+    { "type": "text", "id": "pad_y", "label": "Sektionens padding (CSS)", "info": "Tom = clamp(32px, 4.5vw, 60px) 0. Fx clamp(46px, 6vw, 84px) 0" },
+    { "type": "text", "id": "container", "label": "Containerens maks. bredde (px)", "info": "Tom = temaets 1240. Designet bruger 1100/1120/1140/680" },
+    { "type": "text", "id": "cols", "label": "Gridkolonner (desktop)", "info": "Tom = 1fr 1.08fr. Fx 1fr 1fr eller 0.9fr 1.1fr" },
+    { "type": "text", "id": "col_gap", "label": "Afstand mellem kolonner (CSS)", "info": "Tom = clamp(24px, 3vw, 44px)" },
     { "type": "text", "id": "ratio", "label": "Billedformat (CSS aspect-ratio)", "default": "1 / 1", "info": "Fx 1 / 1 eller 4 / 3" },
-    { "type": "text", "id": "media_max", "label": "Billedets maks. bredde (px)", "info": "Tom = fuldt gridspor. Fx 505" },
-    { "type": "text", "id": "media_col", "label": "Mediekolonnens bredde (px, desktop)", "info": "Tom = 1fr/1.08fr. Fx 574" },
-    { "type": "text", "id": "text_max", "label": "Tekstkolonnens maks. bredde (px)", "info": "Tom = 60ch (62ch uden billede)" },
-    { "type": "text", "id": "quote_size", "label": "Citatets skriftstørrelse (px)", "info": "Tom = 19" },
-    { "type": "checkbox", "id": "flush_bottom", "label": "Træk footeren helt op til sektionen", "default": false },
+    { "type": "text", "id": "media_h", "label": "Billedets faste højde (px, desktop)", "info": "Tom = brug billedformat. Designet: 430/440/460" },
+    { "type": "select", "id": "media_radius", "label": "Billedets hjørneradius", "options": [ { "value": "lg", "label": "18px" }, { "value": "xl", "label": "28px" } ], "default": "lg" },
+    { "type": "select", "id": "media_shadow", "label": "Billedets skygge", "options": [ { "value": "none", "label": "Ingen" }, { "value": "sm", "label": "Lille" }, { "value": "md", "label": "Mellem" } ], "default": "sm" },
+    { "type": "text", "id": "media_max", "label": "Billedets maks. bredde (px)", "info": "Tom = fuldt gridspor" },
+    { "type": "text", "id": "media_col", "label": "Mediekolonnens bredde (px, desktop)", "info": "Tom = gridkolonner ovenfor" },
+    { "type": "text", "id": "text_max", "label": "Tekstkolonnens maks. bredde (px)", "info": "Tom = hele kolonnen" },
     { "type": "text", "id": "focal", "label": "Billedets fokuspunkt (CSS object-position)", "info": "Fx left center. Tom = center" },
+    { "type": "header", "content": "Typografi (spejler designets inline-værdier)" },
+    { "type": "text", "id": "stack_gap", "label": "Afstand mellem tekstelementer (px)", "info": "Tom = 14. Designet: 14/16/18/22" },
+    { "type": "text", "id": "h2_size", "label": "Overskriftens skriftstørrelse (CSS)", "info": "Tom = clamp(20px, 2.9vw, 31px)" },
+    { "type": "text", "id": "h2_lh", "label": "Overskriftens linjehøjde", "info": "Tom = 1.12. Fx 1.1 eller normal" },
+    { "type": "text", "id": "text_size", "label": "Brødtekstens skriftstørrelse (px)", "info": "Tom = 16" },
+    { "type": "text", "id": "text_lh", "label": "Brødtekstens linjehøjde", "info": "Tom = 1.75" },
+    { "type": "text", "id": "quote_size", "label": "Citatets skriftstørrelse (px)", "info": "Tom = 19" },
+    { "type": "text", "id": "quote_lh", "label": "Citatets linjehøjde", "info": "Tom = 1.5. Fx normal" },
+    { "type": "text", "id": "quote_open", "label": "Citatets åbningstegn", "info": "Tom = \"" },
+    { "type": "text", "id": "quote_close", "label": "Citatets sluttegn", "info": "Tom = \"" },
+    { "type": "checkbox", "id": "flush_bottom", "label": "Træk footeren helt op til sektionen", "default": false },
+    { "type": "header", "content": "Indhold" },
     { "type": "image_picker", "id": "image", "label": "Billede" },
     { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" },
     { "type": "text", "id": "eyebrow", "label": "Overlinje" },

@@ -8,14 +8,15 @@
 {%- style -%}
   .nc-hero { position: relative; background: var(--nc-hero-bg); color: var(--paper); overflow: hidden; }
   .nc-hero__track { display: flex; transform: translateX(0); transition: transform 700ms var(--ease-out); }
-  .nc-hero__slide { flex: 0 0 100%; position: relative; min-height: clamp(515px, 78vh, 615px); overflow: hidden; }
+  /* Designets slides: min-height clamp(540px, 82vh, 600px); hoejden saettes af produkt-slidens indhold (~620px) */
+  .nc-hero__slide { flex: 0 0 100%; position: relative; min-height: clamp(540px, 82vh, 600px); overflow: hidden; }
 
   .nc-hero__inner {
     position: relative;
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 clamp(22px, 6.6vw, 72px) 64px;
-    min-height: clamp(515px, 78vh, 615px);
+    min-height: clamp(540px, 82vh, 600px);
   }
   .nc-hero__inner--grid {
     display: grid;
@@ -23,6 +24,8 @@
     gap: clamp(24px, 4vw, 40px);
     align-items: center;
   }
+  .nc-hero__slide--split .nc-hero__inner--grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(28px, 5vw, 48px); }
+  .nc-hero__slide--split .nc-hero__text { gap: 20px; padding: clamp(28px, 7vw, 48px) 0; }
   .nc-hero__inner--stack { display: flex; flex-direction: column; justify-content: center; gap: 20px; }
   @media (max-width: 699px) {
     .nc-hero__inner--stack { justify-content: flex-end; }
@@ -30,13 +33,19 @@
 
   .nc-hero__text { display: flex; flex-direction: column; gap: 22px; padding: clamp(37px, 7vw, 64px) 0; max-width: 520px; }
   .nc-hero__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-200); margin: 0; }
-  .nc-hero__h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--paper); }
-  .nc-hero__h2 { margin: 0; max-width: 560px; font-family: var(--font-display); font-weight: 400; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; color: var(--paper); }
-  .nc-hero__body { margin: 0; font-size: 18px; line-height: 1.7; color: rgba(246, 244, 238, 0.86); max-width: 440px; }
+  /* text-wrap: wrap (ikke temaets "pretty"), saa linjebrud matcher designet: "CBD i samspil med ren / botanik" */
+  .nc-hero__h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--paper); text-wrap: wrap; }
+  .nc-hero__h2 { margin: 0; max-width: 560px; font-family: var(--font-display); font-weight: 400; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; letter-spacing: normal; color: var(--paper); text-wrap: wrap; }
+  .nc-hero__slide--split .nc-hero__h2 { letter-spacing: -0.01em; }
+  .nc-hero__body { margin: 0; font-size: 18px; line-height: 1.7; color: rgba(246, 244, 238, 0.82); max-width: 440px; }
+  .nc-hero__inner--stack .nc-hero__body { color: rgba(246, 244, 238, 0.9); }
+  .nc-hero__slide--split .nc-hero__body { color: rgba(246, 244, 238, 0.85); }
   .nc-hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  /* Designets lyse hero-knap har ingen kant: 15px 28px => 224x48 */
+  .nc-hero .nc-btn--light { border: 0; padding: 15px 28px; }
 
   .nc-hero__trust { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
-  .nc-hero__trust .nc-stars { color: var(--sage-700); }
+  .nc-hero__trust .nc-stars { color: var(--accent-pink); }
   .nc-hero__trust .nc-stars svg { width: 18px; height: 18px; }
   .nc-hero__trust span { font-size: 14px; color: rgba(246, 244, 238, 0.82); }
   .nc-hero__trust strong { color: var(--paper); }
@@ -49,14 +58,14 @@
   .nc-hero__wash { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40, 64, 59, 0.74), rgba(40, 64, 59, 0.26)); pointer-events: none; }
 
   .nc-hero__split-media { display: flex; align-items: center; justify-content: center; padding: clamp(19px, 7vw, 32px) 0; }
-  .nc-hero__split-media img { width: 100%; max-width: 520px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+  .nc-hero__split-media img { display: block; width: 100%; max-width: 560px; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 22%; border-radius: 18px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35); }
 
-  .nc-hero__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; background: rgba(246, 244, 238, 0.92); border: 0; color: var(--sage-700); }
+  .nc-hero__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; width: 44px; height: 44px; background: rgba(246, 244, 238, 0.85); border: 0; color: var(--sage-700); }
   .nc-hero__arrow:hover { background: var(--paper); }
-  .nc-hero__arrow--prev { left: clamp(10px, 2vw, 24px); }
-  .nc-hero__arrow--next { right: clamp(10px, 2vw, 24px); }
+  .nc-hero__arrow--prev { left: clamp(4px, 1.1vw, 18px); }
+  .nc-hero__arrow--next { right: clamp(4px, 1.1vw, 18px); }
 
-  .nc-hero__dots { position: absolute; left: 0; right: 0; bottom: 22px; display: flex; justify-content: center; gap: 8px; z-index: 5; }
+  .nc-hero__dots { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; align-items: center; justify-content: center; gap: 9px; z-index: 5; }
   .nc-hero__dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: var(--radius-pill); background: rgba(246, 244, 238, 0.45); cursor: pointer; transition: width var(--dur-base) var(--ease-soft), background-color var(--dur-base) var(--ease-soft); }
   .nc-hero__dot.is-active { width: 26px; background: var(--paper); }
 
@@ -126,7 +135,7 @@
           </div>
 
         {%- when 'split_slide' -%}
-          <div class="nc-hero__slide" data-nc-slide {{ block.shopify_attributes }}>
+          <div class="nc-hero__slide nc-hero__slide--split" data-nc-slide {{ block.shopify_attributes }}>
             <div class="nc-hero__inner nc-hero__inner--grid">
               <div class="nc-hero__text">
                 <p class="nc-hero__eyebrow">{{ block.settings.eyebrow }}</p>
@@ -153,10 +162,10 @@
 
   {%- if section.blocks.size > 1 -%}
     <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--prev" data-nc-prev aria-label="Forrige slide">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
     </button>
     <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--next" data-nc-next aria-label="Næste slide">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
     </button>
     <div class="nc-hero__dots">
       {%- for block in section.blocks -%}
@@ -189,7 +198,7 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Danmarks første godkendte CBD-hudpleje" },
         { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "Ægte pleje, til al slags hud" },
-        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler. Vi lader vores kunder fortælle om deres egne oplevelser." },
+        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler — vi lader vores kunder fortælle om deres egne oplevelser." },
         { "type": "text", "id": "cta_text", "label": "Primær knap", "default": "Shop nu →" },
         { "type": "url", "id": "cta_url", "label": "Primær knap: link" },
         { "type": "text", "id": "cta2_text", "label": "Sekundær knap", "default": "Se kundecases" },
@@ -217,7 +226,7 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Investering i Løvens Hule" },
         { "type": "inline_richtext", "id": "heading", "label": "Overskrift", "default": "Jesper Buch er trådt ind som investor" },
-        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg." },
+        { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell — sammen med grundlæggerne Lizbeth Falk og Allan Gamborg." },
         { "type": "text", "id": "cta_text", "label": "Knap", "default": "Læs historien →" },
         { "type": "url", "id": "cta_url", "label": "Knap: link" },
         { "type": "image_picker", "id": "image", "label": "Billede" },
@@ -231,7 +240,7 @@
       "blocks": [
         { "type": "product_slide" },
         { "type": "image_slide" },
-        { "type": "image_slide", "settings": { "eyebrow": "Ægte oplevelser", "heading": "Vi lader vores kunder fortælle", "body": "Vi lover ikke mirakler. Læs ægte kundecases, med billeder, video og produkterne de bruger.", "cta_text": "Se kundecases →", "fallback_asset": "nc-hero-kunder.jpg" } },
+        { "type": "image_slide", "settings": { "eyebrow": "Ægte oplevelser", "heading": "Vi lader vores kunder fortælle", "body": "Vi lover ikke mirakler. Læs ægte kundecases — med billeder, video og produkterne de bruger.", "cta_text": "Se kundecases →", "fallback_asset": "nc-hero-kunder.jpg" } },
         { "type": "split_slide" }
       ]
     }

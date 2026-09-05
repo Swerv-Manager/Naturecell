@@ -1,15 +1,17 @@
 {% comment %} "Omtalt i"-marquee fra designet: pressenavne i Philosopher, loop. {% endcomment %}
 
 {%- style -%}
-  .nc-press { padding: clamp(28px, 4vw, 44px) 0; }
-  .nc-press .nc-eyebrow { text-align: center; color: var(--ink-500); }
-  .nc-press__name { font-family: var(--font-display); font-size: 26px; letter-spacing: 0.02em; color: var(--ink-300); white-space: nowrap; padding: 0 clamp(14px, 2.6vw, 30px); }
+  /* Design: padding 44px 0, papir-baggrund, 1px linje under raekken, logoer med gap clamp(26px,5vw,64px) */
+  .nc-press { padding: 44px 0; background: var(--paper); border-bottom: 1px solid var(--border-soft); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-press .nc-eyebrow { text-align: center; margin: 0 0 26px; line-height: 1.7; letter-spacing: 0.14em; color: var(--ink-400); }
+  #shopify-section-{{ section.id }} .nc-press .nc-rail { gap: clamp(26px, 5vw, 64px); padding-right: 64px; }
+  .nc-press__name { font-family: var(--font-display); font-size: 26px; line-height: 1.7; letter-spacing: 0.02em; color: var(--ink-300); white-space: nowrap; padding: 0; }
 {%- endstyle -%}
 
 <section class="nc-press" aria-label="Omtalt i medierne">
   <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
   <div class="nc-marqwrap">
-    <div class="nc-rail" style="animation-duration: {{ section.settings.speed | default: 60 }}s;">
+    <div class="nc-rail" style="animation-duration: {{ section.settings.speed | default: 32 }}s;">
       {%- assign names = section.settings.names | split: ',' -%}
       {%- for i in (1..2) -%}
         {%- for name in names -%}
@@ -32,7 +34,7 @@
       "label": "Navne (kommasepareret)",
       "default": "Berlingske, Politiken, Femina, Euroman, Costume, Børsen, Løvens Hule, ALT for damerne, Woman, Bo Bedre"
     },
-    { "type": "range", "id": "speed", "label": "Hastighed", "min": 20, "max": 120, "step": 5, "unit": "s", "default": 60 }
+    { "type": "range", "id": "speed", "label": "Hastighed", "min": 20, "max": 120, "step": 4, "unit": "s", "default": 32 }
   ],
   "presets": [ { "name": "Omtalt i" } ]
 }

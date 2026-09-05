@@ -1,11 +1,18 @@
 {% comment %}
-  Lille compliance-strib: centreret, daempet tekst paa creme-baggrund.
-  Bruges nederst paa Om CBD-siden.
+  Lille compliance-strib (template.html:2273-2277): centreret, daempet
+  tekst paa creme-baggrund med 1px kant i toppen. Bruges nederst paa
+  Om CBD-siden, hvor den ligger helt op ad footeren.
 {% endcomment %}
 
 {%- style -%}
-  #shopify-section-{{ section.id }} .nc-notestrip { background: var(--paper-2); padding: clamp(22px, 3vw, 36px) 0; }
-  #shopify-section-{{ section.id }} .nc-notestrip p { margin: 0 auto; max-width: 82ch; text-align: center; font-size: 13.5px; line-height: 1.7; color: var(--ink-500); }
+  {%- comment -%} Designets strib: paper-2, border-top, container 900, padding 32px 24px, tekst 13px/1.7 ink-400. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-notestrip { background: var(--paper-2); border-top: 1px solid var(--border-soft); padding: 32px 0; }
+  #shopify-section-{{ section.id }} .nc-notestrip .nc-container { max-width: 900px; }
+  #shopify-section-{{ section.id }} .nc-notestrip p { margin: 0; text-align: center; font-size: 13px; line-height: 1.7; color: var(--ink-400); }
+  {%- if section.settings.flush_bottom -%}
+  {%- comment -%} Footeren har margin-top: var(--section-y); i designet ligger stribben helt op ad footeren. {%- endcomment -%}
+  #shopify-section-{{ section.id }} { margin-bottom: calc(-1 * var(--section-y)); }
+  {%- endif -%}
 {%- endstyle -%}
 
 <div class="nc-notestrip">
@@ -25,7 +32,8 @@
       "label": "Tekst",
       "default": "NatureCells produkter er kosmetiske. De er ikke medicin og kan ikke diagnosticere, behandle eller kurere sygdomme. Rådfør dig altid med egen læge, før du starter på et nyt program.",
       "info": "Compliance-krav. Må ikke fjernes."
-    }
+    },
+    { "type": "checkbox", "id": "flush_bottom", "label": "Træk footeren helt op til stribben", "default": true }
   ],
   "presets": [ { "name": "NC notestrib" } ]
 }

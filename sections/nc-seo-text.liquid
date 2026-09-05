@@ -6,19 +6,26 @@
 {% endcomment %}
 
 {%- style -%}
+  {%- comment -%}
+    Maal spejlet 1:1 fra designets SEO-blok (template.html 1589-1605): 72px over
+    hairline-stregen, 48px under den, 2 kolonner med 52px gap, h2 30px/1.18 + 16px,
+    afsnit 15.5px/1.8 + 14px, emnekort cloud + 1px border-soft, 22px 24px padding,
+    h3 19px/1.25 + 8px, tekst 14.5px/1.75, 14px mellem kortene. Bundpadding 55px lander
+    FAQ-overskriften 70px under sidste emnekort som i det godkendte skud (designets
+    64px margin + FAQ-sektionens egen padding/overskriftsboks).
+  {%- endcomment -%}
   .nc-seotext { background: var(--paper); }
-  .nc-seotext.nc-section { padding-top: clamp(24px, 2.8vw, 40px); padding-bottom: clamp(24px, 2.4vw, 32px); }
-  /* Hairline-streg i indholdsbredden ~40px over overskriften (fra designet) */
-  .nc-seotext .nc-container::before { content: ''; display: block; border-top: 1px solid rgba(62, 93, 88, 0.12); margin-bottom: clamp(28px, 3vw, 40px); }
-  .nc-seotext__cols { display: grid; gap: clamp(28px, 4.5vw, 64px); align-items: start; }
+  .nc-seotext.nc-section { padding-top: clamp(46px, 6vw, 72px); padding-bottom: 55px; }
+  .nc-seotext .nc-container::before { content: ''; display: block; border-top: 1px solid var(--border-soft); margin-bottom: clamp(32px, 4vw, 48px); }
+  .nc-seotext__cols { display: grid; gap: clamp(24px, 4vw, 52px); align-items: start; }
   @media (min-width: 900px) { .nc-seotext__cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
-  .nc-seotext__lead h2 { font-size: clamp(1.65rem, 2.6vw, 2rem); text-wrap: wrap; }
-  .nc-seotext__lead p { max-width: 62ch; color: var(--ink-700); }
-  .nc-seotext__blocks { display: grid; gap: clamp(16px, 2vw, 22px); grid-template-columns: 1fr; }
-  .nc-seotext__card { background: var(--cloud); border-radius: var(--radius-lg, 16px); padding: clamp(20px, 2.4vw, 28px) clamp(20px, 2.2vw, 24px); box-shadow: var(--shadow-sm); }
-  .nc-seotext__card h3 { font-size: 19px; margin: 0 0 8px; color: var(--sage-700); }
-  .nc-seotext__card p { font-size: 14.5px; line-height: 1.7; color: var(--ink-700); margin: 0; }
-  .nc-seotext__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3vw, 34px); }
+  .nc-seotext__lead h2 { margin: 0 0 16px; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3vw, 30px); line-height: 1.18; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+  .nc-seotext__lead p { margin: 0 0 14px; font-size: 15.5px; line-height: 1.8; color: var(--ink-700); text-wrap: pretty; }
+  .nc-seotext__blocks { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  .nc-seotext__card { background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg, 18px); padding: 22px 24px; }
+  .nc-seotext__card h3 { margin: 0 0 8px; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.25; letter-spacing: normal; color: var(--sage-700); }
+  .nc-seotext__card p { margin: 0; font-size: 14.5px; line-height: 1.75; color: var(--ink-700); text-wrap: pretty; }
+  .nc-seotext__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(40px, 5vw, 56px); }
 {%- endstyle -%}
 
 <section class="nc-seotext nc-section">

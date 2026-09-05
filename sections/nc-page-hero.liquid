@@ -13,6 +13,8 @@
   #shopify-section-{{ section.id }} .nc-pagehero { padding: clamp(36px, 5vw, 64px) 0 clamp(10px, 2vw, 20px); }
   #shopify-section-{{ section.id }} .nc-pagehero__inner { max-width: 70ch; }
   #shopify-section-{{ section.id }} .nc-pagehero--center .nc-pagehero__inner { margin: 0 auto; text-align: center; }
+  {%- comment -%} Designets enkle sidehoveder (kontakt m.fl.) har 12px mellem eyebrow og h1 — ikke sektionsafstanden paa 22px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero .nc-eyebrow { margin-bottom: 12px; }
 
   {%- comment -%} Baand-maal 1:1 fra designet: centreret 760px-kolonne (712px + 24px sidepadding), H1 clamp(38,5vw,58)/1.05, intro 18px maks 560px. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-pagehero--band { position: relative; padding: clamp(50px, 6vw, 90px) 0; background: var(--sage-500); overflow: hidden; }
@@ -20,7 +22,7 @@
   #shopify-section-{{ section.id }} .nc-pagehero--band h1 { margin: 0; color: var(--cloud); font-size: clamp(38px, 5vw, 58px); line-height: 1.05; }
   #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__intro { margin: 18px 0 0; color: rgba(246, 244, 238, 0.85); font-size: 18px; line-height: 1.7; max-width: 560px; }
   {%- comment -%} Designets eyebrow paa sage-baandet er lys sage (sage-200), ikke sand. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-eyebrow { color: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-eyebrow { margin: 0 0 16px; color: var(--sage-200); } {%- comment -%} designets flex-gap 16-18px {%- endcomment -%}
 
   {%- comment -%} "soft": lyst sage-50-baand med moerk tekst (designets FAQ-side, template.html:2306-2312):
       820px-kolonne inkl. 24px sidepadding, eyebrow 12px/0.14em sage-600, H1 clamp(29,4.5vw,46), intro 17px maks 560px. {%- endcomment -%}
@@ -81,7 +83,7 @@
     <div class="nc-container">
       <div class="nc-pagehero__inner">
         {%- if section.settings.eyebrow != blank -%}
-          <p class="nc-eyebrow" style="margin-bottom: 14px;">{{ section.settings.eyebrow }}</p>
+          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
         {%- endif -%}
         <h1>{{ section.settings.heading | default: page.title }}</h1>
         {%- if section.settings.intro != blank -%}

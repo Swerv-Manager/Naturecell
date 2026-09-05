@@ -4,48 +4,58 @@
 {% endcomment %}
 
 {%- style -%}
-  .nc-caseteaser__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: clamp(22px, 3vw, 32px); }
-  .nc-caseteaser__head p { max-width: 52ch; margin: 0; }
+  /* 1:1 fra designets CASES TEASER: 72px top/bund, hoved (kolonne gap 8, max 560) + 30 under, rail 300px-kolonner gap 20 */
+  #shopify-section-{{ section.id }} .nc-section { padding: clamp(40px, 6vw, 72px) 0; }
+  .nc-caseteaser__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
+  .nc-caseteaser__intro { display: flex; flex-direction: column; gap: 8px; max-width: 560px; }
+  #shopify-section-{{ section.id }} .nc-caseteaser__intro .nc-eyebrow { margin: 0; line-height: 1.7; letter-spacing: 0.12em; color: var(--sage-600); }
+  .nc-caseteaser__intro h2 { margin: 0; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; color: var(--sage-700); }
+  .nc-caseteaser__intro p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink-500); }
   .nc-caseteaser__nav { display: flex; align-items: center; gap: 10px; }
+  #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-iconbtn { width: 44px; height: 44px; border: 1.5px solid var(--border-default); background: var(--cloud); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-iconbtn:hover { border-color: var(--sage-400); }
+  #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-btn { min-height: 0; padding: 12px 22px; margin-left: 6px; font-size: 14px; font-weight: 600; line-height: 17px; border: 1.5px solid var(--sage-500); background: transparent; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-btn:hover { background: var(--sage-50); border-color: var(--sage-500); }
 
-  .nc-caseteaser__rail { gap: 20px; padding-bottom: 12px; }
-  .nc-caseteaser__rail > * { flex: 0 0 min(300px, 78vw); }
+  .nc-caseteaser__rail { display: grid; grid-auto-flow: column; grid-auto-columns: 300px; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 12px; }
+  .nc-caseteaser__rail::-webkit-scrollbar { display: none; }
 
-  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 14px; text-decoration: none; }
+  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; text-decoration: none; text-align: left; scroll-snap-align: start; }
   .nc-case-card__meta { display: flex; flex-direction: column; gap: 5px; }
-  .nc-case-card__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); }
-  .nc-case-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-soft); }
+  .nc-case-card__media { position: relative; display: block; width: 100%; height: 300px; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
+  .nc-case-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-soft); }
   .nc-case-card:hover .nc-case-card__media img { transform: scale(1.03); }
-  .nc-case-card__area { position: absolute; top: 12px; left: 12px; }
+  #shopify-section-{{ section.id }} .nc-case-card__area { position: absolute; top: 12px; left: 12px; padding: 4px 10px; background: var(--paper); color: var(--sage-700); font-size: 10.5px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; }
   .nc-case-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
   .nc-case-card__play span { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.92); color: var(--sage-700); box-shadow: var(--shadow-md); }
-  .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.2; color: var(--sage-700); }
-  .nc-case-card__who { font-size: 14px; color: var(--ink-500); }
+  /* Designets h3 saetter ingen font-weight => UA-default 700 (Philosopher Bold) */
+  .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
+  .nc-case-card__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
 {%- endstyle -%}
 
 <section class="nc-section">
   <div class="nc-container" data-nc-railwrap>
     <div class="nc-caseteaser__head">
-      <div>
+      <div class="nc-caseteaser__intro">
         <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
         <h2>{{ section.settings.heading }}</h2>
         <p>{{ section.settings.subtext }}</p>
       </div>
       <div class="nc-caseteaser__nav">
-        <button class="nc-iconbtn" data-nc-rail-prev aria-label="Rul tilbage">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <button class="nc-iconbtn" data-nc-rail-prev aria-label="Forrige">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <button class="nc-iconbtn" data-nc-rail-next aria-label="Rul frem">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+        <button class="nc-iconbtn" data-nc-rail-next aria-label="Næste">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
         {%- if section.settings.blog != blank -%}
-          <a class="nc-btn nc-btn--outline" href="{{ section.settings.blog.url }}">Se alle cases →</a>
+          <a class="nc-btn nc-btn--outline" href="{{ section.settings.blog.url }}">{{ section.settings.link_text }}</a>
         {%- endif -%}
       </div>
     </div>
 
     {%- if section.settings.blog != blank -%}
-      <div class="nc-rail-scroll nc-scroll nc-caseteaser__rail" data-nc-railscroll>
+      <div class="nc-scroll nc-caseteaser__rail" data-nc-railscroll>
         {%- for article in section.settings.blog.articles limit: section.settings.limit -%}
           <a class="nc-case-card" href="{{ article.url }}">
             <span class="nc-case-card__media">
@@ -60,12 +70,12 @@
                 {%- endif -%}
               {%- endfor -%}
               {%- if area_tag != blank -%}
-                <span class="nc-tag nc-tag--light nc-case-card__area">{{ area_tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize }}</span>
+                <span class="nc-tag nc-case-card__area">{{ area_tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize }}</span>
               {%- endif -%}
               {%- if article.tags contains 'video' or article.content contains 'youtube' -%}
                 <span class="nc-case-card__play" aria-hidden="true">
                   <span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </span>
                 </span>
               {%- endif -%}
@@ -90,7 +100,8 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Ægte oplevelser" },
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Kundecases" },
-    { "type": "textarea", "id": "subtext", "label": "Undertekst", "default": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger." },
+    { "type": "textarea", "id": "subtext", "label": "Undertekst", "default": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie – med billeder, video og produkterne de bruger." },
+    { "type": "text", "id": "link_text", "label": "Knap", "default": "Se alle cases →" },
     { "type": "blog", "id": "blog", "label": "Blog", "info": "Vælg kundecases-bloggen." },
     { "type": "range", "id": "limit", "label": "Antal", "min": 4, "max": 12, "step": 1, "default": 10 }
   ],

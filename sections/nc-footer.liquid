@@ -5,6 +5,9 @@
 
 {%- style -%}
   .nc-footer { background: var(--nc-footer-bg); color: rgba(255, 255, 255, 0.88); margin-top: var(--section-y); }
+  /* Sider hvor designets sidste sektion gaar direkte over i footeren (fx Om CBD-notestrimlen, B2B):
+     saet klassen nc-flush-footer paa sektionens rodelement, saa footerens egen top-margin bortfalder. */
+  body:has(.nc-flush-footer) .nc-footer { margin-top: 0; }
   .nc-footer a { color: var(--cloud); text-decoration: none; }
   .nc-footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
@@ -48,14 +51,15 @@
     font-size: 14px;
     line-height: normal;
     padding: 11px 16px;
+    border-radius: var(--radius-pill); /* designets felt er en pille (999px) */
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(246, 244, 238, 0.4);
     color: var(--cloud);
     min-width: 0;
   }
-  .nc-footer__form .nc-input::placeholder { color: rgba(255, 255, 255, 0.65); }
-  .nc-footer__form .nc-iconbtn { flex: none; width: auto; height: auto; padding: 11px 18px; border-radius: var(--radius-pill); background: var(--sage-700); border-color: var(--sage-700); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: normal; }
-  .nc-footer__form .nc-iconbtn:hover { background: var(--sage-600); border-color: var(--sage-600); }
+  /* Designet styler ikke ::placeholder — browserens standardgraa (#757575) er det godkendte udtryk. */
+  .nc-footer__form .nc-iconbtn { flex: none; width: auto; height: auto; padding: 11px 18px; border: 0; border-radius: var(--radius-pill); background: var(--sage-700); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: normal; }
+  .nc-footer__form .nc-iconbtn:hover { background: var(--sage-600); }
 
   /* Bundlinje: fuldbreddeskillelinje som i designet, tekst i container */
   .nc-footer__bottom-wrap { border-top: 1px solid rgba(246, 244, 238, 0.4); }

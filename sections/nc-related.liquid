@@ -14,15 +14,21 @@
   #shopify-section-{{ section.id }} .nc-relrail__nav button:hover { background: var(--sage-50); border-color: var(--sage-400); }
   #shopify-section-{{ section.id }} .nc-relrail__rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(min(47%, 248px), 1fr); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 12px; }
   #shopify-section-{{ section.id }} .nc-relrail__rail::-webkit-scrollbar { display: none; }
+  /* Designet (template.html:1776-1780): kortene ligger i auto-hoeje wrappers og har
+     naturlig hoejde — Collagen-kortet (2 titellinjer) er 22px hoejere end de andre. */
+  #shopify-section-{{ section.id }} .nc-relrail__rail { align-items: start; }
   #shopify-section-{{ section.id }} .nc-relrail__rail > * { scroll-snap-align: start; }
+  #shopify-section-{{ section.id }} .nc-product-card { height: auto; }
   /* Korttitler som i designets NCProductCard: ingen tracking, almindelig ombrydning.
      max-width matcher designets ombrydning ("Collagen med / hyaluronsyre"). */
-  #shopify-section-{{ section.id }} .nc-product-card__title { letter-spacing: normal; text-wrap: wrap; max-width: 210px; }
-  /* Tekstblokkens lodrette rytme som designets NCProductCard:
-     gap 7px, rating +2px, pris efter 17px (7 gap + 10 margin), padding 18/18/20. */
-  #shopify-section-{{ section.id }} .nc-product-card__info { gap: 7px; padding: 18px 18px 18px; }
-  #shopify-section-{{ section.id }} .nc-product-card__rating { margin-top: 2px; }
-  #shopify-section-{{ section.id }} .nc-product-card__price { margin-top: 10px; }
+  #shopify-section-{{ section.id }} .nc-product-card__title { letter-spacing: normal; text-wrap: wrap; max-width: 210px; line-height: 1.25; }
+  /* Tekstblokkens lodrette rytme 1:1 fra NCProductCard.dc.html (body 16px/1.7):
+     gap 7, padding 18/18/20; rating-div = margin-top 2 + strut-linje 27.2px med
+     stjernerne 4.5px nede; pris-div = padding-top 10 + strut-linje, hvor PriceTag (22px/1)
+     baseline-justeres 2.5px nede (maalt mod designets render: pris-glyf 153px, kortbund 197px under mediet). */
+  #shopify-section-{{ section.id }} .nc-product-card__info { gap: 7px; padding: 18px 18px 20px; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .nc-product-card__rating { margin-top: 2px; box-sizing: border-box; height: 27.2px; padding-bottom: 2.2px; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-product-card__price { margin-top: auto; padding: 12.5px 0 4.2px; }
 {%- endstyle -%}
 
 <div class="nc-relrail">

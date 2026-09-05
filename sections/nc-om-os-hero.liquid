@@ -1,0 +1,39 @@
+{% comment %}
+  Sidehero til Om os 1:1 fra designet (template.html:2710-2716):
+  sage-500-baand, 760px-kolonne med padding clamp(50,6vw,90), flex-kolonne
+  gap 18 (eyebrow, H1 clamp(38,5vw,58)/1.05, intro 18px maks 560).
+  nc-page-hero's sage-variant bruger 16px og kan ikke naa 18 via indstillinger.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-oshero { position: relative; background: var(--sage-500); color: var(--paper); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-oshero__inner { position: relative; max-width: 760px; margin: 0 auto; padding: clamp(50px, 6vw, 90px) clamp(16px, 4vw, 24px); display: flex; flex-direction: column; gap: 18px; }
+  #shopify-section-{{ section.id }} .nc-oshero__inner .nc-eyebrow { margin: 0; line-height: var(--leading-relaxed); font-size: 12px; letter-spacing: 0.14em; color: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-oshero__inner h1 { margin: 0; font-size: clamp(38px, 5vw, 58px); line-height: 1.05; letter-spacing: normal; color: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-oshero__inner p { margin: 0; font-size: 18px; line-height: 1.7; color: rgba(246, 244, 238, 0.85); max-width: 560px; }
+{%- endstyle -%}
+
+<section class="nc-oshero nc-on-dark">
+  <div class="nc-oshero__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1>{{ section.settings.heading | default: page.title }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <p>{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NC Om os-hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Vores historie" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Vi var de første — og vi gør det ærligt." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Vi er en familiedrevet virksomhed med rødder på Møllerup Gods, bygget på ærlighed frem for løfter." }
+  ],
+  "presets": [ { "name": "NC Om os-hero" } ]
+}
+{% endschema %}
