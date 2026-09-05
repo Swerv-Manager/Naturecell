@@ -1,43 +1,37 @@
 {
   "sections": {
-    "main": {
-      "type": "main-collection"
-    },
+    "main": { "type": "main-collection" },
     "seo": {
       "type": "nc-seo-text",
       "settings": {
-        "heading": "Sampakker: hele rutinen samlet i én pakke",
-        "body": "<p>NatureCells sampakker samler produkter, der er udviklet til at fungere sammen. Komplet CBD Hudpleje indeholder Rensegel, Dagcreme, Natcreme og Hudplejeolie 1000 mg, altså hele ansigtsrutinen morgen og aften. Startpakke PLUS er de tre første trin, og All Day CBD Skin Care samler Dagcreme og Natcreme.</p><p>Til hænder, krop og hår findes Hånd-Sampakken, Hel Kropspleje og Komplet Hårpleje. Pakkerne er en praktisk måde at komme i gang på, fordi produkterne passer sammen i konsistens og brug.</p><p>Alle produkter er kosmetiske, veganske, uden syntetisk parfume og produceret i Danmark. Vi lover ikke mirakler. Vi beskriver brugen og lader vores kunder fortælle om deres egne rutiner under kundecases.</p>",
+        "heading": "NatureCell, dansk CBD-hudpleje til hele familien",
+        "body": "<p>NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Hele sortimentet er bygget på CBD (cannabidiol) i samspil med naturlige planteolier, antioxidanter og fugtgivende ingredienser, veganske, uden syntetisk parfume og udviklet i Danmark.</p><p>Serien er tænkt som en one-size-fits-all løsning, der passer til alle hudtyper: tør, fedtet, kombineret, moden, sensitiv og uren hud. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser, og du kan læse deres historier under kundecases.</p><p>Uanset om du søger CBD creme, CBD hudplejeolie, dagcreme, natcreme, håndcreme eller fodcreme, finder du det i sortimentet. Alle produkter er kosmetiske, plantebaserede og produceret i Danmark, og du kan filtrere efter både område og behov for hurtigt at finde det rigtige.</p>",
         "links": ""
       },
       "blocks": {
         "t1": {
           "type": "topic",
           "settings": {
-            "heading": "Hvilken pakke passer til mig?",
-            "text": "Vil du have hele ansigtsrutinen, er Komplet CBD Hudpleje det oplagte valg. Er du ny, kan du starte med Startpakke PLUS eller All Day CBD Skin Care og bygge på senere."
+            "heading": "Sådan vælger du den rigtige hudpleje",
+            "text": "Start med hudens behov frem for produktnavnet. Er huden tør og stram, skal du have fugt og fedt, en fugtighedscreme morgen og aften plus en olie som sidste trin. Er huden fedtet eller uren, holder du en let creme og en mild rensegel. Er huden moden, prioriterer du næring, antioxidanter og en rigere natcreme. Du kan filtrere sortimentet efter både område og behov på én gang."
           }
         },
         "t2": {
           "type": "topic",
           "settings": {
-            "heading": "Sådan bruger du pakken",
-            "text": "Rens morgen og aften, følg op med Dagcreme om morgenen og Natcreme om aftenen, og slut af med et par dråber Hudplejeolie som sidste lag. Hver pakke følger samme enkle princip."
+            "heading": "Ingredienserne der gør forskellen",
+            "text": "CBD (cannabidiol) er seriens omdrejningspunkt og kombineres med hyaluronsyre og urea, der binder fugt, sheasmør og mandelolie, der blødgør og beskytter, samt niacinamide og E-vitamin, der understøtter en ensartet, velplejet hud. Alt er plantebaseret, vegansk og uden syntetisk parfume, du kan læse om hver enkelt ingrediens på vores ingrediensside."
           }
         },
         "t3": {
           "type": "topic",
           "settings": {
-            "heading": "Som gave",
-            "text": "Sampakkerne er en nem gave til en du har kær. Har du brug for at lade modtageren vælge selv, findes der også gavekort til hele sortimentet."
+            "heading": "Dansk hudpleje du kan regne med",
+            "text": "NatureCell® er et dansk familieejet brand og den første CBD-hudplejeserie godkendt til salg i Danmark. Produktionen sker på GMP- og ISO-certificerede faciliteter, webshoppen er e-mærket, og vi lover ikke mirakler, vi lader vores kunder fortælle deres egne historier under kundecases."
           }
         }
       },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3"
-      ]
+      "block_order": ["t1", "t2", "t3"]
     },
     "faq": {
       "type": "nc-faq",
@@ -51,54 +45,15 @@
         "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
       },
       "blocks": {
-        "q1": {
-          "type": "qa",
-          "settings": {
-            "q": "Er pakkerne billigere end produkterne hver for sig?",
-            "a": "<p>Pakkeprisen fremgår altid på produktsiden sammen med de enkelte produkters normalpriser.</p>"
-          }
-        },
-        "q2": {
-          "type": "qa",
-          "settings": {
-            "q": "Kan jeg bytte et produkt i pakken?",
-            "a": "<p>Pakkerne har fast indhold. Vil du sammensætte selv, finder du alle produkter enkeltvis i sortimentet.</p>"
-          }
-        },
-        "q3": {
-          "type": "qa",
-          "settings": {
-            "q": "Passer pakkerne til alle hudtyper?",
-            "a": "<p>Serien er tænkt som en one-size-fits-all løsning. Er din hud meget reaktiv, kan du starte med ét produkt ad gangen.</p>"
-          }
-        },
-        "q4": {
-          "type": "qa",
-          "settings": {
-            "q": "Kan pakken sendes som gave?",
-            "a": "<p>Ja. Du kan også vælge et gavekort, hvis modtageren selv skal vælge.</p>"
-          }
-        },
-        "q5": {
-          "type": "qa",
-          "settings": {
-            "q": "Hvad koster fragt?",
-            "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.</p>"
-          }
-        }
+        "q1": { "type": "qa", "settings": { "q": "Hvad er CBD-hudpleje?", "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår som aktiv ingrediens sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" } },
+        "q2": { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>" } },
+        "q3": { "type": "qa", "settings": { "q": "Passer produkterne til alle hudtyper?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning til tør, fedtet, kombineret, moden, sensitiv og uren hud.</p>" } },
+        "q4": { "type": "qa", "settings": { "q": "Er produkterne veganske?", "a": "<p>Ja, veganske, uden syntetisk parfume og udviklet i Danmark.</p>" } },
+        "q5": { "type": "qa", "settings": { "q": "Hvad koster fragt?", "a": "<p>Fri fragt ved køb over 399 kr.</p>" } },
+        "q6": { "type": "qa", "settings": { "q": "Hvordan finder jeg det rigtige produkt?", "a": "<p>Filtrér efter område (ansigt, hænder, krop, fødder, hår) og efter behov (tør hud, fugt, moden hud, sensitiv, uren), du kan kombinere begge.</p>" } }
       },
-      "block_order": [
-        "q1",
-        "q2",
-        "q3",
-        "q4",
-        "q5"
-      ]
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
     }
   },
-  "order": [
-    "main",
-    "seo",
-    "faq"
-  ]
+  "order": ["main", "seo", "faq"]
 }
