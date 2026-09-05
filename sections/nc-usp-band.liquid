@@ -11,7 +11,7 @@
   .nc-uspband__item svg { flex: none; }
 {%- endstyle -%}
 
-<div class="nc-uspband nc-marqwrap" aria-label="Fordele ved at handle hos NatureCell">
+<div class="nc-uspband nc-marqwrap" aria-label="{{ 'cart.benefits_title' | t }}">
   <div class="nc-rail" style="animation-duration: 24s;">
     {%- assign items = section.settings.items | newline_to_br | split: '<br />' -%}
     {%- for i in (1..2) -%}

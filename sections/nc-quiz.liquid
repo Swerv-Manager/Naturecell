@@ -29,41 +29,41 @@
       <div data-nc-quiz-step="0">
         <h2>{{ section.settings.intro_heading }}</h2>
         <p>{{ section.settings.intro_text }}</p>
-        <button class="nc-btn nc-btn--primary" data-nc-quiz-start>Start quizzen →</button>
+        <button class="nc-btn nc-btn--primary" data-nc-quiz-start>{{ 'quiz.start' | t }}</button>
       </div>
 
       <div data-nc-quiz-step="1" hidden>
-        <h2>Hvor har du brug for pleje?</h2>
+        <h2>{{ 'collection.where_q' | t }}</h2>
         <div class="nc-quiz__opts">
-          <button class="nc-quiz__opt" data-nc-quiz-area="ansigt" data-nc-label="Ansigt"><strong>Ansigt</strong><span>Creme, serum & rens</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="haender" data-nc-label="Hænder"><strong>Hænder</strong><span>Tørre, slidte hænder</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="krop" data-nc-label="Krop"><strong>Krop</strong><span>Lotion & olie</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="foedder" data-nc-label="Fødder"><strong>Fødder</strong><span>Tørre hæle & fødder</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="haar" data-nc-label="Hår"><strong>Hår</strong><span>Shampoo & pleje</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-area="ansigt" data-nc-label="Ansigt"><strong>{{ 'areas.face' | t }}</strong><span>{{ 'areas_sub.face' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-area="haender" data-nc-label="Hænder"><strong>{{ 'areas.hands' | t }}</strong><span>{{ 'areas_sub.hands' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-area="krop" data-nc-label="Krop"><strong>{{ 'areas.body' | t }}</strong><span>{{ 'areas_sub.body' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-area="foedder" data-nc-label="Fødder"><strong>{{ 'areas.feet' | t }}</strong><span>{{ 'areas_sub.feet' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-area="haar" data-nc-label="Hår"><strong>{{ 'areas.hair' | t }}</strong><span>{{ 'areas_sub.hair' | t }}</span></button>
         </div>
-        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>Tilbage</button></div>
+        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>{{ 'general.back' | t }}</button></div>
       </div>
 
       <div data-nc-quiz-step="2" hidden>
-        <h2>Hvad har din hud brug for?</h2>
+        <h2>{{ 'collection.what_q' | t }}</h2>
         <div class="nc-quiz__opts">
-          <button class="nc-quiz__opt" data-nc-quiz-need="toer" data-nc-label="Tør hud"><strong>Tør hud</strong><span>Nærende fugt</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="fugt" data-nc-label="Fugt"><strong>Fugt</strong><span>Boost & balance</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="moden" data-nc-label="Moden hud"><strong>Moden hud</strong><span>Fasthed & glød</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="sensitiv" data-nc-label="Sensitiv hud"><strong>Sensitiv hud</strong><span>Mild & rolig</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="uren" data-nc-label="Uren hud"><strong>Uren hud</strong><span>Rens & balance</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="genopbygning" data-nc-label="Genopbygning"><strong>Genopbygning</strong><span>Reparation</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="toer" data-nc-label="Tør hud"><strong>{{ 'needs.dry' | t }}</strong><span>{{ 'needs_sub.dry' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="fugt" data-nc-label="Fugt"><strong>{{ 'needs.moisture' | t }}</strong><span>{{ 'needs_sub.moisture' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="moden" data-nc-label="Moden hud"><strong>{{ 'needs.mature' | t }}</strong><span>{{ 'needs_sub.mature' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="sensitiv" data-nc-label="Sensitiv hud"><strong>{{ 'needs.sensitive' | t }}</strong><span>{{ 'needs_sub.sensitive' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="uren" data-nc-label="Uren hud"><strong>{{ 'needs.blemish' | t }}</strong><span>{{ 'needs_sub.blemish' | t }}</span></button>
+          <button class="nc-quiz__opt" data-nc-quiz-need="genopbygning" data-nc-label="Genopbygning"><strong>{{ 'needs.repair' | t }}</strong><span>{{ 'needs_sub.repair' | t }}</span></button>
         </div>
-        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>Tilbage</button></div>
+        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>{{ 'general.back' | t }}</button></div>
       </div>
 
       <div data-nc-quiz-step="3" hidden>
-        <h2>Vores anbefaling til dig</h2>
+        <h2>{{ 'cart.recommendation' | t }}</h2>
         <p data-nc-quiz-labels class="nc-eyebrow"></p>
         <div data-nc-quiz-result></div>
         <div class="nc-quiz__nav">
-          <button class="nc-btn nc-btn--outline" data-nc-quiz-restart>Tag quizzen igen</button>
-          <a class="nc-btn nc-btn--primary" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">Se alle produkter</a>
+          <button class="nc-btn nc-btn--outline" data-nc-quiz-restart>{{ 'quiz.retake' | t }}</button>
+          <a class="nc-btn nc-btn--primary" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'general.view_all_products' | t }}</a>
         </div>
       </div>
 

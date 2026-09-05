@@ -1,0 +1,165 @@
+{
+  "general": {
+    "search": "Suchen",
+    "search_products": "Produkte suchen",
+    "search_ingredient": "Inhaltsstoff suchen",
+    "search_ingredient_placeholder": "Inhaltsstoff suchen ...",
+    "back": "Zurück",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "previous_slide": "Vorherige Folie",
+    "next_slide": "Nächste Folie",
+    "close_menu": "Menü schließen",
+    "close_cart": "Warenkorb schließen",
+    "menu": "Menü",
+    "main_menu": "Hauptmenü",
+    "mobile_menu": "Mobiles Menü",
+    "skip_to_content": "Zum Inhalt springen",
+    "breadcrumb": "Brotkrumen",
+    "home": "Startseite",
+    "featured_content": "Hervorgehobener Inhalt",
+    "video": "Video",
+    "more": "Mehr",
+    "fewer": "Weniger",
+    "page_label": "Seite",
+    "pages": "Seiten",
+    "error_404": "Fehler 404",
+    "not_found_title": "Seite nicht gefunden",
+    "not_found_text": "Entdecken Sie das Sortiment und finden Sie Ihre neue Routine.",
+    "view_all_products": "Alle Produkte ansehen",
+    "view_all_products_arrow": "Alle Produkte ansehen →",
+    "shop_now": "Jetzt shoppen",
+    "read_more": "Mehr lesen",
+    "meta": {
+      "tags": "Getaggt mit {{ tags }}",
+      "page": "Seite {{ page }}"
+    },
+    "404": {
+      "title": "Seite nicht gefunden"
+    },
+    "pagination": {
+      "previous": "Zurück",
+      "next": "Weiter"
+    }
+  },
+  "blog": {
+    "read_also": "Lesen Sie auch",
+    "told_by": "Erzählt von",
+    "article": "Artikel",
+    "real_customer": "Echte NatureCell-Kundin",
+    "more_cases": "Weitere Kundengeschichten",
+    "case_colors": "Farben dieser Geschichte ansehen",
+    "filter_topic": "Nach Thema filtern"
+  },
+  "nav": {
+    "shop": "Shop",
+    "cases": "Kundengeschichten",
+    "articles": "Artikel",
+    "about": "Über uns",
+    "club": "Kundenclub",
+    "about_cbd": "Über CBD",
+    "our_story": "Unsere Geschichte",
+    "ingredients": "Inhaltsstoffe",
+    "collections": "Kollektionen",
+    "favorites": "Favoriten",
+    "account": "Konto",
+    "cart": "Warenkorb"
+  },
+  "cart": {
+    "empty": "Ihr Warenkorb ist leer",
+    "empty_dot": "Ihr Warenkorb ist leer.",
+    "subtotal": "Zwischensumme",
+    "checkout": "Zur Kasse",
+    "remove": "Entfernen",
+    "quantity": "Menge",
+    "update": "Warenkorb aktualisieren",
+    "item": "Artikel",
+    "product": "Produkt",
+    "price": "Preis",
+    "you_save": "Sie sparen",
+    "free_shipping_over": "Kostenloser Versand ab 399 kr.",
+    "free_shipping_status": "Versandkosten-Status",
+    "payment_methods": "Zahlungsarten",
+    "benefits_title": "Ihre Vorteile bei NatureCell",
+    "recommendation": "Unsere Empfehlung für Sie"
+  },
+  "favorites": {
+    "empty": "Noch keine Favoriten"
+  },
+  "campaign": {
+    "gloves_count": "Anzahl abgeholter Handschuhe"
+  },
+  "product": {
+    "regular_price": "Normalpreis",
+    "sold_out": "Ausverkauft",
+    "variant": "Variante",
+    "bundle": "Set"
+  },
+  "collection": {
+    "bestsellers": "Bestseller",
+    "choose": "Kollektion wählen",
+    "area": "Bereich",
+    "need": "Bedürfnis",
+    "by_area": "Nach Bereich",
+    "by_need": "Nach Bedürfnis",
+    "where_q": "Wo brauchen Sie Pflege?",
+    "what_q": "Was braucht Ihre Haut?",
+    "reset": "Zurücksetzen",
+    "reset_filters": "Filter zurücksetzen"
+  },
+  "areas": {
+    "face": "Gesicht",
+    "hands": "Hände",
+    "body": "Körper",
+    "feet": "Füße",
+    "hair": "Haar"
+  },
+  "areas_sub": {
+    "face": "Creme, Serum & Reinigung",
+    "hands": "Trockene, strapazierte Hände",
+    "body": "Lotion & Öl",
+    "feet": "Trockene Fersen & Füße",
+    "hair": "Shampoo & Pflege"
+  },
+  "needs": {
+    "dry": "Trockene Haut",
+    "moisture": "Feuchtigkeit",
+    "mature": "Reife Haut",
+    "sensitive": "Sensible Haut",
+    "blemish": "Unreine Haut",
+    "repair": "Aufbau"
+  },
+  "needs_sub": {
+    "dry": "Nährende Feuchtigkeit",
+    "moisture": "Boost & Balance",
+    "mature": "Festigkeit & Glow",
+    "sensitive": "Mild & ruhig",
+    "blemish": "Reinigung & Balance",
+    "repair": "Reparatur"
+  },
+  "ingredients": {
+    "why": "Darum verwenden wir ihn"
+  },
+  "press": {
+    "title": "Bekannt aus den Medien"
+  },
+  "forms": {
+    "email": "E-Mail",
+    "email_placeholder": "deine@email.de",
+    "newsletter_submit": "Newsletter abonnieren",
+    "thanks": "Danke für Ihre Anmeldung.",
+    "welcome": "Willkommen im Club. Bitte prüfen Sie Ihr Postfach.",
+    "email_error": "Bitte E-Mail-Adresse prüfen und erneut versuchen."
+  },
+  "quiz": {
+    "start": "Quiz starten →",
+    "retake": "Quiz wiederholen"
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "continue_shopping": "Weiter einkaufen"
+      }
+    }
+  }
+}

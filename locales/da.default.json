@@ -10,7 +10,37 @@
     "pagination": {
       "previous": "Forrige",
       "next": "Næste"
-    }
+    },
+    "search": "Søg",
+    "search_products": "Søg efter produkter",
+    "search_ingredient": "Søg efter en ingrediens",
+    "search_ingredient_placeholder": "Søg efter en ingrediens ...",
+    "back": "Tilbage",
+    "previous": "Forrige",
+    "next": "Næste",
+    "previous_slide": "Forrige slide",
+    "next_slide": "Næste slide",
+    "close_menu": "Luk menu",
+    "close_cart": "Luk kurv",
+    "menu": "Menu",
+    "main_menu": "Hovedmenu",
+    "mobile_menu": "Mobilmenu",
+    "skip_to_content": "Gå til indholdet",
+    "breadcrumb": "Brødkrumme",
+    "home": "Forside",
+    "featured_content": "Fremhævet indhold",
+    "video": "Video",
+    "more": "Flere",
+    "fewer": "Færre",
+    "page_label": "Side",
+    "pages": "Sider",
+    "error_404": "Fejl 404",
+    "not_found_title": "Siden findes ikke",
+    "not_found_text": "Udforsk sortimentet og find din nye rutine.",
+    "view_all_products": "Se alle produkter",
+    "view_all_products_arrow": "Se alle produkter →",
+    "shop_now": "Shop nu",
+    "read_more": "Læs mere"
   },
   "shopify": {
     "checkout": {
@@ -18,5 +48,118 @@
         "continue_shopping": "Fortsæt med at handle"
       }
     }
+  },
+  "blog": {
+    "read_also": "Læs også",
+    "told_by": "Fortalt af",
+    "article": "Artikel",
+    "real_customer": "Ægte NatureCell-kunde",
+    "more_cases": "Se flere kundecases",
+    "case_colors": "Se farverne fra casen",
+    "filter_topic": "Filtrér efter emne"
+  },
+  "nav": {
+    "shop": "Shop",
+    "cases": "Kundecases",
+    "articles": "Artikler",
+    "about": "Om os",
+    "club": "Kundeklub",
+    "about_cbd": "Om CBD",
+    "our_story": "Vores historie",
+    "ingredients": "Ingredienser",
+    "collections": "Kollektioner",
+    "favorites": "Favoritter",
+    "account": "Konto",
+    "cart": "Kurv"
+  },
+  "cart": {
+    "empty": "Din kurv er tom",
+    "empty_dot": "Din kurv er tom.",
+    "subtotal": "Subtotal",
+    "checkout": "Gå til kassen",
+    "remove": "Fjern",
+    "quantity": "Antal",
+    "update": "Opdatér kurv",
+    "item": "Vare",
+    "product": "Produkt",
+    "price": "Pris",
+    "you_save": "Du sparer",
+    "free_shipping_over": "Fri fragt ved køb over 399 kr.",
+    "free_shipping_status": "Fri fragt-status",
+    "payment_methods": "Betalingsmetoder",
+    "benefits_title": "Fordele ved at handle hos NatureCell",
+    "recommendation": "Vores anbefaling til dig"
+  },
+  "favorites": {
+    "empty": "Ingen favoritter endnu"
+  },
+  "campaign": {
+    "gloves_count": "Antal hentede handsker"
+  },
+  "product": {
+    "regular_price": "Normalpris",
+    "sold_out": "Udsolgt",
+    "variant": "Variant",
+    "bundle": "Sampakke"
+  },
+  "collection": {
+    "bestsellers": "Bestsellers",
+    "choose": "Vælg en kollektion",
+    "area": "Område",
+    "need": "Behov",
+    "by_area": "Efter område",
+    "by_need": "Efter behov",
+    "where_q": "Hvor har du brug for pleje?",
+    "what_q": "Hvad har din hud brug for?",
+    "reset": "Nulstil",
+    "reset_filters": "Nulstil filtre"
+  },
+  "areas": {
+    "face": "Ansigt",
+    "hands": "Hænder",
+    "body": "Krop",
+    "feet": "Fødder",
+    "hair": "Hår"
+  },
+  "areas_sub": {
+    "face": "Creme, serum & rens",
+    "hands": "Tørre, slidte hænder",
+    "body": "Lotion & olie",
+    "feet": "Tørre hæle & fødder",
+    "hair": "Shampoo & pleje"
+  },
+  "needs": {
+    "dry": "Tør hud",
+    "moisture": "Fugt",
+    "mature": "Moden hud",
+    "sensitive": "Sensitiv hud",
+    "blemish": "Uren hud",
+    "repair": "Genopbygning"
+  },
+  "needs_sub": {
+    "dry": "Nærende fugt",
+    "moisture": "Boost & balance",
+    "mature": "Fasthed & glød",
+    "sensitive": "Mild & rolig",
+    "blemish": "Rens & balance",
+    "repair": "Reparation"
+  },
+  "ingredients": {
+    "why": "Derfor bruger vi den"
+  },
+  "press": {
+    "title": "Omtalt i medierne"
+  },
+  "forms": {
+    "email": "E-mail",
+    "email_placeholder": "din@email.dk",
+    "newsletter_submit": "Tilmeld nyhedsbrev",
+    "thanks": "Tak for din tilmelding.",
+    "welcome": "Velkommen i klubben. Tjek din indbakke.",
+    "email_error": "Tjek din e-mailadresse og prøv igen."
+  },
+  "quiz": {
+    "start": "Start quizzen →",
+    "retake": "Tag quizzen igen"
   }
 }

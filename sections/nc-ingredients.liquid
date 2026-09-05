@@ -44,8 +44,8 @@
       <div class="nc-ing__tools-inner">
         <div class="nc-blogtools__search" style="flex-basis: 320px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
-          <label class="nc-visually-hidden" for="nc-ing-search">Søg efter en ingrediens</label>
-          <input id="nc-ing-search" type="search" placeholder="Søg efter en ingrediens ..." data-nc-ing-search autocomplete="off">
+          <label class="nc-visually-hidden" for="nc-ing-search">{{ 'general.search_ingredient' | t }}</label>
+          <input id="nc-ing-search" type="search" placeholder="{{ 'general.search_ingredient_placeholder' | t }}" data-nc-ing-search autocomplete="off">
         </div>
         <div class="nc-ing__chips">
           {%- for block in section.blocks -%}
@@ -98,7 +98,7 @@
             <div class="nc-ing__text">{{ block.settings.body }}</div>
             {%- if block.settings.benefits != blank -%}
               <div class="nc-ing__why">
-                <strong>Derfor bruger vi den</strong>
+                <strong>{{ 'ingredients.why' | t }}</strong>
                 <ul>
                   {%- assign benefit_rows = block.settings.benefits | newline_to_br | split: '<br />' -%}
                   {%- for row in benefit_rows -%}

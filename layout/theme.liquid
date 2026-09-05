@@ -39,7 +39,7 @@
   </head>
 
   <body class="template-{{ request.page_type | handle }}">
-    <a class="nc-skip-link" href="#nc-main">Gå til indholdet</a>
+    <a class="nc-skip-link" href="#nc-main">{{ 'general.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}
 

@@ -151,26 +151,26 @@
         {%- form 'customer' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="nc-footer__form">
-            <label class="nc-visually-hidden" for="nc-news-email">E-mail</label>
+            <label class="nc-visually-hidden" for="nc-news-email">{{ 'forms.email' | t }}</label>
             <input
               id="nc-news-email"
               class="nc-input"
               type="email"
               name="contact[email]"
-              placeholder="din@email.dk"
+              placeholder="{{ 'forms.email_placeholder' | t }}"
               autocomplete="email"
               required
             >
-            <button class="nc-iconbtn" type="submit" aria-label="Tilmeld nyhedsbrev">→</button>
+            <button class="nc-iconbtn" type="submit" aria-label="{{ 'forms.newsletter_submit' | t }}">→</button>
           </div>
           {%- if form.posted_successfully? -%}
-            <p role="status" style="margin-top: 8px;">Tak for din tilmelding.</p>
+            <p role="status" style="margin-top: 8px;">{{ 'forms.thanks' | t }}</p>
           {%- elsif form.errors -%}
-            <p role="alert" style="margin-top: 8px;">Tjek din e-mailadresse og prøv igen.</p>
+            <p role="alert" style="margin-top: 8px;">{{ 'forms.email_error' | t }}</p>
           {%- endif -%}
         {%- endform -%}
         {%- unless section.settings.hide_payment_icons -%}
-          <div class="nc-footer__payments" aria-label="Betalingsmetoder" style="margin-top: 18px;">
+          <div class="nc-footer__payments" aria-label="{{ 'cart.payment_methods' | t }}" style="margin-top: 18px;">
             {%- for type in shop.enabled_payment_types -%}
               {{ type | payment_type_svg_tag }}
             {%- endfor -%}

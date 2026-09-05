@@ -117,7 +117,7 @@
   {%- paginate blog.articles by 24 -%}
     <div class="nc-blogidx__tools">
       {%- if section.settings.show_tags -%}
-        <div class="nc-blogidx__chips" aria-label="Filtrér efter emne">
+        <div class="nc-blogidx__chips" aria-label="{{ 'blog.filter_topic' | t }}">
           <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}Alle cases{% else %}Alle{% endif %}</a>
           {%- if is_cases -%}
             {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
@@ -147,7 +147,7 @@
       {%- endif -%}
       <div class="nc-blogidx__search">
         <span class="nc-blogidx__search-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
-        <label class="nc-visually-hidden" for="nc-blog-search">Søg</label>
+        <label class="nc-visually-hidden" for="nc-blog-search">{{ 'general.search' | t }}</label>
         <input id="nc-blog-search" type="search" placeholder="{{ search_placeholder }}" data-nc-blog-search autocomplete="off">
       </div>
     </div>
@@ -165,7 +165,7 @@
             <span class="nc-blogidx__feat-pill">Nyeste{% if feat.tags.first %} · {{ feat.tags.first }}{% endif %}</span>
             <h2 class="nc-blogidx__feat-title">{{ feat.title | split: ' | ' | first }}</h2>
             <p class="nc-blogidx__feat-text">{{ feat.excerpt_or_content | strip_html | truncate: 320 }}</p>
-            <span class="nc-blogidx__feat-more">Læs mere <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+            <span class="nc-blogidx__feat-more">{{ 'general.read_more' | t }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
           </span>
         </a>
       {%- endif -%}
@@ -215,7 +215,7 @@
                   <span class="nc-bcard__tag">{{ area_label }}</span>
                 {%- endif -%}
                 {%- if has_video -%}
-                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Video</span>
+                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.video' | t }}</span>
                 {%- endif -%}
               {%- elsif article.tags.first -%}
                 <span class="nc-bcard__tag">{{ article.tags.first }}</span>
@@ -229,7 +229,7 @@
                 {%- endif -%}
               {%- else -%}
                 <p class="nc-bcard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 320 }}</p>
-                <span class="nc-bcard__more">Læs mere <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                <span class="nc-bcard__more">{{ 'general.read_more' | t }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
               {%- endif -%}
             </span>
           </a>
@@ -239,7 +239,7 @@
     <p class="nc-blogidx__empty" data-nc-blog-empty hidden>{{ empty_text }}</p>
 
     {%- if paginate.pages > 1 -%}
-      <nav class="nc-pagination" aria-label="Sider">
+      <nav class="nc-pagination" aria-label="{{ 'general.pages' | t }}">
         {{ paginate | default_pagination }}
       </nav>
     {%- endif -%}

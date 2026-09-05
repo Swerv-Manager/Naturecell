@@ -54,8 +54,8 @@
 <div class="nc-section nc-coll-main">
   <div class="nc-container">
     {%- if section.settings.show_breadcrumb -%}
-      <nav class="nc-coll__crumbs" aria-label="Brødkrumme">
-        <a href="{{ routes.root_url }}">Forside</a>
+      <nav class="nc-coll__crumbs" aria-label="{{ 'general.breadcrumb' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a>
         <span aria-hidden="true">/</span>
         <span>{{ collection.title | capitalize }}</span>
       </nav>
@@ -142,7 +142,7 @@
 
     {%- if current_tags -%}
       <p class="nc-coll__count" style="text-align: left;">
-        Filtreret: {{ current_tags | join: ', ' }} · <a href="{{ collection.url }}">Nulstil</a>
+        Filtreret: {{ current_tags | join: ', ' }} · <a href="{{ collection.url }}">{{ 'collection.reset' | t }}</a>
       </p>
     {%- endif -%}
 
@@ -159,12 +159,12 @@
         <div class="nc-coll__empty">
           <span style="color: var(--sage-400);"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
           <p>Ingen produkter matcher. Prøv en anden søgning eller nulstil filtrene.</p>
-          <a href="{{ collection.url }}">Nulstil filtre</a>
+          <a href="{{ collection.url }}">{{ 'collection.reset_filters' | t }}</a>
         </div>
       {%- endif -%}
 
       {%- if paginate.pages > 1 -%}
-        <nav class="nc-pagination" aria-label="Sider">
+        <nav class="nc-pagination" aria-label="{{ 'general.pages' | t }}">
           {{ paginate | default_pagination }}
         </nav>
       {%- endif -%}

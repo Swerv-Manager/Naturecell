@@ -75,7 +75,7 @@
 {%- endstyle -%}
 
 {%- assign autoplay_ms = section.settings.autoplay | default: 7 | times: 1000 -%}
-<section class="nc-hero" data-nc-carousel="{{ autoplay_ms }}" aria-label="Fremhævet indhold">
+<section class="nc-hero" data-nc-carousel="{{ autoplay_ms }}" aria-label="{{ 'general.featured_content' | t }}">
   <div class="nc-hero__track" data-nc-track>
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -161,10 +161,10 @@
   </div>
 
   {%- if section.blocks.size > 1 -%}
-    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--prev" data-nc-prev aria-label="Forrige slide">
+    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--prev" data-nc-prev aria-label="{{ 'general.previous_slide' | t }}">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
     </button>
-    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--next" data-nc-next aria-label="Næste slide">
+    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--next" data-nc-next aria-label="{{ 'general.next_slide' | t }}">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
     </button>
     <div class="nc-hero__dots">

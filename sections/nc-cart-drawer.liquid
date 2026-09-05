@@ -54,12 +54,12 @@
 {%- assign pct = cart.total_price | times: 100 | divided_by: free_limit -%}
 {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 
-<div class="nc-drawer" data-nc-drawer inert aria-label="Kurv" role="dialog" aria-modal="true">
+<div class="nc-drawer" data-nc-drawer inert aria-label="{{ 'nav.cart' | t }}" role="dialog" aria-modal="true">
   <div class="nc-drawer__overlay" data-nc-drawer-overlay></div>
   <div class="nc-drawer__panel">
     <div class="nc-drawer__head">
       <h2>Kurv {% if cart.item_count > 0 %}({{ cart.item_count }}){% endif %}</h2>
-      <button class="nc-iconbtn" data-nc-cart-close aria-label="Luk kurv">
+      <button class="nc-iconbtn" data-nc-cart-close aria-label="{{ 'general.close_cart' | t }}">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
@@ -73,7 +73,7 @@
           Køb for {{ missing | money }} mere og få fri fragt
         {%- endif -%}
       </p>
-      <div class="nc-drawer__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="Fri fragt-status">
+      <div class="nc-drawer__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="{{ 'cart.free_shipping_status' | t }}">
         <div class="nc-drawer__fill" style="width: {{ pct }}%;"></div>
       </div>
     </div>
@@ -95,13 +95,13 @@
               {%- endfor -%}
               <div class="nc-drawer__line-row">
                 <span class="nc-drawer__qty">
-                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | minus: 1 }}" aria-label="Færre">−</button>
+                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | minus: 1 }}" aria-label="{{ 'general.fewer' | t }}">−</button>
                   <span>{{ item.quantity }}</span>
-                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | plus: 1 }}" aria-label="Flere">+</button>
+                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'general.more' | t }}">+</button>
                 </span>
                 <span class="nc-drawer__line-price">{{ item.final_line_price | money }}</span>
               </div>
-              <button class="nc-drawer__remove" data-nc-line="{{ item.key }}" data-nc-line-qty="0">Fjern</button>
+              <button class="nc-drawer__remove" data-nc-line="{{ item.key }}" data-nc-line-qty="0">{{ 'cart.remove' | t }}</button>
             </div>
           </div>
         {%- endfor -%}
@@ -109,23 +109,23 @@
 
       <div class="nc-drawer__foot">
         <div class="nc-drawer__totals">
-          <span>Subtotal</span>
+          <span>{{ 'cart.subtotal' | t }}</span>
           <strong>{{ cart.total_price | money }}</strong>
         </div>
         {%- if cart.total_discount > 0 -%}
           <div class="nc-drawer__savings">
-            <span>Du sparer</span>
+            <span>{{ 'cart.you_save' | t }}</span>
             <span>{{ cart.total_discount | money }}</span>
           </div>
         {%- endif -%}
         <p class="nc-drawer__note">Fragt beregnes ved kassen. Levering typisk 1-3 hverdage.</p>
-        <a class="nc-btn nc-btn--primary" href="{{ routes.cart_url }}/checkout">Gå til kassen</a>
+        <a class="nc-btn nc-btn--primary" href="{{ routes.cart_url }}/checkout">{{ 'cart.checkout' | t }}</a>
       </div>
     {%- else -%}
       <div class="nc-drawer__empty">
-        <h3>Din kurv er tom</h3>
-        <p>Udforsk sortimentet og find din nye rutine.</p>
-        <a class="nc-btn nc-btn--sage" href="/collections/cbd-hudpleje" data-nc-cart-close>Shop nu</a>
+        <h3>{{ 'cart.empty' | t }}</h3>
+        <p>{{ 'general.not_found_text' | t }}</p>
+        <a class="nc-btn nc-btn--sage" href="/collections/cbd-hudpleje" data-nc-cart-close>{{ 'general.shop_now' | t }}</a>
       </div>
     {%- endif -%}
   </div>

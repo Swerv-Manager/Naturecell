@@ -1,0 +1,165 @@
+{
+  "general": {
+    "search": "Search",
+    "search_products": "Search products",
+    "search_ingredient": "Search for an ingredient",
+    "search_ingredient_placeholder": "Search for an ingredient ...",
+    "back": "Back",
+    "previous": "Previous",
+    "next": "Next",
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide",
+    "close_menu": "Close menu",
+    "close_cart": "Close cart",
+    "menu": "Menu",
+    "main_menu": "Main menu",
+    "mobile_menu": "Mobile menu",
+    "skip_to_content": "Skip to content",
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "featured_content": "Featured content",
+    "video": "Video",
+    "more": "More",
+    "fewer": "Fewer",
+    "page_label": "Page",
+    "pages": "Pages",
+    "error_404": "Error 404",
+    "not_found_title": "Page not found",
+    "not_found_text": "Explore the range and find your new routine.",
+    "view_all_products": "View all products",
+    "view_all_products_arrow": "View all products →",
+    "shop_now": "Shop now",
+    "read_more": "Read more",
+    "meta": {
+      "tags": "Tagged {{ tags }}",
+      "page": "Page {{ page }}"
+    },
+    "404": {
+      "title": "Page not found"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "blog": {
+    "read_also": "Read also",
+    "told_by": "Told by",
+    "article": "Article",
+    "real_customer": "Real NatureCell customer",
+    "more_cases": "More customer stories",
+    "case_colors": "See the colours from this story",
+    "filter_topic": "Filter by topic"
+  },
+  "nav": {
+    "shop": "Shop",
+    "cases": "Customer stories",
+    "articles": "Articles",
+    "about": "About us",
+    "club": "Customer club",
+    "about_cbd": "About CBD",
+    "our_story": "Our story",
+    "ingredients": "Ingredients",
+    "collections": "Collections",
+    "favorites": "Favourites",
+    "account": "Account",
+    "cart": "Cart"
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "empty_dot": "Your cart is empty.",
+    "subtotal": "Subtotal",
+    "checkout": "Go to checkout",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "update": "Update cart",
+    "item": "Item",
+    "product": "Product",
+    "price": "Price",
+    "you_save": "You save",
+    "free_shipping_over": "Free shipping on orders over 399 kr.",
+    "free_shipping_status": "Free shipping status",
+    "payment_methods": "Payment methods",
+    "benefits_title": "Why shop with NatureCell",
+    "recommendation": "Our recommendation for you"
+  },
+  "favorites": {
+    "empty": "No favourites yet"
+  },
+  "campaign": {
+    "gloves_count": "Gloves claimed"
+  },
+  "product": {
+    "regular_price": "Regular price",
+    "sold_out": "Sold out",
+    "variant": "Variant",
+    "bundle": "Bundle"
+  },
+  "collection": {
+    "bestsellers": "Bestsellers",
+    "choose": "Choose a collection",
+    "area": "Area",
+    "need": "Need",
+    "by_area": "By area",
+    "by_need": "By need",
+    "where_q": "Where do you need care?",
+    "what_q": "What does your skin need?",
+    "reset": "Reset",
+    "reset_filters": "Reset filters"
+  },
+  "areas": {
+    "face": "Face",
+    "hands": "Hands",
+    "body": "Body",
+    "feet": "Feet",
+    "hair": "Hair"
+  },
+  "areas_sub": {
+    "face": "Cream, serum & cleanser",
+    "hands": "Dry, hard-working hands",
+    "body": "Lotion & oil",
+    "feet": "Dry heels & feet",
+    "hair": "Shampoo & care"
+  },
+  "needs": {
+    "dry": "Dry skin",
+    "moisture": "Moisture",
+    "mature": "Mature skin",
+    "sensitive": "Sensitive skin",
+    "blemish": "Blemish-prone skin",
+    "repair": "Repair"
+  },
+  "needs_sub": {
+    "dry": "Nourishing moisture",
+    "moisture": "Boost & balance",
+    "mature": "Firmness & glow",
+    "sensitive": "Mild & calm",
+    "blemish": "Cleanse & balance",
+    "repair": "Repair"
+  },
+  "ingredients": {
+    "why": "Why we use it"
+  },
+  "press": {
+    "title": "As featured in"
+  },
+  "forms": {
+    "email": "Email",
+    "email_placeholder": "your@email.com",
+    "newsletter_submit": "Subscribe to newsletter",
+    "thanks": "Thank you for subscribing.",
+    "welcome": "Welcome to the club. Check your inbox.",
+    "email_error": "Check your email address and try again."
+  },
+  "quiz": {
+    "start": "Start the quiz →",
+    "retake": "Take the quiz again"
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "continue_shopping": "Continue shopping"
+      }
+    }
+  }
+}

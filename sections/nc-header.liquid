@@ -100,8 +100,8 @@
   .nc-header__count.is-empty { display: none; }
 
   .nc-langs { display: none; align-items: stretch; background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); overflow: hidden; margin-right: 6px; }
-  .nc-langs a { display: inline-flex; align-items: center; padding: 6px 9px; font-size: 11px; font-weight: 600; line-height: normal; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-500); }
-    .nc-langs a.is-active { background: var(--sage-500); color: var(--cloud); }
+  .nc-langs a, .nc-langs button { display: inline-flex; align-items: center; padding: 6px 9px; border: 0; background: transparent; cursor: pointer; font-family: var(--font-body); font-size: 11px; font-weight: 600; line-height: normal; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-500); }
+    .nc-langs a.is-active, .nc-langs button.is-active { background: var(--sage-500); color: var(--cloud); }
 
   .nc-header__burger { display: inline-flex; }
 
@@ -183,7 +183,7 @@
 <header class="nc-header" data-nc-header>
   <div class="nc-container">
     <div class="nc-header__row">
-      <button class="nc-header__action nc-header__burger" data-nc-burger aria-expanded="false" aria-label="Menu">
+      <button class="nc-header__action nc-header__burger" data-nc-burger aria-expanded="false" aria-label="{{ 'general.menu' | t }}">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
 
@@ -195,25 +195,25 @@
         {%- endif -%}
       </a>
 
-      <nav class="nc-header__nav" aria-label="Hovedmenu">
+      <nav class="nc-header__nav" aria-label="{{ 'general.main_menu' | t }}">
         <ul>
           <li>
             <button class="nc-header__link" data-nc-mega-toggle aria-expanded="false" aria-controls="nc-mega">
-              Shop
+              {{ 'nav.shop' | t }}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </button>
           </li>
-          <li><a class="nc-header__link" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a></li>
-          <li><a class="nc-header__link" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a></li>
+          <li><a class="nc-header__link" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">{{ 'nav.cases' | t }}</a></li>
+          <li><a class="nc-header__link" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">{{ 'nav.articles' | t }}</a></li>
           <li class="nc-dd">
             <a class="nc-header__link" href="{{ section.settings.about_url | default: '/pages/om-os' }}" aria-haspopup="true">
-              Om os
+              {{ 'nav.about' | t }}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </a>
             <div class="nc-dd__panel">
-              <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">Vores historie</a>
-              <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">Om CBD</a>
-              <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">Ingredienser</a>
+              <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">{{ 'nav.our_story' | t }}</a>
+              <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">{{ 'nav.about_cbd' | t }}</a>
+              <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">{{ 'nav.ingredients' | t }}</a>
               <a href="{{ section.settings.faq_url | default: '/pages/faq' }}">Ofte stillede spørgsmål</a>
             </div>
           </li>
@@ -222,38 +222,36 @@
               <span class="nc-header__star" aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
               </span>
-              Kundeklub
+              {{ 'nav.club' | t }}
             </a>
           </li>
         </ul>
       </nav>
 
       <div class="nc-header__actions">
+        {%- comment -%} Sprogskift via Shopifys localization-form: virker baade med undermapper (/de) og egne domaener (naturecell.de) under Markets. {%- endcomment -%}
         {%- if localization.available_languages.size > 1 -%}
-          <div class="nc-langs">
+          {%- form 'localization', id: 'nc-lang-form', class: 'nc-langs' -%}
+            <input type="hidden" name="return_to" value="{{ request.path }}">
             {%- for language in localization.available_languages -%}
-              <a
-                href="{{ request.path }}"
-                hreflang="{{ language.iso_code }}"
-                {% if language.iso_code == localization.language.iso_code %}class="is-active"{% endif %}
-              >{{ language.iso_code | upcase }}</a>
+              <button type="submit" name="language_code" value="{{ language.iso_code }}" lang="{{ language.iso_code }}" class="{% if language.iso_code == localization.language.iso_code %}is-active{% endif %}" aria-label="{{ language.endonym_name }}">{{ language.iso_code | upcase }}</button>
             {%- endfor -%}
-          </div>
+          {%- endform -%}
         {%- endif -%}
 
-        <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="Søg">
+        <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </a>
-        <a class="nc-header__action nc-header__action--sm" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="Favoritter">
+        <a class="nc-header__action nc-header__action--sm" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="{{ 'nav.favorites' | t }}">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
           <span class="nc-header__count is-empty" data-nc-fav-count aria-hidden="true">0</span>
         </a>
         {%- if shop.customer_accounts_enabled -%}
-          <a class="nc-header__action nc-header__action--sm" href="{{ routes.account_url }}" aria-label="Konto">
+          <a class="nc-header__action nc-header__action--sm" href="{{ routes.account_url }}" aria-label="{{ 'nav.account' | t }}">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
           </a>
         {%- endif -%}
-        <button class="nc-header__action" data-nc-cart-open aria-label="Kurv">
+        <button class="nc-header__action" data-nc-cart-open aria-label="{{ 'nav.cart' | t }}">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           <span class="nc-header__count {% if cart.item_count == 0 %}is-empty{% endif %}" data-nc-cart-count>{{ cart.item_count }}</span>
         </button>
@@ -265,9 +263,9 @@
     <div class="nc-container">
       <div class="nc-mega__inner" data-nc-tabs>
         <div class="nc-mega__tabs" role="tablist">
-          <button class="nc-mega__tab is-active" data-nc-tab="area" role="tab" aria-selected="true">Efter område</button>
-          <button class="nc-mega__tab" data-nc-tab="need" role="tab" aria-selected="false">Efter behov</button>
-          <button class="nc-mega__tab" data-nc-tab="best" role="tab" aria-selected="false">Bestsellers</button>
+          <button class="nc-mega__tab is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.by_area' | t }}</button>
+          <button class="nc-mega__tab" data-nc-tab="need" role="tab" aria-selected="false">{{ 'collection.by_need' | t }}</button>
+          <button class="nc-mega__tab" data-nc-tab="best" role="tab" aria-selected="false">{{ 'collection.bestsellers' | t }}</button>
         </div>
 
         <div data-nc-panel="area">
@@ -334,7 +332,7 @@
         </div>
 
         <div class="nc-mega__foot">
-          <a class="nc-btn nc-btn--outline" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">Se alle produkter →</a>
+          <a class="nc-btn nc-btn--outline" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'general.view_all_products_arrow' | t }}</a>
         </div>
       </div>
     </div>
@@ -350,12 +348,12 @@
       {%- else -%}
         <img src="{{ 'nc-logo-wordmark.webp' | asset_url }}" alt="{{ shop.name | escape }}" style="height: 32px; width: auto;" width="220" height="53">
       {%- endif -%}
-      <button class="nc-iconbtn" data-nc-close aria-label="Luk menu">
+      <button class="nc-iconbtn" data-nc-close aria-label="{{ 'general.close_menu' | t }}">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
-    <nav aria-label="Mobilmenu">
-      <a href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">Shop</a>
+    <nav aria-label="{{ 'general.mobile_menu' | t }}">
+      <a href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'nav.shop' | t }}</a>
       <div class="nc-mobilenav__sub">
         {%- for block in section.blocks -%}
           {%- if block.type == 'area' -%}
@@ -363,12 +361,12 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
-      <a href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">Kundecases</a>
-      <a href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">Artikler</a>
-      <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">Om os</a>
-      <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">Om CBD</a>
-      <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">Ingredienser</a>
-      <a href="{{ section.settings.kundeklub_url | default: '/pages/kundeklub' }}">Kundeklub</a>
+      <a href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">{{ 'nav.cases' | t }}</a>
+      <a href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">{{ 'nav.articles' | t }}</a>
+      <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">{{ 'nav.about' | t }}</a>
+      <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">{{ 'nav.about_cbd' | t }}</a>
+      <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">{{ 'nav.ingredients' | t }}</a>
+      <a href="{{ section.settings.kundeklub_url | default: '/pages/kundeklub' }}">{{ 'nav.club' | t }}</a>
       <a href="{{ section.settings.faq_url | default: '/pages/faq' }}">Ofte stillede spørgsmål</a>
     </nav>
   </div>

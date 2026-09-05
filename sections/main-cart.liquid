@@ -47,16 +47,16 @@
 
 <div class="nc-section">
   <div class="nc-container">
-    <h1>Kurv</h1>
+    <h1>{{ 'nav.cart' | t }}</h1>
 
     {%- if cart.item_count > 0 -%}
       {%- form 'cart', cart -%}
         <table class="nc-cart__table">
           <thead>
             <tr>
-              <th scope="col">Vare</th>
-              <th scope="col">Antal</th>
-              <th scope="col">Pris</th>
+              <th scope="col">{{ 'cart.item' | t }}</th>
+              <th scope="col">{{ 'cart.quantity' | t }}</th>
+              <th scope="col">{{ 'cart.price' | t }}</th>
             </tr>
           </thead>
           <tbody>
@@ -73,13 +73,13 @@
                         <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
                       {%- endunless -%}
                       <div>
-                        <a href="{{ item.url_to_remove }}" style="font-size: 13px;">Fjern</a>
+                        <a href="{{ item.url_to_remove }}" style="font-size: 13px;">{{ 'cart.remove' | t }}</a>
                       </div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <label class="nc-visually-hidden" for="nc-cart-qty-{{ forloop.index }}">Antal</label>
+                  <label class="nc-visually-hidden" for="nc-cart-qty-{{ forloop.index }}">{{ 'cart.quantity' | t }}</label>
                   <input
                     id="nc-cart-qty-{{ forloop.index }}"
                     class="nc-input nc-cart__qty"
@@ -99,14 +99,14 @@
           <div class="nc-cart__subtotal">Subtotal: {{ cart.total_price | money }}</div>
           <p class="nc-cart__note">{{ section.settings.shipping_note }}</p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <button class="nc-btn nc-btn--outline" type="submit" name="update">Opdatér kurv</button>
-            <button class="nc-btn nc-btn--primary" type="submit" name="checkout">Gå til kassen</button>
+            <button class="nc-btn nc-btn--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
+            <button class="nc-btn nc-btn--primary" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
           </div>
         </div>
       {%- endform -%}
     {%- else -%}
-      <p>Din kurv er tom.</p>
-      <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">Se alle produkter</a>
+      <p>{{ 'cart.empty_dot' | t }}</p>
+      <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'general.view_all_products' | t }}</a>
     {%- endif -%}
   </div>
 </div>

@@ -21,7 +21,7 @@
   </span>
   {%- if target.compare_at_price > target.price -%}
     <s class="nc-price__compare">
-      <span class="nc-visually-hidden">Normalpris</span>
+      <span class="nc-visually-hidden">{{ 'product.regular_price' | t }}</span>
       {{ target.compare_at_price | money }}
     </s>
   {%- endif -%}

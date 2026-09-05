@@ -3,9 +3,9 @@
 <section class="nc-section" style="padding-top: 10px;" data-nc-fav-page>
   <div class="nc-container">
     <div data-nc-fav-empty hidden style="text-align: center; padding: 40px 0;">
-      <h2>Ingen favoritter endnu</h2>
+      <h2>{{ 'favorites.empty' | t }}</h2>
       <p>Tryk på hjertet på et produkt, så gemmer vi det her til dig.</p>
-      <a class="nc-btn nc-btn--primary" href="{{ section.settings.shop_url | default: '/collections/cbd-hudpleje' }}">Shop nu</a>
+      <a class="nc-btn nc-btn--primary" href="{{ section.settings.shop_url | default: '/collections/cbd-hudpleje' }}">{{ 'general.shop_now' | t }}</a>
     </div>
     <ul class="nc-grid" data-nc-fav-grid></ul>
   </div>

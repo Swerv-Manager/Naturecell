@@ -141,14 +141,14 @@
       {%- form 'customer' -%}
         <input type="hidden" name="contact[tags]" value="newsletter,kundeklub">
         <div class="nc-klub__form">
-          <label class="nc-visually-hidden" for="nc-klub-email">E-mail</label>
-          <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="din@email.dk" autocomplete="email" required>
+          <label class="nc-visually-hidden" for="nc-klub-email">{{ 'forms.email' | t }}</label>
+          <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="{{ 'forms.email_placeholder' | t }}" autocomplete="email" required>
           <button class="nc-btn nc-btn--sage" type="submit">{{ section.settings.cta_button }}</button>
         </div>
         {%- if form.posted_successfully? -%}
-          <p role="status" style="margin-top: 12px; color: var(--sage-700);">Velkommen i klubben. Tjek din indbakke.</p>
+          <p role="status" style="margin-top: 12px; color: var(--sage-700);">{{ 'forms.welcome' | t }}</p>
         {%- elsif form.errors -%}
-          <p role="alert" style="margin-top: 12px;">Tjek din e-mailadresse og prøv igen.</p>
+          <p role="alert" style="margin-top: 12px;">{{ 'forms.email_error' | t }}</p>
         {%- endif -%}
       {%- endform -%}
       <p class="nc-klub__fine">{{ section.settings.cta_fine }}</p>

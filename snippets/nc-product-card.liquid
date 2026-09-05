@@ -73,7 +73,7 @@
         <span class="nc-tag nc-tag--sale">Spar {{ save_pct }}%</span>
       {%- endif -%}
       {%- if is_bundle -%}
-        <span class="nc-tag nc-tag--sage">Sampakke</span>
+        <span class="nc-tag nc-tag--sage">{{ 'product.bundle' | t }}</span>
       {%- endif -%}
     </div>
 
@@ -133,9 +133,9 @@
         {{- v.price | money -}}
       </span>
       {%- if on_sale -%}
-        <s class="nc-product-card__compare"><span class="nc-visually-hidden">Normalpris </span>{{ v.compare_at_price | money }}</s>
+        <s class="nc-product-card__compare"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</s>
       {%- endif -%}
-      {%- unless product.available -%}<span class="nc-product-card__stock">Udsolgt</span>{%- endunless -%}
+      {%- unless product.available -%}<span class="nc-product-card__stock">{{ 'product.sold_out' | t }}</span>{%- endunless -%}
     </span>
   </div>
 </div>
