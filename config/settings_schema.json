@@ -78,5 +78,47 @@
         "content": "Farvepaletten er med vilje låst til NatureCells designsystem (paper, grøn, sand, pink, berry) og styres i temaets kode, så der ikke kan introduceres farver uden for systemet."
       }
     ]
+  },
+  {
+    "name": "Integrationer",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Scripts der ikke er Shopify-apps. Standardværdierne er kopieret fra det nuværende tema. Apps med app-embed (Klaviyo, Yotpo Loyalty, Kaching, Judge.me, Tolstoy, Triple Whale, Avada, EG Auto Add to Cart) slås til under App-embeds i temaeditoren."
+      },
+      {
+        "type": "text",
+        "id": "cookiebot_id",
+        "label": "Cookiebot: Domain Group ID (data-cbid)",
+        "default": "565dfd90-221f-420f-90ef-ac24c9377ee7",
+        "info": "Samtykkebanner. Tøm feltet for at slå Cookiebot fra."
+      },
+      {
+        "type": "text",
+        "id": "gtm_id",
+        "label": "Google Tag Manager: container-ID",
+        "default": "GTM-T7RVQ2D4"
+      },
+      {
+        "type": "text",
+        "id": "emaerket_key",
+        "label": "e-mærket: widget-nøgle",
+        "default": "4094ad9cbcd8b50992a5af5310844549",
+        "info": "Nøglen efter /js/ i widget-scriptet fra e-mærket."
+      },
+      {
+        "type": "text",
+        "id": "herodesk_id",
+        "label": "HeroDesk: livechat widget-ID (wid)",
+        "default": "60379a0887000e"
+      },
+      {
+        "type": "checkbox",
+        "id": "trustpilot_script",
+        "label": "Indlæs Trustpilot-widget-script",
+        "default": false,
+        "info": "Slå til, hvis der indsættes TrustBox-widgets i temaet."
+      }
+    ]
   }
 ]

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f6f4ee">
 
+    {%- render 'nc-integrations-head' -%}
+
     <title>
       {{- page_title -}}
       {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
@@ -52,5 +54,7 @@
     {% section 'nc-cart-drawer' %}
 
     <script src="{{ 'nc-theme.js' | asset_url }}" defer></script>
+
+    {%- render 'nc-integrations-body' -%}
   </body>
 </html>
