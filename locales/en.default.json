@@ -164,11 +164,25 @@
     "b2b_submit": "Send application",
     "b2b_success": "Thank you for your application. We will get back to you within two working days.",
     "b2b_login_hint": "Already a B2B customer?",
-    "b2b_login": "Log in here"
+    "b2b_login": "Log in here",
+    "b2b_email": "Company email",
+    "password": "Password",
+    "login": "Log in",
+    "name": "Name",
+    "name_placeholder": "Your name",
+    "message": "Message",
+    "message_placeholder": "How can we help?",
+    "send": "Send message",
+    "contact_success": "Thank you for your message. We usually reply within one working day."
   },
   "quiz": {
     "start": "Start the quiz →",
-    "retake": "Take the quiz again"
+    "retake": "Take the quiz again",
+    "need_q": "What does your skin need most?",
+    "back": "← Back",
+    "result_eyebrow": "Your recommendation",
+    "result_prefix": "For",
+    "see_all": "See the full range →"
   },
   "shopify": {
     "checkout": {

@@ -1,7 +1,66 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Kundeservice", "heading": "Kontakt & åbningstider", "intro": "Vi er en dansk virksomhed med dansk kundeservice. Skriv, ring eller kig forbi butikken i Skanderborg." } },
-    "kontakt": { "type": "nc-kontakt" }
+    "kontakt": {
+      "type": "nc-kontakt",
+      "settings": {
+        "eyebrow": "Vi sidder klar",
+        "heading": "Kontakt os",
+        "intro": "Spørgsmål om produkter, din ordre eller CBD? Vores danske kundeservice hjælper dig gerne.",
+        "hours_label": "Butikkens åbningstider",
+        "hours": "Mandag til fredag | 10.00 til 17.30\nLørdag | 10.00 til 15.00\nSøn- & helligdage | Lukket",
+        "form_heading": "Skriv til os"
+      },
+      "blocks": {
+        "k1": {
+          "type": "block",
+          "settings": {
+            "title": "Kundeservice",
+            "link_text": "hello@naturecell.dk",
+            "link_url": "mailto:hello@naturecell.dk",
+            "lines": "Skriv til os. Vi svarer typisk inden for én hverdag.",
+            "show_hours": false
+          }
+        },
+        "k2": {
+          "type": "block",
+          "settings": {
+            "title": "Telefon",
+            "link_text": "+45 40 55 00 42",
+            "link_url": "tel:+4540550042",
+            "lines": "Mandag til fredag 9.00 til 15.00",
+            "show_hours": false
+          }
+        },
+        "k3": {
+          "type": "block",
+          "settings": {
+            "title": "Butik Lille Nyhavn",
+            "link_text": "",
+            "link_url": "",
+            "lines": "Lille Nyhavn 4-7\n8660 Skanderborg\nShop-in-shop med personlig vejledning",
+            "show_hours": true
+          }
+        },
+        "k4": {
+          "type": "block",
+          "settings": {
+            "title": "NatureCell Denmark ApS",
+            "link_text": "",
+            "link_url": "",
+            "lines": "Lille Nyhavn 10, 2. tv.\n8660 Skanderborg\nCVR 42256013",
+            "show_hours": false
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2",
+        "k3",
+        "k4"
+      ]
+    }
   },
-  "order": ["hero", "kontakt"]
+  "order": [
+    "kontakt"
+  ]
 }

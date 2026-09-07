@@ -1,14 +1,28 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Erhverv", "heading": "Her finder du NatureCell", "intro": "Ud over webshoppen finder du NatureCell hos udvalgte forhandlere landet over." } },
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "tone": "sage",
+        "band_compact": true,
+        "eyebrow": "Køb NatureCell",
+        "heading": "Find NatureCell i nærheden af dig",
+        "intro": "Du finder NatureCell i vores egen butik, hos Matas og i udvalgte helsekostbutikker og klinikker landet over, eller handl direkte her på siden."
+      }
+    },
     "cards": {
       "type": "nc-rich-page",
-      "settings": { "cta_text": "Bliv forhandler", "cta_url": "/pages/kontakt" },
+      "settings": {
+        "cta_heading": "Vil du forhandle NatureCell?",
+        "cta_body": "Butik, klinik eller kæde? Opret en B2B-konto og få adgang til engrospriser og materiale.",
+        "cta_text": "Bliv forhandler →",
+        "cta_url": "/pages/b2b#b2b-ansoegning"
+      },
       "blocks": {
-        "c1": { "type": "card", "settings": { "heading": "NatureCell · Lille Nyhavn", "text": "Vores egen butik i Skanderborg. Kom forbi og få personlig vejledning." } },
-        "c2": { "type": "card", "settings": { "heading": "Matas", "text": "Udvalgte NatureCell-produkter i Matas-butikker og på matas.dk." } },
-        "c3": { "type": "card", "settings": { "heading": "Helsekost & specialbutikker", "text": "Førende helsekostbutikker landet over fører dele af serien." } },
-        "c4": { "type": "card", "settings": { "heading": "Klinikker & kosmetologer", "text": "Hudplejeklinikker og kosmetologer bruger og forhandler NatureCell." } }
+        "c1": { "type": "card", "settings": { "badge": "Flagship", "heading": "NatureCell · Lille Nyhavn", "text": "Vores egen butik i Skanderborg, kom forbi og få personlig vejledning." } },
+        "c2": { "type": "card", "settings": { "badge": "Kæde", "heading": "Matas", "text": "Udvalgte NatureCell-produkter i Matas-butikker og på matas.dk." } },
+        "c3": { "type": "card", "settings": { "badge": "Helsekost", "heading": "Helsekost & specialbutikker", "text": "Førende helsekostbutikker landet over fører dele af serien." } },
+        "c4": { "type": "card", "settings": { "badge": "Klinik", "heading": "Klinikker & kosmetologer", "text": "Hudplejeklinikker og kosmetologer bruger og forhandler NatureCell." } }
       },
       "block_order": ["c1", "c2", "c3", "c4"]
     }

@@ -171,10 +171,24 @@
     "b2b_submit": "Send ansøgning",
     "b2b_success": "Tak for din ansøgning. Vi vender tilbage inden for to hverdage.",
     "b2b_login_hint": "Allerede B2B-kunde?",
-    "b2b_login": "Log ind her"
+    "b2b_login": "Log ind her",
+    "b2b_email": "Firma-email",
+    "password": "Adgangskode",
+    "login": "Log ind",
+    "name": "Navn",
+    "name_placeholder": "Dit navn",
+    "message": "Besked",
+    "message_placeholder": "Hvordan kan vi hjælpe?",
+    "send": "Send besked",
+    "contact_success": "Tak for din besked. Vi svarer typisk inden for én hverdag."
   },
   "quiz": {
     "start": "Start quizzen →",
-    "retake": "Tag quizzen igen"
+    "retake": "Tag quizzen igen",
+    "need_q": "Hvad har din hud mest brug for?",
+    "back": "← Tilbage",
+    "result_eyebrow": "Din anbefaling",
+    "result_prefix": "Til",
+    "see_all": "Se hele sortimentet →"
   }
 }

@@ -1,110 +1,206 @@
 {% comment %}
-  Hudpleje-quiz fra designet: intro → omraade → behov → top 3-resultat.
-  Produktdata serialiseres fra en kollektion; omraade/behov laeses fra
-  tags (ansigt/haender/krop/foedder/haar) og metafeltet nc.needs.
+  Hudpleje-quiz 1:1 fra designet (design-src/extracted/shell.html 2380-2437):
+  lyst sage-baand med eyebrow, H1 og 420px fremdriftslinje, derefter 900px-kolonne
+  med centreret intro og sage-knap, omraadevalg som runde produktikoner,
+  behovsvalg som tekstkort og et resultat med rigtige produktkort (top 3).
+  Kortene renderes server-side fra kollektionen; nc-theme.js viser de tre,
+  der matcher omraade (tags) og behov (tags/metafeltet ncell.needs).
 {% endcomment %}
 
 {%- style -%}
-  .nc-quiz { max-width: 720px; margin: 0 auto; }
-  .nc-quiz__progress { height: 6px; border-radius: var(--radius-pill); background: var(--sage-100); overflow: hidden; margin-bottom: clamp(24px, 3vw, 36px); }
-  .nc-quiz__progress div { height: 100%; width: 0; background: var(--sage-500); transition: width var(--dur-slow) var(--ease-soft); }
-  .nc-quiz__opts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-top: 20px; }
-  .nc-quiz__opt { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 14px; border: 1.5px solid var(--border-default); border-radius: var(--radius-lg); background: var(--cloud); cursor: pointer; font-family: inherit; text-align: center; }
-  .nc-quiz__opt:hover { border-color: var(--sage-500); }
-  .nc-quiz__opt strong { font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--sage-700); }
-  .nc-quiz__opt span { font-size: 12.5px; color: var(--ink-500); }
-  .nc-quiz__nav { margin-top: 22px; display: flex; gap: 10px; }
-  .nc-quiz-hit { display: flex; gap: 14px; align-items: center; padding: 12px; border: 1px solid var(--border-soft); border-radius: var(--radius-lg); background: var(--cloud); text-decoration: none; margin-top: 10px; }
-  .nc-quiz-hit__media { width: 84px; height: 84px; flex: none; border-radius: var(--radius-md); background: var(--nc-product-tint); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .nc-quiz-hit__media img { max-width: 90%; max-height: 90%; object-fit: contain; }
-  .nc-quiz-hit__body { display: flex; flex-direction: column; gap: 2px; }
-  .nc-quiz-hit__body strong { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--sage-700); }
+  .nc-quizband { background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
+  .nc-quizband__inner { max-width: 760px; margin: 0 auto; padding: clamp(26px, 5vw, 44px) clamp(16px, 4vw, 24px) clamp(18px, 6vw, 30px); display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+  .nc-quizband .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
+  {%- comment -%} Designets h1 saetter ingen line-height og arver body'ens 1.7; det giver baandets hoejde. {%- endcomment -%}
+  .nc-quizband h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(27px, 4.3vw, 44px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
+  .nc-quiz__progress { width: 100%; max-width: 420px; height: 6px; border-radius: 3px; background: var(--sage-100); overflow: hidden; }
+  .nc-quiz__progress div { height: 100%; width: 0; background: var(--sage-500); transition: width var(--dur-base) var(--ease-out); }
+
+  .nc-quiz { max-width: 900px; margin: 0 auto; padding: clamp(29px, 5vw, 48px) clamp(16px, 4vw, 24px) clamp(48px, 6vw, 80px); }
+  .nc-quiz__intro { text-align: center; display: flex; flex-direction: column; gap: 18px; align-items: center; max-width: 560px; margin: 0 auto; }
+  .nc-quiz__intro p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--ink-700); }
+  .nc-quiz__cta { border: 0; cursor: pointer; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 1.2; padding: 16px 34px; border-radius: 999px; }
+  .nc-quiz__cta:hover, .nc-quiz__cta:focus-visible { background: var(--sage-600); }
+
+  {%- comment -%} Trinene skiftes af nc-theme.js via hidden-attributten; den skal vinde over display:flex. {%- endcomment -%}
+  .nc-quiz [data-nc-quiz-step][hidden] { display: none; }
+  .nc-quiz__step { display: flex; flex-direction: column; gap: 24px; }
+  .nc-quiz__step h2 { margin: 0; text-align: center; font-family: var(--font-display); font-weight: 400; font-size: 28px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-quiz__areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+  .nc-quiz__opt { border: 1px solid var(--border-soft); background: var(--cloud); border-radius: var(--radius-lg); cursor: pointer; padding: 20px 14px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-family: inherit; }
+  .nc-quiz__opt:hover, .nc-quiz__opt:focus-visible { border-color: var(--sage-400); box-shadow: var(--shadow-sm); }
+  .nc-quiz__opt-media { width: 72px; height: 72px; border-radius: 999px; background: var(--sage-50); display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .nc-quiz__opt-media img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+  .nc-quiz__opt strong { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--sage-700); }
+  .nc-quiz__needs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(47%, 220px), 1fr)); gap: 14px; }
+  .nc-quiz__need { border: 1px solid var(--border-soft); background: var(--cloud); border-radius: var(--radius-lg); cursor: pointer; padding: 20px; display: flex; flex-direction: column; gap: 5px; text-align: left; font-family: inherit; }
+  .nc-quiz__need:hover, .nc-quiz__need:focus-visible { border-color: var(--sage-400); box-shadow: var(--shadow-sm); }
+  .nc-quiz__need strong { font-family: var(--font-display); font-weight: 400; font-size: 19px; color: var(--sage-700); }
+  .nc-quiz__need span { font-size: 13.5px; color: var(--ink-400); }
+  .nc-quiz__back { align-self: center; border: 0; background: none; cursor: pointer; font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--sage-700); }
+
+  .nc-quiz__resulthead { display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center; margin-bottom: 32px; }
+  .nc-quiz__resulthead .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.12em; color: var(--sage-600); }
+  .nc-quiz__resulthead h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); letter-spacing: normal; color: var(--sage-700); }
+  .nc-quiz__resulthead p { margin: 0; max-width: 520px; font-size: 16px; line-height: 1.6; color: var(--ink-500); }
+  .nc-quiz__results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(47%, 238px), 1fr)); gap: 20px; }
+  .nc-quiz__results > [hidden] { display: none; }
+  .nc-quiz__actions { display: flex; gap: 12px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
+  .nc-quiz__again { border: 1.5px solid var(--sage-500); background: transparent; cursor: pointer; font-family: var(--font-body); font-weight: 600; font-size: 15px; line-height: 1.2; color: var(--sage-700); padding: 13px 26px; border-radius: 999px; }
+  .nc-quiz__again:hover, .nc-quiz__again:focus-visible { background: var(--sage-50); }
+  .nc-quiz__all { display: inline-block; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 15px; line-height: 1.2; padding: 13px 26px; border-radius: 999px; text-decoration: none; }
+  .nc-quiz__all:hover, .nc-quiz__all:focus-visible { background: var(--sage-600); }
 {%- endstyle -%}
 
-<section class="nc-section" style="padding-top: 10px;">
-  <div class="nc-container">
-    <div class="nc-quiz" data-nc-quiz>
-      <div class="nc-quiz__progress"><div data-nc-quiz-progress></div></div>
+{%- liquid
+  assign coll = section.settings.collection
+  assign all_url = section.settings.all_url | default: '/collections/cbd-hudpleje'
+-%}
 
-      <div data-nc-quiz-step="0">
-        <h2>{{ section.settings.intro_heading }}</h2>
-        <p>{{ section.settings.intro_text }}</p>
-        <button class="nc-btn nc-btn--primary" data-nc-quiz-start>{{ 'quiz.start' | t }}</button>
-      </div>
-
-      <div data-nc-quiz-step="1" hidden>
-        <h2>{{ 'collection.where_q' | t }}</h2>
-        <div class="nc-quiz__opts">
-          <button class="nc-quiz__opt" data-nc-quiz-area="ansigt" data-nc-label="Ansigt"><strong>{{ 'areas.face' | t }}</strong><span>{{ 'areas_sub.face' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="haender" data-nc-label="Hænder"><strong>{{ 'areas.hands' | t }}</strong><span>{{ 'areas_sub.hands' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="krop" data-nc-label="Krop"><strong>{{ 'areas.body' | t }}</strong><span>{{ 'areas_sub.body' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="foedder" data-nc-label="Fødder"><strong>{{ 'areas.feet' | t }}</strong><span>{{ 'areas_sub.feet' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-area="haar" data-nc-label="Hår"><strong>{{ 'areas.hair' | t }}</strong><span>{{ 'areas_sub.hair' | t }}</span></button>
-        </div>
-        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>{{ 'general.back' | t }}</button></div>
-      </div>
-
-      <div data-nc-quiz-step="2" hidden>
-        <h2>{{ 'collection.what_q' | t }}</h2>
-        <div class="nc-quiz__opts">
-          <button class="nc-quiz__opt" data-nc-quiz-need="toer" data-nc-label="Tør hud"><strong>{{ 'needs.dry' | t }}</strong><span>{{ 'needs_sub.dry' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="fugt" data-nc-label="Fugt"><strong>{{ 'needs.moisture' | t }}</strong><span>{{ 'needs_sub.moisture' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="moden" data-nc-label="Moden hud"><strong>{{ 'needs.mature' | t }}</strong><span>{{ 'needs_sub.mature' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="sensitiv" data-nc-label="Sensitiv hud"><strong>{{ 'needs.sensitive' | t }}</strong><span>{{ 'needs_sub.sensitive' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="uren" data-nc-label="Uren hud"><strong>{{ 'needs.blemish' | t }}</strong><span>{{ 'needs_sub.blemish' | t }}</span></button>
-          <button class="nc-quiz__opt" data-nc-quiz-need="genopbygning" data-nc-label="Genopbygning"><strong>{{ 'needs.repair' | t }}</strong><span>{{ 'needs_sub.repair' | t }}</span></button>
-        </div>
-        <div class="nc-quiz__nav"><button class="nc-btn nc-btn--outline" data-nc-quiz-back>{{ 'general.back' | t }}</button></div>
-      </div>
-
-      <div data-nc-quiz-step="3" hidden>
-        <h2>{{ 'cart.recommendation' | t }}</h2>
-        <p data-nc-quiz-labels class="nc-eyebrow"></p>
-        <div data-nc-quiz-result></div>
-        <div class="nc-quiz__nav">
-          <button class="nc-btn nc-btn--outline" data-nc-quiz-restart>{{ 'quiz.retake' | t }}</button>
-          <a class="nc-btn nc-btn--primary" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'general.view_all_products' | t }}</a>
-        </div>
-      </div>
-
-      {%- assign coll = section.settings.collection -%}
-      <script type="application/json" data-nc-quiz-data>
-        [
-          {%- if coll != blank -%}
-            {%- for p in coll.products limit: 50 -%}
-              {%- assign areas = '' -%}
-              {%- for tag in p.tags -%}
-                {%- assign lt = tag | downcase -%}
-                {%- if lt == 'ansigt' or lt == 'haender' or lt == 'krop' or lt == 'foedder' or lt == 'haar' -%}
-                  {%- assign areas = areas | append: lt | append: ',' -%}
-                {%- endif -%}
-              {%- endfor -%}
-              {
-                "title": {{ p.title | split: ' | ' | first | json }},
-                "url": {{ p.url | json }},
-                "img": {{ p.featured_image | image_url: width: 300 | json }},
-                "price": {{ p.price | money | json }},
-                "rating": {{ p.metafields.reviews.rating.value.rating | default: 4.5 | json }},
-                "areas": {{ areas | split: ',' | json }},
-                "needs": {{ p.metafields.ncell.needs.value | default: '' | json }}
-              }{% unless forloop.last %},{% endunless %}
-            {%- endfor -%}
-          {%- endif -%}
-        ]
-      </script>
+<div data-nc-quiz>
+  <section class="nc-quizband">
+    <div class="nc-quizband__inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1>{{ section.settings.heading | default: page.title }}</h1>
+      <div class="nc-quiz__progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="{{ section.settings.heading | default: page.title | escape }}"><div data-nc-quiz-progress></div></div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="nc-quiz">
+    <div class="nc-quiz__intro" data-nc-quiz-step="0">
+      <p>{{ section.settings.intro_text }}</p>
+      <button class="nc-quiz__cta" type="button" data-nc-quiz-start>{{ 'quiz.start' | t }}</button>
+    </div>
+
+    <div class="nc-quiz__step" data-nc-quiz-step="1" hidden>
+      <h2>{{ 'collection.where_q' | t }}</h2>
+      <div class="nc-quiz__areas">
+        {%- comment -%} Fem omraader: ikonet er det valgte produkts billede i en rund sage-50-cirkel som i designet. {%- endcomment -%}
+        {%- assign area_keys = 'ansigt,haender,krop,foedder,haar' | split: ',' -%}
+        {%- assign area_labels = 'Ansigt,Hænder,Krop,Fødder,Hår' | split: ',' -%}
+        {%- for key in area_keys -%}
+          {%- liquid
+            case key
+              when 'ansigt'
+                assign ap = section.settings.product_face
+                assign al = 'areas.face' | t
+              when 'haender'
+                assign ap = section.settings.product_hands
+                assign al = 'areas.hands' | t
+              when 'krop'
+                assign ap = section.settings.product_body
+                assign al = 'areas.body' | t
+              when 'foedder'
+                assign ap = section.settings.product_feet
+                assign al = 'areas.feet' | t
+              else
+                assign ap = section.settings.product_hair
+                assign al = 'areas.hair' | t
+            endcase
+          -%}
+          <button class="nc-quiz__opt" type="button" data-nc-quiz-area="{{ key }}" data-nc-label="{{ area_labels[forloop.index0] }}">
+            <span class="nc-quiz__opt-media">
+              {%- if ap.featured_image -%}
+                {{ ap.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', widths: '80, 160' }}
+              {%- endif -%}
+            </span>
+            <strong>{{ al }}</strong>
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="nc-quiz__step" data-nc-quiz-step="2" hidden>
+      <h2>{{ 'quiz.need_q' | t }}</h2>
+      <div class="nc-quiz__needs">
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="toer" data-nc-label="Tør hud"><strong>{{ 'needs.dry' | t }}</strong><span>{{ 'needs_sub.dry' | t }}</span></button>
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="fugt" data-nc-label="Fugt"><strong>{{ 'needs.moisture' | t }}</strong><span>{{ 'needs_sub.moisture' | t }}</span></button>
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="moden" data-nc-label="Moden hud"><strong>{{ 'needs.mature' | t }}</strong><span>{{ 'needs_sub.mature' | t }}</span></button>
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="sensitiv" data-nc-label="Sensitiv hud"><strong>{{ 'needs.sensitive' | t }}</strong><span>{{ 'needs_sub.sensitive' | t }}</span></button>
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="uren" data-nc-label="Uren hud"><strong>{{ 'needs.blemish' | t }}</strong><span>{{ 'needs_sub.blemish' | t }}</span></button>
+        <button class="nc-quiz__need" type="button" data-nc-quiz-need="genopbygning" data-nc-label="Genopbygning"><strong>{{ 'needs.repair' | t }}</strong><span>{{ 'needs_sub.repair' | t }}</span></button>
+      </div>
+      <button class="nc-quiz__back" type="button" data-nc-quiz-back>{{ 'quiz.back' | t }}</button>
+    </div>
+
+    <div data-nc-quiz-step="3" hidden>
+      <div class="nc-quiz__resulthead">
+        <p class="nc-eyebrow">{{ 'quiz.result_eyebrow' | t }}</p>
+        <h2>{{ 'quiz.result_prefix' | t }} <span data-nc-quiz-labels></span></h2>
+        <p>{{ section.settings.result_text }}</p>
+      </div>
+      <div class="nc-quiz__results" data-nc-quiz-result>
+        {%- if coll != blank -%}
+          {%- for p in coll.products limit: 50 -%}
+            {%- liquid
+              assign areas = ''
+              assign needs = ''
+              for tag in p.tags
+                assign lt = tag | downcase
+                case lt
+                  when 'ansigt'
+                    assign areas = areas | append: 'ansigt,'
+                  when 'haender' or 'hænder'
+                    assign areas = areas | append: 'haender,'
+                  when 'krop'
+                    assign areas = areas | append: 'krop,'
+                  when 'foedder' or 'fødder'
+                    assign areas = areas | append: 'foedder,'
+                  when 'haar' or 'hår'
+                    assign areas = areas | append: 'haar,'
+                  when 'tor-hud' or 'toer' or 'tør hud'
+                    assign needs = needs | append: 'toer,'
+                  when 'fugt'
+                    assign needs = needs | append: 'fugt,'
+                  when 'moden-hud' or 'moden'
+                    assign needs = needs | append: 'moden,'
+                  when 'sensitiv-hud' or 'sensitiv'
+                    assign needs = needs | append: 'sensitiv,'
+                  when 'uren-hud' or 'uren'
+                    assign needs = needs | append: 'uren,'
+                  when 'genopbygning'
+                    assign needs = needs | append: 'genopbygning,'
+                endcase
+              endfor
+              assign mf_needs = p.metafields.ncell.needs.value
+              if mf_needs != blank
+                assign needs = needs | append: mf_needs | append: ','
+              endif
+              assign rating = p.metafields.reviews.rating.value.rating | default: p.metafields.reviews.rating.value | default: 4.5
+            -%}
+            <div data-nc-quiz-card data-areas="{{ areas }}" data-needs="{{ needs | replace: ' ', '' }}" data-rating="{{ rating }}" hidden>
+              {%- render 'nc-product-card', product: p -%}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <div class="nc-quiz__actions">
+        <button class="nc-quiz__again" type="button" data-nc-quiz-restart>{{ 'quiz.retake' | t }}</button>
+        <a class="nc-quiz__all" href="{{ all_url }}">{{ 'quiz.see_all' | t }}</a>
+      </div>
+    </div>
+  </section>
+</div>
 
 {% schema %}
 {
   "name": "Hudpleje-quiz",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "intro_heading", "label": "Intro, overskrift", "default": "Find din rutine på ét minut" },
-    { "type": "textarea", "id": "intro_text", "label": "Intro, tekst", "default": "Svar på to hurtige spørgsmål, så peger vi dig i retning af de produkter, der passer til dig. Ingen løfter, bare et godt sted at starte." },
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Find din rutine" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hudpleje-quiz" },
+    { "type": "textarea", "id": "intro_text", "label": "Intro, tekst", "default": "Svar på to hurtige spørgsmål, så guider vi dig til de NatureCell-produkter, der passer bedst til din hud. Ingen løfter om mirakler, bare et godt sted at starte." },
+    { "type": "textarea", "id": "result_text", "label": "Resultat, tekst", "default": "Her er de produkter, vores kunder oftest vælger til netop dét. Start med ét, eller byg hele rutinen." },
     { "type": "collection", "id": "collection", "label": "Produktkilde" },
-    { "type": "url", "id": "all_url", "label": "Se alle-link" }
+    { "type": "url", "id": "all_url", "label": "Se hele sortimentet-link" },
+    { "type": "header", "content": "Ikoner til områdevalg (produktets billede)" },
+    { "type": "product", "id": "product_face", "label": "Ansigt" },
+    { "type": "product", "id": "product_hands", "label": "Hænder" },
+    { "type": "product", "id": "product_body", "label": "Krop" },
+    { "type": "product", "id": "product_feet", "label": "Fødder" },
+    { "type": "product", "id": "product_hair", "label": "Hår" }
   ],
   "presets": [ { "name": "Hudpleje-quiz" } ]
 }

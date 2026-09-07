@@ -164,11 +164,25 @@
     "b2b_submit": "Anfrage senden",
     "b2b_success": "Vielen Dank für Ihre Anfrage. Wir melden uns innerhalb von zwei Werktagen.",
     "b2b_login_hint": "Bereits B2B-Kunde?",
-    "b2b_login": "Hier anmelden"
+    "b2b_login": "Hier anmelden",
+    "b2b_email": "Firmen-E-Mail",
+    "password": "Passwort",
+    "login": "Anmelden",
+    "name": "Name",
+    "name_placeholder": "Ihr Name",
+    "message": "Nachricht",
+    "message_placeholder": "Wie können wir helfen?",
+    "send": "Nachricht senden",
+    "contact_success": "Vielen Dank für Ihre Nachricht. Wir antworten in der Regel innerhalb eines Werktags."
   },
   "quiz": {
     "start": "Quiz starten →",
-    "retake": "Quiz wiederholen"
+    "retake": "Quiz wiederholen",
+    "need_q": "Was braucht Ihre Haut am meisten?",
+    "back": "← Zurück",
+    "result_eyebrow": "Unsere Empfehlung",
+    "result_prefix": "Für",
+    "see_all": "Das ganze Sortiment ansehen →"
   },
   "shopify": {
     "checkout": {

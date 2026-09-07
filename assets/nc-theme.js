@@ -322,25 +322,42 @@
       if (state.step === 3) result();
     }
     function result() {
-      var list = products.slice();
-      if (state.area) list = list.filter(function (p) { return (p.areas || []).indexOf(state.area) !== -1; });
-      if (state.need) {
-        var nl = list.filter(function (p) { return (p.needs || []).indexOf(state.need) !== -1; });
-        if (nl.length) list = nl;
-      }
-      list.sort(function (a, b) { return (b.rating || 0) - (a.rating || 0); });
-      list = list.slice(0, 3);
       var out = $('[data-nc-quiz-result]', root);
       if (!out) return;
-      out.innerHTML = '';
-      list.forEach(function (p) {
-        var li = document.createElement('a');
-        li.className = 'nc-quiz-hit';
-        li.href = p.url;
-        li.innerHTML = '<span class="nc-quiz-hit__media"><img src="' + p.img + '" alt="" loading="lazy"></span>' +
-          '<span class="nc-quiz-hit__body"><strong>' + p.title + '</strong><span>' + p.price + '</span></span>';
-        out.appendChild(li);
+      /* Produktkortene er renderet server-side (nc-quiz.liquid); vis de tre der matcher. */
+      var cards = $all('[data-nc-quiz-card]', out);
+      var split = function (s) { return (s || '').split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean); };
+      var all = cards.map(function (c) {
+        return { el: c, areas: split(c.getAttribute('data-areas')), needs: split(c.getAttribute('data-needs')), rating: parseFloat(c.getAttribute('data-rating')) || 0 };
       });
+      var list = all.slice();
+      if (state.area) {
+        var al = list.filter(function (p) { return p.areas.indexOf(state.area) !== -1; });
+        if (al.length) list = al;
+      }
+      if (state.need) {
+        var nl = list.filter(function (p) { return p.needs.indexOf(state.need) !== -1; });
+        if (nl.length) list = nl;
+      }
+      list.sort(function (a, b) { return b.rating - a.rating; });
+      list = list.slice(0, 3);
+      cards.forEach(function (c) { c.hidden = true; });
+      list.forEach(function (p) { p.el.hidden = false; });
+      if (!cards.length) {
+        /* Fallback: JSON-liste (aeldre skabelon). */
+        var legacy = products.slice();
+        if (state.area) legacy = legacy.filter(function (p) { return (p.areas || []).indexOf(state.area) !== -1; });
+        legacy = legacy.slice(0, 3);
+        out.innerHTML = '';
+        legacy.forEach(function (p) {
+          var li = document.createElement('a');
+          li.className = 'nc-quiz-hit';
+          li.href = p.url;
+          li.innerHTML = '<span class="nc-quiz-hit__media"><img src="' + p.img + '" alt="" loading="lazy"></span>' +
+            '<span class="nc-quiz-hit__body"><strong>' + p.title + '</strong><span>' + p.price + '</span></span>';
+          out.appendChild(li);
+        });
+      }
       var lbl = $('[data-nc-quiz-labels]', root);
       if (lbl) {
         var la = root.querySelector('[data-nc-quiz-area="' + state.area + '"]');

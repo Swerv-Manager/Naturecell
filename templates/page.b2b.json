@@ -1,16 +1,25 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Erhverv", "heading": "B2B login", "intro": "Sælger du NatureCell i butik eller klinik? Log ind og se dine engrospriser, eller anmod om en B2B-konto." } },
-    "cards": {
-      "type": "nc-rich-page",
-      "settings": { "cta_text": "Anmod om B2B-konto", "cta_url": "/pages/b2b#b2b-ansoegning" },
-      "blocks": {
-        "c1": { "type": "card", "settings": { "heading": "Egne engrospriser", "text": "Dine egne engrospriser og rabatter, styret af os." } },
-        "c2": { "type": "card", "settings": { "heading": "Nem genbestilling", "text": "Hurtig genbestilling og samlet fakturering." } },
-        "c3": { "type": "card", "settings": { "heading": "Materiale & træning", "text": "Markedsføringsmateriale og produkttræning til dit team." } },
-        "c4": { "type": "card", "settings": { "heading": "Dokumenteret kvalitet", "text": "Dansk produktion, GMP- & ISO-certificeret." } }
+    "b2b": {
+      "type": "nc-b2b",
+      "settings": {
+        "eyebrow": "For forhandlere & klinikker",
+        "heading": "NatureCell B2B",
+        "intro": "Sælger du NatureCell i din butik eller klinik? Log ind for at se dine priser, styre dine rabatter og bestille til engros.",
+        "info_title": "Konti oprettes og godkendes af NatureCell",
+        "info_text": "Af hensyn til regulering og rabatstyring opretter vi din B2B-konto manuelt. Anmod om adgang, så vender vi tilbage med dit login og dine betingelser.",
+        "login_heading": "Log ind",
+        "apply_text": "Endnu ikke forhandler?",
+        "apply_label": "Anmod om B2B-konto",
+        "apply_url": "#b2b-ansoegning"
       },
-      "block_order": ["c1", "c2", "c3", "c4"]
+      "blocks": {
+        "p1": { "type": "perk", "settings": { "text": "Dine egne engrospriser og rabatter, styret af os" } },
+        "p2": { "type": "perk", "settings": { "text": "Hurtig genbestilling og samlet fakturering" } },
+        "p3": { "type": "perk", "settings": { "text": "Markedsføringsmateriale og produkttræning" } },
+        "p4": { "type": "perk", "settings": { "text": "Dansk produktion, GMP- & ISO-certificeret" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"]
     },
     "apply": {
       "type": "nc-b2b-form",
@@ -20,5 +29,5 @@
       }
     }
   },
-  "order": ["hero", "cards", "apply"]
+  "order": ["b2b", "apply"]
 }

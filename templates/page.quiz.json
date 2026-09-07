@@ -1,7 +1,23 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Hudpleje-quiz", "heading": "Find din rutine", "center": true } },
-    "quiz": { "type": "nc-quiz", "settings": { "collection": "cbd-hudpleje" } }
+    "quiz": {
+      "type": "nc-quiz",
+      "settings": {
+        "eyebrow": "Find din rutine",
+        "heading": "Hudpleje-quiz",
+        "intro_text": "Svar på to hurtige spørgsmål, så guider vi dig til de NatureCell-produkter, der passer bedst til din hud. Ingen løfter om mirakler, bare et godt sted at starte.",
+        "result_text": "Her er de produkter, vores kunder oftest vælger til netop dét. Start med ét, eller byg hele rutinen.",
+        "collection": "cbd-hudpleje",
+        "all_url": "/collections/cbd-hudpleje",
+        "product_face": "dagcreme",
+        "product_hands": "handcreme",
+        "product_body": "bodylotion",
+        "product_feet": "fodcreme",
+        "product_hair": "shampoo-300ml"
+      }
+    }
   },
-  "order": ["hero", "quiz"]
+  "order": [
+    "quiz"
+  ]
 }

@@ -1,0 +1,126 @@
+{% comment %}
+  B2B-login 1:1 fra designet (design-src/extracted/shell.html 2790-2816):
+  1100px-sektion i to kolonner. Venstre: eyebrow, H1, intro, fire fordele med
+  flueben og infoboks. Hoejre: hvidt login-kort med Shopifys kundelogin,
+  skillelinje og "Anmod om B2B-konto", der peger paa ansoegningsformularen.
+  Tekster foelger brandprofilen: ingen tankestreger.
+{% endcomment %}
+
+{%- style -%}
+  .nc-b2b { max-width: 1100px; margin: 0 auto; padding: clamp(38px, 5vw, 64px) clamp(16px, 4vw, 24px) clamp(54px, 6vw, 90px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(28px, 5vw, 56px); align-items: center; }
+  .nc-b2b__intro { display: flex; flex-direction: column; gap: 20px; }
+  .nc-b2b__intro .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.12em; color: var(--sage-600); }
+  .nc-b2b__intro h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(26px, 4.1vw, 42px); line-height: 1.08; letter-spacing: normal; color: var(--sage-700); }
+  .nc-b2b__intro > p { margin: 0; font-size: 17px; line-height: 1.7; color: var(--ink-700); max-width: 460px; }
+  .nc-b2b__perks { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+  .nc-b2b__perk { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: var(--ink-700); }
+  .nc-b2b__perk svg { flex: none; margin-top: 2px; color: var(--sage-600); }
+  .nc-b2b__info { background: var(--sage-50); border: 1px solid var(--border-sage); border-radius: var(--radius-lg); padding: 20px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+  .nc-b2b__info strong { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--sage-700); }
+  .nc-b2b__info p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-700); }
+
+  .nc-b2b__card { background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .nc-b2b__card h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 24px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-b2b__card form { display: flex; flex-direction: column; gap: 18px; }
+  .nc-b2b__field { display: flex; flex-direction: column; gap: 6px; }
+  .nc-b2b__field label { font-family: var(--font-body); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-500); }
+  .nc-b2b__field input { width: 100%; border: 1px solid var(--border-default); background: var(--cloud); border-radius: var(--radius-md); padding: 12px 14px; font-family: var(--font-body); font-size: 15px; color: var(--sage-700); outline: none; }
+  .nc-b2b__field input:focus-visible { border-color: var(--sage-500); box-shadow: var(--shadow-focus); }
+  .nc-b2b__submit { border: 0; cursor: pointer; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 15px; padding: 14px; border-radius: 999px; }
+  .nc-b2b__submit:hover, .nc-b2b__submit:focus-visible { background: var(--sage-600); }
+  .nc-b2b__error { margin: 0; font-size: 14px; color: var(--accent-berry); }
+  .nc-b2b__divider { height: 1px; background: var(--border-soft); margin: 4px 0; }
+  .nc-b2b__apply { display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; }
+  .nc-b2b__apply span { font-size: 14px; color: var(--ink-500); }
+  .nc-b2b__apply a { display: inline-block; border: 1.5px solid var(--sage-500); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: 999px; text-decoration: none; }
+  .nc-b2b__apply a:hover, .nc-b2b__apply a:focus-visible { background: var(--sage-50); }
+{%- endstyle -%}
+
+<section class="nc-b2b">
+  <div class="nc-b2b__intro">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1>{{ section.settings.heading }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <p>{{ section.settings.intro }}</p>
+    {%- endif -%}
+    <div class="nc-b2b__perks">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'perk' -%}
+          <div class="nc-b2b__perk" {{ block.shopify_attributes }}>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>{{ block.settings.text }}</span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.info_title != blank -%}
+      <div class="nc-b2b__info">
+        <strong>{{ section.settings.info_title }}</strong>
+        <p>{{ section.settings.info_text }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="nc-b2b__card">
+    <h2>{{ section.settings.login_heading }}</h2>
+    {%- form 'customer_login', id: 'nc-b2b-login' -%}
+      {%- if form.errors -%}
+        <p class="nc-b2b__error" role="alert">{{ form.errors | default_errors }}</p>
+      {%- endif -%}
+      <div class="nc-b2b__field">
+        <label for="nc-b2b-login-email">{{ 'forms.b2b_email' | t }}</label>
+        <input id="nc-b2b-login-email" type="email" name="customer[email]" placeholder="forhandler@firma.dk" autocomplete="email" required>
+      </div>
+      <div class="nc-b2b__field">
+        <label for="nc-b2b-login-password">{{ 'forms.password' | t }}</label>
+        <input id="nc-b2b-login-password" type="password" name="customer[password]" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button class="nc-b2b__submit" type="submit">{{ 'forms.login' | t }}</button>
+    {%- endform -%}
+    <div class="nc-b2b__divider" role="presentation"></div>
+    <div class="nc-b2b__apply">
+      <span>{{ section.settings.apply_text }}</span>
+      <a href="{{ section.settings.apply_url | default: '#b2b-ansoegning' }}">{{ section.settings.apply_label }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "B2B-login",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "For forhandlere & klinikker" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "NatureCell B2B" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Sælger du NatureCell i din butik eller klinik? Log ind for at se dine priser, styre dine rabatter og bestille til engros." },
+    { "type": "text", "id": "info_title", "label": "Infoboks: titel", "default": "Konti oprettes og godkendes af NatureCell" },
+    { "type": "textarea", "id": "info_text", "label": "Infoboks: tekst", "default": "Af hensyn til regulering og rabatstyring opretter vi din B2B-konto manuelt. Anmod om adgang, så vender vi tilbage med dit login og dine betingelser." },
+    { "type": "text", "id": "login_heading", "label": "Login-kort: overskrift", "default": "Log ind" },
+    { "type": "text", "id": "apply_text", "label": "Under skillelinjen", "default": "Endnu ikke forhandler?" },
+    { "type": "text", "id": "apply_label", "label": "Knap", "default": "Anmod om B2B-konto" },
+    { "type": "text", "id": "apply_url", "label": "Knap: link", "default": "#b2b-ansoegning", "info": "Standard peger på ansøgningsformularen længere nede på siden." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Fordel",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Tekst", "default": "Dine egne engrospriser og rabatter, styret af os" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "B2B-login",
+      "blocks": [
+        { "type": "perk", "settings": { "text": "Dine egne engrospriser og rabatter, styret af os" } },
+        { "type": "perk", "settings": { "text": "Hurtig genbestilling og samlet fakturering" } },
+        { "type": "perk", "settings": { "text": "Markedsføringsmateriale og produkttræning" } },
+        { "type": "perk", "settings": { "text": "Dansk produktion, GMP- & ISO-certificeret" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

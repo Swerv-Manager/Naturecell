@@ -1,31 +1,43 @@
 {% comment %}
-  Indholdssektioner til tekstsider (vilkaar, privatliv, b2b,
-  forhandlere): kort med overskrift + tekst i to kolonner.
+  Indholdskort 1:1 fra designets forhandlerside (design-src/extracted/shell.html
+  2574-2589): 1000px-sektion, kort med kategori-badge, overskrift og tekst i
+  et auto-fit-grid, og en centreret CTA-boks paa lys sage med overskrift,
+  tekst og sage-knap. Bruges til forhandlere og andre tekstsider.
 {% endcomment %}
 
 {%- style -%}
-  .nc-richpage { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 980px; }
-  .nc-richpage__card { background: var(--cloud); border-radius: var(--radius-lg); padding: clamp(20px, 2.6vw, 30px); box-shadow: var(--shadow-xs); }
-  .nc-richpage__card h3 { font-size: 19px; margin-bottom: 8px; }
-  .nc-richpage__card p { margin: 0; font-size: 14.5px; color: var(--ink-700); }
+  .nc-richpage { max-width: 1000px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) clamp(16px, 4vw, 24px); }
+  .nc-richpage__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(47%, 240px), 1fr)); gap: 20px; }
+  .nc-richpage__card { background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 26px; display: flex; flex-direction: column; gap: 10px; }
+  .nc-richpage__badge { align-self: flex-start; background: var(--sage-100); color: var(--sage-700); font-family: var(--font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; }
+  .nc-richpage__card h3 { margin: 2px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 21px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-richpage__card p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-700); }
+  .nc-richpage__cta { margin-top: 44px; background: var(--sage-50); border: 1px solid var(--border-sage, var(--border-soft)); border-radius: var(--radius-xl); padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center; }
+  .nc-richpage__cta h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-richpage__cta p { margin: 0; max-width: 520px; font-size: 15.5px; line-height: 1.7; color: var(--ink-700); }
+  .nc-richpage__cta a { margin-top: 4px; display: inline-block; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 15px; line-height: 1.2; padding: 13px 28px; border-radius: 999px; text-decoration: none; }
+  .nc-richpage__cta a:hover, .nc-richpage__cta a:focus-visible { background: var(--sage-600); }
 {%- endstyle -%}
 
-<section class="nc-section" style="padding-top: 10px;">
-  <div class="nc-container">
-    <div class="nc-richpage">
-      {%- for block in section.blocks -%}
-        <div class="nc-richpage__card" {{ block.shopify_attributes }}>
-          <h3>{{ block.settings.heading }}</h3>
-          <p>{{ block.settings.text }}</p>
-        </div>
-      {%- endfor -%}
-    </div>
-    {%- if section.settings.cta_text != blank -%}
-      <p style="margin-top: 26px;">
-        <a class="nc-btn nc-btn--primary" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
-      </p>
-    {%- endif -%}
+<section class="nc-richpage">
+  <div class="nc-richpage__grid">
+    {%- for block in section.blocks -%}
+      <div class="nc-richpage__card" {{ block.shopify_attributes }}>
+        {%- if block.settings.badge != blank -%}
+          <span class="nc-richpage__badge">{{ block.settings.badge }}</span>
+        {%- endif -%}
+        <h3>{{ block.settings.heading }}</h3>
+        <p>{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
   </div>
+  {%- if section.settings.cta_heading != blank or section.settings.cta_text != blank -%}
+    <div class="nc-richpage__cta">
+      {%- if section.settings.cta_heading != blank -%}<h2>{{ section.settings.cta_heading }}</h2>{%- endif -%}
+      {%- if section.settings.cta_body != blank -%}<p>{{ section.settings.cta_body }}</p>{%- endif -%}
+      {%- if section.settings.cta_text != blank -%}<a href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>{%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -33,14 +45,18 @@
   "name": "Indholdskort",
   "tag": "section",
   "settings": [
+    { "type": "header", "content": "CTA-boks (tom overskrift og knap = ingen boks)" },
+    { "type": "text", "id": "cta_heading", "label": "Overskrift" },
+    { "type": "textarea", "id": "cta_body", "label": "Tekst" },
     { "type": "text", "id": "cta_text", "label": "Knap" },
-    { "type": "url", "id": "cta_url", "label": "Knap: link" }
+    { "type": "text", "id": "cta_url", "label": "Knap: link", "info": "Sti eller URL, fx /pages/b2b" }
   ],
   "blocks": [
     {
       "type": "card",
       "name": "Kort",
       "settings": [
+        { "type": "text", "id": "badge", "label": "Badge (fx Flagship)" },
         { "type": "text", "id": "heading", "label": "Overskrift", "default": "Overskrift" },
         { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tekst" }
       ]
