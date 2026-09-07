@@ -27,6 +27,8 @@
   #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact { padding: clamp(44px, 6vw, 80px) 0; }
   #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact h1 { font-size: clamp(38px, 5vw, 56px); }
   #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact .nc-pagehero__intro { margin-top: 16px; max-width: 520px; }
+  {%- comment -%} Bred intro (designets ingrediensside, shell.html 2825: max-width 600px). {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero__intro.is-wide { max-width: 600px; }
 
   {%- comment -%} "soft": lyst sage-50-baand med moerk tekst (designets FAQ-side, template.html:2306-2312):
       820px-kolonne inkl. 24px sidepadding, eyebrow 12px/0.14em sage-600, H1 clamp(29,4.5vw,46), intro 17px maks 560px. {%- endcomment -%}
@@ -66,7 +68,7 @@
         {%- endif -%}
         <h1>{{ section.settings.heading | default: page.title }}</h1>
         {%- if section.settings.intro != blank -%}
-          <p class="nc-pagehero__intro">{{ section.settings.intro }}</p>
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -91,7 +93,7 @@
         {%- endif -%}
         <h1>{{ section.settings.heading | default: page.title }}</h1>
         {%- if section.settings.intro != blank -%}
-          <p class="nc-pagehero__intro">{{ section.settings.intro }}</p>
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -120,6 +122,7 @@
     { "type": "textarea", "id": "intro", "label": "Intro" },
     { "type": "checkbox", "id": "center", "label": "Centrér (kun enkel variant)", "default": false },
     { "type": "checkbox", "id": "band_compact", "label": "Kompakt bånd (forhandlere: 56px overskrift)", "default": false },
+    { "type": "checkbox", "id": "intro_wide", "label": "Bred intro (600px, ingredienser)", "default": false },
     { "type": "image_picker", "id": "image", "label": "Baggrundsbillede (kun billedvariant)" },
     { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }
   ],

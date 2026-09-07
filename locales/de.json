@@ -142,7 +142,10 @@
     "repair": "Reparatur"
   },
   "ingredients": {
-    "why": "Darum verwenden wir ihn"
+    "why": "Darum verwenden wir ihn",
+    "empty": "Keine Inhaltsstoffe passen zu Ihrer Suche. Versuchen Sie z. B. CBD, Feuchtigkeit oder Sheabutter.",
+    "clear": "Suche zurücksetzen",
+    "show_all": "Alle Inhaltsstoffe anzeigen"
   },
   "press": {
     "title": "Bekannt aus den Medien"

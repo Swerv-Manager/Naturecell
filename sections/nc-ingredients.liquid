@@ -1,101 +1,151 @@
 {% comment %}
-  Ingrediensside 1:1 fra NatureCell.dc.html: soegefelt + chips der
-  hopper til hver ingrediens, og en fuld sektion pr. ingrediens med
-  kategori-pill, navn, INCI i kursiv, funktions-chips, indledning,
-  broedtekst, "Derfor bruger vi den"-kort og hoejt billede.
-  Sektionerne skifter baggrund og billedside.
+  Ingrediensside 1:1 fra designet (design-src/extracted/shell.html 2828-2895):
+  kompakt soege- og filterstribe (420px soegefelt med ikon, én chip-raekke med
+  "+"-knap, der folder alle chips ud) og én sektion pr. ingrediens i et 1100px-
+  spor: 180px billede centreret mod teksten, kategori-pill, navn, INCI i serif-
+  kursiv, fyldte funktions-chips, serif-indledning, broedtekst og "Derfor bruger
+  vi den"-kort. Ulige sektioner er hvide med billedet til venstre, lige er
+  paper-2 med billedet til hoejre.
 {% endcomment %}
 
 {%- style -%}
-  #shopify-section-{{ section.id }} .nc-ing__tools { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--border-soft, var(--ink-100)); padding: 16px 0; }
-  #shopify-section-{{ section.id }} .nc-ing__tools-inner { display: flex; flex-direction: column; gap: 12px; }
-  #shopify-section-{{ section.id }} .nc-ing__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  #shopify-section-{{ section.id }} .nc-ing__tools { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-ing__tools-inner { max-width: 1100px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 24px); display: flex; flex-direction: column; gap: 14px; }
+  #shopify-section-{{ section.id }} .nc-ing__search { position: relative; display: flex; align-items: center; max-width: 420px; }
+  #shopify-section-{{ section.id }} .nc-ing__search > svg { position: absolute; left: 16px; color: var(--ink-400); pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-ing__search input { flex: 1; min-width: 0; border: 1px solid var(--border-default); background: var(--cloud); border-radius: 999px; padding: 12px 40px 12px 42px; font-family: var(--font-body); font-size: 14.5px; line-height: 1.4; outline: none; color: var(--sage-700); -webkit-appearance: none; appearance: none; }
+  #shopify-section-{{ section.id }} .nc-ing__search input:focus-visible { border-color: var(--sage-500); box-shadow: var(--shadow-focus); }
+  #shopify-section-{{ section.id }} .nc-ing__search input::-webkit-search-cancel-button { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__clear { position: absolute; right: 12px; border: 0; background: none; cursor: pointer; color: var(--ink-400); padding: 4px; display: flex; }
+  #shopify-section-{{ section.id }} .nc-ing__clear[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__chiprow { display: flex; align-items: center; gap: 9px; min-width: 0; }
+  #shopify-section-{{ section.id }} .nc-ing__chips { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0; overflow: hidden; flex-wrap: nowrap; padding-bottom: 2px; }
+  #shopify-section-{{ section.id }} .nc-ing__chips.is-open { flex-wrap: wrap; overflow: visible; }
+  #shopify-section-{{ section.id }} .nc-ing__chip { flex: none; border: 1.5px solid var(--border-default); background: var(--cloud); color: var(--sage-700); text-decoration: none; font-family: var(--font-body); font-weight: 600; font-size: 13px; line-height: 1.2; padding: 7px 15px; border-radius: 999px; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .nc-ing__chip:hover { border-color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-ing__more { flex: none; width: 34px; height: 34px; border-radius: 999px; border: 1.5px solid var(--border-default); background: var(--cloud); cursor: pointer; color: var(--sage-700); display: flex; align-items: center; justify-content: center; padding: 0; }
+  #shopify-section-{{ section.id }} .nc-ing__more:hover { border-color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-ing__more .is-minus { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__more.is-open .is-plus { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__more.is-open .is-minus { display: block; }
 
-  #shopify-section-{{ section.id }} .nc-ing__item { padding: clamp(44px, 6vw, 84px) 0; }
-  #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) { background: var(--paper-2); }
-  #shopify-section-{{ section.id }} .nc-ing__grid { display: grid; gap: clamp(24px, 4vw, 64px); grid-template-columns: 1fr; align-items: start; }
-  @media (min-width: 900px) {
-    #shopify-section-{{ section.id }} .nc-ing__grid { grid-template-columns: 220px 1fr; }
-    #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) .nc-ing__grid { grid-template-columns: 1fr 220px; }
-    #shopify-section-{{ section.id }} .nc-ing__item:nth-child(odd) .nc-ing__media { order: 2; }
-  }
-  #shopify-section-{{ section.id }} .nc-ing__media { border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-100); aspect-ratio: 3 / 7; max-height: 480px; }
-  #shopify-section-{{ section.id }} .nc-ing__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-ing__empty { border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-ing__empty[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__empty-inner { max-width: 760px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 24px); text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-ing__empty-inner > svg { color: var(--sage-400); }
+  #shopify-section-{{ section.id }} .nc-ing__empty-inner p { margin: 0; font-size: 15.5px; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-ing__empty-inner button { border: 1.5px solid var(--sage-500); background: transparent; cursor: pointer; color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: 999px; }
 
-  #shopify-section-{{ section.id }} .nc-ing__pill { display: inline-flex; padding: 5px 13px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--cloud); background: var(--sage-500); }
-  #shopify-section-{{ section.id }} .nc-ing__pill--sand { background: var(--sand-500); color: var(--ink-900); }
+  #shopify-section-{{ section.id }} .nc-ing__item { border-top: 1px solid var(--border-soft); scroll-margin-top: 150px; background: var(--cloud); }
+  #shopify-section-{{ section.id }} .nc-ing__item.is-even { background: var(--paper-2); }
+  #shopify-section-{{ section.id }} .nc-ing__item[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .nc-ing__inner { max-width: 1100px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 24px); }
+  #shopify-section-{{ section.id }} .nc-ing__row { display: flex; flex-direction: row; gap: clamp(22px, 4vw, 48px); align-items: center; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-ing__item.is-even .nc-ing__row { flex-direction: row-reverse; }
+  #shopify-section-{{ section.id }} .nc-ing__media { flex: 0 0 180px; max-width: 180px; align-self: center; border-radius: 18px; overflow: hidden; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-ing__media img { width: 100%; height: auto; display: block; }
+  #shopify-section-{{ section.id }} .nc-ing__body { flex: 1 1 340px; min-width: 280px; display: flex; flex-direction: column; justify-content: center; gap: 18px; padding: 8px 0; }
+
+  #shopify-section-{{ section.id }} .nc-ing__pill { align-self: flex-start; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 700; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-ing__pill--sand { background: var(--sand-500); }
   #shopify-section-{{ section.id }} .nc-ing__pill--stone { background: var(--stone-500, #8C8F8F); }
   #shopify-section-{{ section.id }} .nc-ing__pill--mauve { background: #B07A7F; }
-  #shopify-section-{{ section.id }} .nc-ing__body h2 { margin: 14px 0 2px; font-size: clamp(30px, 3.4vw, 42px); }
-  #shopify-section-{{ section.id }} .nc-ing__latin { margin: 0 0 14px; font-style: italic; font-size: 14px; color: var(--ink-500); }
-  #shopify-section-{{ section.id }} .nc-ing__fns { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-  #shopify-section-{{ section.id }} .nc-ing__intro { margin: 0 0 16px; font-family: var(--font-display); font-size: clamp(18px, 1.7vw, 21px); line-height: 1.55; color: var(--ink-900); max-width: 62ch; }
-  #shopify-section-{{ section.id }} .nc-ing__text p { margin: 0 0 14px; line-height: 1.75; color: var(--ink-700); max-width: 68ch; }
-  #shopify-section-{{ section.id }} .nc-ing__why { max-width: 620px; margin-top: 22px; border: 1px solid var(--border-soft, var(--ink-100)); border-radius: var(--radius-lg); background: var(--cloud); padding: clamp(18px, 2.4vw, 26px); }
-  #shopify-section-{{ section.id }} .nc-ing__why strong { display: block; margin-bottom: 12px; font-size: 11px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--ink-500); }
-  #shopify-section-{{ section.id }} .nc-ing__why ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  #shopify-section-{{ section.id }} .nc-ing__why li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--ink-700); }
-  #shopify-section-{{ section.id }} .nc-ing__why svg { flex: none; margin-top: 3px; color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-ing__title { display: flex; flex-direction: column; gap: 4px; }
+  #shopify-section-{{ section.id }} .nc-ing__title h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(25px, 3.9vw, 40px); line-height: 1.06; letter-spacing: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-ing__latin { font-family: var(--font-serif, var(--font-display)); font-style: italic; font-size: 15px; color: var(--ink-400); }
+  #shopify-section-{{ section.id }} .nc-ing__fns { display: flex; flex-wrap: wrap; gap: 7px; }
+  #shopify-section-{{ section.id }} .nc-ing__fn { background: var(--sage-50); color: var(--sage-700); font-family: var(--font-body); font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-ing__intro { margin: 0; font-family: var(--font-serif, var(--font-display)); font-size: 19px; line-height: 1.6; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-ing__text { display: flex; flex-direction: column; gap: 14px; }
+  #shopify-section-{{ section.id }} .nc-ing__text p { margin: 0; font-size: 15.5px; line-height: 1.8; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-ing__why { margin-top: 6px; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  #shopify-section-{{ section.id }} .nc-ing__why strong { font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-ing__why ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  #shopify-section-{{ section.id }} .nc-ing__why li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-ing__why svg { flex: none; margin-top: 1px; color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .is-sand .nc-ing__why svg { color: var(--sand-500); }
+  #shopify-section-{{ section.id }} .is-stone .nc-ing__why svg { color: var(--stone-500, #8C8F8F); }
+  #shopify-section-{{ section.id }} .is-mauve .nc-ing__why svg { color: #B07A7F; }
 {%- endstyle -%}
 
 <div data-nc-ingredients>
   <div class="nc-ing__tools">
-    <div class="nc-container">
-      <div class="nc-ing__tools-inner">
-        <div class="nc-blogtools__search" style="flex-basis: 320px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
-          <label class="nc-visually-hidden" for="nc-ing-search">{{ 'general.search_ingredient' | t }}</label>
-          <input id="nc-ing-search" type="search" placeholder="{{ 'general.search_ingredient_placeholder' | t }}" data-nc-ing-search autocomplete="off">
-        </div>
-        <div class="nc-ing__chips">
+    <div class="nc-ing__tools-inner">
+      <div class="nc-ing__search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <label class="nc-visually-hidden" for="nc-ing-search">{{ 'general.search_ingredient' | t }}</label>
+        <input id="nc-ing-search" type="search" placeholder="{{ 'general.search_ingredient_placeholder' | t }}" data-nc-ing-search autocomplete="off">
+        <button class="nc-ing__clear" type="button" data-nc-ing-clear aria-label="{{ 'ingredients.clear' | t }}" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="nc-ing__chiprow">
+        <div class="nc-ing__chips" data-nc-ing-chips>
           {%- for block in section.blocks -%}
-            <a class="nc-chip" href="#ing-{{ block.settings.name | handleize }}">{{ block.settings.name }}</a>
+            <a class="nc-ing__chip" href="#ing-{{ block.settings.name | handleize }}">{{ block.settings.name }}</a>
           {%- endfor -%}
         </div>
+        <button class="nc-ing__more" type="button" data-nc-ing-more aria-label="{{ 'ingredients.show_all' | t }}" aria-expanded="false">
+          <svg class="is-plus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <svg class="is-minus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>
+        </button>
       </div>
     </div>
   </div>
 
+  <div class="nc-ing__empty" data-nc-ing-empty hidden>
+    <div class="nc-ing__empty-inner">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <p>{{ 'ingredients.empty' | t }}</p>
+      <button type="button" data-nc-ing-clear>{{ 'ingredients.clear' | t }}</button>
+    </div>
+  </div>
+
   {%- for block in section.blocks -%}
-    <div
-      class="nc-ing__item"
+    {%- assign parity = forloop.index | modulo: 2 -%}
+    <section
+      class="nc-ing__item {% if parity == 0 %}is-even{% else %}is-odd{% endif %} is-{{ block.settings.category_tone | default: 'sage' }}"
       id="ing-{{ block.settings.name | handleize }}"
       data-nc-ing-item
       data-nc-search-text="{{ block.settings.name | downcase | escape }} {{ block.settings.latin | downcase | escape }} {{ block.settings.category | downcase | escape }} {{ block.settings.functions | downcase | escape }}"
       {{ block.shopify_attributes }}
     >
-      <div class="nc-container">
-        <div class="nc-ing__grid">
+      <div class="nc-ing__inner">
+        <div class="nc-ing__row">
           <div class="nc-ing__media">
             {%- assign ing_alt = block.settings.name | escape -%}
             {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 480 | image_tag: alt: ing_alt, loading: 'lazy', sizes: '220px' }}
+              {{ block.settings.image | image_url: width: 360 | image_tag: alt: ing_alt, loading: 'lazy', sizes: '180px', widths: '180, 360' }}
             {%- elsif block.settings.image_url contains '//' -%}
-              <img src="{{ block.settings.image_url }}" alt="{{ ing_alt }}" loading="lazy" width="220" height="513">
+              <img src="{{ block.settings.image_url }}" alt="{{ ing_alt }}" loading="lazy" width="180" height="480">
             {%- elsif block.settings.image_url != blank -%}
-              <img src="{{ block.settings.image_url | asset_url }}" alt="{{ ing_alt }}" loading="lazy" width="220" height="513">
+              <img src="{{ block.settings.image_url | asset_url }}" alt="{{ ing_alt }}" loading="lazy" width="180" height="480">
             {%- endif -%}
           </div>
           <div class="nc-ing__body">
             {%- if block.settings.category != blank -%}
               <span class="nc-ing__pill nc-ing__pill--{{ block.settings.category_tone }}">{{ block.settings.category }}</span>
             {%- endif -%}
-            <h2>{{ block.settings.name }}</h2>
-            {%- if block.settings.latin != blank -%}
-              <p class="nc-ing__latin">{{ block.settings.latin }}</p>
-            {%- endif -%}
+            <div class="nc-ing__title">
+              <h2>{{ block.settings.name }}</h2>
+              {%- if block.settings.latin != blank -%}
+                <span class="nc-ing__latin">{{ block.settings.latin }}</span>
+              {%- endif -%}
+            </div>
             {%- if block.settings.functions != blank -%}
               <div class="nc-ing__fns">
                 {%- assign fns = block.settings.functions | split: ',' -%}
                 {%- for fn in fns -%}
-                  <span class="nc-chip" style="pointer-events: none; text-transform: uppercase; font-size: 11px; letter-spacing: var(--tracking-wider);">{{ fn | strip }}</span>
+                  <span class="nc-ing__fn">{{ fn | strip }}</span>
                 {%- endfor -%}
               </div>
             {%- endif -%}
             {%- if block.settings.intro != blank -%}
               <p class="nc-ing__intro">{{ block.settings.intro }}</p>
             {%- endif -%}
-            <div class="nc-ing__text">{{ block.settings.body }}</div>
+            {%- if block.settings.body != blank -%}
+              <div class="nc-ing__text">{{ block.settings.body }}</div>
+            {%- endif -%}
             {%- if block.settings.benefits != blank -%}
               <div class="nc-ing__why">
                 <strong>{{ 'ingredients.why' | t }}</strong>
@@ -105,8 +155,8 @@
                     {%- assign row_text = row | strip -%}
                     {%- if row_text != blank -%}
                       <li>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                        {{ row_text }}
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span>{{ row_text }}</span>
                       </li>
                     {%- endif -%}
                   {%- endfor -%}
@@ -116,7 +166,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   {%- endfor -%}
 </div>
 
@@ -125,14 +175,35 @@
     var wrap = document.querySelector('[data-nc-ingredients]');
     if (!wrap) return;
     var input = wrap.querySelector('[data-nc-ing-search]');
-    var items = wrap.querySelectorAll('[data-nc-ing-item]');
-    if (!input) return;
-    input.addEventListener('input', function () {
-      var q = input.value.trim().toLowerCase();
+    var items = Array.prototype.slice.call(wrap.querySelectorAll('[data-nc-ing-item]'));
+    var empty = wrap.querySelector('[data-nc-ing-empty]');
+    var clearBtn = wrap.querySelector('.nc-ing__clear');
+    var chips = wrap.querySelector('[data-nc-ing-chips]');
+    var more = wrap.querySelector('[data-nc-ing-more]');
+    function apply() {
+      var q = (input.value || '').trim().toLowerCase();
+      var shown = 0;
       items.forEach(function (el) {
-        el.hidden = q && (el.getAttribute('data-nc-search-text') || '').indexOf(q) === -1;
+        var hide = !!q && (el.getAttribute('data-nc-search-text') || '').indexOf(q) === -1;
+        el.hidden = hide;
+        if (!hide) shown += 1;
       });
-    });
+      if (clearBtn) clearBtn.hidden = !q;
+      if (empty) empty.hidden = !(q && shown === 0);
+    }
+    if (input) {
+      input.addEventListener('input', apply);
+      wrap.querySelectorAll('[data-nc-ing-clear]').forEach(function (b) {
+        b.addEventListener('click', function () { input.value = ''; apply(); input.focus(); });
+      });
+    }
+    if (more && chips) {
+      more.addEventListener('click', function () {
+        var open = chips.classList.toggle('is-open');
+        more.classList.toggle('is-open', open);
+        more.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
   })();
 </script>
 

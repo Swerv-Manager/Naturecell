@@ -149,7 +149,10 @@
     "repair": "Reparation"
   },
   "ingredients": {
-    "why": "Derfor bruger vi den"
+    "why": "Derfor bruger vi den",
+    "empty": "Ingen ingredienser matcher din søgning. Prøv fx CBD, fugt eller sheasmør.",
+    "clear": "Ryd søgning",
+    "show_all": "Vis alle ingredienser"
   },
   "press": {
     "title": "Omtalt i medierne"

@@ -142,7 +142,10 @@
     "repair": "Repair"
   },
   "ingredients": {
-    "why": "Why we use it"
+    "why": "Why we use it",
+    "empty": "No ingredients match your search. Try CBD, moisture or shea butter.",
+    "clear": "Clear search",
+    "show_all": "Show all ingredients"
   },
   "press": {
     "title": "As featured in"
