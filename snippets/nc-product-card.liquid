@@ -24,10 +24,14 @@
     assign is_bundle = true
   endif
 
+  comment
+    Eyebrow som i designet: NatureCell, eller ALFALAB for herreserien. Butikkens
+    vendor-felt ("Naturecell.dk") bruges ikke, da det ikke er designets tekst.
+  endcomment
   assign eyebrow = 'NatureCell'
-  if product.vendor != blank
-    assign eyebrow = product.vendor
-  elsif product.title contains 'ALFALAB'
+  assign title_up = product.title | upcase
+  assign vendor_up = product.vendor | upcase
+  if title_up contains 'ALFALAB' or vendor_up contains 'ALFALAB'
     assign eyebrow = 'ALFALAB'
   endif
   if product.type contains 'Kosttilskud'
@@ -49,7 +53,10 @@
   endif
 
   assign title_parts = product.title | split: ' | '
-  assign card_title = title_parts[0]
+  capture card_title
+    render 'nc-title', title: title_parts[0]
+  endcapture
+  assign card_title = card_title | strip
   assign card_sub = product.metafields.ncell.size.value | default: title_parts[1]
 
   assign show_badge = true

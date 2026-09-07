@@ -1,0 +1,29 @@
+{%- comment -%}
+  Normaliserer produkttitler skrevet i versaler (fx "NIGHT CREAM ALFALAB") til
+  "Night Cream ALFALAB", saa Philosopher-overskriften ser ens ud paa alle kort
+  og produktsider. Titler med almindelig skrivemaade sendes uaendret igennem.
+  Brug: {% render 'nc-title', title: product.title %}
+{%- endcomment -%}
+{%- liquid
+  assign t = title | strip
+  assign up = t | upcase
+  if t != blank and t == up
+    assign words = t | split: ' '
+    assign out = ''
+    for w in words
+      if w == 'ALFALAB' or w == 'CBD' or w == 'CBG' or w == 'MCT' or w == 'THC'
+        assign fixed = w
+      else
+        assign fixed = w | downcase | capitalize
+      endif
+      if forloop.first
+        assign out = fixed
+      else
+        assign out = out | append: ' ' | append: fixed
+      endif
+    endfor
+    echo out
+  else
+    echo t
+  endif
+-%}

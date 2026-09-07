@@ -17,14 +17,19 @@
     assign is_bundle = true
   endif
   assign eyebrow = 'NatureCell'
-  if product.title contains 'ALFALAB'
+  assign title_up = product.title | upcase
+  assign vendor_up = product.vendor | upcase
+  if title_up contains 'ALFALAB' or vendor_up contains 'ALFALAB'
     assign eyebrow = 'ALFALAB'
   endif
   if is_bundle
     assign eyebrow = eyebrow | append: ' Sampakke'
   endif
   assign title_parts = product.title | split: ' | '
-  assign main_title = title_parts[0]
+  capture main_title
+    render 'nc-title', title: title_parts[0]
+  endcapture
+  assign main_title = main_title | strip
   assign sub_title = title_parts[1]
   assign size_line = product.metafields.ncell.size.value | default: sub_title
   assign rating = product.metafields.reviews.rating.value
