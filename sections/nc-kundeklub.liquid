@@ -79,7 +79,11 @@
         <h1>{{ section.settings.hero_heading }}</h1>
         <p>{{ section.settings.hero_text }}</p>
         <div class="nc-klub__hero-ctas">
-          <a class="nc-btn nc-btn--light" href="#nc-klub-tilmeld">{{ section.settings.hero_cta1 }}</a>
+          {%- if section.settings.signup_mode == 'account' -%}
+            <a class="nc-btn nc-btn--light" href="{{ routes.account_register_url }}">{{ section.settings.hero_cta1 }}</a>
+          {%- else -%}
+            <a class="nc-btn nc-btn--light" href="#nc-klub-tilmeld">{{ section.settings.hero_cta1 }}</a>
+          {%- endif -%}
           <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_login_url }}">{{ section.settings.hero_cta2 }}</a>
         </div>
       </div>
@@ -115,6 +119,25 @@
     </div>
   </div>
 
+  {%- comment -%}
+    App-slot til loyalitetsprogrammet (Yotpo Loyalty & Referrals): pointsaldo, "saadan
+    optjener du", "saadan indloeser du" og VIP-niveauer tilfoejes som app-blokke i
+    temaeditoren og vises her mellem fordelene og "Saadan virker det".
+  {%- endcomment -%}
+  {%- assign has_app_blocks = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == '@app' -%}{%- assign has_app_blocks = true -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if has_app_blocks -%}
+    <div class="nc-section nc-klub__apps">
+      <div class="nc-container">
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}{%- render block -%}{%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
   <div class="nc-klub__how">
     <div class="nc-container">
       <div class="nc-klub__head" style="margin-bottom: 34px;">
@@ -138,6 +161,12 @@
     <div class="nc-container">
       <h2>{{ section.settings.cta_heading }}</h2>
       <p>{{ section.settings.cta_text }}</p>
+      {%- if section.settings.signup_mode == 'account' -%}
+        {%- comment -%} Pointprogrammet kraever en kundekonto: medlemskab = oprettelse af konto. {%- endcomment -%}
+        <p style="margin-top: 18px;">
+          <a class="nc-btn nc-btn--sage" href="{{ routes.account_register_url }}">{{ section.settings.cta_button }}</a>
+        </p>
+      {%- else -%}
       {%- form 'customer' -%}
         <input type="hidden" name="contact[tags]" value="newsletter,kundeklub">
         <div class="nc-klub__form">
@@ -151,6 +180,7 @@
           <p role="alert" style="margin-top: 12px;">{{ 'forms.email_error' | t }}</p>
         {%- endif -%}
       {%- endform -%}
+      {%- endif -%}
       <p class="nc-klub__fine">{{ section.settings.cta_fine }}</p>
     </div>
   </div>
@@ -173,6 +203,7 @@
     { "type": "header", "content": "Sådan virker det" },
     { "type": "text", "id": "steps_heading", "label": "Overskrift", "default": "Sådan virker det" },
     { "type": "header", "content": "Tilmelding" },
+    { "type": "select", "id": "signup_mode", "label": "Tilmelding sker via", "options": [ { "value": "email", "label": "E-mailfelt (nyhedsbrev + tag kundeklub)" }, { "value": "account", "label": "Kundekonto (kræves af pointprogrammet)" } ], "default": "email", "info": "Vælg Kundekonto, når Yotpo Loyalty er aktivt: point optjenes kun på en konto." },
     { "type": "text", "id": "cta_heading", "label": "Overskrift", "default": "Meld dig ind på 30 sekunder" },
     { "type": "textarea", "id": "cta_text", "label": "Tekst", "default": "Tilmeld dig med din e-mail og få 10% på din første ordre med det samme." },
     { "type": "text", "id": "cta_button", "label": "Knaptekst", "default": "Bliv medlem" },
@@ -196,7 +227,8 @@
         { "type": "text", "id": "title", "label": "Titel", "default": "Meld dig ind" },
         { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail, det tager under et minut." }
       ]
-    }
+    },
+    { "type": "@app" }
   ],
   "presets": [
     {

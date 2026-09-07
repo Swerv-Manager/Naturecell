@@ -88,7 +88,8 @@
     "free_shipping_status": "Fri fragt-status",
     "payment_methods": "Betalingsmetoder",
     "benefits_title": "Fordele ved at handle hos NatureCell",
-    "recommendation": "Vores anbefaling til dig"
+    "recommendation": "Vores anbefaling til dig",
+    "discount": "Rabat"
   },
   "favorites": {
     "empty": "Ingen favoritter endnu"
@@ -100,7 +101,10 @@
     "regular_price": "Normalpris",
     "sold_out": "Udsolgt",
     "variant": "Variant",
-    "bundle": "Sampakke"
+    "bundle": "Sampakke",
+    "unit_price": "Enhedspris",
+    "tax_note": "Priser er inkl. moms. Fragt beregnes ved kassen.",
+    "tax_note_short": "inkl. moms"
   },
   "collection": {
     "bestsellers": "Bestsellers",
@@ -156,7 +160,18 @@
     "newsletter_submit": "Tilmeld nyhedsbrev",
     "thanks": "Tak for din tilmelding.",
     "welcome": "Velkommen i klubben. Tjek din indbakke.",
-    "email_error": "Tjek din e-mailadresse og prøv igen."
+    "email_error": "Tjek din e-mailadresse og prøv igen.",
+    "b2b_company": "Virksomhed",
+    "b2b_vat": "CVR-nummer",
+    "b2b_type": "Butikstype",
+    "b2b_type_placeholder": "Fx klinik, helsekost, apotek eller webshop",
+    "b2b_name": "Kontaktperson",
+    "b2b_phone": "Telefon",
+    "b2b_message": "Fortæl kort om jeres butik og forventet volumen",
+    "b2b_submit": "Send ansøgning",
+    "b2b_success": "Tak for din ansøgning. Vi vender tilbage inden for to hverdage.",
+    "b2b_login_hint": "Allerede B2B-kunde?",
+    "b2b_login": "Log ind her"
   },
   "quiz": {
     "start": "Start quizzen →",

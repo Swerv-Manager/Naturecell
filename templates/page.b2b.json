@@ -3,7 +3,7 @@
     "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Erhverv", "heading": "B2B login", "intro": "Sælger du NatureCell i butik eller klinik? Log ind og se dine engrospriser, eller anmod om en B2B-konto." } },
     "cards": {
       "type": "nc-rich-page",
-      "settings": { "cta_text": "Kontakt os om B2B", "cta_url": "/pages/kontakt" },
+      "settings": { "cta_text": "Anmod om B2B-konto", "cta_url": "/pages/b2b#b2b-ansoegning" },
       "blocks": {
         "c1": { "type": "card", "settings": { "heading": "Egne engrospriser", "text": "Dine egne engrospriser og rabatter, styret af os." } },
         "c2": { "type": "card", "settings": { "heading": "Nem genbestilling", "text": "Hurtig genbestilling og samlet fakturering." } },
@@ -11,7 +11,14 @@
         "c4": { "type": "card", "settings": { "heading": "Dokumenteret kvalitet", "text": "Dansk produktion, GMP- & ISO-certificeret." } }
       },
       "block_order": ["c1", "c2", "c3", "c4"]
+    },
+    "apply": {
+      "type": "nc-b2b-form",
+      "settings": {
+        "heading": "Anmod om en B2B-konto",
+        "intro": "Fortæl os kort om din butik eller klinik. Vi vender tilbage inden for to hverdage med priser, betingelser og adgang til B2B-login."
+      }
     }
   },
-  "order": ["hero", "cards"]
+  "order": ["hero", "cards", "apply"]
 }

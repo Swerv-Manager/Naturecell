@@ -1,0 +1,95 @@
+{% comment %}
+  B2B-ansoegning: Shopifys kontaktformular med firmafelter. Indsendelser sendes
+  som mail til butikkens kundeservice-adresse og maerkes "B2B-ansoegning", saa
+  flowet virker uanset hvilken engros-app der vaelges bagefter. Bestaaende
+  B2B-kunder sendes til login. Alle tekster i formularen er oversaettelige
+  (locales/*.json, forms.b2b_*), saa siden ogsaa virker paa naturecell.de.
+{% endcomment %}
+
+{%- style -%}
+  .nc-b2bform { max-width: 660px; }
+  .nc-b2bform > p { margin: 10px 0 22px; font-size: 16px; line-height: 1.7; color: var(--ink-700); }
+  .nc-b2bform__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) {
+    .nc-b2bform__grid { grid-template-columns: 1fr 1fr; }
+    .nc-b2bform__grid .is-wide { grid-column: 1 / -1; }
+  }
+  .nc-b2bform__field { display: flex; flex-direction: column; gap: 6px; }
+  .nc-b2bform__field .nc-textarea { min-height: 120px; resize: vertical; }
+  .nc-b2bform__actions { margin-top: 18px; }
+  .nc-b2bform__status { margin: 0 0 16px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--sage-50); color: var(--sage-700); font-size: 14.5px; }
+  .nc-b2bform__status[role="alert"] { background: var(--paper-2); color: var(--ink-700); }
+  .nc-b2bform__login { margin-top: 20px; font-size: 14px; color: var(--ink-500); }
+{%- endstyle -%}
+
+<section class="nc-section" id="b2b-ansoegning" style="padding-top: 10px;">
+  <div class="nc-container">
+    <div class="nc-b2bform">
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.intro }}</p>
+
+      {%- form 'contact', id: 'nc-b2b-form', class: 'nc-b2bform__form' -%}
+        <input type="hidden" name="contact[tags]" value="b2b-ansoegning">
+        <input type="hidden" name="contact[Emne]" value="B2B-ansøgning">
+
+        {%- if form.posted_successfully? -%}
+          <p class="nc-b2bform__status" role="status">{{ 'forms.b2b_success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="nc-b2bform__status" role="alert">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+
+        <div class="nc-b2bform__grid">
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-company">{{ 'forms.b2b_company' | t }}</label>
+            <input id="nc-b2b-company" class="nc-input" type="text" name="contact[Virksomhed]" autocomplete="organization" required>
+          </div>
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-vat">{{ 'forms.b2b_vat' | t }}</label>
+            <input id="nc-b2b-vat" class="nc-input" type="text" name="contact[CVR]" inputmode="numeric" required>
+          </div>
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-type">{{ 'forms.b2b_type' | t }}</label>
+            <input id="nc-b2b-type" class="nc-input" type="text" name="contact[Butikstype]" placeholder="{{ 'forms.b2b_type_placeholder' | t }}">
+          </div>
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-name">{{ 'forms.b2b_name' | t }}</label>
+            <input id="nc-b2b-name" class="nc-input" type="text" name="contact[Kontaktperson]" autocomplete="name" required>
+          </div>
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-email">{{ 'forms.email' | t }}</label>
+            <input id="nc-b2b-email" class="nc-input" type="email" name="contact[email]" autocomplete="email" required>
+          </div>
+          <div class="nc-b2bform__field">
+            <label class="nc-label" for="nc-b2b-phone">{{ 'forms.b2b_phone' | t }}</label>
+            <input id="nc-b2b-phone" class="nc-input" type="tel" name="contact[Telefon]" autocomplete="tel">
+          </div>
+          <div class="nc-b2bform__field is-wide">
+            <label class="nc-label" for="nc-b2b-message">{{ 'forms.b2b_message' | t }}</label>
+            <textarea id="nc-b2b-message" class="nc-textarea" name="contact[body]" rows="5"></textarea>
+          </div>
+        </div>
+
+        <div class="nc-b2bform__actions">
+          <button class="nc-btn nc-btn--primary" type="submit">{{ 'forms.b2b_submit' | t }}</button>
+        </div>
+      {%- endform -%}
+
+      <p class="nc-b2bform__login">
+        {{ 'forms.b2b_login_hint' | t }}
+        <a href="{{ routes.account_login_url }}">{{ 'forms.b2b_login' | t }}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "B2B-ansøgning",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Anmod om en B2B-konto" },
+    { "type": "textarea", "id": "intro", "label": "Tekst", "default": "Fortæl os kort om din butik eller klinik. Vi vender tilbage inden for to hverdage med priser, betingelser og adgang til B2B-login." }
+  ],
+  "presets": [ { "name": "B2B-ansøgning" } ]
+}
+{% endschema %}

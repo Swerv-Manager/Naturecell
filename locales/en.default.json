@@ -81,7 +81,8 @@
     "free_shipping_status": "Free shipping status",
     "payment_methods": "Payment methods",
     "benefits_title": "Why shop with NatureCell",
-    "recommendation": "Our recommendation for you"
+    "recommendation": "Our recommendation for you",
+    "discount": "Discount"
   },
   "favorites": {
     "empty": "No favourites yet"
@@ -93,7 +94,10 @@
     "regular_price": "Regular price",
     "sold_out": "Sold out",
     "variant": "Variant",
-    "bundle": "Bundle"
+    "bundle": "Bundle",
+    "unit_price": "Unit price",
+    "tax_note": "Prices include VAT. Shipping is calculated at checkout.",
+    "tax_note_short": "incl. VAT, excl. shipping"
   },
   "collection": {
     "bestsellers": "Bestsellers",
@@ -149,7 +153,18 @@
     "newsletter_submit": "Subscribe to newsletter",
     "thanks": "Thank you for subscribing.",
     "welcome": "Welcome to the club. Check your inbox.",
-    "email_error": "Check your email address and try again."
+    "email_error": "Check your email address and try again.",
+    "b2b_company": "Company",
+    "b2b_vat": "VAT or company registration number",
+    "b2b_type": "Type of business",
+    "b2b_type_placeholder": "E.g. clinic, health store, pharmacy or online shop",
+    "b2b_name": "Contact person",
+    "b2b_phone": "Phone",
+    "b2b_message": "Tell us briefly about your business and expected volume",
+    "b2b_submit": "Send application",
+    "b2b_success": "Thank you for your application. We will get back to you within two working days.",
+    "b2b_login_hint": "Already a B2B customer?",
+    "b2b_login": "Log in here"
   },
   "quiz": {
     "start": "Start the quiz →",

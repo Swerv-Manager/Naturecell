@@ -70,6 +70,9 @@
   .nc-pdp__price-now { font-size: var(--text-2xl); font-weight: 500; color: var(--ink-900); line-height: 1; }
   .nc-pdp__price.is-sale .nc-pdp__price-now { color: var(--sale); }
   .nc-pdp__price-was { font-size: var(--text-md); color: var(--ink-400); text-decoration: line-through; line-height: 1; }
+  .nc-pdp__pricebox { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+  .nc-pdp__unit { font-family: var(--font-body); font-size: 13px; line-height: 1.3; color: var(--ink-500); }
+  .nc-pdp__taxnote { font-family: var(--font-body); font-size: 12.5px; line-height: 1.3; color: var(--ink-400); }
 
   .nc-pdp__desc { margin: 0; max-width: 500px; font-size: 16px; line-height: 1.7; color: var(--ink-700); }
   .nc-pdp__desc p { margin: 0; }
@@ -171,12 +174,25 @@
           </span>
         {%- endif -%}
 
-        <span class="nc-pdp__price{% if on_sale %} is-sale{% endif %}">
-          <span class="nc-pdp__price-now">{{ v.price | money }}</span>
-          {%- if on_sale -%}
-            <span class="nc-pdp__price-was"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</span>
+        <div class="nc-pdp__pricebox">
+          <span class="nc-pdp__price{% if on_sale %} is-sale{% endif %}">
+            <span class="nc-pdp__price-now">{{ v.price | money }}</span>
+            {%- if on_sale -%}
+              <span class="nc-pdp__price-was"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</span>
+            {%- endif -%}
+          </span>
+          {%- comment -%}
+            Enhedspris (Grundpreis) er lovpligtig i Tyskland (PAngV) for varer solgt efter
+            maengde. Vises kun naar varianten har "pris pr. enhed" udfyldt i Shopify.
+            Momsnoten "inkl. MwSt., zzgl. Versand" er ligeledes et tysk krav taet paa prisen.
+          {%- endcomment -%}
+          {%- if v.unit_price_measurement -%}
+            <span class="nc-pdp__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
           {%- endif -%}
-        </span>
+          {%- if section.settings.show_tax_note -%}
+            <span class="nc-pdp__taxnote">{{ 'product.tax_note' | t }}</span>
+          {%- endif -%}
+        </div>
 
         {%- comment -%} Beskrivelsen vises kun én gang: i "Beskrivelse"-accordionen under CTA'en (kundens ønske). {%- endcomment -%}
 
@@ -194,13 +210,26 @@
         {%- endif -%}
 
         {%- comment -%}
-          "Køb flere, spar mere": app-blokke (Katching bundles) lejer
-          felterne her. Temaet viser kun labelen og slottet.
+          App-slot: app-blokke (Katching maengderabat, Yotpo Loyalty-point m.fl.) lejer
+          felterne her. Temaet viser kun labelen og slottet og regner aldrig selv rabatter.
+          Uden en "Label"-blok vises labelen "Køb flere, spar mere" foerst og alle app-blokke
+          under den. Tilfoejes en Label-blok, styrer raekkefoelgen i temaeditoren placeringen,
+          fx: [Yotpo-point] [Label] [Katching].
         {%- endcomment -%}
+        {%- assign has_label_block = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'label' -%}{%- assign has_label_block = true -%}{%- endif -%}
+        {%- endfor -%}
         <div class="nc-pdp__tiers">
-          <span class="nc-pdp__tierlabel">{{ section.settings.tiers_label }}</span>
+          {%- unless has_label_block -%}
+            <span class="nc-pdp__tierlabel">{{ section.settings.tiers_label }}</span>
+          {%- endunless -%}
           {%- for block in section.blocks -%}
-            {%- render block -%}
+            {%- if block.type == 'label' -%}
+              <span class="nc-pdp__tierlabel" {{ block.shopify_attributes }}>{{ block.settings.text | default: section.settings.tiers_label }}</span>
+            {%- else -%}
+              {%- render block -%}
+            {%- endif -%}
           {%- endfor -%}
         </div>
 
@@ -288,11 +317,20 @@
   "name": "Produkt",
   "tag": "section",
   "blocks": [
-    { "type": "@app" }
+    { "type": "@app" },
+    {
+      "type": "label",
+      "name": "Label til app-slot",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Tekst", "default": "Køb flere, spar mere", "info": "Placér labelen mellem app-blokkene for at styre, hvad der står over hvad, fx Yotpo-point først, så labelen, så Katching." }
+      ]
+    }
   ],
   "settings": [
     { "type": "text", "id": "back_label", "label": "Tilbage-knap: tekst", "default": "Tilbage til shop" },
     { "type": "text", "id": "back_url", "label": "Tilbage-knap: link", "info": "Sti eller URL. Shopify tillader ikke standardværdi på url-typen.", "default": "/collections/cbd-hudpleje" },
+    { "type": "checkbox", "id": "show_tax_note", "label": "Vis momsnote under prisen", "info": "Teksten oversættes pr. sprog (dansk: inkl. moms, tysk: inkl. MwSt., zzgl. Versand). Lovpligtig tæt på prisen i Tyskland.", "default": true },
     { "type": "checkbox", "id": "show_badges", "label": "Vis claim-badges", "default": true },
     {
       "type": "textarea",

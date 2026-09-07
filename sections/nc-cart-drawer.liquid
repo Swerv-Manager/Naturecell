@@ -38,6 +38,8 @@
   .nc-drawer__qty button { width: 30px; height: 30px; border: 0; background: none; color: var(--ink-700); font-size: 16px; cursor: pointer; }
   .nc-drawer__qty span { min-width: 22px; text-align: center; font-size: 14px; font-weight: 600; }
   .nc-drawer__line-price { font-weight: 700; font-size: 14.5px; color: var(--ink-900); }
+  .nc-drawer__line-was { font-weight: 400; color: var(--ink-400); margin-right: 4px; }
+  .nc-drawer__line-discount { color: var(--accent-berry); }
   .nc-drawer__remove { background: none; border: 0; padding: 0; font-size: 12px; color: var(--ink-500); text-decoration: underline; cursor: pointer; }
 
   .nc-drawer__empty { text-align: center; padding: 48px 22px; }
@@ -90,8 +92,12 @@
               {%- unless item.product.has_only_default_variant -%}
                 <div class="nc-drawer__line-meta">{{ item.variant.title }}</div>
               {%- endunless -%}
+              {%- if item.unit_price_measurement -%}
+                <div class="nc-drawer__line-meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</div>
+              {%- endif -%}
+              {%- comment -%} Rabatter (fx Katchings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
               {%- for d in item.line_level_discount_allocations -%}
-                <div class="nc-drawer__line-meta">{{ d.discount_application.title }}</div>
+                <div class="nc-drawer__line-meta nc-drawer__line-discount">{{ d.discount_application.title }} (−{{ d.amount | money }})</div>
               {%- endfor -%}
               <div class="nc-drawer__line-row">
                 <span class="nc-drawer__qty">
@@ -99,7 +105,10 @@
                   <span>{{ item.quantity }}</span>
                   <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'general.more' | t }}">+</button>
                 </span>
-                <span class="nc-drawer__line-price">{{ item.final_line_price | money }}</span>
+                <span class="nc-drawer__line-price">
+                  {%- if item.line_level_total_discount > 0 -%}<s class="nc-drawer__line-was">{{ item.original_line_price | money }}</s> {% endif -%}
+                  {{ item.final_line_price | money }}
+                </span>
               </div>
               <button class="nc-drawer__remove" data-nc-line="{{ item.key }}" data-nc-line-qty="0">{{ 'cart.remove' | t }}</button>
             </div>

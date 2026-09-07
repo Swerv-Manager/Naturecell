@@ -137,5 +137,16 @@
       {%- endif -%}
       {%- unless product.available -%}<span class="nc-product-card__stock">{{ 'product.sold_out' | t }}</span>{%- endunless -%}
     </span>
+    {%- comment -%}
+      Enhedspris vises naar varianten har "pris pr. enhed" (tysk Grundpreis-krav).
+      Den korte momsnote vises kun paa andre sprog end dansk: det godkendte danske
+      design har ingen note paa kortene, mens tysk lov kraever den taet paa listepriser.
+    {%- endcomment -%}
+    {%- if v.unit_price_measurement -%}
+      <span class="nc-product-card__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
+    {%- endif -%}
+    {%- if request.locale.iso_code != 'da' -%}
+      <span class="nc-product-card__taxnote">{{ 'product.tax_note_short' | t }}</span>
+    {%- endif -%}
   </div>
 </div>

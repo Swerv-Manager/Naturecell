@@ -81,7 +81,8 @@
     "free_shipping_status": "Versandkosten-Status",
     "payment_methods": "Zahlungsarten",
     "benefits_title": "Ihre Vorteile bei NatureCell",
-    "recommendation": "Unsere Empfehlung für Sie"
+    "recommendation": "Unsere Empfehlung für Sie",
+    "discount": "Rabatt"
   },
   "favorites": {
     "empty": "Noch keine Favoriten"
@@ -93,7 +94,10 @@
     "regular_price": "Normalpreis",
     "sold_out": "Ausverkauft",
     "variant": "Variante",
-    "bundle": "Set"
+    "bundle": "Set",
+    "unit_price": "Grundpreis",
+    "tax_note": "Alle Preise inkl. MwSt., zzgl. Versandkosten.",
+    "tax_note_short": "inkl. MwSt., zzgl. Versand"
   },
   "collection": {
     "bestsellers": "Bestseller",
@@ -149,7 +153,18 @@
     "newsletter_submit": "Newsletter abonnieren",
     "thanks": "Danke für Ihre Anmeldung.",
     "welcome": "Willkommen im Club. Bitte prüfen Sie Ihr Postfach.",
-    "email_error": "Bitte E-Mail-Adresse prüfen und erneut versuchen."
+    "email_error": "Bitte E-Mail-Adresse prüfen und erneut versuchen.",
+    "b2b_company": "Unternehmen",
+    "b2b_vat": "USt-IdNr. oder Handelsregisternummer",
+    "b2b_type": "Art des Geschäfts",
+    "b2b_type_placeholder": "Z. B. Kosmetikstudio, Apotheke, Reformhaus oder Onlineshop",
+    "b2b_name": "Ansprechperson",
+    "b2b_phone": "Telefon",
+    "b2b_message": "Erzählen Sie kurz von Ihrem Geschäft und dem erwarteten Volumen",
+    "b2b_submit": "Anfrage senden",
+    "b2b_success": "Vielen Dank für Ihre Anfrage. Wir melden uns innerhalb von zwei Werktagen.",
+    "b2b_login_hint": "Bereits B2B-Kunde?",
+    "b2b_login": "Hier anmelden"
   },
   "quiz": {
     "start": "Quiz starten →",

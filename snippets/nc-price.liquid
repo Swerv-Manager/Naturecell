@@ -25,4 +25,7 @@
       {{ target.compare_at_price | money }}
     </s>
   {%- endif -%}
+  {%- if target.unit_price_measurement -%}
+    <span class="nc-price__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ target.unit_price | money }} / {% if target.unit_price_measurement.reference_value != 1 %}{{ target.unit_price_measurement.reference_value }} {% endif %}{{ target.unit_price_measurement.reference_unit }}</span>
+  {%- endif -%}
 </span>

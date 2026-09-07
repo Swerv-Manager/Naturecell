@@ -43,6 +43,11 @@
     font-size: 12px;
     color: rgba(44, 70, 61, 0.65);
   }
+
+  .nc-cart__meta { font-size: 13px; color: rgba(44, 70, 61, 0.65); }
+  .nc-cart__discount { color: var(--accent-berry); }
+  .nc-cart__was { color: var(--ink-400); font-weight: 400; margin-right: 4px; }
+  .nc-cart__savings { font-size: 14px; color: var(--accent-berry); }
 {%- endstyle -%}
 
 <div class="nc-section">
@@ -72,6 +77,13 @@
                       {%- unless item.product.has_only_default_variant -%}
                         <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
                       {%- endunless -%}
+                      {%- if item.unit_price_measurement -%}
+                        <div class="nc-cart__meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</div>
+                      {%- endif -%}
+                      {%- comment -%} Rabatter (fx Katchings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
+                      {%- for d in item.line_level_discount_allocations -%}
+                        <div class="nc-cart__meta nc-cart__discount">{{ d.discount_application.title }} (−{{ d.amount | money }})</div>
+                      {%- endfor -%}
                       <div>
                         <a href="{{ item.url_to_remove }}" style="font-size: 13px;">{{ 'cart.remove' | t }}</a>
                       </div>
@@ -89,14 +101,20 @@
                     value="{{ item.quantity }}"
                   >
                 </td>
-                <td>{{ item.final_line_price | money }}</td>
+                <td>
+                  {%- if item.line_level_total_discount > 0 -%}<s class="nc-cart__was">{{ item.original_line_price | money }}</s> {% endif -%}
+                  {{ item.final_line_price | money }}
+                </td>
               </tr>
             {%- endfor -%}
           </tbody>
         </table>
 
         <div class="nc-cart__footer">
-          <div class="nc-cart__subtotal">Subtotal: {{ cart.total_price | money }}</div>
+          {%- if cart.total_discount > 0 -%}
+            <div class="nc-cart__savings">{{ 'cart.you_save' | t }}: {{ cart.total_discount | money }}</div>
+          {%- endif -%}
+          <div class="nc-cart__subtotal">{{ 'cart.subtotal' | t }}: {{ cart.total_price | money }}</div>
           <p class="nc-cart__note">{{ section.settings.shipping_note }}</p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="nc-btn nc-btn--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
