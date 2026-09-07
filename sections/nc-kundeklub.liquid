@@ -126,13 +126,18 @@
   {%- endcomment -%}
   {%- assign has_app_blocks = false -%}
   {%- for block in section.blocks -%}
-    {%- if block.type == '@app' -%}{%- assign has_app_blocks = true -%}{%- endif -%}
+    {%- if block.type == '@app' or block.type == 'yotpo_widget' -%}{%- assign has_app_blocks = true -%}{%- endif -%}
   {%- endfor -%}
   {%- if has_app_blocks -%}
     <div class="nc-section nc-klub__apps">
       <div class="nc-container">
         {%- for block in section.blocks -%}
-          {%- if block.type == '@app' -%}{%- render block -%}{%- endif -%}
+          {%- if block.type == '@app' -%}
+            {%- render block -%}
+          {%- elsif block.type == 'yotpo_widget' and block.settings.instance_id != blank -%}
+            {%- comment -%} Yotpo Loyalty-widget (samme instans-id som paa den nuvaerende kundeklubside). Kraever Yotpos app-embed. {%- endcomment -%}
+            <div class="yotpo-widget-instance" data-yotpo-instance-id="{{ block.settings.instance_id | strip }}" {{ block.shopify_attributes }}></div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
     </div>
@@ -228,7 +233,14 @@
         { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail, det tager under et minut." }
       ]
     },
-    { "type": "@app" }
+    { "type": "@app" },
+    {
+      "type": "yotpo_widget",
+      "name": "Yotpo Loyalty-widget",
+      "settings": [
+        { "type": "text", "id": "instance_id", "label": "Yotpo instans-id", "info": "Findes i Yotpo Loyalty under Display on site → Widgets. Den nuværende kundeklubside bruger 1048950." }
+      ]
+    }
   ],
   "presets": [
     {

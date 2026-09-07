@@ -58,10 +58,27 @@
             "title": "Indløs & nyd",
             "text": "Brug dine point og fordele på din næste hudplejerutine."
           }
+        },
+        "yotpo": {
+          "type": "yotpo_widget",
+          "settings": {
+            "instance_id": "1048950"
+          }
         }
       },
-      "block_order": ["perk-point", "perk-rabat", "perk-gave", "perk-adgang", "step-1", "step-2", "step-3"]
+      "block_order": [
+        "perk-point",
+        "perk-rabat",
+        "perk-gave",
+        "perk-adgang",
+        "step-1",
+        "step-2",
+        "step-3",
+        "yotpo"
+      ]
     }
   },
-  "order": ["klub"]
+  "order": [
+    "klub"
+  ]
 }

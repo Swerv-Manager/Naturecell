@@ -227,6 +227,10 @@
           {%- for block in section.blocks -%}
             {%- if block.type == 'label' -%}
               <span class="nc-pdp__tierlabel" {{ block.shopify_attributes }}>{{ block.settings.text | default: section.settings.tiers_label }}</span>
+            {%- elsif block.type == 'yotpo_widget' -%}
+              {%- if block.settings.instance_id != blank -%}
+                <div class="yotpo-widget-instance" data-yotpo-instance-id="{{ block.settings.instance_id | strip }}" data-yotpo-product-id="{{ product.id }}" {{ block.shopify_attributes }}></div>
+              {%- endif -%}
             {%- else -%}
               {%- render block -%}
             {%- endif -%}
@@ -323,7 +327,15 @@
       "name": "Label til app-slot",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "text", "label": "Tekst", "default": "Køb flere, spar mere", "info": "Placér labelen mellem app-blokkene for at styre, hvad der står over hvad, fx Yotpo-point først, så labelen, så Katching." }
+        { "type": "text", "id": "text", "label": "Tekst", "default": "Køb flere, spar mere", "info": "Placér labelen mellem app-blokkene for at styre, hvad der står over hvad, fx Yotpo-point først, så labelen, så Kaching." }
+      ]
+    },
+    {
+      "type": "yotpo_widget",
+      "name": "Yotpo Loyalty-widget",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "instance_id", "label": "Yotpo instans-id", "info": "Fx produktsidens pointvisning (Points on product page). Findes i Yotpo Loyalty under Display on site → Widgets." }
       ]
     }
   ],

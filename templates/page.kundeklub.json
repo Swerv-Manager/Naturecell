@@ -1,7 +1,31 @@
 {
   "sections": {
-    "hero": { "type": "nc-page-hero", "settings": { "eyebrow": "Kundeklub", "heading": "Fordele der følger med", "intro": "Gratis medlemskab med point på hvert køb, velkomstrabat og tidlig adgang til nyheder.", "center": true } },
-    "klub": { "type": "nc-kundeklub" }
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "eyebrow": "Kundeklub",
+        "heading": "Fordele der følger med",
+        "intro": "Gratis medlemskab med point på hvert køb, velkomstrabat og tidlig adgang til nyheder.",
+        "center": true
+      }
+    },
+    "klub": {
+      "type": "nc-kundeklub",
+      "blocks": {
+        "yotpo": {
+          "type": "yotpo_widget",
+          "settings": {
+            "instance_id": "1048950"
+          }
+        }
+      },
+      "block_order": [
+        "yotpo"
+      ]
+    }
   },
-  "order": ["hero", "klub"]
+  "order": [
+    "hero",
+    "klub"
+  ]
 }
