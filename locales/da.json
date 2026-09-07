@@ -89,7 +89,16 @@
     "payment_methods": "Betalingsmetoder",
     "benefits_title": "Fordele ved at handle hos NatureCell",
     "recommendation": "Vores anbefaling til dig",
-    "discount": "Rabat"
+    "discount": "Rabat",
+    "title": "Din kurv",
+    "discount_code": "Rabatkode",
+    "apply": "Indløs",
+    "discount_applied": "Rabatkoden er gemt og anvendes ved kassen.",
+    "you_save_total": "Du sparer i alt",
+    "vat_note": "Moms inkluderet · fragt beregnes ved kassen",
+    "shop": "Shop hudpleje",
+    "free_shipping_reached": "Du har fri fragt 🎉",
+    "free_shipping_missing": "Køb for {{ amount }} mere og få fri fragt"
   },
   "favorites": {
     "empty": "Ingen favoritter endnu"

@@ -1,140 +1,167 @@
 {% comment %}
-  Kurv-skuffe, oversat fra designet: fri fragt-bar mod 399 kr.,
-  linjer med antalsvaelger, subtotal, besparelseslinje og checkout.
-  Genrenderes via Section Rendering API (nc-theme.js).
+  Kurv-skuffe 1:1 fra designet (design-src/extracted/shell.html 3009-3067):
+  430px panel paa papir, "Din kurv"-hoved, fri fragt-raekke med lastbil-ikon og
+  bar mod 399 kr., linjer med 74px billedboks, antalspille, linjetotal og X,
+  rabatkodefelt, og en bund med besparelsesboks, subtotal, sage-knap og momsnote.
+  Genrenderes via Section Rendering API (nc-theme.js). Rabatkoden gemmes via
+  Shopifys /discount/KODE-link og anvendes ved kassen.
 {% endcomment %}
 
 {%- style -%}
   .nc-drawer { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; }
-  .nc-drawer__overlay { position: absolute; inset: 0; background: rgba(35, 51, 48, 0.4); opacity: 0; transition: opacity var(--dur-base) var(--ease-soft); }
-  .nc-drawer__panel {
-    position: absolute; top: 0; right: 0; bottom: 0;
-    width: min(440px, 94vw);
-    background: var(--paper);
-    transform: translateX(102%);
-    transition: transform var(--dur-base) var(--ease-soft);
-    display: flex; flex-direction: column;
-  }
+  .nc-drawer__overlay { position: absolute; inset: 0; background: rgba(32, 38, 35, 0.42); opacity: 0; transition: opacity var(--dur-base) var(--ease-soft); }
+  .nc-drawer__panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(430px, 92vw); background: var(--paper); box-shadow: var(--shadow-lg); transform: translateX(102%); transition: transform var(--dur-base) var(--ease-out); display: flex; flex-direction: column; }
   .nc-drawer.is-open { pointer-events: auto; }
   .nc-drawer.is-open .nc-drawer__overlay { opacity: 1; }
   .nc-drawer.is-open .nc-drawer__panel { transform: translateX(0); }
 
-  .nc-drawer__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 22px; border-bottom: 1px solid var(--border-soft); }
-  .nc-drawer__head h2 { margin: 0; font-size: var(--text-xl); }
+  .nc-drawer__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-drawer__close { border: 0; background: none; cursor: pointer; color: var(--ink-500); padding: 4px; display: flex; }
 
-  .nc-drawer__ship { padding: 14px 22px 4px; }
-  .nc-drawer__ship p { margin: 0 0 8px; font-size: 13.5px; color: var(--ink-700); }
-  .nc-drawer__bar { height: 6px; border-radius: var(--radius-pill); background: var(--sage-100); overflow: hidden; }
-  .nc-drawer__fill { height: 100%; border-radius: var(--radius-pill); background: var(--sage-500); transition: width var(--dur-slow) var(--ease-soft); }
+  .nc-drawer__ship { padding: 16px 24px; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__ship p { margin: 0 0 9px; display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-700); }
+  .nc-drawer__ship svg { flex: none; color: var(--sage-600); }
+  .nc-drawer__bar { height: 6px; border-radius: 3px; background: var(--sage-100); overflow: hidden; }
+  .nc-drawer__fill { height: 100%; background: var(--sage-500); transition: width var(--dur-base) var(--ease-out); }
 
-  .nc-drawer__lines { flex: 1; overflow-y: auto; padding: 10px 22px; display: flex; flex-direction: column; }
-  .nc-drawer__line { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); }
-  .nc-drawer__line img { width: 76px; height: 76px; object-fit: contain; border-radius: var(--radius-md); background: var(--nc-product-tint); padding: 6px; flex: none; }
-  .nc-drawer__line-info { flex: 1; min-width: 0; }
-  .nc-drawer__line-title { display: block; font-family: var(--font-display); font-size: 16px; color: var(--sage-700); text-decoration: none; }
+  .nc-drawer__lines { flex: 1; overflow-y: auto; padding: 6px 24px; }
+  .nc-drawer__line { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__line-media { width: 74px; height: 74px; flex: none; background: var(--cloud); border-radius: var(--radius-md); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; padding: 6px; }
+  .nc-drawer__line-media img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+  .nc-drawer__line-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+  .nc-drawer__line-title { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 1.3; color: var(--sage-700); text-decoration: none; }
   .nc-drawer__line-meta { font-size: 12.5px; color: var(--ink-500); }
-  .nc-drawer__line-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
-  .nc-drawer__qty { display: inline-flex; align-items: center; border: 1px solid var(--border-default); border-radius: var(--radius-pill); }
-  .nc-drawer__qty button { width: 30px; height: 30px; border: 0; background: none; color: var(--ink-700); font-size: 16px; cursor: pointer; }
-  .nc-drawer__qty span { min-width: 22px; text-align: center; font-size: 14px; font-weight: 600; }
-  .nc-drawer__line-price { font-weight: 700; font-size: 14.5px; color: var(--ink-900); }
+  .nc-drawer__line-discount { font-size: 11.5px; font-weight: 600; color: var(--sage-700); }
+  .nc-drawer__line-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 3px; }
+  .nc-drawer__qty { display: inline-flex; align-items: center; border: 1px solid var(--border-default); border-radius: 999px; overflow: hidden; }
+  .nc-drawer__qty button { border: 0; background: none; cursor: pointer; padding: 5px 10px; color: var(--ink-700); font-size: 15px; line-height: 1.2; font-family: var(--font-body); }
+  .nc-drawer__qty span { font-size: 13px; min-width: 20px; text-align: center; }
+  .nc-drawer__line-price { font-weight: 600; font-size: 14px; color: var(--sage-700); white-space: nowrap; }
   .nc-drawer__line-was { font-weight: 400; color: var(--ink-400); margin-right: 4px; }
-  .nc-drawer__line-discount { color: var(--accent-berry); }
-  .nc-drawer__remove { background: none; border: 0; padding: 0; font-size: 12px; color: var(--ink-500); text-decoration: underline; cursor: pointer; }
+  .nc-drawer__remove { border: 0; background: none; cursor: pointer; color: var(--ink-300); align-self: flex-start; padding: 2px; display: flex; }
+  .nc-drawer__remove:hover { color: var(--ink-700); }
 
-  .nc-drawer__empty { text-align: center; padding: 48px 22px; }
+  .nc-drawer__code { display: flex; gap: 8px; margin: 16px 0 6px; }
+  .nc-drawer__code input { flex: 1; min-width: 0; border: 1px solid var(--border-default); background: var(--cloud); border-radius: 999px; padding: 11px 16px; font-family: var(--font-body); font-size: 13.5px; outline: none; color: var(--sage-700); }
+  .nc-drawer__code input:focus-visible { border-color: var(--sage-500); }
+  .nc-drawer__code button { border: 1.5px solid var(--sage-500); background: transparent; cursor: pointer; color: var(--sage-700); border-radius: 999px; padding: 11px 18px; font-family: var(--font-body); font-weight: 600; font-size: 13.5px; }
+  .nc-drawer__code-note { margin: 0 0 8px; font-size: 12px; color: var(--ink-500); }
+  .nc-drawer__code-note[hidden] { display: none; }
 
-  .nc-drawer__foot { border-top: 1px solid var(--border-default); padding: 16px 22px 22px; background: var(--paper-2); }
-  .nc-drawer__totals { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-  .nc-drawer__totals strong { font-size: var(--text-lg); color: var(--ink-900); }
-  .nc-drawer__savings { display: flex; justify-content: space-between; font-size: 13px; color: var(--accent-berry); margin-bottom: 10px; }
-  .nc-drawer__note { font-size: 12px; color: var(--ink-500); margin: 0 0 12px; }
-  .nc-drawer__foot .nc-btn { width: 100%; }
+  .nc-drawer__empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--ink-400); padding: 40px; text-align: center; }
+  .nc-drawer__empty p { margin: 0; font-size: 15px; color: var(--ink-400); }
+  .nc-drawer__empty a { display: inline-block; border: 1.5px solid var(--sage-500); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: 999px; text-decoration: none; }
+
+  .nc-drawer__foot { padding: clamp(11px, 5vw, 18px) clamp(16px, 4vw, 24px) clamp(14px, 6vw, 24px); border-top: 1px solid var(--border-soft); background: var(--paper-2); display: flex; flex-direction: column; gap: 9px; }
+  .nc-drawer__savings { display: flex; justify-content: space-between; align-items: center; background: var(--sage-100); border-radius: var(--radius-md); padding: 11px 14px; }
+  .nc-drawer__savings span:first-child { font-size: 13.5px; font-weight: 600; color: var(--sage-700); }
+  .nc-drawer__savings span:last-child { font-size: 15px; font-weight: 700; color: var(--sage-700); }
+  .nc-drawer__totals { display: flex; justify-content: space-between; align-items: baseline; }
+  .nc-drawer__totals span { font-size: 15px; color: var(--ink-700); }
+  .nc-drawer__totals strong { font-family: var(--font-body); font-weight: 700; font-size: 22px; color: var(--sage-700); }
+  .nc-drawer__checkout { display: block; text-align: center; border: 0; cursor: pointer; background: var(--sage-500); color: #fff; border-radius: 999px; padding: 15px; font-family: var(--font-body); font-weight: 600; font-size: 15px; margin-top: 4px; text-decoration: none; }
+  .nc-drawer__checkout:hover, .nc-drawer__checkout:focus-visible { background: var(--sage-600); color: #fff; }
+  .nc-drawer__note { margin: 6px 0 0; text-align: center; font-size: 12px; color: var(--ink-400); }
 {%- endstyle -%}
 
 {%- assign free_limit = 39900 -%}
 {%- assign pct = cart.total_price | times: 100 | divided_by: free_limit -%}
 {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 
-<div class="nc-drawer" data-nc-drawer inert aria-label="{{ 'nav.cart' | t }}" role="dialog" aria-modal="true">
+<div class="nc-drawer" data-nc-drawer inert aria-label="{{ 'cart.title' | t }}" role="dialog" aria-modal="true">
   <div class="nc-drawer__overlay" data-nc-drawer-overlay></div>
   <div class="nc-drawer__panel">
     <div class="nc-drawer__head">
-      <h2>Kurv {% if cart.item_count > 0 %}({{ cart.item_count }}){% endif %}</h2>
-      <button class="nc-iconbtn" data-nc-cart-close aria-label="{{ 'general.close_cart' | t }}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      <h2>{{ 'cart.title' | t }}</h2>
+      <button class="nc-drawer__close" type="button" data-nc-cart-close aria-label="{{ 'general.close_cart' | t }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <div class="nc-drawer__ship">
-      <p>
-        {%- if cart.total_price >= free_limit -%}
-          Du har fri fragt 🎉
-        {%- else -%}
-          {%- assign missing = free_limit | minus: cart.total_price -%}
-          Køb for {{ missing | money }} mere og få fri fragt
-        {%- endif -%}
-      </p>
-      <div class="nc-drawer__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="{{ 'cart.free_shipping_status' | t }}">
-        <div class="nc-drawer__fill" style="width: {{ pct }}%;"></div>
-      </div>
-    </div>
-
     {%- if cart.item_count > 0 -%}
+      <div class="nc-drawer__ship">
+        <p>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18H3V6h12v4"/><path d="M14 9h4l3 3v6h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>
+          <span>
+            {%- if cart.total_price >= free_limit -%}
+              {{ 'cart.free_shipping_reached' | t }}
+            {%- else -%}
+              {%- assign missing = free_limit | minus: cart.total_price | money -%}
+              {{ 'cart.free_shipping_missing' | t: amount: missing }}
+            {%- endif -%}
+          </span>
+        </p>
+        <div class="nc-drawer__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="{{ 'cart.free_shipping_status' | t }}">
+          <div class="nc-drawer__fill" style="width: {{ pct }}%;"></div>
+        </div>
+      </div>
+
       <div class="nc-drawer__lines">
         {%- for item in cart.items -%}
           <div class="nc-drawer__line">
-            {%- if item.image -%}
-              {{ item.image | image_url: width: 152 | image_tag: alt: item.title, loading: 'lazy' }}
-            {%- endif -%}
+            <a class="nc-drawer__line-media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 148 | image_tag: alt: '', loading: 'lazy' }}
+              {%- endif -%}
+            </a>
             <div class="nc-drawer__line-info">
               <a class="nc-drawer__line-title" href="{{ item.url }}">{{ item.product.title }}</a>
               {%- unless item.product.has_only_default_variant -%}
-                <div class="nc-drawer__line-meta">{{ item.variant.title }}</div>
+                <span class="nc-drawer__line-meta">{{ item.variant.title }}</span>
               {%- endunless -%}
               {%- if item.unit_price_measurement -%}
-                <div class="nc-drawer__line-meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</div>
+                <span class="nc-drawer__line-meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</span>
               {%- endif -%}
-              {%- comment -%} Rabatter (fx Katchings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
+              {%- comment -%} Rabatter (fx Kachings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
               {%- for d in item.line_level_discount_allocations -%}
-                <div class="nc-drawer__line-meta nc-drawer__line-discount">{{ d.discount_application.title }} (−{{ d.amount | money }})</div>
+                <span class="nc-drawer__line-discount">{{ d.discount_application.title }} −{{ d.amount | money }}</span>
               {%- endfor -%}
               <div class="nc-drawer__line-row">
                 <span class="nc-drawer__qty">
-                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | minus: 1 }}" aria-label="{{ 'general.fewer' | t }}">−</button>
+                  <button type="button" data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | minus: 1 }}" aria-label="{{ 'general.fewer' | t }}">−</button>
                   <span>{{ item.quantity }}</span>
-                  <button data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'general.more' | t }}">+</button>
+                  <button type="button" data-nc-line="{{ item.key }}" data-nc-line-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'general.more' | t }}">+</button>
                 </span>
                 <span class="nc-drawer__line-price">
                   {%- if item.line_level_total_discount > 0 -%}<s class="nc-drawer__line-was">{{ item.original_line_price | money }}</s> {% endif -%}
                   {{ item.final_line_price | money }}
                 </span>
               </div>
-              <button class="nc-drawer__remove" data-nc-line="{{ item.key }}" data-nc-line-qty="0">{{ 'cart.remove' | t }}</button>
             </div>
+            <button class="nc-drawer__remove" type="button" data-nc-line="{{ item.key }}" data-nc-line-qty="0" aria-label="{{ 'cart.remove' | t }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
           </div>
         {%- endfor -%}
+
+        <form class="nc-drawer__code" data-nc-discount action="/discount" method="get">
+          <label class="nc-visually-hidden" for="nc-drawer-code">{{ 'cart.discount_code' | t }}</label>
+          <input id="nc-drawer-code" type="text" name="code" placeholder="{{ 'cart.discount_code' | t }}" autocomplete="off" autocapitalize="characters">
+          <button type="submit">{{ 'cart.apply' | t }}</button>
+        </form>
+        <p class="nc-drawer__code-note" data-nc-discount-note hidden>{{ 'cart.discount_applied' | t }}</p>
       </div>
 
       <div class="nc-drawer__foot">
+        {%- if cart.total_discount > 0 -%}
+          <div class="nc-drawer__savings">
+            <span>{{ 'cart.you_save_total' | t }}</span>
+            <span>−{{ cart.total_discount | money }}</span>
+          </div>
+        {%- endif -%}
         <div class="nc-drawer__totals">
           <span>{{ 'cart.subtotal' | t }}</span>
           <strong>{{ cart.total_price | money }}</strong>
         </div>
-        {%- if cart.total_discount > 0 -%}
-          <div class="nc-drawer__savings">
-            <span>{{ 'cart.you_save' | t }}</span>
-            <span>{{ cart.total_discount | money }}</span>
-          </div>
-        {%- endif -%}
-        <p class="nc-drawer__note">Fragt beregnes ved kassen. Levering typisk 1-3 hverdage.</p>
-        <a class="nc-btn nc-btn--primary" href="{{ routes.cart_url }}/checkout">{{ 'cart.checkout' | t }}</a>
+        <a class="nc-drawer__checkout" href="{{ routes.cart_url }}/checkout">{{ 'cart.checkout' | t }} →</a>
+        <p class="nc-drawer__note">{{ 'cart.vat_note' | t }}</p>
       </div>
     {%- else -%}
       <div class="nc-drawer__empty">
-        <h3>{{ 'cart.empty' | t }}</h3>
-        <p>{{ 'general.not_found_text' | t }}</p>
-        <a class="nc-btn nc-btn--sage" href="/collections/cbd-hudpleje" data-nc-cart-close>{{ 'general.shop_now' | t }}</a>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>{{ 'cart.empty' | t }}</p>
+        <a href="/collections/cbd-hudpleje" data-nc-cart-close>{{ 'cart.shop' | t }}</a>
       </div>
     {%- endif -%}
   </div>

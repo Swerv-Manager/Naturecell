@@ -105,9 +105,16 @@
   .nc-pdp__acc-body { margin: 0 2px 18px; font-size: 14px; line-height: 1.7; color: var(--ink-500); max-width: 500px; }
   .nc-pdp__acc-body p { margin: 0; }
 
-  .nc-buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); background: var(--cloud); border-top: 1px solid var(--border-default); padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom)); display: none; align-items: center; gap: 12px; transform: translateY(110%); transition: transform var(--dur-base) var(--ease-soft); }
+  {%- comment -%} Mobil koebsbar 1:1 fra designet (shell.html 2998-3005): 44px billede, navn + stoerrelse, sage-knap. {%- endcomment -%}
+  .nc-buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); background: rgba(246, 244, 238, 0.96); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--border-default); box-shadow: 0 -6px 24px rgba(44, 70, 61, 0.10); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); display: none; align-items: center; gap: 12px; transform: translateY(110%); transition: transform var(--dur-base) var(--ease-soft); }
   .nc-buybar.is-visible { transform: translateY(0); }
-  .nc-buybar__title { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 15px; color: var(--sage-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nc-buybar__img { width: 44px; height: 44px; flex: none; object-fit: contain; border-radius: 10px; background: var(--nc-product-tint, var(--sage-50)); }
+  .nc-buybar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .nc-buybar__title { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--sage-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nc-buybar__size { font-size: 12px; color: var(--ink-500); }
+  .nc-buybar__add { flex: none; border: 0; cursor: pointer; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 14px; min-height: 46px; padding: 0 20px; border-radius: 999px; }
+  .nc-buybar__add:hover, .nc-buybar__add:focus-visible { background: var(--sage-600); }
+  .nc-buybar__add[disabled] { opacity: 0.45; cursor: not-allowed; }
   @media (max-width: 899px) {
     .nc-buybar { display: flex; }
     .nc-pdp__gallery { position: static; }
@@ -189,8 +196,14 @@
           {%- if v.unit_price_measurement -%}
             <span class="nc-pdp__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
           {%- endif -%}
+          {%- comment -%}
+            Det godkendte danske design har ingen momsnote under prisen; noten vises derfor kun
+            paa andre sprog (tysk lovkrav), medmindre "ogsaa paa dansk" er slaaet til.
+          {%- endcomment -%}
           {%- if section.settings.show_tax_note -%}
-            <span class="nc-pdp__taxnote">{{ 'product.tax_note' | t }}</span>
+            {%- if request.locale.iso_code != 'da' or section.settings.tax_note_da -%}
+              <span class="nc-pdp__taxnote">{{ 'product.tax_note' | t }}</span>
+            {%- endif -%}
           {%- endif -%}
         </div>
 
@@ -220,6 +233,8 @@
         {%- for block in section.blocks -%}
           {%- if block.type == 'label' -%}{%- assign has_label_block = true -%}{%- endif -%}
         {%- endfor -%}
+        {%- comment -%} Uden blokke vises hverken label eller slot, saa der ikke staar en forladt overskrift. {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
         <div class="nc-pdp__tiers">
           {%- unless has_label_block -%}
             <span class="nc-pdp__tierlabel">{{ section.settings.tiers_label }}</span>
@@ -236,6 +251,7 @@
             {%- endif -%}
           {%- endfor -%}
         </div>
+        {%- endif -%}
 
         <div class="nc-pdp__form">
         {%- form 'product', product, data-nc-product-form: '' -%}
@@ -310,9 +326,15 @@
 </div>
 
 <div class="nc-buybar" data-nc-buybar>
-  <span class="nc-buybar__title">{{ main_title }}</span>
-  <button class="nc-btn nc-btn--primary" data-nc-add="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
-    {%- if v.available %}Tilføj · {{ v.price | money }}{% else %}Udsolgt{% endif -%}
+  {%- if product.featured_image -%}
+    {{ product.featured_image | image_url: width: 88 | image_tag: class: 'nc-buybar__img', alt: '', loading: 'lazy', widths: '44, 88' }}
+  {%- endif -%}
+  <div class="nc-buybar__text">
+    <span class="nc-buybar__title">{{ main_title }}</span>
+    {%- if size_line != blank -%}<span class="nc-buybar__size">{{ size_line }}</span>{%- endif -%}
+  </div>
+  <button class="nc-buybar__add" type="button" data-nc-add="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
+    {%- if v.available %}Tilføj til kurv · {{ v.price | money_without_trailing_zeros }}.{% else %}{{ 'product.sold_out' | t }}{% endif -%}
   </button>
 </div>
 
@@ -342,7 +364,8 @@
   "settings": [
     { "type": "text", "id": "back_label", "label": "Tilbage-knap: tekst", "default": "Tilbage til shop" },
     { "type": "text", "id": "back_url", "label": "Tilbage-knap: link", "info": "Sti eller URL. Shopify tillader ikke standardværdi på url-typen.", "default": "/collections/cbd-hudpleje" },
-    { "type": "checkbox", "id": "show_tax_note", "label": "Vis momsnote under prisen", "info": "Teksten oversættes pr. sprog (dansk: inkl. moms, tysk: inkl. MwSt., zzgl. Versand). Lovpligtig tæt på prisen i Tyskland.", "default": true },
+    { "type": "checkbox", "id": "show_tax_note", "label": "Vis momsnote under prisen på andre sprog end dansk", "info": "Lovpligtig tæt på prisen i Tyskland (inkl. MwSt., zzgl. Versand). Det danske design har ingen note.", "default": true },
+    { "type": "checkbox", "id": "tax_note_da", "label": "Vis momsnoten også på dansk", "default": false },
     { "type": "checkbox", "id": "show_badges", "label": "Vis claim-badges", "default": true },
     {
       "type": "textarea",

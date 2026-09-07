@@ -82,7 +82,16 @@
     "payment_methods": "Payment methods",
     "benefits_title": "Why shop with NatureCell",
     "recommendation": "Our recommendation for you",
-    "discount": "Discount"
+    "discount": "Discount",
+    "title": "Your cart",
+    "discount_code": "Discount code",
+    "apply": "Apply",
+    "discount_applied": "The discount code is saved and applied at checkout.",
+    "you_save_total": "You save in total",
+    "vat_note": "VAT included · shipping calculated at checkout",
+    "shop": "Shop skincare",
+    "free_shipping_reached": "You have free shipping 🎉",
+    "free_shipping_missing": "Spend {{ amount }} more for free shipping"
   },
   "favorites": {
     "empty": "No favourites yet"

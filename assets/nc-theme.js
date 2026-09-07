@@ -211,6 +211,26 @@
     }
   });
 
+  /* Rabatkode i kurv-skuffen: Shopifys /discount/KODE-link gemmer koden til kassen og
+     sender tilbage til samme side, hvor skuffen aabnes igen med en bekraeftelse. */
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest && e.target.closest('form[data-nc-discount]');
+    if (!form) return;
+    e.preventDefault();
+    var input = form.querySelector('input');
+    var code = input && input.value.trim();
+    if (!code) return;
+    var back = window.location.pathname + window.location.search + '#nc-cart-discount';
+    window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=' + encodeURIComponent(back);
+  });
+  if (window.location.hash === '#nc-cart-discount') {
+    refreshCart(true).then(function () {
+      var note = $('[data-nc-discount-note]');
+      if (note) note.hidden = false;
+    });
+    try { history.replaceState(null, '', window.location.pathname + window.location.search); } catch (err) {}
+  }
+
   /* PDP: laeg-i-kurv-formular via AJAX */
   $all('form[data-nc-product-form]').forEach(function (form) {
     form.addEventListener('submit', function (e) {

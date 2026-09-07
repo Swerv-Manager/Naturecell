@@ -82,7 +82,16 @@
     "payment_methods": "Zahlungsarten",
     "benefits_title": "Ihre Vorteile bei NatureCell",
     "recommendation": "Unsere Empfehlung für Sie",
-    "discount": "Rabatt"
+    "discount": "Rabatt",
+    "title": "Ihr Warenkorb",
+    "discount_code": "Rabattcode",
+    "apply": "Einlösen",
+    "discount_applied": "Der Rabattcode ist gespeichert und wird an der Kasse angewendet.",
+    "you_save_total": "Sie sparen insgesamt",
+    "vat_note": "Inkl. MwSt. · Versand wird an der Kasse berechnet",
+    "shop": "Hautpflege shoppen",
+    "free_shipping_reached": "Sie haben kostenlosen Versand 🎉",
+    "free_shipping_missing": "Noch {{ amount }} bis zum kostenlosen Versand"
   },
   "favorites": {
     "empty": "Noch keine Favoriten"
