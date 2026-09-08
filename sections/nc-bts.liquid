@@ -1,0 +1,127 @@
+{% comment %}
+  Bag kulisserne: lille fotomosaik med overlinje, overskrift og kort tekst.
+  Hver blok er et foto med valgfri billedtekst; "Bredt" fylder to kolonner.
+  Billedet vaelges i temaeditoren (image). Uden valgt billede bruges
+  URL-fallbacken (image_url: Shopify Files-CDN eller et asset-filnavn).
+  Fotos fra optagelserne af produktvideoerne (Lizbeth, Allan og videoholdet).
+{% endcomment %}
+
+{%- liquid
+  assign tone = section.settings.tone | default: 'paper'
+  assign row_h = section.settings.row_h | default: 280
+  assign row_h_small = row_h | times: 0.75 | round
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-bts { border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-bts--paper { background: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-bts--paper2 { background: var(--paper-2); }
+  #shopify-section-{{ section.id }} .nc-bts--sage50 { background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-bts__inner { max-width: 1100px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); display: flex; flex-direction: column; gap: 30px; }
+  #shopify-section-{{ section.id }} .nc-bts__head { display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+  #shopify-section-{{ section.id }} .nc-bts__eyebrow { margin: 0; font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 1.7; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-bts__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 3.3vw, 34px); line-height: 1.1; letter-spacing: normal; color: var(--sage-700); max-width: 620px; text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-bts__head p { margin: 4px 0 0; max-width: 560px; font-size: 16px; line-height: 1.7; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-bts__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: {{ row_h }}px; grid-auto-flow: dense; gap: 14px; }
+  #shopify-section-{{ section.id }} .nc-bts__tile { position: relative; margin: 0; border-radius: var(--radius-xl); overflow: hidden; background: var(--sage-100); box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-bts__tile--wide { grid-column: span 2; }
+  #shopify-section-{{ section.id }} .nc-bts__tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-bts__tile figcaption { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 36px 16px 14px; background: linear-gradient(180deg, rgba(31, 45, 41, 0), rgba(31, 45, 41, 0.62)); color: #fff; font-family: var(--font-body); font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: 0.06em; text-transform: uppercase; }
+  @media (max-width: 899px) {
+    #shopify-section-{{ section.id }} .nc-bts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: {{ row_h_small }}px; gap: 12px; }
+    #shopify-section-{{ section.id }} .nc-bts__tile figcaption { font-size: 11px; padding: 28px 12px 11px; }
+  }
+{%- endstyle -%}
+
+<section class="nc-bts nc-bts--{{ tone }}">
+  <div class="nc-bts__inner">
+    <div class="nc-bts__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="nc-bts__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2>{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p>{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="nc-bts__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign img = block.settings.image
+            assign img_url = block.settings.image_url
+            assign alt = block.settings.alt | default: block.settings.caption
+            assign focal = block.settings.focal | default: '50% 50%'
+            assign pos_style = 'object-position: ' | append: focal
+          -%}
+          {%- if img != blank or img_url != blank -%}
+            <figure class="nc-bts__tile{% if block.settings.size == 'wide' %} nc-bts__tile--wide{% endif %}" {{ block.shopify_attributes }}>
+              {%- if img != blank -%}
+                {{ img | image_url: width: 1200 | image_tag: alt: alt, loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 540px, 50vw', style: pos_style }}
+              {%- elsif img_url contains '//' -%}
+                <img src="{{ img_url }}" alt="{{ alt | escape }}" loading="lazy" width="1200" height="1500" style="{{ pos_style }}">
+              {%- else -%}
+                <img src="{{ img_url | asset_url }}" alt="{{ alt | escape }}" loading="lazy" width="1200" height="1500" style="{{ pos_style }}">
+              {%- endif -%}
+              {%- if block.settings.caption != blank -%}
+                <figcaption>{{ block.settings.caption }}</figcaption>
+              {%- endif -%}
+            </figure>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bag kulisserne",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Bag kulisserne" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Sådan bliver vores produktvideoer til" },
+    { "type": "textarea", "id": "text", "label": "Tekst", "default": "Vi optager produkterne, som de bruges i hverdagen. Her er et kig ind bag optagelserne, i butikken, ved søen og på badeværelset." },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Baggrund",
+      "options": [
+        { "value": "paper", "label": "Papir" },
+        { "value": "paper2", "label": "Papir, mørkere" },
+        { "value": "sage50", "label": "Sage 50" }
+      ],
+      "default": "paper"
+    },
+    { "type": "range", "id": "row_h", "label": "Rækkehøjde", "min": 200, "max": 360, "step": 10, "unit": "px", "default": 280 }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Foto",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Billede" },
+        { "type": "text", "id": "image_url", "label": "Billede, URL-fallback", "info": "Bruges kun når intet billede er valgt: en CDN-URL eller et filnavn i temaets assets." },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Størrelse",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "wide", "label": "Bredt (to kolonner)" }
+          ],
+          "default": "normal"
+        },
+        { "type": "text", "id": "caption", "label": "Billedtekst" },
+        { "type": "text", "id": "alt", "label": "Alt-tekst", "info": "Standard: billedteksten." },
+        { "type": "text", "id": "focal", "label": "Fokuspunkt (object-position)", "default": "50% 50%" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Bag kulisserne" } ]
+}
+{% endschema %}

@@ -129,6 +129,25 @@
         "text_lh": "1.8"
       }
     },
+    "bts": {
+      "type": "nc-bts",
+      "settings": {
+        "eyebrow": "Bag kulisserne",
+        "heading": "Sådan bliver vores produktvideoer til",
+        "text": "Vi optager produkterne, som de bruges i hverdagen. Her er et kig ind bag optagelserne, i butikken, ved søen og på badeværelset.",
+        "tone": "paper",
+        "row_h": 280
+      },
+      "blocks": {
+        "b1": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-holdet-ved-soeen.jpg", "size": "wide", "caption": "Holdet ved søen", "alt": "Lizbeth og Allan fra NatureCell sammen med videoholdet ved søen", "focal": "50% 35%" } },
+        "b2": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-optagelser-i-butikken.jpg", "size": "normal", "caption": "Optagelser i butikken", "alt": "Videoholdet filmer i butikken", "focal": "50% 40%" } },
+        "b3": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-produkterne-foran-kameraet.jpg", "size": "normal", "caption": "Produkterne i fokus", "alt": "Produkterne filmes med telefonen", "focal": "60% 50%" } },
+        "b4": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-lizbeth-paa-skaermen.jpg", "size": "normal", "caption": "Lizbeth på skærmen", "alt": "Lizbeth optages til en produktvideo", "focal": "50% 45%" } },
+        "b5": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-live-fra-butikken.jpg", "size": "wide", "caption": "Foran kameraet i butikken", "alt": "Allan og Lizbeth filmes i butikken", "focal": "60% 35%" } },
+        "b6": { "type": "photo", "settings": { "image": "shopify://shop_images/naturecell-bag-kulisserne-gennemsyn.jpg", "size": "normal", "caption": "Gennemsyn af optagelserne", "alt": "Videoholdet gennemser optagelserne", "focal": "50% 40%" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6"]
+    },
     "stats": {
       "type": "nc-stats-band",
       "blocks": {
@@ -205,6 +224,7 @@
     "timeline",
     "loefte",
     "moellerup",
+    "bts",
     "stats",
     "familie2"
   ]

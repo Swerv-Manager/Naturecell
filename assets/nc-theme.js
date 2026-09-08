@@ -266,8 +266,13 @@
         if (!main) return;
         var src = th.getAttribute('data-nc-thumb');
         var srcset = th.getAttribute('data-nc-thumb-srcset');
+        var ratio = parseFloat(th.getAttribute('data-nc-thumb-ratio') || '1');
+        /* srcset fra hovedbilledet skal fjernes, ellers bliver browseren ved det gamle billede */
+        if (srcset) main.srcset = srcset; else main.removeAttribute('srcset');
         main.src = src;
-        if (srcset) main.srcset = srcset;
+        if (th.hasAttribute('data-nc-thumb-alt')) main.alt = th.getAttribute('data-nc-thumb-alt');
+        /* livsstilsfotos (ikke kvadratiske) fylder rammen, packshots vises med luft omkring */
+        main.classList.toggle('is-photo', Math.abs(ratio - 1) > 0.04);
         $all('[data-nc-thumb]', g).forEach(function (x) { x.classList.toggle('is-active', x === th); });
       });
     });
