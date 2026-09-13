@@ -4,6 +4,7 @@
   hurtig-laeg-i-kurv, eyebrow, titel, stoerrelse, rating og pris.
 
   Brug: {% render 'nc-product-card', product: product %}
+  Valgfrit: loading: 'eager' (kort over folden) og priority: 'high' (LCP-kortet).
 {% endcomment %}
 
 {%- liquid
@@ -89,16 +90,35 @@
     </button>
 
     {%- if primary_image != blank -%}
-      {{
-        primary_image
-        | image_url: width: 720
-        | image_tag:
-          class: primary_class,
-          alt: primary_alt,
-          widths: '240, 360, 480, 720',
-          sizes: '(min-width: 990px) 300px, 46vw',
-          loading: 'lazy'
-      }}
+      {%- comment -%}
+        loading/priority saettes af sektionen: kort i foerste raekke over folden
+        indlaeses eager, og det foerste kort (LCP-kandidat) faar fetchpriority high.
+      {%- endcomment -%}
+      {%- assign img_loading = loading | default: 'lazy' -%}
+      {%- if priority == 'high' -%}
+        {{
+          primary_image
+          | image_url: width: 720
+          | image_tag:
+            class: primary_class,
+            alt: primary_alt,
+            widths: '240, 360, 480, 720',
+            sizes: '(min-width: 990px) 300px, 46vw',
+            loading: img_loading,
+            fetchpriority: 'high'
+        }}
+      {%- else -%}
+        {{
+          primary_image
+          | image_url: width: 720
+          | image_tag:
+            class: primary_class,
+            alt: primary_alt,
+            widths: '240, 360, 480, 720',
+            sizes: '(min-width: 990px) 300px, 46vw',
+            loading: img_loading
+        }}
+      {%- endif -%}
       {%- if hover_image != blank -%}
         {{
           hover_image

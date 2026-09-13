@@ -107,10 +107,11 @@
               </div>
               <div class="nc-hero__packshot-wrap">
                 <div class="nc-hero__glow" aria-hidden="true"></div>
+                {%- comment -%} Packshottet er forsidens LCP-element: eager, fetchpriority high og WebP-fallback i stedet for PNG'en paa 1,2 MB. {%- endcomment -%}
                 {%- if block.settings.image != blank -%}
-                  {{ block.settings.image | image_url: width: 800 | image_tag: class: 'nc-hero__packshot', alt: block.settings.heading, widths: '400, 600, 800', loading: 'eager' }}
+                  {{ block.settings.image | image_url: width: 800 | image_tag: class: 'nc-hero__packshot', alt: block.settings.heading, widths: '400, 600, 800', sizes: '(min-width: 700px) 400px, 86vw', loading: 'eager', fetchpriority: 'high' }}
                 {%- else -%}
-                  <img class="nc-hero__packshot" src="{{ 'nc-hero-kompletpakken.png' | asset_url }}" alt="Komplet CBD Hudpleje" width="800" height="800">
+                  <img class="nc-hero__packshot" src="{{ 'nc-hero-kompletpakken.webp' | asset_url }}" alt="Komplet CBD Hudpleje" width="800" height="800" loading="eager" fetchpriority="high">
                 {%- endif -%}
               </div>
             </div>

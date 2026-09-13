@@ -92,9 +92,11 @@
 -%}
 
 {% style %}
-  {%- if use_brand_fonts -%}
-    @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap');
-  {%- endif -%}
+  {%- comment -%}
+    Brandfontene (Philosopher og Roboto Flex) er selvhostede i temaet og
+    indlaeses fra nc-theme.css. Ingen ekstern @import: den ville blokere
+    rendering og lave et kald til Google, som Cookiebot-opsaetningen undgaar.
+  {%- endcomment -%}
 
   #shopify-section-{{ section.id }} .nc-aug {
     {%- if use_brand_fonts %}

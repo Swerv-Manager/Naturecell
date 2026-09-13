@@ -152,7 +152,18 @@
       {%- if collection.products.size > 0 -%}
         <ul class="nc-grid">
           {%- for product in collection.products -%}
-            <li>{% render 'nc-product-card', product: product %}</li>
+            {%- comment -%} Foerste raekke ligger i viewporten: ikke lazy. Foerste kort er LCP-kandidat og faar fetchpriority high. {%- endcomment -%}
+            {%- liquid
+              assign card_loading = 'lazy'
+              assign card_priority = ''
+              if forloop.index <= 4
+                assign card_loading = 'eager'
+              endif
+              if forloop.first
+                assign card_priority = 'high'
+              endif
+            -%}
+            <li>{% render 'nc-product-card', product: product, loading: card_loading, priority: card_priority %}</li>
           {%- endfor -%}
         </ul>
       {%- else -%}

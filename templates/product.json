@@ -1,6 +1,7 @@
 {
   "sections": {
-    "main": { "type": "main-product" },
+    "main": { "type": "main-product", "settings": { "desc_open": false } },
+    "infographic": { "type": "nc-pdp-infographic" },
     "ingredients": {
       "type": "nc-pdp-ingredients",
       "blocks": {
@@ -62,5 +63,5 @@
       "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"]
     }
   },
-  "order": ["main", "ingredients", "related", "story", "foundervideo", "videos", "ambassador", "reviews", "faq"]
+  "order": ["main", "infographic", "ingredients", "related", "story", "foundervideo", "videos", "ambassador", "reviews", "faq"]
 }
