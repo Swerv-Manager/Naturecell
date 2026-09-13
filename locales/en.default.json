@@ -40,7 +40,10 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next"
-    }
+    },
+    "go_to_slide": "Go to slide {{ n }}",
+    "not_found_body": "The page you are looking for has moved or no longer exists.",
+    "all": "All"
   },
   "blog": {
     "read_also": "Read also",
@@ -49,7 +52,14 @@
     "real_customer": "Real NatureCell customer",
     "more_cases": "More customer stories",
     "case_colors": "See the colours from this story",
-    "filter_topic": "Filter by topic"
+    "filter_topic": "Filter by topic",
+    "search_cases": "Search by area or name …",
+    "search_articles": "Search articles …",
+    "empty_cases": "No cases match your search.",
+    "empty_articles": "No articles match your search.",
+    "all_cases": "All cases",
+    "all_cases_link": "All customer cases",
+    "all_articles": "All articles"
   },
   "nav": {
     "shop": "Shop",
@@ -94,7 +104,8 @@
     "free_shipping_missing": "Spend {{ amount }} more for free shipping"
   },
   "favorites": {
-    "empty": "No favourites yet"
+    "empty": "No favourites yet",
+    "hint": "Tap the heart on a product and we will save it here for you."
   },
   "campaign": {
     "gloves_count": "Gloves claimed"
@@ -106,7 +117,18 @@
     "bundle": "Bundle",
     "unit_price": "Unit price",
     "tax_note": "Prices include VAT. Shipping is calculated at checkout.",
-    "tax_note_short": "incl. VAT, excl. shipping"
+    "tax_note_short": "incl. VAT, excl. shipping",
+    "save_pct": "Save {{ pct }}%",
+    "show_image": "Show image {{ n }}",
+    "add_to_cart_price": "Add to cart · {{ price }}",
+    "description": "Description",
+    "usage": "How to use it",
+    "supplement": "Supplement",
+    "from": "From",
+    "save_favorite": "Save {{ title }} as a favourite",
+    "add_named": "Add {{ title }} to cart",
+    "rated": "Rated {{ rating }} out of 5",
+    "ambassador": "Ambassador"
   },
   "collection": {
     "bestsellers": "Bestsellers",
@@ -118,7 +140,10 @@
     "where_q": "Where do you need care?",
     "what_q": "What does your skin need?",
     "reset": "Reset",
-    "reset_filters": "Reset filters"
+    "reset_filters": "Reset filters",
+    "products_count": "{{ count }} products",
+    "filtered": "Filtered:",
+    "empty": "No products match. Try another search or reset the filters."
   },
   "areas": {
     "face": "Face",
@@ -185,7 +210,8 @@
     "message": "Message",
     "message_placeholder": "How can we help?",
     "send": "Send message",
-    "contact_success": "Thank you for your message. We usually reply within one working day."
+    "contact_success": "Thank you for your message. We usually reply within one working day.",
+    "b2b_email_placeholder": "retailer@company.com"
   },
   "quiz": {
     "start": "Start the quiz →",
@@ -202,5 +228,8 @@
         "continue_shopping": "Continue shopping"
       }
     }
+  },
+  "search": {
+    "no_results": "No results for \"{{ terms }}\". Try another search term."
   }
 }

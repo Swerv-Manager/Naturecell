@@ -47,7 +47,7 @@
       {%- if section.settings.image != blank -%}
         {{ section.settings.image | image_url: width: 1100 | image_tag: alt: section.settings.pill, loading: 'lazy' }}
       {%- else -%}
-        <img src="{{ 'nc-founders.webp' | asset_url }}" alt="Ambassadør" loading="lazy" width="1200" height="900">
+        <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ 'product.ambassador' | t }}" loading="lazy" width="1200" height="900">
       {%- endif -%}
       <span class="nc-pdpamb__play" aria-hidden="true">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>

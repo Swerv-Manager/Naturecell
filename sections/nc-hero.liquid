@@ -170,7 +170,7 @@
     </button>
     <div class="nc-hero__dots">
       {%- for block in section.blocks -%}
-        <button class="nc-hero__dot" data-nc-dot aria-label="Gå til slide {{ forloop.index }}"></button>
+        <button class="nc-hero__dot" data-nc-dot aria-label="{{ 'general.go_to_slide' | t: n: forloop.index }}"></button>
       {%- endfor -%}
     </div>
   {%- endif -%}

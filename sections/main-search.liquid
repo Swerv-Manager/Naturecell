@@ -63,7 +63,8 @@
           {%- endif -%}
         {%- endpaginate -%}
       {%- else -%}
-        <p>Ingen resultater for "{{ search.terms | escape }}". Prøv et andet søgeord.</p>
+        {%- assign terms_esc = search.terms | escape -%}
+        <p>{{ 'search.no_results' | t: terms: terms_esc }}</p>
       {%- endif -%}
     {%- endif -%}
   </div>

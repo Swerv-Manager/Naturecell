@@ -35,14 +35,16 @@
   if title_up contains 'ALFALAB' or vendor_up contains 'ALFALAB'
     assign eyebrow = 'ALFALAB'
   endif
+  assign supplement_word = 'product.supplement' | t
+  assign bundle_word = 'product.bundle' | t
   if product.type contains 'Kosttilskud'
-    unless eyebrow contains 'Kosttilskud'
-      assign eyebrow = eyebrow | append: ' Kosttilskud'
+    unless eyebrow contains supplement_word
+      assign eyebrow = eyebrow | append: ' ' | append: supplement_word
     endunless
   endif
-  unless eyebrow contains 'Sampakke' or eyebrow contains 'Kosttilskud'
+  unless eyebrow contains bundle_word or eyebrow contains supplement_word
     if is_bundle
-      assign eyebrow = eyebrow | append: ' Sampakke'
+      assign eyebrow = eyebrow | append: ' ' | append: bundle_word
     endif
   endunless
 
@@ -78,14 +80,14 @@
   <div class="nc-product-card__media">
     <div class="nc-product-card__tags">
       {%- if on_sale and show_badge -%}
-        <span class="nc-tag nc-tag--sale">Spar {{ save_pct }}%</span>
+        <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
       {%- endif -%}
       {%- if is_bundle -%}
         <span class="nc-tag nc-tag--sage">{{ 'product.bundle' | t }}</span>
       {%- endif -%}
     </div>
 
-    <button class="nc-product-card__fav" data-nc-fav="{{ product.handle }}" aria-label="Gem {{ card_title | escape }} som favorit">
+    <button class="nc-product-card__fav" data-nc-fav="{{ product.handle }}" aria-label="{{ 'product.save_favorite' | t: title: card_title | escape }}">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
     </button>
 
@@ -131,7 +133,7 @@
     {%- endif -%}
 
     {%- if product.available and product.has_only_default_variant -%}
-      <button class="nc-product-card__add" data-nc-add="{{ v.id }}" aria-label="Læg {{ card_title | escape }} i kurven">
+      <button class="nc-product-card__add" data-nc-add="{{ v.id }}" aria-label="{{ 'product.add_named' | t: title: card_title | escape }}">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
       </button>
     {%- endif -%}
@@ -151,12 +153,12 @@
           {%- endfor -%}
         </span>
         <span>({{ rating_count }})</span>
-        <span class="nc-visually-hidden">Bedømt {{ rating }} ud af 5</span>
+        <span class="nc-visually-hidden">{{ 'product.rated' | t: rating: rating_num }}</span>
       </span>
     {%- endif -%}
     <span class="nc-product-card__price{% if on_sale %} is-sale{% endif %}">
       <span class="nc-product-card__amount">
-        {%- if product.price_varies -%}Fra {% endif -%}
+        {%- if product.price_varies -%}{{ 'product.from' | t }} {% endif -%}
         {{- v.price | money -}}
       </span>
       {%- if on_sale -%}

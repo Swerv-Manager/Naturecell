@@ -23,7 +23,8 @@
     assign eyebrow = 'ALFALAB'
   endif
   if is_bundle
-    assign eyebrow = eyebrow | append: ' Sampakke'
+    assign bundle_word = 'product.bundle' | t
+    assign eyebrow = eyebrow | append: ' ' | append: bundle_word
   endif
   assign title_parts = product.title | split: ' | '
   capture main_title
@@ -142,7 +143,7 @@
         <div class="nc-pdp__main" data-nc-gallery-main>
           <div class="nc-pdp__badges">
             {%- if on_sale and settings.show_save_badge -%}
-              <span class="nc-tag nc-tag--sale">Spar {{ save_pct }}%</span>
+              <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
             {%- endif -%}
           </div>
           {%- if product.featured_image -%}
@@ -174,7 +175,7 @@
                 data-nc-thumb-srcset="{{ image | image_url: width: 480 }} 480w, {{ image | image_url: width: 720 }} 720w, {{ image | image_url: width: 960 }} 960w, {{ image | image_url: width: 1200 }} 1200w"
                 data-nc-thumb-ratio="{{ image.aspect_ratio | default: 1 }}"
                 data-nc-thumb-alt="{{ image.alt | default: main_title | escape }}"
-                aria-label="Vis billede {{ forloop.index }}"
+                aria-label="{{ 'product.show_image' | t: n: forloop.index }}"
               >
                 {{ image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
               </button>
@@ -296,7 +297,7 @@
           {%- endunless -%}
           <input type="hidden" name="quantity" value="1">
           <button class="nc-pdp__add" type="submit" name="add" {% unless v.available %}disabled{% endunless %}>
-            {%- if v.available %}Tilføj til kurv · {{ v.price | money_without_trailing_zeros }}.{% else %}Udsolgt{% endif -%}
+            {%- if v.available %}{% assign cta_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: cta_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
           </button>
         {%- endform -%}
         </div>
@@ -322,7 +323,7 @@
           {%- comment -%} Beskrivelsen kan vaere aaben som standard (designet) eller foldet sammen som de andre (kundens oenske, sat i templaten). {%- endcomment -%}
           <details{% if section.settings.desc_open %} open{% endif %}>
             <summary>
-              Beskrivelse
+              {{ 'product.description' | t }}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
             </summary>
             <div class="nc-pdp__acc-body">{{ product.description }}</div>
@@ -330,7 +331,7 @@
           {%- if product.metafields.ncell.usage.value != blank or section.settings.usage_fallback != blank -%}
             <details>
               <summary>
-                Sådan bruger du den
+                {{ 'product.usage' | t }}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
               <div class="nc-pdp__acc-body">{{ product.metafields.ncell.usage.value | default: section.settings.usage_fallback }}</div>

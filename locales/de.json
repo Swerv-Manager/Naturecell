@@ -40,7 +40,10 @@
     "pagination": {
       "previous": "Zurück",
       "next": "Weiter"
-    }
+    },
+    "go_to_slide": "Zu Slide {{ n }}",
+    "not_found_body": "Die gesuchte Seite wurde verschoben oder existiert nicht mehr.",
+    "all": "Alle"
   },
   "blog": {
     "read_also": "Lesen Sie auch",
@@ -49,7 +52,14 @@
     "real_customer": "Echte NatureCell-Kundin",
     "more_cases": "Weitere Kundengeschichten",
     "case_colors": "Farben dieser Geschichte ansehen",
-    "filter_topic": "Nach Thema filtern"
+    "filter_topic": "Nach Thema filtern",
+    "search_cases": "Nach Bereich oder Name suchen …",
+    "search_articles": "Artikel durchsuchen …",
+    "empty_cases": "Keine Kundenberichte passen zu Ihrer Suche.",
+    "empty_articles": "Keine Artikel passen zu Ihrer Suche.",
+    "all_cases": "Alle Berichte",
+    "all_cases_link": "Alle Kundenberichte",
+    "all_articles": "Alle Artikel"
   },
   "nav": {
     "shop": "Shop",
@@ -94,7 +104,8 @@
     "free_shipping_missing": "Noch {{ amount }} bis zum kostenlosen Versand"
   },
   "favorites": {
-    "empty": "Noch keine Favoriten"
+    "empty": "Noch keine Favoriten",
+    "hint": "Tippen Sie auf das Herz bei einem Produkt, und wir speichern es hier für Sie."
   },
   "campaign": {
     "gloves_count": "Anzahl abgeholter Handschuhe"
@@ -106,7 +117,18 @@
     "bundle": "Set",
     "unit_price": "Grundpreis",
     "tax_note": "Alle Preise inkl. MwSt., zzgl. Versandkosten.",
-    "tax_note_short": "inkl. MwSt., zzgl. Versand"
+    "tax_note_short": "inkl. MwSt., zzgl. Versand",
+    "save_pct": "Spare {{ pct }} %",
+    "show_image": "Bild {{ n }} anzeigen",
+    "add_to_cart_price": "In den Warenkorb · {{ price }}",
+    "description": "Beschreibung",
+    "usage": "So wenden Sie es an",
+    "supplement": "Nahrungsergänzung",
+    "from": "Ab",
+    "save_favorite": "{{ title }} als Favorit speichern",
+    "add_named": "{{ title }} in den Warenkorb legen",
+    "rated": "Mit {{ rating }} von 5 bewertet",
+    "ambassador": "Ambassador"
   },
   "collection": {
     "bestsellers": "Bestseller",
@@ -118,7 +140,10 @@
     "where_q": "Wo brauchen Sie Pflege?",
     "what_q": "Was braucht Ihre Haut?",
     "reset": "Zurücksetzen",
-    "reset_filters": "Filter zurücksetzen"
+    "reset_filters": "Filter zurücksetzen",
+    "products_count": "{{ count }} Produkte",
+    "filtered": "Gefiltert:",
+    "empty": "Keine Produkte gefunden. Versuchen Sie eine andere Suche oder setzen Sie die Filter zurück."
   },
   "areas": {
     "face": "Gesicht",
@@ -185,7 +210,8 @@
     "message": "Nachricht",
     "message_placeholder": "Wie können wir helfen?",
     "send": "Nachricht senden",
-    "contact_success": "Vielen Dank für Ihre Nachricht. Wir antworten in der Regel innerhalb eines Werktags."
+    "contact_success": "Vielen Dank für Ihre Nachricht. Wir antworten in der Regel innerhalb eines Werktags.",
+    "b2b_email_placeholder": "haendler@firma.de"
   },
   "quiz": {
     "start": "Quiz starten →",
@@ -202,5 +228,8 @@
         "continue_shopping": "Weiter einkaufen"
       }
     }
+  },
+  "search": {
+    "no_results": "Keine Ergebnisse für „{{ terms }}“. Versuchen Sie es mit einem anderen Suchbegriff."
   }
 }

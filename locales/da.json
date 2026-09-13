@@ -40,7 +40,10 @@
     "view_all_products": "Se alle produkter",
     "view_all_products_arrow": "Se alle produkter →",
     "shop_now": "Shop nu",
-    "read_more": "Læs mere"
+    "read_more": "Læs mere",
+    "go_to_slide": "Gå til slide {{ n }}",
+    "not_found_body": "Den side du leder efter, er flyttet eller findes ikke længere.",
+    "all": "Alle"
   },
   "shopify": {
     "checkout": {
@@ -56,7 +59,14 @@
     "real_customer": "Ægte NatureCell-kunde",
     "more_cases": "Se flere kundecases",
     "case_colors": "Se farverne fra casen",
-    "filter_topic": "Filtrér efter emne"
+    "filter_topic": "Filtrér efter emne",
+    "search_cases": "Søg på område, navn …",
+    "search_articles": "Søg i artikler …",
+    "empty_cases": "Ingen cases matcher din søgning.",
+    "empty_articles": "Ingen artikler matcher din søgning.",
+    "all_cases": "Alle cases",
+    "all_cases_link": "Alle kundecases",
+    "all_articles": "Alle artikler"
   },
   "nav": {
     "shop": "Shop",
@@ -101,7 +111,8 @@
     "free_shipping_missing": "Køb for {{ amount }} mere og få fri fragt"
   },
   "favorites": {
-    "empty": "Ingen favoritter endnu"
+    "empty": "Ingen favoritter endnu",
+    "hint": "Tryk på hjertet på et produkt, så gemmer vi det her til dig."
   },
   "campaign": {
     "gloves_count": "Antal hentede handsker"
@@ -113,7 +124,18 @@
     "bundle": "Sampakke",
     "unit_price": "Enhedspris",
     "tax_note": "Priser er inkl. moms. Fragt beregnes ved kassen.",
-    "tax_note_short": "inkl. moms"
+    "tax_note_short": "inkl. moms",
+    "save_pct": "Spar {{ pct }}%",
+    "show_image": "Vis billede {{ n }}",
+    "add_to_cart_price": "Tilføj til kurv · {{ price }}.",
+    "description": "Beskrivelse",
+    "usage": "Sådan bruger du den",
+    "supplement": "Kosttilskud",
+    "from": "Fra",
+    "save_favorite": "Gem {{ title }} som favorit",
+    "add_named": "Læg {{ title }} i kurven",
+    "rated": "Bedømt {{ rating }} ud af 5",
+    "ambassador": "Ambassadør"
   },
   "collection": {
     "bestsellers": "Bestsellers",
@@ -125,7 +147,10 @@
     "where_q": "Hvor har du brug for pleje?",
     "what_q": "Hvad har din hud brug for?",
     "reset": "Nulstil",
-    "reset_filters": "Nulstil filtre"
+    "reset_filters": "Nulstil filtre",
+    "products_count": "{{ count }} produkter",
+    "filtered": "Filtreret:",
+    "empty": "Ingen produkter matcher. Prøv en anden søgning eller nulstil filtrene."
   },
   "areas": {
     "face": "Ansigt",
@@ -192,7 +217,8 @@
     "message": "Besked",
     "message_placeholder": "Hvordan kan vi hjælpe?",
     "send": "Send besked",
-    "contact_success": "Tak for din besked. Vi svarer typisk inden for én hverdag."
+    "contact_success": "Tak for din besked. Vi svarer typisk inden for én hverdag.",
+    "b2b_email_placeholder": "forhandler@firma.dk"
   },
   "quiz": {
     "start": "Start quizzen →",
@@ -202,5 +228,8 @@
     "result_eyebrow": "Din anbefaling",
     "result_prefix": "Til",
     "see_all": "Se hele sortimentet →"
+  },
+  "search": {
+    "no_results": "Ingen resultater for \"{{ terms }}\". Prøv et andet søgeord."
   }
 }

@@ -31,11 +31,11 @@
   endif
 
   if is_cases
-    assign search_placeholder = 'Søg på område, navn …'
-    assign empty_text = 'Ingen cases matcher din søgning.'
+    assign search_placeholder = 'blog.search_cases' | t
+    assign empty_text = 'blog.empty_cases' | t
   else
-    assign search_placeholder = 'Søg i artikler …'
-    assign empty_text = 'Ingen artikler matcher din søgning.'
+    assign search_placeholder = 'blog.search_articles' | t
+    assign empty_text = 'blog.empty_articles' | t
   endif
 -%}
 
@@ -118,7 +118,7 @@
     <div class="nc-blogidx__tools">
       {%- if section.settings.show_tags -%}
         <div class="nc-blogidx__chips" aria-label="{{ 'blog.filter_topic' | t }}">
-          <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}Alle cases{% else %}Alle{% endif %}</a>
+          <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}{{ 'blog.all_cases' | t }}{% else %}{{ 'general.all' | t }}{% endif %}</a>
           {%- if is_cases -%}
             {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
             {%- for area in area_names -%}
