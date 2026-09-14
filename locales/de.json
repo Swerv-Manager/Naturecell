@@ -62,7 +62,12 @@
     "all_articles": "Alle Artikel",
     "shop_routine": "Shoppen Sie genau diese Routine, einzeln oder das ganze Set mit einem Klick.",
     "select_blog": "Wählen Sie den Kundenberichte-Blog in den Einstellungen des Abschnitts.",
-    "newest": "Neueste"
+    "newest": "Neueste",
+    "eyebrow_cases": "Echte Erfahrungen",
+    "eyebrow_articles": "Wissen & Inspiration",
+    "intro_cases": "Wir versprechen keine Wunder. Stattdessen lassen wir unsere Kunden ihre eigene Geschichte erzählen, mit Bildern, Video und den Produkten, die sie verwenden. Ergebnisse können von Person zu Person variieren.",
+    "intro_articles": "Guides, Expertenrat und die Geschichten hinter NatureCell, über CBD, Hautpflege und eine Haut in Balance. Ergebnisse können von Person zu Person variieren.",
+    "read_full_article": "Den ganzen Artikel auf naturecell.dk lesen"
   },
   "nav": {
     "shop": "Shop",
@@ -112,7 +117,8 @@
     "hint": "Tippen Sie auf das Herz bei einem Produkt, und wir speichern es hier für Sie."
   },
   "campaign": {
-    "gloves_count": "Anzahl abgeholter Handschuhe"
+    "gloves_count": "Anzahl abgeholter Handschuhe",
+    "value": "Wert {{ price }}"
   },
   "product": {
     "regular_price": "Normalpreis",

@@ -69,7 +69,12 @@
     "all_articles": "Alle artikler",
     "shop_routine": "Shop præcis den rutine, enkeltvis, eller saml hele sættet med ét klik.",
     "select_blog": "Vælg kundecases-bloggen i sektionens indstillinger.",
-    "newest": "Nyeste"
+    "newest": "Nyeste",
+    "eyebrow_cases": "Ægte oplevelser",
+    "eyebrow_articles": "Viden & inspiration",
+    "intro_cases": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og de produkter, de bruger. Resultater kan variere fra person til person.",
+    "intro_articles": "Guides, ekspertråd og historierne bag NatureCell, om CBD, hudpleje og en hud i balance. Resultater kan variere fra person til person.",
+    "read_full_article": "Læs hele artiklen på naturecell.dk"
   },
   "nav": {
     "shop": "Shop",
@@ -119,7 +124,8 @@
     "hint": "Tryk på hjertet på et produkt, så gemmer vi det her til dig."
   },
   "campaign": {
-    "gloves_count": "Antal hentede handsker"
+    "gloves_count": "Antal hentede handsker",
+    "value": "Værdi {{ price }}"
   },
   "product": {
     "regular_price": "Normalpris",

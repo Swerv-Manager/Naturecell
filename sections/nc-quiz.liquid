@@ -79,7 +79,6 @@
       <div class="nc-quiz__areas">
         {%- comment -%} Fem omraader: ikonet er det valgte produkts billede i en rund sage-50-cirkel som i designet. {%- endcomment -%}
         {%- assign area_keys = 'ansigt,haender,krop,foedder,haar' | split: ',' -%}
-        {%- assign area_labels = 'Ansigt,Hænder,Krop,Fødder,Hår' | split: ',' -%}
         {%- for key in area_keys -%}
           {%- liquid
             case key
@@ -100,7 +99,7 @@
                 assign al = 'areas.hair' | t
             endcase
           -%}
-          <button class="nc-quiz__opt" type="button" data-nc-quiz-area="{{ key }}" data-nc-label="{{ area_labels[forloop.index0] }}">
+          <button class="nc-quiz__opt" type="button" data-nc-quiz-area="{{ key }}" data-nc-label="{{ al | escape }}">
             <span class="nc-quiz__opt-media">
               {%- if ap.featured_image -%}
                 {{ ap.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', widths: '80, 160' }}

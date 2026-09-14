@@ -62,7 +62,12 @@
     "all_articles": "All articles",
     "shop_routine": "Shop that exact routine, individually or the whole set in one click.",
     "select_blog": "Select the customer stories blog in the section settings.",
-    "newest": "Newest"
+    "newest": "Newest",
+    "eyebrow_cases": "Real experiences",
+    "eyebrow_articles": "Knowledge & inspiration",
+    "intro_cases": "We do not promise miracles. Instead we let our customers tell their own story, with photos, video and the products they use. Results may vary from person to person.",
+    "intro_articles": "Guides, expert advice and the stories behind NatureCell, about CBD, skincare and skin in balance. Results may vary from person to person.",
+    "read_full_article": "Read the full article on naturecell.dk"
   },
   "nav": {
     "shop": "Shop",
@@ -112,7 +117,8 @@
     "hint": "Tap the heart on a product and we will save it here for you."
   },
   "campaign": {
-    "gloves_count": "Gloves claimed"
+    "gloves_count": "Gloves claimed",
+    "value": "Value {{ price }}"
   },
   "product": {
     "regular_price": "Regular price",

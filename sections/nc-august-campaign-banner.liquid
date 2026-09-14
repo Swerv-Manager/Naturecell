@@ -59,7 +59,7 @@
   assign badge_value = section.settings.badge_value
   if badge_value == blank and product != blank
     assign badge_price = product.price | money_without_trailing_zeros
-    assign badge_value = 'Værdi ' | append: badge_price
+    assign badge_value = 'campaign.value' | t: price: badge_price
   endif
 
   assign glove_total = section.settings.glove_total
