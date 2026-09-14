@@ -88,7 +88,9 @@
                   {%- assign parts = chip | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
                     {%- assign chip_url = parts[1] | strip -%}
-                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{% render 'nc-url', url: chip_url %}">{{ parts[0] | strip }}</a>
+                    {%- capture chip_href %}{% render 'nc-url', url: chip_url %}{% endcapture -%}
+                    {%- assign chip_href = chip_href | strip -%}
+                    <a class="nc-chip {% if chip_href == collection.url %}is-active{% endif %}" href="{{ chip_href }}">{{ parts[0] | strip }}</a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -104,9 +106,11 @@
                   {%- assign parts = chip | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
                     {%- assign chip_url = parts[1] | strip -%}
+                    {%- capture chip_href %}{% render 'nc-url', url: chip_url %}{% endcapture -%}
+                    {%- assign chip_href = chip_href | strip -%}
                     {%- comment -%} Behov-chips er tag-filtre (/collections/<handle>/<tag>): aktiv når tagget er valgt. {%- endcomment -%}
                     {%- assign chip_tag = chip_url | split: '/' | last -%}
-                    <a class="nc-chip {% if chip_url == collection.url or current_tags contains chip_tag %}is-active{% endif %}" href="{% render 'nc-url', url: chip_url %}">{{ parts[0] | strip }}</a>
+                    <a class="nc-chip {% if chip_href == collection.url or current_tags contains chip_tag %}is-active{% endif %}" href="{{ chip_href }}">{{ parts[0] | strip }}</a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -122,8 +126,10 @@
                   {%- assign parts = chip | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
                     {%- assign chip_url = parts[1] | strip -%}
+                    {%- capture chip_href %}{% render 'nc-url', url: chip_url %}{% endcapture -%}
+                    {%- assign chip_href = chip_href | strip -%}
                     {%- assign chip_label = parts[0] | strip -%}
-                    <a class="nc-chip {% if chip_url == collection.url %}is-active{% endif %}" href="{% render 'nc-url', url: chip_url %}">
+                    <a class="nc-chip {% if chip_href == collection.url %}is-active{% endif %}" href="{{ chip_href }}">
                       {%- if chip_label contains '♂' -%}
                         <svg class="nc-chip__mars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="6"/><path d="m14.5 9.5 6-6"/><path d="M15 3h6v6"/></svg>
                         {{- chip_label | remove: '♂' | strip -}}
