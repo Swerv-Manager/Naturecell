@@ -61,7 +61,8 @@
     "all_cases_link": "All customer cases",
     "all_articles": "All articles",
     "shop_routine": "Shop that exact routine, individually or the whole set in one click.",
-    "select_blog": "Select the customer stories blog in the section settings."
+    "select_blog": "Select the customer stories blog in the section settings.",
+    "newest": "Newest"
   },
   "nav": {
     "shop": "Shop",
@@ -75,7 +76,8 @@
     "collections": "Collections",
     "favorites": "Favourites",
     "account": "Account",
-    "cart": "Cart"
+    "cart": "Cart",
+    "faq": "Frequently asked questions"
   },
   "cart": {
     "empty": "Your cart is empty",
@@ -233,5 +235,57 @@
   },
   "search": {
     "no_results": "No results for \"{{ terms }}\". Try another search term."
+  },
+  "tags": {
+    "anmeldelser": "Reviews",
+    "ansigt": "Face",
+    "bodylotion": "Body lotion",
+    "cbd": "CBD",
+    "cbd_olie": "CBD oil",
+    "collagen": "Collagen",
+    "ekspert": "Expert",
+    "eye_gel": "Eye gel",
+    "fodcreme": "Foot cream",
+    "foedder": "Feet",
+    "forskning": "Research",
+    "haandcreme": "Hand cream",
+    "haar": "Hair",
+    "haender": "Hands",
+    "hudplejetips": "Skincare tips",
+    "hudproblemer": "Skin concerns",
+    "hyaluronsyre": "Hyaluronic acid",
+    "jaevn_og_flot_hud": "Even skin",
+    "kollagenpulver": "Collagen powder",
+    "kosmetolog": "Beautician",
+    "krop": "Body",
+    "kundecases": "Customer stories",
+    "lip_balm": "Lip balm",
+    "ls": "LS",
+    "moden_hud": "Mature skin",
+    "moerke_rander": "Dark circles",
+    "naturecell": "NatureCell",
+    "pigmenteringer": "Pigmentation",
+    "pigmentpletter": "Pigmentation",
+    "presseomtale": "Press",
+    "roedme": "Redness",
+    "rosacea": "Rosacea",
+    "rynker": "Fine lines",
+    "sart_hud": "Delicate skin",
+    "sensitiv_hud": "Sensitive skin",
+    "solpaavirket_hud": "Sun-exposed skin",
+    "solskader": "Sun damage",
+    "spoergsmaal": "Questions",
+    "studie": "Study",
+    "studier": "Studies",
+    "test": "Test",
+    "toerre_foedder": "Dry feet",
+    "toerre_haender": "Dry hands",
+    "toerre_laeber": "Dry lips",
+    "toert_ansigt": "Dry face",
+    "uren_hud": "Blemish-prone skin",
+    "video": "Video"
+  },
+  "footer": {
+    "legal_line": "CVR {{ cvr }} · e-mærket · GMP and ISO certified"
   }
 }

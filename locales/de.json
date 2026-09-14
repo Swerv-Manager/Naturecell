@@ -61,7 +61,8 @@
     "all_cases_link": "Alle Kundenberichte",
     "all_articles": "Alle Artikel",
     "shop_routine": "Shoppen Sie genau diese Routine, einzeln oder das ganze Set mit einem Klick.",
-    "select_blog": "Wählen Sie den Kundenberichte-Blog in den Einstellungen des Abschnitts."
+    "select_blog": "Wählen Sie den Kundenberichte-Blog in den Einstellungen des Abschnitts.",
+    "newest": "Neueste"
   },
   "nav": {
     "shop": "Shop",
@@ -75,7 +76,8 @@
     "collections": "Kollektionen",
     "favorites": "Favoriten",
     "account": "Konto",
-    "cart": "Warenkorb"
+    "cart": "Warenkorb",
+    "faq": "Häufige Fragen"
   },
   "cart": {
     "empty": "Ihr Warenkorb ist leer",
@@ -233,5 +235,57 @@
   },
   "search": {
     "no_results": "Keine Ergebnisse für „{{ terms }}“. Versuchen Sie es mit einem anderen Suchbegriff."
+  },
+  "tags": {
+    "anmeldelser": "Bewertungen",
+    "ansigt": "Gesicht",
+    "bodylotion": "Bodylotion",
+    "cbd": "CBD",
+    "cbd_olie": "CBD Öl",
+    "collagen": "Kollagen",
+    "ekspert": "Experte",
+    "eye_gel": "Augengel",
+    "fodcreme": "Fußcreme",
+    "foedder": "Füße",
+    "forskning": "Forschung",
+    "haandcreme": "Handcreme",
+    "haar": "Haar",
+    "haender": "Hände",
+    "hudplejetips": "Hautpflegetipps",
+    "hudproblemer": "Hautprobleme",
+    "hyaluronsyre": "Hyaluronsäure",
+    "jaevn_og_flot_hud": "Ebenmäßige Haut",
+    "kollagenpulver": "Kollagenpulver",
+    "kosmetolog": "Kosmetikerin",
+    "krop": "Körper",
+    "kundecases": "Kundenberichte",
+    "lip_balm": "Lippenbalsam",
+    "ls": "LS",
+    "moden_hud": "Reife Haut",
+    "moerke_rander": "Augenringe",
+    "naturecell": "NatureCell",
+    "pigmenteringer": "Pigmentflecken",
+    "pigmentpletter": "Pigmentflecken",
+    "presseomtale": "Presse",
+    "roedme": "Rötungen",
+    "rosacea": "Rosacea",
+    "rynker": "Falten",
+    "sart_hud": "Zarte Haut",
+    "sensitiv_hud": "Sensible Haut",
+    "solpaavirket_hud": "Sonnengeschädigte Haut",
+    "solskader": "Sonnenschäden",
+    "spoergsmaal": "Fragen",
+    "studie": "Studie",
+    "studier": "Studien",
+    "test": "Test",
+    "toerre_foedder": "Trockene Füße",
+    "toerre_haender": "Trockene Hände",
+    "toerre_laeber": "Trockene Lippen",
+    "toert_ansigt": "Trockenes Gesicht",
+    "uren_hud": "Unreine Haut",
+    "video": "Video"
+  },
+  "footer": {
+    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- und ISO-zertifiziert"
   }
 }

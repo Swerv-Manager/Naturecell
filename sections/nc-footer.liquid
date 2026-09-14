@@ -183,7 +183,7 @@
   <div class="nc-footer__bottom-wrap">
     <div class="nc-container">
       <div class="nc-footer__bottom">
-        <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal_name }} · CVR {{ section.settings.cvr }} · e-mærket · GMP- & ISO-certificeret</span>
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal_name }} · {{ 'footer.legal_line' | t: cvr: section.settings.cvr }}</span>
         <p>{{ section.settings.compliance_text }}</p>
       </div>
     </div>

@@ -26,13 +26,13 @@
     assign lt = tag | downcase
     if area_label == blank
       if lt contains 'ansigt'
-        assign area_label = 'Ansigt'
+        assign area_label = 'areas.face' | t
       elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
-        assign area_label = 'Hænder'
+        assign area_label = 'areas.hands' | t
       elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
-        assign area_label = 'Fødder'
+        assign area_label = 'areas.feet' | t
       elsif lt == 'krop'
-        assign area_label = 'Krop'
+        assign area_label = 'areas.body' | t
       endif
       if area_label != blank
         assign area_tag = tag
@@ -206,7 +206,7 @@
           </a>
         </div>
         {%- if article.tags.first -%}
-          <p class="nc-art__eyebrow">{{ article.tags.first }}</p>
+          <p class="nc-art__eyebrow">{% render 'nc-tag-label', tag: article.tags.first %}</p>
         {%- endif -%}
         <h1 class="nc-art__title">{{ clean_title }}</h1>
         {%- if article.image -%}
@@ -236,7 +236,7 @@
       <div class="nc-art__tags">
         {%- for tag in article.tags limit: 6 -%}
           {%- if is_case and tag == area_tag -%}{%- continue -%}{%- endif -%}
-          <a class="nc-chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+          <a class="nc-chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
         {%- endfor -%}
       </div>
     {%- endif -%}
@@ -289,7 +289,7 @@
                       {{ a.image | image_url: width: 560 | image_tag: alt: a.title, loading: 'lazy' }}
                     {%- endif -%}
                     {%- if a.tags.first -%}
-                      <span class="nc-ccard__area">{{ a.tags.first }}</span>
+                      <span class="nc-ccard__area">{% render 'nc-tag-label', tag: a.tags.first %}</span>
                     {%- endif -%}
                   </span>
                   <h3 class="nc-ccard__title">{{ a.title | split: ' | ' | first }}</h3>

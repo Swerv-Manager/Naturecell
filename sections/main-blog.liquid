@@ -121,6 +121,7 @@
           <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}{{ 'blog.all_cases' | t }}{% else %}{{ 'general.all' | t }}{% endif %}</a>
           {%- if is_cases -%}
             {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
+            {%- assign area_keys = 'areas.face,areas.hands,areas.feet' | split: ',' -%}
             {%- for area in area_names -%}
               {%- assign area_dc = area | downcase -%}
               {%- assign chip_tag = '' -%}
@@ -136,11 +137,11 @@
               {%- if chip_tag == blank -%}
                 {%- assign chip_tag = area -%}
               {%- endif -%}
-              <a class="nc-blogidx__chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area }}</a>
+              <a class="nc-blogidx__chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area_keys[forloop.index0] | t }}</a>
             {%- endfor -%}
           {%- else -%}
             {%- for tag in blog.all_tags -%}
-              <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+              <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
             {%- endfor -%}
           {%- endif -%}
         </div>
@@ -162,7 +163,7 @@
             {%- endif -%}
           </span>
           <span class="nc-blogidx__feat-body">
-            <span class="nc-blogidx__feat-pill">Nyeste{% if feat.tags.first %} · {{ feat.tags.first }}{% endif %}</span>
+            <span class="nc-blogidx__feat-pill">{{ 'blog.newest' | t }}{% if feat.tags.first %} · {% render 'nc-tag-label', tag: feat.tags.first %}{% endif %}</span>
             <h2 class="nc-blogidx__feat-title">{{ feat.title | split: ' | ' | first }}</h2>
             <p class="nc-blogidx__feat-text">{{ feat.excerpt_or_content | strip_html | truncate: 320 }}</p>
             <span class="nc-blogidx__feat-more">{{ 'general.read_more' | t }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
@@ -183,13 +184,13 @@
             assign lt = tag | downcase
             if area_label == blank
               if lt contains 'ansigt'
-                assign area_label = 'Ansigt'
+                assign area_label = 'areas.face' | t
               elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
-                assign area_label = 'Hænder'
+                assign area_label = 'areas.hands' | t
               elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
-                assign area_label = 'Fødder'
+                assign area_label = 'areas.feet' | t
               elsif lt == 'krop'
-                assign area_label = 'Krop'
+                assign area_label = 'areas.body' | t
               endif
             endif
           endfor
@@ -218,7 +219,7 @@
                   <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.video' | t }}</span>
                 {%- endif -%}
               {%- elsif article.tags.first -%}
-                <span class="nc-bcard__tag">{{ article.tags.first }}</span>
+                <span class="nc-bcard__tag">{% render 'nc-tag-label', tag: article.tags.first %}</span>
               {%- endif -%}
             </span>
             <span class="nc-bcard__text">

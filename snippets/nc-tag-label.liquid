@@ -1,0 +1,15 @@
+{%- comment -%}
+  nc-tag-label: viser et artikel-tag paa kundens sprog.
+  Shopify kan ikke oversaette tags, saa kendte tags mappes til noegler under
+  "tags" i locales/*.json. Ukendte tags vises uaendret.
+  Brug: {% render 'nc-tag-label', tag: tag %}
+{%- endcomment -%}
+{%- liquid
+  assign norm = tag | downcase | replace: 'æ', 'ae' | replace: 'ø', 'oe' | replace: 'å', 'aa' | replace: ' ', '_' | replace: '-', '_'
+  assign key = 'tags.' | append: norm
+  assign label = key | t
+  if label contains 'ranslation missing' or label == blank
+    assign label = tag
+  endif
+  echo label
+-%}

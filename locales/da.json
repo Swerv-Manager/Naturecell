@@ -68,7 +68,8 @@
     "all_cases_link": "Alle kundecases",
     "all_articles": "Alle artikler",
     "shop_routine": "Shop præcis den rutine, enkeltvis, eller saml hele sættet med ét klik.",
-    "select_blog": "Vælg kundecases-bloggen i sektionens indstillinger."
+    "select_blog": "Vælg kundecases-bloggen i sektionens indstillinger.",
+    "newest": "Nyeste"
   },
   "nav": {
     "shop": "Shop",
@@ -82,7 +83,8 @@
     "collections": "Kollektioner",
     "favorites": "Favoritter",
     "account": "Konto",
-    "cart": "Kurv"
+    "cart": "Kurv",
+    "faq": "Ofte stillede spørgsmål"
   },
   "cart": {
     "empty": "Din kurv er tom",
@@ -233,5 +235,57 @@
   },
   "search": {
     "no_results": "Ingen resultater for \"{{ terms }}\". Prøv et andet søgeord."
+  },
+  "tags": {
+    "anmeldelser": "Anmeldelser",
+    "ansigt": "Ansigt",
+    "bodylotion": "Bodylotion",
+    "cbd": "CBD",
+    "cbd_olie": "CBD olie",
+    "collagen": "Collagen",
+    "ekspert": "Ekspert",
+    "eye_gel": "Eye Gel",
+    "fodcreme": "Fodcreme",
+    "foedder": "Fødder",
+    "forskning": "Forskning",
+    "haandcreme": "Håndcreme",
+    "haar": "Hår",
+    "haender": "Hænder",
+    "hudplejetips": "Hudplejetips",
+    "hudproblemer": "Hudproblemer",
+    "hyaluronsyre": "Hyaluronsyre",
+    "jaevn_og_flot_hud": "Jævn og flot hud",
+    "kollagenpulver": "Kollagenpulver",
+    "kosmetolog": "Kosmetolog",
+    "krop": "Krop",
+    "kundecases": "Kundecases",
+    "lip_balm": "Lip Balm",
+    "ls": "LS",
+    "moden_hud": "Moden hud",
+    "moerke_rander": "Mørke rander",
+    "naturecell": "NatureCell",
+    "pigmenteringer": "Pigmenteringer",
+    "pigmentpletter": "Pigmentpletter",
+    "presseomtale": "Presseomtale",
+    "roedme": "Rødme",
+    "rosacea": "Rosacea",
+    "rynker": "Rynker",
+    "sart_hud": "sart hud",
+    "sensitiv_hud": "Sensitiv hud",
+    "solpaavirket_hud": "Solpåvirket hud",
+    "solskader": "solskader",
+    "spoergsmaal": "Spørgsmål",
+    "studie": "Studie",
+    "studier": "studier",
+    "test": "Test",
+    "toerre_foedder": "tørre fødder",
+    "toerre_haender": "Tørre hænder",
+    "toerre_laeber": "Tørre Læber",
+    "toert_ansigt": "tørt ansigt",
+    "uren_hud": "uren hud",
+    "video": "Video"
+  },
+  "footer": {
+    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- & ISO-certificeret"
   }
 }

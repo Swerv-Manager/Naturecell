@@ -62,15 +62,20 @@
               {%- if article.image -%}
                 {{ article.image | image_url: width: 640 | image_tag: alt: article.title, loading: 'lazy' }}
               {%- endif -%}
-              {%- assign area_tag = '' -%}
+              {%- assign area_label = '' -%}
               {%- for tag in article.tags -%}
                 {%- assign lt = tag | downcase -%}
-                {%- if lt == 'ansigt' or lt == 'haender' or lt == 'hænder' or lt == 'foedder' or lt == 'fødder' or lt == 'krop' or lt == 'haar' or lt == 'hår' -%}
-                  {%- assign area_tag = tag -%}
+                {%- if area_label == blank -%}
+                  {%- if lt == 'ansigt' -%}{%- assign area_label = 'areas.face' | t -%}
+                  {%- elsif lt == 'haender' or lt == 'hænder' -%}{%- assign area_label = 'areas.hands' | t -%}
+                  {%- elsif lt == 'foedder' or lt == 'fødder' -%}{%- assign area_label = 'areas.feet' | t -%}
+                  {%- elsif lt == 'krop' -%}{%- assign area_label = 'areas.body' | t -%}
+                  {%- elsif lt == 'haar' or lt == 'hår' -%}{%- assign area_label = 'areas.hair' | t -%}
+                  {%- endif -%}
                 {%- endif -%}
               {%- endfor -%}
-              {%- if area_tag != blank -%}
-                <span class="nc-tag nc-case-card__area">{{ area_tag | replace: 'haender', 'Hænder' | replace: 'foedder', 'Fødder' | replace: 'haar', 'Hår' | capitalize }}</span>
+              {%- if area_label != blank -%}
+                <span class="nc-tag nc-case-card__area">{{ area_label }}</span>
               {%- endif -%}
               {%- if article.tags contains 'video' or article.content contains 'youtube' -%}
                 <span class="nc-case-card__play" aria-hidden="true">
