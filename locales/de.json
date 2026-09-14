@@ -59,11 +59,13 @@
     "empty_articles": "Keine Artikel passen zu Ihrer Suche.",
     "all_cases": "Alle Berichte",
     "all_cases_link": "Alle Kundenberichte",
-    "all_articles": "Alle Artikel"
+    "all_articles": "Alle Artikel",
+    "shop_routine": "Shoppen Sie genau diese Routine, einzeln oder das ganze Set mit einem Klick.",
+    "select_blog": "Wählen Sie den Kundenberichte-Blog in den Einstellungen des Abschnitts."
   },
   "nav": {
     "shop": "Shop",
-    "cases": "Kundengeschichten",
+    "cases": "Kundenberichte",
     "articles": "Artikel",
     "about": "Über uns",
     "club": "Kundenclub",

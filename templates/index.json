@@ -7,14 +7,24 @@
           "type": "product_slide",
           "settings": {
             "cta_url": "/collections/cbd-hudpleje",
-            "cta2_url": "/blogs/kundecases"
+            "cta2_url": "/blogs/kundecases",
+            "eyebrow": "Danmarks første godkendte CBD-hudpleje",
+            "heading": "Ægte pleje, til al slags hud",
+            "body": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser.",
+            "cta_text": "Shop nu →",
+            "cta2_text": "Se kundecases",
+            "trust_text": "<strong>4,8/5</strong> · 2.143 anmeldelser på Trustpilot"
           }
         },
         "slide2": {
           "type": "image_slide",
           "settings": {
             "cta_url": "/collections/cbd-hudpleje",
-            "fallback_asset": "nc-hero-botanik.jpg"
+            "fallback_asset": "nc-hero-botanik.jpg",
+            "eyebrow": "Plantebaseret & dansk",
+            "heading": "CBD i samspil med ren botanik",
+            "body": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume, udviklet og testet i Danmark.",
+            "cta_text": "Udforsk produkterne →"
           }
         },
         "slide3": {
@@ -32,7 +42,11 @@
           "type": "split_slide",
           "settings": {
             "cta_url": "/blogs/artikler/vores-oplevelse-i-lovens-hule",
-            "fallback_asset": "nc-hero-jesper-buch.jpg"
+            "fallback_asset": "nc-hero-jesper-buch.jpg",
+            "eyebrow": "Investering i Løvens Hule",
+            "heading": "Jesper Buch er trådt ind som investor",
+            "body": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg.",
+            "cta_text": "Læs historien →"
           }
         }
       },
@@ -83,7 +97,11 @@
       ]
     },
     "press": {
-      "type": "nc-press"
+      "type": "nc-press",
+      "settings": {
+        "eyebrow": "Omtalt i",
+        "names": "Berlingske, Politiken, Femina, Euroman, Costume, Børsen, Løvens Hule, ALT for damerne, Woman, Bo Bedre"
+      }
     },
     "shoptabs": {
       "type": "nc-shop-tabs",
@@ -210,24 +228,42 @@
         "n4",
         "n5",
         "n6"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Find det rigtige til dig",
+        "heading": "Shop efter område eller behov",
+        "subtext": "Vælg hvor du har brug for pleje, eller hvad din hud har brug for."
+      }
     },
     "lifestyle": {
-      "type": "nc-lifestyle"
+      "type": "nc-lifestyle",
+      "settings": {
+        "eyebrow": "Ægte ritualer",
+        "heading": "Et øjeblik for dig, hver dag",
+        "subtext": "Ægte hudpleje handler ikke kun om resultater, men om følelsen undervejs. Mærk teksturen, duften og roen, og gør plejen til dit daglige pusterum.",
+        "main_caption_eyebrow": "Se ritualet",
+        "main_caption_title": "Naturlig CBD-hudpleje"
+      }
     },
     "bestsellers": {
       "type": "nc-bestsellers",
       "settings": {
         "collection": "cbd-hudpleje",
         "limit": 8,
-        "link_text": "Se alle"
+        "link_text": "Se alle",
+        "eyebrow": "Mest elskede",
+        "heading": "Kundernes favoritter"
       }
     },
     "cases": {
       "type": "nc-cases-teaser",
       "settings": {
         "blog": "kundecases",
-        "limit": 10
+        "limit": 10,
+        "eyebrow": "Ægte oplevelser",
+        "heading": "Kundecases",
+        "subtext": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger.",
+        "link_text": "Se alle cases →"
       }
     },
     "testimonials": {
@@ -361,12 +397,23 @@
         "r12",
         "r13",
         "r14"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Anmeldelser",
+        "heading": "Det siger vores kunder",
+        "agg_text": "<strong>4,8</strong> ud af 5 · <strong>2.143</strong> anmeldelser"
+      }
     },
     "story": {
       "type": "nc-story",
       "settings": {
-        "cta_url": "/pages/om-os"
+        "cta_url": "/pages/om-os",
+        "eyebrow": "Vores historie",
+        "heading": "Danmarks første, og stadig drevet af én familie",
+        "body": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk produktion og rigtige resultater frem for løfter.",
+        "cta_text": "Læs vores historie →",
+        "caption_title": "Lizbeth Falk & Allan Gamborg",
+        "caption_sub": "Grundlæggere af NatureCell"
       },
       "blocks": {
         "s1": {

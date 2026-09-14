@@ -16,7 +16,8 @@
         "heading": "",
         "open_first": false,
         "list_style": true,
-        "note": "Fandt du ikke svar? Skriv til vores danske kundeservice, vi hjælper gerne 💚"
+        "note": "Fandt du ikke svar? Skriv til vores danske kundeservice, vi hjælper gerne 💚",
+        "links_label": "Populære søgninger"
       },
       "blocks": {
         "g1": {

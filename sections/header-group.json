@@ -5,7 +5,8 @@
     "header": {
       "type": "nc-header",
       "settings": {
-        "best_collection": "cbd-hudpleje"
+        "best_collection": "cbd-hudpleje",
+        "announcement": "Fri fragt over 399 kr. · Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje"
       },
       "blocks": {
         "area_ansigt": {

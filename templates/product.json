@@ -1,67 +1,391 @@
 {
   "sections": {
-    "main": { "type": "main-product", "settings": { "desc_open": false } },
-    "infographic": { "type": "nc-pdp-infographic" },
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "desc_open": false,
+        "back_label": "Tilbage til shop",
+        "badges": "cbd: 1000 mg CBD i 30 ml\nmoisture: Med MCT-olie\neasy: Absorberes hurtigt, fedter ikke",
+        "tiers_label": "Køb flere, spar mere",
+        "ticker_items": "Fri fragt over 399 kr. | M5 18H3V6h12v4 M14 9h4l3 3v6h-2 M7.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3 M17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3\nDansk produktion & test | M20 6 9 17l-5-5\nVegansk & plantebaseret | M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\ne-mærket webshop · tryg handel | M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z\n30 dages returret | M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5",
+        "usage_fallback": "Påfør på ren, tør hud morgen og/eller aften. Til udvortes brug. Undgå direkte kontakt med øjnene. Opbevares køligt og mørkt.",
+        "ingredients_fallback": "CBD (Cannabidiol), naturlige planteolier og botaniske ekstrakter. Vegansk. Uden tilsatte syntetiske duftstoffer."
+      }
+    },
+    "infographic": {
+      "type": "nc-pdp-infographic"
+    },
     "ingredients": {
       "type": "nc-pdp-ingredients",
       "blocks": {
-        "i1": { "type": "ingredient", "settings": { "name": "CBD", "purpose": "Balance", "fn": "Skin conditioning · antioxidant", "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_CBD_180x480px.jpg?v=1762184205" } },
-        "i2": { "type": "ingredient", "settings": { "name": "MCT-olie", "purpose": "Silkeblød", "fn": "Emollient", "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Caprylic_Capric_Triglyceride_180x480px.jpg?v=1762792242" } },
-        "i3": { "type": "ingredient", "settings": { "name": "Hampolie", "purpose": "Næring", "fn": "Skin conditioning", "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Cannabis_Sativa_Leaf_Extract_180x480px.jpg?v=1762792242" } },
-        "i4": { "type": "ingredient", "settings": { "name": "E-vitamin", "purpose": "Beskyttelse", "fn": "Antioxidant", "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Tocopherol_180x480px.jpg?v=1762792241" } }
+        "i1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "CBD",
+            "purpose": "Balance",
+            "fn": "Skin conditioning · antioxidant",
+            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_CBD_180x480px.jpg?v=1762184205"
+          }
+        },
+        "i2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "MCT-olie",
+            "purpose": "Silkeblød",
+            "fn": "Emollient",
+            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Caprylic_Capric_Triglyceride_180x480px.jpg?v=1762792242"
+          }
+        },
+        "i3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Hampolie",
+            "purpose": "Næring",
+            "fn": "Skin conditioning",
+            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Cannabis_Sativa_Leaf_Extract_180x480px.jpg?v=1762792242"
+          }
+        },
+        "i4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "E-vitamin",
+            "purpose": "Beskyttelse",
+            "fn": "Antioxidant",
+            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Tocopherol_180x480px.jpg?v=1762792241"
+          }
+        }
       },
-      "block_order": ["i1", "i2", "i3", "i4"]
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {
+        "eyebrow": "Hovedingredienser",
+        "heading": "Hvad der virker, og hvorfor",
+        "intro": "De vigtigste aktive ingredienser i [produkt], hver med sit tydelige formål for din hud.",
+        "button_label": "Udforsk alle ingredienser →"
+      }
     },
-    "related": { "type": "nc-related", "settings": { "pinned": ["dagcreme", "natcreme", "collagen", "rensegel", "handcreme"] } },
-    "story": { "type": "nc-pdp-story" },
-    "foundervideo": { "type": "nc-pdp-founder" },
+    "related": {
+      "type": "nc-related",
+      "settings": {
+        "pinned": [
+          "dagcreme",
+          "natcreme",
+          "collagen",
+          "rensegel",
+          "handcreme"
+        ],
+        "heading": "Passer godt sammen med"
+      }
+    },
+    "story": {
+      "type": "nc-pdp-story",
+      "settings": {
+        "eyebrow_1": "Derfor elsker vores kunder den",
+        "heading_1": "Skabt til [område]",
+        "eyebrow_2": "Sådan bruger du den",
+        "heading_2": "En enkel del af din daglige rutine",
+        "usage_fallback": "Påfør på ren hud morgen og/eller aften. Til udvortes brug. Opbevares køligt og mørkt."
+      }
+    },
+    "foundervideo": {
+      "type": "nc-pdp-founder",
+      "settings": {
+        "eyebrow": "Fra grundlæggeren",
+        "heading": "Se [produkt] i brug",
+        "poster_alt": "Lizbeth fra NatureCell",
+        "pill": "Video kommer snart"
+      }
+    },
     "videos": {
       "type": "nc-video-rail",
       "blocks": {
-        "v1": { "type": "video", "settings": { "name": "Mette", "youtube_id": "VRJSZeNlCoQ" } },
-        "v2": { "type": "video", "settings": { "name": "Christian", "youtube_id": "RHGezLkTcO8" } },
-        "v3": { "type": "video", "settings": { "name": "Astrid", "youtube_id": "7_Bpx7LJIGc" } },
-        "v4": { "type": "video", "settings": { "name": "Vivi", "youtube_id": "HwVoEwGZmyc" } }
+        "v1": {
+          "type": "video",
+          "settings": {
+            "name": "Mette",
+            "youtube_id": "VRJSZeNlCoQ"
+          }
+        },
+        "v2": {
+          "type": "video",
+          "settings": {
+            "name": "Christian",
+            "youtube_id": "RHGezLkTcO8"
+          }
+        },
+        "v3": {
+          "type": "video",
+          "settings": {
+            "name": "Astrid",
+            "youtube_id": "7_Bpx7LJIGc"
+          }
+        },
+        "v4": {
+          "type": "video",
+          "settings": {
+            "name": "Vivi",
+            "youtube_id": "HwVoEwGZmyc"
+          }
+        }
       },
-      "block_order": ["v1", "v2", "v3", "v4"]
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "settings": {
+        "heading": "47.800+ danskere elsker NatureCell",
+        "note": "94% vil anbefale os til en ven"
+      }
     },
-    "ambassador": { "type": "nc-pdp-ambassador" },
+    "ambassador": {
+      "type": "nc-pdp-ambassador",
+      "settings": {
+        "pill": "Ambassadør",
+        "heading": "\"Min hud fortjener ærlige produkter\"",
+        "body": "Jeg vil vide, hvad jeg smører på min hud. Det, jeg holder af ved NatureCell, er åbenheden, plantebaseret, dansk produceret og testet, uden store løfter. Det er blevet en fast del af min daglige rutine.",
+        "name": "Camilla Holm",
+        "role": "Hudplejeentusiast"
+      }
+    },
     "reviews": {
       "type": "nc-pdp-reviews",
       "blocks": {
-        "r1": { "type": "review", "settings": { "name": "Mette K.", "meta": "Verificeret køb", "text": "Jeg er så glad for [produkt]. Den er blevet helt fast i min rutine." } },
-        "r2": { "type": "review", "settings": { "name": "Anders L.", "meta": "Verificeret køb", "text": "Mærkbar forskel efter et par uger. Ingen parfume, bare god pleje." } },
-        "r3": { "type": "review", "settings": { "name": "Sofie R.", "meta": "Verificeret køb", "text": "Dejlig konsistens og trækker hurtigt ind. Præcis hvad jeg søgte." } },
-        "r4": { "type": "review", "settings": { "name": "Camilla B.", "meta": "Verificeret køb", "text": "God kvalitet, tryg dansk handel og hurtig levering. Køber igen." } },
-        "r5": { "type": "review", "settings": { "name": "Henrik J.", "meta": "Verificeret køb", "text": "Min hud føles mere rolig og velplejet. Helt klart pengene værd." } },
-        "r6": { "type": "review", "settings": { "name": "Pia M.", "meta": "Verificeret køb", "text": "Bruger den hver dag nu. En fast del af min morgenrutine." } },
-        "r7": { "type": "review", "settings": { "name": "Lars P.", "meta": "Verificeret køb", "text": "Skøn dansk kvalitet. Man kan mærke, der er tænkt over ingredienserne." } },
-        "r8": { "type": "review", "settings": { "name": "Rikke S.", "meta": "Verificeret køb", "text": "Lige det min hud manglede. Føles nærende uden at være fedtet." } },
-        "r9": { "type": "review", "settings": { "name": "Bente A.", "meta": "Verificeret køb", "text": "Efter et par uger ser huden mere ensartet ud. Meget tilfreds." } },
-        "r10": { "type": "review", "settings": { "name": "Thomas E.", "meta": "Verificeret køb", "text": "Tryg handel, hurtig levering og et produkt der holder, hvad det lover." } },
-        "r11": { "type": "review", "settings": { "name": "Julie N.", "meta": "Verificeret køb", "text": "Min nye favorit. Mild og behagelig på huden hver dag." } },
-        "r12": { "type": "review", "settings": { "name": "Karin B.", "meta": "Verificeret køb", "text": "Jeg har kun godt at sige. Huden føles blød og velplejet." } },
-        "r13": { "type": "review", "settings": { "name": "Emma D.", "meta": "Verificeret køb", "text": "Let konsistens der trækker hurtigt ind. Ingen klistret følelse." } },
-        "r14": { "type": "review", "settings": { "name": "Jan F.", "meta": "Verificeret køb", "text": "Har gjort en forskel for min hud. Rigtig god kvalitet." } }
+        "r1": {
+          "type": "review",
+          "settings": {
+            "name": "Mette K.",
+            "meta": "Verificeret køb",
+            "text": "Jeg er så glad for [produkt]. Den er blevet helt fast i min rutine."
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "name": "Anders L.",
+            "meta": "Verificeret køb",
+            "text": "Mærkbar forskel efter et par uger. Ingen parfume, bare god pleje."
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "name": "Sofie R.",
+            "meta": "Verificeret køb",
+            "text": "Dejlig konsistens og trækker hurtigt ind. Præcis hvad jeg søgte."
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "name": "Camilla B.",
+            "meta": "Verificeret køb",
+            "text": "God kvalitet, tryg dansk handel og hurtig levering. Køber igen."
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "name": "Henrik J.",
+            "meta": "Verificeret køb",
+            "text": "Min hud føles mere rolig og velplejet. Helt klart pengene værd."
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "name": "Pia M.",
+            "meta": "Verificeret køb",
+            "text": "Bruger den hver dag nu. En fast del af min morgenrutine."
+          }
+        },
+        "r7": {
+          "type": "review",
+          "settings": {
+            "name": "Lars P.",
+            "meta": "Verificeret køb",
+            "text": "Skøn dansk kvalitet. Man kan mærke, der er tænkt over ingredienserne."
+          }
+        },
+        "r8": {
+          "type": "review",
+          "settings": {
+            "name": "Rikke S.",
+            "meta": "Verificeret køb",
+            "text": "Lige det min hud manglede. Føles nærende uden at være fedtet."
+          }
+        },
+        "r9": {
+          "type": "review",
+          "settings": {
+            "name": "Bente A.",
+            "meta": "Verificeret køb",
+            "text": "Efter et par uger ser huden mere ensartet ud. Meget tilfreds."
+          }
+        },
+        "r10": {
+          "type": "review",
+          "settings": {
+            "name": "Thomas E.",
+            "meta": "Verificeret køb",
+            "text": "Tryg handel, hurtig levering og et produkt der holder, hvad det lover."
+          }
+        },
+        "r11": {
+          "type": "review",
+          "settings": {
+            "name": "Julie N.",
+            "meta": "Verificeret køb",
+            "text": "Min nye favorit. Mild og behagelig på huden hver dag."
+          }
+        },
+        "r12": {
+          "type": "review",
+          "settings": {
+            "name": "Karin B.",
+            "meta": "Verificeret køb",
+            "text": "Jeg har kun godt at sige. Huden føles blød og velplejet."
+          }
+        },
+        "r13": {
+          "type": "review",
+          "settings": {
+            "name": "Emma D.",
+            "meta": "Verificeret køb",
+            "text": "Let konsistens der trækker hurtigt ind. Ingen klistret følelse."
+          }
+        },
+        "r14": {
+          "type": "review",
+          "settings": {
+            "name": "Jan F.",
+            "meta": "Verificeret køb",
+            "text": "Har gjort en forskel for min hud. Rigtig god kvalitet."
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13", "r14"]
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8",
+        "r9",
+        "r10",
+        "r11",
+        "r12",
+        "r13",
+        "r14"
+      ],
+      "settings": {
+        "heading": "Hvad kunderne siger"
+      }
     },
     "faq": {
       "type": "nc-faq",
-      "settings": { "eyebrow": "", "heading": "Ofte stillede spørgsmål", "open_first": true, "display_style": true },
-      "blocks": {
-        "q1": { "type": "qa", "settings": { "q": "Hvordan bruger jeg hudplejeolien?", "a": "<p>Et par dråber i håndfladen, varm den mellem hænderne og tryk den ind i huden som sidste trin, morgen, aften eller kun om aftenen. Du kan også blande en dråbe i din creme.</p>" } },
-        "q2": { "type": "qa", "settings": { "q": "Bliver huden fedtet af olien?", "a": "<p>Nej. Olien er let og trækker relativt hurtigt ind. Start med få dråber og justér efter, hvad din hud kan optage.</p>" } },
-        "q3": { "type": "qa", "settings": { "q": "Hvad betyder 1000 mg?", "a": "<p>Det angiver mængden af CBD i flasken. Alle partier testes, og analysecertifikat findes pr. parti.</p>" } },
-        "q4": { "type": "qa", "settings": { "q": "Passer [produkt] til min hudtype?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning og passer til tør, fedtet, kombineret, moden, sensitiv og uren hud. Er din hud meget reaktiv, så start med ét produkt ad gangen.</p>" } },
-        "q5": { "type": "qa", "settings": { "q": "Er produktet vegansk og uden parfume?", "a": "<p>Ja. Vores produkter er veganske og uden tilsatte syntetiske duftstoffer, duften kommer alene fra de naturlige ingredienser.</p>" } },
-        "q6": { "type": "qa", "settings": { "q": "Hvor produceres det?", "a": "<p>Det udvikles og produceres på GMP- og ISO-certificerede faciliteter i Danmark.</p>" } },
-        "q7": { "type": "qa", "settings": { "q": "Hvor hurtigt ser jeg resultater?", "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler, du kan læse rigtige kunders egne oplevelser under kundecases.</p>" } },
-        "q8": { "type": "qa", "settings": { "q": "Hvordan opbevarer jeg det?", "a": "<p>Køligt og mørkt, og luk godt efter brug. Produktet er til udvortes brug.</p>" } },
-        "q9": { "type": "qa", "settings": { "q": "Hvad koster fragt, og kan jeg returnere?", "a": "<p>Fri fragt ved køb over 399 kr. Du har 30 dages returret på uåbnede varer.</p>" } }
+      "settings": {
+        "eyebrow": "",
+        "heading": "Ofte stillede spørgsmål",
+        "open_first": true,
+        "display_style": true,
+        "links_label": "Populære søgninger"
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"]
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvordan bruger jeg hudplejeolien?",
+            "a": "<p>Et par dråber i håndfladen, varm den mellem hænderne og tryk den ind i huden som sidste trin, morgen, aften eller kun om aftenen. Du kan også blande en dråbe i din creme.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "q": "Bliver huden fedtet af olien?",
+            "a": "<p>Nej. Olien er let og trækker relativt hurtigt ind. Start med få dråber og justér efter, hvad din hud kan optage.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad betyder 1000 mg?",
+            "a": "<p>Det angiver mængden af CBD i flasken. Alle partier testes, og analysecertifikat findes pr. parti.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "q": "Passer [produkt] til min hudtype?",
+            "a": "<p>Serien er tænkt som en one-size-fits-all løsning og passer til tør, fedtet, kombineret, moden, sensitiv og uren hud. Er din hud meget reaktiv, så start med ét produkt ad gangen.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "q": "Er produktet vegansk og uden parfume?",
+            "a": "<p>Ja. Vores produkter er veganske og uden tilsatte syntetiske duftstoffer, duften kommer alene fra de naturlige ingredienser.</p>"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvor produceres det?",
+            "a": "<p>Det udvikles og produceres på GMP- og ISO-certificerede faciliteter i Danmark.</p>"
+          }
+        },
+        "q7": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvor hurtigt ser jeg resultater?",
+            "a": "<p>Det varierer fra person til person. Mange oplever en mere velplejet hud efter nogle ugers fast rutine. Vi lover ikke mirakler, du kan læse rigtige kunders egne oplevelser under kundecases.</p>"
+          }
+        },
+        "q8": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvordan opbevarer jeg det?",
+            "a": "<p>Køligt og mørkt, og luk godt efter brug. Produktet er til udvortes brug.</p>"
+          }
+        },
+        "q9": {
+          "type": "qa",
+          "settings": {
+            "q": "Hvad koster fragt, og kan jeg returnere?",
+            "a": "<p>Fri fragt ved køb over 399 kr. Du har 30 dages returret på uåbnede varer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8",
+        "q9"
+      ]
     }
   },
-  "order": ["main", "infographic", "ingredients", "related", "story", "foundervideo", "videos", "ambassador", "reviews", "faq"]
+  "order": [
+    "main",
+    "infographic",
+    "ingredients",
+    "related",
+    "story",
+    "foundervideo",
+    "videos",
+    "ambassador",
+    "reviews",
+    "faq"
+  ]
 }

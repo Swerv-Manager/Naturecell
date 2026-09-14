@@ -59,7 +59,9 @@
     "empty_articles": "No articles match your search.",
     "all_cases": "All cases",
     "all_cases_link": "All customer cases",
-    "all_articles": "All articles"
+    "all_articles": "All articles",
+    "shop_routine": "Shop that exact routine, individually or the whole set in one click.",
+    "select_blog": "Select the customer stories blog in the section settings."
   },
   "nav": {
     "shop": "Shop",

@@ -75,7 +75,21 @@
         "step-2",
         "step-3",
         "yotpo"
-      ]
+      ],
+      "settings": {
+        "hero_eyebrow": "Bliv medlem · Gratis",
+        "hero_heading": "NatureCell Kundeklub",
+        "hero_text": "Bliv en del af klubben og få mere ud af din hudpleje. Optjen point på hvert køb, få 10% velkomstrabat, en fødselsdagsgave og tidlig adgang til nyheder og medlemspriser.",
+        "hero_cta1": "Bliv medlem →",
+        "hero_cta2": "Allerede medlem? Log ind",
+        "perks_eyebrow": "Medlemsfordele",
+        "perks_heading": "Fordele der plejer dig",
+        "steps_heading": "Sådan virker det",
+        "cta_heading": "Meld dig ind på 30 sekunder",
+        "cta_text": "Tilmeld dig med din e-mail og få 10% på din første ordre med det samme.",
+        "cta_button": "Bliv medlem",
+        "cta_fine": "Gratis medlemskab · afmeld når som helst · vi deler ikke dine data."
+      }
     }
   },
   "order": [

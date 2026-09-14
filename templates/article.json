@@ -1,8 +1,13 @@
 {
   "sections": {
     "main": {
-      "type": "main-article"
+      "type": "main-article",
+      "settings": {
+        "cta_label": "Læs hele artiklen på naturecell.dk"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

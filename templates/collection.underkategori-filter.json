@@ -1,7 +1,16 @@
 {
   "sections": {
     "main": {
-      "type": "main-collection"
+      "type": "main-collection",
+      "settings": {
+        "search_placeholder": "Søg på produkt, ingrediens, behov …",
+        "chips_label": "Område",
+        "chips": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje\nIntim | /collections/cbd-hudpleje/intim",
+        "need_label": "Behov",
+        "need_chips": "Tør hud | /collections/cbd-hudpleje/tor-hud\nFugt | /collections/cbd-hudpleje/fugt\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nUren hud | /collections/cbd-hudpleje/uren-hud\nGenopbygning | /collections/cbd-hudpleje/genopbygning",
+        "sort_label": "Sortiment",
+        "sort_chips": "Hele sortimentet | /collections/cbd-hudpleje\n♂ Herre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+      }
     },
     "seo": {
       "type": "nc-seo-text",
