@@ -45,7 +45,7 @@
           {%- endfor -%}
         </div>
         {%- if section.settings.cta_text != blank -%}
-          <a class="nc-btn nc-btn--primary nc-story__cta" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+          <a class="nc-btn nc-btn--primary nc-story__cta" href="{% render 'nc-url', url: section.settings.cta_url %}">{{ section.settings.cta_text }}</a>
         {%- endif -%}
       </div>
       <div class="nc-story__media">

@@ -42,7 +42,7 @@
         <p>{{ section.settings.text }}</p>
       {%- endif -%}
       {%- if section.settings.cta_text != blank -%}
-        <a class="nc-btn nc-btn--light" href="{{ section.settings.cta_url | default: '/collections/cbd-hudpleje' }}">{{ section.settings.cta_text }}</a>
+        <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta_text }}</a>
       {%- endif -%}
     </div>
   </div>

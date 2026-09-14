@@ -88,10 +88,10 @@
                 <p class="nc-hero__body">{{ block.settings.body }}</p>
                 <div class="nc-hero__ctas">
                   {%- if block.settings.cta_text != blank -%}
-                    <a class="nc-btn nc-btn--light" href="{{ block.settings.cta_url }}">{{ block.settings.cta_text }}</a>
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a>
                   {%- endif -%}
                   {%- if block.settings.cta2_text != blank -%}
-                    <a class="nc-btn nc-btn--outline-light" href="{{ block.settings.cta2_url }}">{{ block.settings.cta2_text }}</a>
+                    <a class="nc-btn nc-btn--outline-light" href="{% render 'nc-url', url: block.settings.cta2_url %}">{{ block.settings.cta2_text }}</a>
                   {%- endif -%}
                 </div>
                 {%- if block.settings.trust_text != blank -%}
@@ -130,7 +130,7 @@
               <h2 class="nc-hero__h2">{{ block.settings.heading }}</h2>
               <p class="nc-hero__body">{{ block.settings.body }}</p>
               {%- if block.settings.cta_text != blank -%}
-                <div><a class="nc-btn nc-btn--light" href="{{ block.settings.cta_url }}">{{ block.settings.cta_text }}</a></div>
+                <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a></div>
               {%- endif -%}
             </div>
           </div>
@@ -144,7 +144,7 @@
                 <p class="nc-hero__body">{{ block.settings.body }}</p>
                 {%- if block.settings.cta_text != blank -%}
                   <div class="nc-hero__ctas">
-                    <a class="nc-btn nc-btn--light" href="{{ block.settings.cta_url }}">{{ block.settings.cta_text }}</a>
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a>
                   </div>
                 {%- endif -%}
               </div>

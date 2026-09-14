@@ -76,7 +76,7 @@
               <h3>{{ block.settings.title }}</h3>
               <p>{{ block.settings.text }}</p>
               {%- if block.settings.url != blank -%}
-                <a class="nc-tl__link" href="{{ block.settings.url }}">
+                <a class="nc-tl__link" href="{% render 'nc-url', url: block.settings.url %}">
                   {{ 'general.read_more' | t }}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
                 </a>
@@ -89,7 +89,7 @@
 
     {%- if section.settings.cta_text != blank -%}
       <div class="nc-tl__cta">
-        <a class="nc-btn nc-btn--sage" href="{{ section.settings.cta_url | default: '/collections/cbd-hudpleje' }}">{{ section.settings.cta_text }}</a>
+        <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta_text }}</a>
       </div>
     {%- endif -%}
   </div>

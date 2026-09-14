@@ -203,22 +203,22 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </button>
           </li>
-          <li><a class="nc-header__link" href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">{{ 'nav.cases' | t }}</a></li>
-          <li><a class="nc-header__link" href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">{{ 'nav.articles' | t }}</a></li>
+          <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a></li>
+          <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a></li>
           <li class="nc-dd">
-            <a class="nc-header__link" href="{{ section.settings.about_url | default: '/pages/om-os' }}" aria-haspopup="true">
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}" aria-haspopup="true">
               {{ 'nav.about' | t }}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </a>
             <div class="nc-dd__panel">
-              <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">{{ 'nav.our_story' | t }}</a>
-              <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">{{ 'nav.about_cbd' | t }}</a>
-              <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">{{ 'nav.ingredients' | t }}</a>
-              <a href="{{ section.settings.faq_url | default: '/pages/faq' }}">{{ 'nav.faq' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.our_story' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{{ 'nav.about_cbd' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
             </div>
           </li>
           <li>
-            <a class="nc-header__link" href="{{ section.settings.kundeklub_url | default: '/pages/kundeklub' }}">
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">
               <span class="nc-header__star" aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
               </span>
@@ -242,7 +242,7 @@
         <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </a>
-        <a class="nc-header__action nc-header__action--sm" href="{{ section.settings.favorites_url | default: '/pages/favoritter' }}" aria-label="{{ 'nav.favorites' | t }}">
+        <a class="nc-header__action nc-header__action--sm" href="{% render 'nc-url', url: section.settings.favorites_url, fallback: '/pages/favoritter' %}" aria-label="{{ 'nav.favorites' | t }}">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
           <span class="nc-header__count is-empty" data-nc-fav-count aria-hidden="true">0</span>
         </a>
@@ -272,7 +272,7 @@
           <div class="nc-mega__grid">
             {%- for block in section.blocks -%}
               {%- if block.type == 'area' -%}
-                <a class="nc-mega__card" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
                   <span class="nc-mega__media">
                     {%- if block.settings.image != blank -%}
                       {{ block.settings.image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
@@ -294,7 +294,7 @@
           <div class="nc-mega__grid">
             {%- for block in section.blocks -%}
               {%- if block.type == 'need' -%}
-                <a class="nc-mega__card" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
                   <span class="nc-mega__media">
                     {%- if block.settings.image != blank -%}
                       {{ block.settings.image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
@@ -332,7 +332,7 @@
         </div>
 
         <div class="nc-mega__foot">
-          <a class="nc-btn nc-btn--outline" href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'general.view_all_products_arrow' | t }}</a>
+          <a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'general.view_all_products_arrow' | t }}</a>
         </div>
       </div>
     </div>
@@ -353,21 +353,21 @@
       </button>
     </div>
     <nav aria-label="{{ 'general.mobile_menu' | t }}">
-      <a href="{{ section.settings.all_url | default: '/collections/cbd-hudpleje' }}">{{ 'nav.shop' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>
       <div class="nc-mobilenav__sub">
         {%- for block in section.blocks -%}
           {%- if block.type == 'area' -%}
-            <a href="{{ block.settings.url }}">{{ block.settings.label }}</a>
+            <a href="{% render 'nc-url', url: block.settings.url %}">{{ block.settings.label }}</a>
           {%- endif -%}
         {%- endfor -%}
       </div>
-      <a href="{{ section.settings.cases_url | default: '/blogs/kundecases' }}">{{ 'nav.cases' | t }}</a>
-      <a href="{{ section.settings.articles_url | default: '/blogs/artikler' }}">{{ 'nav.articles' | t }}</a>
-      <a href="{{ section.settings.about_url | default: '/pages/om-os' }}">{{ 'nav.about' | t }}</a>
-      <a href="{{ section.settings.omcbd_url | default: '/pages/om-cbd' }}">{{ 'nav.about_cbd' | t }}</a>
-      <a href="{{ section.settings.ingredients_url | default: '/pages/ingredienser' }}">{{ 'nav.ingredients' | t }}</a>
-      <a href="{{ section.settings.kundeklub_url | default: '/pages/kundeklub' }}">{{ 'nav.club' | t }}</a>
-      <a href="{{ section.settings.faq_url | default: '/pages/faq' }}">{{ 'nav.faq' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.about' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{{ 'nav.about_cbd' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">{{ 'nav.club' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
     </nav>
   </div>
 </div>

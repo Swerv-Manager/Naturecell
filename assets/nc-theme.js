@@ -8,14 +8,14 @@
 (function () {
   'use strict';
 
-  var FREE_SHIP = 39900; // oere
+  /* Sprogbevidst rod: paa /de/ er Shopify.routes.root '/de/'. Alle kald og
+     redirects skal bruge den, ellers falder kunden tilbage til dansk indhold,
+     og kurv-/produktsvar kommer retur paa forkert sprog. */
+  var NC_ROOT = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+  function ncUrl(path) { return NC_ROOT + String(path).replace(/^\/+/, ''); }
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-  function fmtKr(cents) {
-    var n = Math.round(cents / 100);
-    return n.toLocaleString('da-DK') + ' kr.';
-  }
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* --- Karrusel (hero) --- */
@@ -143,7 +143,7 @@
   window.ncRefreshCart = function (open) { return refreshCart(open); };
 
   function refreshCart(open) {
-    return fetch(window.Shopify && window.Shopify.routes ? window.Shopify.routes.root + '?sections=nc-cart-drawer' : '/?sections=nc-cart-drawer')
+    return fetch(ncUrl('?sections=nc-cart-drawer'))
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var html = data['nc-cart-drawer'];
@@ -157,7 +157,7 @@
           cur.innerHTML = fresh.innerHTML;
           if (wasOpen || open) openDrawer();
         }
-        return fetch('/cart.js').then(function (r) { return r.json(); }).then(function (cart) {
+        return fetch(ncUrl('/cart.js')).then(function (r) { return r.json(); }).then(function (cart) {
           $all('[data-nc-cart-count]').forEach(function (el) { el.textContent = cart.item_count; });
         });
       })
@@ -183,14 +183,14 @@
       var qty = parseInt(add.getAttribute('data-nc-qty') || '1', 10);
       if (!vid) return;
       add.classList.add('is-busy');
-      fetch('/cart/add.js', {
+      fetch(ncUrl('/cart/add.js'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ id: parseInt(vid, 10), quantity: qty }),
       })
         .then(function (r) { if (!r.ok) throw new Error('add failed'); return r.json(); })
         .then(function () { return refreshCart(true); })
-        .catch(function () { window.location.href = '/cart'; })
+        .catch(function () { window.location.href = ncUrl('/cart'); })
         .then(function () { add.classList.remove('is-busy'); });
       return;
     }
@@ -200,7 +200,7 @@
       e.preventDefault();
       var key = lineBtn.getAttribute('data-nc-line');
       var q = parseInt(lineBtn.getAttribute('data-nc-line-qty'), 10);
-      fetch('/cart/change.js', {
+      fetch(ncUrl('/cart/change.js'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ id: key, quantity: q }),
@@ -221,7 +221,7 @@
     var code = input && input.value.trim();
     if (!code) return;
     var back = window.location.pathname + window.location.search + '#nc-cart-discount';
-    window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=' + encodeURIComponent(back);
+    window.location.href = ncUrl('/discount/' + encodeURIComponent(code)) + '?redirect=' + encodeURIComponent(back);
   });
   if (window.location.hash === '#nc-cart-discount') {
     refreshCart(true).then(function () {
@@ -238,7 +238,7 @@
       var fd = new FormData(form);
       var btn = form.querySelector('[type="submit"]');
       if (btn) btn.classList.add('is-busy');
-      fetch('/cart/add.js', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } })
+      fetch(ncUrl('/cart/add.js'), { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } })
         .then(function (r) { if (!r.ok) throw new Error('add failed'); return r.json(); })
         .then(function () { return refreshCart(true); })
         .catch(function () { form.submit(); })
@@ -321,7 +321,7 @@
     } else {
       if (empty) empty.hidden = true;
       list.forEach(function (h) {
-        fetch('/products/' + h + '?view=nc-card')
+        fetch(ncUrl('/products/' + h + '?view=nc-card'))
           .then(function (r) { if (!r.ok) throw new Error('nope'); return r.text(); })
           .then(function (html) {
             var d = document.createElement('li');

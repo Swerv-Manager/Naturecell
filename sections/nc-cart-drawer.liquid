@@ -65,7 +65,9 @@
   .nc-drawer__note { margin: 6px 0 0; text-align: center; font-size: 12px; color: var(--ink-400); }
 {%- endstyle -%}
 
-{%- assign free_limit = 39900 -%}
+{%- comment -%} Graensen er i oere/cent. Beloebet er markedets valuta, saa den
+   skal saettes om, hvis et marked handler i euro. {%- endcomment -%}
+{%- assign free_limit = section.settings.free_limit | default: 39900 -%}
 {%- assign pct = cart.total_price | times: 100 | divided_by: free_limit -%}
 {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 
@@ -135,7 +137,7 @@
           </div>
         {%- endfor -%}
 
-        <form class="nc-drawer__code" data-nc-discount action="/discount" method="get">
+        <form class="nc-drawer__code" data-nc-discount action="{% render 'nc-url', url: '/discount' %}" method="get">
           <label class="nc-visually-hidden" for="nc-drawer-code">{{ 'cart.discount_code' | t }}</label>
           <input id="nc-drawer-code" type="text" name="code" placeholder="{{ 'cart.discount_code' | t }}" autocomplete="off" autocapitalize="characters">
           <button type="submit">{{ 'cart.apply' | t }}</button>
@@ -161,7 +163,7 @@
       <div class="nc-drawer__empty">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <p>{{ 'cart.empty' | t }}</p>
-        <a href="/collections/cbd-hudpleje" data-nc-cart-close>{{ 'cart.shop' | t }}</a>
+        <a href="{% render 'nc-url', url: '/collections/cbd-hudpleje' %}" data-nc-cart-close>{{ 'cart.shop' | t }}</a>
       </div>
     {%- endif -%}
   </div>
@@ -170,6 +172,14 @@
 {% schema %}
 {
   "name": "Kurv-skuffe",
-  "settings": []
+  "settings": [
+    {
+      "type": "number",
+      "id": "free_limit",
+      "label": "Graense for fri fragt",
+      "info": "I oere/cent i markedets egen valuta. 39900 = 399 kr. Et euro-marked skal have sit eget beloeb.",
+      "default": 39900
+    }
+  ]
 }
 {% endschema %}

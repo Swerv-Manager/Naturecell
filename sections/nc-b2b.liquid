@@ -82,7 +82,7 @@
     <div class="nc-b2b__divider" role="presentation"></div>
     <div class="nc-b2b__apply">
       <span>{{ section.settings.apply_text }}</span>
-      <a href="{{ section.settings.apply_url | default: '#b2b-ansoegning' }}">{{ section.settings.apply_label }}</a>
+      <a href="{% render 'nc-url', url: section.settings.apply_url, fallback: '#b2b-ansoegning' %}">{{ section.settings.apply_label }}</a>
     </div>
   </div>
 </section>

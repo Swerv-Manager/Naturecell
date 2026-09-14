@@ -1,0 +1,38 @@
+{%- comment -%}
+  nc-url: goer en URL fra temaets indstillinger sprogbevidst.
+
+  Shopify saetter selv sprogpraefikset paa objekt-URLs (product.url, collection.url,
+  blog.url, routes.* og link.url fra en menu), men IKKE paa URLs der er skrevet ind
+  i en sektionsindstilling. Paa /de/ sender saadan et link kunden tilbage til den
+  danske version. Denne snippet saetter praefikset paa.
+
+  Uroert bliver: absolutte URLs (https://, //), mailto/tel, ankre (#...) og URLs
+  der allerede har praefikset. Snippet'en er derfor idempotent.
+
+  Brug:
+    href="{% render 'nc-url', url: section.settings.cta_url %}"
+    href="{% render 'nc-url', url: block.settings.link, fallback: '/collections/cbd-hudpleje' %}"
+{%- endcomment -%}
+{%- liquid
+  assign nc_u = url | default: fallback | strip
+  assign nc_root = routes.root_url
+  assign nc_out = nc_u
+
+  if nc_u != blank and nc_root != '/'
+    assign nc_head1 = nc_u | slice: 0, 1
+    assign nc_head2 = nc_u | slice: 0, 2
+    if nc_head1 == '/' and nc_head2 != '//'
+      assign nc_len = nc_root | size
+      assign nc_pre = nc_u | slice: 0, nc_len
+      assign nc_next = nc_u | slice: nc_len, 1
+      if nc_pre == nc_root and nc_next == blank
+        assign nc_out = nc_u
+      elsif nc_pre == nc_root and nc_next == '/'
+        assign nc_out = nc_u
+      else
+        assign nc_out = nc_root | append: nc_u
+      endif
+    endif
+  endif
+  echo nc_out
+-%}

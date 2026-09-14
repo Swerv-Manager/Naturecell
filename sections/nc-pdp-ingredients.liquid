@@ -36,11 +36,11 @@
         <h2>{{ section.settings.heading }}</h2>
         <p>{{ section.settings.intro | replace: '[produkt]', product.title }}</p>
       </div>
-      <a class="nc-pdping__btn" href="{{ section.settings.button_url }}">{{ section.settings.button_label }}</a>
+      <a class="nc-pdping__btn" href="{% render 'nc-url', url: section.settings.button_url %}">{{ section.settings.button_label }}</a>
     </div>
     <div class="nc-pdping__rail">
       {%- for block in section.blocks -%}
-        <a class="nc-pdping__card" href="{{ section.settings.button_url }}#ing-{{ block.settings.name | handleize }}" {{ block.shopify_attributes }}>
+        <a class="nc-pdping__card" href="{% render 'nc-url', url: section.settings.button_url %}#ing-{{ block.settings.name | handleize }}" {{ block.shopify_attributes }}>
           <span class="nc-pdping__media">
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 480 | image_tag: alt: block.settings.name, loading: 'lazy' }}

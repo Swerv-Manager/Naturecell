@@ -44,7 +44,7 @@
       <div class="nc-shoptabs__grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'area' -%}
-            <a class="nc-shoptabs__card" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+            <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
               <span class="nc-shoptabs__media">
                 {%- if block.settings.image != blank -%}
                   {{ block.settings.image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}
@@ -66,7 +66,7 @@
       <div class="nc-shoptabs__grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'need' -%}
-            <a class="nc-shoptabs__card" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+            <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
               <span class="nc-shoptabs__media">
                 {%- if block.settings.image != blank -%}
                   {{ block.settings.image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}

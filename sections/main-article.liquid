@@ -223,7 +223,7 @@
       {%- unless is_case -%}
         {%- if section.settings.show_cta -%}
           <div class="nc-art__cta-row nc-art__inset">
-            <a class="nc-btn nc-btn--sage" href="{{ section.settings.cta_url | default: article.url }}">
+            <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: article.url %}">
               {% if section.settings.cta_label != blank %}{{ section.settings.cta_label }}{% else %}{{ 'blog.read_full_article' | t }}{% endif %}
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
             </a>

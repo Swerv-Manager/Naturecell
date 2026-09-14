@@ -54,7 +54,7 @@
       <div class="nc-kontakt__block" {{ block.shopify_attributes }}>
         <strong>{{ block.settings.title }}</strong>
         {%- if block.settings.link_text != blank -%}
-          <a href="{{ block.settings.link_url }}">{{ block.settings.link_text }}</a>
+          <a href="{% render 'nc-url', url: block.settings.link_url %}">{{ block.settings.link_text }}</a>
         {%- endif -%}
         {%- assign lines = block.settings.lines | newline_to_br | split: '<br />' -%}
         {%- for line in lines -%}

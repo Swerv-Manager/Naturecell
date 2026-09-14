@@ -177,7 +177,7 @@
       </div>
       <div class="nc-quiz__actions">
         <button class="nc-quiz__again" type="button" data-nc-quiz-restart>{{ 'quiz.retake' | t }}</button>
-        <a class="nc-quiz__all" href="{{ all_url }}">{{ 'quiz.see_all' | t }}</a>
+        <a class="nc-quiz__all" href="{% render 'nc-url', url: all_url %}">{{ 'quiz.see_all' | t }}</a>
       </div>
     </div>
   </section>
