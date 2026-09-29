@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><title>Invitation</title>
+<style>
+@font-face{font-family:"Playfair";font-weight:700;font-style:italic;src:url(img/PlayfairDisplay-700i.ttf)}
+@font-face{font-family:"Playfair";font-weight:700;src:url(img/PlayfairDisplay-700.ttf)}
+@font-face{font-family:"Caveat";font-weight:600;src:url(img/Caveat-600.ttf)}
+@font-face{font-family:"Caveat";font-weight:700;src:url(img/Caveat-700.ttf)}
+@font-face{font-family:"Roboto Flex";font-weight:100 1000;src:url(img/roboto-flex-latin-full-normal.woff2)}
+:root{--deep:#2E4A44;--green:#3E5D58;--paper:#FBF8F1;--linen:#E9E1D3;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--linen);font-family:"Roboto Flex",sans-serif}
+.emoji{font-family:"Noto Color Emoji";font-weight:400;font-style:normal}
+.c{position:absolute;left:0;right:0;text-align:center}
+.hand{font-family:"Caveat";font-weight:600;color:var(--deep)}
+.caps{font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--green);font-size:32px}
+#bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#F3EDE2 0%,#E6DDCD 60%,#D9CEBB 100%)}
+#grain{position:absolute;inset:0;width:1080px;height:1920px;mix-blend-mode:multiply;pointer-events:none}
+/* envelope */
+#env{position:absolute;left:100px;top:880px;width:880px;height:600px;z-index:1}
+#env .back{position:absolute;inset:0;background:#28413C;border-radius:18px}
+#env .front{position:absolute;inset:0;z-index:3;border-radius:18px;overflow:hidden;filter:drop-shadow(0 30px 40px rgba(46,74,68,.35))}
+#envF .front .l{position:absolute;inset:0;background:#355650;clip-path:polygon(0 0,52% 56%,0 100%)}
+#envF .front .r{position:absolute;inset:0;background:#355650;clip-path:polygon(100% 0,48% 56%,100% 100%)}
+#envF .front .b{position:absolute;inset:0;background:var(--green);clip-path:polygon(0 100%,50% 44%,100% 100%)}
+#flap{position:absolute;left:0;top:0;width:880px;height:600px;z-index:4;transform-origin:50% 0;transform-style:preserve-3d}
+#flap .o,#flap .i{position:absolute;left:0;top:0;width:880px;height:360px;clip-path:polygon(0 0,100% 0,50% 100%);backface-visibility:hidden}
+#flap .o{background:linear-gradient(180deg,#3F625B,#2E4A44)}
+#flap .i{background:#223833;transform:rotateX(180deg)}
+#seal{position:absolute;left:345px;top:255px;width:190px;height:190px;z-index:6}
+#seal .h{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 38% 34%,#EAD2B6 0%,#CDA77E 45%,#A9835B 100%);box-shadow:0 6px 18px rgba(0,0,0,.3),inset 0 0 0 10px rgba(255,255,255,.12)}
+#seal img{position:absolute;left:35px;top:40px;width:120px;opacity:.55;mix-blend-mode:multiply}
+#seal .h.l{clip-path:polygon(0 0,52% 0,44% 40%,56% 62%,47% 100%,0 100%)}
+#seal .h.r{clip-path:polygon(52% 0,100% 0,100% 100%,47% 100%,56% 62%,44% 40%)}
+#seal .ir{position:absolute;inset:0;clip-path:inherit}
+/* card */
+#card{position:absolute;left:150px;top:900px;width:780px;height:1180px;background:var(--paper);border-radius:14px;z-index:2;box-shadow:0 30px 70px rgba(46,74,68,.25);transform-origin:50% 0%}
+#card .brd{position:absolute;inset:26px;border:2px solid var(--sand);border-radius:6px}
+#card .in{position:absolute;inset:0;padding:110px 80px 0}
+.ln{opacity:0}
+#polaroid{position:absolute;right:-40px;top:-70px;width:300px;height:340px;background:#fff;padding:16px 16px 60px;box-shadow:0 14px 30px rgba(0,0,0,.2);transform:rotate(7deg)}
+#polaroid img{width:100%;height:100%;object-fit:cover;object-position:60% 30%}
+#tape{position:absolute;left:90px;top:-22px;width:130px;height:46px;background:rgba(249,181,196,.75);transform:rotate(-6deg)}
+#su{position:absolute;left:0;right:0;top:1560px;text-align:center;opacity:0;z-index:9}
+#su .pill{display:inline-block;background:var(--deep);color:#fff;border-radius:999px;font-weight:750;font-size:58px;padding:34px 70px;box-shadow:0 20px 44px rgba(46,74,68,.35)}
+</style></head><body>
+<div id="bg"></div>
+<canvas id="grain" width="540" height="960"></canvas>
+
+<div class="c caps" id="t0" style="top:330px">VIP · Black Week 2026</div>
+<div class="c" id="t1" style="top:400px;font-family:'Playfair';font-style:italic;font-weight:700;font-size:140px;color:var(--deep);line-height:1">Du er<br>inviteret</div>
+<div class="c hand" id="t2" style="top:720px;font-size:84px;transform:rotate(-3deg)">til dig <span class="emoji" style="font-size:66px">💌</span></div>
+
+<div id="stage" style="position:absolute;inset:0">
+ <div id="env">
+  <div class="back"></div>
+  <div id="flap"><div class="o"></div><div class="i"></div></div>
+ </div>
+ <div id="envF" style="position:absolute;left:100px;top:880px;width:880px;height:600px;z-index:3"><div class="front" style="position:absolute;inset:0;border-radius:18px;overflow:hidden;filter:drop-shadow(0 30px 40px rgba(46,74,68,.35))"><div class="l"></div><div class="r"></div><div class="b"></div></div><div id="flapF" style="position:absolute;left:0;top:0;width:880px;height:360px;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,#3F625B,#2E4A44)"></div><div id="seal"><div class="h l" id="sl"><img src="img/logo_green.png"></div><div class="h r" id="sr"><img src="img/logo_green.png"></div></div></div>
+</div>
+
+<div id="card">
+  <div class="brd"></div>
+  <div id="polaroid"><div id="tape"></div><img src="img/founders2.jpg"></div>
+  <div class="in">
+    <div class="ln hand" id="c0" style="font-size:92px;font-weight:700">Kære dig,</div>
+    <div class="ln hand" id="c1" style="font-size:58px;line-height:1.14;margin-top:24px;white-space:nowrap">vi åbner Black Week for<br>vores VIP'er fredag 20/11,<br>7 dage før Black Friday.</div>
+    <div class="ln" id="c2" style="margin-top:56px;text-align:center;font-family:'Playfair';font-weight:700;font-size:96px;color:var(--deep);line-height:1">20 %</div>
+    <div class="ln" id="c3" style="text-align:center;font-family:'Playfair';font-style:italic;font-weight:700;font-size:54px;color:var(--green)">på hele shoppen</div>
+    <div class="ln caps" id="c4" style="text-align:center;margin-top:22px;font-size:28px">+5 % ved 2 · +10 % ved 3</div>
+    <div class="ln hand" id="c5" style="font-size:62px;line-height:1.12;margin-top:50px">...og en gave til de første<br>ordrer <span class="emoji" style="font-size:48px">🎁</span></div>
+    <div class="ln hand" id="c6" style="font-size:54px;margin-top:46px">De skønneste hilsner,</div>
+    <div class="ln hand" id="c7" style="font-size:88px;font-weight:700;margin-top:-6px">Lizbeth &amp; Allan <span class="emoji" style="font-size:58px">💚</span></div>
+  </div>
+</div>
+<div id="su"><span class="pill">S.U. · Skriv dig på VIP‑listen <span class="emoji">👇</span></span>
+  <div style="margin-top:26px;font-size:34px;color:var(--green)">Det er gratis at stå på listen</div></div>
+
+<script src="common.js"></script>
+<script>
+const B=60/84;
+function write(id,t,a,d){const p=P(t,a,a+d);const el=$(id);el.style.opacity=p>0?1:0;el.style.clipPath=`inset(-20px ${(100-io(p)*100).toFixed(2)}% -20px -20px)`;}
+function render(t){
+  // 0-2.0 intro: hook readable on frame 0
+  const bob=Math.sin(t*2.2)*8;
+  const outro=P(t,4.3,5.1);
+  ['t0','t1','t2'].forEach((id,i)=>st(id,{o:1-oc(P(t,3.0,3.5)),y:-oc(P(t,3.0,3.5))*40}));
+  // seal crack 1.9-2.4
+  const sc=P(t,1.9,2.35);
+  st('sl',{x:-sc*70,y:sc*40,r:-sc*25,o:1-P(t,2.2,2.5)});st('sr',{x:sc*70,y:sc*50,r:sc*22,o:1-P(t,2.2,2.5)});
+  const sp=Math.sin(Math.PI*P(t,1.75,1.95));$('seal').style.transform=`scale(${1+.06*sp})`;
+  // flap opens 2.3-3.0
+  const fp=P(t,2.3,3.0);$('flap').style.transform=`perspective(1800px) rotateX(${(-io(fp)*178).toFixed(1)}deg)`;
+  $('flapF').style.display=fp>0?'none':'block';
+  // envelope position; drops away 4.3-5.1
+  st('env',{y:bob*(1-outro)+ic(outro)*1200,r:outro*6,o:1-P(t,4.8,5.1)});st('envF',{y:bob*(1-outro)+ic(outro)*1200,r:outro*6,o:1-P(t,4.8,5.1)});
+  // card: rises out of envelope 3.0-4.2 then comes forward and fills the frame 4.2-5.2
+  const rise=P(t,3.0,4.2), fwd=P(t,4.2,5.2);
+  const card=$('card');
+  const baseY=900+bob, riseY=lerp(baseY,300,io(rise));
+  const y=lerp(riseY,240,io(fwd)), s=lerp(.9,1.12,io(fwd)), x=lerp(0,-8,io(fwd));
+  card.style.transform=`translate(${x}px,${y-900}px) scale(${s})`;
+  card.style.zIndex=fwd>0?8:2; card.style.opacity=t<3.0?0:1;
+  // card's lower part is hidden inside the envelope while rising
+  const envTop=880+bob;
+  card.style.clipPath=fwd>0?'none':`inset(-120px -80px ${Math.max(0,(y+1180*s-(envTop+560))/s).toFixed(0)}px -80px)`;
+  // writing
+  const T=[[0,5.3,.6],[1,6.0,1.5],[2,7.7,.35],[3,8.05,.4],[4,8.5,.4],[5,9.1,1.1],[6,10.5,.6],[7,11.1,.9]];
+  for(const [i,a,d] of T) write('c'+i,t,a,d);
+  const pq=P(t,11.9,12.35);st('polaroid',{o:cl(pq*3),s:lerp(1.4,1,oc(pq)),r:lerp(18,7,oc(pq))});
+  // S.U. button at the end, card lifts slightly
+  const u=P(t,12.9,13.4);
+  if(t>12.9){card.style.transform=`translate(${x}px,${y-900-oc(u)*130}px) scale(${lerp(1.12,1.0,oc(u))})`;}
+  let bs=lerp(.6,1,ob(P(t,13.2,13.6),2));if(t>13.7)bs*=1+.035*Math.max(0,Math.cos(Math.PI*2*(t-13.7)/B));
+  st('su',{o:cl(P(t,13.2,13.5)*3),s:bs});
+  grain($('grain'),t,.06);
+}
+window.render=render;render(0);
+</script></body></html>
