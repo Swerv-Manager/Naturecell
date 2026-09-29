@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><title>UGC</title>
+<style>
+@font-face{font-family:"TikTok Sans";font-weight:600;src:url(img/TikTokSans-600.ttf)}
+@font-face{font-family:"TikTok Sans";font-weight:700;src:url(img/TikTokSans-700.ttf)}
+@font-face{font-family:"Marker";src:url(img/PermanentMarker-400.ttf)}
+@font-face{font-family:"Inter";font-weight:400;src:url(img/Inter-400.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(img/Inter-500.ttf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(img/Inter-600.ttf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(img/Inter-700.ttf)}
+@font-face{font-family:"Philosopher";font-weight:700;src:url(img/philosopher-latin-700-normal.woff2)}
+:root{--deep:#2E4A44;--green:#3E5D58;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+.emoji{font-family:"Noto Color Emoji";font-weight:400}
+.shot{position:absolute;inset:0;overflow:hidden;display:none}
+.cam{position:absolute;left:-60px;top:-107px;width:1200px;height:2134px;transform-origin:50% 50%}
+.cam img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* post-it overlay, positioned in cam coordinates */
+#note{position:absolute;left:370px;top:330px;width:680px;font-family:"Marker";color:#1d1d1b;font-size:96px;line-height:1.1;text-align:center;transform:rotate(.8deg);mix-blend-mode:multiply;opacity:.93}
+#note .s{font-size:88px}
+.cap{position:absolute;left:70px;right:70px;text-align:center;display:none}
+.cap span.t{background:#fff;color:#121212;font-family:"TikTok Sans";font-weight:600;font-size:56px;line-height:1.5;padding:6px 22px;border-radius:14px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#grain{position:absolute;inset:0;width:1080px;height:1920px;mix-blend-mode:overlay;pointer-events:none}
+#grade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.18) 100%)}
+/* screen recording */
+#screen{position:absolute;inset:0;background:var(--paper);display:none;font-family:"Inter"}
+#screen .sb{position:absolute;left:0;right:0;top:0;height:140px;display:flex;justify-content:space-between;align-items:center;padding:30px 80px 0 90px;font-weight:600;font-size:46px;color:#111}
+#screen .sb .r{display:flex;gap:18px;align-items:center}
+#screen .logo{position:absolute;left:50%;top:230px;width:260px;margin-left:-130px}
+#screen .h{position:absolute;left:0;right:0;top:470px;text-align:center;font-family:"Philosopher";font-weight:700;font-size:112px;color:var(--deep)}
+#screen .sub{position:absolute;left:90px;right:90px;top:620px;text-align:center;font-size:44px;line-height:1.35;color:var(--green)}
+#screen .lbl{position:absolute;left:90px;top:820px;font-size:38px;font-weight:600;color:var(--green)}
+#screen .inp{position:absolute;left:90px;right:90px;top:880px;height:140px;border:3px solid #cfd6d2;border-radius:28px;background:#fff;font-size:50px;color:#111;padding:0 40px;display:flex;align-items:center}
+#screen .inp.focus{border-color:var(--green)}
+#caret{display:inline-block;width:4px;height:60px;background:var(--green);margin-left:4px}
+#screen .btn{position:absolute;left:90px;right:90px;top:1070px;height:150px;border-radius:999px;background:var(--deep);color:#fff;font-weight:700;font-size:54px;display:flex;align-items:center;justify-content:center}
+#screen .fine{position:absolute;left:90px;right:90px;top:1250px;text-align:center;font-size:32px;color:var(--green);opacity:.75}
+#done{position:absolute;inset:0;background:var(--paper);display:none}
+#done .ck{position:absolute;left:50%;top:520px;width:220px;height:220px;margin-left:-110px;border-radius:50%;background:var(--deep);display:flex;align-items:center;justify-content:center}
+#done .h{position:absolute;left:0;right:0;top:800px;text-align:center;font-family:"Philosopher";font-weight:700;font-size:100px;color:var(--deep)}
+#done .sub{position:absolute;left:100px;right:100px;top:940px;text-align:center;font-size:46px;line-height:1.35;color:var(--green)}
+#touch{position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(120,120,120,.35);border:3px solid rgba(255,255,255,.7);display:none}
+</style></head><body>
+
+<div class="shot" id="sh0"><div class="cam" id="c0"><img src="img/ugc_postit_blank.jpg" style="object-position:50% 0%">
+  <div id="note">HUSK!<br><span class="s">VIP‑LISTEN</span><br><span class="s">BLACK WEEK</span><br>FRE 20/11 <svg width="86" height="76" viewBox="0 0 86 76" style="vertical-align:-6px"><path d="M43 70 C18 52 5 38 7 22 C9 8 26 3 36 14 C40 18 42 22 43 25 C45 18 52 7 64 6 C78 6 84 18 80 30 C75 45 60 57 44 69" fill="none" stroke="#1d1d1b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+<div class="shot" id="sh1"><div class="cam" id="c1"><img src="img/ugc_point.jpg" style="object-position:88% 50%"></div></div>
+<div class="shot" id="sh2"><div class="cam" id="c2"><img src="img/ugc_bedside.jpg" style="object-position:50% 60%"></div></div>
+<div class="shot" id="sh3"><div class="cam" id="c3"><img src="img/ugc_sink.jpg" style="object-position:60% 40%"></div></div>
+
+<div id="screen">
+  <div class="sb"><span>20:14</span><span class="r">
+    <svg width="54" height="34" viewBox="0 0 54 34"><rect x="0" y="22" width="9" height="12" rx="2" fill="#111"/><rect x="14" y="15" width="9" height="19" rx="2" fill="#111"/><rect x="28" y="8" width="9" height="26" rx="2" fill="#111"/><rect x="42" y="0" width="9" height="34" rx="2" fill="#111"/></svg>
+    <svg width="90" height="40" viewBox="0 0 90 40"><rect x="1.5" y="1.5" width="76" height="37" rx="10" fill="none" stroke="#111" stroke-width="3" opacity=".45"/><rect x="7" y="7" width="54" height="26" rx="6" fill="#111"/><rect x="81" y="13" width="6" height="14" rx="3" fill="#111" opacity=".45"/></svg></span></div>
+  <img class="logo" src="img/logo_green.png">
+  <div class="h">VIP‑listen</div>
+  <div class="sub">Black Week 2026<br>Pre‑access fredag 20. november</div>
+  <div class="lbl">E‑mail</div>
+  <div class="inp" id="inp"><span id="typed"></span><span id="caret"></span></div>
+  <div class="btn" id="btn">Skriv mig op</div>
+  <div class="fine">Det er gratis at stå på listen</div>
+  <div id="done">
+    <div class="ck"><svg width="120" height="120" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="h">Du er på listen <span class="emoji">💚</span></div>
+    <div class="sub">Vi skriver til dig, når Black Week åbner for VIP fredag 20. november</div>
+  </div>
+  <div id="touch"></div>
+</div>
+
+<div id="grade"></div>
+<canvas id="grain" width="540" height="960"></canvas>
+
+<div class="cap" id="k0" style="top:1110px"><span class="t">okay det her Black Week‑trick<br>er for godt til ikke at dele <span class="emoji">🤫</span></span></div>
+<div class="cap" id="k1" style="top:1180px"><span class="t">NatureCell åbner Black Week<br>for deres VIP‑liste</span></div>
+<div class="cap" id="k2" style="top:1180px"><span class="t">fredag 20/11. altså 7 dage<br>før Black Friday <span class="emoji">😳</span></span></div>
+<div class="cap" id="k3" style="top:1180px"><span class="t">20% på hele shoppen</span></div>
+<div class="cap" id="k4" style="top:1180px"><span class="t">og +5% ekstra ved 2,<br>+10% ved 3 <span class="emoji">🙌</span></span></div>
+<div class="cap" id="k5" style="top:1180px"><span class="t">og de første ordrer<br>får en gave <span class="emoji">🎁</span></span></div>
+<div class="cap" id="k6" style="top:1400px"><span class="t">tog mig 10 sek <span class="emoji">😅</span><br>skriv dig op herunder <span class="emoji">👇</span></span></div>
+
+<script src="common.js"></script>
+<script>
+const B=60/90; // 90 BPM
+const CUTS=[0,5*B,9*B,13*B,17*B,22.5*B]; // 0, 3.33, 6.0, 8.67, 11.33, 15.0
+// per shot: base scale, pan (dx,dy) over the shot, handheld amplitude
+const SH=[{s:1.00,pan:[0,-20],a:1.0,zoomAt:1.7},{s:1.02,pan:[60,10],a:1.1},{s:1.00,pan:[0,-70],a:.9},{s:1.03,pan:[-80,0],a:1.2}];
+const CAPS=[[0,CUTS[1]],[CUTS[1],7*B],[7*B,CUTS[2]],[CUTS[2],11*B],[11*B,CUTS[3]],[CUTS[3],CUTS[4]],[CUTS[4]+0.35,99]];
+const EMAIL='sofie.jensen@mail.dk';
+function render(t){
+  for(let i=0;i<4;i++){
+    const on=t>=CUTS[i]&&t<CUTS[i+1]; show('sh'+i,on);
+    if(!on)continue;
+    const lt=t-CUTS[i], d=CUTS[i+1]-CUTS[i], q=SH[i];
+    const h=handheld(t+i*3.1,q.a,i+1);
+    // settle jolt right after a cut (phone just lifted)
+    const j=Math.exp(-lt*7);
+    let s=q.s*1.0;
+    if(q.zoomAt!==undefined){ // quick digital zoom-in onto the note, like a creator pinching in
+      const z=P(lt,q.zoomAt,q.zoomAt+.22); s*=lerp(1,1.16,io(z));
+    }
+    const px=q.pan[0]*(lt/d), py=q.pan[1]*(lt/d);
+    const cam=$('c'+i);
+    cam.style.transform=`translate(${h.x+px+j*26}px,${h.y+py-j*38}px) rotate(${h.r+j*1.2}deg) scale(${s})`;
+    // autofocus hunt + exposure adapt at the start of shots 2-4 (shot 1 must be sharp on frame 0)
+    const af=i===0?0:Math.max(0,1-lt/.32);
+    const ex=i===0?0:Math.exp(-lt*5);
+    cam.style.filter=`blur(${(af*af*7).toFixed(2)}px) brightness(${(1+ex*.22).toFixed(3)}) contrast(1.04) saturate(1.06)`;
+  }
+  // screen recording
+  const sr=t>=CUTS[4]; show('screen',sr);
+  if(sr){
+    const lt=t-CUTS[4];
+    const n=Math.floor(cl((lt-.45)/1.05)*EMAIL.length);
+    $('typed').textContent=EMAIL.slice(0,n);
+    $('inp').className='inp'+(lt>.3?' focus':'');
+    $('caret').style.opacity=(lt<.45||n>=EMAIL.length)?(Math.floor(lt*2.2)%2?0:1):1;
+    const tp=$('touch');
+    // taps: field at .3, button at 1.9
+    let tap=null;
+    if(lt>.2&&lt<.45)tap=[540,950,(lt-.2)/.25];
+    if(lt>1.8&&lt<2.1)tap=[540,1145,(lt-1.8)/.3];
+    if(tap){tp.style.display='block';tp.style.left=(tap[0]-60)+'px';tp.style.top=(tap[1]-60)+'px';tp.style.opacity=1-tap[2]*.6;tp.style.transform=`scale(${lerp(.7,1.1,tap[2])})`;}
+    else tp.style.display='none';
+    $('btn').style.transform=`scale(${(lt>1.8&&lt<2.05)?.96:1})`;
+    const dn=P(lt,2.05,2.3); show('done',dn>0); $('done').style.opacity=dn;
+    const ck=P(lt,2.1,2.45); $('done').querySelector('.ck').style.transform=`scale(${lerp(.4,1,ob(ck))})`;
+  }
+  // captions (TikTok style: instant on, tiny pop)
+  CAPS.forEach(([a,b],i)=>{const on=t>=a&&t<b;const el=$('k'+i);show(el,on);if(on){const p=P(t,a,a+.12);el.style.transform=`scale(${lerp(.92,1,oc(p))})`;}});
+  grain($('grain'),t,sr?.05:.16);
+  $('grade').style.display=sr?'none':'block';
+}
+window.render=render; render(0);
+</script></body></html>

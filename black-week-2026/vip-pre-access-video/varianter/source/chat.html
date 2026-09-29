@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><title>Chat</title>
+<style>
+@font-face{font-family:"Inter";font-weight:400;src:url(img/Inter-400.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(img/Inter-500.ttf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(img/Inter-600.ttf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(img/Inter-700.ttf)}
+@font-face{font-family:"Philosopher";font-weight:700;src:url(img/philosopher-latin-700-normal.woff2)}
+@font-face{font-family:"Roboto Flex";font-weight:100 1000;src:url(img/roboto-flex-latin-full-normal.woff2)}
+:root{--deep:#2E4A44;--green:#3E5D58;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E;--blue:#1A8CFF;--gray:#E9E9EB}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff;font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased}
+.emoji{font-family:"Noto Color Emoji";font-weight:400}
+#app{position:absolute;inset:0;background:#fff}
+.sb{position:absolute;left:0;right:0;top:0;height:130px;display:flex;justify-content:space-between;align-items:center;padding:28px 80px 0 96px;font-weight:600;font-size:48px;color:#000;z-index:5;background:rgba(248,248,248,.96)}
+.sb .r{display:flex;gap:16px;align-items:center}
+.nav{position:absolute;left:0;right:0;top:130px;height:300px;background:rgba(248,248,248,.96);border-bottom:2px solid #e3e3e6;z-index:5}
+.nav .back{position:absolute;left:40px;top:70px;width:40px;height:70px}
+.nav .av{position:absolute;left:50%;top:26px;width:170px;height:170px;margin-left:-85px;border-radius:50%;background:linear-gradient(180deg,#a8adb6,#868b94);color:#fff;font-size:84px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.nav .nm{position:absolute;left:0;right:0;top:212px;text-align:center;font-size:40px;color:#111}
+.nav .nm span{color:#9a9aa0;font-size:34px}
+#chat{position:absolute;left:0;right:0;top:430px;bottom:210px;overflow:hidden}
+#list{position:absolute;left:0;right:0;top:0;padding:30px 36px 40px}
+.row{display:flex;margin-top:14px;position:relative}
+.row.in{justify-content:flex-start}.row.out{justify-content:flex-end}
+.row.gap{margin-top:34px}
+.bub{max-width:830px;padding:28px 44px;border-radius:62px;font-size:58px;line-height:1.26;position:relative;transform-origin:0% 100%}
+.row.out .bub{background:var(--blue);color:#fff;transform-origin:100% 100%}
+.row.in .bub{background:var(--gray);color:#000}
+.row.big .bub{background:none;padding:0 10px;font-size:130px;line-height:1.1}
+.typing .bub{padding:34px 40px;display:flex;gap:14px}
+.typing .d{width:22px;height:22px;border-radius:50%;background:#8e8e93}
+.tap{position:absolute;right:-26px;top:-46px;width:96px;height:84px;border-radius:44px;background:var(--blue);border:6px solid #fff;display:flex;align-items:center;justify-content:center;font-size:44px;opacity:0}
+.meta{text-align:right;font-size:32px;color:#8e8e93;margin-top:8px;padding-right:14px;opacity:0}
+.link{width:760px;border-radius:44px;overflow:hidden;background:var(--gray);transform-origin:0% 100%}
+.link img{display:block;width:760px;height:440px;object-fit:cover;object-position:50% 60%}
+.link .lt{padding:22px 34px 26px}
+.link .lt b{display:block;font-size:44px;font-weight:600;color:#000}
+.link .lt span{font-size:36px;color:#6d6d72}
+.inputbar{position:absolute;left:0;right:0;bottom:0;height:210px;background:#fff;z-index:5}
+.inputbar .plus{position:absolute;left:36px;top:34px;width:100px;height:100px;border-radius:50%;background:#eeeef0;display:flex;align-items:center;justify-content:center}
+.inputbar .field{position:absolute;left:160px;right:36px;top:34px;height:100px;border:2.5px solid #d6d6da;border-radius:50px;font-size:44px;color:#b0b0b5;display:flex;align-items:center;padding-left:40px}
+#veil{position:absolute;inset:0;background:rgba(20,32,29,.0);z-index:8;pointer-events:none}
+#sheet{position:absolute;left:0;right:0;top:1920px;height:1260px;background:linear-gradient(180deg,var(--green),var(--deep));border-radius:64px 64px 0 0;z-index:9;overflow:hidden}
+#sheet .wash{position:absolute;left:520px;top:-360px;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(169,191,184,.5),rgba(169,191,184,0) 68%)}
+#sheet .grab{position:absolute;left:50%;top:24px;width:140px;height:12px;margin-left:-70px;border-radius:6px;background:rgba(255,255,255,.45)}
+#sheet .logo{position:absolute;left:50%;top:90px;width:220px;margin-left:-110px}
+#sheet .h{position:absolute;left:0;right:0;top:330px;text-align:center;color:#fff;font-family:"Philosopher";font-weight:700;font-size:120px;line-height:1.02}
+#sheet .list{position:absolute;left:150px;top:620px;width:820px;font-family:"Roboto Flex"}
+#sheet .li{display:flex;align-items:center;gap:28px;color:#fff;font-size:48px;height:92px}
+#sheet .ck{flex:0 0 60px;height:60px;border-radius:50%;background:var(--sand);display:flex;align-items:center;justify-content:center}
+#sheet .btn{position:absolute;left:50%;top:930px;transform:translateX(-50%);white-space:nowrap;background:#fff;color:var(--deep);font-family:"Roboto Flex";font-weight:750;font-size:60px;padding:34px 80px;border-radius:999px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+</style></head><body>
+<div id="app">
+  <div class="sb"><span>20:41</span><span class="r">
+    <svg width="54" height="34" viewBox="0 0 54 34"><rect x="0" y="22" width="9" height="12" rx="2" fill="#000"/><rect x="14" y="15" width="9" height="19" rx="2" fill="#000"/><rect x="28" y="8" width="9" height="26" rx="2" fill="#000"/><rect x="42" y="0" width="9" height="34" rx="2" fill="#000"/></svg>
+    <svg width="90" height="40" viewBox="0 0 90 40"><rect x="1.5" y="1.5" width="76" height="37" rx="10" fill="none" stroke="#000" stroke-width="3" opacity=".45"/><rect x="7" y="7" width="44" height="26" rx="6" fill="#000"/><rect x="81" y="13" width="6" height="14" rx="3" fill="#000" opacity=".45"/></svg></span></div>
+  <div class="nav">
+    <svg class="back" viewBox="0 0 40 70"><path d="M34 6 L8 35 L34 64" fill="none" stroke="#1A8CFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="av">M</div>
+    <div class="nm">Mette <span>›</span></div>
+  </div>
+  <div id="chat"><div id="list"></div></div>
+  <div class="inputbar"><div class="plus"><svg width="44" height="44" viewBox="0 0 44 44"><path d="M22 6v32M6 22h32" stroke="#8e8e93" stroke-width="5" stroke-linecap="round"/></svg></div><div class="field">Besked</div></div>
+</div>
+<div id="veil"></div>
+<div id="sheet">
+  <div class="wash"></div><div class="grab"></div>
+  <img class="logo" src="img/logo_white.png">
+  <div class="h">Skriv dig på<br>VIP‑listen</div>
+  <div class="list">
+    <div class="li" id="l0"><div class="ck"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#2E4A44" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Adgang fra fredag 20. november</div>
+    <div class="li" id="l1"><div class="ck"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#2E4A44" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>20 % på hele shoppen</div>
+    <div class="li" id="l2"><div class="ck"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#2E4A44" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>En gave til de første ordrer</div>
+  </div>
+  <div class="btn" id="btn">Tilmeld dig her <span class="emoji">👇</span></div>
+</div>
+<script src="common.js"></script>
+<script>
+const E=s=>s.replace(/(\p{Extended_Pictographic}(️)?)+/gu,m=>`<span class="emoji">${m}</span>`);
+// [time, side, html, opts]
+const MSG=[
+ [0.00,'in','SKAT <e>😱</e> har du hørt det med NatureCell og Black Week??'],
+ [1.10,'out','nej?? fortæl <e>👀</e>',{gap:1}],
+ [2.20,'in','hvis man står på deres VIP‑liste, kommer man ind fredag 20/11',{gap:1,typing:.55}],
+ [3.30,'in','7 dage før Black Friday <e>🤯</e>',{typing:.45,tap:4.0}],
+ [4.60,'out','STOP. hvad er rabatten??',{gap:1}],
+ [5.70,'in','20% på hele shoppen',{gap:1,typing:.5}],
+ [6.50,'in','+5% ekstra ved 2 og +10% ved 3 <e>😍</e>',{typing:.35}],
+ [7.50,'in','og de første ordrer får en gave <e>🎁</e>',{typing:.45}],
+ [8.40,'out','okay jeg skriver mig op NU',{gap:1}],
+ [8.95,'out','send link!!'],
+ [9.90,'in','LINK',{gap:1,typing:.55}],
+ [10.80,'in','listen er gratis <e>💚</e> vi ses 20/11',{typing:.4}],
+ [11.80,'out','<e>❤️❤️❤️</e>',{gap:1,big:1}],
+];
+const CTA=12.6;
+const list=$('list'); const rows=[];
+for(const [t,side,html,o={}] of MSG){
+  if(o.typing){const r=document.createElement('div');r.className='row in typing'+(o.gap?' gap':'');r.innerHTML='<div class="bub"><i class="d"></i><i class="d"></i><i class="d"></i></div>';list.appendChild(r);rows.push({el:r,t0:t-o.typing,t1:t,typing:1});}
+  const r=document.createElement('div');r.className=`row ${side}`+(o.gap&&!o.typing?' gap':'')+(o.big?' big':'');
+  if(html==='LINK') r.innerHTML=`<div class="link bub" style="padding:0;background:var(--gray)"><img src="img/sink.jpg"><div class="lt"><b>NatureCell VIP‑listen</b><span>Black Week 2026 · Pre‑access 20.11</span></div></div>`;
+  else r.innerHTML=`<div class="bub">${html.replace(/<e>(.*?)<\/e>/g,'<span class="emoji">$1</span>')}</div>`+(o.tap?`<div class="tap"><span style="font-size:40px;color:#fff;font-weight:800">‼</span></div>`:'');
+  if(o.tap){r.querySelector('.tap').style.right=(side==='in'?'auto':'-26px');}
+  list.appendChild(r);rows.push({el:r,t0:t,side,tap:o.tap,big:o.big});
+}
+const meta=document.createElement('div');meta.className='meta';meta.textContent='Leveret';list.appendChild(meta);
+// the in-bubble tapback sits on the top-right corner of the bubble
+rows.forEach(r=>{if(r.tap){const b=r.el.querySelector('.bub'),tp=r.el.querySelector('.tap');tp.style.left=(b.offsetLeft+b.offsetWidth-70)+'px';tp.style.right='auto';}});
+const VIEW=1920-430-210;
+function layoutAt(t){for(const r of rows){if(r.typing)r.el.style.display=(t>=r.t0&&t<r.t1)?'flex':'none';else r.el.style.display=t>=r.t0?'flex':'none';}}
+function render(t){
+  let lastOut=null;
+  for(const r of rows){
+    if(r.typing){
+      const on=t>=r.t0&&t<r.t1; r.el.style.display=on?'flex':'none';
+      if(on){const dots=r.el.querySelectorAll('.d');dots.forEach((d,i)=>{const ph=(t*3.2-i*.22);d.style.opacity=.35+.65*Math.max(0,Math.sin(ph*Math.PI*2));});
+        const p=P(t,r.t0,r.t0+.15);r.el.firstChild.style.transform=`scale(${lerp(.6,1,oc(p))})`;}
+      continue;
+    }
+    const on=t>=r.t0; r.el.style.display=on?'flex':'none';
+    if(on){const p=r.t0===0?1:P(t,r.t0,r.t0+.22);const b=r.el.querySelector('.bub');
+      b.style.transform=`scale(${lerp(.55,1,ob(p,2.2))})`;b.style.opacity=cl(p*4);
+      if(r.side==='out')lastOut=r;
+      if(r.tap){const tp=r.el.querySelector('.tap');const q=P(t,r.tap,r.tap+.25);tp.style.opacity=cl(q*4);tp.style.transform=`scale(${lerp(.3,1,ob(q,2.5))})`;}
+    }
+  }
+  // "Leveret" under the newest outgoing message, only while it is the last message
+  const lastShown=rows.filter(r=>!r.typing&&t>=r.t0).pop();
+  meta.style.opacity=(lastShown&&lastShown.side==='out'&&t-lastShown.t0>.35)?1:0;
+  if(lastShown&&lastShown.side==='out'){lastShown.el.after(meta);}
+  // auto-scroll: ease from the layout just before the latest event to the current one (iOS-like)
+  const evs=[];rows.forEach(r=>{evs.push(r.t0);if(r.typing)evs.push(r.t1);});
+  const te=Math.max(0,...evs.filter(e=>e<=t));
+  const yNow=Math.max(0,list.scrollHeight-VIEW);
+  let y=yNow;
+  if(te>0&&t-te<.3){
+    const saved=rows.map(r=>r.el.style.display), ms=meta.style.opacity;
+    layoutAt(te-1e-3);
+    const yPrev=Math.max(0,list.scrollHeight-VIEW);
+    rows.forEach((r,i)=>r.el.style.display=saved[i]); meta.style.opacity=ms;
+    y=lerp(yPrev,yNow,oc(P(t,te,te+.28)));
+  }
+  list.style.transform=`translateY(${-y}px)`;
+  // CTA sheet
+  const v=P(t,CTA,CTA+.4);
+  $('veil').style.background=`rgba(20,32,29,${(.45*oc(v)).toFixed(3)})`;
+  $('app').style.filter=v>0?`blur(${(oc(v)*10).toFixed(1)}px)`:'none';
+  const s=P(t,CTA+.1,CTA+.6);
+  $('sheet').style.transform=`translateY(${-(1260*ob(s,1.1)).toFixed(1)}px)`;
+  for(let i=0;i<3;i++){const q=P(t,CTA+.6+i*.18,CTA+.9+i*.18);st('l'+i,{o:oc(q),x:lerp(-50,0,oc(q))});}
+  const bq=P(t,CTA+1.2,CTA+1.55);let bs=lerp(.6,1,ob(bq));
+  if(t>CTA+1.6){const b=Math.max(0,Math.cos(Math.PI*2*((t-(CTA+1.9))/(60/110*2))));bs*=1+.04*b;}
+  const btn=$('btn');btn.style.opacity=cl(bq*3);btn.style.transform=`translateX(-50%) scale(${bs})`;
+}
+window.render=render;render(0);
+</script></body></html>

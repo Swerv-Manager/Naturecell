@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><title>Editorial</title>
+<style>
+@font-face{font-family:"Cormorant";font-weight:400;font-style:normal;src:url(img/CormorantGaramond-400.ttf)}
+@font-face{font-family:"Cormorant";font-weight:500;font-style:normal;src:url(img/CormorantGaramond-500.ttf)}
+@font-face{font-family:"Cormorant";font-weight:400;font-style:italic;src:url(img/CormorantGaramond-400i.ttf)}
+@font-face{font-family:"Roboto Flex";font-weight:100 1000;src:url(img/roboto-flex-latin-full-normal.woff2)}
+:root{--ink:#101B18;--deep:#2E4A44;--green:#3E5D58;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+.sc{position:absolute;inset:0;overflow:hidden;opacity:0}
+.ph{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;filter:saturate(.82) contrast(1.06) sepia(.08) brightness(.92)}
+.shade{position:absolute;inset:0}
+.serif{font-family:"Cormorant",serif;font-weight:400}
+.it{font-style:italic}
+.caps{font-family:"Roboto Flex";font-weight:520;text-transform:uppercase;letter-spacing:.42em;font-size:32px}
+.c{position:absolute;left:0;right:0;text-align:center}
+.t{opacity:0}
+.rule{position:absolute;left:50%;height:2px;background:var(--sand);transform-origin:50% 50%}
+#bars:before,#bars:after{content:"";position:absolute;left:0;right:0;height:120px;background:#070d0b}
+#bars:before{top:0}#bars:after{bottom:0}
+#bars{position:absolute;inset:0;pointer-events:none}
+#leak{position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 50%,rgba(0,0,0,.45) 100%);pointer-events:none}
+#grain{position:absolute;inset:0;width:1080px;height:1920px;mix-blend-mode:overlay;pointer-events:none}
+.sh{text-shadow:0 4px 40px rgba(0,0,0,.35)}
+</style></head><body>
+
+<div class="sc" id="s0"><img class="ph" id="p0" src="img/sink.jpg" style="object-position:30% 72%">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(16,27,24,.55),rgba(16,27,24,.15) 45%,rgba(16,27,24,.6))"></div>
+  <div class="c serif it sh t" id="a1" style="top:700px;color:#fff;font-size:124px;line-height:1.02">Nogle venter<br>til Black Friday.</div>
+  <div class="c serif it sh t" id="a2" style="top:700px;color:#fff;font-size:124px;line-height:1.02">Andre er der<br>en uge før.</div>
+</div>
+
+<div class="sc" id="s1"><img class="ph" id="p1" src="img/hand.jpg" style="object-position:60% 50%">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(16,27,24,.25),rgba(16,27,24,.15) 35%,rgba(16,27,24,.82) 80%)"></div>
+  <div class="c caps t sh" id="b1" style="top:1150px;color:var(--sand)">NatureCell VIP</div>
+  <div class="c serif sh t" id="b2" style="top:1210px;color:#fff;font-size:132px;line-height:1">Fredag</div>
+  <div class="c serif it sh t" id="b3" style="top:1340px;color:#fff;font-size:132px;line-height:1">20. november</div>
+</div>
+
+<div class="sc" id="s2"><img class="ph" id="p2" src="img/sort_right.jpg" style="object-position:50% 60%">
+  <div class="shade" style="background:linear-gradient(180deg,rgba(16,27,24,.78),rgba(16,27,24,.35) 50%,rgba(16,27,24,.35))"></div>
+  <div class="c serif sh t" id="c1" style="top:330px;color:#fff;font-size:200px;line-height:1">20 %</div>
+  <div class="c serif it sh t" id="c2" style="top:540px;color:#fff;font-size:96px">på hele shoppen</div>
+  <div class="c caps t sh" id="c3" style="top:690px;color:#fff">+5 % ved 2 · +10 % ved 3</div>
+</div>
+
+<div class="sc" id="s3" style="background:radial-gradient(ellipse at 50% 40%,#23372F 0%,var(--ink) 75%)">
+  <div style="position:absolute;left:90px;top:330px;width:900px;height:680px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.5),0 0 0 2px rgba(221,191,163,.55)"><img id="p3" src="img/founders2.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 35%;filter:saturate(.85) contrast(1.05) sepia(.08)"></div>
+  <div class="c serif it sh t" id="d1" style="top:1110px;color:#fff;font-size:118px;line-height:1.02">Og en gave<br>til de første ordrer.</div>
+  <div class="c caps t sh" id="d2" style="top:1390px;color:var(--sand)">Lizbeth &amp; Allan</div>
+</div>
+
+<div class="sc" id="s4" style="background:radial-gradient(ellipse at 50% 42%,#2A4640 0%,#1A2C28 55%,var(--ink) 100%)">
+  <img id="lg" src="img/logo_white.png" style="position:absolute;left:50%;top:430px;width:230px;margin-left:-115px;opacity:0">
+  <div class="c serif it t" id="e1" style="top:760px;color:#fff;font-size:150px;line-height:1">Skriv dig på<br>VIP‑listen</div>
+  <div class="rule" id="rl" style="top:1105px;width:260px;margin-left:-130px"></div>
+  <div class="c caps t" id="e2" style="top:1160px;color:var(--sand)">Tilmeld dig herunder</div>
+  <svg id="chev" style="position:absolute;left:50%;top:1250px;margin-left:-28px;opacity:0" width="56" height="34" viewBox="0 0 56 34"><path d="M4 6 L28 28 L52 6" fill="none" stroke="#DDBFA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="c t" id="e3" style="top:1400px;font-family:'Roboto Flex';font-weight:350;font-size:28px;color:rgba(255,255,255,.55);letter-spacing:.04em">Pre‑access fra fredag 20.11 · Pakker har egne priser</div>
+</div>
+
+<div id="leak"></div>
+<div id="vig"></div>
+<canvas id="grain" width="540" height="960"></canvas>
+<div id="bars"></div>
+
+<script src="common.js"></script>
+<script>
+const B=60/70; // .857
+// scene windows [start,end]; crossfades of X seconds are centered on the boundaries
+const S=[[0,3.4],[3.4,6.8],[6.8,10.2],[10.2,13.6],[13.6,99]];
+const X=.9;
+function sceneAlpha(t,i){const [a,b]=S[i];const fin=i===0?1:P(t,a-X/2,a+X/2);const fout=i===S.length-1?1:1-P(t,b-X/2,b+X/2);return io(fin)*io(fout);}
+function fadeText(id,t,a,b,dy=18){const pin=P(t,a,a+.8),pout=b?1-P(t,b,b+.6):1;const o=oc(pin)*pout;st(id,{o,y:lerp(dy,0,oc(pin)),blur:(1-pin)*6});}
+function render(t){
+  for(let i=0;i<S.length;i++){$('s'+i).style.opacity=sceneAlpha(t,i);$('s'+i).style.display=sceneAlpha(t,i)>0.001?'block':'none';}
+  // slow camera moves
+  const k=(i,d)=>P(t,S[i][0]-X/2,S[i][1]+X/2);
+  $('p0').style.transform=`scale(${lerp(1.14,1.04,k(0))}) translateY(${lerp(10,-10,k(0))}px)`;
+  $('p1').style.transform=`scale(${lerp(1.04,1.12,k(1))}) translateX(${lerp(20,-20,k(1))}px)`;
+  $('p2').style.transform=`scale(${lerp(1.16,1.05,k(2))})`;
+  $('p3').style.transform=`scale(${lerp(1.03,1.1,k(3))}) translateX(${lerp(-18,18,k(3))}px)`;
+  // text: frame 0 shows the first line immediately
+  if(t<.01){st('a1',{o:1});}else fadeText('a1',t,-1,1.55,0);
+  fadeText('a2',t,1.9,3.0);
+  fadeText('b1',t,3.7,6.35);fadeText('b2',t,3.95,6.35);fadeText('b3',t,4.25,6.35);
+  fadeText('c1',t,7.05,9.75);fadeText('c2',t,7.45,9.75);fadeText('c3',t,7.95,9.75);
+  fadeText('d1',t,10.45,13.15);fadeText('d2',t,11.1,13.15);
+  // end card
+  const lg=P(t,13.8,14.6);$('lg').style.opacity=oc(lg);
+  fadeText('e1',t,14.1);
+  const r=P(t,14.7,15.5);$('rl').style.transform=`scaleX(${io(r)})`;$('rl').style.opacity=r>0?1:0;
+  fadeText('e2',t,15.0);
+  const cv=P(t,15.4,15.9);$('chev').style.opacity=oc(cv);$('chev').style.transform=`translateY(${Math.sin((t-15.4)/B*Math.PI)*8}px)`;
+  fadeText('e3',t,15.6);
+  // light leak drifting through the frame
+  const lx=50+40*Math.sin(t*.35), ly=30+25*Math.cos(t*.27), la=.18+.1*Math.sin(t*.8);
+  $('leak').style.background=`radial-gradient(circle at ${lx}% ${ly}%,rgba(255,196,150,${la.toFixed(3)}) 0%,rgba(255,170,120,0) 42%)`;
+  $('leak').style.opacity=t>13.6?.35:1;
+  grain($('grain'),t,.13);
+}
+window.render=render;render(0);
+</script></body></html>

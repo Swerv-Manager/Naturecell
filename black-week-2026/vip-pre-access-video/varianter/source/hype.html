@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><title>Hype</title>
+<style>
+@font-face{font-family:"Roboto Flex";font-weight:100 1000;font-stretch:25% 151%;src:url(img/roboto-flex-latin-full-normal.woff2)}
+@font-face{font-family:"Philosopher";font-weight:700;src:url(img/philosopher-latin-700-normal.woff2)}
+:root{--ink:#0E1A17;--deep:#2E4A44;--green:#3E5D58;--sage:#8FAAA2;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+.emoji{font-family:"Noto Color Emoji";font-weight:400;font-variation-settings:normal}
+#world{position:absolute;inset:0}
+.sc{position:absolute;inset:0;display:none;overflow:hidden}
+.x{font-family:"Roboto Flex";font-variation-settings:"wdth" 25,"wght" 1000,"opsz" 144,"GRAD" 150;text-transform:uppercase;line-height:.84;letter-spacing:-.01em}
+.c{position:absolute;left:0;right:0;text-align:center}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dim{position:absolute;inset:0;background:rgba(14,26,23,.42)}
+.ticker{position:absolute;left:-200px;white-space:nowrap;font-family:"Roboto Flex";font-variation-settings:"wdth" 25,"wght" 1000;text-transform:uppercase;font-size:115px;line-height:1;color:rgba(249,181,196,.14);transform-origin:0 0}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+/* card */
+#card{position:absolute;left:110px;top:600px;width:860px;height:540px;border-radius:44px;background:linear-gradient(135deg,#3E5D58 0%,#2E4A44 55%,#1F332F 100%);box-shadow:0 50px 120px rgba(0,0,0,.55),inset 0 0 0 3px rgba(221,191,163,.5);overflow:hidden;transform-style:preserve-3d}
+#card .sheen{position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(249,181,196,.28),rgba(221,191,163,.42),rgba(169,191,184,.28),rgba(255,255,255,0));transform:rotate(18deg)}
+#card .lg{position:absolute;left:56px;top:48px;width:150px}
+#card .chip{position:absolute;right:60px;top:60px;width:110px;height:84px;border-radius:16px;background:linear-gradient(135deg,#E9D3BD,#C9A67F);box-shadow:inset 0 0 0 2px rgba(0,0,0,.12)}
+#card .vip{position:absolute;left:52px;top:170px;font-family:"Philosopher";font-weight:700;font-size:230px;line-height:1;color:var(--sand)}
+#card .l1{position:absolute;left:60px;bottom:120px;font-size:52px;color:#fff}
+#card .l2{position:absolute;left:60px;bottom:58px;font-size:40px;color:rgba(255,255,255,.75);letter-spacing:.12em}
+.pill{display:inline-block;border-radius:999px}
+</style></head><body>
+<div id="world">
+
+ <!-- 1 hook -->
+ <div class="sc" id="a"><div class="c x" id="a1" style="top:540px;font-size:520px;color:var(--pink)">7 dage</div>
+   <div class="c x" id="a2" style="top:960px;font-size:230px;color:#fff">før Black<br>Friday</div></div>
+
+ <!-- 2 strobe -->
+ <div class="sc" id="b">
+   <img class="photo" id="b0" src="img/sink.jpg"><img class="photo" id="b1" src="img/hand.jpg" style="object-position:65% 50%">
+   <img class="photo" id="b2" src="img/sort_right.jpg" style="object-position:50% 62%"><img class="photo" id="b3" src="img/sort_left.jpg" style="object-position:50% 60%">
+   <img class="photo" id="b4" src="img/sink.jpg" style="object-position:20% 80%;transform:scale(1.5)"><img class="photo" id="b5" src="img/hand.jpg" style="object-position:30% 70%;transform:scale(1.4)">
+   <img class="photo" id="b6" src="img/sort_right.jpg" style="object-position:80% 55%;transform:scale(1.5)"><img class="photo" id="b7" src="img/sink.jpg" style="object-position:60% 40%;transform:scale(1.25)">
+   <div class="dim"></div>
+   <div class="c x" id="bw0" style="top:700px;font-size:560px;color:#fff">VIP</div>
+   <div class="c x" id="bw1" style="top:760px;font-size:360px;color:#fff">handler</div>
+   <div class="c x" id="bw2" style="top:760px;font-size:400px;color:var(--pink)">først.</div>
+ </div>
+
+ <!-- 3 date -->
+ <div class="sc" id="c" style="background:var(--ink)">
+   <div id="r1" style="position:absolute;left:140px;right:140px;top:420px;height:6px;background:var(--sand);transform-origin:0 50%"></div><div id="r2" style="position:absolute;left:140px;right:140px;top:1150px;height:6px;background:var(--sand);transform-origin:100% 50%"></div>
+   <div class="c x" id="c1" style="top:470px;font-size:210px;color:var(--sand)">fredag</div>
+   <div class="c x" id="c2" style="top:660px;font-size:560px;color:#fff">20.11</div>
+   <div class="c" id="c3" style="top:1200px"><span class="pill x" style="background:var(--pink);color:var(--ink);font-size:84px;padding:26px 50px 18px">kun for VIP‑listen</span></div>
+ </div>
+
+ <!-- 4 offer -->
+ <div class="sc" id="d">
+   <div id="d0" style="position:absolute;inset:0;background:var(--pink)"></div>
+   <div class="c x" id="d1" style="top:430px;font-size:720px;color:var(--ink)">20%</div>
+   <div class="c x" id="d2" style="top:1090px;font-size:200px;color:var(--ink)">på hele<br>shoppen</div>
+ </div>
+ <div class="sc" id="e">
+   <img class="photo" src="img/sort_left.jpg" style="height:52%;object-position:50% 62%">
+   <div style="position:absolute;left:0;right:0;top:52%;bottom:0;background:var(--ink)"></div>
+   <div class="c x" id="e1" style="top:1080px;font-size:330px;color:#fff">+5%</div>
+   <div class="c x" id="e2" style="top:1380px;font-size:150px;color:var(--sand)">når du køber 2</div>
+ </div>
+ <div class="sc" id="f">
+   <img class="photo" src="img/sort_right.jpg" style="height:52%;object-position:50% 60%">
+   <div style="position:absolute;left:0;right:0;top:52%;bottom:0;background:var(--pink)"></div>
+   <div class="c x" id="f1" style="top:1080px;font-size:330px;color:var(--ink)">+10%</div>
+   <div class="c x" id="f2" style="top:1380px;font-size:150px;color:var(--berry)">når du køber 3</div>
+ </div>
+
+ <!-- 5 gift -->
+ <div class="sc" id="g" style="background:var(--sand)">
+   <div class="c" id="g0" style="top:330px;font-size:330px"><span class="emoji">🎁</span></div>
+   <div class="c x" id="g1" style="top:760px;font-size:520px;color:var(--ink)">gave</div>
+   <div class="c x" id="g2" style="top:1210px;font-size:150px;color:var(--berry)">til de første<br>ordrer</div>
+ </div>
+
+ <!-- 6 pass -->
+ <div class="sc" id="h" style="background:radial-gradient(ellipse at 50% 40%,#23403A 0%,var(--ink) 70%)">
+   <div class="c x" id="h0" style="top:420px;font-size:90px;color:var(--sand);letter-spacing:.08em">din adgang til black week</div>
+   <div style="position:absolute;inset:0;perspective:1800px"><div id="card">
+     <div class="sheen" id="sheen"></div>
+     <img class="lg" src="img/logo_white.png"><div class="chip"></div>
+     <div class="vip">VIP</div>
+     <div class="l1 x" style="font-size:66px">Black Week 2026</div>
+     <div class="l2" style="font-family:'Roboto Flex';font-weight:600">PRE‑ACCESS · FRE 20.11</div>
+   </div></div>
+   <div class="c" id="h1" style="top:1250px"><span class="pill x" style="background:var(--pink);color:var(--ink);font-size:96px;padding:34px 64px 24px">skriv dig på listen <span class="emoji">👇</span></span></div>
+   <div class="c" id="h2" style="top:1440px;font-family:'Roboto Flex';font-size:30px;color:rgba(255,255,255,.6)">20 % på hele shoppen for VIP fra fredag 20.11. Pakker har egne priser.</div>
+ </div>
+
+</div>
+<div id="flash"></div>
+<script src="common.js"></script>
+<script>
+let FITTED=false;
+function fitAll(){
+document.querySelectorAll('.sc').forEach(e=>e.style.display='block');
+document.querySelectorAll('.c.x').forEach(el=>{el.style.whiteSpace='nowrap';let fs=parseFloat(getComputedStyle(el).fontSize);const sp=document.createElement('span');sp.style.display='inline-block';while(el.firstChild)sp.appendChild(el.firstChild);el.appendChild(sp);let g=0;while(sp.offsetWidth>990&&g++<300){fs-=3;el.style.fontSize=fs+'px';}});
+document.querySelectorAll('.sc').forEach(e=>e.style.display='none');FITTED=true;}
+const B=60/150; // .4s
+const W=[['a',0,4*B],['b',4*B,8*B],['c',8*B,12*B],['d',12*B,14*B],['e',14*B,16*B],['f',16*B,18*B],['g',18*B,21*B],['h',21*B,99]];
+function slam(t,t0,k=.14,d=.18){const p=P(t,t0,t0+d);return 1+k*(1-oc(p));}
+function beatShake(t,amp){const bt=t/B,ph=bt-Math.floor(bt),e=Math.exp(-ph*9);return {x:vnoise(t*40,3)*amp*e,y:vnoise(t*40,7)*amp*e};}
+function render(t){
+  if(!FITTED&&window.__ready)fitAll();
+  for(const [id,a,b] of W) show(id,t>=a&&t<b);
+  const sh=beatShake(t,t<21*B?18:6);
+  $('world').style.transform=`translate(${sh.x}px,${sh.y}px)`;
+  // 1 hook: frame 0 fully readable; slams on every beat; inversion on beat 2
+  if(t<4*B){
+    const bi=Math.floor(t/B);
+    const inv=bi===2;
+    $('a').style.background=inv?'var(--pink)':'var(--ink)';
+    $('a1').style.color=inv?'var(--ink)':'var(--pink)';$('a2').style.color=inv?'var(--ink)':'#fff';
+    st('a1',{s:slam(t,bi*B,t<.01?0:.12)});
+    st('a2',{s:slam(t,bi*B,t<.01?0:.08),y:bi===3?-10*(1-P(t,3*B,3.4*B)):0});
+  }
+  // 2 strobe: 0.2s cuts, words on beats
+  if(t>=4*B&&t<8*B){
+    const k=Math.floor((t-4*B)/(B/2));
+    for(let i=0;i<8;i++){const on=i===k;const el=$('b'+i);el.style.display=on?'block':'none';
+      if(on){const lt=t-(4*B+i*B/2);const base=el.style.transform.match(/scale\(([\d.]+)\)/);}}
+    const w=Math.floor((t-4*B)/B);
+    for(let i=0;i<3;i++){const on=(i===w)||(i===2&&w===3);const el=$('bw'+i);el.style.display=on?'block':'none';if(on)st(el,{s:slam(t,4*B+i*B,.25,.14)});}
+  }
+  // 3 date
+  if(t>=8*B&&t<12*B){
+    const lt=t-8*B;
+    
+    st('c1',{s:slam(t,8*B,.3),o:1});st('r1',{sx:oc(P(t,8*B,8*B+.3))});st('r2',{sx:oc(P(t,8*B+.1,8*B+.4))});
+    const p2=P(t,9*B,9*B+.12);st('c2',{o:p2>0?1:0,s:lerp(1.6,1,oc(p2))});
+    const p3=P(t,10*B,10*B+.2);st('c3',{o:cl(p3*3),s:lerp(.5,1,ob(p3,2))});
+    if(t>11*B){const q=P(t,11*B,11*B+.15);st('c2',{s:1+.05*(1-oc(q))});}
+  }
+  // 4 offer
+  if(t>=12*B&&t<14*B){const p=P(t,12*B,12*B+.14);st('d1',{s:lerp(1.5,1,oc(p))});const q=P(t,13*B,13*B+.16);st('d2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});}
+  if(t>=14*B&&t<16*B){st('e1',{s:slam(t,14*B,.3)});const q=P(t,15*B,15*B+.14);st('e2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});}
+  if(t>=16*B&&t<18*B){st('f1',{s:slam(t,16*B,.3)});const q=P(t,17*B,17*B+.14);st('f2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});}
+  // 5 gift
+  if(t>=18*B&&t<21*B){const p=P(t,18*B,18*B+.3);st('g0',{s:lerp(.2,1,ob(p,2.4)),r:lerp(-30,0,oc(p))});
+    st('g1',{s:slam(t,19*B,.25),o:t>=19*B?1:0});const q=P(t,20*B,20*B+.14);st('g2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});
+    if(t>19*B){$('g0').style.transform+=` translateY(${-14*Math.abs(Math.sin((t-19*B)/B*Math.PI))}px)`;}}
+  // 6 pass
+  if(t>=21*B){
+    const lt=t-21*B;
+    
+    const p=P(lt,0,.55);
+    const card=$('card');
+    const wob=Math.sin(lt*1.6)*6;
+    card.style.transform=`translateY(${lerp(700,0,ob(p,1.2))}px) rotateX(${lerp(55,8,oc(p))+Math.sin(lt*1.2)*2}deg) rotateY(${lerp(-35,0,oc(p))+wob}deg) rotateZ(${lerp(-12,-3,oc(p))}deg)`;
+    $('sheen').style.left=`${-60+((lt*0.7)%1.6)*120}%`;
+    const h0=P(lt,.2,.45);st('h0',{o:oc(h0),y:lerp(-30,0,oc(h0))});
+    const bq=P(lt,.7,1.0);let bs=lerp(.5,1,ob(bq,2));if(lt>1.1){bs*=slam(t,Math.floor(t/B)*B,.05);}st('h1',{o:cl(bq*3),s:bs});
+    st('h2',{o:oc(P(lt,1.2,1.5))});
+  }
+  // flash frames on section downbeats
+  let f=0;for(const [,a] of W){if(a>0&&t>=a&&t<a+.07)f=Math.max(f,.85*(1-(t-a)/.07));}
+  $('flash').style.opacity=f;
+}
+window.render=render;render(0);
+</script></body></html>
