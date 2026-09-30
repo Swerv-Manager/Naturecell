@@ -1,5 +1,5 @@
 from synth import *
-DUR=15.0; B=60/90; BAR=4*B
+DUR=14.67; B=60/90; BAR=4*B
 m=Mix(DUR)
 CH=[[53,57,60,64,67],[52,55,59,62,67],[50,53,57,60,64],[48,52,55,59,62]]  # Fmaj9 Em9 Dm9 Cmaj9
 ROOT=[41,40,38,36]
@@ -32,11 +32,11 @@ m.add(room_tone(DUR,.5),0,.6)
 L=lp(m.L,6500); R=lp(m.R,6500)
 m.L[:]=L; m.R[:]=R
 # screen recording sfx
-T4=17*B
-for i in range(20): m.add(tick(),T4+.45+i*(1.05/20),.35,.1)
-m.add(pop(700,.06),T4+.3,.4); m.add(pop(700,.06),T4+1.9,.4)
-chime(m,T4+2.1,(84,88,91,96),.12)
+T4=16*B
+for i in range(20): m.add(tick(),T4+.4+i*(.9/20),.35,.1)
+m.add(pop(700,.06),T4+.3,.4); m.add(pop(700,.06),T4+1.5,.4)
+chime(m,T4+1.75,(84,88,91,96),.12)
 # cut 'handling' thumps
-for c in (5*B,9*B,13*B): m.add(lp(kick(60,40,20,1,.15),300),c,.25)
+for c in (4*B,8*B,12*B): m.add(lp(kick(60,40,20,1,.15),300),c,.25)
 m.write('music_ugc.wav',drive=1.5,fade_out=.6)
 print('ok')

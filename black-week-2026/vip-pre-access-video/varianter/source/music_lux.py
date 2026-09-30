@@ -1,6 +1,6 @@
 from synth import *
 from scipy.signal import fftconvolve
-BPM=70; B=60/BPM; BAR=4*B; DUR=17.0
+BPM=70; B=60/BPM; BAR=4*B; DUR=15.0
 m=Mix(DUR)
 # Dmaj9, Bm11, Gmaj9, Asus4 -> A
 CH=[[50,57,61,64,66],[47,54,57,61,64],[43,50,54,57,62],[45,52,57,59,64]]
@@ -29,7 +29,7 @@ sp=string_pad(CH,BAR,DUR,1500)
 m.add(sp,0,.22,-.3); m.add(np.roll(sp,600),0,.22,.3)
 m.add(lp(rng.standard_normal(m.n),1200)*.015,0,1)
 # soft swells into scene changes and the end card
-for s_ in (3.4,6.8,10.2): m.add(riser(1.0,200,1800)*.6,s_-1.0,.25)
-m.add(riser(1.6,150,2500),13.6-1.6,.3); m.add(impact(2.5,.05),13.6,.35)
+for s_ in (3.0,5.8,8.6): m.add(riser(1.0,200,1800)*.6,s_-1.0,.25)
+m.add(riser(1.6,150,2500),11.2-1.6,.3); m.add(impact(2.5,.05),11.2,.35)
 m.write('music_lux.wav',drive=1.2,fade_out=1.6)
 print('ok')

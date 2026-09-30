@@ -3,6 +3,8 @@
 <style>
 @font-face{font-family:"Roboto Flex";font-weight:100 1000;font-stretch:25% 151%;src:url(img/roboto-flex-latin-full-normal.woff2)}
 @font-face{font-family:"Philosopher";font-weight:700;src:url(img/philosopher-latin-700-normal.woff2)}
+@font-face{font-family:"Philosopher";font-weight:700;src:url(img/PlayfairDisplay-700.ttf);unicode-range:U+0049;size-adjust:100%}
+@font-face{font-family:"Philosopher";font-weight:400;src:url(img/PlayfairDisplay-700.ttf);unicode-range:U+0049;size-adjust:100%}
 :root{--ink:#0E1A17;--deep:#2E4A44;--green:#3E5D58;--sage:#8FAAA2;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
@@ -12,7 +14,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
 .x{font-family:"Roboto Flex";font-variation-settings:"wdth" 25,"wght" 1000,"opsz" 144,"GRAD" 150;text-transform:uppercase;line-height:.84;letter-spacing:-.01em}
 .c{position:absolute;left:0;right:0;text-align:center}
 .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.dim{position:absolute;inset:0;background:rgba(14,26,23,.42)}
+.dim{position:absolute;inset:0;background:rgba(14,26,23,.55)}
 .ticker{position:absolute;left:-200px;white-space:nowrap;font-family:"Roboto Flex";font-variation-settings:"wdth" 25,"wght" 1000;text-transform:uppercase;font-size:115px;line-height:1;color:rgba(249,181,196,.14);transform-origin:0 0}
 #flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
 /* card */
@@ -60,13 +62,13 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
  <div class="sc" id="e">
    <img class="photo" src="img/sort_left.jpg" style="height:52%;object-position:50% 62%">
    <div style="position:absolute;left:0;right:0;top:52%;bottom:0;background:var(--ink)"></div>
-   <div class="c x" id="e1" style="top:1080px;font-size:330px;color:#fff">+5%</div>
+   <div class="c x" id="e1" style="top:1080px;font-size:330px;color:#fff"><span style="font-variation-settings:'wdth' 100,'wght' 900">+</span>5%</div>
    <div class="c x" id="e2" style="top:1380px;font-size:150px;color:var(--sand)">når du køber 2</div>
  </div>
  <div class="sc" id="f">
    <img class="photo" src="img/sort_right.jpg" style="height:52%;object-position:50% 60%">
    <div style="position:absolute;left:0;right:0;top:52%;bottom:0;background:var(--pink)"></div>
-   <div class="c x" id="f1" style="top:1080px;font-size:330px;color:var(--ink)">+10%</div>
+   <div class="c x" id="f1" style="top:1080px;font-size:330px;color:var(--ink)"><span style="font-variation-settings:'wdth' 100,'wght' 900">+</span>10%</div>
    <div class="c x" id="f2" style="top:1380px;font-size:150px;color:var(--berry)">når du køber 3</div>
  </div>
 
@@ -88,7 +90,8 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
      <div class="l2" style="font-family:'Roboto Flex';font-weight:600">PRE‑ACCESS · FRE 20.11</div>
    </div></div>
    <div class="c" id="h1" style="top:1250px"><span class="pill x" style="background:var(--pink);color:var(--ink);font-size:96px;padding:34px 64px 24px">skriv dig på listen <span class="emoji">👇</span></span></div>
-   <div class="c" id="h2" style="top:1440px;font-family:'Roboto Flex';font-size:30px;color:rgba(255,255,255,.6)">20 % på hele shoppen for VIP fra fredag 20.11. Pakker har egne priser.</div>
+   <div class="c" id="h2" style="top:1430px;font-family:'Roboto Flex';font-size:40px;font-weight:600;color:rgba(255,255,255,.9)">Det er gratis · <span style="color:#DDBFA3">★★★★★</span> 4,7 på Trustpilot</div>
+   <div class="c" id="h3" style="top:1500px;font-family:'Roboto Flex';font-size:30px;color:rgba(255,255,255,.62)">20 % på hele shoppen for VIP fra fredag 20.11. Pakker har egne priser.</div>
  </div>
 
 </div>
@@ -141,7 +144,7 @@ function render(t){
   if(t>=16*B&&t<18*B){st('f1',{s:slam(t,16*B,.3)});const q=P(t,17*B,17*B+.14);st('f2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});}
   // 5 gift
   if(t>=18*B&&t<21*B){const p=P(t,18*B,18*B+.3);st('g0',{s:lerp(.2,1,ob(p,2.4)),r:lerp(-30,0,oc(p))});
-    st('g1',{s:slam(t,19*B,.25),o:t>=19*B?1:0});const q=P(t,20*B,20*B+.14);st('g2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});
+    st('g1',{s:slam(t,18*B,.25),o:1});const q=P(t,19*B,19*B+.14);st('g2',{o:q>0?1:0,s:lerp(1.3,1,oc(q))});
     if(t>19*B){$('g0').style.transform+=` translateY(${-14*Math.abs(Math.sin((t-19*B)/B*Math.PI))}px)`;}}
   // 6 pass
   if(t>=21*B){
@@ -154,7 +157,7 @@ function render(t){
     $('sheen').style.left=`${-60+((lt*0.7)%1.6)*120}%`;
     const h0=P(lt,.2,.45);st('h0',{o:oc(h0),y:lerp(-30,0,oc(h0))});
     const bq=P(lt,.7,1.0);let bs=lerp(.5,1,ob(bq,2));if(lt>1.1){bs*=slam(t,Math.floor(t/B)*B,.05);}st('h1',{o:cl(bq*3),s:bs});
-    st('h2',{o:oc(P(lt,1.2,1.5))});
+    st('h2',{o:oc(P(lt,1.1,1.4))});st('h3',{o:oc(P(lt,1.3,1.6))});
   }
   // flash frames on section downbeats
   let f=0;for(const [,a] of W){if(a>0&&t>=a&&t<a+.07)f=Math.max(f,.85*(1-(t-a)/.07));}

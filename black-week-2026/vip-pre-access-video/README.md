@@ -28,6 +28,10 @@ følger videolæringen fra 04-09-2026 (`naturecell-video-laering-2026-09`), som 
 at en påstand vist fra første frame virker bedst. Al vigtig tekst ligger inden for
 TikToks og Reels' sikre zone, så knapper og billedtekst i bunden ikke dækker den.
 
+## Rettelse 30-09-2026
+
+"VIP" blev vist som "VlP", fordi det store I i Philosopher ligner et lille l. Kun bogstavet I er nu sat i Playfair Display, og det gør "VIP" entydigt. Videoen er renderet igen, og resten er uændret.
+
 ## Kilder
 
 - **Fakta:** `naturecell-q4-2026-plan` (mødet 25-08) og

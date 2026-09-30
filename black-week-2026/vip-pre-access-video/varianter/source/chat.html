@@ -6,6 +6,8 @@
 @font-face{font-family:"Inter";font-weight:600;src:url(img/Inter-600.ttf)}
 @font-face{font-family:"Inter";font-weight:700;src:url(img/Inter-700.ttf)}
 @font-face{font-family:"Philosopher";font-weight:700;src:url(img/philosopher-latin-700-normal.woff2)}
+@font-face{font-family:"Philosopher";font-weight:700;src:url(img/PlayfairDisplay-700.ttf);unicode-range:U+0049;size-adjust:100%}
+@font-face{font-family:"Philosopher";font-weight:400;src:url(img/PlayfairDisplay-700.ttf);unicode-range:U+0049;size-adjust:100%}
 @font-face{font-family:"Roboto Flex";font-weight:100 1000;src:url(img/roboto-flex-latin-full-normal.woff2)}
 :root{--deep:#2E4A44;--green:#3E5D58;--paper:#F6F4EE;--sand:#DDBFA3;--pink:#F9B5C4;--berry:#84334E;--blue:#1A8CFF;--gray:#E9E9EB}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -24,7 +26,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#fff;font-family
 .row{display:flex;margin-top:14px;position:relative}
 .row.in{justify-content:flex-start}.row.out{justify-content:flex-end}
 .row.gap{margin-top:34px}
-.bub{max-width:830px;padding:28px 44px;border-radius:62px;font-size:58px;line-height:1.26;position:relative;transform-origin:0% 100%}
+.bub{max-width:940px;padding:30px 44px;border-radius:66px;font-size:63px;line-height:1.24;position:relative;transform-origin:0% 100%}
 .row.out .bub{background:var(--blue);color:#fff;transform-origin:100% 100%}
 .row.in .bub{background:var(--gray);color:#000}
 .row.big .bub{background:none;padding:0 10px;font-size:130px;line-height:1.1}
@@ -73,7 +75,8 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#fff;font-family
     <div class="li" id="l1"><div class="ck"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#2E4A44" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>20 % på hele shoppen</div>
     <div class="li" id="l2"><div class="ck"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#2E4A44" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>En gave til de første ordrer</div>
   </div>
-  <div class="btn" id="btn">Tilmeld dig her <span class="emoji">👇</span></div>
+  <div class="btn" id="btn">Tilmeld dig gratis <span class="emoji">👇</span></div>
+  <div id="tp" style="position:absolute;left:0;right:0;top:1100px;text-align:center;color:rgba(255,255,255,.85);font-family:'Roboto Flex';font-size:36px;font-weight:500"><span style="color:#DDBFA3">★★★★★</span> 4,7 på Trustpilot</div>
 </div>
 <script src="common.js"></script>
 <script>
@@ -81,21 +84,21 @@ const E=s=>s.replace(/(\p{Extended_Pictographic}(️)?)+/gu,m=>`<span class="emo
 // [time, side, html, opts]
 const MSG=[
  [0.00,'in','SKAT <e>😱</e> har du hørt det med NatureCell og Black Week??'],
- [1.10,'out','nej?? fortæl <e>👀</e>',{gap:1}],
- [2.20,'in','hvis man står på deres VIP‑liste, kommer man ind fredag 20/11',{gap:1,typing:.55}],
- [3.30,'in','7 dage før Black Friday <e>🤯</e>',{typing:.45,tap:4.0}],
- [4.60,'out','STOP. hvad er rabatten??',{gap:1}],
- [5.70,'in','20% på hele shoppen',{gap:1,typing:.5}],
- [6.50,'in','+5% ekstra ved 2 og +10% ved 3 <e>😍</e>',{typing:.35}],
- [7.50,'in','og de første ordrer får en gave <e>🎁</e>',{typing:.45}],
- [8.40,'out','okay jeg skriver mig op NU',{gap:1}],
- [8.95,'out','send link!!'],
- [9.90,'in','LINK',{gap:1,typing:.55}],
- [10.80,'in','listen er gratis <e>💚</e> vi ses 20/11',{typing:.4}],
- [11.80,'out','<e>❤️❤️❤️</e>',{gap:1,big:1}],
+ [0.90,'out','nej?? fortæl <e>👀</e>',{gap:1}],
+ [1.80,'in','hvis man står på deres VIP‑liste, kommer man ind fredag 20/11',{gap:1,typing:.45}],
+ [2.75,'in','7 dage før Black Friday <e>🤯</e>',{typing:.35,tap:3.3}],
+ [3.80,'out','STOP. hvad er rabatten??',{gap:1}],
+ [4.65,'in','20% på hele shoppen',{gap:1,typing:.4}],
+ [5.40,'in','+5% ekstra ved 2 og +10% ved 3 <e>😍</e>',{typing:.3}],
+ [6.30,'in','og de første ordrer får en gave <e>🎁</e>',{typing:.4}],
+ [7.10,'out','okay jeg skriver mig op NU',{gap:1}],
+ [8.00,'in','LINK',{gap:1,typing:.45}],
+ [8.85,'in','listen er gratis <e>💚</e> vi ses 20/11',{typing:.35}],
+ [9.60,'out','<e>❤️❤️❤️</e>',{gap:1,big:1}],
 ];
-const CTA=12.6;
+const CTA=10.3;
 const list=$('list'); const rows=[];
+{const d=document.createElement('div');d.style.cssText='text-align:center;color:#8e8e93;font-size:34px;margin:6px 0 10px';d.innerHTML='<b style="font-weight:600">I dag</b> 20.41';list.appendChild(d);}
 for(const [t,side,html,o={}] of MSG){
   if(o.typing){const r=document.createElement('div');r.className='row in typing'+(o.gap?' gap':'');r.innerHTML='<div class="bub"><i class="d"></i><i class="d"></i><i class="d"></i></div>';list.appendChild(r);rows.push({el:r,t0:t-o.typing,t1:t,typing:1});}
   const r=document.createElement('div');r.className=`row ${side}`+(o.gap&&!o.typing?' gap':'')+(o.big?' big':'');
@@ -151,6 +154,7 @@ function render(t){
   for(let i=0;i<3;i++){const q=P(t,CTA+.6+i*.18,CTA+.9+i*.18);st('l'+i,{o:oc(q),x:lerp(-50,0,oc(q))});}
   const bq=P(t,CTA+1.2,CTA+1.55);let bs=lerp(.6,1,ob(bq));
   if(t>CTA+1.6){const b=Math.max(0,Math.cos(Math.PI*2*((t-(CTA+1.9))/(60/110*2))));bs*=1+.04*b;}
+  $('tp').style.opacity=oc(P(t,CTA+1.5,CTA+1.9));
   const btn=$('btn');btn.style.opacity=cl(bq*3);btn.style.transform=`translateX(-50%) scale(${bs})`;
 }
 window.render=render;render(0);

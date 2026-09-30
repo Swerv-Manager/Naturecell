@@ -6,10 +6,21 @@ sit tempo og sit hook, så Meta og TikTok får reel kreativ variation at teste p
 
 | # | Fil | Stil | Tempo | Længde | Hook (første frame) |
 |---|---|---|---|---|---|
-| 1 | `v1-ugc-iphone-15s.mp4` | UGC, filmet med iPhone | 90 BPM lo-fi | 15,0 s | Post-it på badeværelset "HUSK! VIP-LISTEN BLACK WEEK FRE 20/11" + "okay det her Black Week-trick er for godt til ikke at dele 🤫" |
-| 2 | `v2-sms-chat-16s.mp4` | Native beskedtråd mellem to veninder | 110 BPM bouncy pop | 16,2 s | "SKAT 😱 har du hørt det med NatureCell og Black Week??" |
+| 1 | `v1-ugc-iphone-15s.mp4` | UGC, filmet med iPhone | 90 BPM lo-fi | 14,7 s | Post-it på badeværelset "HUSK! VIP-LISTEN BLACK WEEK FRE 20/11" + "okay det her Black Week-trick er for godt til ikke at dele 🤫" |
+| 2 | `v2-sms-chat-14s.mp4` | Native beskedtråd mellem to veninder | 110 BPM bouncy pop | 14,0 s | "SKAT 😱 har du hørt det med NatureCell og Black Week??" |
 | 3 | `v3-hype-strobe-12s.mp4` | Hurtig kinetisk typografi og strobe-klip | 150 BPM | 12,0 s | "7 DAGE FØR BLACK FRIDAY" i fuld bredde |
-| 4 | `v4-editorial-17s.mp4` | Roligt, filmisk, luksus-editorial | 70 BPM klaver og strygere | 17,0 s | "Nogle venter til Black Friday." efterfulgt af "Andre er der en uge før." |
+| 4 | `v4-editorial-15s.mp4` | Roligt, filmisk, luksus-editorial | 70 BPM klaver og strygere | 15,0 s | "Nogle venter til Black Friday." efterfulgt af "Andre er der en uge før." |
+
+## Finpudsning 30-09-2026
+
+Rettet efter en frame-for-frame-QA (4 frames pr. sekund) og optimeret til konvertering. v2, v4 og v8 har fået nyt filnavn, fordi længden er ændret.
+
+**Fælles for alle:** "VIP" blev vist som "VlP", fordi Philosophers store I ligner et lille l. Et I med seriffer (Playfair Display) bruges nu kun til det bogstav. Alle har fået tre ting: et CTA med "gratis", Trustpilot 4,7 som social proof og kortere tid til CTA'et.
+
+- **v1 UGC:** Post-it'ens top blev skåret af, så kameraet er flyttet ned, og zoomet er mindre. Det svage fingerklip er erstattet af ByChris' selfie med Kompletpakken. Klippene er strammet (14,7 s). "Tog mig 10 sek" er fjernet, fordi det ikke kan dokumenteres, og "det er gratis" er sat ind. Der er en Trustpilot-linje. Tilmeldingsskærmen ghostede under overtoningen, så den er rettet, og statusbaren bliver stående.
+- **v2 Beskedtråd:** Større bobler (63 px), så skærmen ikke står tom, og et datostempel. Tempoet er strammet med ca. 15 %, og CTA-arket kommer ved 10,3 s i stedet for 12,6 s. Knappen hedder "Tilmeld dig gratis", og der står Trustpilot under. Emoji knækkede ned på en ny linje, det er rettet.
+- **v3 Hype:** "+" i "+5 %" og "+10 %" lignede et andet tegn i den smalle font, det er rettet. Billederne er mørkere under strobe-ordene. Gave-beatet står ikke længere tomt, og slutkortet har "Det er gratis · Trustpilot" og læsbar fin print.
+- **v4 Editorial:** Hooket var svært at læse, så teksten er større og har mørk baggrund, og "NatureCell VIP · Black Week" står fra første frame. Tempoet er strammet til 15 s. "+5 % ved 2 · +10 % ved 3" var næsten usynligt og står nu i en ramme. Slutkortet har fået en rigtig knap ("Tilmeld dig gratis") og Trustpilot, og kornet er skruet ned (mindre fil).
 
 ## Hvad sker der i hver
 

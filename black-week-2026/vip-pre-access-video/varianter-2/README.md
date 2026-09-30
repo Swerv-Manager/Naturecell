@@ -8,7 +8,16 @@ indholdet i Drive-mappen. Samme fakta og compliance som hovedvideoen og v1 til v
 | 5 | `v5-snapchat-story-16s.mp4` | Snapchat-story med overlay | 112,5 BPM | 16,0 s | "psst 🤫" + Snap-billedtekst "Black Week starter tidligere for dem på VIP-listen" |
 | 6 | `v6-promo-produkter-15s.mp4` | Salgsfremmende produktshowcase | 124 BPM house | 15,5 s | Pink "20 % PÅ HELE SHOPPEN"-stempel over et produktgrid + "7 dage før Black Friday" |
 | 7 | `v7-black-week-guld-14s.mp4` | Rendyrket Black Week: sort og guldfolie | 128 BPM, mørk | 14,5 s | "BLACK WEEK" i guldfolie, "starter 20.11 for VIP" |
-| 8 | `v8-vip-invitation-16s.mp4` | Personlig VIP-invitation i papir | 84 BPM vals | 16,0 s | "Du er inviteret" over en kuvert med voksegl |
+| 8 | `v8-vip-invitation-14s.mp4` | Personlig VIP-invitation i papir | 84 BPM vals | 13,5 s | "Du er inviteret" over en kuvert med voksegl |
+
+## Finpudsning 30-09-2026
+
+Rettet efter en frame-for-frame-QA og optimeret til konvertering. v8 har fået nyt filnavn (14s), fordi længden er ændret. Fælles: "VIP" vises korrekt (Philosophers I lignede et l), CTA'et nævner "gratis", og Trustpilot 4,7 er med som social proof.
+
+- **v5 Snapchat:** "psst 🤫" dækkede ByChris' ansigt og er flyttet op over hovedet. Nedtællingskortet stod som "20 NOV / FRE DAG" og står nu som "fre. 20. nov.". Snapchat sætter selv "Sponsoreret" på, så vores label er skiftet til "Black Week VIP". Der er en ⭐ 4,7 Trustpilot-sticker på bruse-snappet. Den sidste billedtekst dækkede hendes ansigt, så den er kortere og siger "gratis".
+- **v6 Promo:** "VIP-PRIS" er ændret til "VIP-ADGANG", fordi "pris" kan læses som en prispåstand. Tælleren "1 / 5" er erstattet af et CTA midt i videoen ("Skriv dig på VIP-listen 👇"), mens produkterne kører. Det faldende produktkort dækkede overskriften og ligger nu bag den. Hooket siger nu "VIP-adgang 7 dage før Black Friday", og slutkortet har "Tilmeld dig gratis" og Trustpilot.
+- **v7 Black Week guld:** Spotlyset var for lille og scenen for mørk, så lyset er større, og "7 dage før Black Friday" er læsbart. Flip-uret startede på en tom frame, det er rettet. Slutknappen var en svag kontur over produkterne og er nu en massiv guldknap ("Tilmeld dig gratis"). Trustpilot og fin print er læsbare.
+- **v8 Invitation:** Kuverten tog 5 s før indholdet kom og tager nu 3,5 s. Kortet er skaleret op, så håndskriften er læsbar på mobil. Nøglefakta står ved 5 til 6 s, og S.U.-knappen kommer ved 9 s og står i 4,5 s. Hooket siger nu "7 dage før Black Friday". Flappen skar ind i underteksten, og polaroiden blev skåret af i toppen, begge dele er rettet.
 
 ## Hvad sker der i hver
 
@@ -54,6 +63,10 @@ vals med celesta og klaver plus lyden af seglet, papiret og pennen.
 - Invitationen er underskrevet "Lizbeth & Allan" med brandets faste hilsen fra
   brandprofilen.
 - Al lyd er genereret (`source/synth.py`), så der er intet at licensere.
+
+## Social proof
+
+Trustpilot 4,7 kommer fra Nexus-planen 27-09 ("Trustpilot 4,7 og 600 anmeldelser") og de kørende V157 til V161 ("trustpilot-600"), og `clients.trustpilot_allowed` er sand. Tallet skal tjekkes på Trustpilot lige før launch og rettes i HTML'en, hvis det har flyttet sig.
 
 ## Compliance-tjek
 
