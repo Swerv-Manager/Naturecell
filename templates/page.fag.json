@@ -142,18 +142,10 @@
             "heading": "Levering & returnering"
           }
         },
-        "g4q1": {
-          "type": "qa",
+        "g4ship": {
+          "type": "locale_qa",
           "settings": {
-            "q": "Hvad koster fragt?",
-            "a": "<p>Fri fragt ved køb over 399 kr. Vi afsender hver dag, og webshoppen er e-mærket for tryg handel.</p>"
-          }
-        },
-        "g4q2": {
-          "type": "qa",
-          "settings": {
-            "q": "Hvor lang er leveringstiden?",
-            "a": "<p>Typisk 1-3 hverdage med vores fragtpartnere. Du modtager altid track &amp; trace, så du kan følge din pakke.</p>"
+            "key": "ship"
           }
         },
         "g4q3": {
@@ -244,8 +236,7 @@
         "g3q3",
         "g3q4",
         "g4",
-        "g4q1",
-        "g4q2",
+        "g4ship",
         "g4q3",
         "g4q4",
         "g5",
