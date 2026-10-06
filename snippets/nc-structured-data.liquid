@@ -91,7 +91,9 @@
   "publisher": { "@id": {{ sd_org_id | json }} },
   "potentialAction": {
     "@type": "SearchAction",
-    "target": { "@type": "EntryPoint", "urlTemplate": {{ sd_origin | append: routes.search_url | append: '?q={search_term_string}' | json }} },
+    {%- comment -%} Kroellede parenteser maa ikke staa inde i et output-udtryk (Shopifys tokenizer lukker ved foerste hoejre-parentes), derfor via assign. {%- endcomment -%}
+    {%- assign sd_search_tpl = '?q={search_term_string}' -%}
+    "target": { "@type": "EntryPoint", "urlTemplate": {{ sd_origin | append: routes.search_url | append: sd_search_tpl | json }} },
     "query-input": "required name=search_term_string"
   }
 }
