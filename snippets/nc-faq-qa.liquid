@@ -1,0 +1,29 @@
+{%- comment -%}
+  nc-faq-qa: spoergsmaal (part: 'q') eller svar (part: 'a') for en FAQ-blok.
+  "qa": blokkens egne felter ([produkt] erstattes med produktets navn uden undertitel).
+  "locale_qa": faste spoergsmaal fra sprogfilen (pdp.faq.<key>_q / _a), saa de er
+  oversat. Svaret om levering faar fri fragt-graensen paa, kun i valutaer med en graense.
+{%- endcomment -%}
+{%- liquid
+  if block.type == 'locale_qa'
+    assign nc_key = 'pdp.faq.' | append: block.settings.key | append: '_' | append: part
+    assign nc_out = nc_key | t
+    if part == 'a' and block.settings.key == 'ship'
+      capture nc_fs
+        render 'nc-free-shipping'
+      endcapture
+      assign nc_fs = nc_fs | strip
+      if nc_fs != blank
+        # "399 kr." + "." giver dobbelt punktum; beloebsformatet ejer punktummet
+        assign nc_free = 'pdp.faq.ship_free' | t: amount: nc_fs | replace: '..', '.'
+        assign nc_out = nc_out | append: nc_free
+      endif
+    endif
+    echo nc_out
+  elsif part == 'q'
+    assign nc_name = product.title | split: ' | ' | first
+    echo block.settings.q | replace: '[produkt]', nc_name
+  else
+    echo block.settings.a
+  endif
+-%}

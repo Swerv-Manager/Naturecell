@@ -1,0 +1,57 @@
+{%- comment -%}
+  nc-social-meta: Open Graph og Twitter-kort, saa delinger paa Facebook, Messenger,
+  LinkedIn, Slack m.fl. viser rigtig titel, tekst og billede. Billede: sidens eget
+  (produkt-, artikel- eller kollektionsbillede), ellers temaets delingsbillede, ellers logoet.
+{%- endcomment -%}
+{%- liquid
+  assign og_title = page_title | default: shop.name
+  assign og_url = canonical_url | default: shop.url
+  assign og_type = 'website'
+  assign og_description = page_description | default: shop.description | default: shop.name
+  case request.page_type
+    when 'product'
+      assign og_type = 'product'
+    when 'article'
+      assign og_type = 'article'
+  endcase
+  assign og_image = page_image | default: settings.nc_share_image
+  case request.locale.iso_code
+    when 'da'
+      assign og_locale = 'da_DK'
+    when 'de'
+      assign og_locale = 'de_DE'
+    when 'sv'
+      assign og_locale = 'sv_SE'
+    else
+      assign og_locale = 'en_GB'
+  endcase
+-%}
+<meta property="og:site_name" content="NatureCell">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title | escape }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description | escape }}">
+<meta property="og:locale" content="{{ og_locale }}">
+{%- if og_image != blank %}
+<meta property="og:image" content="https:{{ og_image | image_url: width: 1200 }}">
+<meta property="og:image:secure_url" content="https:{{ og_image | image_url: width: 1200 }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="{{ 1200 | divided_by: og_image.aspect_ratio | round }}">
+{%- if og_image.alt != blank %}<meta property="og:image:alt" content="{{ og_image.alt | escape }}">{% endif %}
+{%- else %}
+<meta property="og:image" content="https:{{ 'nc-logo-wordmark.webp' | asset_url }}">
+{%- endif %}
+{%- if request.page_type == 'product' %}
+<meta property="product:price:amount" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}">
+<meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
+<meta property="og:price:amount" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}">
+<meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{%- endif %}
+{%- if request.page_type == 'article' %}
+<meta property="article:published_time" content="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' }}">
+<meta property="article:modified_time" content="{{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' }}">
+{%- for tag in article.tags limit: 6 %}<meta property="article:tag" content="{{ tag | escape }}">{% endfor %}
+{%- endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title | escape }}">
+<meta name="twitter:description" content="{{ og_description | escape }}">

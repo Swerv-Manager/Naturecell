@@ -1,0 +1,23 @@
+{%- comment -%}
+  nc-primary-collection: handle paa produktets primaere kollektion.
+
+  Produktet faar sin "type" fra den foerste kollektion i prioritetslisten
+  (temaindstillinger: SEO og produktdata), som det ligger i. Den styrer FAQ,
+  relaterede produkter, broedkrumme og omraade-ord paa produktsiden, saa hver
+  side faar indhold fra sin egen kategori uden en skabelon pr. produkttype.
+
+  Brug: {%- capture pc %}{% render 'nc-primary-collection', product: product %}{% endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign nc_handles = product.collections | map: 'handle'
+  assign nc_prio = settings.nc_primary_collections | default: 'cbd-ansigtspleje, cbd-handpleje, cbd-fodpleje, cbd-kropspleje, cbd-haarpleje, herre-hudpleje, cbd-olie, sampakker, cbd-hudpleje' | newline_to_br | replace: '<br />', ',' | split: ','
+  assign nc_found = ''
+  for h in nc_prio
+    assign nc_h = h | strip
+    if nc_h != blank and nc_handles contains nc_h
+      assign nc_found = nc_h
+      break
+    endif
+  endfor
+  echo nc_found
+-%}

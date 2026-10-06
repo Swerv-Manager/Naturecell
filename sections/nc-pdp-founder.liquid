@@ -24,6 +24,10 @@
 {%- capture main_title -%}{%- render 'nc-title', title: title_parts[0] -%}{%- endcapture -%}
 {%- assign main_title = main_title | strip -%}
 
+{%- comment -%} Uden produktvideo vises sektionen ikke (ingen "Video kommer snart" paa live). {%- endcomment -%}
+{%- assign vid = product.metafields.ncell.video.value -%}
+{%- assign vid_url = product.metafields.ncell.video_url.value -%}
+{%- if vid != blank or vid_url != blank or section.settings.show_without_video -%}
 <section class="nc-pdpfv">
   <div class="nc-pdpfv__inner">
     <span class="nc-pdpfv__eyebrow">{{ section.settings.eyebrow }}</span>
@@ -51,12 +55,14 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Produkt: grundlægger",
   "tag": "section",
   "settings": [
+    { "type": "checkbox", "id": "show_without_video", "label": "Vis sektionen uden video (plakat med pill)", "default": false },
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Fra grundlæggeren" },
     { "type": "text", "id": "heading", "label": "Overskrift ([produkt] = produktnavn)", "default": "Se [produkt] i brug" },
     { "type": "select", "id": "format", "label": "Videoformat", "options": [ { "value": "portrait", "label": "Stående 9:16 (produktvideoerne)" }, { "value": "landscape", "label": "Liggende 16:9" } ], "default": "portrait" },

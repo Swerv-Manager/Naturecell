@@ -1,0 +1,22 @@
+{%- comment -%}
+  nc-trustpilot: Trustpilot-tallene fra temaindstillingerne (Integrationer), saa de kun
+  opdateres ét sted og altid er ens paa forside, anmeldelsesbaand og om os.
+  format: 'line' (hero), 'agg' (anmeldelsesbaandet), 'num' eller 'label' (statistikbaand).
+  Tomt output, hvis tallene ikke er udfyldt.
+{%- endcomment -%}
+{%- liquid
+  assign nc_score = settings.nc_tp_score | strip
+  assign nc_count = settings.nc_tp_count | plus: 0
+  if nc_score != blank and nc_count > 0
+    case format
+      when 'agg'
+        echo 'general.tp_agg' | t: score: nc_score, count: nc_count
+      when 'num'
+        echo 'general.tp_num' | t: score: nc_score
+      when 'label'
+        echo 'general.tp_label' | t: count: nc_count
+      else
+        echo 'general.tp_line' | t: score: nc_score, count: nc_count
+    endcase
+  endif
+-%}

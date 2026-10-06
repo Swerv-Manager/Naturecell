@@ -1,6 +1,6 @@
 {% comment %}
   Statistikbaand fra om os-designet (template.html:2779-2788): fire
-  noegletal paa creme-baggrund (2019 / Vegansk / 100% / 4,8/5).
+  noegletal paa creme-baggrund (2019 / Vegansk / 100% / Trustpilot fra temaindstillingerne).
 {% endcomment %}
 
 {%- style -%}
@@ -18,10 +18,24 @@
   <div class="nc-container">
     <div class="nc-stats__grid">
       {%- for block in section.blocks -%}
+        {%- liquid
+          assign st_num = block.settings.num
+          assign st_label = block.settings.label
+          if block.settings.trustpilot
+            capture st_num
+              render 'nc-trustpilot', format: 'num'
+            endcapture
+            capture st_label
+              render 'nc-trustpilot', format: 'label'
+            endcapture
+          endif
+        -%}
+        {%- if st_num != blank -%}
         <div class="nc-stats__item" {{ block.shopify_attributes }}>
-          <span class="nc-stats__num">{{ block.settings.num }}</span>
-          <span class="nc-stats__label">{{ block.settings.label }}</span>
+          <span class="nc-stats__num">{{ st_num | strip }}</span>
+          <span class="nc-stats__label">{{ st_label | strip }}</span>
         </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
@@ -37,8 +51,25 @@
       "type": "stat",
       "name": "Nøgletal",
       "settings": [
-        { "type": "text", "id": "num", "label": "Tal", "default": "2019" },
-        { "type": "text", "id": "label", "label": "Etiket", "default": "Først godkendt til salg i Danmark" }
+        {
+          "type": "text",
+          "id": "num",
+          "label": "Tal",
+          "default": "2019"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiket",
+          "default": "Først godkendt til salg i Danmark"
+        },
+        {
+          "type": "checkbox",
+          "id": "trustpilot",
+          "label": "Vis Trustpilot-tal i stedet",
+          "info": "Tal og etiket hentes fra Temaindstillinger → Integrationer.",
+          "default": false
+        }
       ]
     }
   ],
@@ -46,10 +77,35 @@
     {
       "name": "NC statistikbånd",
       "blocks": [
-        { "type": "stat", "settings": { "num": "2019", "label": "Først godkendt til salg i Danmark" } },
-        { "type": "stat", "settings": { "num": "Vegansk", "label": "Plantebaseret & uden syntetisk parfume" } },
-        { "type": "stat", "settings": { "num": "100%", "label": "Dansk produktion & test" } },
-        { "type": "stat", "settings": { "num": "4,8/5", "label": "2.143 anmeldelser på Trustpilot" } }
+        {
+          "type": "stat",
+          "settings": {
+            "num": "2019",
+            "label": "Først godkendt til salg i Danmark"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "Vegansk",
+            "label": "Plantebaseret & uden syntetisk parfume"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "100%",
+            "label": "Dansk produktion & test"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "",
+            "label": "",
+            "trustpilot": true
+          }
+        }
       ]
     }
   ]

@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "tone": "sage",
+        "band_compact": true,
+        "eyebrow": "Som set i Løvens Hule",
+        "heading": "Jesper Buch investerer i NatureCell®",
+        "intro": "Vi er stolte over at byde Jesper Buch og Guerilla Capital velkommen ombord som investorer i NatureCell®, og vi glæder os til det næste kapitel."
+      }
+    },
+    "investering": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "paper",
+        "media_side": "right",
+        "image_url": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663305097660/QsJRjWCbXlqFyTSa.jpg",
+        "eyebrow": "Løvens Hule",
+        "heading": "Et nyt kapitel for NatureCell®",
+        "text": "<p>Hos NatureCell® er vi stolte over at kunne byde Jesper Buch og hans partnere i Guerilla Capital velkommen ombord som investorer i NatureCell®. Investeringen kom i forbindelse med vores deltagelse i tv-programmet Løvens Hule, hvor vi fik mulighed for at præsentere vores danske CBD hudplejebrand og den virksomhed, vi gennem flere år har opbygget.</p><p>Det blev starten på et nyt kapitel for NatureCell®: fra iværksætterdrøm til nu at have investorer med i udviklingen af virksomheden. Jesper Buch lagde sin investering i investeringsselskabet Guerilla Capital, hvilket betyder, at vi har fået fire stærke kompetence-profiler med ind. Det er vi meget stolte og taknemmelige over, og vi er allerede i gang med et godt samarbejde.</p>",
+        "cta1_text": "Se Løvepakken →",
+        "cta1_url": "shopify://products/love-pakken-cbd-hudpleje"
+      }
+    },
+    "anerkendelse": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "sage50",
+        "heading": "En anerkendelse af det vi har bygget op",
+        "text": "<p>Da vi gik ind i Løvens Hule, var det ikke kun for at få kapital. Vores mål var i høj grad at få kompetencer og erfaring, som kan hjælpe os med at udvikle og skalere NatureCell®. Derfor betyder det meget for os, at investorer kan se potentialet i den forretning, vi allerede har opbygget, og i den respons vi oplever fra vores kunder.</p>",
+        "quote": "Det triggede mig, at de allerede er godt i gang med at bygge en sund forretning op, og at de har fået masser af god respons fra deres kunder. Jeg ser frem til at videreudvikle forretningen i partnerskab med Lizbeth og Allan.",
+        "quote_open": "\"",
+        "quote_close": "\" Jesper Buch"
+      }
+    },
+    "naeste": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "paper",
+        "image_url": "nc-founders.webp",
+        "media_side": "left",
+        "heading": "Klar til næste fase",
+        "text": "<p>Med nye kompetencer og investorer ombord ser vi frem til næste fase for NatureCell®. Vores ambition er at udvikle og skalere vores danskudviklede CBD hudplejeserie, så endnu flere får mulighed for at lære produkterne at kende, også uden for Danmarks grænser.</p><p>Samtidig holder vi fast i det fundament, NatureCell® er bygget på:</p><ul><li>CBD hudpleje formuleret med ingredienser af naturlig oprindelse og høj kvalitet, man kan være tryg ved</li><li>Nærværende, personlig kundeservice</li></ul>"
+      }
+    },
+    "tak": {
+      "type": "nc-media-split",
+      "settings": {
+        "tone": "cream",
+        "heading": "Tak til vores kunder",
+        "text": "<p>NatureCell® var ikke nået hertil uden vores kunder. Det er jeres tillid, feedback og oplevelser med produkterne, der har været med til at skabe fundamentet for den rejse, vi nu fortsætter. Tusind tak for det!</p><p>Vi glæder os til den videre udvikling af NatureCell® sammen med vores kunder og vores nye investorer.</p><p><strong>Lizbeth Falk & Allan Falk Gamborg</strong><br>Founders, NatureCell 💚</p>",
+        "callout": "<p>Fejr investeringen med os med Løvepakken, den rutine vi præsenterede i Løvens Hule.</p>",
+        "cta1_text": "Se Løvepakken →",
+        "cta1_url": "shopify://products/love-pakken-cbd-hudpleje",
+        "cta2_text": "Om NatureCell",
+        "cta2_url": "shopify://pages/om-os"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "investering",
+    "anerkendelse",
+    "naeste",
+    "tak"
+  ]
+}

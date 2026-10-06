@@ -2,9 +2,7 @@
   "sections": {
     "main": {
       "type": "main-cart",
-      "settings": {
-        "shipping_note": "Fragt beregnes ved kassen. Gratis levering ved ordrer over 399 kr."
-      }
+      "settings": {}
     }
   },
   "order": [

@@ -5,8 +5,7 @@
     "header": {
       "type": "nc-header",
       "settings": {
-        "best_collection": "cbd-hudpleje",
-        "announcement": "Fri fragt over 399 kr. · Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje"
+        "best_collection": "cbd-hudpleje"
       },
       "blocks": {
         "area_ansigt": {
@@ -22,7 +21,7 @@
           "type": "area",
           "settings": {
             "label": "Hænder",
-            "desc": "Tørre, slidte hænder",
+            "desc": "Håndcreme & balm",
             "url": "/collections/cbd-handpleje",
             "product": "handcreme"
           }
@@ -40,7 +39,7 @@
           "type": "area",
           "settings": {
             "label": "Fødder",
-            "desc": "Tørre hæle & fødder",
+            "desc": "Fodcreme & pleje",
             "url": "/collections/cbd-fodpleje",
             "product": "fodcreme"
           }
@@ -67,7 +66,7 @@
           "type": "need",
           "settings": {
             "label": "Tør hud",
-            "desc": "Nærende fugt",
+            "desc": "Fugt & pleje",
             "url": "/collections/cbd-hudpleje",
             "product": "natcreme"
           }
@@ -76,7 +75,7 @@
           "type": "need",
           "settings": {
             "label": "Fugt",
-            "desc": "Boost & balance",
+            "desc": "Serum & creme",
             "url": "/collections/cbd-hudpleje",
             "product": "naturecell-cbd-hyaluronic-serum"
           }
@@ -85,7 +84,7 @@
           "type": "need",
           "settings": {
             "label": "Moden hud",
-            "desc": "Fasthed & glød",
+            "desc": "Eye gel & natcreme",
             "url": "/collections/cbd-hudpleje",
             "product": "cbg-eye-gel"
           }
@@ -94,7 +93,7 @@
           "type": "need",
           "settings": {
             "label": "Sensitiv hud",
-            "desc": "Mild & rolig",
+            "desc": "Mild & uden parfume",
             "url": "/collections/cbd-hudpleje",
             "product": "rensegel"
           }
@@ -103,7 +102,7 @@
           "type": "need",
           "settings": {
             "label": "Uren hud",
-            "desc": "Rens & balance",
+            "desc": "Rensegel & pleje",
             "url": "/collections/cbd-hudpleje",
             "product": "rensegel"
           }
@@ -112,7 +111,7 @@
           "type": "need",
           "settings": {
             "label": "Genopbygning",
-            "desc": "Reparation",
+            "desc": "Olie & balm",
             "url": "/collections/cbd-hudpleje",
             "product": "cbd-olie-1000mg"
           }

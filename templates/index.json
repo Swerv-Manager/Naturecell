@@ -13,7 +13,7 @@
             "body": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser.",
             "cta_text": "Shop nu →",
             "cta2_text": "Se kundecases",
-            "trust_text": "<strong>4,8/5</strong> · 2.143 anmeldelser på Trustpilot"
+            "show_trustpilot": true
           }
         },
         "slide2": {
@@ -119,7 +119,7 @@
           "type": "area",
           "settings": {
             "label": "Hænder",
-            "desc": "Tørre, slidte hænder",
+            "desc": "Håndcreme & balm",
             "url": "/collections/cbd-handpleje",
             "product": "handcreme"
           }
@@ -137,7 +137,7 @@
           "type": "area",
           "settings": {
             "label": "Fødder",
-            "desc": "Tørre hæle & fødder",
+            "desc": "Fodcreme & pleje",
             "url": "/collections/cbd-fodpleje",
             "product": "fodcreme"
           }
@@ -164,7 +164,7 @@
           "type": "need",
           "settings": {
             "label": "Tør hud",
-            "desc": "Nærende fugt",
+            "desc": "Fugt & pleje",
             "url": "/collections/cbd-hudpleje",
             "product": "natcreme"
           }
@@ -173,7 +173,7 @@
           "type": "need",
           "settings": {
             "label": "Fugt",
-            "desc": "Boost & balance",
+            "desc": "Serum & creme",
             "url": "/collections/cbd-hudpleje",
             "product": "naturecell-cbd-hyaluronic-serum"
           }
@@ -182,7 +182,7 @@
           "type": "need",
           "settings": {
             "label": "Moden hud",
-            "desc": "Fasthed & glød",
+            "desc": "Eye gel & natcreme",
             "url": "/collections/cbd-hudpleje",
             "product": "cbg-eye-gel"
           }
@@ -191,7 +191,7 @@
           "type": "need",
           "settings": {
             "label": "Sensitiv hud",
-            "desc": "Mild & rolig",
+            "desc": "Mild & uden parfume",
             "url": "/collections/cbd-hudpleje",
             "product": "rensegel"
           }
@@ -200,7 +200,7 @@
           "type": "need",
           "settings": {
             "label": "Uren hud",
-            "desc": "Rens & balance",
+            "desc": "Rensegel & pleje",
             "url": "/collections/cbd-hudpleje",
             "product": "rensegel"
           }
@@ -209,7 +209,7 @@
           "type": "need",
           "settings": {
             "label": "Genopbygning",
-            "desc": "Reparation",
+            "desc": "Olie & balm",
             "url": "/collections/cbd-hudpleje",
             "product": "cbd-olie-1000mg"
           }
@@ -268,140 +268,11 @@
     },
     "testimonials": {
       "type": "nc-testimonials",
-      "blocks": {
-        "r1": {
-          "type": "review",
-          "settings": {
-            "text": "Jeg er vild med olien. Den trækker hurtigt ind og min hud føles blød hele dagen.",
-            "name": "Mette K.",
-            "meta": "Verificeret køb · CBD Hudplejeolie"
-          }
-        },
-        "r2": {
-          "type": "review",
-          "settings": {
-            "text": "Hele sættet er bare gennemtænkt. Fragten var hurtig, og jeg sparede en del på pakken.",
-            "name": "Lars P.",
-            "meta": "Verificeret køb · Komplet pakke"
-          }
-        },
-        "r3": {
-          "type": "review",
-          "settings": {
-            "text": "Endelig en dagcreme der ikke strammer. Let og fugtgivende. Den er fast i min rutine nu.",
-            "name": "Camilla B.",
-            "meta": "Verificeret køb · Dagcreme"
-          }
-        },
-        "r4": {
-          "type": "review",
-          "settings": {
-            "text": "Bruger den efter træning hver dag. Ingen parfume, bare god pleje.",
-            "name": "Jonas H.",
-            "meta": "Verificeret køb · Bodylotion"
-          }
-        },
-        "r5": {
-          "type": "review",
-          "settings": {
-            "text": "Serummet giver lige det ekstra fugt min hud manglede. Mærkbar forskel.",
-            "name": "Rikke S.",
-            "meta": "Verificeret køb · Serum"
-          }
-        },
-        "r6": {
-          "type": "review",
-          "settings": {
-            "text": "Tryg handel og dansk produktion. Det betyder noget for mig.",
-            "name": "Thomas E.",
-            "meta": "Verificeret køb · CBD Drops"
-          }
-        },
-        "r7": {
-          "type": "review",
-          "settings": {
-            "text": "Efter kun 3 uger med olien ser min hud meget roligere og mere ensartet ud. Fantastisk.",
-            "name": "Bente",
-            "meta": "Verificeret køb · CBD Hudplejeolie"
-          }
-        },
-        "r8": {
-          "type": "review",
-          "settings": {
-            "text": "Min hud føltes rød og irriteret. Efter en måned føles den mere rolig og velplejet.",
-            "name": "Emma",
-            "meta": "Verificeret køb · Komplet pakke"
-          }
-        },
-        "r9": {
-          "type": "review",
-          "settings": {
-            "text": "Jeg brugte olien før cremen. Efter et par måneder føltes huden mere jævn. Helt vildt.",
-            "name": "Birte",
-            "meta": "Verificeret køb · CBD Hudplejeolie"
-          }
-        },
-        "r10": {
-          "type": "review",
-          "settings": {
-            "text": "Jeg bruger rens og olie hver aften. Min hud føles nu mere i balance.",
-            "name": "Julie",
-            "meta": "Verificeret køb · CBD Rensegel"
-          }
-        },
-        "r11": {
-          "type": "review",
-          "settings": {
-            "text": "Allerede fra første påføring føltes min hud mere rolig og i bedre balance.",
-            "name": "Sally",
-            "meta": "Verificeret køb · CBD Hudplejeolie"
-          }
-        },
-        "r12": {
-          "type": "review",
-          "settings": {
-            "text": "Efter en måneds brug virkede huden mere rolig og velplejet. Jeg har kun godt at sige.",
-            "name": "Karin",
-            "meta": "Verificeret køb · CBD Håndcreme"
-          }
-        },
-        "r13": {
-          "type": "review",
-          "settings": {
-            "text": "NatureCells CBD hudpleje har gjort en forskel for min hud. Rigtig gode produkter.",
-            "name": "Jan",
-            "meta": "Verificeret køb · Komplet pakke"
-          }
-        },
-        "r14": {
-          "type": "review",
-          "settings": {
-            "text": "Natcremen er blevet mit lille aftenritual. Huden føles mere udhvilet om morgenen.",
-            "name": "Pernille M.",
-            "meta": "Verificeret køb · Natcreme"
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2",
-        "r3",
-        "r4",
-        "r5",
-        "r6",
-        "r7",
-        "r8",
-        "r9",
-        "r10",
-        "r11",
-        "r12",
-        "r13",
-        "r14"
-      ],
       "settings": {
         "eyebrow": "Anmeldelser",
         "heading": "Det siger vores kunder",
-        "agg_text": "<strong>4,8</strong> ud af 5 · <strong>2.143</strong> anmeldelser"
+        "link_text": "Se kundecases",
+        "link_url": "/blogs/kundecases"
       }
     },
     "story": {
@@ -434,7 +305,7 @@
           "type": "stat",
           "settings": {
             "num": "7.000+",
-            "label": "Glade kunder"
+            "label": "Kunder"
           }
         }
       },

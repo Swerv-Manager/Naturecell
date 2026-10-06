@@ -63,11 +63,14 @@
           <div>{% render 'nc-product-card', product: rec %}</div>
         {%- endfor -%}
       {%- elsif product.collections.first or collection -%}
-        {%- assign src = product.collections.first | default: collection -%}
+        {%- comment -%} Produktets primaere kollektion (samme type), ellers den foerste. {%- endcomment -%}
+        {%- capture rel_handle %}{% render 'nc-primary-collection', product: product %}{% endcapture -%}
+        {%- assign rel_handle = rel_handle | strip -%}
+        {%- assign src = collections[rel_handle] | default: product.collections.first | default: collection -%}
         {%- assign shown = 0 -%}
         {%- for p in src.products -%}
           {%- assign skip = false -%}
-          {%- if p.id == product.id -%}{%- assign skip = true -%}{%- endif -%}
+          {%- if p.id == product.id or p.available == false -%}{%- assign skip = true -%}{%- endif -%}
           {%- if p.tags contains 'pakker' or p.tags contains 'bundle' -%}{%- assign skip = true -%}{%- endif -%}
           {%- if skip == false and shown < section.settings.limit -%}
             <div>{% render 'nc-product-card', product: p %}</div>

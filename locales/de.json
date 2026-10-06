@@ -43,7 +43,14 @@
     },
     "go_to_slide": "Zu Slide {{ n }}",
     "not_found_body": "Die gesuchte Seite wurde verschoben oder existiert nicht mehr.",
-    "all": "Alle"
+    "all": "Alle",
+    "free_shipping": "Kostenloser Versand ab {{ amount }}",
+    "announce_tail": "Vegan & pflanzenbasiert · Dänischer Webshop mit e-mærket-Siegel",
+    "tp_line": "<strong>{{ score }}/5</strong> · über {{ count }} Bewertungen auf Trustpilot",
+    "tp_agg": "<strong>{{ score }}</strong> von 5 · über <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
+    "tp_num": "{{ score }}/5",
+    "tp_label": "über {{ count }} Bewertungen auf Trustpilot",
+    "reviews_disclaimer": "Kundinnen und Kunden teilen ihre eigenen Erfahrungen. Ergebnisse können variieren."
   },
   "blog": {
     "read_also": "Lesen Sie auch",
@@ -82,7 +89,8 @@
     "favorites": "Favoriten",
     "account": "Konto",
     "cart": "Warenkorb",
-    "faq": "Häufige Fragen"
+    "faq": "Häufige Fragen",
+    "jesper": "Jesper Buch & Løvens Hule"
   },
   "cart": {
     "empty": "Ihr Warenkorb ist leer",
@@ -96,7 +104,7 @@
     "product": "Produkt",
     "price": "Preis",
     "you_save": "Sie sparen",
-    "free_shipping_over": "Kostenloser Versand ab 399 kr.",
+    "free_shipping_over": "Kostenloser Versand ab {{ amount }}.",
     "free_shipping_status": "Versandkosten-Status",
     "payment_methods": "Zahlungsarten",
     "benefits_title": "Ihre Vorteile bei NatureCell",
@@ -110,7 +118,8 @@
     "vat_note": "Inkl. MwSt. · Versand wird an der Kasse berechnet",
     "shop": "Hautpflege shoppen",
     "free_shipping_reached": "Sie haben kostenlosen Versand 🎉",
-    "free_shipping_missing": "Noch {{ amount }} bis zum kostenlosen Versand"
+    "free_shipping_missing": "Noch {{ amount }} bis zum kostenlosen Versand",
+    "shipping_calc": "Versandkosten werden an der Kasse berechnet."
   },
   "favorites": {
     "empty": "Noch keine Favoriten",
@@ -138,7 +147,9 @@
     "save_favorite": "{{ title }} als Favorit speichern",
     "add_named": "{{ title }} in den Warenkorb legen",
     "rated": "Mit {{ rating }} von 5 bewertet",
-    "ambassador": "Ambassador"
+    "ambassador": "Ambassador",
+    "rating_summary": "{{ rating }}/5 · {{ count }} Bewertungen",
+    "back_to": "Zurück zu {{ title }}"
   },
   "collection": {
     "bestsellers": "Bestseller",
@@ -292,6 +303,70 @@
     "video": "Video"
   },
   "footer": {
-    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- und ISO-zertifiziert"
+    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- und ISO-zertifiziert",
+    "legal_nav": "Rechtliche Hinweise",
+    "withdrawal": "Vertrag widerrufen"
+  },
+  "badges": {
+    "bundle": "Die ganze Routine in einem Set",
+    "cbd_amount": "{{ amount }} CBD in {{ size }}",
+    "with_cbd_size": "Mit CBD · {{ size }}",
+    "with_cbd": "Mit CBD",
+    "with_cbg_size": "Mit CBG · {{ size }}",
+    "with_one": "Mit {{ a }}",
+    "with_two": "Mit {{ a }} und {{ b }}",
+    "developed_dk": "Entwickelt in Dänemark",
+    "dermatest": "Dermatest: Sehr gut",
+    "kemiluppen": "Kemiluppen (DK): Kolbe A",
+    "coa": "Analysezertifikat pro Charge",
+    "ingr": {
+      "hyaluron": "Hyaluronsäure",
+      "niacinamide": "Niacinamid",
+      "urea": "Urea",
+      "shea": "Sheabutter",
+      "squalane": "Squalan",
+      "aloe": "Aloe vera",
+      "almond": "Mandelöl",
+      "mango": "Mangobutter",
+      "jojoba": "Jojobaöl",
+      "lavender": "Lavendelöl",
+      "cucumber": "Gurkenextrakt",
+      "vitamin_e": "Vitamin E",
+      "mct": "MCT-Öl",
+      "sunflower": "Sonnenblumenöl",
+      "hemp_seed": "Hanfsamenöl"
+    }
+  },
+  "pdp": {
+    "ingredients": {
+      "eyebrow": "Inhaltsstoffe",
+      "heading": "Mit Bedacht ausgewählt",
+      "intro": "Eine Auswahl der Inhaltsstoffe in [produkt]. Die vollständige Liste finden Sie unter Inhaltsstoffe."
+    },
+    "story": {
+      "eyebrow": "Über das Produkt"
+    },
+    "videos": {
+      "heading": "Kundinnen und Kunden erzählen von ihrer Routine",
+      "note": "Kundinnen und Kunden teilen ihre eigenen Erfahrungen. Ergebnisse können variieren."
+    },
+    "ticker": {
+      "free_shipping": "Kostenloser Versand ab {{ amount }}",
+      "dk_test": "Dänische Produktion & Tests",
+      "vegan": "Vegan & pflanzenbasiert",
+      "emaerket": "e-mærket-zertifizierter Webshop · sicheres Einkaufen",
+      "returns": "14 Tage Widerrufsrecht"
+    },
+    "faq": {
+      "ship_q": "Wann versenden Sie meine Bestellung?",
+      "ship_a": "<p>Bestellungen, die werktags vor 14 Uhr eingehen, versenden wir am selben Tag. Sobald Ihr Paket unterwegs ist, erhalten Sie eine E-Mail mit der Sendungsnummer.</p>",
+      "return_q": "Kann ich meinen Kauf widerrufen?",
+      "return_a": "<p>Ja. Sie haben ein Widerrufsrecht von 14 Tagen ab dem Tag, an dem Sie die Ware erhalten. Die Ware wird unbenutzt und in der Originalverpackung zurückgesendet.</p>",
+      "storage_q": "Wie bewahre ich die Produkte auf?",
+      "storage_a": "<p>Bei höchstens 25 Grad und ohne direkte Sonneneinstrahlung aufbewahren. Die Verpackung nach Gebrauch gut verschließen. Die Produkte sind zur äußerlichen Anwendung bestimmt.</p>",
+      "advice_q": "Kann ich mich persönlich beraten lassen?",
+      "advice_a": "<p>Ja. Schreiben Sie an hello@naturecell.dk oder rufen Sie uns unter +45 40 55 00 42 an. Wir gehen selbst ans Telefon und finden gemeinsam mit Ihnen das passende Produkt für Ihre Routine.</p>",
+      "ship_free": "<p>Kostenloser Versand ab {{ amount }}.</p>"
+    }
   }
 }

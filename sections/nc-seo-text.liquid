@@ -1,8 +1,9 @@
 {% comment %}
   SEO-bundtekst fra designet: overskrift + afsnit og tre emneblokke.
-  Bruges nederst paa kollektionssider. Indholdet vedligeholdes pr.
-  kollektionsskabelon i temaeditoren (teksterne er skrevet i designet
-  ud fra Ahrefs-soegevolumener, aug. 2026).
+  Bruges nederst paa kollektionssider. Indholdet kommer pr. kollektion fra
+  metafelterne (ncell.seo_heading / seo_body / seo_topics), saa der kun er
+  én skabelon. Uden indhold vises sektionen ikke, saa der aldrig staar den
+  samme generiske tekst paa flere kollektioner (dobbelt indhold).
 {% endcomment %}
 
 {%- style -%}
@@ -28,6 +29,21 @@
   .nc-seotext__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(40px, 5vw, 56px); }
 {%- endstyle -%}
 
+{%- liquid
+  assign seo_any = false
+  if collection.metafields.ncell.seo_heading.value != blank or collection.metafields.ncell.seo_body.value != blank or collection.metafields.ncell.seo_topics.value != blank
+    assign seo_any = true
+  elsif section.settings.heading != blank or section.settings.body != blank or section.settings.links != blank
+    assign seo_any = true
+  else
+    for block in section.blocks
+      if block.type == 'topic'
+        assign seo_any = true
+      endif
+    endfor
+  endif
+-%}
+{%- if seo_any -%}
 <section class="nc-seotext nc-section">
   <div class="nc-container">
     {%- assign has_blocks = false -%}
@@ -45,9 +61,17 @@
       assign mf_body = collection.metafields.ncell.seo_body
       assign mf_topics = collection.metafields.ncell.seo_topics.value
     -%}
+    {%- liquid
+      assign seo_heading = mf_heading | default: section.settings.heading
+      assign seo_has_body = false
+      if mf_body.value != blank or section.settings.body != blank
+        assign seo_has_body = true
+      endif
+    -%}
+    {%- if seo_heading != blank or seo_has_body or mf_topics != blank or has_blocks -%}
     <div class="nc-seotext__cols">
       <div class="nc-seotext__lead">
-        <h2>{{ mf_heading | default: section.settings.heading }}</h2>
+        {%- if seo_heading != blank -%}<h2>{{ seo_heading }}</h2>{%- endif -%}
         {%- if mf_body.value != blank -%}
           {{ mf_body | metafield_tag }}
         {%- else -%}
@@ -77,6 +101,7 @@
         </div>
       {%- endif -%}
     </div>
+    {%- endif -%}
 
     {%- if section.settings.links != blank -%}
       <div class="nc-seotext__links">
@@ -91,34 +116,55 @@
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "SEO-tekst",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Overskrift", "default": "NatureCell, dansk CBD-hudpleje til hele familien" },
-    { "type": "richtext", "id": "body", "label": "Brødtekst", "default": "<p>NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Hele sortimentet er bygget på CBD (cannabidiol) i samspil med naturlige planteolier, antioxidanter og fugtgivende ingredienser, veganske, uden syntetisk parfume og udviklet i Danmark.</p><p>Serien er tænkt som en one-size-fits-all løsning, der passer til alle hudtyper: tør, fedtet, kombineret, moden, sensitiv og uren hud. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser, og du kan læse deres historier under kundecases.</p><p>Uanset om du søger CBD creme, CBD hudplejeolie, dagcreme, natcreme, håndcreme eller fodcreme, finder du det i sortimentet. Alle produkter er kosmetiske, plantebaserede og produceret i Danmark, og du kan filtrere efter både område og behov for hurtigt at finde det rigtige.</p>" },
-    { "type": "textarea", "id": "links", "label": "Interne links (én pr. linje: Tekst | /url)", "default": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift (fallback)",
+      "info": "Bruges kun, når kollektionen ikke har metafeltet ncell.seo_heading. Lad den stå tom, så kollektioner uden eget indhold ikke viser den samme tekst."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Brødtekst (fallback)",
+      "info": "Bruges kun, når kollektionen ikke har ncell.seo_body."
+    },
+    {
+      "type": "textarea",
+      "id": "links",
+      "label": "Interne links (én pr. linje: Tekst | /url)",
+      "default": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nHåndcreme | /collections/cbd-handpleje\nFodcreme | /collections/cbd-fodpleje\nBodylotion | /collections/cbd-kropspleje\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje"
+    }
   ],
   "blocks": [
     {
       "type": "topic",
       "name": "Emneblok",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Overskrift", "default": "Sådan vælger du den rigtige hudpleje" },
-        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Start med hudens behov frem for produktnavnet. Er huden tør og stram, skal du have fugt og fedt. Er huden fedtet eller uren, holder du en let creme og en mild rensegel. Er huden moden, prioriterer du næring, antioxidanter og en rigere natcreme." }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Rutinen i tre trin"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Tekst",
+          "default": "Beskriv, hvordan produkterne i kollektionen bruges sammen, uden løfter om effekt."
+        }
       ]
     }
   ],
   "presets": [
     {
-      "name": "SEO-tekst",
-      "blocks": [
-        { "type": "topic", "settings": { "heading": "Sådan vælger du den rigtige hudpleje", "text": "Start med hudens behov frem for produktnavnet. Er huden tør og stram, skal du have fugt og fedt: en fugtighedscreme morgen og aften plus en olie som sidste trin. Er huden fedtet eller uren, holder du en let creme og en mild rensegel. Er huden moden, prioriterer du næring, antioxidanter og en rigere natcreme." } },
-        { "type": "topic", "settings": { "heading": "Ingredienserne der gør forskellen", "text": "CBD (cannabidiol) er seriens omdrejningspunkt og kombineres med hyaluronsyre og urea, der binder fugt, sheasmør og mandelolie, der blødgør og beskytter, samt niacinamide og E-vitamin, der understøtter en ensartet, velplejet hud. Alt er plantebaseret, vegansk og uden syntetisk parfume." } },
-        { "type": "topic", "settings": { "heading": "Dansk hudpleje du kan regne med", "text": "NatureCell er et dansk familieejet brand og den første CBD-hudplejeserie godkendt til salg i Danmark. Produktionen sker på GMP- og ISO-certificerede faciliteter, webshoppen er e-mærket, og vi lover ikke mirakler. Vi lader vores kunder fortælle deres egne historier under kundecases." } }
-      ]
+      "name": "SEO-tekst"
     }
   ]
 }

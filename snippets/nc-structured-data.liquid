@@ -1,0 +1,371 @@
+{%- comment -%}
+  nc-structured-data: JSON-LD for hele butikken, renderet i <head> (layout/theme.liquid).
+
+  Alle sider:   OnlineStore (organisation med adresse, CVR, kontakt, returpolitik, sameAs)
+  Forside:      WebSite (+ SearchAction)
+  Produkt:      Product med Offer pr. variant (pris i kundens valuta, lager, GTIN/SKU,
+                returpolitik, levering naar fri fragt gaelder), Brand, AggregateRating
+                fra Judge.me-metafelterne og BreadcrumbList via produktets primaere kollektion
+  Kollektion:   CollectionPage + ItemList og BreadcrumbList
+  Blog:         Blog med de seneste indlaeg og BreadcrumbList
+  Artikel:      BlogPosting (forfatter, udgiver, datoer, billede, tags) og BreadcrumbList
+  Side:         WebPage / AboutPage / ContactPage og BreadcrumbList
+  FAQPage udsendes af FAQ-sektionen selv (sections/nc-faq.liquid), hvor spoergsmaalene vises.
+
+  Styres under Temaindstillinger → SEO og produktdata. Hreflang tilfoejer Shopify selv.
+{%- endcomment -%}
+{%- liquid
+  assign sd_origin = request.origin
+  assign sd_home = sd_origin | append: routes.root_url
+  assign sd_org_id = sd_origin | append: '/#organization'
+  assign sd_site_id = sd_origin | append: '/#website'
+  assign sd_lang = request.locale.iso_code
+  assign sd_country = localization.country.iso_code | default: 'DK'
+  assign sd_currency = cart.currency.iso_code
+  if settings.logo != blank
+    assign sd_logo = settings.logo | image_url: width: 600 | prepend: 'https:'
+  else
+    assign sd_logo = 'nc-logo-wordmark.webp' | asset_url | prepend: 'https:'
+  endif
+  assign sd_home_name = 'general.home' | t
+  assign sd_same = ''
+  if settings.social_instagram != blank
+    assign sd_same = sd_same | append: settings.social_instagram | append: '¶'
+  endif
+  if settings.social_facebook != blank
+    assign sd_same = sd_same | append: settings.social_facebook | append: '¶'
+  endif
+  if settings.nc_trustpilot_url != blank
+    assign sd_same = sd_same | append: settings.nc_trustpilot_url | append: '¶'
+  endif
+  assign sd_same = sd_same | split: '¶'
+  assign sd_vat = settings.nc_org_vat | remove: ' '
+-%}
+{%- capture sd_returns -%}
+  {"@type":"MerchantReturnPolicy","applicableCountry":{{ sd_country | json }},"returnPolicyCategory":"https://schema.org/MerchantReturnFiniteReturnWindow","merchantReturnDays":14,"returnMethod":"https://schema.org/ReturnByMail","returnFees":"https://schema.org/ReturnFeesCustomerResponsibility"{% if shop.refund_policy %},"merchantReturnLink":{{ sd_origin | append: shop.refund_policy.url | json }}{% endif %}}
+{%- endcapture -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "OnlineStore",
+  "@id": {{ sd_org_id | json }},
+  "name": "NatureCell",
+  {%- if shop.name != 'NatureCell' %}"alternateName": {{ shop.name | json }},{% endif %}
+  {%- if settings.nc_org_name != blank %}"legalName": {{ settings.nc_org_name | json }},{% endif %}
+  "url": {{ sd_home | json }},
+  "logo": {{ sd_logo | json }},
+  {%- if settings.nc_org_email != blank %}"email": {{ settings.nc_org_email | json }},{% endif %}
+  {%- if settings.nc_org_phone != blank %}"telephone": {{ settings.nc_org_phone | json }},{% endif %}
+  {%- if sd_vat != blank %}"vatID": {{ 'DK' | append: sd_vat | json }},{% endif %}
+  {%- if settings.nc_org_street != blank %}
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ settings.nc_org_street | json }},
+    "postalCode": {{ settings.nc_org_zip | json }},
+    "addressLocality": {{ settings.nc_org_city | json }},
+    "addressCountry": "DK"
+  },
+  {%- endif %}
+  {%- if settings.nc_org_email != blank or settings.nc_org_phone != blank %}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service"
+    {%- if settings.nc_org_email != blank %},"email": {{ settings.nc_org_email | json }}{% endif %}
+    {%- if settings.nc_org_phone != blank %},"telephone": {{ settings.nc_org_phone | json }}{% endif %}
+  },
+  {%- endif %}
+  {%- if sd_same.size > 0 %}"sameAs": {{ sd_same | json }},{% endif %}
+  "hasMerchantReturnPolicy": {{ sd_returns }}
+}
+</script>
+
+{%- if request.page_type == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": {{ sd_site_id | json }},
+  "name": "NatureCell",
+  "url": {{ sd_home | json }},
+  "inLanguage": {{ sd_lang | json }},
+  "publisher": { "@id": {{ sd_org_id | json }} },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": { "@type": "EntryPoint", "urlTemplate": {{ sd_origin | append: routes.search_url | append: '?q={search_term_string}' | json }} },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{%- endif -%}
+
+{%- comment -%} Broedkrummer: forside → (primaer kollektion / blog) → side {%- endcomment -%}
+{%- liquid
+  assign sd_crumbs = ''
+  case request.page_type
+    when 'product'
+      capture sd_ph
+        render 'nc-primary-collection', product: product
+      endcapture
+      assign sd_ph = sd_ph | strip
+      if sd_ph != blank and collections[sd_ph].url != blank
+        assign sd_c = collections[sd_ph]
+        assign sd_crumbs = sd_c.title | append: '§' | append: sd_origin | append: sd_c.url | append: '¶'
+      endif
+      assign sd_pname = product.title | split: ' | ' | first
+      assign sd_crumbs = sd_crumbs | append: sd_pname | append: '§' | append: sd_origin | append: product.url
+    when 'collection'
+      if collection.url != blank
+        assign sd_crumbs = collection.title | append: '§' | append: sd_origin | append: collection.url
+      endif
+    when 'blog'
+      assign sd_crumbs = blog.title | append: '§' | append: sd_origin | append: blog.url
+    when 'article'
+      assign sd_crumbs = blog.title | append: '§' | append: sd_origin | append: blog.url | append: '¶' | append: article.title | append: '§' | append: sd_origin | append: article.url
+    when 'page'
+      assign sd_crumbs = page.title | append: '§' | append: sd_origin | append: page.url
+  endcase
+-%}
+{%- if sd_crumbs != blank -%}
+{%- assign sd_rows = sd_crumbs | split: '¶' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": {{ sd_home_name | json }}, "item": {{ sd_home | json }} }
+    {%- for row in sd_rows -%}
+      {%- assign sd_bits = row | split: '§' -%}
+      ,{ "@type": "ListItem", "position": {{ forloop.index | plus: 1 }}, "name": {{ sd_bits[0] | strip | json }}, "item": {{ sd_bits[1] | json }} }
+    {%- endfor %}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+{%- liquid
+  assign sd_title_up = product.title | upcase
+  assign sd_vendor_up = product.vendor | upcase
+  assign sd_brand = 'NatureCell'
+  if sd_title_up contains 'ALFALAB' or sd_vendor_up contains 'ALFALAB'
+    assign sd_brand = 'ALFALAB'
+  endif
+  capture sd_desc
+    render 'nc-product-part', product: product, part: 'desc', plain: true
+  endcapture
+  assign sd_desc = sd_desc | strip_newlines | replace: '  ', ' ' | strip | truncate: 1000
+  if sd_desc == blank
+    assign sd_desc = page_description | default: product.title
+  endif
+  capture sd_fs
+    render 'nc-free-shipping', cents: true
+  endcapture
+  assign sd_fs = sd_fs | strip | plus: 0
+  assign sd_rating = product.metafields.reviews.rating.value
+  assign sd_rating_count = product.metafields.reviews.rating_count.value | plus: 0
+  assign sd_imgs = product.media | where: 'media_type', 'image'
+  assign sd_pname_raw = product.title | split: ' | ' | first
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": {{ canonical_url | append: '#product' | json }},
+  {%- capture sd_pname_clean %}{% render 'nc-title', title: sd_pname_raw %}{% endcapture -%}
+  "name": {{ sd_pname_clean | strip | json }},
+  "url": {{ sd_origin | append: product.url | json }},
+  "description": {{ sd_desc | json }},
+  {%- if sd_imgs.size > 0 %}
+  "image": [
+    {%- for m in sd_imgs limit: 6 -%}
+      {{ m | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  {%- endif %}
+  "brand": { "@type": "Brand", "name": {{ sd_brand | json }} },
+  {%- if product.type != blank %}"category": {{ product.type | json }},{% endif %}
+  {%- assign sd_v1 = product.selected_or_first_available_variant -%}
+  {%- if sd_v1.sku != blank %}"sku": {{ sd_v1.sku | json }},{% endif %}
+  {%- if settings.nc_schema_rating and sd_rating != blank and sd_rating_count > 0 %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ sd_rating.rating | json }},
+    "bestRating": {{ sd_rating.scale_max | default: 5 | json }},
+    "worstRating": {{ sd_rating.scale_min | default: 1 | json }},
+    "ratingCount": {{ sd_rating_count }}
+  },
+  {%- endif %}
+  "offers": [
+    {%- for variant in product.variants -%}
+      {%- liquid
+        assign sd_bc = variant.barcode | remove: ' ' | remove: '-'
+        assign sd_bc_digits = sd_bc | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+        assign sd_gtin_key = ''
+        if sd_bc != blank and sd_bc_digits == blank
+          case sd_bc.size
+            when 8
+              assign sd_gtin_key = 'gtin8'
+            when 12
+              assign sd_gtin_key = 'gtin12'
+            when 13
+              assign sd_gtin_key = 'gtin13'
+            when 14
+              assign sd_gtin_key = 'gtin14'
+          endcase
+        endif
+        if variant.available
+          assign sd_avail = 'https://schema.org/InStock'
+        else
+          assign sd_avail = 'https://schema.org/OutOfStock'
+        endif
+      -%}
+      {
+        "@type": "Offer",
+        "url": {{ sd_origin | append: variant.url | json }},
+        {%- if variant.sku != blank %}"sku": {{ variant.sku | json }},{% endif %}
+        {%- if sd_gtin_key != blank %}{{ sd_gtin_key | json }}: {{ sd_bc | json }},{% endif %}
+        {%- unless product.has_only_default_variant %}"name": {{ variant.title | json }},{% endunless %}
+        "price": {{ variant.price | divided_by: 100.0 | json }},
+        "priceCurrency": {{ sd_currency | json }},
+        "availability": {{ sd_avail | json }},
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": { "@id": {{ sd_org_id | json }} },
+        {%- if sd_fs > 0 and variant.price >= sd_fs %}
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": { "@type": "MonetaryAmount", "value": 0, "currency": {{ sd_currency | json }} },
+          "shippingDestination": { "@type": "DefinedRegion", "addressCountry": {{ sd_country | json }} },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+            "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY" }
+          }
+        },
+        {%- endif %}
+        "hasMerchantReturnPolicy": {{ sd_returns }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'collection' and collection.url != blank -%}
+{%- liquid
+  assign sd_cdesc = collection.metafields.ncell.seo_body.value | default: collection.description | strip_html | strip_newlines | replace: '  ', ' ' | strip | truncate: 300
+  if sd_cdesc == blank
+    assign sd_cdesc = page_description
+  endif
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": {{ canonical_url | append: '#collection' | json }},
+  "name": {{ collection.title | json }},
+  "url": {{ canonical_url | json }},
+  {%- if sd_cdesc != blank %}"description": {{ sd_cdesc | json }},{% endif %}
+  "inLanguage": {{ sd_lang | json }},
+  "isPartOf": { "@type": "WebSite", "@id": {{ sd_site_id | json }}, "url": {{ sd_home | json }}, "name": "NatureCell" },
+  {%- if collection.image %}"image": {{ collection.image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ collection.products_count }},
+    "itemListElement": [
+      {%- for p in collection.products limit: 24 -%}
+        { "@type": "ListItem", "position": {{ forloop.index }}, "url": {{ sd_origin | append: p.url | json }}, "name": {{ p.title | split: ' | ' | first | strip | json }} }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'blog' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": {{ sd_origin | append: blog.url | append: '#blog' | json }},
+  "name": {{ blog.title | json }},
+  "url": {{ sd_origin | append: blog.url | json }},
+  "inLanguage": {{ sd_lang | json }},
+  "publisher": { "@id": {{ sd_org_id | json }} },
+  "blogPost": [
+    {%- for a in blog.articles limit: 12 -%}
+      {
+        "@type": "BlogPosting",
+        "headline": {{ a.title | truncate: 110 | json }},
+        "url": {{ sd_origin | append: a.url | json }},
+        "datePublished": {{ a.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }}
+        {%- if a.image %},"image": {{ a.image | image_url: width: 1200 | prepend: 'https:' | json }}{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'article' -%}
+{%- liquid
+  assign sd_adesc = article.excerpt | strip_html | strip_newlines | strip
+  if sd_adesc == blank
+    assign sd_adesc = page_description | default: article.content | strip_html | strip_newlines | strip
+  endif
+  assign sd_adesc = sd_adesc | replace: '  ', ' ' | truncate: 300
+  assign sd_author = article.author | default: 'NatureCell'
+  assign sd_author_up = sd_author | upcase
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": {{ canonical_url | append: '#article' | json }},
+  "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | json }} },
+  "headline": {{ article.title | truncate: 110 | json }},
+  "description": {{ sd_adesc | json }},
+  {%- if article.image %}"image": [{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}],{% endif %}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+  "dateModified": {{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+  {%- if sd_author_up contains 'NATURECELL' %}
+  "author": { "@id": {{ sd_org_id | json }} },
+  {%- else %}
+  "author": { "@type": "Person", "name": {{ sd_author | json }}, "worksFor": { "@id": {{ sd_org_id | json }} } },
+  {%- endif %}
+  "publisher": { "@id": {{ sd_org_id | json }} },
+  "isPartOf": { "@type": "Blog", "@id": {{ sd_origin | append: blog.url | append: '#blog' | json }}, "name": {{ blog.title | json }} },
+  "articleSection": {{ blog.title | json }},
+  {%- if article.tags.size > 0 %}"keywords": {{ article.tags | join: ', ' | json }},{% endif %}
+  "inLanguage": {{ sd_lang | json }}
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'page' -%}
+{%- liquid
+  assign sd_ptype = 'WebPage'
+  assign sd_suffix = page.template_suffix | default: page.handle
+  if sd_suffix contains 'om-os'
+    assign sd_ptype = 'AboutPage'
+  elsif sd_suffix contains 'kontakt' or sd_suffix contains 'contact'
+    assign sd_ptype = 'ContactPage'
+  elsif sd_suffix contains 'faq'
+    assign sd_ptype = 'FAQPage'
+  endif
+-%}
+{%- comment -%} FAQ-siden faar sin FAQPage fra FAQ-sektionen (med spoergsmaalene); her kun WebPage. {%- endcomment -%}
+{%- if sd_ptype == 'FAQPage' -%}{%- assign sd_ptype = 'WebPage' -%}{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": {{ sd_ptype | json }},
+  "@id": {{ canonical_url | append: '#webpage' | json }},
+  "name": {{ page.title | json }},
+  "url": {{ canonical_url | json }},
+  {%- if page_description != blank %}"description": {{ page_description | json }},{% endif %}
+  "inLanguage": {{ sd_lang | json }},
+  "isPartOf": { "@type": "WebSite", "@id": {{ sd_site_id | json }}, "url": {{ sd_home | json }}, "name": "NatureCell" },
+  "publisher": { "@id": {{ sd_org_id | json }} }
+}
+</script>
+{%- endif -%}

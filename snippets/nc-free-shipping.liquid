@@ -1,0 +1,34 @@
+{%- comment -%}
+  nc-free-shipping: graensen for fri fragt i kundens valuta.
+
+  Kilden er temaindstillingen "Fri fragt-graense pr. valuta" (en linje pr. valuta,
+  fx "DKK: 399"). Uden en linje for kundens valuta er output tomt, og alle tekster
+  om fri fragt skjules paa det marked, saa et euro-marked aldrig ser "399 kr.".
+
+  Brug:
+    {%- capture fs %}{% render 'nc-free-shipping' %}{% endcapture -%}               formateret, fx "399 kr."
+    {%- capture fs_cents %}{% render 'nc-free-shipping', cents: true %}{% endcapture -%}  i oere/cent, fx 39900
+{%- endcomment -%}
+{%- liquid
+  assign nc_iso = cart.currency.iso_code | default: shop.currency | upcase
+  assign nc_rows = settings.nc_free_shipping | newline_to_br | split: '<br />'
+  assign nc_amount = ''
+  for nc_row in nc_rows
+    assign nc_bits = nc_row | split: ':'
+    assign nc_cur = nc_bits[0] | strip | upcase
+    if nc_cur == nc_iso and nc_bits[1] != blank
+      assign nc_amount = nc_bits[1] | strip | remove: ' ' | replace: ',', '.'
+      break
+    endif
+  endfor
+  if nc_amount != blank
+    assign nc_cents = nc_amount | times: 100 | round
+    if nc_cents > 0
+      if cents
+        echo nc_cents
+      else
+        echo nc_cents | money_without_trailing_zeros
+      endif
+    endif
+  endif
+-%}

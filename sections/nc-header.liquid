@@ -176,8 +176,26 @@
   }
 {%- endstyle -%}
 
-{%- if section.settings.announcement != blank -%}
-  <div class="nc-announce">{{ section.settings.announcement }}</div>
+{%- comment -%}
+  Topbjaelke: egen tekst fra indstillingen, ellers sprogfilens tekst med fri fragt-graensen
+  foran, kun hvis kundens valuta har fri fragt (Temaindstillinger → Fragt og handel).
+{%- endcomment -%}
+{%- liquid
+  assign announce = section.settings.announcement
+  if announce == blank and section.settings.announce_auto
+    capture hdr_fs
+      render 'nc-free-shipping'
+    endcapture
+    assign hdr_fs = hdr_fs | strip
+    assign announce = 'general.announce_tail' | t
+    if hdr_fs != blank
+      assign hdr_fs_txt = 'general.free_shipping' | t: amount: hdr_fs
+      assign announce = hdr_fs_txt | append: ' · ' | append: announce
+    endif
+  endif
+-%}
+{%- if announce != blank -%}
+  <div class="nc-announce">{{ announce }}</div>
 {%- endif -%}
 
 <header class="nc-header" data-nc-header>
@@ -215,6 +233,9 @@
               <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{{ 'nav.about_cbd' | t }}</a>
               <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
               <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
+              {%- if section.settings.show_jesper -%}
+                <a href="{% render 'nc-url', url: section.settings.jesper_url, fallback: '/pages/velkommen-jesper' %}">{{ 'nav.jesper' | t }}</a>
+              {%- endif -%}
             </div>
           </li>
           <li>
@@ -368,6 +389,9 @@
       <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">{{ 'nav.club' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
+      {%- if section.settings.show_jesper -%}
+        <a href="{% render 'nc-url', url: section.settings.jesper_url, fallback: '/pages/velkommen-jesper' %}">{{ 'nav.jesper' | t }}</a>
+      {%- endif -%}
     </nav>
   </div>
 </div>
@@ -379,10 +403,17 @@
   "class": "nc-header-section",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "announce_auto",
+      "label": "Vis annonceringslinje",
+      "info": "Uden egen tekst vises fri fragt-grænsen i kundens valuta plus \"Vegansk & plantebaseret · Dansk, e-mærket webshop\", oversat automatisk.",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "announcement",
-      "label": "Annonceringslinje",
-      "default": "Fri fragt over 399 kr. · Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje"
+      "label": "Annonceringslinje (egen tekst)",
+      "info": "Overstyrer standardteksten på alle sprog. Nævn ikke et fast fragtbeløb her, hvis der også sælges i euro."
     },
     {
       "type": "range",
@@ -394,16 +425,76 @@
       "unit": "px",
       "default": 36
     },
-    { "type": "header", "content": "Links" },
-    { "type": "url", "id": "all_url", "label": "Alle produkter", "info": "Standard: /collections/cbd-hudpleje" },
-    { "type": "url", "id": "cases_url", "label": "Kundecases", "info": "Standard: /blogs/kundecases" },
-    { "type": "url", "id": "articles_url", "label": "Artikler", "info": "Standard: /blogs/artikler" },
-    { "type": "url", "id": "about_url", "label": "Om os", "info": "Standard: /pages/om-os" },
-    { "type": "url", "id": "omcbd_url", "label": "Om CBD", "info": "Standard: /pages/om-cbd" },
-    { "type": "url", "id": "ingredients_url", "label": "Ingredienser", "info": "Standard: /pages/ingredienser" },
-    { "type": "url", "id": "faq_url", "label": "FAQ", "info": "Standard: /pages/faq" },
-    { "type": "url", "id": "kundeklub_url", "label": "Kundeklub", "info": "Standard: /pages/kundeklub" },
-    { "type": "url", "id": "favorites_url", "label": "Favoritter", "info": "Standard: /pages/favoritter" },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "url",
+      "id": "all_url",
+      "label": "Alle produkter",
+      "info": "Standard: /collections/cbd-hudpleje"
+    },
+    {
+      "type": "url",
+      "id": "cases_url",
+      "label": "Kundecases",
+      "info": "Standard: /blogs/kundecases"
+    },
+    {
+      "type": "url",
+      "id": "articles_url",
+      "label": "Artikler",
+      "info": "Standard: /blogs/artikler"
+    },
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "Om os",
+      "info": "Standard: /pages/om-os"
+    },
+    {
+      "type": "url",
+      "id": "omcbd_url",
+      "label": "Om CBD",
+      "info": "Standard: /pages/om-cbd"
+    },
+    {
+      "type": "url",
+      "id": "ingredients_url",
+      "label": "Ingredienser",
+      "info": "Standard: /pages/ingredienser"
+    },
+    {
+      "type": "url",
+      "id": "faq_url",
+      "label": "FAQ",
+      "info": "Standard: /pages/faq"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_jesper",
+      "label": "Vis \"Jesper Buch & Løvens Hule\" under Om os",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "jesper_url",
+      "label": "Jesper Buch-siden",
+      "info": "Standard: /pages/velkommen-jesper"
+    },
+    {
+      "type": "url",
+      "id": "kundeklub_url",
+      "label": "Kundeklub",
+      "info": "Standard: /pages/kundeklub"
+    },
+    {
+      "type": "url",
+      "id": "favorites_url",
+      "label": "Favoritter",
+      "info": "Standard: /pages/favoritter"
+    },
     {
       "type": "collection",
       "id": "best_collection",
@@ -416,22 +507,66 @@
       "type": "area",
       "name": "Område",
       "settings": [
-        { "type": "text", "id": "label", "label": "Navn", "default": "Ansigt" },
-        { "type": "text", "id": "desc", "label": "Undertekst", "default": "Creme, serum & rens" },
-        { "type": "url", "id": "url", "label": "Link" },
-        { "type": "image_picker", "id": "image", "label": "Billede" },
-        { "type": "product", "id": "product", "label": "Produkt (billed-fallback)" }
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Ansigt"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Creme, serum & rens"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        }
       ]
     },
     {
       "type": "need",
       "name": "Behov",
       "settings": [
-        { "type": "text", "id": "label", "label": "Navn", "default": "Tør hud" },
-        { "type": "text", "id": "desc", "label": "Undertekst", "default": "Nærende fugt" },
-        { "type": "url", "id": "url", "label": "Link" },
-        { "type": "image_picker", "id": "image", "label": "Billede" },
-        { "type": "product", "id": "product", "label": "Produkt (billed-fallback)" }
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Tør hud"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Fugt & pleje"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        }
       ]
     }
   ]

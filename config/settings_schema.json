@@ -80,6 +80,120 @@
     ]
   },
   {
+    "name": "Fragt og handel",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Bruges af kurv-skuffen, kurven, USP-løbet på produktsiden, topbjælken og FAQ-svaret om levering."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_free_shipping",
+        "label": "Fri fragt-grænse pr. valuta",
+        "default": "DKK: 399",
+        "info": "Én valuta pr. linje, fx DKK: 399. Står kundens valuta ikke på listen, nævner temaet ikke fri fragt på det marked. EU-zonen har i dag ingen fri fragt i Shopify, så EUR står bevidst ikke her endnu."
+      }
+    ]
+  },
+  {
+    "name": "SEO og produktdata",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Produktsiderne bygges af produktets egne data og metaobjekter, så der kun er én produktskabelon at vedligeholde."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_schema",
+        "label": "Strukturerede data (JSON-LD)",
+        "default": true,
+        "info": "Organization, WebSite, Product, BreadcrumbList, CollectionPage, Blog og BlogPosting. Slå kun fra, hvis en app leverer det samme."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_schema_rating",
+        "label": "Medtag bedømmelser (AggregateRating) i Product-markup",
+        "default": true,
+        "info": "Bruger produktets reviews.rating og reviews.rating_count fra Judge.me. Slå fra, hvis Judge.me selv udsender Product-markup med bedømmelser."
+      },
+      {
+        "type": "image_picker",
+        "id": "nc_share_image",
+        "label": "Delingsbillede (standard)",
+        "info": "Vises, når en side deles på sociale medier og ikke har sit eget billede. 1200 × 630 px anbefales. Uden billede bruges logoet."
+      },
+      {
+        "type": "text",
+        "id": "nc_primary_collections",
+        "label": "Primær kollektion (prioriteret)",
+        "default": "cbd-ansigtspleje, cbd-handpleje, cbd-fodpleje, cbd-kropspleje, cbd-haarpleje, herre-hudpleje, cbd-olie, sampakker, cbd-hudpleje",
+        "info": "Den første kollektion på listen, som produktet ligger i, styrer brødkrummer, tilbage-knap, FAQ og relaterede produkter."
+      },
+      {
+        "type": "text",
+        "id": "nc_ingredient_skip",
+        "label": "Ingredienser der aldrig vises automatisk",
+        "default": "water, test, test-1, cbd, cannabis-sativa-l-extract",
+        "info": "Handles på metaobjektet Ingredients, adskilt med komma. CBD og hamp bruges aldrig som blikfang."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_doc_badges",
+        "label": "Dokumentations-ikon pr. produkt",
+        "default": "dagcreme: dermatest\nnatcreme: kemiluppen\ncbd-olie-10-10ml-test1: coa\ncbd-olie-10-10ml-test1-kopi: coa\ncbd-olie-15-10ml-test-kopi: coa\ncbd-olie-15-10ml-test-kopi-1: coa",
+        "info": "Én pr. linje: produkt-handle: dermatest, kemiluppen eller coa. Brug kun dokumentation, der gælder netop det produkt."
+      },
+      {
+        "type": "text",
+        "id": "nc_org_name",
+        "label": "Virksomhedens juridiske navn",
+        "default": "NatureCell Denmark ApS"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_vat",
+        "label": "CVR-nummer",
+        "default": "42256013"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_street",
+        "label": "Adresse",
+        "default": "Lille Nyhavn 10, 2. tv."
+      },
+      {
+        "type": "text",
+        "id": "nc_org_zip",
+        "label": "Postnummer",
+        "default": "8660"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_city",
+        "label": "By",
+        "default": "Skanderborg"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_email",
+        "label": "Kundeservice: e-mail",
+        "default": "hello@naturecell.dk"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_phone",
+        "label": "Kundeservice: telefon",
+        "default": "+45 40 55 00 42"
+      },
+      {
+        "type": "url",
+        "id": "nc_trustpilot_url",
+        "label": "Trustpilot-profil",
+        "info": "Fx https://dk.trustpilot.com/review/naturecell.dk. Bruges som sameAs i Organization-markup."
+      }
+    ]
+  },
+  {
     "name": "Integrationer",
     "settings": [
       {
@@ -111,6 +225,20 @@
         "id": "herodesk_id",
         "label": "HeroDesk: livechat widget-ID (wid)",
         "default": "60379a0887000e"
+      },
+      {
+        "type": "text",
+        "id": "nc_tp_score",
+        "label": "Trustpilot: bedømmelse",
+        "default": "4,7",
+        "info": "Bruges på forsiden, i anmeldelsesbåndet og på Om os. Slå det aktuelle tal op på Trustpilot, før det ændres (4,7 pr. 29-09-2026)."
+      },
+      {
+        "type": "number",
+        "id": "nc_tp_count",
+        "label": "Trustpilot: antal anmeldelser",
+        "default": 600,
+        "info": "Vises som \"over 600\". Opdatér samtidig med bedømmelsen."
       },
       {
         "type": "checkbox",

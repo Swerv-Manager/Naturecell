@@ -1,7 +1,7 @@
 {% comment %}
   Kurv-skuffe 1:1 fra designet (design-src/extracted/shell.html 3009-3067):
   430px panel paa papir, "Din kurv"-hoved, fri fragt-raekke med lastbil-ikon og
-  bar mod 399 kr., linjer med 74px billedboks, antalspille, linjetotal og X,
+  bar mod fri fragt-graensen, linjer med 74px billedboks, antalspille, linjetotal og X,
   rabatkodefelt, og en bund med besparelsesboks, subtotal, sage-knap og momsnote.
   Genrenderes via Section Rendering API (nc-theme.js). Rabatkoden gemmes via
   Shopifys /discount/KODE-link og anvendes ved kassen.
@@ -65,11 +65,15 @@
   .nc-drawer__note { margin: 6px 0 0; text-align: center; font-size: 12px; color: var(--ink-400); }
 {%- endstyle -%}
 
-{%- comment -%} Graensen er i oere/cent. Beloebet er markedets valuta, saa den
-   skal saettes om, hvis et marked handler i euro. {%- endcomment -%}
-{%- assign free_limit = section.settings.free_limit | default: 39900 -%}
-{%- assign pct = cart.total_price | times: 100 | divided_by: free_limit -%}
-{%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+{%- comment -%} Graensen kommer fra temaindstillingen "Fri fragt-graense pr. valuta" (snippets/
+   nc-free-shipping) i kundens egen valuta. Uden graense for valutaen vises ingen fragtbar. {%- endcomment -%}
+{%- capture free_limit %}{% render 'nc-free-shipping', cents: true %}{% endcapture -%}
+{%- assign free_limit = free_limit | strip | plus: 0 -%}
+{%- assign pct = 0 -%}
+{%- if free_limit > 0 -%}
+  {%- assign pct = cart.total_price | times: 100 | divided_by: free_limit -%}
+  {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+{%- endif -%}
 
 <div class="nc-drawer" data-nc-drawer inert aria-label="{{ 'cart.title' | t }}" role="dialog" aria-modal="true">
   <div class="nc-drawer__overlay" data-nc-drawer-overlay></div>
@@ -82,6 +86,7 @@
     </div>
 
     {%- if cart.item_count > 0 -%}
+      {%- if free_limit > 0 -%}
       <div class="nc-drawer__ship">
         <p>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18H3V6h12v4"/><path d="M14 9h4l3 3v6h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>
@@ -98,6 +103,7 @@
           <div class="nc-drawer__fill" style="width: {{ pct }}%;"></div>
         </div>
       </div>
+      {%- endif -%}
 
       <div class="nc-drawer__lines">
         {%- for item in cart.items -%}
@@ -174,11 +180,8 @@
   "name": "Kurv-skuffe",
   "settings": [
     {
-      "type": "number",
-      "id": "free_limit",
-      "label": "Graense for fri fragt",
-      "info": "I oere/cent i markedets egen valuta. 39900 = 399 kr. Et euro-marked skal have sit eget beloeb.",
-      "default": 39900
+      "type": "paragraph",
+      "content": "Grænsen for fri fragt sættes pr. valuta under Temaindstillinger → Fragt og handel."
     }
   ]
 }

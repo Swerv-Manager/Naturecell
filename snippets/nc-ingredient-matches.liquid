@@ -1,0 +1,67 @@
+{%- comment -%}
+  nc-ingredient-matches: komma-liste over ingrediens-metaobjekter i produktet.
+
+  Kurateret liste vinder: produktets metafelt custom.ingredients (liste af
+  metaobjektet "ingredients"). Ellers matches hele ingrediensbiblioteket mod
+  produktets INCI-liste (ingrediensdelen af beskrivelsen). Et metaobjekt matcher
+  paa sit navn foer parentesen eller teksten i parentesen, fx
+  "Sheasmør (Butyrospermum Parkii Butter)". Mellemrum, bindestreger og "natural"
+  ignoreres. Resultatet sorteres efter placering i INCI-listen (hoejest koncentration
+  foerst). Handles i "Ingredienser der aldrig vises automatisk" springes over.
+
+  Brug: {%- capture ids %}{% render 'nc-ingredient-matches', product: product, limit: 4 %}{% endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign nc_lim = limit | default: 4
+  assign nc_curated = product.metafields.custom.ingredients.value
+  if nc_curated != blank
+    assign nc_out = ''
+    for mo in nc_curated limit: nc_lim
+      assign nc_out = nc_out | append: mo.system.handle | append: ','
+    endfor
+    echo nc_out
+  else
+    capture nc_inci
+      render 'nc-product-part', product: product, part: 'ingredients', plain: true
+    endcapture
+    assign nc_inci = nc_inci | downcase | remove: ' ' | remove: '-' | remove: '*' | remove: '(' | remove: ')' | remove: '/' | remove: ','
+    if nc_inci != blank
+      assign nc_skip = settings.nc_ingredient_skip | default: 'water, test, test-1, cbd, cannabis-sativa-l-extract' | remove: ' ' | split: ','
+      assign nc_hits = ''
+      for mo in shop.metaobjects.ingredients.values
+        assign nc_handle = mo.system.handle
+        if nc_skip contains nc_handle
+          continue
+        endif
+        assign nc_name = mo.name.value | downcase
+        assign nc_bits = nc_name | replace: ')', '' | split: '('
+        assign nc_pos = -1
+        for nc_bit in nc_bits
+          assign nc_key = nc_bit | remove: ' ' | remove: '-' | remove: '/' | remove: '*'
+          assign nc_k7 = nc_key | slice: 0, 7
+          if nc_k7 == 'natural'
+            assign nc_key = nc_key | slice: 7, nc_key.size
+          endif
+          if nc_key.size >= 4 and nc_inci contains nc_key
+            assign nc_before = nc_inci | split: nc_key | first
+            assign nc_p = nc_before.size
+            if nc_pos == -1 or nc_p < nc_pos
+              assign nc_pos = nc_p
+            endif
+          endif
+        endfor
+        if nc_pos > -1
+          assign nc_pad = nc_pos | prepend: '00000' | slice: -5, 5
+          assign nc_hits = nc_hits | append: nc_pad | append: '|' | append: nc_handle | append: ','
+        endif
+      endfor
+      assign nc_sorted = nc_hits | split: ',' | sort
+      assign nc_out = ''
+      for row in nc_sorted limit: nc_lim
+        assign nc_row_handle = row | split: '|' | last
+        assign nc_out = nc_out | append: nc_row_handle | append: ','
+      endfor
+      echo nc_out
+    endif
+  endif
+-%}

@@ -12,8 +12,17 @@
   assign rating_label = ''
   if rating != blank and rating_count != blank
     assign rating_str = rating.rating | default: rating | append: ''
-    assign rating_label = rating_str | replace: '.', ',' | append: '/5 · ' | append: rating_count | append: ' anmeldelser'
+    assign rating_dec = rating_str | replace: '.', ','
+    assign rating_label = 'product.rating_summary' | t: rating: rating_dec, count: rating_count
+    assign rating_round = rating.rating | default: rating | times: 1.0 | round
   endif
+  # App-blokke (Judge.me) erstatter de manuelle kort: ingen haardkodede anmeldelser naar appen er sat ind.
+  assign has_app = false
+  for block in section.blocks
+    if block.type == '@app'
+      assign has_app = true
+    endif
+  endfor
   assign row_a_count = 7
   if section.blocks.size < 14
     assign row_a_count = section.blocks.size | plus: 1 | divided_by: 2
@@ -21,6 +30,7 @@
 -%}
 
 {%- style -%}
+  #shopify-section-{{ section.id }} .nc-pdprev__app { max-width: 1000px; margin: 0 auto; padding: 0 var(--gutter); }
   #shopify-section-{{ section.id }} .nc-pdprev { background: var(--nc-reviews-bg, var(--sage-50)); border-top: 1px solid var(--border-soft); padding: 60px 0; overflow: hidden; }
   #shopify-section-{{ section.id }} .nc-pdprev__head { max-width: var(--container-max); margin: 0 auto 36px; padding: 0 var(--gutter); text-align: center; }
   #shopify-section-{{ section.id }} .nc-pdprev__stars { display: inline-flex; gap: 3px; margin-bottom: 10px; color: var(--sage-500); }
@@ -49,17 +59,26 @@
 
 <section class="nc-pdprev">
   <div class="nc-pdprev__head">
+    {%- if rating_round > 0 -%}
     <div class="nc-pdprev__stars" aria-hidden="true">
-      {%- for i in (1..5) -%}
+      {%- for i in (1..rating_round) -%}
         <svg width="24" height="24" viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
       {%- endfor -%}
     </div>
+    {%- endif -%}
     <h2>{{ section.settings.heading }}</h2>
     {%- if rating_label != blank -%}
       <p>{{ rating_label }}</p>
     {%- endif -%}
   </div>
 
+  {%- if has_app -%}
+    <div class="nc-pdprev__app">
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
   <div class="nc-pdprev__row nc-pdprev__row--a">
     <div class="nc-pdprev__rail">
       {%- for i in (1..2) -%}
@@ -89,6 +108,7 @@
       </div>
     </div>
   {%- endif -%}
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -99,13 +119,14 @@
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hvad kunderne siger" }
   ],
   "blocks": [
+    { "type": "@app" },
     {
       "type": "review",
       "name": "Anmeldelse",
       "settings": [
-        { "type": "text", "id": "name", "label": "Navn", "default": "Mette K." },
-        { "type": "text", "id": "meta", "label": "Meta", "default": "Verificeret køb" },
-        { "type": "textarea", "id": "text", "label": "Tekst ([produkt] = produktnavn)", "default": "Jeg er så glad for [produkt]. Den er blevet helt fast i min rutine." }
+        { "type": "text", "id": "name", "label": "Navn" },
+        { "type": "text", "id": "meta", "label": "Meta", "info": "Skriv kun \"Verificeret køb\", hvis anmeldelsen faktisk stammer fra et verificeret køb." },
+        { "type": "textarea", "id": "text", "label": "Tekst ([produkt] = produktnavn)", "info": "Kun ægte anmeldelser. Brug helst Judge.me-appblokken, der viser butikkens rigtige anmeldelser." }
       ]
     }
   ],

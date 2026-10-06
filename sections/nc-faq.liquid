@@ -73,6 +73,7 @@
       {%- if section.settings.list_style -%}
       {%- comment -%} Aaben liste: gruppeoverskrift + alle spoergsmaal/svar synlige, som paa designets FAQ-side. {%- endcomment -%}
       {%- assign grp_open = false -%}
+      {%- assign list_ld = '' -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'group' -%}
           {%- if grp_open -%}</div>{%- endif -%}
@@ -80,46 +81,112 @@
             <h2>{{ block.settings.heading }}</h2>
           {%- assign grp_open = true -%}
         {%- else -%}
+          {%- capture list_q %}{% render 'nc-faq-qa', block: block, product: product, part: 'q' %}{% endcapture -%}
+          {%- capture list_a %}{% render 'nc-faq-qa', block: block, product: product, part: 'a' %}{% endcapture -%}
           <div class="nc-faqsec__qa" {{ block.shopify_attributes }}>
-            <h3>{{ block.settings.q | replace: '[produkt]', product.title }}</h3>
-            {{ block.settings.a }}
+            <h3>{{ list_q | strip }}</h3>
+            {{ list_a }}
           </div>
+          {%- capture list_one -%}{"@type":"Question","name":{{ list_q | strip | json }},"acceptedAnswer":{"@type":"Answer","text":{{ list_a | strip_html | strip | json }}}}{%- endcapture -%}
+          {%- assign list_ld = list_ld | append: list_one | append: ',' -%}
         {%- endif -%}
       {%- endfor -%}
       {%- if grp_open -%}</div>{%- endif -%}
+      {%- assign list_ld = list_ld | remove_last: ',' -%}
+      {%- if list_ld != blank and section.settings.schema -%}
+        <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ list_ld }}]}</script>
+      {%- endif -%}
       {%- if section.settings.note != blank -%}
         <div class="nc-faqsec__note"><p>{{ section.settings.note }}</p></div>
       {%- endif -%}
       {%- else -%}
-      {%- comment -%} Kollektionssider: unik FAQ fra kollektionens metafelt ncell.faq (liste af metaobjektet faq_item); ellers sektionens blokke. {%- endcomment -%}
+      {%- comment -%}
+        Kollektionssider: unik FAQ fra kollektionens metafelt ncell.faq (liste af metaobjektet faq_item).
+        Produktsider: produktets ncell.faq, ellers FAQ'en fra produktets primaere kollektion, efterfulgt af
+        sektionens generelle blokke (en blok skjules, hvis dens "dubletord" allerede staar i et spoergsmaal).
+        Ellers: sektionens blokke.
+      {%- endcomment -%}
       {%- assign mf_faq = collection.metafields.ncell.faq.value -%}
+      {%- assign is_pdp = false -%}
+      {%- if request.page_type == 'product' -%}
+        {%- assign is_pdp = true -%}
+        {%- capture faq_handle %}{% render 'nc-primary-collection', product: product %}{% endcapture -%}
+        {%- assign faq_handle = faq_handle | strip -%}
+        {%- assign mf_faq = product.metafields.ncell.faq.value | default: collections[faq_handle].metafields.ncell.faq.value -%}
+      {%- endif -%}
+      {%- assign faq_qs = '' -%}
+      {%- assign faq_ld = '' -%}
       <div class="nc-acc">
-        {%- if request.page_type == 'collection' and mf_faq != blank -%}
+        {%- assign use_mf = false -%}
+        {%- if mf_faq != blank -%}
+          {%- if request.page_type == 'collection' or is_pdp -%}{%- assign use_mf = true -%}{%- endif -%}
+        {%- endif -%}
+        {%- comment -%}
+          Metaobjekt-spoergsmaal med et ord fra "Erstat spoergsmaal med" (fx fragt) springes over; temaets
+          eget leveringssvar (blokken "Fast spoergsmaal") tager over, saa beloebet passer til kundens valuta.
+        {%- endcomment -%}
+        {%- assign mf_skip = section.settings.mf_skip | downcase | split: ',' -%}
+        {%- assign mf_shown = 0 -%}
+        {%- if use_mf -%}
           {%- for item in mf_faq -%}
-            <details class="nc-acc__item" {% if forloop.first and section.settings.open_first %}open{% endif %}>
+            {%- assign mf_q = item.question.value | downcase -%}
+            {%- assign mf_skipped = false -%}
+            {%- for w in mf_skip -%}
+              {%- assign w = w | strip -%}
+              {%- if w != blank and mf_q contains w -%}{%- assign mf_skipped = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- if mf_skipped -%}{%- continue -%}{%- endif -%}
+            {%- assign mf_shown = mf_shown | plus: 1 -%}
+            <details class="nc-acc__item" {% if mf_shown == 1 and section.settings.open_first %}open{% endif %}>
               <summary class="nc-acc__head">
                 {{ item.question }}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
               <div class="nc-acc__body">{{ item.answer | metafield_tag }}</div>
             </details>
+            {%- assign faq_qs = faq_qs | append: item.question.value | downcase | append: ' ¶ ' -%}
+            {%- capture faq_one -%}{"@type":"Question","name":{{ item.question.value | json }},"acceptedAnswer":{"@type":"Answer","text":{{ item.answer | metafield_text | json }}}}{%- endcapture -%}
+            {%- assign faq_ld = faq_ld | append: faq_one | append: ',' -%}
           {%- endfor -%}
-        {%- else -%}
+        {%- endif -%}
+        {%- comment -%}
+          Kollektioner med egen FAQ viser kun de faste, oversatte blokke (locale_qa) efter metaobjekterne.
+          Produktsider viser alle blokke efter metaobjekterne. Uden metaobjekter: alle blokke.
+        {%- endcomment -%}
         {%- for block in section.blocks -%}
+          {%- if use_mf and is_pdp == false and block.type != 'locale_qa' -%}{%- continue -%}{%- endif -%}
           {%- if block.type == 'group' -%}
             <h3 class="nc-eyebrow nc-faqsec__group" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h3>
           {%- else -%}
-            <details class="nc-acc__item" {% if forloop.first and section.settings.open_first %}open{% endif %} {{ block.shopify_attributes }}>
+            {%- assign is_dupe = false -%}
+            {%- assign dupe_words = block.settings.dedupe | downcase | split: ',' -%}
+            {%- for dw in dupe_words -%}
+              {%- assign dw = dw | strip -%}
+              {%- if dw != blank and faq_qs contains dw -%}{%- assign is_dupe = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- unless is_dupe -%}
+            {%- capture block_q %}{% render 'nc-faq-qa', block: block, product: product, part: 'q' %}{% endcapture -%}
+            {%- capture block_a %}{% render 'nc-faq-qa', block: block, product: product, part: 'a' %}{% endcapture -%}
+            {%- assign block_q = block_q | strip -%}
+            {%- if block_q != blank -%}
+            <details class="nc-acc__item" {% if forloop.first and section.settings.open_first and mf_shown == 0 %}open{% endif %} {{ block.shopify_attributes }}>
               <summary class="nc-acc__head">
-                {{ block.settings.q | replace: '[produkt]', product.title }}
+                {{ block_q }}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
-              <div class="nc-acc__body">{{ block.settings.a }}</div>
+              <div class="nc-acc__body">{{ block_a }}</div>
             </details>
+            {%- capture faq_one -%}{"@type":"Question","name":{{ block_q | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block_a | strip_html | strip | json }}}}{%- endcapture -%}
+            {%- assign faq_ld = faq_ld | append: faq_one | append: ',' -%}
+            {%- endif -%}
+            {%- endunless -%}
           {%- endif -%}
         {%- endfor -%}
-        {%- endif -%}
       </div>
+      {%- assign faq_ld = faq_ld | remove_last: ',' -%}
+      {%- if faq_ld != blank and section.settings.schema -%}
+        <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ faq_ld }}]}</script>
+      {%- endif -%}
       {%- endif -%}
 
       {%- if section.settings.links != blank -%}
@@ -151,6 +218,8 @@
   "name": "FAQ",
   "tag": "section",
   "settings": [
+    { "type": "checkbox", "id": "schema", "label": "Tilføj FAQPage-markup (strukturerede data)", "default": true },
+    { "type": "text", "id": "mf_skip", "label": "Erstat spørgsmål med", "default": "fragt, versand, shipping", "info": "Spørgsmål fra metaobjekterne (kollektionens eller produktets FAQ), der indeholder et af ordene, springes over. Tilføj blokken \"Fast spørgsmål: Levering og fri fragt\", så temaets valuta-korrekte svar vises i stedet." },
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Spørgsmål & svar" },
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Ofte stillede spørgsmål" },
     { "type": "textarea", "id": "subtext", "label": "Undertekst" },
@@ -169,7 +238,28 @@
       "name": "Spørgsmål",
       "settings": [
         { "type": "text", "id": "q", "label": "Spørgsmål", "default": "Hvad er CBD-hudpleje?" },
-        { "type": "richtext", "id": "a", "label": "Svar", "default": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" }
+        { "type": "richtext", "id": "a", "label": "Svar", "default": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" },
+        { "type": "text", "id": "dedupe", "label": "Dubletord", "info": "Blokken skjules, hvis FAQ'en fra metaobjekterne allerede har et spørgsmål med et af ordene (komma mellem, gerne på alle sprog), fx opbevar, aufbewahr." }
+      ]
+    },
+    {
+      "type": "locale_qa",
+      "name": "Fast spørgsmål (oversat)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "key",
+          "label": "Spørgsmål",
+          "options": [
+            { "value": "ship", "label": "Levering og fri fragt" },
+            { "value": "return", "label": "Fortrydelsesret" },
+            { "value": "storage", "label": "Opbevaring" },
+            { "value": "advice", "label": "Personlig rådgivning" }
+          ],
+          "default": "ship"
+        },
+        { "type": "paragraph", "content": "Teksten ligger i temaets sprogfiler og er oversat til tysk og engelsk. Levering følger leveringspolitikken; fri fragt nævnes kun i valutaer med en grænse." },
+        { "type": "text", "id": "dedupe", "label": "Dubletord", "info": "Blokken skjules, hvis FAQ'en fra metaobjekterne allerede har et spørgsmål med et af ordene (komma mellem, gerne på alle sprog), fx opbevar, aufbewahr." }
       ]
     },
     {
@@ -185,10 +275,10 @@
       "name": "FAQ",
       "blocks": [
         { "type": "qa", "settings": { "q": "Hvad er CBD-hudpleje?", "a": "<p>Hudpleje, hvor CBD (cannabidiol) indgår sammen med planteolier, antioxidanter og fugtgivende ingredienser. Produkterne er kosmetiske.</p>" } },
-        { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark.</p>" } },
-        { "type": "qa", "settings": { "q": "Passer produkterne til alle hudtyper?", "a": "<p>Serien er tænkt som en one-size-fits-all løsning til tør, fedtet, kombineret, moden, sensitiv og uren hud.</p>" } },
+        { "type": "qa", "settings": { "q": "Er NatureCell godkendt i Danmark?", "a": "<p>Ja. NatureCell var blandt de første i Danmark med en godkendt CBD-hudplejeserie, og alle produkter er sikkerhedsvurderet efter EU's kosmetikregler.</p>" } },
         { "type": "qa", "settings": { "q": "Er produkterne veganske?", "a": "<p>Ja. Veganske, uden syntetisk parfume og udviklet i Danmark.</p>" } },
-        { "type": "qa", "settings": { "q": "Hvad koster fragt?", "a": "<p>Fri fragt ved køb over 399 kr.</p>" } }
+        { "type": "locale_qa", "settings": { "key": "ship" } },
+        { "type": "locale_qa", "settings": { "key": "return" } }
       ]
     }
   ]

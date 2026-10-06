@@ -63,7 +63,8 @@
 
     <header class="nc-coll__header">
       <h1>{{ collection.title }}</h1>
-      {%- if collection.description != blank -%}
+      {%- assign coll_desc_text = collection.description | strip_html | strip -%}
+      {%- if coll_desc_text != blank -%}
         <div class="nc-coll__desc">{{ collection.description }}</div>
       {%- endif -%}
     </header>

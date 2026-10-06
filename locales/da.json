@@ -43,7 +43,14 @@
     "read_more": "Læs mere",
     "go_to_slide": "Gå til slide {{ n }}",
     "not_found_body": "Den side du leder efter, er flyttet eller findes ikke længere.",
-    "all": "Alle"
+    "all": "Alle",
+    "free_shipping": "Fri fragt over {{ amount }}",
+    "announce_tail": "Vegansk & plantebaseret · Dansk, e-mærket webshop",
+    "tp_line": "<strong>{{ score }}/5</strong> · over {{ count }} anmeldelser på Trustpilot",
+    "tp_agg": "<strong>{{ score }}</strong> ud af 5 · over <strong>{{ count }}</strong> anmeldelser på Trustpilot",
+    "tp_num": "{{ score }}/5",
+    "tp_label": "over {{ count }} anmeldelser på Trustpilot",
+    "reviews_disclaimer": "Kunder deler deres egne oplevelser. Resultater kan variere."
   },
   "shopify": {
     "checkout": {
@@ -89,7 +96,8 @@
     "favorites": "Favoritter",
     "account": "Konto",
     "cart": "Kurv",
-    "faq": "Ofte stillede spørgsmål"
+    "faq": "Ofte stillede spørgsmål",
+    "jesper": "Jesper Buch & Løvens Hule"
   },
   "cart": {
     "empty": "Din kurv er tom",
@@ -103,7 +111,7 @@
     "product": "Produkt",
     "price": "Pris",
     "you_save": "Du sparer",
-    "free_shipping_over": "Fri fragt ved køb over 399 kr.",
+    "free_shipping_over": "Fri fragt ved køb over {{ amount }}.",
     "free_shipping_status": "Fri fragt-status",
     "payment_methods": "Betalingsmetoder",
     "benefits_title": "Fordele ved at handle hos NatureCell",
@@ -117,7 +125,8 @@
     "vat_note": "Moms inkluderet · fragt beregnes ved kassen",
     "shop": "Shop hudpleje",
     "free_shipping_reached": "Du har fri fragt 🎉",
-    "free_shipping_missing": "Køb for {{ amount }} mere og få fri fragt"
+    "free_shipping_missing": "Køb for {{ amount }} mere og få fri fragt",
+    "shipping_calc": "Fragt beregnes ved kassen."
   },
   "favorites": {
     "empty": "Ingen favoritter endnu",
@@ -145,7 +154,9 @@
     "save_favorite": "Gem {{ title }} som favorit",
     "add_named": "Læg {{ title }} i kurven",
     "rated": "Bedømt {{ rating }} ud af 5",
-    "ambassador": "Ambassadør"
+    "ambassador": "Ambassadør",
+    "rating_summary": "{{ rating }}/5 · {{ count }} anmeldelser",
+    "back_to": "Tilbage til {{ title }}"
   },
   "collection": {
     "bestsellers": "Bestsellers",
@@ -292,6 +303,70 @@
     "video": "Video"
   },
   "footer": {
-    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- & ISO-certificeret"
+    "legal_line": "CVR {{ cvr }} · e-mærket · GMP- & ISO-certificeret",
+    "legal_nav": "Juridiske oplysninger",
+    "withdrawal": "Fortryd dit køb"
+  },
+  "badges": {
+    "bundle": "Hele rutinen samlet i én pakke",
+    "cbd_amount": "{{ amount }} CBD i {{ size }}",
+    "with_cbd_size": "Med CBD · {{ size }}",
+    "with_cbd": "Med CBD",
+    "with_cbg_size": "Med CBG · {{ size }}",
+    "with_one": "Med {{ a }}",
+    "with_two": "Med {{ a }} og {{ b }}",
+    "developed_dk": "Udviklet i Danmark",
+    "dermatest": "Dermatest: Sehr gut",
+    "kemiluppen": "Kolbe A i Kemiluppen",
+    "coa": "Analysecertifikat pr. parti",
+    "ingr": {
+      "hyaluron": "hyaluronsyre",
+      "niacinamide": "niacinamid",
+      "urea": "urea",
+      "shea": "sheasmør",
+      "squalane": "squalan",
+      "aloe": "aloe vera",
+      "almond": "mandelolie",
+      "mango": "mangosmør",
+      "jojoba": "jojobaolie",
+      "lavender": "lavendelolie",
+      "cucumber": "agurkeekstrakt",
+      "vitamin_e": "E-vitamin",
+      "mct": "MCT-olie",
+      "sunflower": "solsikkeolie",
+      "hemp_seed": "hampfrøolie"
+    }
+  },
+  "pdp": {
+    "ingredients": {
+      "eyebrow": "Ingredienser",
+      "heading": "Udvalgt med omtanke",
+      "intro": "Et udpluk af ingredienserne i [produkt]. Hele ingredienslisten står under Ingredienser."
+    },
+    "story": {
+      "eyebrow": "Om produktet"
+    },
+    "videos": {
+      "heading": "Kunder fortæller om deres rutine",
+      "note": "Kunder deler deres egne oplevelser. Resultater kan variere."
+    },
+    "ticker": {
+      "free_shipping": "Fri fragt over {{ amount }}",
+      "dk_test": "Dansk produktion & test",
+      "vegan": "Vegansk & plantebaseret",
+      "emaerket": "e-mærket webshop · tryg handel",
+      "returns": "14 dages fortrydelsesret"
+    },
+    "faq": {
+      "ship_q": "Hvornår sender I min ordre?",
+      "ship_a": "<p>Ordrer afgivet før kl. 14 på hverdage afsendes samme dag, og leveringstiden er 1 til 3 hverdage. Du får en mail med sporingsnummer, når pakken er afsendt. Du kan også hente din ordre i butikken i Lille Nyhavn 10 i Skanderborg, hvor den normalt er klar inden for 24 timer.</p>",
+      "return_q": "Kan jeg fortryde mit køb?",
+      "return_a": "<p>Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Varen sendes retur ubrugt og i original emballage.</p>",
+      "storage_q": "Hvordan opbevarer jeg produkterne?",
+      "storage_a": "<p>Opbevares ved højst 25 grader og uden for direkte sollys. Luk emballagen godt efter brug. Produkterne er til udvortes brug.</p>",
+      "advice_q": "Kan jeg få personlig rådgivning?",
+      "advice_a": "<p>Ja. Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
+      "ship_free": "<p>Fri fragt ved køb over {{ amount }}.</p>"
+    }
   }
 }

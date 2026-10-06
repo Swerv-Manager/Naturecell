@@ -73,6 +73,9 @@
     color: rgba(255, 255, 255, 0.88);
   }
   .nc-footer__bottom p { margin: 0; max-width: 560px; }
+  .nc-footer__legal { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0 0 22px; font-size: 12.5px; }
+  .nc-footer__legal a { color: inherit; opacity: 0.85; text-decoration: none; }
+  .nc-footer__legal a:hover { opacity: 1; text-decoration: underline; }
 
   .nc-footer__payments { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-bottom: 4px; }
   .nc-footer__payments svg { height: 22px; width: auto; }
@@ -186,6 +189,21 @@
         <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal_name }} · {{ 'footer.legal_line' | t: cvr: section.settings.cvr }}</span>
         <p>{{ section.settings.compliance_text }}</p>
       </div>
+      {%- comment -%}
+        Juridisk linkraekke: butikkens politikker (titlerne oversaettes af Shopify) og
+        fortrydelsesfunktionen (EU-krav fra 19-06-2026), naar siden withdrawal-form findes.
+      {%- endcomment -%}
+      {%- if section.settings.show_policies -%}
+        <nav class="nc-footer__legal" aria-label="{{ 'footer.legal_nav' | t }}">
+          {%- for policy in shop.policies -%}
+            <a href="{{ policy.url }}">{{ policy.title }}</a>
+          {%- endfor -%}
+          {%- assign wd_page = pages['withdrawal-form'] -%}
+          {%- if wd_page != blank and wd_page.url != blank -%}
+            <a href="{{ wd_page.url }}">{{ 'footer.withdrawal' | t }}</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
     </div>
   </div>
 </footer>
@@ -202,15 +220,56 @@
       "label": "Om brandet",
       "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Danmarks første godkendte CBD-hudplejeserie."
     },
-    { "type": "text", "id": "legal_name", "label": "Juridisk navn", "default": "NatureCell Denmark ApS" },
-    { "type": "textarea", "id": "address", "label": "Adresse", "default": "Lille Nyhavn 10, 2. tv.\n8660 Skanderborg, Danmark\nCVR: 42256013" },
-    { "type": "text", "id": "email", "label": "E-mail", "default": "hello@naturecell.dk" },
-    { "type": "text", "id": "phone", "label": "Telefon", "default": "+45 40 55 00 42" },
-    { "type": "text", "id": "cvr", "label": "CVR", "default": "42256013" },
-    { "type": "header", "content": "Nyhedsbrev" },
-    { "type": "text", "id": "newsletter_heading", "label": "Overskrift", "default": "Nyhedsbrev" },
-    { "type": "textarea", "id": "newsletter_text", "label": "Tekst", "default": "Få 10% på din første ordre." },
-    { "type": "header", "content": "Bund" },
+    {
+      "type": "text",
+      "id": "legal_name",
+      "label": "Juridisk navn",
+      "default": "NatureCell Denmark ApS"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Adresse",
+      "default": "Lille Nyhavn 10, 2. tv.\n8660 Skanderborg, Danmark\nCVR: 42256013"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "E-mail",
+      "default": "hello@naturecell.dk"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Telefon",
+      "default": "+45 40 55 00 42"
+    },
+    {
+      "type": "text",
+      "id": "cvr",
+      "label": "CVR",
+      "default": "42256013"
+    },
+    {
+      "type": "header",
+      "content": "Nyhedsbrev"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Overskrift",
+      "default": "Nyhedsbrev"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Tekst",
+      "default": "Få 10% på din første ordre."
+    },
+    {
+      "type": "header",
+      "content": "Bund"
+    },
     {
       "type": "textarea",
       "id": "compliance_text",
@@ -218,19 +277,57 @@
       "default": "NatureCells hudplejeprodukter er kosmetiske. De er ikke beregnet til at diagnosticere, behandle eller kurere sygdom.",
       "info": "Compliance-krav. Må ikke fjernes."
     },
-    { "type": "checkbox", "id": "hide_payment_icons", "label": "Skjul betalingsikoner", "default": false }
+    {
+      "type": "checkbox",
+      "id": "hide_payment_icons",
+      "label": "Skjul betalingsikoner",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Vis juridisk linkrække (politikker og fortrydelsesformular)",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "menu",
       "name": "Linkkolonne",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Overskrift", "default": "Shop" },
-        { "type": "link_list", "id": "menu", "label": "Menu" },
-        { "type": "textarea", "id": "links_text", "label": "Links (fallback)", "info": "Ét link pr. linje: Tekst | /url. Bruges når ingen menu er valgt." },
-        { "type": "text", "id": "heading_2", "label": "Overskrift 2 (valgfri)" },
-        { "type": "link_list", "id": "menu_2", "label": "Menu 2 (valgfri)" },
-        { "type": "textarea", "id": "links_text_2", "label": "Links 2 (fallback)", "info": "Ét link pr. linje: Tekst | /url." }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        },
+        {
+          "type": "textarea",
+          "id": "links_text",
+          "label": "Links (fallback)",
+          "info": "Ét link pr. linje: Tekst | /url. Bruges når ingen menu er valgt."
+        },
+        {
+          "type": "text",
+          "id": "heading_2",
+          "label": "Overskrift 2 (valgfri)"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_2",
+          "label": "Menu 2 (valgfri)"
+        },
+        {
+          "type": "textarea",
+          "id": "links_text_2",
+          "label": "Links 2 (fallback)",
+          "info": "Ét link pr. linje: Tekst | /url."
+        }
       ]
     }
   ]

@@ -1,0 +1,191 @@
+{%- comment -%}
+  nc-product-badges: op til tre fakta-ikoner pr. produkt.
+
+  Manuelt: metafeltet ncell.badges (én pr. linje, "ikon: tekst") vinder altid.
+  Automatisk ud fra produktets egne data, saa hvert produkt faar sine egne:
+    1. Indhold: "1000 mg CBD i 30 ml" eller "Med CBD · 100 ml" (mg fra titel eller
+       custom.product_page_short_description, stoerrelse fra custom.product_size
+       eller titlen). Pakker: "Hele rutinen samlet i én pakke".
+    2. Ingredienser fra INCI-listen (ingrediensdelen af beskrivelsen), fx
+       "Med sheasmør og aloe vera". Kun navne, aldrig virkning.
+    3. Dokumentation fra temaindstillingen "Dokumentations-ikoner"
+       (fx dagcreme: dermatest), ellers "Udviklet i Danmark" for NatureCell.
+  Teksterne ligger i locales (badges.*), saa de er oversat.
+  Ikonet "cbd" er et cannabisblad og bruges aldrig (copy-agentens compliance-regel);
+  en manuel "cbd:"-linje vises med det neutrale blad.
+{%- endcomment -%}
+{%- liquid
+  assign nc_lines = ''
+  assign nc_manual = product.metafields.ncell.badges.value
+
+  if nc_manual != blank
+    assign nc_lines = nc_manual | newline_to_br | split: '<br />'
+  else
+    assign nc_title = product.title
+    assign nc_title_up = nc_title | upcase
+    assign nc_vendor_up = product.vendor | upcase
+    assign nc_is_alfalab = false
+    if nc_title_up contains 'ALFALAB' or nc_vendor_up contains 'ALFALAB'
+      assign nc_is_alfalab = true
+    endif
+
+    assign nc_is_bundle = false
+    if nc_title contains 'Indhold:' or product.tags contains 'pakker' or product.tags contains 'Pakker' or product.tags contains 'bundle'
+      assign nc_is_bundle = true
+    endif
+
+    capture nc_inci
+      render 'nc-product-part', product: product, part: 'ingredients', plain: true
+    endcapture
+    assign nc_inci = nc_inci | downcase | remove: ' ' | remove: '-' | remove: '*' | remove: '(' | remove: ')' | remove: '/' | remove: ','
+
+    assign nc_has_cbd = false
+    if nc_inci contains 'cannabidiol' or nc_title contains 'CBD'
+      assign nc_has_cbd = true
+    endif
+    assign nc_has_cbg = false
+    if nc_inci contains 'cannabigerol' or nc_title contains 'CBG'
+      assign nc_has_cbg = true
+    endif
+
+    # Stoerrelse: metafelt, ellers foerste "...ml"-token i titlen.
+    assign nc_size = product.metafields.custom.product_size.value | remove: '.' | strip
+    if nc_size == blank
+      assign nc_words = nc_title | replace: '|', ' ' | split: ' '
+      for w in nc_words
+        assign nc_wd = w | downcase
+        assign nc_tail = nc_wd | slice: -2, 2
+        assign nc_num = nc_wd | remove: 'ml' | plus: 0
+        if nc_tail == 'ml' and nc_num > 0
+          assign nc_size = nc_wd
+          break
+        elsif nc_wd == 'ml' and forloop.index0 > 0
+          assign nc_prev_i = forloop.index0 | minus: 1
+          assign nc_prev = nc_words[nc_prev_i] | plus: 0
+          if nc_prev > 0
+            assign nc_size = nc_words[nc_prev_i] | append: ' ml'
+            break
+          endif
+        endif
+      endfor
+    endif
+    if nc_size != blank
+      assign nc_size = nc_size | downcase | replace: 'ml', ' ml' | replace: '  ', ' ' | strip
+    endif
+
+    # CBD-maengde: "1000mg" eller "250 mg" i titlen, ellers i den korte beskrivelse.
+    assign nc_mg = ''
+    assign nc_mg_src = nc_title | append: ' ' | append: product.metafields.custom.product_page_short_description.value
+    assign nc_mg_words = nc_mg_src | replace: '|', ' ' | replace: '(', ' ' | newline_to_br | replace: '<br />', ' ' | split: ' '
+    for w in nc_mg_words
+      assign nc_wd = w | downcase | remove: '.'
+      if nc_wd == 'mg' and forloop.index0 > 0
+        assign nc_prev_i = forloop.index0 | minus: 1
+        assign nc_prev = nc_mg_words[nc_prev_i] | remove: '.' | plus: 0
+        if nc_prev > 0
+          assign nc_mg = nc_prev
+          break
+        endif
+      else
+        assign nc_tail = nc_wd | slice: -2, 2
+        assign nc_num = nc_wd | remove: 'mg' | plus: 0
+        if nc_tail == 'mg' and nc_num > 0
+          assign nc_mg = nc_num
+          break
+        endif
+      endif
+    endfor
+
+    # Badge 1: indhold
+    if nc_is_bundle
+      assign nc_b1 = 'badges.bundle' | t
+      assign nc_lines = 'easy:' | append: nc_b1
+    elsif nc_has_cbg and nc_size != blank
+      assign nc_b1 = 'badges.with_cbg_size' | t: size: nc_size
+      assign nc_lines = 'moisture:' | append: nc_b1
+    elsif nc_has_cbd and nc_mg != blank and nc_size != blank
+      assign nc_mg_txt = nc_mg | append: ' mg'
+      assign nc_b1 = 'badges.cbd_amount' | t: amount: nc_mg_txt, size: nc_size
+      assign nc_lines = 'moisture:' | append: nc_b1
+    elsif nc_has_cbd and nc_size != blank
+      assign nc_b1 = 'badges.with_cbd_size' | t: size: nc_size
+      assign nc_lines = 'moisture:' | append: nc_b1
+    elsif nc_has_cbd
+      assign nc_b1 = 'badges.with_cbd' | t
+      assign nc_lines = 'moisture:' | append: nc_b1
+    elsif nc_size != blank
+      assign nc_lines = 'moisture:' | append: nc_size
+    else
+      assign nc_sub = nc_title | split: ' | ' | last
+      if nc_sub != nc_title
+        assign nc_lines = 'easy:' | append: nc_sub
+      endif
+    endif
+
+    # Badge 2: kendte ingredienser i prioriteret raekkefoelge (noegle = INCI-uddrag).
+    unless nc_is_bundle
+      assign nc_map = 'hyaluron:hyaluron,niacinamide:niacinamide,urea:urea,shea:butyrospermum,squalane:squalane,aloe:aloebarbadensis,almond:prunusamygdalus,mango:mangifera,jojoba:simmondsia,lavender:lavandula,cucumber:cucumis,vitamin_e:tocopherol,mct:caprylic,sunflower:helianthus,hemp_seed:hampfrøolie' | split: ','
+      assign nc_found = ''
+      assign nc_n = 0
+      for pair in nc_map
+        assign nc_kv = pair | split: ':'
+        if nc_inci contains nc_kv[1] and nc_n < 2
+          assign nc_label_key = 'badges.ingr.' | append: nc_kv[0]
+          assign nc_label = nc_label_key | t
+          assign nc_found = nc_found | append: nc_label | append: '§'
+          assign nc_n = nc_n | plus: 1
+        endif
+      endfor
+      if nc_n > 0
+        assign nc_names = nc_found | split: '§'
+        if nc_n == 2
+          assign nc_b2 = 'badges.with_two' | t: a: nc_names[0], b: nc_names[1]
+        else
+          assign nc_b2 = 'badges.with_one' | t: a: nc_names[0]
+        endif
+        assign nc_lines = nc_lines | append: '¶vegan:' | append: nc_b2
+      endif
+    endunless
+
+    # Badge 3: dokumentation pr. produkt, ellers dansk udvikling (kun NatureCell).
+    assign nc_doc = ''
+    assign nc_docmap = settings.nc_doc_badges | default: 'dagcreme: dermatest, natcreme: kemiluppen, cbd-olie-10-10ml-test1: coa, cbd-olie-10-10ml-test1-kopi: coa, cbd-olie-15-10ml-test-kopi: coa, cbd-olie-15-10ml-test-kopi-1: coa' | newline_to_br | replace: '<br />', ',' | split: ','
+    for row in nc_docmap
+      assign nc_dkv = row | split: ':'
+      assign nc_dh = nc_dkv[0] | strip
+      if nc_dh == product.handle
+        assign nc_doc = nc_dkv[1] | strip
+        break
+      endif
+    endfor
+    if nc_doc != blank
+      assign nc_doc_key = 'badges.' | append: nc_doc
+      assign nc_b3 = nc_doc_key | t
+      assign nc_lines = nc_lines | append: '¶lab:' | append: nc_b3
+    elsif nc_is_alfalab == false
+      # Kun NatureCells egne formuleringer (CBD/CBG eller pakker); handsken og Alfalab faar intet tredje ikon.
+      if nc_has_cbd or nc_has_cbg or nc_is_bundle
+        assign nc_b3 = 'badges.developed_dk' | t
+        assign nc_lines = nc_lines | append: '¶lab:' | append: nc_b3
+      endif
+    endif
+
+    assign nc_lines = nc_lines | split: '¶'
+  endif
+-%}
+{%- if nc_lines.size > 0 -%}
+  <div class="nc-pdp__usps">
+    {%- for line in nc_lines limit: 3 -%}
+      {%- assign nc_p = line | strip | split: ':' -%}
+      {%- assign nc_icon = nc_p[0] | strip | downcase -%}
+      {%- if nc_icon == 'cbd' -%}{%- assign nc_icon = 'vegan' -%}{%- endif -%}
+      {%- assign nc_text = line | strip | remove_first: nc_p[0] | remove_first: ':' | strip -%}
+      {%- if nc_text != blank -%}
+        <div class="nc-pdp__usp">
+          <img src="{{ nc_icon | prepend: 'nc-badge-' | append: '.svg' | asset_url }}" alt="" width="62" height="62" loading="lazy">
+          <span>{{ nc_text }}</span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

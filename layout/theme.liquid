@@ -10,7 +10,7 @@
     <title>
       {{- page_title -}}
       {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
-      {%- if current_page != 1 %} &ndash; Side {{ current_page }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
@@ -19,6 +19,12 @@
     {%- endif -%}
 
     <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- comment -%} Delingskort og strukturerede data (Temaindstillinger → SEO og produktdata). Hreflang lægger Shopify selv ind via content_for_header. {%- endcomment -%}
+    {%- render 'nc-social-meta' -%}
+    {%- if settings.nc_schema -%}
+      {%- render 'nc-structured-data' -%}
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">

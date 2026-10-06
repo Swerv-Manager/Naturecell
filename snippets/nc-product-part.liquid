@@ -1,0 +1,51 @@
+{%- comment -%}
+  nc-product-part: én del af produktbeskrivelsen.
+
+  Produkterne er skrevet efter butikkens faste konvention, som det gamle tema
+  også brugte: beskrivelse ---- ingredienser ---- vejledning. Snippet'en deler
+  product.description paa '----' og rydder de tags op, som skillelinjen efterlader
+  (fx "<p>" foer og "</p>" efter, og indsatte <meta charset>). Metafelterne
+  ncell.ingredients og ncell.usage vinder, hvis de er udfyldt.
+
+  Brug:
+    {% render 'nc-product-part', product: product, part: 'desc' %}
+    {% render 'nc-product-part', product: product, part: 'ingredients' %}
+    {% render 'nc-product-part', product: product, part: 'usage' %}
+    {% render 'nc-product-part', product: product, part: 'ingredients', plain: true %}  (ren tekst)
+{%- endcomment -%}
+{%- liquid
+  assign nc_src = product.description | remove: '<meta charset="utf-8">' | remove: '<meta charset="UTF-8">'
+  assign nc_parts = nc_src | split: '----'
+  assign nc_out = ''
+
+  case part
+    when 'ingredients'
+      assign nc_out = product.metafields.ncell.ingredients.value | default: nc_parts[1]
+    when 'usage'
+      assign nc_out = product.metafields.ncell.usage.value | default: nc_parts[2]
+    else
+      assign nc_out = nc_parts[0] | default: nc_src
+  endcase
+
+  assign nc_out = nc_out | strip
+  for i in (1..4)
+    assign nc_h4 = nc_out | slice: 0, 4
+    assign nc_h7 = nc_out | slice: 0, 7
+    if nc_h4 == '</p>' or nc_h4 == '<br>'
+      assign nc_out = nc_out | slice: 4, nc_out.size | strip
+    elsif nc_h7 == '</span>' or nc_h7 == '<br />' or nc_h7 == '</div>'
+      assign nc_out = nc_out | slice: 7, nc_out.size | strip
+    endif
+    assign nc_t3 = nc_out | slice: -3, 3
+    if nc_t3 == '<p>'
+      assign nc_len = nc_out.size | minus: 3
+      assign nc_out = nc_out | slice: 0, nc_len | strip
+    endif
+  endfor
+
+  if plain
+    # Afsnit og linjeskift bliver til mellemrum, saa "CBD</p><p>Indeholder" ikke bliver "CBDIndeholder"
+    assign nc_out = nc_out | replace: '</p>', ' </p>' | replace: '<br>', ' ' | replace: '<br />', ' ' | replace: '<br/>', ' ' | replace: '</li>', ' </li>' | replace: '</h2>', ' </h2>' | replace: '</h3>', ' </h3>' | replace: '</h4>', ' </h4>' | replace: '</div>', ' </div>' | strip_html | strip_newlines | replace: '  ', ' ' | replace: '  ', ' ' | strip
+  endif
+  echo nc_out
+-%}
