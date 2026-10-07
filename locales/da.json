@@ -383,5 +383,9 @@
       "advice_a": "<p>Ja. Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
       "ship_free": "<p>Fri fragt ved køb over {{ amount }}.</p>"
     }
+  },
+  "start": {
+    "read_routine": "Læs om rutinen",
+    "your_routine": "Din rutine"
   }
 }

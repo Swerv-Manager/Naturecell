@@ -1,0 +1,105 @@
+{
+  "sections": {
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "tone": "soft",
+        "eyebrow": "Din guide til en enkel rutine",
+        "heading": "Hvor skal jeg starte?",
+        "intro": "Ét produkt eller hele rutinen? Her er fire enkle steder at begynde, alt efter hvad du allerede bruger, og hvor meget du vil bruge. Du kan altid bygge videre i dit eget tempo."
+      }
+    },
+    "guide": {
+      "type": "nc-start-guide",
+      "settings": {
+        "heading": "Vælg dit udgangspunkt",
+        "intro": "Vælg efter de produkter, du allerede har, og dit budget. Alle fire er en enkel rutine til morgen og aften, og produkterne er lavet til at bruges sammen.",
+        "closing_heading": "Begynd enkelt, og mærk efter",
+        "closing_text": "<p>Vælg det sted at begynde, der passer til dig og den rutine, du allerede har. Prøver du flere nye produkter, kan du tage dem ind ét ad gangen og starte med en lille mængde.</p><p>Husk solbeskyttelse som sidste trin om morgenen ved behov. Hudolien og cremerne indeholder ikke SPF.</p><p>Er du i tvivl om, hvor du skal begynde, så skriv eller ring til os. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
+        "closing_cta_label": "Skriv til os",
+        "closing_cta_url": "mailto:hello@naturecell.dk",
+        "closing_phone": "+45 40 55 00 42"
+      },
+      "blocks": {
+        "o1": {
+          "type": "option",
+          "settings": {
+            "product": "cbd-olie-1000mg",
+            "count_label": "1 produkt",
+            "title": "Begynd med hudolien",
+            "contents": "Hudpleje Olie 1000 mg, 30 ml",
+            "teaser": "Til dig, der vil prøve ét produkt eller føje et trin til den rutine, du allerede har.",
+            "cta_label": "Se hudolien",
+            "detail_heading": "Ét produkt: begynd med hudolien",
+            "detail_text": "<p>Vil du prøve ét produkt fra NatureCell, er hudolien et enkelt sted at begynde. Den er nem at føje til den hudpleje, du allerede bruger, og du skal kun bruge få dråber.</p><p><strong>Det får du:</strong> Hudpleje Olie 1000 mg, 30 ml.</p><p><strong>Om ingredienserne:</strong> Olien består af MCT-olie og olier fra appelsin- og citronskal, og CBD er en gennemgående del af formuleringen. Konsistensen er let og uden fedtet fornemmelse.</p><p><strong>Sådan bruger du den:</strong> Fordel 2 til 3 dråber på nyrenset hud morgen og aften, og massér dem ind med cirkulære bevægelser. Bruger du allerede en creme, kommer den bagefter. Undgå området tæt på øjnene.</p>",
+            "detail_cta_label": "Se hudolien",
+            "routine_1_label": "Morgen og aften",
+            "routine_1_steps": "Hudolie | Din sædvanlige creme, hvis du bruger en"
+          }
+        },
+        "o2": {
+          "type": "option",
+          "settings": {
+            "product": "pakke-til-starten-af-dagen",
+            "count_label": "2 produkter",
+            "title": "Din enkle morgenrutine",
+            "contents": "Hudolie og dagcreme",
+            "teaser": "To trin om morgenen: et par dråber olie og derefter dagcremen.",
+            "cta_label": "Se pakken",
+            "detail_heading": "To produkter: hudolie og dagcreme",
+            "detail_text": "<p>Vil du have en enkel morgenrutine med både olie og creme, er hudolie og dagcreme et godt næste skridt. De to produkter er lavet til at bruges sammen.</p><p><strong>Det får du:</strong> Hudpleje Olie 1000 mg, 30 ml, og dagcreme, 50 ml.</p><p><strong>Om ingredienserne:</strong> Dagcremen indeholder blandt andet aloe vera, glycerin, solsikkeolie, sheasmør og E-vitamin, som bidrager til pleje og fugt. Den har en let konsistens og er testet hos Dermatest med resultatet \"Sehr Gut\".</p><p><strong>Sådan bruger du dem:</strong> Påfør 2 til 3 dråber hudolie på nyrenset hud om morgenen, og fordel derefter dagcremen i ansigtet. Vil du holde rutinen til de to produkter, kan dagcremen også bruges om aftenen efter hudolien.</p>",
+            "detail_cta_label": "Se pakken med hudolie og dagcreme",
+            "routine_1_label": "Morgen",
+            "routine_1_steps": "Hudolie | Dagcreme"
+          }
+        },
+        "o3": {
+          "type": "option",
+          "settings": {
+            "product": "facial-cbd-care",
+            "count_label": "3 produkter",
+            "title": "Pleje morgen og aften",
+            "contents": "Hudolie, dagcreme og natcreme",
+            "teaser": "Til dig, der vil have en creme til morgenen og en til aftenen.",
+            "cta_label": "Se pakken",
+            "detail_heading": "Tre produkter: hudolie, dagcreme og natcreme",
+            "detail_text": "<p>Vil du have en creme til morgenen og en til aftenen, er pakken med tre produkter et oplagt valg. Trinene er de samme, du skifter blot creme om aftenen.</p><p><strong>Det får du:</strong> Hudpleje Olie 1000 mg, 30 ml, dagcreme, 50 ml, og natcreme, 50 ml.</p><p><strong>Om ingredienserne:</strong> Natcremen har en mere fyldig konsistens med blandt andet glycerin, mandelolie, squalane og mangokernesmør, der bidrager til pleje. Natcremen har fået Kolbe A i Kemiluppen.</p><p><strong>Sådan bruger du dem:</strong> Om morgenen bruger du hudolie og derefter dagcreme. Om aftenen renser du ansigtet med din sædvanlige rens og afslutter med hudolie og natcreme. Rensegel er ikke med i denne pakke.</p>",
+            "detail_cta_label": "Se pakken med tre produkter",
+            "routine_1_label": "Morgen",
+            "routine_1_steps": "Hudolie | Dagcreme",
+            "routine_2_label": "Aften",
+            "routine_2_steps": "Din sædvanlige ansigtsrens | Hudolie | Natcreme"
+          }
+        },
+        "o4": {
+          "type": "option",
+          "settings": {
+            "product": "hudpleje-startpakke-plus-1",
+            "count_label": "4 produkter",
+            "title": "Hele rutinen samlet",
+            "contents": "Rensegel, hudolie, dagcreme og natcreme",
+            "teaser": "Rens, olie og cremer til morgen og aften, samlet i én pakke.",
+            "cta_label": "Se pakken",
+            "detail_heading": "Fire produkter: hele rutinen samlet i én pakke",
+            "detail_text": "<p>Vil du samle hele din daglige rutine hos NatureCell, er Kompletpakken det enkleste valg: rens, olie og cremer til morgen og aften i én pakke.</p><p><strong>Det får du:</strong> Rensegel, 100 ml, Hudpleje Olie 1000 mg, 30 ml, dagcreme, 50 ml, og natcreme, 50 ml.</p><p><strong>Om ingredienserne:</strong> Rensegelen er aftenens første trin, før olie og natcreme. Den indeholder blandt andet Sodium PCA og E-vitamin.</p><p><strong>Sådan bruger du dem:</strong> Om aftenen fugter du ansigtet, skummer en lille mængde rensegel op mellem hænderne og masserer den let ind. Skyl med lunkent vand, og dup huden tør. Påfør derefter 2 til 3 dråber hudolie, og afslut med natcremen.</p>",
+            "detail_cta_label": "Se Kompletpakken",
+            "routine_1_label": "Morgen",
+            "routine_1_steps": "Hudolie | Dagcreme",
+            "routine_2_label": "Aften",
+            "routine_2_steps": "Rensegel | Hudolie | Natcreme"
+          }
+        }
+      },
+      "block_order": [
+        "o1",
+        "o2",
+        "o3",
+        "o4"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "guide"
+  ]
+}

@@ -1,0 +1,211 @@
+{% comment %}
+  "Hvor skal jeg starte?": guide med valgmuligheder fra ét produkt til hele rutinen.
+  Hver blok er et udgangspunkt: et kort øverst (antal, navn, indhold, aktuel pris og knap)
+  og et afsnit længere nede med indhold, ingredienser, brug og rutinen trin for trin.
+  Pris, billede og link hentes live fra det valgte produkt, så intet skal opdateres i hånden.
+  Afsluttes med personlig vejledning (mail og telefon).
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-start { padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 7vw, 88px); }
+  #shopify-section-{{ section.id }} .nc-start__head { max-width: 640px; margin: 0 0 24px; }
+  #shopify-section-{{ section.id }} .nc-start__head h2 { margin: 0 0 8px; font-family: var(--font-display); font-weight: 400; font-size: clamp(25px, 3.4vw, 34px); line-height: 1.2; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-start__head p { margin: 0; font-size: 16.5px; line-height: 1.7; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-start__cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 236px), 1fr)); }
+  #shopify-section-{{ section.id }} .nc-start__card { display: flex; flex-direction: column; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-start__media { position: relative; display: block; aspect-ratio: 1 / 1; background: var(--sage-50); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-start__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-start__count { position: absolute; top: 12px; left: 12px; z-index: 1; padding: 5px 11px; border-radius: var(--radius-pill); background: var(--cloud); font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage-700); box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-start__body { display: flex; flex-direction: column; flex: 1; padding: 18px 18px 20px; }
+  #shopify-section-{{ section.id }} .nc-start__card h3 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 21px; line-height: 1.25; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-start__contents { margin: 0 0 8px; font-size: 13.5px; font-weight: 600; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-start__teaser { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-start__buy { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+  #shopify-section-{{ section.id }} .nc-start__price { margin: 0; font-size: 22px; font-weight: 700; color: var(--ink-900); }
+  #shopify-section-{{ section.id }} .nc-start__unit { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-start__buy .nc-btn { justify-content: center; width: 100%; }
+  #shopify-section-{{ section.id }} .nc-start__more { align-self: center; font-size: 14px; color: var(--sage-700); }
+  @media (max-width: 599px) {
+    #shopify-section-{{ section.id }} .nc-start__card { flex-direction: row; }
+    #shopify-section-{{ section.id }} .nc-start__media { flex: none; width: 118px; aspect-ratio: auto; min-height: 100%; }
+    #shopify-section-{{ section.id }} .nc-start__count { top: 8px; left: 8px; padding: 4px 8px; font-size: 10px; letter-spacing: 0.06em; }
+    #shopify-section-{{ section.id }} .nc-start__body { padding: 14px 14px 16px; min-width: 0; }
+    #shopify-section-{{ section.id }} .nc-start__card h3 { font-size: 19px; }
+    #shopify-section-{{ section.id }} .nc-start__teaser { margin-bottom: 12px; font-size: 13.5px; }
+    #shopify-section-{{ section.id }} .nc-start__price { font-size: 19px; }
+  }
+  #shopify-section-{{ section.id }} .nc-start__steps-wrap { display: grid; gap: 22px; margin-top: clamp(36px, 5vw, 56px); }
+  #shopify-section-{{ section.id }} .nc-start__step { scroll-margin-top: 110px; display: grid; gap: clamp(18px, 3vw, 36px); grid-template-columns: 1fr; padding: clamp(22px, 3.5vw, 36px); border-radius: var(--radius-lg); background: var(--paper-2, #f7f5f0); border: 1px solid var(--border-soft); }
+  @media (min-width: 860px) {
+    #shopify-section-{{ section.id }} .nc-start__step { grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr); align-items: start; }
+  }
+  #shopify-section-{{ section.id }} .nc-start__step h2 { margin: 0 0 14px; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.25; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-start__rte p { margin: 0 0 14px; font-size: 16px; line-height: 1.75; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-start__rte strong { color: var(--ink-900); }
+  #shopify-section-{{ section.id }} .nc-start__link { display: inline-block; margin-top: 4px; font-weight: 600; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-start__routine { padding: 20px; border-radius: var(--radius-md); background: var(--cloud); border: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-start__routine .nc-eyebrow { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .nc-start__routine-row + .nc-start__routine-row { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border-default); }
+  #shopify-section-{{ section.id }} .nc-start__routine-row strong { display: block; margin-bottom: 8px; font-size: 14px; color: var(--ink-900); }
+  #shopify-section-{{ section.id }} .nc-start__trin { list-style: none; margin: 0; padding: 0; counter-reset: nctrin; display: grid; gap: 8px; }
+  #shopify-section-{{ section.id }} .nc-start__trin li { counter-increment: nctrin; display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-start__trin li::before { content: counter(nctrin); flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--sage-500); color: var(--cloud); font-size: 12.5px; font-weight: 700; }
+  #shopify-section-{{ section.id }} .nc-start__closing { margin-top: 22px; padding: clamp(24px, 4vw, 40px); border-radius: var(--radius-lg); background: var(--sage-50); border: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-start__closing h2 { margin: 0 0 14px; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 2.8vw, 28px); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-start__closing .nc-start__rte { max-width: 680px; }
+  #shopify-section-{{ section.id }} .nc-start__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 6px; }
+  #shopify-section-{{ section.id }} .nc-start__actions a:not(.nc-btn) { font-weight: 600; color: var(--sage-700); }
+{%- endstyle -%}
+
+<div class="nc-start">
+  <div class="nc-container">
+    {%- if section.settings.heading != blank or section.settings.intro != blank -%}
+      <header class="nc-start__head">
+        {%- if section.settings.heading != blank -%}<h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>{%- endif -%}
+        {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro }}</p>{%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <ol class="nc-start__cards">
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        {%- assign img = block.settings.image | default: p.featured_image -%}
+        <li class="nc-start__card" {{ block.shopify_attributes }}>
+          <a class="nc-start__media" href="{{ p.url | default: '#' }}" tabindex="-1" aria-hidden="true">
+            {%- if block.settings.count_label != blank -%}<span class="nc-start__count">{{ block.settings.count_label }}</span>{%- endif -%}
+            {%- if img -%}
+              {{ img | image_url: width: 640 | image_tag: alt: '', loading: 'lazy', widths: '320, 480, 640', sizes: '(min-width: 990px) 280px, (min-width: 600px) 46vw, 92vw' }}
+            {%- endif -%}
+          </a>
+          <div class="nc-start__body">
+            <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
+            {%- if block.settings.contents != blank -%}<p class="nc-start__contents">{{ block.settings.contents }}</p>{%- endif -%}
+            {%- if block.settings.teaser != blank -%}<p class="nc-start__teaser">{{ block.settings.teaser }}</p>{%- endif -%}
+            <div class="nc-start__buy">
+              {%- if p != blank -%}
+                {%- assign v = p.selected_or_first_available_variant -%}
+                <p class="nc-start__price">
+                  {%- if p.price_varies -%}{{ 'product.from' | t }} {% endif -%}
+                  {{- p.price | money -}}
+                  {%- if v.unit_price_measurement -%}
+                    <span class="nc-start__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
+                  {%- endif -%}
+                </p>
+                <a class="nc-btn nc-btn--primary" href="{{ p.url }}">{{ block.settings.cta_label | default: p.title }}</a>
+              {%- endif -%}
+              {%- if block.settings.detail_heading != blank -%}
+                <a class="nc-start__more" href="#nc-trin-{{ forloop.index }}">{{ 'start.read_routine' | t }} <span aria-hidden="true">↓</span></a>
+              {%- endif -%}
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+
+    <div class="nc-start__steps-wrap">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.detail_heading != blank -%}
+          {%- assign p = block.settings.product -%}
+          <section class="nc-start__step" id="nc-trin-{{ forloop.index }}" aria-labelledby="nc-trin-h-{{ forloop.index }}">
+            <div>
+              <h2 id="nc-trin-h-{{ forloop.index }}">{% render 'nc-cbd', text: block.settings.detail_heading %}</h2>
+              {%- if block.settings.detail_text != blank -%}<div class="nc-start__rte">{{ block.settings.detail_text }}</div>{%- endif -%}
+              {%- if p != blank and block.settings.detail_cta_label != blank -%}
+                <a class="nc-start__link" href="{{ p.url }}">{{ block.settings.detail_cta_label }} <span aria-hidden="true">→</span></a>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.routine_1_steps != blank or block.settings.routine_2_steps != blank -%}
+              <aside class="nc-start__routine" aria-label="{{ 'start.your_routine' | t | escape }}">
+                <p class="nc-eyebrow">{{ 'start.your_routine' | t }}</p>
+                {%- for n in (1..2) -%}
+                  {%- liquid
+                    case n
+                      when 1
+                        assign r_label = block.settings.routine_1_label
+                        assign r_steps = block.settings.routine_1_steps
+                      when 2
+                        assign r_label = block.settings.routine_2_label
+                        assign r_steps = block.settings.routine_2_steps
+                    endcase
+                  -%}
+                  {%- if r_steps != blank -%}
+                    <div class="nc-start__routine-row">
+                      {%- if r_label != blank -%}<strong>{{ r_label }}</strong>{%- endif -%}
+                      <ol class="nc-start__trin">
+                        {%- assign r_list = r_steps | split: '|' -%}
+                        {%- for step in r_list -%}
+                          {%- assign step = step | strip -%}
+                          {%- if step != blank -%}<li>{{ step }}</li>{%- endif -%}
+                        {%- endfor -%}
+                      </ol>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </aside>
+            {%- endif -%}
+          </section>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if section.settings.closing_heading != blank or section.settings.closing_text != blank -%}
+        <section class="nc-start__closing" aria-labelledby="nc-start-closing-{{ section.id }}">
+          <h2 id="nc-start-closing-{{ section.id }}">{{ section.settings.closing_heading }}</h2>
+          <div class="nc-start__rte">{{ section.settings.closing_text }}</div>
+          <div class="nc-start__actions">
+            {%- if section.settings.closing_cta_label != blank -%}
+              <a class="nc-btn nc-btn--primary" href="{% render 'nc-url', url: section.settings.closing_cta_url, fallback: 'mailto:hello@naturecell.dk' %}">{{ section.settings.closing_cta_label }}</a>
+            {%- endif -%}
+            {%- if section.settings.closing_phone != blank -%}
+              <a href="tel:{{ section.settings.closing_phone | remove: ' ' }}">{{ section.settings.closing_phone }}</a>
+            {%- endif -%}
+          </div>
+        </section>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hvor skal jeg starte?",
+  "tag": "section",
+  "class": "nc-start-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Overskrift over kortene" },
+    { "type": "textarea", "id": "intro", "label": "Tekst over kortene" },
+    { "type": "header", "content": "Afslutning" },
+    { "type": "text", "id": "closing_heading", "label": "Overskrift" },
+    { "type": "richtext", "id": "closing_text", "label": "Tekst" },
+    { "type": "text", "id": "closing_cta_label", "label": "Knaptekst" },
+    { "type": "text", "id": "closing_cta_url", "label": "Knaplink", "info": "Fx mailto:hello@naturecell.dk eller /pages/kontakt" },
+    { "type": "text", "id": "closing_phone", "label": "Telefonnummer", "info": "Vises som link ved siden af knappen. Lad stå tomt for at skjule." }
+  ],
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Udgangspunkt",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Produkt eller pakke", "info": "Pris, billede og link hentes fra produktet." },
+        { "type": "image_picker", "id": "image", "label": "Billede (valgfrit)", "info": "Standard er produktets eget billede." },
+        { "type": "text", "id": "count_label", "label": "Mærkat", "info": "Fx \"1 produkt\"" },
+        { "type": "text", "id": "title", "label": "Navn" },
+        { "type": "text", "id": "contents", "label": "Indhold", "info": "Fx \"Hudolie og dagcreme\"" },
+        { "type": "textarea", "id": "teaser", "label": "Kort tekst på kortet" },
+        { "type": "text", "id": "cta_label", "label": "Knaptekst" },
+        { "type": "header", "content": "Afsnit om rutinen" },
+        { "type": "text", "id": "detail_heading", "label": "Overskrift", "info": "Lad stå tomt for kun at vise kortet." },
+        { "type": "richtext", "id": "detail_text", "label": "Tekst" },
+        { "type": "text", "id": "detail_cta_label", "label": "Linktekst til produktet" },
+        { "type": "text", "id": "routine_1_label", "label": "Rutine 1: navn", "info": "Fx \"Morgen\"" },
+        { "type": "text", "id": "routine_1_steps", "label": "Rutine 1: trin", "info": "Adskil trinene med |, fx \"Hudolie | Dagcreme\"" },
+        { "type": "text", "id": "routine_2_label", "label": "Rutine 2: navn", "info": "Fx \"Aften\"" },
+        { "type": "text", "id": "routine_2_steps", "label": "Rutine 2: trin" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    { "name": "Hvor skal jeg starte?" }
+  ]
+}
+{% endschema %}
