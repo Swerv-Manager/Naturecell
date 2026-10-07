@@ -31,8 +31,8 @@
 <section class="nc-section">
   <div class="nc-container" data-nc-tabs>
     <div class="nc-section-head nc-section-head--center">
-      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-      <h2>{{ section.settings.heading }}</h2>
+      <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       <p>{{ section.settings.subtext }}</p>
       <div class="nc-shoptabs__pills" role="tablist">
         <button class="nc-shoptabs__pill nc-shoptabs__pill--area is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.area' | t }}</button>
@@ -53,7 +53,7 @@
                 {%- endif -%}
               </span>
               <span class="nc-shoptabs__label">
-                <strong>{{ block.settings.label }}</strong>
+                <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
                 <span>{{ block.settings.desc }}</span>
               </span>
             </a>
@@ -75,7 +75,7 @@
                 {%- endif -%}
               </span>
               <span class="nc-shoptabs__label">
-                <strong>{{ block.settings.label }}</strong>
+                <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
                 <span>{{ block.settings.desc }}</span>
               </span>
             </a>

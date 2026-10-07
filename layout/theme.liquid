@@ -47,6 +47,7 @@
   </head>
 
   <body class="template-{{ request.page_type | handle }}">
+    {%- if settings.nc_cbd_icon %}{% render 'nc-cbd-sprite' %}{% endif -%}
     <a class="nc-skip-link" href="#nc-main">{{ 'general.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}

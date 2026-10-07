@@ -26,8 +26,8 @@
 <section class="nc-lifestyle nc-section">
   <div class="nc-container">
     <div class="nc-section-head nc-section-head--center">
-      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-      <h2>{{ section.settings.heading }}</h2>
+      <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       <p>{{ section.settings.subtext }}</p>
     </div>
 
@@ -43,8 +43,8 @@
           {{ section.settings.main_image | image_url: width: 1400 | image_tag: alt: section.settings.main_caption_title, loading: 'lazy' }}
         {%- endif -%}
         <div class="nc-lifestyle__caption">
-          <small>{{ section.settings.main_caption_eyebrow }}</small>
-          <strong>{{ section.settings.main_caption_title }}</strong>
+          <small>{% render 'nc-cbd', text: section.settings.main_caption_eyebrow %}</small>
+          <strong>{% render 'nc-cbd', text: section.settings.main_caption_title %}</strong>
         </div>
       </div>
       <div class="nc-lifestyle__side">

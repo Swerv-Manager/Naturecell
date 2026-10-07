@@ -33,14 +33,14 @@
   <div class="nc-container">
     <div class="nc-story__grid">
       <div class="nc-story__text">
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-        <h2>{{ section.settings.heading }}</h2>
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
         <p class="nc-story__body">{{ section.settings.body }}</p>
         <div class="nc-story__stats">
           {%- for block in section.blocks -%}
             <div class="nc-story__stat" {{ block.shopify_attributes }}>
               <strong>{{ block.settings.num }}</strong>
-              <span>{{ block.settings.label }}</span>
+              <span>{% render 'nc-cbd', text: block.settings.label %}</span>
             </div>
           {%- endfor -%}
         </div>
@@ -55,7 +55,7 @@
           <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy" width="1200" height="1500">
         {%- endif -%}
         <div class="nc-story__caption">
-          <strong>{{ section.settings.caption_title }}</strong>
+          <strong>{% render 'nc-cbd', text: section.settings.caption_title %}</strong>
           <span>{{ section.settings.caption_sub }}</span>
         </div>
       </div>

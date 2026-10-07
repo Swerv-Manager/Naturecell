@@ -29,7 +29,7 @@
   <div class="nc-pdpamb__inner">
     <div class="nc-pdpamb__text">
       <span class="nc-pdpamb__pill">{{ section.settings.pill }}</span>
-      <h2>{{ section.settings.heading }}</h2>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       <p>{{ section.settings.body }}</p>
       <div class="nc-pdpamb__who">
         <span class="nc-pdpamb__avatar">

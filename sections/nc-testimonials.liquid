@@ -57,8 +57,8 @@
 
 <section class="nc-testi nc-section">
   <div class="nc-testi__head">
-    <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-    <h2>{{ section.settings.heading }}</h2>
+    <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+    <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
     {%- if t_agg != blank -%}
       <div class="nc-testi__agg">
         <span class="nc-stars" aria-hidden="true">

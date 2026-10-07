@@ -43,7 +43,7 @@
                 {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
             </div>
-            <h2 class="nc-product-card__title">{{ collection.title }}</h2>
+            <h2 class="nc-product-card__title">{% render 'nc-cbd', text: collection.title, mode: 'category' %}</h2>
           </a>
         </li>
       {%- endfor -%}

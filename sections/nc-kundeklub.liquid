@@ -110,7 +110,7 @@
                   {%- endcase -%}
                 </svg>
               </span>
-              <h3>{{ block.settings.title }}</h3>
+              <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
               <p>{{ block.settings.text }}</p>
             </div>
           {%- endif -%}
@@ -153,7 +153,7 @@
           {%- if block.type == 'step' -%}
             <div class="nc-klub__step" {{ block.shopify_attributes }}>
               <strong>{{ block.settings.num }}</strong>
-              <h3>{{ block.settings.title }}</h3>
+              <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
               <p>{{ block.settings.text }}</p>
             </div>
           {%- endif -%}

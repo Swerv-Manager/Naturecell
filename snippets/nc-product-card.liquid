@@ -141,7 +141,7 @@
 
   <div class="nc-product-card__info">
     <span class="nc-product-card__eyebrow">{{ eyebrow }}</span>
-    <h3 class="nc-product-card__title"><a href="{{ product.url }}">{{ card_title }}</a></h3>
+    <h3 class="nc-product-card__title"><a href="{{ product.url }}">{% render 'nc-cbd', text: card_title %}</a></h3>
     {%- if card_sub != blank -%}
       <span class="nc-product-card__size">{{ card_sub }}</span>
     {%- endif -%}

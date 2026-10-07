@@ -11,5 +11,5 @@
   if label contains 'ranslation missing' or label == blank
     assign label = tag
   endif
-  echo label
+  render 'nc-cbd', text: label
 -%}

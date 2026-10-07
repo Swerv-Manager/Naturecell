@@ -25,7 +25,7 @@
 <section class="nc-section" id="b2b-ansoegning" style="padding-top: 10px;">
   <div class="nc-container">
     <div class="nc-b2bform">
-      <h2>{{ section.settings.heading }}</h2>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       <p>{{ section.settings.intro }}</p>
 
       {%- form 'contact', id: 'nc-b2b-form', class: 'nc-b2bform__form' -%}

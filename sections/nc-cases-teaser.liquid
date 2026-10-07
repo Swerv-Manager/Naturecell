@@ -37,8 +37,8 @@
   <div class="nc-container" data-nc-railwrap>
     <div class="nc-caseteaser__head">
       <div class="nc-caseteaser__intro">
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
-        <h2>{{ section.settings.heading }}</h2>
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
         <p>{{ section.settings.subtext }}</p>
       </div>
       <div class="nc-caseteaser__nav">
@@ -86,7 +86,7 @@
               {%- endif -%}
             </span>
             <div class="nc-case-card__meta">
-              <h3 class="nc-case-card__title">{{ article.title }}</h3>
+              <h3 class="nc-case-card__title">{% render 'nc-cbd', text: article.title %}</h3>
               <span class="nc-case-card__who">{{ article.metafields.ncell.name | default: article.author }}</span>
             </div>
           </a>

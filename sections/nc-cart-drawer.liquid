@@ -114,7 +114,7 @@
               {%- endif -%}
             </a>
             <div class="nc-drawer__line-info">
-              <a class="nc-drawer__line-title" href="{{ item.url }}">{{ item.product.title }}</a>
+              <a class="nc-drawer__line-title" href="{{ item.url }}">{% render 'nc-cbd', text: item.product.title %}</a>
               {%- unless item.product.has_only_default_variant -%}
                 <span class="nc-drawer__line-meta">{{ item.variant.title }}</span>
               {%- endunless -%}

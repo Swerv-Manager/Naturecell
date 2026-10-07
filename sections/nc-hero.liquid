@@ -83,8 +83,8 @@
           <div class="nc-hero__slide" data-nc-slide {{ block.shopify_attributes }}>
             <div class="nc-hero__inner nc-hero__inner--grid">
               <div class="nc-hero__text">
-                <p class="nc-hero__eyebrow">{{ block.settings.eyebrow }}</p>
-                <h1 class="nc-hero__h1">{{ block.settings.heading }}</h1>
+                <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+                <h1 class="nc-hero__h1">{% render 'nc-cbd', text: block.settings.heading %}</h1>
                 <p class="nc-hero__body">{{ block.settings.body }}</p>
                 <div class="nc-hero__ctas">
                   {%- if block.settings.cta_text != blank -%}
@@ -135,8 +135,8 @@
             {%- endif -%}
             <div class="nc-hero__wash" aria-hidden="true"></div>
             <div class="nc-hero__inner nc-hero__inner--stack">
-              <p class="nc-hero__eyebrow">{{ block.settings.eyebrow }}</p>
-              <h2 class="nc-hero__h2">{{ block.settings.heading }}</h2>
+              <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+              <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
               <p class="nc-hero__body">{{ block.settings.body }}</p>
               {%- if block.settings.cta_text != blank -%}
                 <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a></div>
@@ -148,8 +148,8 @@
           <div class="nc-hero__slide nc-hero__slide--split" data-nc-slide {{ block.shopify_attributes }}>
             <div class="nc-hero__inner nc-hero__inner--grid">
               <div class="nc-hero__text">
-                <p class="nc-hero__eyebrow">{{ block.settings.eyebrow }}</p>
-                <h2 class="nc-hero__h2">{{ block.settings.heading }}</h2>
+                <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+                <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
                 <p class="nc-hero__body">{{ block.settings.body }}</p>
                 {%- if block.settings.cta_text != blank -%}
                   <div class="nc-hero__ctas">

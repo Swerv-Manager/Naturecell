@@ -28,7 +28,7 @@
     <div class="nc-featured__head">
       <div>
         {%- if section.settings.eyebrow != blank -%}
-          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         {%- endif -%}
         <h2>{{ section.settings.heading | default: collection.title }}</h2>
       </div>

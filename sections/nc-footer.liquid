@@ -92,7 +92,7 @@
             <img src="{{ 'nc-logo-wordmark-white.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="230" height="56">
           {%- endif -%}
         </div>
-        <p>{{ section.settings.brand_text }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.brand_text %}</p>
         <div class="nc-footer__brand-lines">
           <strong>{{ section.settings.legal_name }}</strong>
           {%- assign addr_rows = section.settings.address | newline_to_br | split: '<br />' -%}
@@ -110,18 +110,19 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'menu' -%}
           <nav aria-label="{{ block.settings.heading }}" {{ block.shopify_attributes }}>
-            <h2 class="nc-footer__heading">{{ block.settings.heading }}</h2>
+            <h2 class="nc-footer__heading">{% render 'nc-cbd', text: block.settings.heading %}</h2>
             <ul>
               {%- if block.settings.menu != blank -%}
                 {%- for link in block.settings.menu.links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  <li><a href="{{ link.url }}">{% render 'nc-cbd', text: link.title %}</a></li>
                 {%- endfor -%}
               {%- else -%}
                 {%- assign rows = block.settings.links_text | newline_to_br | split: '<br />' -%}
                 {%- for row in rows -%}
                   {%- assign parts = row | strip | split: '|' -%}
                   {%- if parts[0] != blank and parts[1] != blank -%}
-                    <li><a href="{% render 'nc-url', url: parts[1] %}">{{ parts[0] | strip }}</a></li>
+                    {%- assign nc_lbl = parts[0] | strip -%}
+                    <li><a href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: nc_lbl %}</a></li>
                   {%- endif -%}
                 {%- endfor -%}
               {%- endif -%}
@@ -131,14 +132,15 @@
               <ul>
                 {%- if block.settings.menu_2 != blank -%}
                   {%- for link in block.settings.menu_2.links -%}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    <li><a href="{{ link.url }}">{% render 'nc-cbd', text: link.title %}</a></li>
                   {%- endfor -%}
                 {%- else -%}
                   {%- assign rows2 = block.settings.links_text_2 | newline_to_br | split: '<br />' -%}
                   {%- for row in rows2 -%}
                     {%- assign parts2 = row | strip | split: '|' -%}
                     {%- if parts2[0] != blank and parts2[1] != blank -%}
-                      <li><a href="{% render 'nc-url', url: parts2[1] %}">{{ parts2[0] | strip }}</a></li>
+                      {%- assign nc_lbl = parts2[0] | strip -%}
+                    <li><a href="{% render 'nc-url', url: parts2[1] %}">{% render 'nc-cbd', text: nc_lbl %}</a></li>
                     {%- endif -%}
                   {%- endfor -%}
                 {%- endif -%}
@@ -218,7 +220,7 @@
       "type": "textarea",
       "id": "brand_text",
       "label": "Om brandet",
-      "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Danmarks første godkendte CBD-hudplejeserie."
+      "default": "Plantebaseret hudpleje, udviklet og testet i Danmark. Danmarks første godkendte CBD-hudplejeserie."
     },
     {
       "type": "text",

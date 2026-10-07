@@ -73,7 +73,7 @@
                       {{ item.image | image_url: width: 144 | image_tag: alt: item.title, loading: 'lazy' }}
                     {%- endif -%}
                     <div>
-                      <a href="{{ item.url }}">{{ item.product.title }}</a>
+                      <a href="{{ item.url }}">{% render 'nc-cbd', text: item.product.title %}</a>
                       {%- unless item.product.has_only_default_variant -%}
                         <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
                       {%- endunless -%}

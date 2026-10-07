@@ -183,7 +183,7 @@
       {%- if nc_text != blank -%}
         <div class="nc-pdp__usp">
           <img src="{{ nc_icon | prepend: 'nc-badge-' | append: '.svg' | asset_url }}" alt="" width="62" height="62" loading="lazy">
-          <span>{{ nc_text }}</span>
+          <span>{% render 'nc-cbd', text: nc_text %}</span>
         </div>
       {%- endif -%}
     {%- endfor -%}

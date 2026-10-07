@@ -50,9 +50,9 @@
     <div class="nc-container">
       <div class="nc-pagehero__inner">
         {%- if section.settings.eyebrow != blank -%}
-          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         {%- endif -%}
-        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
           <p>{{ section.settings.intro }}</p>
         {%- endif -%}
@@ -64,9 +64,9 @@
     <div class="nc-container">
       <div class="nc-pagehero__inner">
         {%- if section.settings.eyebrow != blank -%}
-          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         {%- endif -%}
-        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
           <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
         {%- endif -%}
@@ -89,9 +89,9 @@
     <div class="nc-container">
       <div class="nc-pagehero__inner">
         {%- if section.settings.eyebrow != blank -%}
-          <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         {%- endif -%}
-        <h1>{{ section.settings.heading | default: page.title }}</h1>
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
           <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
         {%- endif -%}

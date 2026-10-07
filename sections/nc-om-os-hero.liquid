@@ -16,9 +16,9 @@
 <section class="nc-oshero nc-on-dark">
   <div class="nc-oshero__inner">
     {%- if section.settings.eyebrow != blank -%}
-      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+      <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
     {%- endif -%}
-    <h1>{{ section.settings.heading | default: page.title }}</h1>
+    <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
     {%- if section.settings.intro != blank -%}
       <p>{{ section.settings.intro }}</p>
     {%- endif -%}

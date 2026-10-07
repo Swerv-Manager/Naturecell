@@ -61,9 +61,9 @@
   <section class="nc-quizband">
     <div class="nc-quizband__inner">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
       {%- endif -%}
-      <h1>{{ section.settings.heading | default: page.title }}</h1>
+      <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
       <div class="nc-quiz__progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="{{ section.settings.heading | default: page.title | escape }}"><div data-nc-quiz-progress></div></div>
     </div>
   </section>

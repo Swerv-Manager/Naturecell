@@ -156,7 +156,7 @@
       <div class="nc-casehero__grid">
         <div class="nc-casehero__body">
           <span class="nc-casehero__pill">{% if area_label != blank %}{{ area_label }} · {% endif %}Kundecase</span>
-          <h1>{{ clean_title }}</h1>
+          <h1>{% render 'nc-cbd', text: clean_title %}</h1>
           {%- if quote != blank -%}
             <p class="nc-casehero__quote">"{{ quote }}"</p>
           {%- endif -%}
@@ -208,7 +208,7 @@
         {%- if article.tags.first -%}
           <p class="nc-art__eyebrow">{% render 'nc-tag-label', tag: article.tags.first %}</p>
         {%- endif -%}
-        <h1 class="nc-art__title">{{ clean_title }}</h1>
+        <h1 class="nc-art__title">{% render 'nc-cbd', text: clean_title %}</h1>
         {%- if article.image -%}
           <div class="nc-art__hero">
             {{ article.image | image_url: width: 1900 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 1024px) 950px, 94vw' }}
@@ -292,7 +292,8 @@
                       <span class="nc-ccard__area">{% render 'nc-tag-label', tag: a.tags.first %}</span>
                     {%- endif -%}
                   </span>
-                  <h3 class="nc-ccard__title">{{ a.title | split: ' | ' | first }}</h3>
+                  {%- assign nc_at = a.title | split: ' | ' | first -%}
+                  <h3 class="nc-ccard__title">{% render 'nc-cbd', text: nc_at %}</h3>
                 </a>
               </li>
               {%- assign shown = shown | plus: 1 -%}

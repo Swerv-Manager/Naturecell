@@ -60,8 +60,10 @@
     <div class="nc-pdping__head">
       <div class="nc-pdping__intro">
         <span class="nc-pdping__eyebrow">{{ ing_eyebrow }}</span>
-        <h2>{{ ing_heading | replace: '[produkt]', ing_title }}</h2>
-        <p>{{ ing_intro | replace: '[produkt]', ing_title }}</p>
+        {%- assign nc_ing_h = ing_heading | replace: '[produkt]', ing_title -%}
+        <h2>{% render 'nc-cbd', text: nc_ing_h %}</h2>
+        {%- assign nc_ing_p = ing_intro | replace: '[produkt]', ing_title -%}
+        <p>{% render 'nc-cbd', text: nc_ing_p %}</p>
       </div>
       <a class="nc-pdping__btn" href="{% render 'nc-url', url: section.settings.button_url %}">{{ section.settings.button_label }}</a>
     </div>

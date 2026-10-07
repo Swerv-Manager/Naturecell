@@ -195,7 +195,7 @@
   endif
 -%}
 {%- if announce != blank -%}
-  <div class="nc-announce">{{ announce }}</div>
+  <div class="nc-announce">{% render 'nc-cbd', text: announce %}</div>
 {%- endif -%}
 
 <header class="nc-header" data-nc-header>
@@ -230,7 +230,7 @@
             </a>
             <div class="nc-dd__panel">
               <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.our_story' | t }}</a>
-              <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{{ 'nav.about_cbd' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{%- assign nc_nav_cbd = 'nav.about_cbd' | t -%}{% render 'nc-cbd', text: nc_nav_cbd %}</a>
               <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
               <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
               {%- if section.settings.show_jesper -%}
@@ -302,7 +302,7 @@
                     {%- endif -%}
                   </span>
                   <span class="nc-mega__label">
-                    <strong>{{ block.settings.label }}</strong>
+                    <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
                     <span>{{ block.settings.desc }}</span>
                   </span>
                 </a>
@@ -324,7 +324,7 @@
                     {%- endif -%}
                   </span>
                   <span class="nc-mega__label">
-                    <strong>{{ block.settings.label }}</strong>
+                    <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
                     <span>{{ block.settings.desc }}</span>
                   </span>
                 </a>
@@ -343,7 +343,8 @@
                     {{ product.featured_image | image_url: width: 360 | image_tag: alt: product.title, loading: 'lazy' }}
                   </span>
                   <span class="nc-mega__label">
-                    <strong>{{ product.title }}</strong>
+                    {%- assign nc_mt = product.title | split: ' | ' | first -%}
+                    <strong>{% render 'nc-cbd', text: nc_mt %}</strong>
                     <span>{{ product.price | money }}</span>
                   </span>
                 </a>
@@ -378,14 +379,14 @@
       <div class="nc-mobilenav__sub">
         {%- for block in section.blocks -%}
           {%- if block.type == 'area' -%}
-            <a href="{% render 'nc-url', url: block.settings.url %}">{{ block.settings.label }}</a>
+            <a href="{% render 'nc-url', url: block.settings.url %}">{% render 'nc-cbd', text: block.settings.label %}</a>
           {%- endif -%}
         {%- endfor -%}
       </div>
       <a href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.about' | t }}</a>
-      <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{{ 'nav.about_cbd' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{%- assign nc_nav_cbd = 'nav.about_cbd' | t -%}{% render 'nc-cbd', text: nc_nav_cbd %}</a>
       <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">{{ 'nav.club' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>

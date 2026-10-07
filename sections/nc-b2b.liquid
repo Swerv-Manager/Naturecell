@@ -39,9 +39,9 @@
 <section class="nc-b2b">
   <div class="nc-b2b__intro">
     {%- if section.settings.eyebrow != blank -%}
-      <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+      <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
     {%- endif -%}
-    <h1>{{ section.settings.heading }}</h1>
+    <h1>{% render 'nc-cbd', text: section.settings.heading %}</h1>
     {%- if section.settings.intro != blank -%}
       <p>{{ section.settings.intro }}</p>
     {%- endif -%}

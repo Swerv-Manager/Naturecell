@@ -35,9 +35,9 @@
   <div class="nc-container nc-imgcta__pad">
     <div class="nc-imgcta__inner">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
       {%- endif -%}
-      <h2>{{ section.settings.heading }}</h2>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       {%- if section.settings.text != blank -%}
         <p>{{ section.settings.text }}</p>
       {%- endif -%}

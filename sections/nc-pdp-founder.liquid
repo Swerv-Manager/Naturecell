@@ -30,8 +30,9 @@
 {%- if vid != blank or vid_url != blank or section.settings.show_without_video -%}
 <section class="nc-pdpfv">
   <div class="nc-pdpfv__inner">
-    <span class="nc-pdpfv__eyebrow">{{ section.settings.eyebrow }}</span>
-    <h2>{{ section.settings.heading | replace: '[produkt]', main_title }}</h2>
+    <span class="nc-pdpfv__eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</span>
+    {%- assign nc_fh = section.settings.heading | replace: '[produkt]', main_title -%}
+    <h2>{% render 'nc-cbd', text: nc_fh %}</h2>
     {%- comment -%} Produktvideo: ncell.video (Shopify-fil) foretrækkes, ellers ncell.video_url (embed-URL); uden video vises posteren med "Video kommer snart". {%- endcomment -%}
     {%- assign vid = product.metafields.ncell.video.value -%}
     {%- assign vid_url = product.metafields.ncell.video_url.value -%}

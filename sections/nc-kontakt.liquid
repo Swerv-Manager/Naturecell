@@ -40,9 +40,9 @@
 
 <section class="nc-kontakt__hero">
   {%- if section.settings.eyebrow != blank -%}
-    <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+    <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
   {%- endif -%}
-  <h1>{{ section.settings.heading | default: page.title }}</h1>
+  <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
   {%- if section.settings.intro != blank -%}
     <p>{{ section.settings.intro }}</p>
   {%- endif -%}
@@ -52,7 +52,7 @@
   <div class="nc-kontakt__blocks">
     {%- for block in section.blocks -%}
       <div class="nc-kontakt__block" {{ block.shopify_attributes }}>
-        <strong>{{ block.settings.title }}</strong>
+        <strong>{% render 'nc-cbd', text: block.settings.title %}</strong>
         {%- if block.settings.link_text != blank -%}
           <a href="{% render 'nc-url', url: block.settings.link_url %}">{{ block.settings.link_text }}</a>
         {%- endif -%}

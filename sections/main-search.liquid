@@ -43,12 +43,12 @@
                     {% render 'nc-product-card', product: item %}
                   {%- when 'article' -%}
                     <a class="nc-blog__card" href="{{ item.url }}">
-                      <h2 class="nc-blog__title">{{ item.title }}</h2>
+                      <h2 class="nc-blog__title">{% render 'nc-cbd', text: item.title %}</h2>
                       <p class="nc-blog__excerpt">{{ 'blog.article' | t }}</p>
                     </a>
                   {%- when 'page' -%}
                     <a class="nc-blog__card" href="{{ item.url }}">
-                      <h2 class="nc-blog__title">{{ item.title }}</h2>
+                      <h2 class="nc-blog__title">{% render 'nc-cbd', text: item.title %}</h2>
                       <p class="nc-blog__excerpt">{{ 'general.page_label' | t }}</p>
                     </a>
                 {%- endcase -%}

@@ -57,12 +57,12 @@
       <nav class="nc-coll__crumbs" aria-label="{{ 'general.breadcrumb' | t }}">
         <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a>
         <span aria-hidden="true">/</span>
-        <span>{{ collection.title | capitalize }}</span>
+        <span>{% render 'nc-cbd', text: collection.title, mode: 'category' %}</span>
       </nav>
     {%- endif -%}
 
     <header class="nc-coll__header">
-      <h1>{{ collection.title }}</h1>
+      <h1>{% render 'nc-cbd', text: collection.title, mode: 'category' %}</h1>
       {%- assign coll_desc_text = collection.description | strip_html | strip -%}
       {%- if coll_desc_text != blank -%}
         <div class="nc-coll__desc">{{ collection.description }}</div>

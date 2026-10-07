@@ -9,7 +9,7 @@
 {%- endstyle -%}
 
 <section class="nc-press" aria-label="{{ 'press.title' | t }}">
-  <p class="nc-eyebrow">{{ section.settings.eyebrow }}</p>
+  <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
   <div class="nc-marqwrap">
     <div class="nc-rail" style="animation-duration: {{ section.settings.speed | default: 32 }}s;">
       {%- assign names = section.settings.names | split: ',' -%}

@@ -1,0 +1,43 @@
+{%- comment -%}
+  nc-cbd: nedtoner ordet "CBD" i synlige titler, overskrifter, badges og korte tekster.
+
+  Standard: "CBD" vises som et lille ikon (bogstaverne som figur, ikke som tekst).
+  mode: 'category' bruges til kategorinavne: "CBD Ansigtspleje" vises som "Ansigtspleje",
+  mens navne uden "pleje" (fx "CBD Olie") faar ikonet.
+  mode: 'strip' fjerner kun kategori-praefikset og giver ren tekst (til oversaettelser).
+
+  Slaas fra i Temaindstillinger > SEO og produktdata > "Vis CBD som ikon".
+  Bruges kun i synlig tekst. Attributter (alt, title, aria-label), sidetitler,
+  metabeskrivelser og strukturerede data beholder ordet som tekst.
+
+  Brug:
+    {% render 'nc-cbd', text: product.title %}
+    {% render 'nc-cbd', text: collection.title, mode: 'category' %}
+{%- endcomment -%}
+{%- liquid
+  assign nc_t = text
+  if settings.nc_cbd_icon and nc_t contains 'CBD'
+    if mode == 'category' or mode == 'strip'
+      assign nc_head = nc_t | slice: 0, 4
+      if nc_head == 'CBD ' or nc_head == 'CBD-'
+        assign nc_rest = nc_t | slice: 4, 400 | strip
+        assign nc_rest_d = nc_rest | downcase
+        if nc_rest_d contains 'pleje'
+          assign nc_first = nc_rest | slice: 0 | upcase
+          assign nc_t = nc_rest | slice: 1, 400 | prepend: nc_first
+        endif
+      endif
+    endif
+    # mode 'strip' giver ren tekst (til oversaettelser og attributter), aldrig ikonet
+    if mode != 'strip'
+      capture nc_icon
+        echo '<svg class="nc-cbd" role="img" aria-label="CBD" focusable="false"><use href="#nc-cbd"></use></svg>'
+      endcapture
+      assign nc_icon_dash = nc_icon | prepend: '<span class="nc-cbd-w">' | append: '-</span>'
+      # Pladsholdere foerst, saa ikonets eget aria-label="CBD" ikke erstattes igen
+      assign nc_t = nc_t | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%'
+      assign nc_t = nc_t | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon
+    endif
+  endif
+  echo nc_t
+-%}

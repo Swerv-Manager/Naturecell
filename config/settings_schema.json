@@ -104,6 +104,13 @@
       },
       {
         "type": "checkbox",
+        "id": "nc_cbd_icon",
+        "label": "Vis CBD som ikon",
+        "default": true,
+        "info": "Ordet CBD vises som et lille ikon i produktnavne, overskrifter, badges, topbjælken og footeren, og kategorinavne som \"CBD Ansigtspleje\" vises som \"Ansigtspleje\". Sidetitler, metabeskrivelser, alt-tekster og strukturerede data beholder ordet som tekst."
+      },
+      {
+        "type": "checkbox",
         "id": "nc_schema",
         "label": "Strukturerede data (JSON-LD)",
         "default": true,

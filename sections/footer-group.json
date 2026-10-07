@@ -9,7 +9,7 @@
           "type": "menu",
           "settings": {
             "heading": "Shop",
-            "links_text": "Alle produkter | /collections/cbd-hudpleje\nCBD Hudpleje | /collections/cbd-hudpleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+            "links_text": "Alle produkter | /collections/cbd-hudpleje\nAnsigtspleje | /collections/cbd-ansigtspleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
           }
         },
         "om": {
@@ -35,7 +35,7 @@
         "service"
       ],
       "settings": {
-        "brand_text": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Danmarks første godkendte CBD-hudplejeserie.",
+        "brand_text": "Plantebaseret hudpleje, udviklet og testet i Danmark. Danmarks første godkendte CBD-hudplejeserie.",
         "legal_name": "NatureCell Denmark ApS",
         "address": "Lille Nyhavn 10, 2. tv.\n8660 Skanderborg, Danmark\nCVR: 42256013",
         "email": "hello@naturecell.dk",

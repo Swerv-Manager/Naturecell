@@ -141,7 +141,8 @@
     <a class="nc-pdp-back" href="{% if back_href != blank %}{{ back_href }}{% else %}{% render 'nc-url', url: section.settings.back_url %}{% endif %}">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
       {%- if back_href != blank -%}
-        {{ 'product.back_to' | t: title: collections[primary_handle].title }}
+        {%- capture nc_back_title %}{% render 'nc-cbd', text: collections[primary_handle].title, mode: 'strip' %}{% endcapture -%}
+        {{ 'product.back_to' | t: title: nc_back_title }}
       {%- else -%}
         {{ section.settings.back_label }}
       {%- endif -%}
@@ -195,7 +196,7 @@
 
       <div class="nc-pdp__info">
         <span class="nc-pdp__eyebrow">{{ eyebrow }}</span>
-        <h1 class="nc-pdp__title">{{ main_title }}</h1>
+        <h1 class="nc-pdp__title">{% render 'nc-cbd', text: main_title %}</h1>
         {%- if size_line != blank -%}
           <span class="nc-pdp__size">{{ size_line }}</span>
         {%- endif -%}
@@ -379,7 +380,7 @@
     {{ product.featured_image | image_url: width: 88 | image_tag: class: 'nc-buybar__img', alt: '', loading: 'lazy', widths: '44, 88' }}
   {%- endif -%}
   <div class="nc-buybar__text">
-    <span class="nc-buybar__title">{{ main_title }}</span>
+    <span class="nc-buybar__title">{% render 'nc-cbd', text: main_title %}</span>
     {%- if size_line != blank -%}<span class="nc-buybar__size">{{ size_line }}</span>{%- endif -%}
   </div>
   <button class="nc-buybar__add" type="button" data-nc-add="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
