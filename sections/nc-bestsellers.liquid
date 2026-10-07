@@ -24,7 +24,7 @@
         <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       </div>
       {%- if section.settings.collection != blank -%}
-        <a class="nc-best__link" href="{{ section.settings.collection.url }}">{{ section.settings.link_text }} →</a>
+        <a class="nc-best__link" href="{{ section.settings.collection.url }}">{% render 'nc-cbd', text: section.settings.link_text %} →</a>
       {%- endif -%}
     </div>
 

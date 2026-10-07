@@ -51,7 +51,7 @@
         <div class="nc-pdpfv__play" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <span class="nc-pdpfv__soon">{{ section.settings.pill }}</span>
+        <span class="nc-pdpfv__soon">{% render 'nc-cbd', text: section.settings.pill %}</span>
       {%- endif -%}
     </div>
   </div>

@@ -70,7 +70,7 @@
 
   <section class="nc-quiz">
     <div class="nc-quiz__intro" data-nc-quiz-step="0">
-      <p>{{ section.settings.intro_text }}</p>
+      <p>{% render 'nc-cbd', text: section.settings.intro_text %}</p>
       <button class="nc-quiz__cta" type="button" data-nc-quiz-start>{{ 'quiz.start' | t }}</button>
     </div>
 
@@ -128,7 +128,7 @@
       <div class="nc-quiz__resulthead">
         <p class="nc-eyebrow">{{ 'quiz.result_eyebrow' | t }}</p>
         <h2>{{ 'quiz.result_prefix' | t }} <span data-nc-quiz-labels></span></h2>
-        <p>{{ section.settings.result_text }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.result_text %}</p>
       </div>
       <div class="nc-quiz__results" data-nc-quiz-result>
         {%- if coll != blank -%}

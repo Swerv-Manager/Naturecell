@@ -73,7 +73,7 @@
                     <a class="nc-search__item" href="{{ item.url }}">
                       <small>{{ 'blog.article' | t }}</small>
                       <strong>{% render 'nc-cbd', text: res_title %}</strong>
-                      <span>{{ item.excerpt_or_content | strip_html | truncatewords: 26 }}</span>
+                      {%- assign res_ex = item.excerpt_or_content | strip_html | truncatewords: 26 -%}<span>{% render 'nc-cbd', text: res_ex %}</span>
                     </a>
                   </li>
                 {%- when 'page' -%}
@@ -82,7 +82,7 @@
                       <small>{{ 'general.page_label' | t }}</small>
                       <strong>{% render 'nc-cbd', text: item.title %}</strong>
                       {%- assign res_text = item.content | strip_html | strip | truncatewords: 26 -%}
-                      {%- if res_text != blank -%}<span>{{ res_text }}</span>{%- endif -%}
+                      {%- if res_text != blank -%}<span>{% render 'nc-cbd', text: res_text %}</span>{%- endif -%}
                     </a>
                   </li>
               {%- endcase -%}
@@ -98,11 +98,7 @@
             <ul class="nc-search__list">{{ res_other }}</ul>
           {%- endif -%}
 
-          {%- if paginate.pages > 1 -%}
-            <nav class="nc-pagination" aria-label="{{ 'general.pages' | t }}">
-              {{ paginate | default_pagination }}
-            </nav>
-          {%- endif -%}
+          {% render 'nc-pagination', paginate: paginate %}
         {%- endpaginate -%}
       {%- else -%}
         <div class="nc-search__empty">

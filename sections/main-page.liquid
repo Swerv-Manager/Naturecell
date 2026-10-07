@@ -14,7 +14,7 @@
   <div class="nc-container">
     <article class="nc-page">
       <h1>{% render 'nc-cbd', text: page.title %}</h1>
-      <div class="nc-page__content">{{ page.content }}</div>
+      <div class="nc-page__content">{% render 'nc-cbd', text: page.content %}</div>
     </article>
   </div>
 </div>

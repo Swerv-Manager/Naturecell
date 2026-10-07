@@ -84,7 +84,7 @@
       <div class="nc-ing__chiprow">
         <div class="nc-ing__chips" data-nc-ing-chips>
           {%- for block in section.blocks -%}
-            <a class="nc-ing__chip" href="#ing-{{ block.settings.name | handleize }}">{{ block.settings.name }}</a>
+            <a class="nc-ing__chip" href="#ing-{{ block.settings.name | handleize }}">{% render 'nc-cbd', text: block.settings.name %}</a>
           {%- endfor -%}
         </div>
         <button class="nc-ing__more" type="button" data-nc-ing-more aria-label="{{ 'ingredients.show_all' | t }}" aria-expanded="false">
@@ -126,12 +126,12 @@
           </div>
           <div class="nc-ing__body">
             {%- if block.settings.category != blank -%}
-              <span class="nc-ing__pill nc-ing__pill--{{ block.settings.category_tone }}">{{ block.settings.category }}</span>
+              <span class="nc-ing__pill nc-ing__pill--{{ block.settings.category_tone }}">{% render 'nc-cbd', text: block.settings.category %}</span>
             {%- endif -%}
             <div class="nc-ing__title">
-              <h2>{{ block.settings.name }}</h2>
+              <h2>{% render 'nc-cbd', text: block.settings.name %}</h2>
               {%- if block.settings.latin != blank -%}
-                <span class="nc-ing__latin">{{ block.settings.latin }}</span>
+                <span class="nc-ing__latin">{% render 'nc-cbd', text: block.settings.latin %}</span>
               {%- endif -%}
             </div>
             {%- if block.settings.functions != blank -%}
@@ -143,10 +143,10 @@
               </div>
             {%- endif -%}
             {%- if block.settings.intro != blank -%}
-              <p class="nc-ing__intro">{{ block.settings.intro }}</p>
+              <p class="nc-ing__intro">{% render 'nc-cbd', text: block.settings.intro %}</p>
             {%- endif -%}
             {%- if block.settings.body != blank -%}
-              <div class="nc-ing__text">{{ block.settings.body }}</div>
+              <div class="nc-ing__text">{% render 'nc-cbd', text: block.settings.body %}</div>
             {%- endif -%}
             {%- if block.settings.benefits != blank -%}
               <div class="nc-ing__why">
@@ -158,7 +158,7 @@
                     {%- if row_text != blank -%}
                       <li>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                        <span>{{ row_text }}</span>
+                        <span>{% render 'nc-cbd', text: row_text %}</span>
                       </li>
                     {%- endif -%}
                   {%- endfor -%}

@@ -24,18 +24,18 @@
     {%- for block in section.blocks -%}
       <div class="nc-richpage__card" {{ block.shopify_attributes }}>
         {%- if block.settings.badge != blank -%}
-          <span class="nc-richpage__badge">{{ block.settings.badge }}</span>
+          <span class="nc-richpage__badge">{% render 'nc-cbd', text: block.settings.badge %}</span>
         {%- endif -%}
         <h3>{% render 'nc-cbd', text: block.settings.heading %}</h3>
-        <p>{{ block.settings.text }}</p>
+        <p>{% render 'nc-cbd', text: block.settings.text %}</p>
       </div>
     {%- endfor -%}
   </div>
   {%- if section.settings.cta_heading != blank or section.settings.cta_text != blank -%}
     <div class="nc-richpage__cta">
-      {%- if section.settings.cta_heading != blank -%}<h2>{{ section.settings.cta_heading }}</h2>{%- endif -%}
-      {%- if section.settings.cta_body != blank -%}<p>{{ section.settings.cta_body }}</p>{%- endif -%}
-      {%- if section.settings.cta_text != blank -%}<a href="{% render 'nc-url', url: section.settings.cta_url %}">{{ section.settings.cta_text }}</a>{%- endif -%}
+      {%- if section.settings.cta_heading != blank -%}<h2>{% render 'nc-cbd', text: section.settings.cta_heading %}</h2>{%- endif -%}
+      {%- if section.settings.cta_body != blank -%}<p>{% render 'nc-cbd', text: section.settings.cta_body %}</p>{%- endif -%}
+      {%- if section.settings.cta_text != blank -%}<a href="{% render 'nc-url', url: section.settings.cta_url %}">{% render 'nc-cbd', text: section.settings.cta_text %}</a>{%- endif -%}
     </div>
   {%- endif -%}
 </section>

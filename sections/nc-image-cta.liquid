@@ -39,10 +39,10 @@
       {%- endif -%}
       <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       {%- if section.settings.text != blank -%}
-        <p>{{ section.settings.text }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.text %}</p>
       {%- endif -%}
       {%- if section.settings.cta_text != blank -%}
-        <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta_text }}</a>
+        <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.cta_text %}</a>
       {%- endif -%}
     </div>
   </div>

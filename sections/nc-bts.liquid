@@ -43,7 +43,7 @@
         <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
       {%- endif -%}
       {%- if section.settings.text != blank -%}
-        <p>{{ section.settings.text }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.text %}</p>
       {%- endif -%}
     </div>
 
@@ -67,7 +67,7 @@
                 <img src="{{ img_url | asset_url }}" alt="{{ alt | escape }}" loading="lazy" width="1200" height="1500" style="{{ pos_style }}">
               {%- endif -%}
               {%- if block.settings.caption != blank -%}
-                <figcaption>{{ block.settings.caption }}</figcaption>
+                <figcaption>{% render 'nc-cbd', text: block.settings.caption %}</figcaption>
               {%- endif -%}
             </figure>
           {%- endif -%}

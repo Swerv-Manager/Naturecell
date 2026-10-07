@@ -74,7 +74,7 @@
             <div class="nc-tl__body">
               <p class="nc-tl__year">{{ block.settings.year }}</p>
               <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
-              <p>{{ block.settings.text }}</p>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
               {%- if block.settings.url != blank -%}
                 <a class="nc-tl__link" href="{% render 'nc-url', url: block.settings.url %}">
                   {{ 'general.read_more' | t }}
@@ -89,7 +89,7 @@
 
     {%- if section.settings.cta_text != blank -%}
       <div class="nc-tl__cta">
-        <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta_text }}</a>
+        <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.cta_text %}</a>
       </div>
     {%- endif -%}
   </div>

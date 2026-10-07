@@ -59,13 +59,13 @@
   <div class="nc-container">
     <div class="nc-pdping__head">
       <div class="nc-pdping__intro">
-        <span class="nc-pdping__eyebrow">{{ ing_eyebrow }}</span>
+        <span class="nc-pdping__eyebrow">{% render 'nc-cbd', text: ing_eyebrow %}</span>
         {%- assign nc_ing_h = ing_heading | replace: '[produkt]', ing_title -%}
         <h2>{% render 'nc-cbd', text: nc_ing_h %}</h2>
         {%- assign nc_ing_p = ing_intro | replace: '[produkt]', ing_title -%}
         <p>{% render 'nc-cbd', text: nc_ing_p %}</p>
       </div>
-      <a class="nc-pdping__btn" href="{% render 'nc-url', url: section.settings.button_url %}">{{ section.settings.button_label }}</a>
+      <a class="nc-pdping__btn" href="{% render 'nc-url', url: section.settings.button_url %}">{% render 'nc-cbd', text: section.settings.button_label %}</a>
     </div>
     <div class="nc-pdping__rail">
       {%- if ing_ids.size > 0 -%}
@@ -79,7 +79,7 @@
                 {%- endif -%}
               </span>
               <span class="nc-pdping__meta">
-                <span class="nc-pdping__name">{{ mo.name.value }}</span>
+                <span class="nc-pdping__name">{% render 'nc-cbd', text: mo.name.value %}</span>
               </span>
             </a>
           {%- endif -%}
@@ -95,7 +95,7 @@
               {%- endif -%}
             </span>
             <span class="nc-pdping__meta">
-              <span class="nc-pdping__name">{{ block.settings.name }}</span>
+              <span class="nc-pdping__name">{% render 'nc-cbd', text: block.settings.name %}</span>
             </span>
           </a>
         {%- endfor -%}

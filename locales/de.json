@@ -46,13 +46,16 @@
     "all": "Alle",
     "free_shipping": "Kostenloser Versand ab {{ amount }}",
     "announce_tail": "Vegan & pflanzenbasiert · Dänemarks erste zugelassene CBD-Hautpflege",
-    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} Bewertungen auf Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> von 5 · <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
+    "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} Bewertungen auf Trustpilot",
+    "tp_agg_html": "<strong>{{ score }}</strong> von 5 · <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
     "tp_num": "{{ score }}/5",
     "tp_label": "{{ count }} Bewertungen auf Trustpilot",
     "reviews_disclaimer": "Kundinnen und Kunden teilen ihre eigenen Erfahrungen. Ergebnisse können variieren.",
     "play_video": "Video abspielen",
-    "video_missing": "Wählen Sie das Video in den Einstellungen des Abschnitts aus. Laden Sie es zuerst unter Inhalte > Dateien hoch."
+    "video_missing": "Wählen Sie das Video in den Einstellungen des Abschnitts aus. Laden Sie es zuerst unter Inhalte > Dateien hoch.",
+    "previous_page": "Vorherige Seite",
+    "next_page": "Nächste Seite",
+    "page_n": "Seite {{ page }}"
   },
   "blog": {
     "read_also": "Lesen Sie auch",
@@ -376,14 +379,14 @@
     },
     "faq": {
       "ship_q": "Wann versenden Sie meine Bestellung?",
-      "ship_a": "<p>Bestellungen, die werktags vor 14 Uhr eingehen, versenden wir am selben Tag. Sobald Ihr Paket unterwegs ist, erhalten Sie eine E-Mail mit der Sendungsnummer.</p>",
+      "ship_a_html": "<p>Bestellungen, die werktags vor 14 Uhr eingehen, versenden wir am selben Tag. Sobald Ihr Paket unterwegs ist, erhalten Sie eine E-Mail mit der Sendungsnummer.</p>",
       "return_q": "Kann ich meinen Kauf widerrufen?",
-      "return_a": "<p>Ja. Sie haben ein Widerrufsrecht von 14 Tagen ab dem Tag, an dem Sie die Ware erhalten. Die Ware wird unbenutzt und in der Originalverpackung zurückgesendet.</p>",
+      "return_a_html": "<p>Ja. Sie haben ein Widerrufsrecht von 14 Tagen ab dem Tag, an dem Sie die Ware erhalten. Die Ware wird unbenutzt und in der Originalverpackung zurückgesendet.</p>",
       "storage_q": "Wie bewahre ich die Produkte auf?",
-      "storage_a": "<p>Bei höchstens 25 Grad und ohne direkte Sonneneinstrahlung aufbewahren. Die Verpackung nach Gebrauch gut verschließen. Die Produkte sind zur äußerlichen Anwendung bestimmt.</p>",
+      "storage_a_html": "<p>Bei höchstens 25 Grad und ohne direkte Sonneneinstrahlung aufbewahren. Die Verpackung nach Gebrauch gut verschließen. Die Produkte sind zur äußerlichen Anwendung bestimmt.</p>",
       "advice_q": "Kann ich mich persönlich beraten lassen?",
-      "advice_a": "<p>Ja. Schreiben Sie an hello@naturecell.dk oder rufen Sie uns unter +45 40 55 00 42 an. Wir gehen selbst ans Telefon und finden gemeinsam mit Ihnen das passende Produkt für Ihre Routine.</p>",
-      "ship_free": "<p>Kostenloser Versand ab {{ amount }}.</p>"
+      "advice_a_html": "<p>Ja. Schreiben Sie an hello@naturecell.dk oder rufen Sie uns unter +45 40 55 00 42 an. Wir gehen selbst ans Telefon und finden gemeinsam mit Ihnen das passende Produkt für Ihre Routine.</p>",
+      "ship_free_html": "<p>Kostenloser Versand ab {{ amount }}.</p>"
     }
   },
   "start": {

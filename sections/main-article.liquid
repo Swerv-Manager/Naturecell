@@ -158,7 +158,7 @@
           <span class="nc-casehero__pill">{% if area_label != blank %}{{ area_label }} · {% endif %}Kundecase</span>
           <h1>{% render 'nc-cbd', text: clean_title %}</h1>
           {%- if quote != blank -%}
-            <p class="nc-casehero__quote">"{{ quote }}"</p>
+            <p class="nc-casehero__quote">"{% render 'nc-cbd', text: quote %}"</p>
           {%- endif -%}
           {%- if person != blank -%}
             <div class="nc-casehero__person">
@@ -217,14 +217,14 @@
       {%- endif -%}
 
       <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead nc-art__inset{% endif %}">
-        {{ body_html }}
+        {% render 'nc-cbd', text: body_html %}
       </div>
 
       {%- unless is_case -%}
         {%- if section.settings.show_cta -%}
           <div class="nc-art__cta-row nc-art__inset">
             <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: article.url %}">
-              {% if section.settings.cta_label != blank %}{{ section.settings.cta_label }}{% else %}{{ 'blog.read_full_article' | t }}{% endif %}
+              {% if section.settings.cta_label != blank %}{% render 'nc-cbd', text: section.settings.cta_label %}{% else %}{{ 'blog.read_full_article' | t }}{% endif %}
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </div>

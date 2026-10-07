@@ -39,7 +39,7 @@
       <div class="nc-caseteaser__intro">
         <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
-        <p>{{ section.settings.subtext }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.subtext %}</p>
       </div>
       <div class="nc-caseteaser__nav">
         <button class="nc-iconbtn" data-nc-rail-prev aria-label="{{ 'general.previous' | t }}">
@@ -49,7 +49,7 @@
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
         {%- if section.settings.blog != blank -%}
-          <a class="nc-btn nc-btn--outline" href="{{ section.settings.blog.url }}">{{ section.settings.link_text }}</a>
+          <a class="nc-btn nc-btn--outline" href="{{ section.settings.blog.url }}">{% render 'nc-cbd', text: section.settings.link_text %}</a>
         {%- endif -%}
       </div>
     </div>

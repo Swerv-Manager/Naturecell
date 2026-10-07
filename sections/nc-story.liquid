@@ -35,7 +35,7 @@
       <div class="nc-story__text">
         <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
-        <p class="nc-story__body">{{ section.settings.body }}</p>
+        <p class="nc-story__body">{% render 'nc-cbd', text: section.settings.body %}</p>
         <div class="nc-story__stats">
           {%- for block in section.blocks -%}
             <div class="nc-story__stat" {{ block.shopify_attributes }}>
@@ -45,7 +45,7 @@
           {%- endfor -%}
         </div>
         {%- if section.settings.cta_text != blank -%}
-          <a class="nc-btn nc-btn--primary nc-story__cta" href="{% render 'nc-url', url: section.settings.cta_url %}">{{ section.settings.cta_text }}</a>
+          <a class="nc-btn nc-btn--primary nc-story__cta" href="{% render 'nc-url', url: section.settings.cta_url %}">{% render 'nc-cbd', text: section.settings.cta_text %}</a>
         {%- endif -%}
       </div>
       <div class="nc-story__media">
@@ -56,7 +56,7 @@
         {%- endif -%}
         <div class="nc-story__caption">
           <strong>{% render 'nc-cbd', text: section.settings.caption_title %}</strong>
-          <span>{{ section.settings.caption_sub }}</span>
+          <span>{% render 'nc-cbd', text: section.settings.caption_sub %}</span>
         </div>
       </div>
     </div>

@@ -85,13 +85,13 @@
               <div class="nc-hero__text">
                 <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
                 <h1 class="nc-hero__h1">{% render 'nc-cbd', text: block.settings.heading %}</h1>
-                <p class="nc-hero__body">{{ block.settings.body }}</p>
+                <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
                 <div class="nc-hero__ctas">
                   {%- if block.settings.cta_text != blank -%}
-                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a>
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a>
                   {%- endif -%}
                   {%- if block.settings.cta2_text != blank -%}
-                    <a class="nc-btn nc-btn--outline-light" href="{% render 'nc-url', url: block.settings.cta2_url %}">{{ block.settings.cta2_text }}</a>
+                    <a class="nc-btn nc-btn--outline-light" href="{% render 'nc-url', url: block.settings.cta2_url %}">{% render 'nc-cbd', text: block.settings.cta2_text %}</a>
                   {%- endif -%}
                 </div>
                 {%- liquid
@@ -110,7 +110,7 @@
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
                       {%- endfor -%}
                     </span>
-                    <span>{{ hero_trust }}</span>
+                    <span>{% render 'nc-cbd', text: hero_trust %}</span>
                   </div>
                 {%- endif -%}
               </div>
@@ -137,9 +137,9 @@
             <div class="nc-hero__inner nc-hero__inner--stack">
               <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
               <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
-              <p class="nc-hero__body">{{ block.settings.body }}</p>
+              <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
               {%- if block.settings.cta_text != blank -%}
-                <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a></div>
+                <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a></div>
               {%- endif -%}
             </div>
           </div>
@@ -150,10 +150,10 @@
               <div class="nc-hero__text">
                 <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
                 <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
-                <p class="nc-hero__body">{{ block.settings.body }}</p>
+                <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
                 {%- if block.settings.cta_text != blank -%}
                   <div class="nc-hero__ctas">
-                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{{ block.settings.cta_text }}</a>
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a>
                   </div>
                 {%- endif -%}
               </div>

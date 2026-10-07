@@ -20,7 +20,7 @@
     {%- endif -%}
     <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
     {%- if section.settings.intro != blank -%}
-      <p>{{ section.settings.intro }}</p>
+      <p>{% render 'nc-cbd', text: section.settings.intro %}</p>
     {%- endif -%}
   </div>
 </section>

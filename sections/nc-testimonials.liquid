@@ -91,10 +91,10 @@
                   <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
                 {%- endfor -%}
               </span>
-              <p>"{{ block.settings.text }}"</p>
+              <p>"{% render 'nc-cbd', text: block.settings.text %}"</p>
               <div class="nc-testi__who">
-                <strong>{{ block.settings.name }}</strong>
-                {%- if block.settings.meta != blank -%}<small>{{ block.settings.meta }}</small>{%- endif -%}
+                <strong>{% render 'nc-cbd', text: block.settings.name %}</strong>
+                {%- if block.settings.meta != blank -%}<small>{% render 'nc-cbd', text: block.settings.meta %}</small>{%- endif -%}
               </div>
             </div>
           {%- endfor -%}
@@ -112,10 +112,10 @@
                   <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
                 {%- endfor -%}
               </span>
-              <p>"{{ block.settings.text }}"</p>
+              <p>"{% render 'nc-cbd', text: block.settings.text %}"</p>
               <div class="nc-testi__who">
-                <strong>{{ block.settings.name }}</strong>
-                {%- if block.settings.meta != blank -%}<small>{{ block.settings.meta }}</small>{%- endif -%}
+                <strong>{% render 'nc-cbd', text: block.settings.name %}</strong>
+                {%- if block.settings.meta != blank -%}<small>{% render 'nc-cbd', text: block.settings.meta %}</small>{%- endif -%}
               </div>
             </div>
           {%- endfor -%}
@@ -125,7 +125,7 @@
   </div>
   {%- endif -%}
   {%- if section.settings.link_text != blank -%}
-    <div class="nc-testi__more"><a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.link_url, fallback: '/blogs/kundecases' %}">{{ section.settings.link_text }}</a></div>
+    <div class="nc-testi__more"><a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.link_url, fallback: '/blogs/kundecases' %}">{% render 'nc-cbd', text: section.settings.link_text %}</a></div>
   {%- endif -%}
   {%- if t_reviews > 0 or t_app -%}
     <p class="nc-testi__note">{{ 'general.reviews_disclaimer' | t }}</p>

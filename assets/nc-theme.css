@@ -468,9 +468,13 @@ button { font-family: inherit; }
 summary.nc-acc__head { list-style: none; }
 
 /* --- Paginering --- */
-.nc-pagination { display: flex; justify-content: center; gap: 8px; margin-top: clamp(28px, 4vw, 48px); flex-wrap: wrap; }
-.nc-pagination a, .nc-pagination span { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; min-height: 42px; padding: 0 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-default); text-decoration: none; font-size: var(--text-sm); color: var(--ink-700); }
-.nc-pagination span.current { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+.nc-pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: clamp(28px, 4vw, 48px); flex-wrap: wrap; }
+.nc-pagination__item { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 42px; height: 42px; padding: 0 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-default); background: var(--cloud); text-decoration: none; font-size: var(--text-sm); font-weight: 600; line-height: 1; color: var(--ink-700); transition: border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
+a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color: var(--sage-500); color: var(--sage-700); }
+.nc-pagination__item.is-current { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+.nc-pagination__arrow { padding: 0; width: 42px; }
+.nc-pagination__arrow svg { width: 18px; height: 18px; }
+.nc-pagination__gap { display: inline-flex; align-items: flex-end; justify-content: center; min-width: 20px; height: 42px; padding-bottom: 12px; box-sizing: border-box; color: var(--ink-400); }
 
 /* --- Artikelindhold (blogs, sider) --- */
 .nc-article-body { font-family: var(--font-body); font-size: 17px; line-height: 1.8; color: var(--ink-700); }
@@ -521,7 +525,8 @@ summary.nc-acc__head { list-style: none; }
 .nc-ps__all:hover, .nc-ps__all:focus-visible { text-decoration: underline; outline: none; }
 
 /* CBD-ikonet (snippets/nc-cbd.liquid): bogstaverne som figur i en pille, arver tekstfarven */
-.nc-cbd { display: inline-block; height: 0.86em; width: calc(0.86em * 2.0431); vertical-align: -0.1em; margin: 0 0.04em; overflow: visible; flex: none; }
+.nc-cbd-i { white-space: nowrap; }
+.nc-cbd { display: inline-block; height: max(0.86em, 11px); width: calc(max(0.86em, 11px) * 2.0431); vertical-align: -0.1em; margin: 0 0.04em; overflow: visible; flex: none; }
 .nc-cbd-w { white-space: nowrap; }
 /* Ikonet er et ord: det foelger altid tekstens farve og drejes aldrig med harmonika-pile o.l. */
 svg.nc-cbd { color: inherit !important; transform: none !important; transition: none !important; }

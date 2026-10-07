@@ -46,13 +46,16 @@
     "all": "Alle",
     "free_shipping": "Fri fragt over {{ amount }}",
     "announce_tail": "Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje",
-    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} anmeldelser på Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> ud af 5 · <strong>{{ count }}</strong> anmeldelser på Trustpilot",
+    "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} anmeldelser på Trustpilot",
+    "tp_agg_html": "<strong>{{ score }}</strong> ud af 5 · <strong>{{ count }}</strong> anmeldelser på Trustpilot",
     "tp_num": "{{ score }}/5",
     "tp_label": "{{ count }} anmeldelser på Trustpilot",
     "reviews_disclaimer": "Kunder deler deres egne oplevelser. Resultater kan variere.",
     "play_video": "Afspil video",
-    "video_missing": "Vælg videoen i sektionens indstillinger. Upload den først under Indhold > Filer."
+    "video_missing": "Vælg videoen i sektionens indstillinger. Upload den først under Indhold > Filer.",
+    "previous_page": "Forrige side",
+    "next_page": "Næste side",
+    "page_n": "Side {{ page }}"
   },
   "shopify": {
     "checkout": {
@@ -376,14 +379,14 @@
     },
     "faq": {
       "ship_q": "Hvornår sender I min ordre?",
-      "ship_a": "<p>Ordrer afgivet før kl. 14 på hverdage afsendes samme dag, og leveringstiden er 1 til 3 hverdage. Du får en mail med sporingsnummer, når pakken er afsendt. Du kan også hente din ordre i butikken i Lille Nyhavn 10 i Skanderborg, hvor den normalt er klar inden for 24 timer.</p>",
+      "ship_a_html": "<p>Ordrer afgivet før kl. 14 på hverdage afsendes samme dag, og leveringstiden er 1 til 3 hverdage. Du får en mail med sporingsnummer, når pakken er afsendt. Du kan også hente din ordre i butikken i Lille Nyhavn 10 i Skanderborg, hvor den normalt er klar inden for 24 timer.</p>",
       "return_q": "Kan jeg fortryde mit køb?",
-      "return_a": "<p>Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Varen sendes retur ubrugt og i original emballage.</p>",
+      "return_a_html": "<p>Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Varen sendes retur ubrugt og i original emballage.</p>",
       "storage_q": "Hvordan opbevarer jeg produkterne?",
-      "storage_a": "<p>Opbevares ved højst 25 grader og uden for direkte sollys. Luk emballagen godt efter brug. Produkterne er til udvortes brug.</p>",
+      "storage_a_html": "<p>Opbevares ved højst 25 grader og uden for direkte sollys. Luk emballagen godt efter brug. Produkterne er til udvortes brug.</p>",
       "advice_q": "Kan jeg få personlig rådgivning?",
-      "advice_a": "<p>Ja. Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
-      "ship_free": "<p>Fri fragt ved køb over {{ amount }}.</p>"
+      "advice_a_html": "<p>Ja. Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
+      "ship_free_html": "<p>Fri fragt ved køb over {{ amount }}.</p>"
     }
   },
   "start": {

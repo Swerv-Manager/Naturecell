@@ -120,7 +120,7 @@
           {%- assign cart_fs = cart_fs | strip -%}
           <p class="nc-cart__note">
             {%- if section.settings.shipping_note != blank -%}
-              {{ section.settings.shipping_note }}
+              {% render 'nc-cbd', text: section.settings.shipping_note %}
             {%- else -%}
               {{ 'cart.shipping_calc' | t }}{% if cart_fs != blank %} {{ 'cart.free_shipping_over' | t: amount: cart_fs | replace: '..', '.' }}{% endif %}
             {%- endif -%}

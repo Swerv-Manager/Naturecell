@@ -44,7 +44,7 @@
   {%- endif -%}
   <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
   {%- if section.settings.intro != blank -%}
-    <p>{{ section.settings.intro }}</p>
+    <p>{% render 'nc-cbd', text: section.settings.intro %}</p>
   {%- endif -%}
 </section>
 
@@ -54,7 +54,7 @@
       <div class="nc-kontakt__block" {{ block.shopify_attributes }}>
         <strong>{% render 'nc-cbd', text: block.settings.title %}</strong>
         {%- if block.settings.link_text != blank -%}
-          <a href="{% render 'nc-url', url: block.settings.link_url %}">{{ block.settings.link_text }}</a>
+          <a href="{% render 'nc-url', url: block.settings.link_url %}">{% render 'nc-cbd', text: block.settings.link_text %}</a>
         {%- endif -%}
         {%- assign lines = block.settings.lines | newline_to_br | split: '<br />' -%}
         {%- for line in lines -%}
@@ -63,7 +63,7 @@
         {%- endfor -%}
         {%- if block.settings.show_hours and section.settings.hours != blank -%}
           <div class="nc-kontakt__hours">
-            <span class="nc-kontakt__hours-label">{{ section.settings.hours_label }}</span>
+            <span class="nc-kontakt__hours-label">{% render 'nc-cbd', text: section.settings.hours_label %}</span>
             {%- assign rows = section.settings.hours | newline_to_br | split: '<br />' -%}
             {%- for row in rows -%}
               {%- assign parts = row | strip | split: '|' -%}
@@ -78,7 +78,7 @@
   </div>
 
   <div class="nc-kontakt__card">
-    <h2>{{ section.settings.form_heading }}</h2>
+    <h2>{% render 'nc-cbd', text: section.settings.form_heading %}</h2>
     {%- form 'contact', id: 'nc-kontakt-form' -%}
       {%- if form.posted_successfully? -%}
         <p class="nc-kontakt__status" role="status">{{ 'forms.contact_success' | t }}</p>

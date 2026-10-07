@@ -54,7 +54,7 @@
         {%- endif -%}
         <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
-          <p>{{ section.settings.intro }}</p>
+          <p>{% render 'nc-cbd', text: section.settings.intro %}</p>
         {%- endif -%}
       </div>
     </div>
@@ -68,7 +68,7 @@
         {%- endif -%}
         <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
-          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{% render 'nc-cbd', text: section.settings.intro %}</p>
         {%- endif -%}
       </div>
     </div>
@@ -93,7 +93,7 @@
         {%- endif -%}
         <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
         {%- if section.settings.intro != blank -%}
-          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{{ section.settings.intro }}</p>
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{% render 'nc-cbd', text: section.settings.intro %}</p>
         {%- endif -%}
       </div>
     </div>

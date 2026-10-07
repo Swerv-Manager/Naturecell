@@ -85,8 +85,8 @@
         {%- for block in section.blocks limit: row_a_count -%}
           <div class="nc-pdprev__card" {% if i == 2 %}aria-hidden="true"{% else %}{{ block.shopify_attributes }}{% endif %}>
             <div class="nc-pdprev__card-stars" aria-hidden="true">{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}</div>
-            <p class="nc-pdprev__quote">"{{ block.settings.text | replace: '[produkt]', main_title }}"</p>
-            <div class="nc-pdprev__by"><strong>{{ block.settings.name }}</strong><span>{{ block.settings.meta }}</span></div>
+            <p class="nc-pdprev__quote">"{%- assign rv_text = block.settings.text | replace: '[produkt]', main_title -%}{% render 'nc-cbd', text: rv_text %}"</p>
+            <div class="nc-pdprev__by"><strong>{% render 'nc-cbd', text: block.settings.name %}</strong><span>{% render 'nc-cbd', text: block.settings.meta %}</span></div>
           </div>
         {%- endfor -%}
       {%- endfor -%}
@@ -100,8 +100,8 @@
           {%- for block in section.blocks offset: row_a_count -%}
             <div class="nc-pdprev__card" {% if i == 2 %}aria-hidden="true"{% else %}{{ block.shopify_attributes }}{% endif %}>
               <div class="nc-pdprev__card-stars" aria-hidden="true">{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}{{ star16 }}</div>
-              <p class="nc-pdprev__quote">"{{ block.settings.text | replace: '[produkt]', main_title }}"</p>
-              <div class="nc-pdprev__by"><strong>{{ block.settings.name }}</strong><span>{{ block.settings.meta }}</span></div>
+              <p class="nc-pdprev__quote">"{%- assign rv_text = block.settings.text | replace: '[produkt]', main_title -%}{% render 'nc-cbd', text: rv_text %}"</p>
+              <div class="nc-pdprev__by"><strong>{% render 'nc-cbd', text: block.settings.name %}</strong><span>{% render 'nc-cbd', text: block.settings.meta %}</span></div>
             </div>
           {%- endfor -%}
         {%- endfor -%}

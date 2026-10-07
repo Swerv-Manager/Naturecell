@@ -75,16 +75,16 @@
   <div class="nc-klub__hero nc-on-dark">
     <div class="nc-container">
       <div class="nc-klub__hero-inner">
-        <p class="nc-eyebrow" style="margin: 0;">{{ section.settings.hero_eyebrow }}</p>
-        <h1>{{ section.settings.hero_heading }}</h1>
-        <p>{{ section.settings.hero_text }}</p>
+        <p class="nc-eyebrow" style="margin: 0;">{% render 'nc-cbd', text: section.settings.hero_eyebrow %}</p>
+        <h1>{% render 'nc-cbd', text: section.settings.hero_heading %}</h1>
+        <p>{% render 'nc-cbd', text: section.settings.hero_text %}</p>
         <div class="nc-klub__hero-ctas">
           {%- if section.settings.signup_mode == 'account' -%}
-            <a class="nc-btn nc-btn--light" href="{{ routes.account_register_url }}">{{ section.settings.hero_cta1 }}</a>
+            <a class="nc-btn nc-btn--light" href="{{ routes.account_register_url }}">{% render 'nc-cbd', text: section.settings.hero_cta1 %}</a>
           {%- else -%}
-            <a class="nc-btn nc-btn--light" href="#nc-klub-tilmeld">{{ section.settings.hero_cta1 }}</a>
+            <a class="nc-btn nc-btn--light" href="#nc-klub-tilmeld">{% render 'nc-cbd', text: section.settings.hero_cta1 %}</a>
           {%- endif -%}
-          <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_login_url }}">{{ section.settings.hero_cta2 }}</a>
+          <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_login_url }}">{% render 'nc-cbd', text: section.settings.hero_cta2 %}</a>
         </div>
       </div>
     </div>
@@ -93,8 +93,8 @@
   <div class="nc-section nc-klub__perksec">
     <div class="nc-container">
       <div class="nc-klub__head">
-        <p class="nc-eyebrow">{{ section.settings.perks_eyebrow }}</p>
-        <h2>{{ section.settings.perks_heading }}</h2>
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.perks_eyebrow %}</p>
+        <h2>{% render 'nc-cbd', text: section.settings.perks_heading %}</h2>
       </div>
       <div class="nc-klub__perks">
         {%- for block in section.blocks -%}
@@ -111,7 +111,7 @@
                 </svg>
               </span>
               <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
-              <p>{{ block.settings.text }}</p>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
             </div>
           {%- endif -%}
         {%- endfor -%}
@@ -146,7 +146,7 @@
   <div class="nc-klub__how">
     <div class="nc-container">
       <div class="nc-klub__head" style="margin-bottom: 34px;">
-        <h2>{{ section.settings.steps_heading }}</h2>
+        <h2>{% render 'nc-cbd', text: section.settings.steps_heading %}</h2>
       </div>
       <div class="nc-klub__steps">
         {%- for block in section.blocks -%}
@@ -154,7 +154,7 @@
             <div class="nc-klub__step" {{ block.shopify_attributes }}>
               <strong>{{ block.settings.num }}</strong>
               <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
-              <p>{{ block.settings.text }}</p>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
             </div>
           {%- endif -%}
         {%- endfor -%}
@@ -164,12 +164,12 @@
 
   <div class="nc-klub__signup" id="nc-klub-tilmeld">
     <div class="nc-container">
-      <h2>{{ section.settings.cta_heading }}</h2>
-      <p>{{ section.settings.cta_text }}</p>
+      <h2>{% render 'nc-cbd', text: section.settings.cta_heading %}</h2>
+      <p>{% render 'nc-cbd', text: section.settings.cta_text %}</p>
       {%- if section.settings.signup_mode == 'account' -%}
         {%- comment -%} Pointprogrammet kraever en kundekonto: medlemskab = oprettelse af konto. {%- endcomment -%}
         <p style="margin-top: 18px;">
-          <a class="nc-btn nc-btn--sage" href="{{ routes.account_register_url }}">{{ section.settings.cta_button }}</a>
+          <a class="nc-btn nc-btn--sage" href="{{ routes.account_register_url }}">{% render 'nc-cbd', text: section.settings.cta_button %}</a>
         </p>
       {%- else -%}
       {%- form 'customer' -%}
@@ -177,7 +177,7 @@
         <div class="nc-klub__form">
           <label class="nc-visually-hidden" for="nc-klub-email">{{ 'forms.email' | t }}</label>
           <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="{{ 'forms.email_placeholder' | t }}" autocomplete="email" required>
-          <button class="nc-btn nc-btn--sage" type="submit">{{ section.settings.cta_button }}</button>
+          <button class="nc-btn nc-btn--sage" type="submit">{% render 'nc-cbd', text: section.settings.cta_button %}</button>
         </div>
         {%- if form.posted_successfully? -%}
           <p role="status" style="margin-top: 12px; color: var(--sage-700);">{{ 'forms.welcome' | t }}</p>
@@ -186,7 +186,7 @@
         {%- endif -%}
       {%- endform -%}
       {%- endif -%}
-      <p class="nc-klub__fine">{{ section.settings.cta_fine }}</p>
+      <p class="nc-klub__fine">{% render 'nc-cbd', text: section.settings.cta_fine %}</p>
     </div>
   </div>
 </div>

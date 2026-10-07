@@ -42,7 +42,7 @@
         <header class="nc-vf__head">
           {%- if section.settings.eyebrow != blank -%}<p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>{%- endif -%}
           {%- if section.settings.heading != blank -%}<h2 id="nc-vf-h-{{ section.id }}">{% render 'nc-cbd', text: section.settings.heading %}</h2>{%- endif -%}
-          {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+          {%- if section.settings.text != blank -%}<p>{% render 'nc-cbd', text: section.settings.text %}</p>{%- endif -%}
         </header>
       {%- endif -%}
 
@@ -72,7 +72,7 @@
           <div class="nc-vf__empty">{{ 'general.video_missing' | t }}</div>
         {%- endif -%}
       </div>
-      {%- if section.settings.caption != blank -%}<p class="nc-vf__caption">{{ section.settings.caption }}</p>{%- endif -%}
+      {%- if section.settings.caption != blank -%}<p class="nc-vf__caption">{% render 'nc-cbd', text: section.settings.caption %}</p>{%- endif -%}
     </div>
   </section>
 {%- endif -%}

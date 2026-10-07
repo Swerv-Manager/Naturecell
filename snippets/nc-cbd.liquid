@@ -1,14 +1,20 @@
 {%- comment -%}
-  nc-cbd: nedtoner ordet "CBD" i synlige titler, overskrifter, badges og korte tekster.
+  nc-cbd: nedtoner ordet "CBD" i synlig tekst.
 
-  Standard: "CBD" vises som et lille ikon (bogstaverne som figur, ikke som tekst).
+  "CBD" vises som et lille ikon (bogstaverne tegnet som figur i en pille). Ordet ligger
+  stadig i siden som skjult tekst ved ikonet, saa soegemaskiner, skaermlaesere og
+  kopier/indsaet fortsat ser "CBD".
+
+  Virker paa ren tekst og paa HTML (beskrivelser, artikler, rich text): i HTML erstattes
+  kun tekst mellem tags, aldrig attributter som alt, title eller href, og aldrig indhold
+  i <script> eller <style>.
+
   mode: 'category' bruges til kategorinavne: "CBD Ansigtspleje" vises som "Ansigtspleje",
   mens navne uden "pleje" (fx "CBD Olie") faar ikonet.
   mode: 'strip' fjerner kun kategori-praefikset og giver ren tekst (til oversaettelser).
 
   Slaas fra i Temaindstillinger > SEO og produktdata > "Vis CBD som ikon".
-  Bruges kun i synlig tekst. Attributter (alt, title, aria-label), sidetitler,
-  metabeskrivelser og strukturerede data beholder ordet som tekst.
+  Sidetitler, metabeskrivelser, alt-tekster og strukturerede data bruger ikke snippetten.
 
   Brug:
     {% render 'nc-cbd', text: product.title %}
@@ -28,15 +34,47 @@
         endif
       endif
     endif
-    # mode 'strip' giver ren tekst (til oversaettelser og attributter), aldrig ikonet
-    if mode != 'strip'
+    if mode != 'strip' and nc_t contains 'CBD'
       capture nc_icon
-        echo '<svg class="nc-cbd" role="img" aria-label="CBD" focusable="false"><use href="#nc-cbd"></use></svg>'
+        echo '<span class="nc-cbd-i"><svg class="nc-cbd" aria-hidden="true" focusable="false"><use href="#nc-cbd"></use></svg><span class="nc-visually-hidden">CBD</span></span>'
       endcapture
       assign nc_icon_dash = nc_icon | prepend: '<span class="nc-cbd-w">' | append: '-</span>'
-      # Pladsholdere foerst, saa ikonets eget aria-label="CBD" ikke erstattes igen
-      assign nc_t = nc_t | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%'
-      assign nc_t = nc_t | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon
+      if nc_t contains '<'
+        assign nc_parts = nc_t | split: '<'
+        assign nc_raw = false
+        capture nc_t
+          for nc_part in nc_parts
+            if forloop.first
+              assign nc_seg = nc_part
+            else
+              if nc_part contains '>'
+                assign nc_tag = nc_part | split: '>' | first
+                assign nc_seg = nc_part | remove_first: nc_tag | remove_first: '>'
+                echo '<' | append: nc_tag | append: '>'
+                assign nc_tag_lc = nc_tag | downcase | slice: 0, 7
+                if nc_tag_lc contains 'script' or nc_tag_lc contains 'style'
+                  assign nc_raw = true
+                  if nc_tag_lc contains '/'
+                    assign nc_raw = false
+                  endif
+                endif
+              else
+                echo '<'
+                assign nc_seg = nc_part
+              endif
+            endif
+            if nc_raw == false and nc_seg contains 'CBD'
+              # Pladsholdere foerst, saa ikonets egen skjulte "CBD" ikke erstattes igen
+              assign nc_seg = nc_seg | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%'
+              assign nc_seg = nc_seg | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon
+            endif
+            echo nc_seg
+          endfor
+        endcapture
+      else
+        assign nc_t = nc_t | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%'
+        assign nc_t = nc_t | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon
+      endif
     endif
   endif
   echo nc_t

@@ -70,7 +70,7 @@
       <h1>{% render 'nc-cbd', text: collection.title, mode: 'category' %}</h1>
       {%- assign coll_desc_text = collection.description | strip_html | strip -%}
       {%- if coll_desc_text != blank -%}
-        <div class="nc-coll__desc">{{ collection.description }}</div>
+        <div class="nc-coll__desc">{% render 'nc-cbd', text: collection.description %}</div>
       {%- endif -%}
     </header>
 
@@ -113,7 +113,7 @@
           -%}
           {%- if section.settings.chips != blank -%}
             <div class="nc-coll__filter-row" role="group" aria-label="{{ section.settings.chips_label | escape }}">
-              <span class="nc-coll__filter-label">{{ section.settings.chips_label }}</span>
+              <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.chips_label %}</span>
               <div class="nc-coll__row-chips">
                 {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
                 {%- for chip in chips -%}
@@ -133,7 +133,7 @@
                         {%- endif -%}
                       {%- endif -%}
                     {%- endif -%}
-                    <a class="nc-chip{% if chip_active %} is-active{% endif %}" href="{{ chip_href }}"{% if chip_active %} aria-current="true"{% endif %}>{{ parts[0] | strip }}</a>
+                    <a class="nc-chip{% if chip_active %} is-active{% endif %}" href="{{ chip_href }}"{% if chip_active %} aria-current="true"{% endif %}>{%- assign chip_text = parts[0] | strip -%}{% render 'nc-cbd', text: chip_text %}</a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -152,22 +152,22 @@
                     {%- if collection.all_tags contains chip_tag -%}
                       {%- assign chip_label = parts[0] | strip -%}
                       {%- if current_tags contains chip_tag -%}
-                        <a class="nc-chip is-active" href="{{ collection.url }}" aria-current="true" title="{{ 'collection.remove_filter' | t: filter: chip_label }}">{{ chip_label }}<span aria-hidden="true" class="nc-chip__x">×</span></a>
+                        <a class="nc-chip is-active" href="{{ collection.url }}" aria-current="true" title="{{ 'collection.remove_filter' | t: filter: chip_label }}">{% render 'nc-cbd', text: chip_label %}<span aria-hidden="true" class="nc-chip__x">×</span></a>
                       {%- else -%}
-                        <a class="nc-chip" href="{{ collection.url }}/{{ chip_tag }}" rel="nofollow">{{ parts[0] | strip }}</a>
+                        <a class="nc-chip" href="{{ collection.url }}/{{ chip_tag }}" rel="nofollow">{%- assign chip_text = parts[0] | strip -%}{% render 'nc-cbd', text: chip_text %}</a>
                       {%- endif -%}
                     {%- endif -%}
                   {%- else -%}
                     {%- capture chip_href %}{% render 'nc-url', url: chip_url %}{% endcapture -%}
                     {%- assign chip_href = chip_href | strip -%}
-                    <a class="nc-chip{% if chip_href == collection.url %} is-active{% endif %}" href="{{ chip_href }}">{{ parts[0] | strip }}</a>
+                    <a class="nc-chip{% if chip_href == collection.url %} is-active{% endif %}" href="{{ chip_href }}">{%- assign chip_text = parts[0] | strip -%}{% render 'nc-cbd', text: chip_text %}</a>
                   {%- endif -%}
                 {%- endif -%}
               {%- endfor -%}
             {%- endcapture -%}
             {%- if need_html != blank -%}
               <div class="nc-coll__filter-row" role="group" aria-label="{{ section.settings.need_label | escape }}">
-                <span class="nc-coll__filter-label">{{ section.settings.need_label }}</span>
+                <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.need_label %}</span>
                 <div class="nc-coll__row-chips">{{ need_html }}</div>
               </div>
             {%- endif -%}
@@ -175,7 +175,7 @@
 
           {%- if section.settings.sort_chips != blank -%}
             <div class="nc-coll__filter-row nc-coll__filter-row--sort" aria-label="{{ section.settings.sort_label | escape }}">
-              <span class="nc-coll__filter-label">{{ section.settings.sort_label }}</span>
+              <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.sort_label %}</span>
               <div class="nc-coll__row-chips">
                 {%- assign chips = section.settings.sort_chips | newline_to_br | split: '<br />' -%}
                 {%- for chip in chips -%}
@@ -251,11 +251,7 @@
         </div>
       {%- endif -%}
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="nc-pagination" aria-label="{{ 'general.pages' | t }}">
-          {{ paginate | default_pagination }}
-        </nav>
-      {%- endif -%}
+      {% render 'nc-pagination', paginate: paginate %}
     {%- endpaginate -%}
   </div>
 </div>

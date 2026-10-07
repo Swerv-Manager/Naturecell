@@ -30,10 +30,10 @@
         {%- if section.settings.eyebrow != blank -%}
           <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
         {%- endif -%}
-        <h2>{{ section.settings.heading | default: collection.title }}</h2>
+        {%- assign fc_heading = section.settings.heading | default: collection.title -%}<h2>{% render 'nc-cbd', text: fc_heading %}</h2>
       </div>
       {%- if collection != blank -%}
-        <a class="nc-btn nc-btn--outline" href="{{ collection.url }}">{{ section.settings.link_text }}</a>
+        <a class="nc-btn nc-btn--outline" href="{{ collection.url }}">{% render 'nc-cbd', text: section.settings.link_text %}</a>
       {%- endif -%}
     </div>
 

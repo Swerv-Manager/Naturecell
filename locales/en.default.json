@@ -46,13 +46,16 @@
     "all": "All",
     "free_shipping": "Free shipping over {{ amount }}",
     "announce_tail": "Vegan & plant-based · Denmark's first approved CBD skincare",
-    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} reviews on Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> out of 5 · <strong>{{ count }}</strong> reviews on Trustpilot",
+    "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} reviews on Trustpilot",
+    "tp_agg_html": "<strong>{{ score }}</strong> out of 5 · <strong>{{ count }}</strong> reviews on Trustpilot",
     "tp_num": "{{ score }}/5",
     "tp_label": "{{ count }} reviews on Trustpilot",
     "reviews_disclaimer": "Customers share their own experiences. Results may vary.",
     "play_video": "Play video",
-    "video_missing": "Choose the video in the section settings. Upload it first under Content > Files."
+    "video_missing": "Choose the video in the section settings. Upload it first under Content > Files.",
+    "previous_page": "Previous page",
+    "next_page": "Next page",
+    "page_n": "Page {{ page }}"
   },
   "blog": {
     "read_also": "Read also",
@@ -376,14 +379,14 @@
     },
     "faq": {
       "ship_q": "When do you ship my order?",
-      "ship_a": "<p>Orders placed before 2 pm on weekdays ship the same day. You get an email with a tracking number once your parcel is on its way.</p>",
+      "ship_a_html": "<p>Orders placed before 2 pm on weekdays ship the same day. You get an email with a tracking number once your parcel is on its way.</p>",
       "return_q": "Can I cancel my purchase?",
-      "return_a": "<p>Yes. You have a 14-day right of withdrawal from the day you receive the goods. Items are returned unused and in their original packaging.</p>",
+      "return_a_html": "<p>Yes. You have a 14-day right of withdrawal from the day you receive the goods. Items are returned unused and in their original packaging.</p>",
       "storage_q": "How do I store the products?",
-      "storage_a": "<p>Store at no more than 25 degrees and out of direct sunlight. Close the packaging well after use. The products are for external use.</p>",
+      "storage_a_html": "<p>Store at no more than 25 degrees and out of direct sunlight. Close the packaging well after use. The products are for external use.</p>",
       "advice_q": "Can I get personal advice?",
-      "advice_a": "<p>Yes. Write to hello@naturecell.dk or call +45 40 55 00 42. We answer the phone ourselves, and together we will find the product that suits your routine.</p>",
-      "ship_free": "<p>Free shipping on orders over {{ amount }}.</p>"
+      "advice_a_html": "<p>Yes. Write to hello@naturecell.dk or call +45 40 55 00 42. We answer the phone ourselves, and together we will find the product that suits your routine.</p>",
+      "ship_free_html": "<p>Free shipping on orders over {{ amount }}.</p>"
     }
   },
   "start": {

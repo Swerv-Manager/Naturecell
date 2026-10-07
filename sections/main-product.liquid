@@ -144,7 +144,7 @@
         {%- capture nc_back_title %}{% render 'nc-cbd', text: collections[primary_handle].title, mode: 'strip' %}{% endcapture -%}
         {{ 'product.back_to' | t: title: nc_back_title }}
       {%- else -%}
-        {{ section.settings.back_label }}
+        {% render 'nc-cbd', text: section.settings.back_label %}
       {%- endif -%}
     </a>
 
@@ -265,11 +265,11 @@
         {%- if section.blocks.size > 0 -%}
         <div class="nc-pdp__tiers">
           {%- unless has_label_block -%}
-            <span class="nc-pdp__tierlabel">{{ section.settings.tiers_label }}</span>
+            <span class="nc-pdp__tierlabel">{% render 'nc-cbd', text: section.settings.tiers_label %}</span>
           {%- endunless -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'label' -%}
-              <span class="nc-pdp__tierlabel" {{ block.shopify_attributes }}>{{ block.settings.text | default: section.settings.tiers_label }}</span>
+              <span class="nc-pdp__tierlabel" {{ block.shopify_attributes }}>{%- assign nc_tier_label = block.settings.text | default: section.settings.tiers_label -%}{% render 'nc-cbd', text: nc_tier_label %}</span>
             {%- elsif block.type == 'yotpo_widget' -%}
               {%- if block.settings.instance_id != blank -%}
                 <div class="yotpo-widget-instance" data-yotpo-instance-id="{{ block.settings.instance_id | strip }}" data-yotpo-product-id="{{ product.id }}" {{ block.shopify_attributes }}></div>
@@ -330,7 +330,7 @@
                   {%- assign tp = line | split: ' | ' -%}
                   <div class="nc-pdp__ticker-item" {% if i == 2 %}aria-hidden="true"{% endif %}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ tp[1] | strip }}"/></svg>
-                    <span>{{ tp[0] | strip }}</span>
+                    {%- assign tp_label = tp[0] | strip -%}<span>{% render 'nc-cbd', text: tp_label %}</span>
                   </div>
                 {%- endfor -%}
               {%- endfor -%}
@@ -345,7 +345,8 @@
               {{ 'product.description' | t }}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
             </summary>
-            <div class="nc-pdp__acc-body">{% render 'nc-product-part', product: product, part: 'desc' %}</div>
+            {%- capture part_desc %}{% render 'nc-product-part', product: product, part: 'desc' %}{% endcapture -%}
+            <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_desc %}</div>
           </details>
           {%- capture part_usage %}{% render 'nc-product-part', product: product, part: 'usage' %}{% endcapture -%}
           {%- if part_usage == blank -%}{%- assign part_usage = section.settings.usage_fallback -%}{%- endif -%}
@@ -355,7 +356,7 @@
                 {{ 'product.usage' | t }}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
-              <div class="nc-pdp__acc-body">{{ part_usage }}</div>
+              <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_usage %}</div>
             </details>
           {%- endif -%}
           {%- capture part_ingr %}{% render 'nc-product-part', product: product, part: 'ingredients' %}{% endcapture -%}
@@ -366,7 +367,7 @@
                 {{ 'nav.ingredients' | t }}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
-              <div class="nc-pdp__acc-body">{{ part_ingr }}</div>
+              <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_ingr %}</div>
             </details>
           {%- endif -%}
         </div>

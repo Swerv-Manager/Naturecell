@@ -128,7 +128,7 @@
               {%- endif -%}
             </ul>
             {%- if block.settings.heading_2 != blank -%}
-              <h2 class="nc-footer__heading" style="margin-top: 24px;">{{ block.settings.heading_2 }}</h2>
+              <h2 class="nc-footer__heading" style="margin-top: 24px;">{% render 'nc-cbd', text: block.settings.heading_2 %}</h2>
               <ul>
                 {%- if block.settings.menu_2 != blank -%}
                   {%- for link in block.settings.menu_2.links -%}
@@ -151,8 +151,8 @@
       {%- endfor -%}
 
       <div class="nc-footer__news">
-        <h2 class="nc-footer__heading">{{ section.settings.newsletter_heading }}</h2>
-        <p>{{ section.settings.newsletter_text }}</p>
+        <h2 class="nc-footer__heading">{% render 'nc-cbd', text: section.settings.newsletter_heading %}</h2>
+        <p>{% render 'nc-cbd', text: section.settings.newsletter_text %}</p>
         {%- form 'customer' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="nc-footer__form">
@@ -189,7 +189,7 @@
     <div class="nc-container">
       <div class="nc-footer__bottom">
         <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.legal_name }} · {{ 'footer.legal_line' | t: cvr: section.settings.cvr }}</span>
-        <p>{{ section.settings.compliance_text }}</p>
+        <p>{% render 'nc-cbd', text: section.settings.compliance_text %}</p>
       </div>
       {%- comment -%}
         Juridisk linkraekke: butikkens politikker (titlerne oversaettes af Shopify) og

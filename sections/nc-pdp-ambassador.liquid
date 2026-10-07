@@ -28,9 +28,9 @@
 <section class="nc-pdpamb">
   <div class="nc-pdpamb__inner">
     <div class="nc-pdpamb__text">
-      <span class="nc-pdpamb__pill">{{ section.settings.pill }}</span>
+      <span class="nc-pdpamb__pill">{% render 'nc-cbd', text: section.settings.pill %}</span>
       <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
-      <p>{{ section.settings.body }}</p>
+      <p>{% render 'nc-cbd', text: section.settings.body %}</p>
       <div class="nc-pdpamb__who">
         <span class="nc-pdpamb__avatar">
           {%- if section.settings.avatar != blank -%}
@@ -38,8 +38,8 @@
           {%- endif -%}
         </span>
         <span class="nc-pdpamb__who-name">
-          <strong>{{ section.settings.name }}</strong>
-          <span>{{ section.settings.role }}</span>
+          <strong>{% render 'nc-cbd', text: section.settings.name %}</strong>
+          <span>{% render 'nc-cbd', text: section.settings.role %}</span>
         </span>
       </div>
     </div>

@@ -6,7 +6,11 @@
 {%- endcomment -%}
 {%- liquid
   if block.type == 'locale_qa'
+    # Svarene indeholder <p> og ligger derfor under noegler, der ender paa _html (ellers escaper Shopify dem)
     assign nc_key = 'pdp.faq.' | append: block.settings.key | append: '_' | append: part
+    if part == 'a'
+      assign nc_key = nc_key | append: '_html'
+    endif
     assign nc_out = nc_key | t
     if part == 'a' and block.settings.key == 'ship'
       capture nc_fs
@@ -15,7 +19,7 @@
       assign nc_fs = nc_fs | strip
       if nc_fs != blank
         # "399 kr." + "." giver dobbelt punktum; beloebsformatet ejer punktummet
-        assign nc_free = 'pdp.faq.ship_free' | t: amount: nc_fs | replace: '..', '.'
+        assign nc_free = 'pdp.faq.ship_free_html' | t: amount: nc_fs | replace: '..', '.'
         assign nc_out = nc_out | append: nc_free
       endif
     endif

@@ -114,23 +114,23 @@
         {%- if section.settings.heading != blank -%}
           <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
         {%- endif -%}
-        <div class="nc-msplit__text">{{ section.settings.text }}</div>
+        <div class="nc-msplit__text">{% render 'nc-cbd', text: section.settings.text %}</div>
         {%- if section.settings.quote != blank -%}
-          <p class="nc-msplit__quote">{{ section.settings.quote_open | default: '"' }}{{ section.settings.quote }}{{ section.settings.quote_close | default: '"' }}</p>
+          <p class="nc-msplit__quote">{{ section.settings.quote_open | default: '"' }}{% render 'nc-cbd', text: section.settings.quote %}{{ section.settings.quote_close | default: '"' }}</p>
         {%- endif -%}
         {%- if section.settings.callout != blank -%}
           <div class="nc-msplit__callout">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg>
-            <div>{{ section.settings.callout }}</div>
+            <div>{% render 'nc-cbd', text: section.settings.callout %}</div>
           </div>
         {%- endif -%}
         {%- if section.settings.cta1_text != blank or section.settings.cta2_text != blank -%}
           <div class="nc-msplit__ctas">
             {%- if section.settings.cta1_text != blank -%}
-              <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta1_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta1_text }}</a>
+              <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta1_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.cta1_text %}</a>
             {%- endif -%}
             {%- if section.settings.cta2_text != blank -%}
-              <a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.cta2_url, fallback: '/collections/cbd-hudpleje' %}">{{ section.settings.cta2_text }}</a>
+              <a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.cta2_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.cta2_text %}</a>
             {%- endif -%}
           </div>
         {%- endif -%}

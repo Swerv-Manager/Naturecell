@@ -26,7 +26,7 @@
   <div class="nc-container">
     <div class="nc-b2bform">
       <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
-      <p>{{ section.settings.intro }}</p>
+      <p>{% render 'nc-cbd', text: section.settings.intro %}</p>
 
       {%- form 'contact', id: 'nc-b2b-form', class: 'nc-b2bform__form' -%}
         <input type="hidden" name="contact[tags]" value="b2b-ansoegning">

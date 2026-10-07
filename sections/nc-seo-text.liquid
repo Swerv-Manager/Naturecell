@@ -71,11 +71,12 @@
     {%- if seo_heading != blank or seo_has_body or mf_topics != blank or has_blocks -%}
     <div class="nc-seotext__cols">
       <div class="nc-seotext__lead">
-        {%- if seo_heading != blank -%}<h2>{{ seo_heading }}</h2>{%- endif -%}
+        {%- if seo_heading != blank -%}<h2>{% render 'nc-cbd', text: seo_heading %}</h2>{%- endif -%}
         {%- if mf_body.value != blank -%}
-          {{ mf_body | metafield_tag }}
+          {%- capture mf_body_html %}{{ mf_body | metafield_tag }}{% endcapture -%}
+          {% render 'nc-cbd', text: mf_body_html %}
         {%- else -%}
-          {{ section.settings.body }}
+          {% render 'nc-cbd', text: section.settings.body %}
         {%- endif -%}
       </div>
 
@@ -83,8 +84,8 @@
         <div class="nc-seotext__blocks">
           {%- for topic in mf_topics -%}
             <div class="nc-seotext__card">
-              <h3>{{ topic.title }}</h3>
-              <p>{{ topic.text }}</p>
+              <h3>{% render 'nc-cbd', text: topic.title %}</h3>
+              <p>{% render 'nc-cbd', text: topic.text %}</p>
             </div>
           {%- endfor -%}
         </div>
@@ -93,8 +94,8 @@
           {%- for block in section.blocks -%}
             {%- if block.type == 'topic' -%}
               <div class="nc-seotext__card" {{ block.shopify_attributes }}>
-                <h3>{{ block.settings.heading }}</h3>
-                <p>{{ block.settings.text }}</p>
+                <h3>{% render 'nc-cbd', text: block.settings.heading %}</h3>
+                <p>{% render 'nc-cbd', text: block.settings.text %}</p>
               </div>
             {%- endif -%}
           {%- endfor -%}
@@ -109,7 +110,7 @@
         {%- for row in rows -%}
           {%- assign parts = row | strip | split: '|' -%}
           {%- if parts[0] != blank and parts[1] != blank -%}
-            <a class="nc-chip" href="{% render 'nc-url', url: parts[1] %}">{{ parts[0] | strip }}</a>
+            {%- assign link_text = parts[0] | strip -%}<a class="nc-chip" href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: link_text %}</a>
           {%- endif -%}
         {%- endfor -%}
       </div>

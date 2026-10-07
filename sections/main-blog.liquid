@@ -107,9 +107,9 @@
 
 <section class="nc-blogidx__hero">
   <div class="nc-blogidx__hero-in">
-    <span class="nc-blogidx__eyebrow">{{ eyebrow }}</span>
+    <span class="nc-blogidx__eyebrow">{% render 'nc-cbd', text: eyebrow %}</span>
     <h1 class="nc-blogidx__title">{% render 'nc-cbd', text: blog.title %}</h1>
-    <p class="nc-blogidx__intro">{{ intro }}</p>
+    <p class="nc-blogidx__intro">{% render 'nc-cbd', text: intro %}</p>
   </div>
 </section>
 
@@ -166,7 +166,8 @@
             <span class="nc-blogidx__feat-pill">{{ 'blog.newest' | t }}{% if feat.tags.first %} · {% render 'nc-tag-label', tag: feat.tags.first %}{% endif %}</span>
             {%- assign nc_ft = feat.title | split: ' | ' | first -%}
             <h2 class="nc-blogidx__feat-title">{% render 'nc-cbd', text: nc_ft %}</h2>
-            <p class="nc-blogidx__feat-text">{{ feat.excerpt_or_content | strip_html | truncate: 320 }}</p>
+            {%- assign feat_text = feat.excerpt_or_content | strip_html | truncate: 320 -%}
+            <p class="nc-blogidx__feat-text">{% render 'nc-cbd', text: feat_text %}</p>
             <span class="nc-blogidx__feat-more">{{ 'general.read_more' | t }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
           </span>
         </a>
@@ -230,7 +231,8 @@
                   <span class="nc-bcard__who">{{ person }}</span>
                 {%- endif -%}
               {%- else -%}
-                <p class="nc-bcard__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 320 }}</p>
+                {%- assign card_text = article.excerpt_or_content | strip_html | truncate: 320 -%}
+                <p class="nc-bcard__excerpt">{% render 'nc-cbd', text: card_text %}</p>
                 <span class="nc-bcard__more">{{ 'general.read_more' | t }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
               {%- endif -%}
             </span>
@@ -240,11 +242,7 @@
     </ul>
     <p class="nc-blogidx__empty" data-nc-blog-empty hidden>{{ empty_text }}</p>
 
-    {%- if paginate.pages > 1 -%}
-      <nav class="nc-pagination" aria-label="{{ 'general.pages' | t }}">
-        {{ paginate | default_pagination }}
-      </nav>
-    {%- endif -%}
+    {% render 'nc-pagination', paginate: paginate %}
   {%- endpaginate -%}
 </section>
 

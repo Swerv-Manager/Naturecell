@@ -62,7 +62,7 @@
     {%- if section.settings.heading != blank or section.settings.intro != blank -%}
       <header class="nc-start__head">
         {%- if section.settings.heading != blank -%}<h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>{%- endif -%}
-        {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro }}</p>{%- endif -%}
+        {%- if section.settings.intro != blank -%}<p>{% render 'nc-cbd', text: section.settings.intro %}</p>{%- endif -%}
       </header>
     {%- endif -%}
 
@@ -72,15 +72,15 @@
         {%- assign img = block.settings.image | default: p.featured_image -%}
         <li class="nc-start__card" {{ block.shopify_attributes }}>
           <a class="nc-start__media" href="{{ p.url | default: '#' }}" tabindex="-1" aria-hidden="true">
-            {%- if block.settings.count_label != blank -%}<span class="nc-start__count">{{ block.settings.count_label }}</span>{%- endif -%}
+            {%- if block.settings.count_label != blank -%}<span class="nc-start__count">{% render 'nc-cbd', text: block.settings.count_label %}</span>{%- endif -%}
             {%- if img -%}
               {{ img | image_url: width: 640 | image_tag: alt: '', loading: 'lazy', widths: '320, 480, 640', sizes: '(min-width: 990px) 280px, (min-width: 600px) 46vw, 92vw' }}
             {%- endif -%}
           </a>
           <div class="nc-start__body">
             <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
-            {%- if block.settings.contents != blank -%}<p class="nc-start__contents">{{ block.settings.contents }}</p>{%- endif -%}
-            {%- if block.settings.teaser != blank -%}<p class="nc-start__teaser">{{ block.settings.teaser }}</p>{%- endif -%}
+            {%- if block.settings.contents != blank -%}<p class="nc-start__contents">{% render 'nc-cbd', text: block.settings.contents %}</p>{%- endif -%}
+            {%- if block.settings.teaser != blank -%}<p class="nc-start__teaser">{% render 'nc-cbd', text: block.settings.teaser %}</p>{%- endif -%}
             <div class="nc-start__buy">
               {%- if p != blank -%}
                 {%- assign v = p.selected_or_first_available_variant -%}
@@ -91,7 +91,7 @@
                     <span class="nc-start__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
                   {%- endif -%}
                 </p>
-                <a class="nc-btn nc-btn--primary" href="{{ p.url }}">{{ block.settings.cta_label | default: p.title }}</a>
+                <a class="nc-btn nc-btn--primary" href="{{ p.url }}">{%- assign sg_cta = block.settings.cta_label | default: p.title -%}{% render 'nc-cbd', text: sg_cta %}</a>
               {%- endif -%}
               {%- if block.settings.detail_heading != blank -%}
                 <a class="nc-start__more" href="#nc-trin-{{ forloop.index }}">{{ 'start.read_routine' | t }} <span aria-hidden="true">↓</span></a>
@@ -109,9 +109,9 @@
           <section class="nc-start__step" id="nc-trin-{{ forloop.index }}" aria-labelledby="nc-trin-h-{{ forloop.index }}">
             <div>
               <h2 id="nc-trin-h-{{ forloop.index }}">{% render 'nc-cbd', text: block.settings.detail_heading %}</h2>
-              {%- if block.settings.detail_text != blank -%}<div class="nc-start__rte">{{ block.settings.detail_text }}</div>{%- endif -%}
+              {%- if block.settings.detail_text != blank -%}<div class="nc-start__rte">{% render 'nc-cbd', text: block.settings.detail_text %}</div>{%- endif -%}
               {%- if p != blank and block.settings.detail_cta_label != blank -%}
-                <a class="nc-start__link" href="{{ p.url }}">{{ block.settings.detail_cta_label }} <span aria-hidden="true">→</span></a>
+                <a class="nc-start__link" href="{{ p.url }}">{% render 'nc-cbd', text: block.settings.detail_cta_label %} <span aria-hidden="true">→</span></a>
               {%- endif -%}
             </div>
             {%- if block.settings.routine_1_steps != blank or block.settings.routine_2_steps != blank -%}
@@ -149,11 +149,11 @@
 
       {%- if section.settings.closing_heading != blank or section.settings.closing_text != blank -%}
         <section class="nc-start__closing" aria-labelledby="nc-start-closing-{{ section.id }}">
-          <h2 id="nc-start-closing-{{ section.id }}">{{ section.settings.closing_heading }}</h2>
-          <div class="nc-start__rte">{{ section.settings.closing_text }}</div>
+          <h2 id="nc-start-closing-{{ section.id }}">{% render 'nc-cbd', text: section.settings.closing_heading %}</h2>
+          <div class="nc-start__rte">{% render 'nc-cbd', text: section.settings.closing_text %}</div>
           <div class="nc-start__actions">
             {%- if section.settings.closing_cta_label != blank -%}
-              <a class="nc-btn nc-btn--primary" href="{% render 'nc-url', url: section.settings.closing_cta_url, fallback: 'mailto:hello@naturecell.dk' %}">{{ section.settings.closing_cta_label }}</a>
+              <a class="nc-btn nc-btn--primary" href="{% render 'nc-url', url: section.settings.closing_cta_url, fallback: 'mailto:hello@naturecell.dk' %}">{% render 'nc-cbd', text: section.settings.closing_cta_label %}</a>
             {%- endif -%}
             {%- if section.settings.closing_phone != blank -%}
               <a href="tel:{{ section.settings.closing_phone | remove: ' ' }}">{{ section.settings.closing_phone }}</a>

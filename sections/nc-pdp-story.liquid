@@ -61,10 +61,10 @@
       {{ img_a | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
     {%- endif -%}
     <div class="nc-pdpstory__text">
-      <span class="nc-pdpstory__eyebrow">{{ story_eyebrow }}</span>
+      <span class="nc-pdpstory__eyebrow">{% render 'nc-cbd', text: story_eyebrow %}</span>
       {%- assign nc_sh = product.metafields.ncell.story_title.value | default: story_title_fallback -%}
       <h2>{% render 'nc-cbd', text: nc_sh %}</h2>
-      <p>{{ story_text }}</p>
+      <p>{% render 'nc-cbd', text: story_text %}</p>
     </div>
   </div>
 </section>
@@ -76,10 +76,10 @@
       {{ img_b | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
     {%- endif -%}
     <div class="nc-pdpstory__text">
-      <span class="nc-pdpstory__eyebrow">{{ section.settings.eyebrow_2 }}</span>
+      <span class="nc-pdpstory__eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow_2 %}</span>
       {%- assign nc_uh = product.metafields.ncell.usage_title.value | default: section.settings.heading_2 -%}
       <h2>{% render 'nc-cbd', text: nc_uh %}</h2>
-      <p>{{ usage_text }}</p>
+      <p>{% render 'nc-cbd', text: usage_text %}</p>
     </div>
   </div>
 </section>

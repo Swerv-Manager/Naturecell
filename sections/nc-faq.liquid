@@ -65,7 +65,7 @@
           <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
         {%- endif -%}
         {%- if section.settings.subtext != blank -%}
-          <p>{{ section.settings.subtext }}</p>
+          <p>{% render 'nc-cbd', text: section.settings.subtext %}</p>
         {%- endif -%}
       </div>
       {%- endif -%}
@@ -84,7 +84,7 @@
           {%- capture list_q %}{% render 'nc-faq-qa', block: block, product: product, part: 'q' %}{% endcapture -%}
           {%- capture list_a %}{% render 'nc-faq-qa', block: block, product: product, part: 'a' %}{% endcapture -%}
           <div class="nc-faqsec__qa" {{ block.shopify_attributes }}>
-            <h3>{{ list_q | strip }}</h3>
+            {%- assign list_q_s = list_q | strip -%}<h3>{% render 'nc-cbd', text: list_q_s %}</h3>
             {{ list_a }}
           </div>
           {%- capture list_one -%}{"@type":"Question","name":{{ list_q | strip | json }},"acceptedAnswer":{"@type":"Answer","text":{{ list_a | strip_html | strip | json }}}}{%- endcapture -%}
@@ -97,7 +97,7 @@
         <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ list_ld }}]}</script>
       {%- endif -%}
       {%- if section.settings.note != blank -%}
-        <div class="nc-faqsec__note"><p>{{ section.settings.note }}</p></div>
+        <div class="nc-faqsec__note"><p>{% render 'nc-cbd', text: section.settings.note %}</p></div>
       {%- endif -%}
       {%- else -%}
       {%- comment -%}
@@ -142,7 +142,8 @@
                 <span>{% render 'nc-cbd', text: item.question.value %}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
-              <div class="nc-acc__body">{{ item.answer | metafield_tag }}</div>
+              {%- capture mf_answer %}{{ item.answer | metafield_tag }}{% endcapture -%}
+              <div class="nc-acc__body">{% render 'nc-cbd', text: mf_answer %}</div>
             </details>
             {%- assign faq_qs = faq_qs | append: item.question.value | downcase | append: ' ¶ ' -%}
             {%- capture faq_one -%}{"@type":"Question","name":{{ item.question.value | json }},"acceptedAnswer":{"@type":"Answer","text":{{ item.answer | metafield_text | json }}}}{%- endcapture -%}
@@ -174,7 +175,7 @@
                 <span>{% render 'nc-cbd', text: block_q %}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </summary>
-              <div class="nc-acc__body">{{ block_a }}</div>
+              <div class="nc-acc__body">{% render 'nc-cbd', text: block_a %}</div>
             </details>
             {%- capture faq_one -%}{"@type":"Question","name":{{ block_q | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block_a | strip_html | strip | json }}}}{%- endcapture -%}
             {%- assign faq_ld = faq_ld | append: faq_one | append: ',' -%}
@@ -192,14 +193,14 @@
       {%- if section.settings.links != blank -%}
         <div class="nc-faqsec__links-block">
           {%- if section.settings.links_label != blank -%}
-            <p class="nc-eyebrow nc-faqsec__links-label">{{ section.settings.links_label }}</p>
+            <p class="nc-eyebrow nc-faqsec__links-label">{% render 'nc-cbd', text: section.settings.links_label %}</p>
           {%- endif -%}
           <div class="nc-faqsec__links">
             {%- assign rows = section.settings.links | newline_to_br | split: '<br />' -%}
             {%- for row in rows -%}
               {%- assign parts = row | strip | split: '|' -%}
               {%- if parts[0] != blank and parts[1] != blank -%}
-                <a class="nc-chip" href="{% render 'nc-url', url: parts[1] %}">{{ parts[0] | strip }}</a>
+                {%- assign link_text = parts[0] | strip -%}<a class="nc-chip" href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: link_text %}</a>
               {%- endif -%}
             {%- endfor -%}
           </div>
@@ -207,7 +208,7 @@
       {%- endif -%}
 
       {%- if section.settings.disclaimer != blank -%}
-        <p class="nc-faqsec__disclaimer">{{ section.settings.disclaimer }}</p>
+        <p class="nc-faqsec__disclaimer">{% render 'nc-cbd', text: section.settings.disclaimer %}</p>
       {%- endif -%}
     </div>
   </div>

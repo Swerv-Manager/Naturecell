@@ -34,7 +34,7 @@
 <section class="nc-vidband">
   <div class="nc-vidband__inner">
     <div class="nc-vidband__head">
-      <h2>{{ vid_heading }}</h2>
+      <h2>{% render 'nc-cbd', text: vid_heading %}</h2>
       <span class="nc-vidband__note">{{ vid_note }}</span>
     </div>
     <div class="nc-vidband__grid">
@@ -51,7 +51,7 @@
             <span class="nc-vidband__play" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
             </span>
-            <span class="nc-vidband__name">{{ block.settings.name }}</span>
+            <span class="nc-vidband__name">{% render 'nc-cbd', text: block.settings.name %}</span>
           </span>
         </a>
       {%- endfor -%}
