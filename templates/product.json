@@ -34,7 +34,7 @@
     "foundervideo": {
       "type": "nc-pdp-founder",
       "settings": {
-        "eyebrow": "Fra grundlæggeren",
+        "eyebrow": "Hvordan bruges den?",
         "heading": "Se [produkt] i brug",
         "poster_alt": "Lizbeth fra NatureCell",
         "pill": "Video kommer snart"
@@ -70,26 +70,58 @@
             "name": "Vivi",
             "youtube_id": "HwVoEwGZmyc"
           }
+        },
+        "v5": {
+          "type": "video",
+          "settings": {
+            "name": "Emma",
+            "youtube_id": "PCFwLqqGngE"
+          }
+        },
+        "v6": {
+          "type": "video",
+          "settings": {
+            "name": "Frederik",
+            "youtube_id": "7oDE9SaSxbY"
+          }
         }
       },
       "block_order": [
         "v1",
         "v2",
         "v3",
-        "v4"
+        "v4",
+        "v5",
+        "v6"
       ],
       "settings": {}
     },
     "ambassador": {
       "type": "nc-pdp-ambassador",
       "settings": {
-        "pill": "Ambassadør",
-        "heading": "\"Min hud fortjener ærlige produkter\"",
-        "body": "Jeg vil vide, hvad jeg smører på min hud. Det, jeg holder af ved NatureCell, er åbenheden, plantebaseret, dansk produceret og testet, uden store løfter. Det er blevet en fast del af min daglige rutine.",
-        "name": "Camilla Holm",
-        "role": "Hudplejeentusiast"
-      },
-      "disabled": true
+        "products": [
+          "hudpleje-startpakke-plus-1",
+          "love-pakken-cbd-hudpleje",
+          "cbd-olie-1000mg",
+          "dagcreme",
+          "natcreme",
+          "rensegel",
+          "cbg-eye-gel",
+          "facial-cbd-care",
+          "forkael-en-du-har-kaer",
+          "pakke-til-starten-af-dagen",
+          "pakke-til-starten-af-natten",
+          "cbd-hudpleje-startpakke-plus"
+        ],
+        "pill": "Kundecase",
+        "heading": "“Jeg bruger hele serien – og kun den.”",
+        "body": "Winnie har brugt Kompletpakken i over otte måneder. I videoen fortæller hun med sine egne ord om sin rutine, og i kundecasen kan du læse hele hendes historie.",
+        "name": "Winnie",
+        "role": "Bruger Kompletpakken",
+        "case_url": "/blogs/kundecases/winnie-kompletpakken-har-gjort-en-kaempe-forskel-for-min-hud",
+        "link_label": "Læs Winnies historie",
+        "youtube_id": "UQQF2NPfATE"
+      }
     },
     "reviews": {
       "type": "nc-pdp-reviews",

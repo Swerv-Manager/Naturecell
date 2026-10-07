@@ -342,7 +342,44 @@
     f.title = btn.getAttribute('data-nc-embed-title') || '';
     f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
     f.setAttribute('allowfullscreen', '');
+    if (btn.parentNode.classList) btn.parentNode.classList.add('is-playing');
     btn.parentNode.replaceChild(f, btn);
+  });
+
+  /* --- Video fra Shopify Filer: plakat med playknap, videoen indsaettes og afspilles foerst ved klik --- */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-nc-play]') : null;
+    if (!btn) return;
+    var box = btn.parentNode;
+    var tpl = box.querySelector('template[data-nc-play-src]');
+    if (!tpl) return;
+    var node = document.importNode(tpl.content, true);
+    var v = node.querySelector('video');
+    box.classList.add('is-playing');
+    box.replaceChild(node, btn);
+    if (v && v.play) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  });
+
+  /* --- Vandret rulning med pile (fx emne-chips paa bloggen): pilene vises kun, naar der er mere at se --- */
+  $all('[data-nc-hscroll]').forEach(function (wrap) {
+    var track = $('[data-nc-hscroll-track]', wrap);
+    var prev = $('[data-nc-hscroll-prev]', wrap);
+    var next = $('[data-nc-hscroll-next]', wrap);
+    if (!track || !prev || !next) return;
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      prev.hidden = track.scrollLeft <= 4;
+      next.hidden = track.scrollLeft >= max - 4;
+      wrap.classList.toggle('is-scrollable', max > 4);
+    }
+    function go(dir) { track.scrollBy({ left: dir * Math.max(160, track.clientWidth * 0.7), behavior: 'smooth' }); }
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    var active = $('.is-active', track);
+    if (active && active.offsetLeft > track.clientWidth * 0.6) track.scrollLeft = active.offsetLeft - 16;
+    update();
   });
 
   /* --- Kollektion: sortering (beholder tag-filteret i stien, nulstiller sidetal) --- */
@@ -432,19 +469,35 @@
       var all = cards.map(function (c) {
         return { el: c, areas: split(c.getAttribute('data-areas')), needs: split(c.getAttribute('data-needs')), rating: parseFloat(c.getAttribute('data-rating')) || 0 };
       });
-      var list = all.slice();
-      if (state.area) {
-        var al = list.filter(function (p) { return p.areas.indexOf(state.area) !== -1; });
-        if (al.length) list = al;
+      var max = parseInt(root.getAttribute('data-nc-quiz-max'), 10) || 3;
+      /* Faste anbefalinger (blokke i sektionen) vinder: omraade + behov, ellers omraade + alle behov, ellers alle omraader + behov. */
+      var rules = [];
+      try { rules = JSON.parse(($('[data-nc-quiz-rules]', root) || {}).textContent || '[]'); } catch (e) {}
+      var pick = function (a, n) { return rules.filter(function (r) { return r.area === a && r.need === n && r.handles && r.handles.length; })[0]; };
+      var rule = pick(state.area, state.need) || pick(state.area, 'any') || pick('any', state.need);
+      var list = [];
+      if (rule) {
+        rule.handles.forEach(function (h) {
+          var hit = all.filter(function (p) { return p.el.getAttribute('data-handle') === h; })[0];
+          if (hit && list.indexOf(hit) === -1) list.push(hit);
+        });
       }
-      if (state.need) {
-        var nl = list.filter(function (p) { return p.needs.indexOf(state.need) !== -1; });
-        if (nl.length) list = nl;
+      if (!list.length) {
+        /* Uden fast anbefaling: produkter til omraadet, foerst dem der matcher behovet, derefter de oevrige, hver gruppe efter rating. */
+        var pool = all.slice();
+        if (state.area) {
+          var al = pool.filter(function (p) { return p.areas.indexOf(state.area) !== -1; });
+          if (al.length) pool = al;
+        }
+        var byRating = function (a, b) { return b.rating - a.rating; };
+        var hits = pool.filter(function (p) { return state.need && p.needs.indexOf(state.need) !== -1; }).sort(byRating);
+        /* Opfyldning kun med produkter, der har behovs-tags (ikke fx tilbehoer og intimpleje). */
+        var rest = pool.filter(function (p) { return hits.indexOf(p) === -1 && p.needs.length; }).sort(byRating);
+        list = hits.concat(rest);
       }
-      list.sort(function (a, b) { return b.rating - a.rating; });
-      list = list.slice(0, 3);
+      list = list.slice(0, max);
       cards.forEach(function (c) { c.hidden = true; });
-      list.forEach(function (p) { p.el.hidden = false; });
+      list.forEach(function (p, i) { p.el.hidden = false; p.el.style.order = i; });
       if (!cards.length) {
         /* Fallback: JSON-liste (aeldre skabelon). */
         var legacy = products.slice();

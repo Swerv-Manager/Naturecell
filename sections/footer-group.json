@@ -9,14 +9,14 @@
           "type": "menu",
           "settings": {
             "heading": "Shop",
-            "links_text": "Alle produkter | /collections/cbd-hudpleje\nHvor skal jeg starte? | /pages/hvor-skal-jeg-starte\nAnsigtspleje | /collections/cbd-ansigtspleje\nKrop & hænder | /collections/cbd-kropspleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+            "links_text": "Alle produkter | /collections/cbd-hudpleje\nHvor skal jeg starte? | /pages/hvor-skal-jeg-starte\nAnsigtspleje | /collections/cbd-ansigtspleje\nKropspleje | /collections/cbd-kropspleje\nHåndpleje | /collections/cbd-handpleje\nCBD Drops | /collections/cbd-olie\nSampakker | /collections/sampakker\nHerre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
           }
         },
         "om": {
           "type": "menu",
           "settings": {
             "heading": "Om NatureCell",
-            "links_text": "Vores historie | /pages/om-os\nOm CBD | /pages/om-cbd\nIngredienser | /pages/ingredienser\nKundecases | /blogs/kundecases\nArtikler | /blogs/artikler\nKundeklub | /pages/kundeklub"
+            "links_text": "Vores historie | /pages/om-os\nOm CBD | /pages/om-cbd\nIngredienser | /pages/ingredienser\nKundecases | /blogs/kundecases\nArtikler | /blogs/artikler\nPresse | /pages/presse\nKundeklub | /pages/kundeklub"
           }
         },
         "service": {

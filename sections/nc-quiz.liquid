@@ -57,7 +57,26 @@
   assign all_url = section.settings.all_url | default: '/collections/cbd-hudpleje'
 -%}
 
-<div data-nc-quiz>
+{%- comment -%}
+  Anbefalinger: en blok "Fast anbefaling" for et omraade + behov viser praecis de valgte produkter i
+  den valgte raekkefoelge. Uden blok vaelges produkterne ud fra deres tags (omraade og behov) og
+  sorteres efter anmeldelser. Antal vist styres af "Antal produkter i resultatet".
+{%- endcomment -%}
+<div data-nc-quiz data-nc-quiz-max="{{ section.settings.results_count | default: 3 }}">
+  <script type="application/json" data-nc-quiz-rules>
+    [
+    {%- assign nc_rule_n = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'rule' and block.settings.products != blank -%}
+        {%- if nc_rule_n > 0 -%},{%- endif -%}
+        {"area":{{ block.settings.area | json }},"need":{{ block.settings.need | json }},"handles":[
+          {%- for rp in block.settings.products -%}{{ rp.handle | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+        ]}
+        {%- assign nc_rule_n = nc_rule_n | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    ]
+  </script>
   <section class="nc-quizband">
     <div class="nc-quizband__inner">
       {%- if section.settings.eyebrow != blank -%}
@@ -131,49 +150,25 @@
         <p>{% render 'nc-cbd', text: section.settings.result_text %}</p>
       </div>
       <div class="nc-quiz__results" data-nc-quiz-result>
+        {%- comment -%} Kortene fra produktkilden, derefter produkter fra faste anbefalinger, der ikke ligger i kilden (fx hårplejen). {%- endcomment -%}
+        {%- assign nc_seen = ',' -%}
         {%- if coll != blank -%}
           {%- for p in coll.products limit: 50 -%}
-            {%- liquid
-              assign areas = ''
-              assign needs = ''
-              for tag in p.tags
-                assign lt = tag | downcase
-                case lt
-                  when 'ansigt'
-                    assign areas = areas | append: 'ansigt,'
-                  when 'haender' or 'hænder'
-                    assign areas = areas | append: 'haender,'
-                  when 'krop'
-                    assign areas = areas | append: 'krop,'
-                  when 'foedder' or 'fødder'
-                    assign areas = areas | append: 'foedder,'
-                  when 'haar' or 'hår'
-                    assign areas = areas | append: 'haar,'
-                  when 'tor-hud' or 'toer' or 'tør hud'
-                    assign needs = needs | append: 'toer,'
-                  when 'fugt'
-                    assign needs = needs | append: 'fugt,'
-                  when 'moden-hud' or 'moden'
-                    assign needs = needs | append: 'moden,'
-                  when 'sensitiv-hud' or 'sensitiv'
-                    assign needs = needs | append: 'sensitiv,'
-                  when 'uren-hud' or 'uren'
-                    assign needs = needs | append: 'uren,'
-                  when 'genopbygning'
-                    assign needs = needs | append: 'genopbygning,'
-                endcase
-              endfor
-              assign mf_needs = p.metafields.ncell.needs.value
-              if mf_needs != blank
-                assign needs = needs | append: mf_needs | append: ','
-              endif
-              assign rating = p.metafields.reviews.rating.value.rating | default: p.metafields.reviews.rating.value | default: 4.5
-            -%}
-            <div data-nc-quiz-card data-areas="{{ areas }}" data-needs="{{ needs | replace: ' ', '' }}" data-rating="{{ rating }}" hidden>
-              {%- render 'nc-product-card', product: p -%}
-            </div>
+            {%- render 'nc-quiz-card', p: p -%}
+            {%- assign nc_seen = nc_seen | append: p.handle | append: ',' -%}
           {%- endfor -%}
         {%- endif -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'rule' -%}
+            {%- for p in block.settings.products -%}
+              {%- assign nc_key = ',' | append: p.handle | append: ',' -%}
+              {%- unless nc_seen contains nc_key -%}
+                {%- render 'nc-quiz-card', p: p -%}
+                {%- assign nc_seen = nc_seen | append: p.handle | append: ',' -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
       </div>
       <div class="nc-quiz__actions">
         <button class="nc-quiz__again" type="button" data-nc-quiz-restart>{{ 'quiz.retake' | t }}</button>
@@ -199,7 +194,21 @@
     { "type": "product", "id": "product_hands", "label": "Hænder" },
     { "type": "product", "id": "product_body", "label": "Krop" },
     { "type": "product", "id": "product_feet", "label": "Fødder" },
-    { "type": "product", "id": "product_hair", "label": "Hår" }
+    { "type": "product", "id": "product_hair", "label": "Hår" },
+    { "type": "header", "content": "Resultat" },
+    { "type": "range", "id": "results_count", "label": "Antal produkter i resultatet", "min": 3, "max": 8, "step": 1, "default": 3 }
+  ],
+  "blocks": [
+    {
+      "type": "rule",
+      "name": "Fast anbefaling",
+      "settings": [
+        { "type": "paragraph", "content": "Vælg område og behov, og de produkter quizzen skal vise, i den rækkefølge de skal stå. Produkterne skal ligge i quizzens produktkilde." },
+        { "type": "select", "id": "area", "label": "Område", "options": [ { "value": "any", "label": "Alle områder" }, { "value": "ansigt", "label": "Ansigt" }, { "value": "haender", "label": "Hænder" }, { "value": "krop", "label": "Krop" }, { "value": "foedder", "label": "Fødder" }, { "value": "haar", "label": "Hår" } ], "default": "ansigt" },
+        { "type": "select", "id": "need", "label": "Behov", "options": [ { "value": "any", "label": "Alle behov" }, { "value": "toer", "label": "Tør hud" }, { "value": "fugt", "label": "Fugt" }, { "value": "moden", "label": "Moden hud" }, { "value": "sensitiv", "label": "Sensitiv hud" }, { "value": "uren", "label": "Uren hud" }, { "value": "genopbygning", "label": "Genopbygning" } ], "default": "toer" },
+        { "type": "product_list", "id": "products", "label": "Produkter", "limit": 8 }
+      ]
+    }
   ],
   "presets": [ { "name": "Hudpleje-quiz" } ]
 }

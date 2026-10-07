@@ -6,8 +6,8 @@
         "tone": "sage",
         "band_compact": true,
         "eyebrow": "Køb NatureCell",
-        "heading": "Find NatureCell i nærheden af dig",
-        "intro": "Du finder NatureCell i vores egen butik, hos Matas og i udvalgte helsekostbutikker og klinikker landet over, eller handl direkte her på siden."
+        "heading": "Her kan du købe NatureCell",
+        "intro": "Du kan købe NatureCell her i webshoppen og i Butik Lille Nyhavn i Skanderborg, hvor vi har shop-in-shop."
       }
     },
     "cards": {
@@ -19,13 +19,35 @@
         "cta_url": "/pages/b2b#b2b-ansoegning"
       },
       "blocks": {
-        "c1": { "type": "card", "settings": { "badge": "Flagship", "heading": "NatureCell · Lille Nyhavn", "text": "Vores egen butik i Skanderborg, kom forbi og få personlig vejledning." } },
-        "c2": { "type": "card", "settings": { "badge": "Kæde", "heading": "Matas", "text": "Udvalgte NatureCell-produkter i Matas-butikker og på matas.dk." } },
-        "c3": { "type": "card", "settings": { "badge": "Helsekost", "heading": "Helsekost & specialbutikker", "text": "Førende helsekostbutikker landet over fører dele af serien." } },
-        "c4": { "type": "card", "settings": { "badge": "Klinik", "heading": "Klinikker & kosmetologer", "text": "Hudplejeklinikker og kosmetologer bruger og forhandler NatureCell." } }
+        "c1": {
+          "type": "card",
+          "settings": {
+            "badge": "Butik",
+            "heading": "Butik Lille Nyhavn, Skanderborg",
+            "text": "Vi har shop-in-shop i Butik Lille Nyhavn. Kom forbi og få personlig vejledning.",
+            "link_text": "Se åbningstider",
+            "link_url": "/pages/abningstider"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "badge": "Webshop",
+            "heading": "naturecell.dk",
+            "text": "Hele sortimentet samlet ét sted. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+            "link_text": "Se alle produkter",
+            "link_url": "/collections/cbd-hudpleje"
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"]
+      "block_order": [
+        "c1",
+        "c2"
+      ]
     }
   },
-  "order": ["hero", "cards"]
+  "order": [
+    "hero",
+    "cards"
+  ]
 }

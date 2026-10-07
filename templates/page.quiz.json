@@ -13,8 +13,85 @@
         "product_hands": "handcreme",
         "product_body": "bodylotion",
         "product_feet": "fodcreme",
-        "product_hair": "shampoo-300ml"
-      }
+        "product_hair": "shampoo-300ml",
+        "results_count": 6
+      },
+      "blocks": {
+        "r_ansigt_toer": {
+          "type": "rule",
+          "settings": {
+            "area": "ansigt",
+            "need": "toer",
+            "products": [
+              "dagcreme",
+              "natcreme",
+              "cbd-olie-1000mg",
+              "naturecell-cbd-hyaluronic-serum",
+              "cbg-eye-gel",
+              "hudpleje-startpakke-plus-1"
+            ]
+          }
+        },
+        "r_haender": {
+          "type": "rule",
+          "settings": {
+            "area": "haender",
+            "need": "any",
+            "products": [
+              "handcreme",
+              "re-new-balm",
+              "cbd-olie-1000mg",
+              "pakke"
+            ]
+          }
+        },
+        "r_krop": {
+          "type": "rule",
+          "settings": {
+            "area": "krop",
+            "need": "any",
+            "products": [
+              "bodylotion",
+              "body-oil-100ml",
+              "hel-krops-pleje",
+              "cbd-olie-1000mg",
+              "re-new-balm",
+              "exfoliating-hanske"
+            ]
+          }
+        },
+        "r_foedder": {
+          "type": "rule",
+          "settings": {
+            "area": "foedder",
+            "need": "any",
+            "products": [
+              "fodcreme",
+              "re-new-balm",
+              "cbd-olie-1000mg"
+            ]
+          }
+        },
+        "r_haar": {
+          "type": "rule",
+          "settings": {
+            "area": "haar",
+            "need": "any",
+            "products": [
+              "shampoo-300ml",
+              "conditioner-300-ml",
+              "sampakke-shampoo-conditioner"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "r_ansigt_toer",
+        "r_haender",
+        "r_krop",
+        "r_foedder",
+        "r_haar"
+      ]
     }
   },
   "order": [

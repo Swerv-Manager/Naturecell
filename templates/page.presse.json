@@ -1,0 +1,183 @@
+{
+  "sections": {
+    "main": {
+      "type": "nc-press-list",
+      "blocks": {
+        "p1": {
+          "type": "item",
+          "settings": {
+            "outlet": "Løvens Hule",
+            "year": "2026",
+            "title": "Vores oplevelse i Løvens Hule",
+            "text": "NatureCell var med i Løvens Hule, som blev sendt 19. marts 2026, og Jesper Buch blev investor. Her fortæller vi, hvordan det var at stå foran løverne.",
+            "article_url": "/blogs/artikler/vores-oplevelse-i-lovens-hule"
+          }
+        },
+        "p2": {
+          "type": "item",
+          "settings": {
+            "outlet": "Ritzau",
+            "year": "2026",
+            "title": "Lizbeth får Jesper Buch som medinvestor",
+            "text": "Pressemeddelelse via Ritzau om Lizbeth, NatureCell og investeringen fra Jesper Buch efter Løvens Hule.",
+            "url": "https://via.ritzau.dk/pressemeddelelse/14842017/lizbeth-fra-kolding-var-den-forste-i-danmark-til-at-lancere-hudpleje-med-cbd-fra-hampeplanter-nu-far-hun-jesper-buch-som-medinvestor-efter-tv-optraeden?publisherId=13563161&lang=da",
+            "image": "shopify://shop_images/naturecell-presse-ritzau-2026.jpg"
+          }
+        },
+        "p3": {
+          "type": "item",
+          "settings": {
+            "outlet": "JydskeVestkysten",
+            "year": "2026",
+            "title": "Da ægtefællen gav op, knoklede Lizbeth videre",
+            "text": "JydskeVestkysten fortæller Lizbeths historie om NatureCell og om investeringen fra Jesper Buch.",
+            "url": "https://jv.dk/kolding/da-aegtefaellen-gav-op-knoklede-lizbeth-videre-nu-har-de-faaet-investering-fra-loevernes-konge",
+            "image": "shopify://shop_images/naturecell-presse-jydskevestkysten-2026.jpg"
+          }
+        },
+        "p4": {
+          "type": "item",
+          "settings": {
+            "outlet": "Kolding Netavis",
+            "year": "2026",
+            "title": "Jesper Buch investerer i NatureCell",
+            "text": "Kolding Netavis om Jesper Buchs investering i NatureCell efter Løvens Hule.",
+            "url": "https://www.kolding-netavis.dk/jesper-buch-investerer-hudpleje-med-cbd/",
+            "image": "shopify://shop_images/naturecell-presse-kolding-netavis-2026.jpg"
+          }
+        },
+        "p5": {
+          "type": "item",
+          "settings": {
+            "outlet": "Skanderborg Liv",
+            "year": "2026",
+            "title": "Fra Lille Nyhavn til Løvens Hule",
+            "text": "Skanderborg Liv om virksomheden bag butikken i Lille Nyhavn, der fik en investering i Løvens Hule.",
+            "url": "https://skanderborgliv.dk/skanderborgliv-dk/fra-lille-nyhavn-til-loevens-hule-skanderborg-virksomhed-scorer-stor-investering-i-bedste-sendetid",
+            "image": "shopify://shop_images/naturecell-presse-skanderborg-liv-2026.jpg"
+          }
+        },
+        "p6": {
+          "type": "item",
+          "settings": {
+            "outlet": "Connery",
+            "year": "2026",
+            "title": "Connery tester Alfalab",
+            "text": "Connery testede hudpleje fra Alfalab, herreserien fra teamet bag NatureCell.",
+            "article_url": "/blogs/artikler/alfalab-omtalt-i-connery-historien-bag-naturecells-herrebrand",
+            "url": "https://connery.dk/vi-testede-hudpleje-fra-alfalab-og-nej-du-faar-ikke-loese-haandled-af-at-bruge-ansigtscreme/"
+          }
+        },
+        "p7": {
+          "type": "item",
+          "settings": {
+            "outlet": "Ude og Hjemme",
+            "year": "2025",
+            "title": "Body Oil i Nyt på Hylden",
+            "text": "Forbrugerjournalist Gitte Gerner Eriksen valgte vores Body Oil til Nyt på Hylden i Ude og Hjemme.",
+            "article_url": "/blogs/artikler/naturecell-body-oil-i-ude-og-hjemme-se-omtalen-i-nyt-pa-hylden"
+          }
+        },
+        "p8": {
+          "type": "item",
+          "settings": {
+            "outlet": "Ude og Hjemme",
+            "year": "2023",
+            "title": "Ude og Hjemme tester vores olie",
+            "text": "I rubrikken Jeg tester prøvede Ude og Hjemme vores olie 1000 mg.",
+            "article_url": "/blogs/artikler/medie-omtale-ude-hjemme"
+          }
+        },
+        "p9": {
+          "type": "item",
+          "settings": {
+            "outlet": "Stiften",
+            "year": "2023",
+            "title": "Tech-giganter dikterer spillereglerne",
+            "text": "Stiften om, hvorfor NatureCell ikke kan reklamere for sine produkter på grund af en gammel amerikansk lov.",
+            "article_url": "/blogs/artikler/tech-giganter-dikterer-spillereglerne",
+            "url": "https://stiften.dk/erhverv/tech-giganter-dikterer-spillereglerne-dansk-hudplejevirksomhed-kan-ikke-reklamere-for-sine-produkter-paa-grund-af-gammel-amerikansk-lov",
+            "image": "shopify://shop_images/naturecell-presse-stiften-2023.jpg"
+          }
+        },
+        "p10": {
+          "type": "item",
+          "settings": {
+            "outlet": "Hair.dk",
+            "year": "2023",
+            "title": "Flere unge går til kosmetolog",
+            "text": "Hair.dk skrev om, at flere unge søger hjælp hos en kosmetolog, og NatureCell var med i artiklen.",
+            "article_url": "/blogs/artikler/flere-unge-gar-til-kosmetolog-paen-hud-oger-selvvaerdet",
+            "url": "https://www.hair.dk/flere-unge-gar-til-kosmetolog-paen-hud-oger-selvvaerdet"
+          }
+        },
+        "p11": {
+          "type": "item",
+          "settings": {
+            "outlet": "Børsen Pleasure",
+            "year": "2019",
+            "title": "Børsen Pleasure om en ny tendens i hudpleje",
+            "text": "I august 2019 omtalte Børsen Pleasure NatureCell i en artikel om den voksende interesse for CBD i hudpleje.",
+            "article_url": "/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt",
+            "url": "https://borsen.dk/nyheder/pleasure/hippie-hip-cannabis-i-hudpleje-boomer"
+          }
+        },
+        "p12": {
+          "type": "item",
+          "settings": {
+            "outlet": "Beautyspace",
+            "year": "2019",
+            "title": "Beautyspace om en ny ingrediens i hudpleje",
+            "text": "Skønhedsmediet Beautyspace skrev i august 2019 om CBD i hudpleje og nævnte NatureCell.",
+            "article_url": "/blogs/artikler/beautyspace-dk",
+            "url": "https://beautyspace.dk/hvad-cbd-goer-for-din-hud/"
+          }
+        },
+        "p13": {
+          "type": "item",
+          "settings": {
+            "outlet": "Helse",
+            "year": "2019",
+            "title": "Helse om nye tendenser i hudpleje",
+            "text": "Livsstilsmagasinet Helse skrev i 2019 om nye tendenser i hudpleje og nævnte NatureCell.",
+            "article_url": "/blogs/artikler/helse-magasin-cbd-hudpleje-naturecell-2019"
+          }
+        },
+        "p14": {
+          "type": "item",
+          "settings": {
+            "outlet": "ALT Beauty",
+            "year": "2019",
+            "title": "ALT Beauty om ti beautybrands",
+            "text": "ALT Beauty samlede i 2019 ti brands med CBD i deres produkter, og NatureCell var et af dem.",
+            "article_url": "/blogs/artikler/alt-beauty"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9",
+        "p10",
+        "p11",
+        "p12",
+        "p13",
+        "p14"
+      ],
+      "settings": {
+        "eyebrow": "Presse",
+        "heading": "NatureCell i pressen",
+        "intro": "Her har vi samlet omtalen af NatureCell i aviser, magasiner og på tv. Fra de første artikler om CBD i hudpleje i 2019 til Løvens Hule i 2026."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

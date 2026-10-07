@@ -14,12 +14,37 @@
         "apply_url": "#b2b-ansoegning"
       },
       "blocks": {
-        "p1": { "type": "perk", "settings": { "text": "Dine egne engrospriser og rabatter, styret af os" } },
-        "p2": { "type": "perk", "settings": { "text": "Hurtig genbestilling og samlet fakturering" } },
-        "p3": { "type": "perk", "settings": { "text": "Markedsføringsmateriale og produkttræning" } },
-        "p4": { "type": "perk", "settings": { "text": "Dansk produktion, GMP- & ISO-certificeret" } }
+        "p1": {
+          "type": "perk",
+          "settings": {
+            "text": "Dine egne engrospriser og rabatter, styret af os"
+          }
+        },
+        "p2": {
+          "type": "perk",
+          "settings": {
+            "text": "Hurtig genbestilling og samlet fakturering"
+          }
+        },
+        "p3": {
+          "type": "perk",
+          "settings": {
+            "text": "Markedsføringsmateriale og produkttræning"
+          }
+        },
+        "p4": {
+          "type": "perk",
+          "settings": {
+            "text": "Dansk udviklet, GMP- & ISO-certificeret"
+          }
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4"]
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ]
     },
     "apply": {
       "type": "nc-b2b-form",
@@ -29,5 +54,8 @@
       }
     }
   },
-  "order": ["b2b", "apply"]
+  "order": [
+    "b2b",
+    "apply"
+  ]
 }

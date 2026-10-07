@@ -13,8 +13,18 @@
     assign is_cases = true
   endif
 
-  assign eyebrow = section.settings.eyebrow
-  assign intro = section.settings.intro
+  if is_cases
+    assign eyebrow = section.settings.cases_eyebrow | default: section.settings.eyebrow
+    assign heading = section.settings.cases_heading
+    assign intro = section.settings.cases_intro | default: section.settings.intro
+  else
+    assign eyebrow = section.settings.articles_eyebrow | default: section.settings.eyebrow
+    assign heading = section.settings.articles_heading
+    assign intro = section.settings.articles_intro | default: section.settings.intro
+  endif
+  if heading == blank
+    assign heading = blog.title
+  endif
   if eyebrow == blank
     if is_cases
       assign eyebrow = 'blog.eyebrow_cases' | t
@@ -52,7 +62,16 @@
 
   /* Vaerktoejsraekke: chips + soegning (design: flex, space-between, gap 18, mb 28/30) */
   #shopify-section-{{ section.id }} .nc-blogidx__tools { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: {% if is_cases %}28px{% else %}30px{% endif %}; }
-  #shopify-section-{{ section.id }} .nc-blogidx__chips { display: flex; gap: {% if is_cases %}9px{% else %}8px{% endif %}; flex-wrap: wrap; }
+  /* Emne-chips: én vandret raekke med pile i siderne, naar der er flere chips end plads */
+  #shopify-section-{{ section.id }} .nc-blogidx__chipwrap { position: relative; flex: 1 1 360px; min-width: 0; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chips { display: flex; gap: {% if is_cases %}9px{% else %}8px{% endif %}; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px 1px; scroll-padding-inline: 44px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chips::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chipwrap.is-scrollable .nc-blogidx__chips { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn { position: absolute; top: 50%; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin: 0; padding: 0; border: 1px solid var(--border-default); border-radius: 999px; background: var(--paper); color: var(--sage-700); box-shadow: var(--shadow-sm); cursor: pointer; transform: translateY(-50%); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn:hover { border-color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn--prev { left: 0; }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn--next { right: 0; }
   #shopify-section-{{ section.id }} .nc-blogidx__chip { display: inline-block; border: 1.5px solid var(--border-default); background: transparent; color: var(--ink-700); font-family: var(--font-body); font-weight: 600; font-size: {% if is_cases %}13.5px{% else %}13px{% endif %}; line-height: normal; padding: {% if is_cases %}8px 16px{% else %}7px 15px{% endif %}; border-radius: 999px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
   #shopify-section-{{ section.id }} .nc-blogidx__chip:hover { border-color: var(--sage-500); color: var(--sage-700); text-decoration: none; }
   #shopify-section-{{ section.id }} .nc-blogidx__chip.is-active { border-color: var(--sage-500); background: var(--sage-500); color: #fff; }
@@ -108,7 +127,7 @@
 <section class="nc-blogidx__hero">
   <div class="nc-blogidx__hero-in">
     <span class="nc-blogidx__eyebrow">{% render 'nc-cbd', text: eyebrow %}</span>
-    <h1 class="nc-blogidx__title">{% render 'nc-cbd', text: blog.title %}</h1>
+    <h1 class="nc-blogidx__title">{% render 'nc-cbd', text: heading %}</h1>
     <p class="nc-blogidx__intro">{% render 'nc-cbd', text: intro %}</p>
   </div>
 </section>
@@ -117,7 +136,9 @@
   {%- paginate blog.articles by 24 -%}
     <div class="nc-blogidx__tools">
       {%- if section.settings.show_tags -%}
-        <div class="nc-blogidx__chips" aria-label="{{ 'blog.filter_topic' | t }}">
+        <div class="nc-blogidx__chipwrap" data-nc-hscroll>
+        <button type="button" class="nc-hscroll__btn nc-hscroll__btn--prev" data-nc-hscroll-prev aria-label="{{ 'general.scroll_left' | t }}" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="nc-blogidx__chips" data-nc-hscroll-track role="group" aria-label="{{ 'blog.filter_topic' | t }}">
           <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}{{ 'blog.all_cases' | t }}{% else %}{{ 'general.all' | t }}{% endif %}</a>
           {%- if is_cases -%}
             {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
@@ -140,10 +161,37 @@
               <a class="nc-blogidx__chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area_keys[forloop.index0] | t }}</a>
             {%- endfor -%}
           {%- else -%}
+            {%- liquid
+              assign pinned = section.settings.pinned_tags | split: ','
+              assign skip_s = ','
+              for p in pinned
+                assign p_dc = p | strip | downcase
+                assign skip_s = skip_s | append: p_dc | append: ','
+              endfor
+              assign hidden = section.settings.hidden_tags | split: ','
+              for h in hidden
+                assign h_dc = h | strip | downcase
+                assign skip_s = skip_s | append: h_dc | append: ','
+              endfor
+            -%}
+            {%- for p in pinned -%}
+              {%- assign p_dc = p | strip | downcase -%}
+              {%- for tag in blog.all_tags -%}
+                {%- assign tag_dc = tag | downcase -%}
+                {%- if tag_dc == p_dc -%}
+                  <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
             {%- for tag in blog.all_tags -%}
+              {%- assign tag_key = tag | downcase | prepend: ',' | append: ',' -%}
+              {%- if skip_s contains tag_key -%}{%- continue -%}{%- endif -%}
               <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
             {%- endfor -%}
           {%- endif -%}
+        </div>
+        <button type="button" class="nc-hscroll__btn nc-hscroll__btn--next" data-nc-hscroll-next aria-label="{{ 'general.scroll_right' | t }}" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
       {%- endif -%}
       <div class="nc-blogidx__search">
@@ -163,7 +211,8 @@
             {%- endif -%}
           </span>
           <span class="nc-blogidx__feat-body">
-            <span class="nc-blogidx__feat-pill">{{ 'blog.newest' | t }}{% if feat.tags.first %} · {% render 'nc-tag-label', tag: feat.tags.first %}{% endif %}</span>
+            {%- capture feat_lbl %}{% render 'nc-article-label', article: feat %}{% endcapture -%}
+            <span class="nc-blogidx__feat-pill">{{ 'blog.newest' | t }}{% if feat_lbl != blank %} · {{ feat_lbl }}{% endif %}</span>
             {%- assign nc_ft = feat.title | split: ' | ' | first -%}
             <h2 class="nc-blogidx__feat-title">{% render 'nc-cbd', text: nc_ft %}</h2>
             {%- assign feat_text = feat.excerpt_or_content | strip_html | truncate: 320 -%}
@@ -220,8 +269,9 @@
                 {%- if has_video -%}
                   <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.video' | t }}</span>
                 {%- endif -%}
-              {%- elsif article.tags.first -%}
-                <span class="nc-bcard__tag">{% render 'nc-tag-label', tag: article.tags.first %}</span>
+              {%- else -%}
+                {%- capture card_lbl %}{% render 'nc-article-label', article: article %}{% endcapture -%}
+                {%- if card_lbl != blank -%}<span class="nc-bcard__tag">{{ card_lbl }}</span>{%- endif -%}
               {%- endif -%}
             </span>
             <span class="nc-bcard__text">
@@ -272,8 +322,19 @@
   "name": "Blog",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Overlinje", "info": "Tom = automatisk pr. blog (Ægte oplevelser / Viden & inspiration)" },
-    { "type": "textarea", "id": "intro", "label": "Introtekst", "info": "Tom = automatisk pr. blog" },
+    { "type": "header", "content": "Artikler" },
+    { "type": "text", "id": "articles_eyebrow", "label": "Overlinje", "info": "Tom = Viden & inspiration" },
+    { "type": "text", "id": "articles_heading", "label": "Overskrift", "info": "Tom = bloggens navn" },
+    { "type": "textarea", "id": "articles_intro", "label": "Introtekst", "info": "Tom = standardteksten" },
+    { "type": "text", "id": "pinned_tags", "label": "Emne-chips først (kommasepareret)", "default": "Guides", "info": "Tags der står først efter Alle, fx Guides. Tagget sættes på artiklerne i Shopify." },
+    { "type": "text", "id": "hidden_tags", "label": "Tags der ikke vises som chips", "default": "Test, LS" },
+    { "type": "header", "content": "Kundecases" },
+    { "type": "text", "id": "cases_eyebrow", "label": "Overlinje", "info": "Tom = Ægte oplevelser" },
+    { "type": "text", "id": "cases_heading", "label": "Overskrift", "info": "Tom = bloggens navn" },
+    { "type": "textarea", "id": "cases_intro", "label": "Introtekst", "info": "Tom = standardteksten" },
+    { "type": "header", "content": "Fælles" },
+    { "type": "text", "id": "eyebrow", "label": "Overlinje (gammel, begge blogs)", "info": "Bruges kun, hvis feltet for bloggen er tomt." },
+    { "type": "textarea", "id": "intro", "label": "Introtekst (gammel, begge blogs)", "info": "Bruges kun, hvis feltet for bloggen er tomt." },
     { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips", "default": true }
   ]
 }

@@ -100,7 +100,9 @@
       "type": "nc-press",
       "settings": {
         "eyebrow": "Omtalt i",
-        "names": "Berlingske, Politiken, Femina, Euroman, Costume, Børsen, Løvens Hule, ALT for damerne, Woman, Bo Bedre"
+        "names": "Løvens Hule, Børsen, JydskeVestkysten, Stiften, Ritzau, Ude og Hjemme, Helse, ALT Beauty, Beautyspace, Hair.dk",
+        "link_text": "Se al presseomtale",
+        "link_url": "/pages/presse"
       }
     },
     "shoptabs": {
@@ -228,11 +230,12 @@
     "lifestyle": {
       "type": "nc-lifestyle",
       "settings": {
-        "eyebrow": "Ægte ritualer",
+        "eyebrow": "Pleje med omtanke",
         "heading": "Et øjeblik for dig, hver dag",
-        "subtext": "Ægte hudpleje handler ikke kun om resultater, men om følelsen undervejs. Mærk teksturen, duften og roen, og gør plejen til dit daglige pusterum.",
+        "subtext": "Mærk trygheden i hudpleje med nøje udvalgte ingredienser og uden unødvendige tilsætninger. Giv din hud fugt og omsorg, og gør plejen til dit daglige pusterum.",
         "main_caption_eyebrow": "Se ritualet",
-        "main_caption_title": "Plantebaseret hudpleje"
+        "main_caption_title": "Plantebaseret hudpleje",
+        "main_url": "/pages/hvor-skal-jeg-starte"
       }
     },
     "bestsellers": {
@@ -271,7 +274,7 @@
         "cta_url": "/pages/om-os",
         "eyebrow": "Vores historie",
         "heading": "Danmarks første, og stadig drevet af én familie",
-        "body": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk produktion og rigtige resultater frem for løfter.",
+        "body": "I 2019 blev NatureCell den første danske CBD-hudplejeserie, som fik bekræftet, at produkterne kunne sælges som kosmetik. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk udvikling og ægte oplevelser frem for løfter.",
         "cta_text": "Læs vores historie →",
         "caption_title": "Lizbeth Falk & Allan Gamborg",
         "caption_sub": "Grundlæggere af NatureCell"
@@ -280,15 +283,15 @@
         "s1": {
           "type": "stat",
           "settings": {
-            "num": "2019",
-            "label": "Først godkendt i DK"
+            "num": "4,7",
+            "label": "ud af 5 anmeldelser"
           }
         },
         "s2": {
           "type": "stat",
           "settings": {
             "num": "100%",
-            "label": "Dansk produktion"
+            "label": "Dansk udviklet"
           }
         },
         "s3": {

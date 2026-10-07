@@ -6,6 +6,8 @@
   #shopify-section-{{ section.id }} .nc-press .nc-eyebrow { text-align: center; margin: 0 0 26px; line-height: 1.7; letter-spacing: 0.14em; color: var(--ink-400); }
   #shopify-section-{{ section.id }} .nc-press .nc-rail { gap: clamp(26px, 5vw, 64px); padding-right: 64px; }
   .nc-press__name { font-family: var(--font-display); font-size: 26px; line-height: 1.7; letter-spacing: 0.02em; color: var(--ink-300); white-space: nowrap; padding: 0; }
+  #shopify-section-{{ section.id }} .nc-press__more { display: flex; justify-content: center; margin: 22px 0 0; }
+  #shopify-section-{{ section.id }} .nc-press__more a { font-weight: 600; font-size: 14px; color: var(--sage-700); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
 {%- endstyle -%}
 
 <section class="nc-press" aria-label="{{ 'press.title' | t }}">
@@ -20,6 +22,9 @@
       {%- endfor -%}
     </div>
   </div>
+  {%- if section.settings.link_url != blank and section.settings.link_text != blank -%}
+    <p class="nc-press__more"><a href="{% render 'nc-url', url: section.settings.link_url %}">{% render 'nc-cbd', text: section.settings.link_text %} <span aria-hidden="true">→</span></a></p>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -32,8 +37,11 @@
       "type": "textarea",
       "id": "names",
       "label": "Navne (kommasepareret)",
-      "default": "Berlingske, Politiken, Femina, Euroman, Costume, Børsen, Løvens Hule, ALT for damerne, Woman, Bo Bedre"
+      "default": "Løvens Hule, Børsen, JydskeVestkysten, Stiften, Ritzau, Ude og Hjemme, Helse, ALT Beauty, Beautyspace, Hair.dk",
+      "info": "Kun medier, der faktisk har omtalt NatureCell."
     },
+    { "type": "text", "id": "link_text", "label": "Link, tekst", "default": "Se al presseomtale" },
+    { "type": "url", "id": "link_url", "label": "Link", "info": "Fx siden NatureCell i pressen." },
     { "type": "range", "id": "speed", "label": "Hastighed", "min": 20, "max": 120, "step": 4, "unit": "s", "default": 32 }
   ],
   "presets": [ { "name": "Omtalt i" } ]

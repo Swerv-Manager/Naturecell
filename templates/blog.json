@@ -1,8 +1,17 @@
 {
   "sections": {
     "main": {
-      "type": "main-blog"
+      "type": "main-blog",
+      "settings": {
+        "articles_eyebrow": "Viden & inspiration",
+        "articles_heading": "Hudpleje – viden, råd og guides",
+        "articles_intro": "Bliv klogere på din hud med NatureCell. Find guides til hudpleje til ansigt og krop, hudtyper og eksfoliering. Læs om ingredienser og CBD i hudpleje, og få hjælp til at vælge en rutine, der passer til dig.",
+        "pinned_tags": "Guides",
+        "hidden_tags": "Test, LS"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

@@ -3,9 +3,9 @@
     "hero": {
       "type": "nc-om-os-hero",
       "settings": {
-        "eyebrow": "Vores historie",
-        "heading": "Vi var de første, og vi gør det ærligt.",
-        "intro": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Vi er en familiedrevet virksomhed med rødder på Møllerup Gods, bygget på ærlighed frem for løfter."
+        "eyebrow": "Vores tilgang",
+        "heading": "Hudpleje med omtanke. Fra ingrediens til kundeservice",
+        "intro": "NatureCell er dansk hudpleje til ansigt og krop, udviklet sammen med hudplejespecialister. Vi kombinerer naturlige, plejende ingredienser med vores særlige viden om CBD. Til dig, der ønsker en enkel rutine og går op i, hvad du bruger på din hud."
       }
     },
     "familien": {
@@ -15,10 +15,9 @@
         "media_side": "left",
         "ratio": "16 / 10",
         "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp",
-        "eyebrow": "Mød familien bag",
-        "heading": "Ægte mennesker. Ægte dansk hudpleje.",
-        "text": "<p>Vi er Lizbeth og Allan, en dansk familie med rødder på Møllerup Gods. Vi står selv bag hvert valg: råvarerne, formuleringerne og den ærlige måde, vi taler til dig på.</p>",
-        "quote": "Vi lover ikke mirakler, vi lover ærlighed, dansk kvalitet og produkter, vi selv bruger hver dag.",
+        "eyebrow": "Vores produkter",
+        "heading": "Hver ingrediens skal have et formål",
+        "text": "<p>Vi vælger ingredienser for deres bidrag til produktet og din hud. CBD indgår sammen med blandt andet glycerin, squalane, aloe vera og sheasmør. Uden syntetisk parfume og med den konservering, der er nødvendig for sikre og holdbare produkter. Størstedelen produceres i Danmark, og vores CBD kommer fra Europa, så vi kan følge kvaliteten tæt.</p>",
         "border": "both",
         "container": "1120",
         "pad_y": "clamp(31px, 6vw, 56px) 0",
@@ -38,7 +37,7 @@
       "type": "nc-timeline",
       "settings": {
         "eyebrow": "Vores rejse",
-        "heading": "Fra idé til Danmarks førende CBD-hudpleje",
+        "heading": "Fra idé til i dag",
         "cta_text": "Shop NatureCell →",
         "cta_url": "/collections/cbd-hudpleje"
       },
@@ -47,20 +46,19 @@
           "type": "milestone",
           "settings": {
             "year": "2026",
-            "title": "Et komplet univers",
-            "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår, stadig dansk, stadig ærligt.",
-            "url": "/collections/cbd-hudpleje",
-            "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp"
+            "title": "Løvens Hule",
+            "text": "Vi pitcher NatureCell i Løvens Hule, og Jesper Buch bliver investor.",
+            "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule",
+            "image_url": "nc-lovens-hule.webp"
           }
         },
         "m2021": {
           "type": "milestone",
           "settings": {
             "year": "2021",
-            "title": "Løvens Hule",
-            "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.",
-            "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule",
-            "image_url": "nc-lovens-hule.webp"
+            "title": "Webshoppen",
+            "text": "NatureCell sælges direkte til dig gennem vores egen webshop, drevet af Lizbeth.",
+            "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp"
           }
         },
         "m2019": {
@@ -69,8 +67,9 @@
             "year": "2019",
             "title": "Først godkendt i DK",
             "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.",
-            "url": "/blogs/artikler",
-            "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972"
+            "url": "/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt",
+            "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972",
+            "fit": "contain"
           }
         },
         "m2018": {
@@ -79,7 +78,7 @@
             "year": "2018",
             "title": "Idéen fødes",
             "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.",
-            "url": "/blogs/artikler",
+            "url": "/blogs/artikler/interview-pa-mollerup-gods-her-begynder-historien-bag-naturecell",
             "image_url": "nc-founders.webp"
           }
         }
@@ -95,8 +94,8 @@
       "type": "nc-media-split",
       "settings": {
         "tone": "paper",
-        "heading": "Vi lover ikke mirakler",
-        "text": "<p>I stedet lader vi vores kunder fortælle om deres egne oplevelser. Vores produkter er plantebaserede. CBD i samspil med glycerin, mandelolie, hampolie, squalane, aloe vera, sheasmør og agurkeekstrakt. Vegansk og uden syntetisk parfume.</p><p>Vores CBD-olie produceres på GMP- og ISO-certificerede faciliteter i Danmark. Det er sådan, vi bygger tryghed: dansk produktion, dansk test og fuld åbenhed.</p>",
+        "heading": "Ægte oplevelser. Ærlige forventninger",
+        "text": "<p>Vi lover ikke mirakler. Vi giver plads til kunder, der fortæller om deres hud, deres rutiner og deres oplevelser med NatureCell. Måske finder du en historie, du kan spejle dig i. Vi hjælper dig gerne med at finde dit eget sted at starte.</p>",
         "text_max": "632",
         "container": "680",
         "pad_y": "clamp(35px, 6vw, 64px) 0",
@@ -104,7 +103,10 @@
         "h2_size": "clamp(20px, 3.1vw, 32px)",
         "h2_lh": "1.7",
         "text_size": "17",
-        "text_lh": "1.8"
+        "text_lh": "1.8",
+        "eyebrow": "Vores kunder",
+        "cta1_text": "Se kundernes historier",
+        "cta1_url": "/blogs/kundecases"
       }
     },
     "moellerup": {
@@ -113,9 +115,9 @@
         "tone": "paper",
         "media_side": "left",
         "image_url": "https://naturecell.dk/cdn/shop/articles/Billede_af_Anne_Sophie_Gamborg_og_Allan_Falk_Gamborg_cc5b96e7-f77f-46c0-958e-5d64cb69441f.jpg?v=1767017225",
-        "eyebrow": "Hvor det startede",
-        "heading": "Rødder på Møllerup Gods",
-        "text": "<p>Vores rejse begyndte på Møllerup Gods i Djursland, med en idé om, at hudpleje kan være både plantebaseret, ærlig og dansk. Det var her, de første formuleringer tog form, og det er stadig den ånd, der driver os i dag.</p>",
+        "eyebrow": "Vores historie",
+        "heading": "En idé på Møllerup Gods blev til NatureCell",
+        "text": "<p>Allan fik idéen, da han arbejdede med hamp sammen med sin bror på <a href=\"/blogs/artikler/interview-pa-mollerup-gods-her-begynder-historien-bag-naturecell\">Møllerup Gods</a>. Nysgerrigheden på plantens plejende ingrediens CBD førte til et samarbejde med hudplejespecialister i Danmark. I 2019 blev NatureCell <a href=\"/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt\">den første danske CBD-hudplejeserie</a>, som fik bekræftet, at produkterne kunne sælges som kosmetik.</p>",
         "container": "1100",
         "pad_y": "8px 0 64px",
         "cols": "1fr 1fr",
@@ -229,8 +231,8 @@
         "s3": {
           "type": "stat",
           "settings": {
-            "num": "100%",
-            "label": "Dansk produktion & test"
+            "num": "Dansk",
+            "label": "Udviklet af hudplejespecialister"
           }
         },
         "s4": {
@@ -255,10 +257,10 @@
         "tone": "sage50",
         "media_side": "left",
         "image_url": "nc-founders.webp",
-        "eyebrow": "Familien bag",
-        "heading": "Drevet af en dansk familie",
-        "text": "<p>NatureCell er familiedrevet. Vi står selv bag hver beslutning, fra råvarer og formuleringer til den måde, vi taler med vores kunder på. Vi lover ikke mirakler; vi lover ærlighed, dansk produktion og produkter, vi selv bruger hver dag.</p>",
-        "quote": "Vi bygger NatureCell på tillid, én ærlig kundeoplevelse ad gangen.",
+        "eyebrow": "Mød familien bag",
+        "heading": "Vi er Lizbeth og Allan. Og vi står bag vores valg",
+        "text": "<p>Vi bruger selv produkterne hver dag og står bag beslutningerne om indhold, kvalitet og kundeservice. AI kan hjælpe os med formuleringer, men et menneske læser altid din besked og står for svaret. Du skal føle dig hørt og få hjælp, der tager udgangspunkt i dig.</p>",
+        "quote": "Din hud og din tryghed går forud for et salg.",
         "focal": "left center",
         "quote_size": "18",
         "flush_bottom": true,
@@ -293,11 +295,11 @@
     "hero",
     "video",
     "familien",
-    "timeline",
-    "loefte",
     "moellerup",
+    "timeline",
+    "familie2",
     "bts",
-    "stats",
-    "familie2"
+    "loefte",
+    "stats"
   ]
 }

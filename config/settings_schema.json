@@ -201,6 +201,29 @@
     ]
   },
   {
+    "name": "Blog og artikler",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Etiketten på artikelkort og over artiklens titel er et af artiklens tags (Indhold > Blogopslag > Tags). Temaet viser det første tag fra listen herunder, som artiklen har. Har artiklen ingen af dem, vises det første tag, der ikke står på listen over tags, der aldrig bruges. Ret listerne her, eller ret artiklens tags."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_article_labels",
+        "label": "Artikel-etiketter, i prioriteret rækkefølge",
+        "default": "Guides, Presseomtale, Ekspert, Kosmetolog, Hudplejetips, Hudplejerutine, Forskning, Moden hud, Uren hud, Sensitiv hud, Tørre hænder, Tørre fødder, Tørt ansigt, Ansigt, Hænder, Fødder, Krop",
+        "info": "Kommasepareret. Store og små bogstaver er ligegyldige."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_article_label_skip",
+        "label": "Tags der aldrig bruges som etiket",
+        "default": "CBD, CBD olie, NatureCell, Test, LS, studie, studier, Anmeldelser, Kundecases",
+        "info": "Kommasepareret. Fx brede tags, der står på næsten alle artikler."
+      }
+    ]
+  },
+  {
     "name": "Integrationer",
     "settings": [
       {

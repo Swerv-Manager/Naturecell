@@ -26,8 +26,10 @@
   {%- comment -%} Designets indhold: flex 1, padding-bottom clamp(26,5vw,44), raekke med gap clamp(14,3vw,22), lodret centreret, ombrydes. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-tl__content { flex: 1; min-width: 0; padding: 0 0 clamp(26px, 5vw, 44px); display: flex; gap: clamp(14px, 3vw, 22px); align-items: center; flex-wrap: wrap; text-align: left; }
   {%- comment -%} Designets thumb: flex 0 0 min(190px,40%), 3:2, radius-lg, shadow-sm. {%- endcomment -%}
-  #shopify-section-{{ section.id }} .nc-tl__media { flex: 0 0 min(190px, 40%); max-width: 190px; aspect-ratio: 3 / 2; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-tl__media { flex: 0 0 min(240px, 42%); max-width: 240px; aspect-ratio: 3 / 2; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); box-shadow: var(--shadow-sm); }
   #shopify-section-{{ section.id }} .nc-tl__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-tl__media--contain { background: var(--cloud, #fff); }
+  #shopify-section-{{ section.id }} .nc-tl__media--contain img { object-fit: contain; padding: 6px; }
   {%- comment -%} Designets tekstspalte: flex 1, min-width 200, kolonne med gap 5. {%- endcomment -%}
   #shopify-section-{{ section.id }} .nc-tl__body { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
   #shopify-section-{{ section.id }} .nc-tl__year { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--sage-600); line-height: 1; }
@@ -61,10 +63,10 @@
             <span class="nc-tl__rail" aria-hidden="true"></span>
           </div>
           <div class="nc-tl__content">
-            <div class="nc-tl__media">
+            <div class="nc-tl__media{% if block.settings.fit == 'contain' %} nc-tl__media--contain{% endif %}">
               {%- assign tl_alt = block.settings.title | escape -%}
               {%- if block.settings.image != blank -%}
-                {{ block.settings.image | image_url: width: 420 | image_tag: alt: tl_alt, loading: 'lazy', sizes: '190px' }}
+                {{ block.settings.image | image_url: width: 520 | image_tag: alt: tl_alt, loading: 'lazy', sizes: '240px' }}
               {%- elsif block.settings.image_url contains '//' -%}
                 <img src="{{ block.settings.image_url }}" alt="{{ tl_alt }}" loading="lazy" width="420" height="280">
               {%- elsif block.settings.image_url != blank -%}
@@ -101,7 +103,7 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Vores rejse" },
-    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Fra idé til Danmarks førende CBD-hudpleje" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Fra idé til i dag" },
     { "type": "text", "id": "cta_text", "label": "CTA-knap, tekst", "default": "Shop NatureCell →" },
     { "type": "url", "id": "cta_url", "label": "CTA-knap, link" }
   ],
@@ -115,19 +117,20 @@
         { "type": "textarea", "id": "text", "label": "Tekst", "default": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form." },
         { "type": "url", "id": "url", "label": "Læs mere-link" },
         { "type": "image_picker", "id": "image", "label": "Billede" },
-        { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }
+        { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" },
+        { "type": "select", "id": "fit", "label": "Billedvisning", "options": [ { "value": "cover", "label": "Fyld rammen" }, { "value": "contain", "label": "Hele billedet (fx produktbilleder)" } ], "default": "cover" }
       ]
     }
   ],
   "presets": [
     {
       "name": "Tidslinje",
-      "settings": { "eyebrow": "Vores rejse", "heading": "Fra idé til Danmarks førende CBD-hudpleje", "cta_text": "Shop NatureCell →" },
+      "settings": { "eyebrow": "Vores rejse", "heading": "Fra idé til i dag", "cta_text": "Shop NatureCell →" },
       "blocks": [
-        { "type": "milestone", "settings": { "year": "2026", "title": "Et komplet univers", "text": "Et fuldt sortiment til ansigt, krop, hænder, fødder og hår, stadig dansk, stadig ærligt.", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp" } },
-        { "type": "milestone", "settings": { "year": "2021", "title": "Løvens Hule", "text": "Jesper Buch investerer, og NatureCell når ud til flere danske hjem.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
-        { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972" } },
-        { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "image_url": "nc-founders.webp" } }
+        { "type": "milestone", "settings": { "year": "2026", "title": "Løvens Hule", "text": "Vi pitcher NatureCell i Løvens Hule, og Jesper Buch bliver investor.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
+        { "type": "milestone", "settings": { "year": "2021", "title": "Webshoppen", "text": "NatureCell sælges direkte til dig gennem vores egen webshop, drevet af Lizbeth.", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp" } },
+        { "type": "milestone", "settings": { "year": "2019", "title": "Først godkendt i DK", "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.", "url": "/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972", "fit": "contain" } },
+        { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "url": "/blogs/artikler/interview-pa-mollerup-gods-her-begynder-historien-bag-naturecell", "image_url": "nc-founders.webp" } }
       ]
     }
   ]

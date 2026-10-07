@@ -45,7 +45,7 @@
     "not_found_body": "The page you are looking for has moved or no longer exists.",
     "all": "All",
     "free_shipping": "Free shipping over {{ amount }}",
-    "announce_tail": "Vegan & plant-based · Denmark's first approved CBD skincare",
+    "announce_tail": "Danish skincare since 2018 · Specialists in plant-based CBD skincare",
     "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} reviews on Trustpilot",
     "tp_agg_html": "<strong>{{ score }}</strong> out of 5 · <strong>{{ count }}</strong> reviews on Trustpilot",
     "tp_num": "{{ score }}/5",
@@ -55,11 +55,13 @@
     "video_missing": "Choose the video in the section settings. Upload it first under Content > Files.",
     "previous_page": "Previous page",
     "next_page": "Next page",
-    "page_n": "Page {{ page }}"
+    "page_n": "Page {{ page }}",
+    "scroll_left": "Scroll left",
+    "scroll_right": "Scroll right"
   },
   "blog": {
     "read_also": "Read also",
-    "told_by": "Told by",
+    "told_by": "Written by",
     "article": "Article",
     "real_customer": "Real NatureCell customer",
     "more_cases": "More customer stories",
@@ -210,7 +212,9 @@
     "show_all": "Show all ingredients"
   },
   "press": {
-    "title": "As featured in"
+    "title": "As featured in",
+    "read_more": "Read more",
+    "read_original": "Read the original at {{ outlet }}"
   },
   "forms": {
     "email": "Email",
@@ -336,7 +340,7 @@
     "with_one": "With {{ a }}",
     "with_two": "With {{ a }} and {{ b }}",
     "developed_dk": "Developed in Denmark",
-    "dermatest": "Dermatest: Sehr gut",
+    "dermatest": "Dermatest: Excellent",
     "kemiluppen": "Kemiluppen (DK): Kolbe A",
     "coa": "Certificate of analysis per batch",
     "ingr": {
@@ -372,7 +376,7 @@
     },
     "ticker": {
       "free_shipping": "Free shipping over {{ amount }}",
-      "dk_test": "Danish production & testing",
+      "dk_test": "Developed in Denmark by skincare specialists",
       "vegan": "Vegan & plant-based",
       "emaerket": "e-mærket certified webshop · safe shopping",
       "returns": "14-day right of withdrawal"
@@ -383,7 +387,7 @@
       "return_q": "Can I cancel my purchase?",
       "return_a_html": "<p>Yes. You have a 14-day right of withdrawal from the day you receive the goods. Items are returned unused and in their original packaging.</p>",
       "storage_q": "How do I store the products?",
-      "storage_a_html": "<p>Store at no more than 25 degrees and out of direct sunlight. Close the packaging well after use. The products are for external use.</p>",
+      "storage_a_html": "<p>Store at no more than 25 degrees and out of direct sunlight. Close the packaging well after use. Do not swallow the products.</p>",
       "advice_q": "Can I get personal advice?",
       "advice_a_html": "<p>Yes. Write to hello@naturecell.dk or call +45 40 55 00 42. We answer the phone ourselves, and together we will find the product that suits your routine.</p>",
       "ship_free_html": "<p>Free shipping on orders over {{ amount }}.</p>"

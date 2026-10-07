@@ -3,7 +3,10 @@
     "main": {
       "type": "main-article",
       "settings": {
-        "cta_label": "Læs hele artiklen på naturecell.dk"
+        "cta_label": "Se alle produkter",
+        "cta_url": "/collections/cbd-hudpleje",
+        "author_avatar": "shopify://shop_images/Naturecell-Lizbeth.webp",
+        "author_avatar_name": "Lizbeth Falk"
       }
     }
   },

@@ -55,7 +55,9 @@
     "video_missing": "Wählen Sie das Video in den Einstellungen des Abschnitts aus. Laden Sie es zuerst unter Inhalte > Dateien hoch.",
     "previous_page": "Vorherige Seite",
     "next_page": "Nächste Seite",
-    "page_n": "Seite {{ page }}"
+    "page_n": "Seite {{ page }}",
+    "scroll_left": "Nach links scrollen",
+    "scroll_right": "Nach rechts scrollen"
   },
   "blog": {
     "read_also": "Lesen Sie auch",
@@ -210,7 +212,9 @@
     "show_all": "Alle Inhaltsstoffe anzeigen"
   },
   "press": {
-    "title": "Bekannt aus den Medien"
+    "title": "Bekannt aus den Medien",
+    "read_more": "Mehr lesen",
+    "read_original": "Original bei {{ outlet }} lesen"
   },
   "forms": {
     "email": "E-Mail",

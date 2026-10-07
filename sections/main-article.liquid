@@ -46,21 +46,49 @@
   endif
 
   comment
-    Kundecase: video-embed skal staa lige efter intro-afsnittet (som i
-    designet), ikke hvor den ligger i CMS-indholdet. Loeft foerste iframe
-    ud og saet den ind efter foerste <p>.
+    Kundecase: casens foerste video (YouTube/Vimeo-iframe) afspilles i heroen, naar man trykker
+    paa playknappen, saa knappen ikke er pynt. Videoen fjernes saa fra broedteksten, saa den ikke
+    staar to gange. Kan iframen ikke laeses, loeftes den som foer ind efter foerste afsnit.
   endcomment
   assign body_html = article.content
+  assign case_vid_src = ''
   if is_case and body_html contains '<iframe'
     assign embed_split = body_html | split: '<iframe'
     assign embed_rest = embed_split[1] | split: '</iframe>'
-    assign embed_html = '<div class="nc-art__embed"><iframe' | append: embed_rest[0] | append: '</iframe></div>'
-    assign intro_split = embed_split[0] | split: '</p>'
-    assign intro_html = intro_split[0] | append: '</p>'
-    assign after_intro = embed_split[0] | remove_first: intro_html
-    assign body_html = intro_html | append: embed_html | append: after_intro
-    if embed_rest.size > 1
-      assign body_html = body_html | append: embed_rest[1]
+    assign if_attrs = embed_rest[0] | split: '>' | first
+    if if_attrs contains ' src="'
+      assign case_vid_src = if_attrs | split: ' src="' | last | split: '"' | first | strip | replace: '&amp;', '&'
+    endif
+    if case_vid_src contains 'youtube' or case_vid_src contains 'youtu.be' or case_vid_src contains 'vimeo'
+      if case_vid_src contains '?'
+        assign case_vid_src = case_vid_src | append: '&autoplay=1&rel=0'
+      else
+        assign case_vid_src = case_vid_src | append: '?autoplay=1&rel=0'
+      endif
+      assign body_html = embed_split[0]
+      if embed_rest.size > 1
+        assign body_html = body_html | append: embed_rest[1]
+      endif
+    else
+      assign case_vid_src = ''
+      assign embed_html = '<div class="nc-art__embed"><iframe' | append: embed_rest[0] | append: '</iframe></div>'
+      assign intro_split = embed_split[0] | split: '</p>'
+      assign intro_html = intro_split[0] | append: '</p>'
+      assign after_intro = embed_split[0] | remove_first: intro_html
+      assign body_html = intro_html | append: embed_html | append: after_intro
+      if embed_rest.size > 1
+        assign body_html = body_html | append: embed_rest[1]
+      endif
+    endif
+  endif
+
+  assign author_name = article.author | strip
+  assign author_img = blank
+  if section.settings.author_avatar != blank
+    assign avatar_for = section.settings.author_avatar_name | default: 'Lizbeth Falk' | strip | downcase
+    assign author_dc = author_name | downcase
+    if author_dc == avatar_for
+      assign author_img = section.settings.author_avatar
     endif
   endif
 -%}
@@ -84,6 +112,12 @@
   #shopify-section-{{ section.id }} .nc-casehero__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 4 / 5; background: var(--sage-600); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); }
   #shopify-section-{{ section.id }} .nc-casehero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #shopify-section-{{ section.id }} .nc-casehero__media .nc-ccard__play span { width: 74px; height: 74px; background: rgba(255, 255, 255, 0.95); color: var(--sage-700); box-shadow: var(--shadow-lg); }
+  #shopify-section-{{ section.id }} .nc-casehero__playbtn { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; }
+  #shopify-section-{{ section.id }} .nc-casehero__playbtn .nc-ccard__play { pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-casehero__playbtn:hover .nc-ccard__play span, #shopify-section-{{ section.id }} .nc-casehero__playbtn:focus-visible .nc-ccard__play span { transform: scale(1.06); }
+  #shopify-section-{{ section.id }} .nc-casehero__media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  #shopify-section-{{ section.id }} .nc-art__byline .nc-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; border-radius: inherit; display: block; }
+  #shopify-section-{{ section.id }} .nc-art__byline--article { max-width: 712px; margin: -18px auto 30px; padding-bottom: 0; border-bottom: 0; }
 
   /* ===== Kundecase-artikel (design l.1987-2008) ===== */
   #shopify-section-{{ section.id }} .nc-section--case { padding: 52px 0 0; }
@@ -176,8 +210,10 @@
           {%- if article.image -%}
             {{ article.image | image_url: width: 1100 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 900px) 590px, 94vw' }}
           {%- endif -%}
-          {%- if has_video -%}
-            <span class="nc-ccard__play" aria-hidden="true"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span>
+          {%- if case_vid_src != blank -%}
+            <button type="button" class="nc-casehero__playbtn" data-nc-embed="{{ case_vid_src | escape }}" data-nc-embed-title="{{ clean_title | escape }}" aria-label="{{ 'general.play_video' | t }}: {{ clean_title | escape }}">
+              <span class="nc-ccard__play" aria-hidden="true"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span>
+            </button>
           {%- endif -%}
         </div>
       </div>
@@ -192,12 +228,7 @@
   <div class="nc-container">
     <article class="nc-art {% if is_case %}nc-art--case{% else %}nc-art--article{% endif %}">
       {%- if is_case -%}
-        <div class="nc-art__byline">
-          <span class="nc-avatar nc-avatar--light" aria-hidden="true">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-          </span>
-          <span>{{ 'blog.told_by' | t }} <strong>{{ article.author }}</strong></span>
-        </div>
+        {%- render 'nc-article-byline', author_name: author_name, author_img: author_img, extra_class: '' -%}
       {%- else -%}
         <div class="nc-art__back">
           <a class="nc-backlink" href="{{ blog.url }}">
@@ -205,10 +236,12 @@
             {{ 'blog.all_articles' | t }}
           </a>
         </div>
-        {%- if article.tags.first -%}
-          <p class="nc-art__eyebrow">{% render 'nc-tag-label', tag: article.tags.first %}</p>
+        {%- capture art_lbl %}{% render 'nc-article-label', article: article %}{% endcapture -%}
+        {%- if art_lbl != blank -%}
+          <p class="nc-art__eyebrow">{{ art_lbl }}</p>
         {%- endif -%}
         <h1 class="nc-art__title">{% render 'nc-cbd', text: clean_title %}</h1>
+        {%- render 'nc-article-byline', author_name: author_name, author_img: author_img, extra_class: 'nc-art__byline--article' -%}
         {%- if article.image -%}
           <div class="nc-art__hero">
             {{ article.image | image_url: width: 1900 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 1024px) 950px, 94vw' }}
@@ -221,11 +254,12 @@
       </div>
 
       {%- unless is_case -%}
-        {%- if section.settings.show_cta -%}
+        {%- comment -%} Knappen linker aldrig til artiklen selv: uden link vises den ikke. {%- endcomment -%}
+        {%- if section.settings.show_cta and section.settings.cta_url != blank and section.settings.cta_label != blank -%}
           <div class="nc-art__cta-row nc-art__inset">
-            <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: article.url %}">
-              {% if section.settings.cta_label != blank %}{% render 'nc-cbd', text: section.settings.cta_label %}{% else %}{{ 'blog.read_full_article' | t }}{% endif %}
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url %}">
+              {% render 'nc-cbd', text: section.settings.cta_label %}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             </a>
           </div>
         {%- endif -%}
@@ -288,8 +322,9 @@
                     {%- if a.image -%}
                       {{ a.image | image_url: width: 560 | image_tag: alt: a.title, loading: 'lazy' }}
                     {%- endif -%}
-                    {%- if a.tags.first -%}
-                      <span class="nc-ccard__area">{% render 'nc-tag-label', tag: a.tags.first %}</span>
+                    {%- capture rel_lbl %}{% render 'nc-article-label', article: a %}{% endcapture -%}
+                    {%- if rel_lbl != blank -%}
+                      <span class="nc-ccard__area">{{ rel_lbl }}</span>
                     {%- endif -%}
                   </span>
                   {%- assign nc_at = a.title | split: ' | ' | first -%}
@@ -333,9 +368,12 @@
   "settings": [
     { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet ncell.products (produktliste) på artiklen." },
     { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips under artiklen", "default": true, "info": "Vises kun på kundecases." },
-    { "type": "checkbox", "id": "show_cta", "label": "Vis CTA-knap efter artiklen", "default": true },
-    { "type": "text", "id": "cta_label", "label": "CTA-tekst", "default": "Læs hele artiklen på naturecell.dk" },
-    { "type": "url", "id": "cta_url", "label": "CTA-link", "info": "Tom = artiklens egen adresse." }
+    { "type": "checkbox", "id": "show_cta", "label": "Vis knap efter artiklen", "default": true },
+    { "type": "text", "id": "cta_label", "label": "Knaptekst", "default": "Se alle produkter" },
+    { "type": "url", "id": "cta_url", "label": "Knaplink", "info": "Uden link vises knappen ikke. Teksten skal passe til siden, knappen fører til." },
+    { "type": "header", "content": "Forfatter" },
+    { "type": "image_picker", "id": "author_avatar", "label": "Forfatterbillede", "info": "Vises i den runde cirkel ved \"Skrevet af\"." },
+    { "type": "text", "id": "author_avatar_name", "label": "Billedet hører til forfatteren", "default": "Lizbeth Falk", "info": "Navnet skal stå præcis som forfatteren på blogindlægget." }
   ]
 }
 {% endschema %}

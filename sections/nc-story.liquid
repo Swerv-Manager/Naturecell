@@ -26,6 +26,13 @@
   .nc-story__caption { position: absolute; left: 22px; bottom: 20px; z-index: 1; color: var(--paper); }
   .nc-story__caption strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.2; }
   .nc-story__caption span { display: block; font-size: 13px; color: rgba(246, 244, 238, 0.85); margin-top: 2px; }
+  /* Video: plakat med playknap; videoen afspilles foerst ved klik (med lyd og kontroller) */
+  .nc-story__play { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; }
+  .nc-story__play img { position: absolute; inset: 0; }
+  .nc-story__playicon { position: absolute; top: 50%; left: 50%; z-index: 2; transform: translate(-50%, -50%); width: 74px; height: 74px; border-radius: 999px; background: rgba(255, 255, 255, 0.94); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); transition: transform var(--dur-fast) var(--ease-soft); }
+  .nc-story__play:hover .nc-story__playicon, .nc-story__play:focus-visible .nc-story__playicon { transform: translate(-50%, -50%) scale(1.06); }
+  .nc-story__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+  .nc-story__media.is-playing::after, .nc-story__media.is-playing .nc-story__caption { display: none; }
 {%- endstyle -%}
 
 {%- comment -%} nc-flush-footer: designet har ingen luft mellem historie-striben og footeren (footeren nulstiller sin margin-top). {%- endcomment -%}
@@ -49,7 +56,17 @@
         {%- endif -%}
       </div>
       <div class="nc-story__media">
-        {%- if section.settings.image != blank -%}
+        {%- if section.settings.video != blank -%}
+          <button type="button" class="nc-story__play" data-nc-play aria-label="{{ 'general.play_video' | t }}: {{ section.settings.caption_title | escape }}">
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 1200 | image_tag: alt: '', widths: '600, 900, 1200', loading: 'lazy' }}
+            {%- elsif section.settings.video.preview_image -%}
+              {{ section.settings.video.preview_image | image_url: width: 1200 | image_tag: alt: '', widths: '600, 900, 1200', loading: 'lazy' }}
+            {%- endif -%}
+            <span class="nc-story__playicon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+          <template data-nc-play-src>{{ section.settings.video | video_tag: controls: true, playsinline: true, preload: 'auto' }}</template>
+        {%- elsif section.settings.image != blank -%}
           {{ section.settings.image | image_url: width: 1200 | image_tag: alt: section.settings.caption_title, widths: '600, 900, 1200', loading: 'lazy' }}
         {%- else -%}
           <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy" width="1200" height="1500">
@@ -73,7 +90,8 @@
     { "type": "textarea", "id": "body", "label": "Brødtekst", "default": "NatureCell blev i 2019 den første CBD-hudplejeserie godkendt til salg i Danmark. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk produktion og rigtige resultater frem for løfter." },
     { "type": "text", "id": "cta_text", "label": "Knap", "default": "Læs vores historie →" },
     { "type": "url", "id": "cta_url", "label": "Knap: link" },
-    { "type": "image_picker", "id": "image", "label": "Billede", "info": "Standard: grundlæggerfotoet fra designet." },
+    { "type": "image_picker", "id": "image", "label": "Billede", "info": "Standard: grundlæggerfotoet fra designet. Med video bruges billedet som plakat." },
+    { "type": "video", "id": "video", "label": "Video (valgfri)", "info": "Fx grundlæggervideoen fra Shopify Filer. Vises med playknap og afspilles med lyd, når man trykker." },
     { "type": "text", "id": "caption_title", "label": "Billedtekst", "default": "Lizbeth Falk & Allan Gamborg" },
     { "type": "text", "id": "caption_sub", "label": "Billedtekst, undertekst", "default": "Grundlæggere af NatureCell" }
   ],

@@ -45,7 +45,7 @@
     "not_found_body": "Den side du leder efter, er flyttet eller findes ikke længere.",
     "all": "Alle",
     "free_shipping": "Fri fragt over {{ amount }}",
-    "announce_tail": "Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje",
+    "announce_tail": "Dansk hudpleje siden 2018 · Specialister i plantebaseret CBD-hudpleje",
     "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} anmeldelser på Trustpilot",
     "tp_agg_html": "<strong>{{ score }}</strong> ud af 5 · <strong>{{ count }}</strong> anmeldelser på Trustpilot",
     "tp_num": "{{ score }}/5",
@@ -55,7 +55,9 @@
     "video_missing": "Vælg videoen i sektionens indstillinger. Upload den først under Indhold > Filer.",
     "previous_page": "Forrige side",
     "next_page": "Næste side",
-    "page_n": "Side {{ page }}"
+    "page_n": "Side {{ page }}",
+    "scroll_left": "Rul til venstre",
+    "scroll_right": "Rul til højre"
   },
   "shopify": {
     "checkout": {
@@ -66,7 +68,7 @@
   },
   "blog": {
     "read_also": "Læs også",
-    "told_by": "Fortalt af",
+    "told_by": "Skrevet af",
     "article": "Artikel",
     "real_customer": "Ægte NatureCell-kunde",
     "more_cases": "Se flere kundecases",
@@ -217,7 +219,9 @@
     "show_all": "Vis alle ingredienser"
   },
   "press": {
-    "title": "Omtalt i medierne"
+    "title": "Omtalt i medierne",
+    "read_more": "Læs mere",
+    "read_original": "Læs originalen hos {{ outlet }}"
   },
   "forms": {
     "email": "E-mail",
@@ -336,7 +340,7 @@
     "with_one": "Med {{ a }}",
     "with_two": "Med {{ a }} og {{ b }}",
     "developed_dk": "Udviklet i Danmark",
-    "dermatest": "Dermatest: Sehr gut",
+    "dermatest": "Dermatest: Excellent",
     "kemiluppen": "Kolbe A i Kemiluppen",
     "coa": "Analysecertifikat pr. parti",
     "ingr": {
@@ -372,7 +376,7 @@
     },
     "ticker": {
       "free_shipping": "Fri fragt over {{ amount }}",
-      "dk_test": "Dansk produktion & test",
+      "dk_test": "Dansk udviklet af hudplejespecialister",
       "vegan": "Vegansk & plantebaseret",
       "emaerket": "e-mærket webshop · tryg handel",
       "returns": "14 dages fortrydelsesret"
@@ -383,7 +387,7 @@
       "return_q": "Kan jeg fortryde mit køb?",
       "return_a_html": "<p>Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Varen sendes retur ubrugt og i original emballage.</p>",
       "storage_q": "Hvordan opbevarer jeg produkterne?",
-      "storage_a_html": "<p>Opbevares ved højst 25 grader og uden for direkte sollys. Luk emballagen godt efter brug. Produkterne er til udvortes brug.</p>",
+      "storage_a_html": "<p>Opbevares ved højst 25 grader og uden for direkte sollys. Luk emballagen godt efter brug. Produkterne må ikke indtages.</p>",
       "advice_q": "Kan jeg få personlig rådgivning?",
       "advice_a_html": "<p>Ja. Skriv til hello@naturecell.dk eller ring på +45 40 55 00 42. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
       "ship_free_html": "<p>Fri fragt ved køb over {{ amount }}.</p>"
