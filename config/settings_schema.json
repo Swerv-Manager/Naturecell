@@ -139,9 +139,9 @@
       {
         "type": "text",
         "id": "nc_ingredient_skip",
-        "label": "Ingredienser der aldrig vises automatisk",
-        "default": "water, test, test-1, cbd, cannabis-sativa-l-extract",
-        "info": "Handles på metaobjektet Ingredients, adskilt med komma. CBD og hamp bruges aldrig som blikfang."
+        "label": "Ingredienser der aldrig vises",
+        "default": "water, test, test-1, cbd, cannabis-sativa-l-extract, koldpresset-hamp-froolie, natural-myrcene, natural-alpha-pinene, natural-beta-caryophyllene, citrus-aurantium-dulcis-oil-orange, citrus-medica-limonum-oil-lemon",
+        "info": "Handles på metaobjektet Ingredients, adskilt med komma. Gælder både automatisk match og produktets egen ingrediensliste (custom.ingredients). Bliver der intet tilbage af produktets liste, vises de ingredienser der matcher INCI-listen. Duftstofferne (terpener og citrusolier) står her, fordi de endnu ikke har billeder i den nye serie: fjern dem fra listen, når de har."
       },
       {
         "type": "textarea",

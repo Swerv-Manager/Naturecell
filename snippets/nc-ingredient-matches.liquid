@@ -7,26 +7,35 @@
   paa sit navn foer parentesen eller teksten i parentesen, fx
   "Sheasmør (Butyrospermum Parkii Butter)". Mellemrum, bindestreger og "natural"
   ignoreres. Resultatet sorteres efter placering i INCI-listen (hoejest koncentration
-  foerst). Handles i "Ingredienser der aldrig vises automatisk" springes over.
+  foerst). Handles i "Ingredienser der aldrig vises" springes over, ogsaa i den kuraterede
+  liste. Er der intet tilbage af den kuraterede liste, bruges matchningen i stedet.
 
   Brug: {%- capture ids %}{% render 'nc-ingredient-matches', product: product, limit: 4 %}{% endcapture -%}
 {%- endcomment -%}
 {%- liquid
   assign nc_lim = limit | default: 4
+  assign nc_skip = settings.nc_ingredient_skip | default: 'water, test, test-1, cbd, cannabis-sativa-l-extract, koldpresset-hamp-froolie, natural-myrcene, natural-alpha-pinene, natural-beta-caryophyllene, citrus-aurantium-dulcis-oil-orange, citrus-medica-limonum-oil-lemon' | remove: ' ' | split: ','
+  assign nc_out = ''
   assign nc_curated = product.metafields.custom.ingredients.value
   if nc_curated != blank
-    assign nc_out = ''
-    for mo in nc_curated limit: nc_lim
+    assign nc_n = 0
+    for mo in nc_curated
+      if nc_skip contains mo.system.handle
+        continue
+      endif
       assign nc_out = nc_out | append: mo.system.handle | append: ','
+      assign nc_n = nc_n | plus: 1
+      if nc_n >= nc_lim
+        break
+      endif
     endfor
-    echo nc_out
-  else
+  endif
+  if nc_out == blank
     capture nc_inci
       render 'nc-product-part', product: product, part: 'ingredients', plain: true
     endcapture
     assign nc_inci = nc_inci | downcase | remove: ' ' | remove: '-' | remove: '*' | remove: '(' | remove: ')' | remove: '/' | remove: ','
     if nc_inci != blank
-      assign nc_skip = settings.nc_ingredient_skip | default: 'water, test, test-1, cbd, cannabis-sativa-l-extract' | remove: ' ' | split: ','
       assign nc_hits = ''
       for mo in shop.metaobjects.ingredients.values
         assign nc_handle = mo.system.handle
@@ -61,7 +70,7 @@
         assign nc_row_handle = row | split: '|' | last
         assign nc_out = nc_out | append: nc_row_handle | append: ','
       endfor
-      echo nc_out
     endif
   endif
+  echo nc_out
 -%}
