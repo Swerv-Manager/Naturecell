@@ -60,6 +60,10 @@
   .nc-header__link[aria-expanded="true"] svg { transform: rotate(180deg); }
   {%- comment -%} Designet: 14px stjerne centreret i knappens inline-flex (ikke baseline-justeret). {%- endcomment -%}
   .nc-header__star { display: inline-flex; align-items: center; color: var(--sage-500); }
+  {%- comment -%} Bland selv-menupunktet: lille badge over teksten (som referencen "Koeb 3 og spar"). {%- endcomment -%}
+  .nc-header__mix { position: relative; }
+  .nc-header__badge { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); padding: 2px 8px; border-radius: var(--radius-pill); background: var(--sage-700); color: var(--cloud); font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; line-height: 1.5; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
+  .nc-mobilenav__badge { margin-left: 8px; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--sage-700); color: var(--cloud); font-size: 11px; font-weight: 700; vertical-align: middle; }
   .nc-header__star svg { display: block; }
 
   .nc-header__actions { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: none; }
@@ -221,6 +225,9 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </button>
           </li>
+          {%- if section.settings.mix_show and section.settings.mix_label != blank -%}
+            <li><a class="nc-header__link nc-header__mix" href="{% render 'nc-url', url: section.settings.mix_url, fallback: '/collections/bland-selv' %}">{% render 'nc-cbd', text: section.settings.mix_label %}{%- if section.settings.mix_badge != blank -%}<span class="nc-header__badge">{% render 'nc-cbd', text: section.settings.mix_badge %}</span>{%- endif -%}</a></li>
+          {%- endif -%}
           <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a></li>
           <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a></li>
           <li class="nc-dd">
@@ -383,6 +390,9 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      {%- if section.settings.mix_show and section.settings.mix_label != blank -%}
+        <a href="{% render 'nc-url', url: section.settings.mix_url, fallback: '/collections/bland-selv' %}">{% render 'nc-cbd', text: section.settings.mix_label %}{%- if section.settings.mix_badge != blank -%}<span class="nc-mobilenav__badge">{% render 'nc-cbd', text: section.settings.mix_badge %}</span>{%- endif -%}</a>
+      {%- endif -%}
       <a href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.about' | t }}</a>
@@ -435,6 +445,32 @@
       "id": "all_url",
       "label": "Alle produkter",
       "info": "Standard: /collections/cbd-hudpleje"
+    },
+    {
+      "type": "checkbox",
+      "id": "mix_show",
+      "label": "Vis \"Bland selv\" i menuen",
+      "info": "Slå først til, når kollektionen og de automatiske rabatter findes.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "mix_label",
+      "label": "Bland selv: tekst",
+      "default": "Bland selv"
+    },
+    {
+      "type": "text",
+      "id": "mix_badge",
+      "label": "Bland selv: badge",
+      "info": "Fx Spar op til 20 %. Skal matche rabatterne.",
+      "default": "Spar op til 20 %"
+    },
+    {
+      "type": "url",
+      "id": "mix_url",
+      "label": "Bland selv: link",
+      "info": "Standard: /collections/bland-selv"
     },
     {
       "type": "url",

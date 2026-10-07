@@ -397,5 +397,36 @@
   "start": {
     "read_routine": "Læs om rutinen",
     "your_routine": "Din rutine"
+  },
+  "mix": {
+    "pack_title": "Din pakke",
+    "empty": "Dine valgte produkter vises her",
+    "pick_min": "Vælg mindst {{ n }} produkter",
+    "pick_for": "Vælg {{ n }} produkter og få {{ pct }} % rabat",
+    "pick_more": "Vælg {{ n }} mere, og få {{ pct }} % rabat",
+    "now_more": "Du får {{ pct }} % rabat. Vælg {{ n }} mere, og få {{ next }} %",
+    "full": "Du får den fulde rabat på {{ pct }} %",
+    "normal": "Normalpris",
+    "total": "Din pris",
+    "save": "Du sparer",
+    "add_all": "Læg hele pakken i kurven",
+    "add": "Tilføj til pakken",
+    "in_pack": "I pakken",
+    "remove": "Fjern",
+    "at_pct": "ved {{ pct }} %",
+    "tier": "{{ n }} stk. → {{ pct }} %",
+    "selected": "{{ n }} valgt",
+    "see_pack": "Se din pakke",
+    "sort": "Sortér",
+    "sort_default": "Standard",
+    "sort_price_asc": "Pris, lav til høj",
+    "sort_price_desc": "Pris, høj til lav",
+    "sort_rating": "Bedst bedømt",
+    "decrease": "Færre af {{ title }}",
+    "increase": "Flere af {{ title }}",
+    "error": "Pakken kunne ikke lægges i kurven:",
+    "reviews": "{{ n }} anmeldelser",
+    "filter_label": "Vis produkter til",
+    "review_one": "{{ n }} anmeldelse"
   }
 }

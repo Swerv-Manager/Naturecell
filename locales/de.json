@@ -397,5 +397,36 @@
   "start": {
     "read_routine": "Mehr zur Routine",
     "your_routine": "Ihre Routine"
+  },
+  "mix": {
+    "pack_title": "Ihr Paket",
+    "empty": "Ihre ausgewählten Produkte erscheinen hier",
+    "pick_min": "Wählen Sie mindestens {{ n }} Produkte",
+    "pick_for": "Wählen Sie {{ n }} Produkte und erhalten Sie {{ pct }} % Rabatt",
+    "pick_more": "Wählen Sie {{ n }} weitere und erhalten Sie {{ pct }} % Rabatt",
+    "now_more": "Sie erhalten {{ pct }} % Rabatt. Wählen Sie {{ n }} weitere für {{ next }} %",
+    "full": "Sie erhalten den vollen Rabatt von {{ pct }} %",
+    "normal": "Normalpreis",
+    "total": "Ihr Preis",
+    "save": "Sie sparen",
+    "add_all": "Ganzes Paket in den Warenkorb",
+    "add": "Zum Paket hinzufügen",
+    "in_pack": "Im Paket",
+    "remove": "Entfernen",
+    "at_pct": "bei {{ pct }} %",
+    "tier": "{{ n }} Stk. → {{ pct }} %",
+    "selected": "{{ n }} ausgewählt",
+    "see_pack": "Ihr Paket ansehen",
+    "sort": "Sortieren",
+    "sort_default": "Standard",
+    "sort_price_asc": "Preis, aufsteigend",
+    "sort_price_desc": "Preis, absteigend",
+    "sort_rating": "Beste Bewertung",
+    "decrease": "Weniger {{ title }}",
+    "increase": "Mehr {{ title }}",
+    "error": "Das Paket konnte nicht in den Warenkorb gelegt werden:",
+    "reviews": "{{ n }} Bewertungen",
+    "filter_label": "Produkte anzeigen für",
+    "review_one": "{{ n }} Bewertung"
   }
 }

@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "main": {
+      "type": "nc-mix-match",
+      "blocks": {
+        "t1": {
+          "type": "tier",
+          "settings": {
+            "qty": 2,
+            "pct": 10
+          }
+        },
+        "t2": {
+          "type": "tier",
+          "settings": {
+            "qty": 3,
+            "pct": 15
+          }
+        },
+        "t3": {
+          "type": "tier",
+          "settings": {
+            "qty": 4,
+            "pct": 20
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "eyebrow": "Bland selv",
+        "heading": "Sammensæt din egen rutine. Jo flere, jo billigere",
+        "intro": "Vælg mellem vores enkeltprodukter til ansigt, krop, hænder, fødder og hår. Rabatten regnes af normalprisen og stiger, jo flere produkter du tager med.",
+        "quote": "Vi bruger selv produkterne hver dag.",
+        "quote_author": "Lizbeth og Allan",
+        "tiers_label": "Rabattrin",
+        "tiers_note": "Rabatten stiger automatisk, jo flere du vælger",
+        "show_trust": true,
+        "fine_print": "Gælder enkeltprodukterne på denne side. Kan ikke kombineres med rabatkoder.",
+        "step1": "<strong>Vælg mindst [antal] produkter.</strong> Alle produkter på siden tæller med, også flere af det samme.",
+        "step2": "<strong>Prisen falder, mens du vælger:</strong> [trin].",
+        "unit_word": "produkter",
+        "step3": "<strong>Læg hele pakken i kurven</strong> med ét tryk.",
+        "grid_heading": "Vælg dine produkter",
+        "show_filters": true,
+        "products": [
+          "dagcreme",
+          "natcreme",
+          "rensegel",
+          "naturecell-cbd-hyaluronic-serum",
+          "cbg-eye-gel",
+          "cbd-olie-1000mg",
+          "lip-balm",
+          "handcreme",
+          "re-new-balm",
+          "bodylotion",
+          "body-oil-100ml",
+          "deodorant",
+          "exfoliating-hanske",
+          "fodcreme",
+          "shampoo-300ml",
+          "conditioner-300-ml"
+        ],
+        "skip_handles": "love-lubricant"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

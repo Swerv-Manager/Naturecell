@@ -397,5 +397,36 @@
   "start": {
     "read_routine": "Read about the routine",
     "your_routine": "Your routine"
+  },
+  "mix": {
+    "pack_title": "Your bundle",
+    "empty": "Your chosen products appear here",
+    "pick_min": "Choose at least {{ n }} products",
+    "pick_for": "Choose {{ n }} products and get {{ pct }}% off",
+    "pick_more": "Add {{ n }} more and get {{ pct }}% off",
+    "now_more": "You get {{ pct }}% off. Add {{ n }} more for {{ next }}%",
+    "full": "You get the full {{ pct }}% off",
+    "normal": "Regular price",
+    "total": "Your price",
+    "save": "You save",
+    "add_all": "Add the whole bundle to cart",
+    "add": "Add to bundle",
+    "in_pack": "In bundle",
+    "remove": "Remove",
+    "at_pct": "at {{ pct }}% off",
+    "tier": "{{ n }} items → {{ pct }}%",
+    "selected": "{{ n }} selected",
+    "see_pack": "View your bundle",
+    "sort": "Sort",
+    "sort_default": "Featured",
+    "sort_price_asc": "Price, low to high",
+    "sort_price_desc": "Price, high to low",
+    "sort_rating": "Top rated",
+    "decrease": "Fewer {{ title }}",
+    "increase": "More {{ title }}",
+    "error": "The bundle could not be added to the cart:",
+    "reviews": "{{ n }} reviews",
+    "filter_label": "Show products for",
+    "review_one": "{{ n }} review"
   }
 }
