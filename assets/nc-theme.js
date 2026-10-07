@@ -271,7 +271,7 @@
         if (srcset) main.srcset = srcset; else main.removeAttribute('srcset');
         main.src = src;
         if (th.hasAttribute('data-nc-thumb-alt')) main.alt = th.getAttribute('data-nc-thumb-alt');
-        /* livsstilsfotos (ikke kvadratiske) fylder rammen, packshots vises med luft omkring */
+        /* alle billeder fylder rammen; is-photo markerer ikke-kvadratiske billeder */
         main.classList.toggle('is-photo', Math.abs(ratio - 1) > 0.04);
         $all('[data-nc-thumb]', g).forEach(function (x) { x.classList.toggle('is-active', x === th); });
       });

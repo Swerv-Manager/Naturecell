@@ -62,17 +62,14 @@
   }
 
   .nc-pdp__gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px; }
-  .nc-pdp__main { position: relative; background: var(--nc-product-tint, var(--sage-50)); border: 1px solid var(--border-soft); border-radius: var(--radius-xl); aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; padding: 32px; overflow: hidden; }
-  .nc-pdp__main img { max-width: 88%; max-height: 88%; object-fit: contain; }
-  /* Livsstilsfotos (ikke kvadratiske) fylder hele rammen; packshots beholder luften omkring */
-  .nc-pdp__main img.is-photo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; }
+  .nc-pdp__main { position: relative; background: var(--nc-product-tint, var(--sage-50)); border: 1px solid var(--border-soft); border-radius: var(--radius-xl); aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; }
+  /* Billedet fylder rammen helt ud til den graa kant (ogsaa kvadratiske packshots). */
+  .nc-pdp__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .nc-pdp__badges { position: absolute; top: 18px; left: 18px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; z-index: 2; }
   .nc-pdp__thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
-  .nc-pdp__thumbs button { width: 72px; height: 72px; border-radius: var(--radius-md); border: 2px solid var(--border-soft); background: var(--sage-50); cursor: pointer; padding: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .nc-pdp__thumbs button { width: 72px; height: 72px; border-radius: var(--radius-md); border: 2px solid var(--border-soft); background: var(--sage-50); cursor: pointer; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .nc-pdp__thumbs button.is-active { border-color: var(--sage-500); }
-  .nc-pdp__thumbs img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .nc-pdp__thumbs button.is-photo { padding: 0; }
-  .nc-pdp__thumbs button.is-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .nc-pdp__thumbs img { width: 100%; height: 100%; object-fit: cover; }
 
   .nc-pdp__info { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .nc-pdp__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
@@ -126,7 +123,7 @@
   {%- comment -%} Mobil koebsbar 1:1 fra designet (shell.html 2998-3005): 44px billede, navn + stoerrelse, sage-knap. {%- endcomment -%}
   .nc-buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); background: rgba(246, 244, 238, 0.96); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--border-default); box-shadow: 0 -6px 24px rgba(44, 70, 61, 0.10); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); display: none; align-items: center; gap: 12px; transform: translateY(110%); transition: transform var(--dur-base) var(--ease-soft); }
   .nc-buybar.is-visible { transform: translateY(0); }
-  .nc-buybar__img { width: 44px; height: 44px; flex: none; object-fit: contain; border-radius: 10px; background: var(--nc-product-tint, var(--sage-50)); }
+  .nc-buybar__img { width: 44px; height: 44px; flex: none; object-fit: cover; border-radius: 10px; background: var(--nc-product-tint, var(--sage-50)); }
   .nc-buybar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .nc-buybar__title { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--sage-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .nc-buybar__size { font-size: 12px; color: var(--ink-500); }
@@ -173,7 +170,7 @@
         {%- if product.images.size > 1 -%}
           <div class="nc-pdp__thumbs">
             {%- for image in product.images limit: 8 -%}
-              {%- comment -%} Ikke-kvadratiske billeder er livsstilsfotos og fylder rammen (is-photo). {%- endcomment -%}
+              {%- comment -%} is-photo bruges af galleri-scriptet; alle billeder fylder rammen. {%- endcomment -%}
               {%- liquid
                 assign is_photo = false
                 if image.aspect_ratio < 0.96 or image.aspect_ratio > 1.04
