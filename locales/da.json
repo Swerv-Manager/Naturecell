@@ -171,7 +171,9 @@
     "reset_filters": "Nulstil filtre",
     "products_count": "{{ count }} produkter",
     "filtered": "Filtreret:",
-    "empty": "Ingen produkter matcher. Prøv en anden søgning eller nulstil filtrene."
+    "empty": "Ingen produkter matcher. Prøv en anden søgning eller nulstil filtrene.",
+    "remove_filter": "Fjern filteret {{ filter }}",
+    "sort": "Sortér"
   },
   "areas": {
     "face": "Ansigt",
@@ -251,7 +253,20 @@
     "see_all": "Se hele sortimentet →"
   },
   "search": {
-    "no_results": "Ingen resultater for \"{{ terms }}\". Prøv et andet søgeord."
+    "no_results": "Ingen resultater for \"{{ terms }}\".",
+    "try": "Prøv et andet ord, eller find vej herfra:",
+    "results_title": "Søgeresultater",
+    "results_for": "{{ count }} resultater for \"{{ terms }}\"",
+    "products": "Produkter",
+    "pages_articles": "Sider og artikler",
+    "suggestions": "Forslag",
+    "see_all": "Se alle resultater for \"{{ terms }}\"",
+    "no_suggestions": "Ingen forslag endnu. Tryk enter for at søge i hele butikken.",
+    "all_products": "Alle produkter",
+    "where_to_start": "Hvor skal jeg starte?",
+    "contact": "Kontakt os",
+    "popular": "Populære produkter",
+    "category": "Kategori"
   },
   "tags": {
     "anmeldelser": "Anmeldelser",

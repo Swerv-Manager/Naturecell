@@ -164,7 +164,9 @@
     "reset_filters": "Filter zurücksetzen",
     "products_count": "{{ count }} Produkte",
     "filtered": "Gefiltert:",
-    "empty": "Keine Produkte gefunden. Versuchen Sie eine andere Suche oder setzen Sie die Filter zurück."
+    "empty": "Keine Produkte gefunden. Versuchen Sie eine andere Suche oder setzen Sie die Filter zurück.",
+    "remove_filter": "Filter {{ filter }} entfernen",
+    "sort": "Sortieren"
   },
   "areas": {
     "face": "Gesicht",
@@ -251,7 +253,20 @@
     }
   },
   "search": {
-    "no_results": "Keine Ergebnisse für „{{ terms }}“. Versuchen Sie es mit einem anderen Suchbegriff."
+    "no_results": "Keine Ergebnisse für „{{ terms }}“.",
+    "try": "Versuchen Sie ein anderes Wort oder starten Sie hier:",
+    "results_title": "Suchergebnisse",
+    "results_for": "{{ count }} Ergebnisse für „{{ terms }}“",
+    "products": "Produkte",
+    "pages_articles": "Seiten und Artikel",
+    "suggestions": "Vorschläge",
+    "see_all": "Alle Ergebnisse für „{{ terms }}“ anzeigen",
+    "no_suggestions": "Noch keine Vorschläge. Drücken Sie Enter, um im ganzen Shop zu suchen.",
+    "all_products": "Alle Produkte",
+    "where_to_start": "Wo soll ich anfangen?",
+    "contact": "Kontakt",
+    "popular": "Beliebte Produkte",
+    "category": "Kategorie"
   },
   "tags": {
     "anmeldelser": "Bewertungen",

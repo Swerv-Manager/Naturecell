@@ -1,0 +1,70 @@
+{%- comment -%}
+  Soegeforslag mens kunden skriver (Shopify Predictive Search API).
+  Hentes af nc-theme.js via {{ routes.predictive_search_url }}?section_id=predictive-search og
+  vises under soegefelterne paa soegesiden og kollektionssiderne. Produkter matches paa titel,
+  beskrivelse, tags, produkttype og varianter, saa man ogsaa kan soege paa ingredienser og behov.
+  Sektionen kan ikke tilfoejes i temaeditoren (ingen presets).
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- assign ps = predictive_search.resources -%}
+  {%- assign ps_terms = predictive_search.terms -%}
+  <div class="nc-ps" data-nc-ps-results>
+    {%- if ps.queries.size > 0 -%}
+      <p class="nc-ps__head">{{ 'search.suggestions' | t }}</p>
+      <ul class="nc-ps__queries">
+        {%- for query in ps.queries limit: 4 -%}
+          <li><a href="{{ query.url }}">{{ query.styled_text }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if ps.products.size > 0 -%}
+      <p class="nc-ps__head">{{ 'search.products' | t }}</p>
+      <ul class="nc-ps__products">
+        {%- for product in ps.products limit: 6 -%}
+          {%- assign ps_name = product.title | split: ' | ' | first -%}
+          <li>
+            <a class="nc-ps__product" href="{{ product.url }}">
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 120 | image_tag: alt: '', loading: 'lazy', width: 56, height: 56 }}
+              {%- else -%}
+                <span class="nc-ps__noimg"></span>
+              {%- endif -%}
+              <span class="nc-ps__name">{% render 'nc-cbd', text: ps_name %}</span>
+              <span class="nc-ps__price">{% if product.price_varies %}{{ 'product.from' | t }} {% endif %}{{ product.price | money }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if ps.collections.size > 0 or ps.pages.size > 0 or ps.articles.size > 0 -%}
+      <p class="nc-ps__head">{{ 'search.pages_articles' | t }}</p>
+      <ul class="nc-ps__links">
+        {%- for c in ps.collections limit: 3 -%}
+          <li><a href="{{ c.url }}">{% render 'nc-cbd', text: c.title, mode: 'category' %}<small>{{ 'search.category' | t }}</small></a></li>
+        {%- endfor -%}
+        {%- for pg in ps.pages limit: 3 -%}
+          <li><a href="{{ pg.url }}">{% render 'nc-cbd', text: pg.title %}<small>{{ 'general.page_label' | t }}</small></a></li>
+        {%- endfor -%}
+        {%- for a in ps.articles limit: 3 -%}
+          {%- assign ps_at = a.title | split: ' | ' | first -%}
+          <li><a href="{{ a.url }}">{% render 'nc-cbd', text: ps_at %}<small>{{ 'blog.article' | t }}</small></a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if ps.products.size == 0 and ps.collections.size == 0 and ps.pages.size == 0 and ps.articles.size == 0 and ps.queries.size == 0 -%}
+      <p class="nc-ps__empty">{{ 'search.no_suggestions' | t }}</p>
+    {%- endif -%}
+
+    <a class="nc-ps__all" href="{{ routes.search_url }}?q={{ ps_terms | url_encode }}&amp;options%5Bprefix%5D=last">{{ 'search.see_all' | t: terms: ps_terms }}</a>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Søgeforslag",
+  "tag": "div"
+}
+{% endschema %}

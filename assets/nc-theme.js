@@ -278,6 +278,71 @@
     });
   });
 
+  /* --- Soegeforslag mens man skriver (Shopify Predictive Search + sektionen predictive-search) --- */
+  $all('[data-nc-predictive]').forEach(function (form) {
+    var input = $('input[name="q"]', form);
+    var box = $('[data-nc-ps]', form);
+    var endpoint = form.getAttribute('data-nc-predictive');
+    if (!input || !box || !endpoint || !window.fetch || !window.DOMParser) return;
+    var timer = null;
+    var last = '';
+    var ctrl = null;
+    function close() { box.hidden = true; input.setAttribute('aria-expanded', 'false'); }
+    function open() { if (box.innerHTML.trim()) { box.hidden = false; input.setAttribute('aria-expanded', 'true'); } }
+    function run() {
+      var q = input.value.trim();
+      if (q.length < 2) { last = ''; box.innerHTML = ''; close(); return; }
+      if (q === last) { open(); return; }
+      last = q;
+      if (ctrl) ctrl.abort();
+      ctrl = window.AbortController ? new AbortController() : null;
+      var url = endpoint + '?q=' + encodeURIComponent(q) + '&section_id=predictive-search' +
+        '&resources[type]=product,collection,page,article,query&resources[limit]=6&resources[limit_scope]=each' +
+        '&resources[options][unavailable_products]=last';
+      fetch(url, ctrl ? { signal: ctrl.signal } : {})
+        .then(function (r) { return r.ok ? r.text() : ''; })
+        .then(function (html) {
+          if (q !== input.value.trim()) return;
+          var res = html ? new DOMParser().parseFromString(html, 'text/html').querySelector('[data-nc-ps-results]') : null;
+          box.innerHTML = res ? res.outerHTML : '';
+          if (res) open(); else close();
+        })
+        .catch(function () {});
+    }
+    input.setAttribute('autocomplete', 'off');
+    input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 220); });
+    input.addEventListener('focus', function () { if (input.value.trim().length >= 2) open(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowDown' && !box.hidden) {
+        var first = $('a', box);
+        if (first) { e.preventDefault(); first.focus(); }
+      }
+    });
+    box.addEventListener('keydown', function (e) {
+      var links = $all('a', box);
+      var i = links.indexOf(document.activeElement);
+      if (i < 0) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); (links[i + 1] || links[0]).focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); if (i === 0) input.focus(); else links[i - 1].focus(); }
+      if (e.key === 'Escape') { close(); input.focus(); }
+    });
+    document.addEventListener('click', function (e) { if (!form.contains(e.target)) close(); });
+    form.addEventListener('focusout', function () {
+      setTimeout(function () { if (!form.contains(document.activeElement)) close(); }, 0);
+    });
+  });
+
+  /* --- Kollektion: sortering (beholder tag-filteret i stien, nulstiller sidetal) --- */
+  $all('[data-nc-sort]').forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      var u = new URL(window.location.href);
+      u.searchParams.set('sort_by', sel.value);
+      u.searchParams.delete('page');
+      window.location.href = u.toString();
+    });
+  });
+
   /* --- Favoritter (localStorage, som i designet) --- */
   function favs() {
     try { return JSON.parse(localStorage.getItem('nc_favs') || '[]'); } catch (e) { return []; }

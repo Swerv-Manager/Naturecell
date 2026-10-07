@@ -503,6 +503,23 @@ summary.nc-acc__head { list-style: none; }
 .nc-skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; padding: 12px 20px; background: var(--cloud); color: var(--ink-900); }
 .nc-skip-link:focus { left: 0; }
 
+/* Soegeforslag (sections/predictive-search.liquid), dropdown under soegefelterne */
+.nc-ps-box { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: min(480px, calc(100vw - 2 * var(--gutter, 16px))); max-height: min(70vh, 540px); overflow-y: auto; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 8px; text-align: left; }
+.nc-ps-box[hidden] { display: none; }
+.nc-ps__head { margin: 10px 8px 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-400); }
+.nc-ps__products, .nc-ps__links, .nc-ps__queries { list-style: none; margin: 0; padding: 0; }
+.nc-ps__product { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 12px; padding: 8px; border-radius: var(--radius-md); text-decoration: none; }
+.nc-ps__product img, .nc-ps__noimg { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 10px; background: var(--sage-50); }
+.nc-ps__name { font-family: var(--font-display); font-size: 16px; line-height: 1.25; color: var(--sage-700); }
+.nc-ps__price { font-size: 13.5px; font-weight: 600; color: var(--ink-700); white-space: nowrap; }
+.nc-ps__links a, .nc-ps__queries a { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 8px; border-radius: var(--radius-md); font-size: 14.5px; color: var(--ink-700); text-decoration: none; }
+.nc-ps__links small { flex: none; font-size: 11.5px; color: var(--ink-400); }
+.nc-ps__queries mark { background: none; color: var(--sage-700); font-weight: 700; }
+.nc-ps__product:hover, .nc-ps__product:focus-visible, .nc-ps__links a:hover, .nc-ps__links a:focus-visible, .nc-ps__queries a:hover, .nc-ps__queries a:focus-visible { background: var(--sage-50); outline: none; }
+.nc-ps__empty { margin: 10px 8px; font-size: 14px; line-height: 1.5; color: var(--ink-500); }
+.nc-ps__all { display: block; margin-top: 6px; padding: 12px 8px 6px; border-top: 1px solid var(--border-soft); font-size: 14px; font-weight: 600; color: var(--sage-700); text-decoration: none; }
+.nc-ps__all:hover, .nc-ps__all:focus-visible { text-decoration: underline; outline: none; }
+
 /* CBD-ikonet (snippets/nc-cbd.liquid): bogstaverne som figur i en pille, arver tekstfarven */
 .nc-cbd { display: inline-block; height: 0.86em; width: calc(0.86em * 2.0431); vertical-align: -0.1em; margin: 0 0.04em; overflow: visible; flex: none; }
 .nc-cbd-w { white-space: nowrap; }
