@@ -46,39 +46,19 @@
   endif
 
   comment
-    Kundecase: casens foerste video (YouTube/Vimeo-iframe) afspilles i heroen, naar man trykker
-    paa playknappen, saa knappen ikke er pynt. Videoen fjernes saa fra broedteksten, saa den ikke
-    staar to gange. Kan iframen ikke laeses, loeftes den som foer ind efter foerste afsnit.
+    Kundecase: videoen bliver staaende, hvor artiklen har den. Mange cases har videoen i en ramme
+    med fast format (fx padding-top: 177.78 %), og flyttes iframen, staar rammen tom tilbage.
+    Har casen en YouTube- eller Vimeo-video, faar den foerste iframe id'et nc-case-video, og heroen
+    viser knappen "Se videoen", der hopper ned til den. Billedet i heroen har ingen falsk playknap.
   endcomment
   assign body_html = article.content
-  assign case_vid_src = ''
+  assign case_has_video = false
   if is_case and body_html contains '<iframe'
     assign embed_split = body_html | split: '<iframe'
-    assign embed_rest = embed_split[1] | split: '</iframe>'
-    assign if_attrs = embed_rest[0] | split: '>' | first
-    if if_attrs contains ' src="'
-      assign case_vid_src = if_attrs | split: ' src="' | last | split: '"' | first | strip | replace: '&amp;', '&'
-    endif
-    if case_vid_src contains 'youtube' or case_vid_src contains 'youtu.be' or case_vid_src contains 'vimeo'
-      if case_vid_src contains '?'
-        assign case_vid_src = case_vid_src | append: '&autoplay=1&rel=0'
-      else
-        assign case_vid_src = case_vid_src | append: '?autoplay=1&rel=0'
-      endif
-      assign body_html = embed_split[0]
-      if embed_rest.size > 1
-        assign body_html = body_html | append: embed_rest[1]
-      endif
-    else
-      assign case_vid_src = ''
-      assign embed_html = '<div class="nc-art__embed"><iframe' | append: embed_rest[0] | append: '</iframe></div>'
-      assign intro_split = embed_split[0] | split: '</p>'
-      assign intro_html = intro_split[0] | append: '</p>'
-      assign after_intro = embed_split[0] | remove_first: intro_html
-      assign body_html = intro_html | append: embed_html | append: after_intro
-      if embed_rest.size > 1
-        assign body_html = body_html | append: embed_rest[1]
-      endif
+    assign if_attrs = embed_split[1] | split: '>' | first
+    if if_attrs contains 'youtube' or if_attrs contains 'youtu.be' or if_attrs contains 'vimeo'
+      assign case_has_video = true
+      assign body_html = body_html | replace_first: '<iframe', '<iframe id="nc-case-video"'
     endif
   endif
 
@@ -112,10 +92,10 @@
   #shopify-section-{{ section.id }} .nc-casehero__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 4 / 5; background: var(--sage-600); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); }
   #shopify-section-{{ section.id }} .nc-casehero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #shopify-section-{{ section.id }} .nc-casehero__media .nc-ccard__play span { width: 74px; height: 74px; background: rgba(255, 255, 255, 0.95); color: var(--sage-700); box-shadow: var(--shadow-lg); }
-  #shopify-section-{{ section.id }} .nc-casehero__playbtn { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; }
-  #shopify-section-{{ section.id }} .nc-casehero__playbtn .nc-ccard__play { pointer-events: none; }
-  #shopify-section-{{ section.id }} .nc-casehero__playbtn:hover .nc-ccard__play span, #shopify-section-{{ section.id }} .nc-casehero__playbtn:focus-visible .nc-ccard__play span { transform: scale(1.06); }
-  #shopify-section-{{ section.id }} .nc-casehero__media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.95); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14.5px; text-decoration: none; box-shadow: var(--shadow-md); transition: transform var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink:hover, #shopify-section-{{ section.id }} .nc-casehero__videolink:focus-visible { transform: translateY(-1px); }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink span { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: var(--sage-600); color: #fff; }
+  #shopify-section-{{ section.id }} #nc-case-video { scroll-margin-top: 120px; }
   #shopify-section-{{ section.id }} .nc-art__byline .nc-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; border-radius: inherit; display: block; }
   #shopify-section-{{ section.id }} .nc-art__byline--article { max-width: 712px; margin: -18px auto 30px; padding-bottom: 0; border-bottom: 0; }
 
@@ -135,8 +115,6 @@
   #shopify-section-{{ section.id }} .nc-case-body .nc-lead::first-letter { font-family: var(--font-display); font-size: 3.6em; line-height: 0.82; float: left; margin: 6px 12px 0 0; padding: 0; color: var(--sage-600); font-weight: 400; }
   #shopify-section-{{ section.id }} .nc-case-body blockquote { margin: 30px 0; padding: 22px 28px; border: 0; border-left: 3px solid var(--sage-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--sage-50); font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.5; color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-case-body blockquote p { margin: 0; }
-  #shopify-section-{{ section.id }} .nc-art__embed { position: relative; margin: 30px 0; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-xl); overflow: hidden; background: #000; box-shadow: var(--shadow-md); }
-  #shopify-section-{{ section.id }} .nc-art__embed iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; border-radius: 0; max-width: none; }
   #shopify-section-{{ section.id }} .nc-art__tags { display: flex; flex-wrap: wrap; gap: 8px; max-width: 712px; margin: 32px auto 0; padding-top: 22px; border-top: 1px solid var(--border-soft, var(--ink-100)); }
   #shopify-section-{{ section.id }} .nc-art__tags .nc-chip { border: 0; padding: 6px 13px; background: var(--sage-50); color: var(--sage-700); font-size: 12px; font-weight: 600; letter-spacing: 0.03em; line-height: var(--leading-relaxed, 1.7); }
   #shopify-section-{{ section.id }} .nc-art__tags .nc-chip:hover { background: var(--sage-100); color: var(--sage-800); }
@@ -210,10 +188,11 @@
           {%- if article.image -%}
             {{ article.image | image_url: width: 1100 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 900px) 590px, 94vw' }}
           {%- endif -%}
-          {%- if case_vid_src != blank -%}
-            <button type="button" class="nc-casehero__playbtn" data-nc-embed="{{ case_vid_src | escape }}" data-nc-embed-title="{{ clean_title | escape }}" aria-label="{{ 'general.play_video' | t }}: {{ clean_title | escape }}">
-              <span class="nc-ccard__play" aria-hidden="true"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span>
-            </button>
+          {%- if case_has_video -%}
+            <a class="nc-casehero__videolink" href="#nc-case-video">
+              <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+              {{ 'blog.watch_video' | t }}
+            </a>
           {%- endif -%}
         </div>
       </div>

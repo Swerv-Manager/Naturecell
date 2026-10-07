@@ -41,6 +41,7 @@
   endif
 -%}
 
+{%- unless product.gift_card? -%}
 {%- style -%}
   #shopify-section-{{ section.id }} .nc-pdpstory { border-top: 1px solid var(--border-soft); }
   #shopify-section-{{ section.id }} .nc-pdpstory__inner { max-width: 1140px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); display: grid; gap: clamp(28px, 5vw, 48px); grid-template-columns: 1fr; align-items: center; }
@@ -84,6 +85,7 @@
   </div>
 </section>
 {%- endif -%}
+{%- endunless -%}
 
 {% schema %}
 {

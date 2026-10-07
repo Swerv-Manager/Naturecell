@@ -16,6 +16,7 @@
   endif
 -%}
 
+{%- unless product.gift_card? -%}
 {%- style -%}
   #shopify-section-{{ section.id }} .nc-vidband { background: var(--nc-pdpband-bg, var(--sage-500)); }
   #shopify-section-{{ section.id }} .nc-vidband__inner { max-width: 1140px; margin: 0 auto; padding: clamp(33px, 6vw, 60px) var(--gutter); }
@@ -64,6 +65,7 @@
     </div>
   </div>
 </section>
+{%- endunless -%}
 
 {% schema %}
 {

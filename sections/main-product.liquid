@@ -246,7 +246,7 @@
         {%- comment -%} Beskrivelsen vises kun én gang: i "Beskrivelse"-accordionen under CTA'en (kundens ønske). {%- endcomment -%}
 
         {%- comment -%} Fakta-ikoner pr. produkt: ncell.badges, ellers bygget af produktets egne data (snippets/nc-product-badges). {%- endcomment -%}
-        {%- if section.settings.show_badges -%}
+        {%- if section.settings.show_badges and product.gift_card? == false -%}
           {%- render 'nc-product-badges', product: product -%}
         {%- endif -%}
 
@@ -306,8 +306,10 @@
 
         {%- comment -%}
           USP-loeb: egen liste fra indstillingen, ellers sprogfilens fem punkter (pdp.ticker.*).
+          Vises ikke paa gavekort (hudpleje-punkterne passer ikke til et gavekort).
           Fri fragt vises kun, naar kundens valuta har en graense (Temaindstillinger → Fragt og handel).
         {%- endcomment -%}
+        {%- unless product.gift_card? -%}
         {%- if section.settings.ticker_items != blank -%}
           {%- assign ticker_lines = section.settings.ticker_items | newline_to_br | split: '<br />' -%}
         {%- else -%}
@@ -337,6 +339,7 @@
             </div>
           </div>
         {%- endif -%}
+        {%- endunless -%}
 
         <div class="nc-pdp__acc">
           {%- comment -%} Beskrivelsen kan vaere aaben som standard (designet) eller foldet sammen som de andre (kundens oenske, sat i templaten). {%- endcomment -%}

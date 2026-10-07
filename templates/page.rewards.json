@@ -11,14 +11,6 @@
             "text": "Tjen point på hvert køb og indløs dem til rabat på din næste ordre."
           }
         },
-        "perk-rabat": {
-          "type": "perk",
-          "settings": {
-            "icon": "percent",
-            "title": "15% velkomstrabat",
-            "text": "Få 15% på din første ordre, når du melder dig ind i klubben."
-          }
-        },
         "perk-gave": {
           "type": "perk",
           "settings": {
@@ -68,7 +60,6 @@
       },
       "block_order": [
         "perk-point",
-        "perk-rabat",
         "perk-gave",
         "perk-adgang",
         "step-1",
@@ -79,14 +70,14 @@
       "settings": {
         "hero_eyebrow": "Bliv medlem · Gratis",
         "hero_heading": "NatureCell Kundeklub",
-        "hero_text": "Bliv en del af klubben og få mere ud af din hudpleje. Optjen point på hvert køb, få 15% velkomstrabat, en fødselsdagsgave og tidlig adgang til nyheder og medlemspriser.",
+        "hero_text": "Bliv en del af klubben og få mere ud af din hudpleje. Optjen point på hvert køb, få en fødselsdagsgave og tidlig adgang til nyheder og medlemspriser.",
         "hero_cta1": "Bliv medlem →",
         "hero_cta2": "Allerede medlem? Log ind",
         "perks_eyebrow": "Medlemsfordele",
         "perks_heading": "Fordele der plejer dig",
         "steps_heading": "Sådan virker det",
         "cta_heading": "Meld dig ind på 30 sekunder",
-        "cta_text": "Tilmeld dig med din e-mail og få 15% på din første ordre med det samme.",
+        "cta_text": "Tilmeld dig med din e-mail, og optjen point fra dit første køb.",
         "cta_button": "Bliv medlem",
         "cta_fine": "Gratis medlemskab · afmeld når som helst · vi deler ikke dine data."
       }

@@ -156,6 +156,10 @@
         {%- endcomment -%}
         {%- for block in section.blocks -%}
           {%- if use_mf and is_pdp == false and block.type != 'locale_qa' -%}{%- continue -%}{%- endif -%}
+          {%- if product.gift_card? and block.type == 'locale_qa' -%}
+            {%- comment -%} Gavekort sendes pr. e-mail og skal ikke opbevares: ingen levering- og opbevaringssvar. {%- endcomment -%}
+            {%- if block.settings.key == 'ship' or block.settings.key == 'storage' -%}{%- continue -%}{%- endif -%}
+          {%- endif -%}
           {%- if block.type == 'group' -%}
             <h3 class="nc-eyebrow nc-faqsec__group" {{ block.shopify_attributes }}>{% render 'nc-cbd', text: block.settings.heading %}</h3>
           {%- else -%}
