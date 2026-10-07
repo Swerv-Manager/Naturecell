@@ -50,7 +50,9 @@
     "tp_agg": "<strong>{{ score }}</strong> out of 5 · <strong>{{ count }}</strong> reviews on Trustpilot",
     "tp_num": "{{ score }}/5",
     "tp_label": "{{ count }} reviews on Trustpilot",
-    "reviews_disclaimer": "Customers share their own experiences. Results may vary."
+    "reviews_disclaimer": "Customers share their own experiences. Results may vary.",
+    "play_video": "Play video",
+    "video_missing": "Choose the video in the section settings. Upload it first under Content > Files."
   },
   "blog": {
     "read_also": "Read also",

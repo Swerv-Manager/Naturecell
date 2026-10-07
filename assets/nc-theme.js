@@ -333,6 +333,18 @@
     });
   });
 
+  /* --- Video: YouTube og Vimeo indlaeses foerst, naar kunden trykker afspil (ingen cookies forinden) --- */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-nc-embed]') : null;
+    if (!btn) return;
+    var f = document.createElement('iframe');
+    f.src = btn.getAttribute('data-nc-embed');
+    f.title = btn.getAttribute('data-nc-embed-title') || '';
+    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    f.setAttribute('allowfullscreen', '');
+    btn.parentNode.replaceChild(f, btn);
+  });
+
   /* --- Kollektion: sortering (beholder tag-filteret i stien, nulstiller sidetal) --- */
   $all('[data-nc-sort]').forEach(function (sel) {
     sel.addEventListener('change', function () {

@@ -278,10 +278,20 @@
         "quote_open": "“",
         "quote_close": "”"
       }
+    },
+    "video": {
+      "type": "nc-video-feature",
+      "settings": {
+        "eyebrow": "Mød grundlæggerne",
+        "heading": "Historien bag NatureCell",
+        "text": "Lizbeth & Allan fortæller om, hvordan NatureCell begyndte, og om den hudpleje, de selv bruger hver dag.",
+        "tone": "plain"
+      }
     }
   },
   "order": [
     "hero",
+    "video",
     "familien",
     "timeline",
     "loefte",

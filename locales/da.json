@@ -50,7 +50,9 @@
     "tp_agg": "<strong>{{ score }}</strong> ud af 5 · <strong>{{ count }}</strong> anmeldelser på Trustpilot",
     "tp_num": "{{ score }}/5",
     "tp_label": "{{ count }} anmeldelser på Trustpilot",
-    "reviews_disclaimer": "Kunder deler deres egne oplevelser. Resultater kan variere."
+    "reviews_disclaimer": "Kunder deler deres egne oplevelser. Resultater kan variere.",
+    "play_video": "Afspil video",
+    "video_missing": "Vælg videoen i sektionens indstillinger. Upload den først under Indhold > Filer."
   },
   "shopify": {
     "checkout": {
