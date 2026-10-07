@@ -7,11 +7,13 @@
 
     {%- render 'nc-integrations-head' -%}
 
+    {%- comment -%} Brandet tilfoejes, medmindre titlen allerede naevner NatureCell. Skilletegn er |, ikke tankestreg. {%- endcomment -%}
+    {%- assign nc_title_lc = page_title | downcase -%}
     <title>
       {{- page_title -}}
-      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
-      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if current_tags %} | {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} | {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless nc_title_lc contains 'naturecell' %} | NatureCell{% endunless -%}
     </title>
 
     {%- if page_description -%}
