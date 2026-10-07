@@ -231,14 +231,14 @@
         "id": "nc_tp_score",
         "label": "Trustpilot: bedømmelse",
         "default": "4,7",
-        "info": "Bruges på forsiden, i anmeldelsesbåndet og på Om os. Slå det aktuelle tal op på Trustpilot, før det ændres (4,7 pr. 29-09-2026)."
+        "info": "Bruges på forsiden, i anmeldelsesbåndet og på Om os. Slå det aktuelle tal op på Trustpilot, før det ændres (4,7 pr. 07-10-2026)."
       },
       {
         "type": "number",
         "id": "nc_tp_count",
         "label": "Trustpilot: antal anmeldelser",
-        "default": 600,
-        "info": "Vises som \"over 600\". Opdatér samtidig med bedømmelsen."
+        "default": 615,
+        "info": "Vises som \"615 anmeldelser\". Opdatér samtidig med bedømmelsen (615 pr. 07-10-2026)."
       },
       {
         "type": "checkbox",

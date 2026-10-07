@@ -45,11 +45,11 @@
     "not_found_body": "The page you are looking for has moved or no longer exists.",
     "all": "All",
     "free_shipping": "Free shipping over {{ amount }}",
-    "announce_tail": "Vegan & plant-based · Danish webshop with the e-mærket trust seal",
-    "tp_line": "<strong>{{ score }}/5</strong> · over {{ count }} reviews on Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> out of 5 · over <strong>{{ count }}</strong> reviews on Trustpilot",
+    "announce_tail": "Vegan & plant-based · Denmark's first approved CBD skincare",
+    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} reviews on Trustpilot",
+    "tp_agg": "<strong>{{ score }}</strong> out of 5 · <strong>{{ count }}</strong> reviews on Trustpilot",
     "tp_num": "{{ score }}/5",
-    "tp_label": "over {{ count }} reviews on Trustpilot",
+    "tp_label": "{{ count }} reviews on Trustpilot",
     "reviews_disclaimer": "Customers share their own experiences. Results may vary."
   },
   "blog": {

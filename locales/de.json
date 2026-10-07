@@ -45,11 +45,11 @@
     "not_found_body": "Die gesuchte Seite wurde verschoben oder existiert nicht mehr.",
     "all": "Alle",
     "free_shipping": "Kostenloser Versand ab {{ amount }}",
-    "announce_tail": "Vegan & pflanzenbasiert · Dänischer Webshop mit e-mærket-Siegel",
-    "tp_line": "<strong>{{ score }}/5</strong> · über {{ count }} Bewertungen auf Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> von 5 · über <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
+    "announce_tail": "Vegan & pflanzenbasiert · Dänemarks erste zugelassene CBD-Hautpflege",
+    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} Bewertungen auf Trustpilot",
+    "tp_agg": "<strong>{{ score }}</strong> von 5 · <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
     "tp_num": "{{ score }}/5",
-    "tp_label": "über {{ count }} Bewertungen auf Trustpilot",
+    "tp_label": "{{ count }} Bewertungen auf Trustpilot",
     "reviews_disclaimer": "Kundinnen und Kunden teilen ihre eigenen Erfahrungen. Ergebnisse können variieren."
   },
   "blog": {

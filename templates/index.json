@@ -151,15 +151,6 @@
             "product": "shampoo-300ml"
           }
         },
-        "a6": {
-          "type": "area",
-          "settings": {
-            "label": "Intim",
-            "desc": "Skånsom pleje",
-            "url": "/products/love-lubricant",
-            "product": "love-lubricant"
-          }
-        },
         "n1": {
           "type": "need",
           "settings": {
@@ -221,7 +212,6 @@
         "a3",
         "a4",
         "a5",
-        "a6",
         "n1",
         "n2",
         "n3",

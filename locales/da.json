@@ -45,11 +45,11 @@
     "not_found_body": "Den side du leder efter, er flyttet eller findes ikke længere.",
     "all": "Alle",
     "free_shipping": "Fri fragt over {{ amount }}",
-    "announce_tail": "Vegansk & plantebaseret · Dansk, e-mærket webshop",
-    "tp_line": "<strong>{{ score }}/5</strong> · over {{ count }} anmeldelser på Trustpilot",
-    "tp_agg": "<strong>{{ score }}</strong> ud af 5 · over <strong>{{ count }}</strong> anmeldelser på Trustpilot",
+    "announce_tail": "Vegansk & plantebaseret · Danmarks første godkendte CBD-hudpleje",
+    "tp_line": "<strong>{{ score }}/5</strong> · {{ count }} anmeldelser på Trustpilot",
+    "tp_agg": "<strong>{{ score }}</strong> ud af 5 · <strong>{{ count }}</strong> anmeldelser på Trustpilot",
     "tp_num": "{{ score }}/5",
-    "tp_label": "over {{ count }} anmeldelser på Trustpilot",
+    "tp_label": "{{ count }} anmeldelser på Trustpilot",
     "reviews_disclaimer": "Kunder deler deres egne oplevelser. Resultater kan variere."
   },
   "shopify": {
