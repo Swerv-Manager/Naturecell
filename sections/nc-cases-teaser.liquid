@@ -20,14 +20,15 @@
   .nc-caseteaser__rail { display: grid; grid-auto-flow: column; grid-auto-columns: 300px; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 12px; }
   .nc-caseteaser__rail::-webkit-scrollbar { display: none; }
 
-  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; text-decoration: none; text-align: left; scroll-snap-align: start; }
-  .nc-case-card__meta { display: flex; flex-direction: column; gap: 5px; }
-  .nc-case-card__media { position: relative; display: block; width: 100%; height: 300px; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
+  /* Kundens rettelse 50/51 (08-10): hvidt kort med tekstboks under billedet som produktkortene, ingen play-ikon midt paa */
+  .nc-case-card { position: relative; display: flex; flex-direction: column; gap: 0; min-width: 0; text-decoration: none; text-align: left; scroll-snap-align: start; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft); }
+  .nc-case-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .nc-case-card__meta { display: flex; flex-direction: column; gap: 5px; padding: 16px 18px 18px; }
+  .nc-case-card__media { position: relative; display: block; width: 100%; height: 300px; overflow: hidden; background: var(--sage-50); }
   .nc-case-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-soft); }
   .nc-case-card:hover .nc-case-card__media img { transform: scale(1.03); }
   #shopify-section-{{ section.id }} .nc-case-card__area { position: absolute; top: 12px; left: 12px; padding: 4px 10px; background: var(--paper); color: var(--sage-700); font-size: 10.5px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; }
-  .nc-case-card__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-  .nc-case-card__play span { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.92); color: var(--sage-700); box-shadow: var(--shadow-md); }
+  #shopify-section-{{ section.id }} .nc-case-card__video { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: var(--radius-pill); background: rgba(32, 38, 35, 0.62); color: #fff; font-size: 10.5px; font-weight: 600; line-height: normal; letter-spacing: 0.06em; text-transform: uppercase; }
   /* Designets h3 saetter ingen font-weight => UA-default 700 (Philosopher Bold) */
   .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
   .nc-case-card__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
@@ -86,11 +87,7 @@
                 <span class="nc-tag nc-case-card__area">{{ area_label }}</span>
               {%- endif -%}
               {%- if article.tags contains 'video' or article.content contains 'youtube' -%}
-                <span class="nc-case-card__play" aria-hidden="true">
-                  <span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </span>
-                </span>
+                <span class="nc-case-card__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.see_video' | t }}</span>
               {%- endif -%}
             </span>
             <div class="nc-case-card__meta">

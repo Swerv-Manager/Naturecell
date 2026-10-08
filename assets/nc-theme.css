@@ -547,6 +547,9 @@ a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color:
 .nc-terms a { color: var(--sage-700); text-decoration: underline; text-underline-offset: 2px; }
 .nc-btn[disabled], .nc-btn[aria-disabled="true"], .nc-drawer__checkout[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
+/* "NatureCell®": lille, haevet ® (kundens rettelse 49) */
+.nc-reg { font-size: 0.5em; line-height: 0; vertical-align: 0.9em; margin-left: 0.04em; font-weight: 400; }
+
 /* --- Utility --- */
 .nc-skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; padding: 12px 20px; background: var(--cloud); color: var(--ink-900); }
 .nc-skip-link:focus { left: 0; }

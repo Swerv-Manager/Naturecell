@@ -101,6 +101,13 @@
   #shopify-section-{{ section.id }} .nc-blogidx__grid > li { min-width: 0; }
 
   #shopify-section-{{ section.id }} .nc-bcard { display: flex; flex-direction: column; gap: 14px; padding: 0; text-align: left; text-decoration: none; color: inherit; line-height: normal; }
+  {%- comment -%} Kundecases (kundens rettelse 50/51): hvidt kort med tekstboks under billedet, som produktkortene; ingen play-ikon midt paa. {%- endcomment -%}
+  {%- if is_cases -%}
+  #shopify-section-{{ section.id }} .nc-bcard { gap: 0; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-bcard:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  #shopify-section-{{ section.id }} .nc-bcard__media { border-radius: 0; }
+  #shopify-section-{{ section.id }} .nc-bcard__text { padding: 16px 18px 18px; }
+  {%- endif -%}
   #shopify-section-{{ section.id }} .nc-bcard:hover { text-decoration: none; }
   #shopify-section-{{ section.id }} .nc-bcard__media { position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
   #shopify-section-{{ section.id }} .nc-bcard__media--wide { aspect-ratio: 4 / 3; }
@@ -260,14 +267,11 @@
                 {{ article.image | image_url: width: 760 | image_tag: alt: article.title, loading: 'lazy', sizes: '(min-width: 990px) 380px, 46vw' }}
               {%- endif -%}
               {%- if is_cases -%}
-                {%- if has_video -%}
-                  <span class="nc-bcard__play" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-                {%- endif -%}
                 {%- if area_label != blank -%}
                   <span class="nc-bcard__tag">{{ area_label }}</span>
                 {%- endif -%}
                 {%- if has_video -%}
-                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.video' | t }}</span>
+                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.see_video' | t }}</span>
                 {%- endif -%}
               {%- else -%}
                 {%- capture card_lbl %}{% render 'nc-article-label', article: article %}{% endcapture -%}

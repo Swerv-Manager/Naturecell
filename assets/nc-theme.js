@@ -144,6 +144,31 @@
   });
   $all('[data-nc-terms-scope]').forEach(syncTerms);
 
+  /* --- "NatureCell®": ®-tegnet haeves og goeres mindre overalt (kundens rettelse 49, 08-10) --- */
+  (function () {
+    if (!document.body || !document.createTreeWalker) return;
+    var skip = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, NOSCRIPT: 1, SUP: 1, svg: 1, OPTION: 1, TITLE: 1 };
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        if (n.nodeValue.indexOf('\u00AE') === -1) return NodeFilter.FILTER_REJECT;
+        var p = n.parentNode;
+        while (p && p !== document.body) { if (skip[p.nodeName] || (p.closest && p.closest('.nc-reg'))) return NodeFilter.FILTER_REJECT; p = p.parentNode; }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (node) {
+      var parts = node.nodeValue.split('\u00AE');
+      var frag = document.createDocumentFragment();
+      parts.forEach(function (txt, i) {
+        if (txt) frag.appendChild(document.createTextNode(txt));
+        if (i < parts.length - 1) { var s = document.createElement('sup'); s.className = 'nc-reg'; s.textContent = '\u00AE'; frag.appendChild(s); }
+      });
+      node.parentNode.replaceChild(frag, node);
+    });
+  })();
+
   /* --- Megamenu + mobilnav --- */
   var header = $('[data-nc-header]');
   if (header) {
