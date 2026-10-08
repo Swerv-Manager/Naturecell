@@ -1,6 +1,7 @@
 {% comment %}
   Produktside: moerkt sage-baand 1:1 fra NatureCell.dc.html med overskrift,
   hoejrestillet note og 4 staaende videokort (YouTube-thumbnail, playknap, navn).
+  Kortene aabner videoen i et vindue paa siden (kundens rettelse 08-10), ikke paa YouTube.
   Tomme tekstfelter bruger sprogfilen (pdp.videos.*): en overskrift uden tal og
   den faste kundecase-disclaimer som note.
 {% endcomment %}
@@ -47,7 +48,8 @@
     <div class="nc-vidband__grid">
       {%- for block in section.blocks -%}
         {%- assign yt = block.settings.youtube_id -%}
-        <a class="nc-vidband__card" href="https://www.youtube.com/watch?v={{ yt }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+        {%- comment -%} Aabner i et vindue paa siden (nc-theme.js, data-nc-yt); linket til YouTube er fallback uden JS. {%- endcomment -%}
+        <a class="nc-vidband__card" href="https://www.youtube.com/watch?v={{ yt }}" target="_blank" rel="noopener" data-nc-yt="{{ yt }}" data-nc-yt-name="{{ block.settings.name | escape }}" data-nc-yt-portrait="{% if section.settings.landscape %}false{% else %}true{% endif %}" data-nc-yt-close="{{ 'general.close' | t }}" {{ block.shopify_attributes }}>
           <span class="nc-vidband__media">
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 640 | image_tag: alt: block.settings.name, loading: 'lazy' }}
@@ -73,7 +75,8 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "heading", "label": "Overskrift (valgfri)", "info": "Tom: \"Kunder fortæller om deres rutine\". Brug kun tal, der kan dokumenteres, og aldrig tal koblet til følelser." },
-    { "type": "text", "id": "note", "label": "Note (højre, valgfri)", "info": "Tom: \"Kunder deler deres egne oplevelser. Resultater kan variere.\"" }
+    { "type": "text", "id": "note", "label": "Note (højre, valgfri)", "info": "Tom: \"Kunder deler deres egne oplevelser. Resultater kan variere.\"" },
+    { "type": "checkbox", "id": "landscape", "label": "Videoerne er liggende (16:9)", "info": "Slået fra: stående (9:16) som Shorts. Videoerne afspilles i et vindue på siden.", "default": false }
   ],
   "blocks": [
     {

@@ -277,7 +277,9 @@
         "body": "I 2019 blev NatureCell den første danske CBD-hudplejeserie, som fik bekræftet, at produkterne kunne sælges som kosmetik. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk udvikling og ægte oplevelser frem for løfter.",
         "cta_text": "Læs vores historie →",
         "caption_title": "Lizbeth Falk & Allan Gamborg",
-        "caption_sub": "Grundlæggere af NatureCell"
+        "caption_sub": "Grundlæggere af NatureCell",
+        "ratio": "16 / 9",
+        "focal": "50% 50%"
       },
       "blocks": {
         "s1": {

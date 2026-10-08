@@ -360,6 +360,41 @@
     if (v && v.play) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
   });
 
+  /* --- Kundevideoer (YouTube) aabner i et vindue paa siden, ikke paa YouTube (kundens rettelse 08-10) --- */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('[data-nc-yt]') : null;
+    if (!a) return;
+    var id = a.getAttribute('data-nc-yt');
+    if (!id) return;
+    e.preventDefault();
+    var portrait = a.getAttribute('data-nc-yt-portrait') !== 'false';
+    var box = document.createElement('div');
+    box.className = 'nc-ytbox' + (portrait ? ' nc-ytbox--portrait' : '');
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', a.getAttribute('data-nc-yt-name') || '');
+    var closeLabel = a.getAttribute('data-nc-yt-close') || 'Luk';
+    box.innerHTML = '<div class="nc-ytbox__back" data-nc-yt-close></div>' +
+      '<div class="nc-ytbox__frame">' +
+      '<button type="button" class="nc-ytbox__close" data-nc-yt-close aria-label="' + closeLabel.replace(/"/g, '&quot;') + '">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+      '<iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="' + (a.getAttribute('data-nc-yt-name') || '').replace(/"/g, '&quot;') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>' +
+      '</div>';
+    document.body.appendChild(box);
+    document.body.classList.add('nc-ytbox-open');
+    var closeBtn = box.querySelector('.nc-ytbox__close');
+    if (closeBtn) closeBtn.focus();
+    function close() {
+      if (box.parentNode) box.parentNode.removeChild(box);
+      document.body.classList.remove('nc-ytbox-open');
+      document.removeEventListener('keydown', onKey);
+      a.focus();
+    }
+    function onKey(ev) { if (ev.key === 'Escape') close(); }
+    box.addEventListener('click', function (ev) { if (ev.target.closest('[data-nc-yt-close]')) close(); });
+    document.addEventListener('keydown', onKey);
+  });
+
   /* --- Vandret rulning med pile (fx emne-chips paa bloggen): pilene vises kun, naar der er mere at se --- */
   $all('[data-nc-hscroll]').forEach(function (wrap) {
     var track = $('[data-nc-hscroll-track]', wrap);

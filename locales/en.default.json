@@ -57,7 +57,8 @@
     "next_page": "Next page",
     "page_n": "Page {{ page }}",
     "scroll_left": "Scroll left",
-    "scroll_right": "Scroll right"
+    "scroll_right": "Scroll right",
+    "close": "Close"
   },
   "blog": {
     "read_also": "Read also",

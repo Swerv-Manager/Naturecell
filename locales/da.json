@@ -57,7 +57,8 @@
     "next_page": "Næste side",
     "page_n": "Side {{ page }}",
     "scroll_left": "Rul til venstre",
-    "scroll_right": "Rul til højre"
+    "scroll_right": "Rul til højre",
+    "close": "Luk"
   },
   "shopify": {
     "checkout": {

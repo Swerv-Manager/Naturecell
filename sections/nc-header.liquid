@@ -133,8 +133,8 @@
   .nc-mega__card { display: flex; flex-direction: column; text-decoration: none; border-radius: var(--radius-md); overflow: hidden; background: var(--paper-2); transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft); }
   .nc-mega__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
   .nc-mega__media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--nc-product-tint); }
-  /* Packshots staar paa samme underkant (contain, bundjusteret, multiply paa tinten) saa fliserne har visuel ro. */
-  .nc-mega__media img { display: block; width: 100%; height: 100%; box-sizing: border-box; padding: 8% 10% 0; object-fit: contain; object-position: 50% 100%; mix-blend-mode: multiply; }
+  /* Packshots: contain + multiply paa tinten; nc-packshot.js stiller produkterne paa samme underkant (kundens rettelse 39). */
+  .nc-mega__media img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; }
   .nc-mega__label { padding: 10px 14px 12px; }
   .nc-mega__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 16.5px; color: var(--sage-700); }
   .nc-mega__label span { font-size: 12.5px; color: var(--ink-500); }
@@ -304,9 +304,9 @@
                 <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
                   <span class="nc-mega__media">
                     {%- if block.settings.image != blank -%}
-                      {{ block.settings.image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                      {{ block.settings.image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                     {%- elsif block.settings.product != blank -%}
-                      {{ block.settings.product.featured_image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                      {{ block.settings.product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                     {%- endif -%}
                   </span>
                   <span class="nc-mega__label">
@@ -326,9 +326,9 @@
                 <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
                   <span class="nc-mega__media">
                     {%- if block.settings.image != blank -%}
-                      {{ block.settings.image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                      {{ block.settings.image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                     {%- elsif block.settings.product != blank -%}
-                      {{ block.settings.product.featured_image | image_url: width: 360 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                      {{ block.settings.product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                     {%- endif -%}
                   </span>
                   <span class="nc-mega__label">
@@ -348,7 +348,7 @@
               {%- for product in best.products limit: 8 -%}
                 <a class="nc-mega__card" href="{{ product.url }}">
                   <span class="nc-mega__media">
-                    {{ product.featured_image | image_url: width: 360 | image_tag: alt: product.title, loading: 'lazy' }}
+                    {{ product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: product.title, loading: 'lazy' }}
                   </span>
                   <span class="nc-mega__label">
                     {%- assign nc_mt = product.title | split: ' | ' | first -%}

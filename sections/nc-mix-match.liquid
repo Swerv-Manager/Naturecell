@@ -92,7 +92,7 @@
   #shopify-section-{{ section.id }} .nc-mm__card.is-in-pack { border-color: var(--sage-500); }
   #shopify-section-{{ section.id }} .nc-mm__badge { position: absolute; top: 12px; left: 12px; z-index: 1; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--sage-700); color: var(--cloud); font-size: 12px; font-weight: 700; }
   #shopify-section-{{ section.id }} .nc-mm__media { display: block; aspect-ratio: 1; background: var(--nc-product-tint, var(--sage-50)); }
-  #shopify-section-{{ section.id }} .nc-mm__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  #shopify-section-{{ section.id }} .nc-mm__media img { width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; display: block; }
   #shopify-section-{{ section.id }} .nc-mm__info { display: flex; flex-direction: column; gap: 6px; padding: 14px 14px 16px; flex: 1; }
   #shopify-section-{{ section.id }} .nc-mm__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.25; color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-mm__title a { color: inherit; text-decoration: none; }
@@ -315,7 +315,7 @@
               <span class="nc-mm__badge" data-mm-badge hidden>{{ 'mix.in_pack' | t }}</span>
               <a class="nc-mm__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
                 {%- if p.featured_image -%}
-                  {{ p.featured_image | image_url: width: 600 | image_tag: alt: '', loading: 'lazy', widths: '240, 360, 480, 600', sizes: '(min-width: 1200px) 260px, (min-width: 700px) 30vw, 46vw' }}
+                  {{ p.featured_image | image_url: width: 600 | image_tag: class: 'nc-packshot', alt: '', loading: 'lazy', widths: '240, 360, 480, 600', sizes: '(min-width: 1200px) 260px, (min-width: 700px) 30vw, 46vw' }}
                 {%- endif -%}
               </a>
               <div class="nc-mm__info">

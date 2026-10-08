@@ -20,8 +20,8 @@
   .nc-story__stat span { font-size: 12.5px; line-height: 1.7; color: var(--ink-500); }
   /* Designets knap: 14px 28px, 15px/600 => 46px hoej */
   #shopify-section-{{ section.id }} .nc-story__cta { align-self: flex-start; margin-top: 10px; min-height: 0; padding: 14px 28px; line-height: normal; border: 0; }
-  .nc-story__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 4 / 3; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4); }
-  .nc-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 43% 22%; }
+  #shopify-section-{{ section.id }} .nc-story__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: {{ section.settings.ratio | default: '4 / 3' }}; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4); }
+  #shopify-section-{{ section.id }} .nc-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: {{ section.settings.focal | default: '43% 22%' }}; }
   .nc-story__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(40, 64, 59, 0.55), transparent 45%); pointer-events: none; }
   .nc-story__caption { position: absolute; left: 22px; bottom: 20px; z-index: 1; color: var(--paper); }
   .nc-story__caption strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 19px; line-height: 1.2; }
@@ -69,7 +69,7 @@
         {%- elsif section.settings.image != blank -%}
           {{ section.settings.image | image_url: width: 1200 | image_tag: alt: section.settings.caption_title, widths: '600, 900, 1200', loading: 'lazy' }}
         {%- else -%}
-          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy" width="1200" height="1500">
+          <img src="{{ 'nc-founders.webp' | asset_url }}" alt="{{ section.settings.caption_title | escape }}" loading="lazy" width="1100" height="623">
         {%- endif -%}
         <div class="nc-story__caption">
           <strong>{% render 'nc-cbd', text: section.settings.caption_title %}</strong>
@@ -93,7 +93,9 @@
     { "type": "image_picker", "id": "image", "label": "Billede", "info": "Standard: grundlæggerfotoet fra designet. Med video bruges billedet som plakat." },
     { "type": "video", "id": "video", "label": "Video (valgfri)", "info": "Fx grundlæggervideoen fra Shopify Filer. Vises med playknap og afspilles med lyd, når man trykker." },
     { "type": "text", "id": "caption_title", "label": "Billedtekst", "default": "Lizbeth Falk & Allan Gamborg" },
-    { "type": "text", "id": "caption_sub", "label": "Billedtekst, undertekst", "default": "Grundlæggere af NatureCell" }
+    { "type": "text", "id": "caption_sub", "label": "Billedtekst, undertekst", "default": "Grundlæggere af NatureCell" },
+    { "type": "text", "id": "ratio", "label": "Billedformat (CSS aspect-ratio)", "info": "Tom = 4 / 3. Grundlæggerfotoet er 16 / 9, så hele billedet vises med 16 / 9" },
+    { "type": "text", "id": "focal", "label": "Billedets fokuspunkt (CSS object-position)", "info": "Tom = 43% 22%. Fx 50% 50%" }
   ],
   "blocks": [
     {

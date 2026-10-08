@@ -22,8 +22,8 @@
   .nc-shoptabs__card { display: flex; flex-direction: column; width: 100%; text-decoration: none; text-align: center; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; scroll-snap-align: start; transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base); }
   .nc-shoptabs__card:hover { border-color: var(--sage-400); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
   .nc-shoptabs__media { display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--sage-50); }
-  /* Packshots staar paa samme underkant (contain, bundjusteret, multiply paa mint-panelet). */
-  .nc-shoptabs__media img { display: block; width: 100%; height: 100%; box-sizing: border-box; padding: 8% 10% 0; object-fit: contain; object-position: 50% 100%; mix-blend-mode: multiply; }
+  /* Packshots: contain + multiply paa mint-panelet; nc-packshot.js stiller produkterne paa samme underkant (kundens rettelse 39). */
+  .nc-shoptabs__media img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; }
   .nc-shoptabs__label { display: flex; flex-direction: column; gap: 3px; padding: 16px 12px 18px; line-height: normal; }
   .nc-shoptabs__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--sage-700); }
   .nc-shoptabs__label span { font-size: 12.5px; color: var(--ink-400); }
@@ -48,9 +48,9 @@
             <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
               <span class="nc-shoptabs__media">
                 {%- if block.settings.image != blank -%}
-                  {{ block.settings.image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                  {{ block.settings.image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                 {%- elsif block.settings.product != blank -%}
-                  {{ block.settings.product.featured_image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                  {{ block.settings.product.featured_image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                 {%- endif -%}
               </span>
               <span class="nc-shoptabs__label">
@@ -70,9 +70,9 @@
             <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
               <span class="nc-shoptabs__media">
                 {%- if block.settings.image != blank -%}
-                  {{ block.settings.image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                  {{ block.settings.image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                 {%- elsif block.settings.product != blank -%}
-                  {{ block.settings.product.featured_image | image_url: width: 480 | image_tag: alt: block.settings.label, loading: 'lazy' }}
+                  {{ block.settings.product.featured_image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
                 {%- endif -%}
               </span>
               <span class="nc-shoptabs__label">
