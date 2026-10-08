@@ -261,13 +261,13 @@
         "heading": "Vi er Lizbeth og Allan. Og vi står bag vores valg",
         "text": "<p>Vi bruger selv produkterne hver dag og står bag beslutningerne om indhold, kvalitet og kundeservice. AI kan hjælpe os med formuleringer, men et menneske læser altid din besked og står for svaret. Du skal føle dig hørt og få hjælp, der tager udgangspunkt i dig.</p>",
         "quote": "Din hud og din tryghed går forud for et salg.",
-        "focal": "50% 50%",
+        "focal": "0% 50%",
         "quote_size": "18",
         "flush_bottom": true,
         "border": "top",
         "container": "1100",
         "pad_y": "clamp(35px, 6vw, 64px) 0",
-        "cols": "1.15fr 1fr",
+        "cols": "1fr 1.1fr",
         "col_gap": "clamp(22px, 4vw, 44px)",
         "media_radius": "lg",
         "media_shadow": "none",
@@ -278,7 +278,7 @@
         "quote_lh": "1.7",
         "quote_open": "“",
         "quote_close": "”",
-        "ratio": "16 / 9"
+        "ratio": "7 / 6"
       }
     },
     "video": {
