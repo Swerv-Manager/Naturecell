@@ -39,6 +39,7 @@
       "settings": {
         "tone": "paper",
         "image_url": "nc-founders.webp",
+        "ratio": "16 / 9",
         "media_side": "left",
         "heading": "Klar til næste fase",
         "text": "<p>Med nye kompetencer og investorer ombord ser vi frem til næste fase for NatureCell®. Vores ambition er at udvikle og skalere vores danskudviklede CBD hudplejeserie, så endnu flere får mulighed for at lære produkterne at kende, også uden for Danmarks grænser.</p><p>Samtidig holder vi fast i det fundament, NatureCell® er bygget på:</p><ul><li>CBD hudpleje formuleret med ingredienser af naturlig oprindelse og høj kvalitet, man kan være tryg ved</li><li>Nærværende, personlig kundeservice</li></ul>"

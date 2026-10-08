@@ -125,7 +125,10 @@
   #shopify-section-{{ section.id }} .nc-caseprods__eyebrow { margin: 0; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-200); }
   #shopify-section-{{ section.id }} .nc-caseprods h2 { margin: 0; color: var(--paper); font-family: var(--font-display); font-weight: 400; font-size: clamp(21px, 3.3vw, 34px); line-height: var(--leading-relaxed, 1.7); letter-spacing: normal; }
   #shopify-section-{{ section.id }} .nc-caseprods__sub { margin: 4px 0 0; max-width: 520px; font-size: 16px; line-height: 1.6; color: rgba(246, 244, 238, 0.82); }
-  #shopify-section-{{ section.id }} .nc-caseprods__grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(47%, 240px), 1fr)); margin: 0; list-style: none; padding: 0; text-align: left; }
+  {%- comment -%} Flex i stedet for grid, saa 2 eller 3 produkter staar centreret i stedet for i venstre side. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-caseprods__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 0; list-style: none; padding: 0; text-align: left; }
+  #shopify-section-{{ section.id }} .nc-caseprods__grid > li { flex: 0 1 270px; min-width: 0; }
+  @media (max-width: 599px) { #shopify-section-{{ section.id }} .nc-caseprods__grid > li { flex-basis: calc(50% - 10px); } }
   #shopify-section-{{ section.id }} .nc-caseprods__ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 36px; }
   #shopify-section-{{ section.id }} .nc-caseprods__ctas .nc-btn { gap: 9px; min-height: 0; padding: 15px 30px; font-size: 15px; font-weight: 600; line-height: normal; letter-spacing: normal; }
   #shopify-section-{{ section.id }} .nc-caseprods__ctas .nc-btn--light { border: 0; }

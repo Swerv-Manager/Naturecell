@@ -6,22 +6,22 @@
         "t1": {
           "type": "tier",
           "settings": {
-            "qty": 2,
-            "pct": 10
+            "qty": 3,
+            "pct": 25
           }
         },
         "t2": {
           "type": "tier",
           "settings": {
-            "qty": 3,
-            "pct": 15
+            "qty": 4,
+            "pct": 30
           }
         },
         "t3": {
           "type": "tier",
           "settings": {
-            "qty": 4,
-            "pct": 20
+            "qty": 5,
+            "pct": 35
           }
         }
       },

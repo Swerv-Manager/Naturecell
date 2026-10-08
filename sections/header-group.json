@@ -53,6 +53,15 @@
             "product": "shampoo-300ml"
           }
         },
+        "area_olier": {
+          "type": "area",
+          "settings": {
+            "label": "Olier",
+            "desc": "Dråber 5, 10, 15 og 20 %",
+            "url": "/collections/cbd-olie",
+            "product": "cbd-olie-10-10ml-test1"
+          }
+        },
         "area_herre": {
           "type": "area",
           "settings": {
@@ -123,6 +132,7 @@
         "area_krop",
         "area_foedder",
         "area_haar",
+        "area_olier",
         "area_herre",
         "need_toer",
         "need_fugt",

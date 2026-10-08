@@ -150,7 +150,7 @@
             {%- endif -%}
             {%- if block.settings.benefits != blank -%}
               <div class="nc-ing__why">
-                <strong>{{ 'ingredients.why' | t }}</strong>
+                <strong>{% if block.settings.why_heading != blank %}{% render 'nc-cbd', text: block.settings.why_heading %}{% else %}{{ 'ingredients.why' | t }}{% endif %}</strong>
                 <ul>
                   {%- assign benefit_rows = block.settings.benefits | newline_to_br | split: '<br />' -%}
                   {%- for row in benefit_rows -%}
@@ -226,6 +226,7 @@
         { "type": "text", "id": "functions", "label": "Funktioner (kommasepareret)", "default": "Skin conditioning, Antioxidant" },
         { "type": "textarea", "id": "intro", "label": "Indledning" },
         { "type": "richtext", "id": "body", "label": "Brødtekst" },
+        { "type": "text", "id": "why_heading", "label": "Overskrift over listen (valgfri)", "info": "Tom = Derfor bruger vi den" },
         { "type": "textarea", "id": "benefits", "label": "Derfor bruger vi den (én pr. linje)" },
         { "type": "image_picker", "id": "image", "label": "Billede" },
         { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }

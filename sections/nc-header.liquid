@@ -133,7 +133,8 @@
   .nc-mega__card { display: flex; flex-direction: column; text-decoration: none; border-radius: var(--radius-md); overflow: hidden; background: var(--paper-2); transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft); }
   .nc-mega__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
   .nc-mega__media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--nc-product-tint); }
-  .nc-mega__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* Packshots staar paa samme underkant (contain, bundjusteret, multiply paa tinten) saa fliserne har visuel ro. */
+  .nc-mega__media img { display: block; width: 100%; height: 100%; box-sizing: border-box; padding: 8% 10% 0; object-fit: contain; object-position: 50% 100%; mix-blend-mode: multiply; }
   .nc-mega__label { padding: 10px 14px 12px; }
   .nc-mega__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 16.5px; color: var(--sage-700); }
   .nc-mega__label span { font-size: 12.5px; color: var(--ink-500); }
@@ -463,8 +464,8 @@
       "type": "text",
       "id": "mix_badge",
       "label": "Bland selv: badge",
-      "info": "Fx Spar op til 20 %. Skal matche rabatterne.",
-      "default": "Spar op til 20 %"
+      "info": "Fx Køb 3 og spar 25 %. Skal matche rabatterne.",
+      "default": "Køb 3 og spar 25 %"
     },
     {
       "type": "url",

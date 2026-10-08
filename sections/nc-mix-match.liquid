@@ -1,6 +1,6 @@
 {% comment %}
   Bland selv (mix & match): kunden saetter sin egen pakke sammen af enkeltprodukter, og rabatten
-  stiger med antallet (trin som blokke, fx 2 = 10 %, 3 = 15 %, 4+ = 20 %).
+  stiger med antallet (trin som blokke, fx 3 = 25 %, 4 = 30 %, 5+ = 35 %).
   Produkter: listen i sektionen, ellers kollektionens produkter. Pakker, gavekort, udsolgte varer og
   handles under "Spring over" vises aldrig.
   Selve rabatten er en automatisk rabat i Shopify (Rabatter), en pr. trin, paa de samme produkter.
@@ -465,7 +465,7 @@
     { "type": "checkbox", "id": "show_trust", "label": "Vis Trustpilot, fri fragt, e-mærket og fortrydelsesret", "default": true },
     { "type": "text", "id": "fine_print", "label": "Betingelser (lille tekst)", "default": "Gælder enkeltprodukterne på denne side. Kan ikke kombineres med rabatkoder." },
     { "type": "inline_richtext", "id": "step1", "label": "Trin 1", "info": "[antal] = første trins antal.", "default": "<strong>Vælg mindst [antal] produkter.</strong> Alle produkter på siden tæller med, også flere af det samme." },
-    { "type": "inline_richtext", "id": "step2", "label": "Trin 2", "info": "[trin] = trinene, fx 2 produkter 10 %, 3 produkter 15 %.", "default": "<strong>Prisen falder, mens du vælger:</strong> [trin]." },
+    { "type": "inline_richtext", "id": "step2", "label": "Trin 2", "info": "[trin] = trinene, fx 3 produkter 25 %, 4 produkter 30 %.", "default": "<strong>Prisen falder, mens du vælger:</strong> [trin]." },
     { "type": "text", "id": "unit_word", "label": "Ord efter antal i trin 2", "default": "produkter" },
     { "type": "inline_richtext", "id": "step3", "label": "Trin 3", "default": "<strong>Læg hele pakken i kurven</strong> med ét tryk." },
     { "type": "header", "content": "Produkter" },
@@ -490,9 +490,9 @@
     {
       "name": "Bland selv",
       "blocks": [
-        { "type": "tier", "settings": { "qty": 2, "pct": 10 } },
-        { "type": "tier", "settings": { "qty": 3, "pct": 15 } },
-        { "type": "tier", "settings": { "qty": 4, "pct": 20 } }
+        { "type": "tier", "settings": { "qty": 3, "pct": 25 } },
+        { "type": "tier", "settings": { "qty": 4, "pct": 30 } },
+        { "type": "tier", "settings": { "qty": 5, "pct": 35 } }
       ]
     }
   ]
