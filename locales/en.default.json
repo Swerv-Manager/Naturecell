@@ -102,6 +102,7 @@
     "jesper": "Jesper Buch & Løvens Hule"
   },
   "cart": {
+    "accept_terms_html": "I accept the <a href=\"{{ url }}\" target=\"_blank\" rel=\"noopener\">terms and conditions</a>",
     "empty": "Your cart is empty",
     "empty_dot": "Your cart is empty.",
     "subtotal": "Subtotal",

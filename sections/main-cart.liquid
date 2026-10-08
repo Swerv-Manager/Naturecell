@@ -138,9 +138,14 @@
               {{ 'cart.shipping_calc' | t }}{% if cart_fs != blank %} {{ 'cart.free_shipping_over' | t: amount: cart_fs | replace: '..', '.' }}{% endif %}
             {%- endif -%}
           </p>
+          {%- comment -%} Handelsbetingelser accepteres foer kassen (som paa det nuvaerende site); nc-theme.js aabner knappen. {%- endcomment -%}
+          <label class="nc-terms" data-nc-terms-scope>
+            <input type="checkbox" data-nc-terms>
+            <span>{{ 'cart.accept_terms_html' | t: url: shop.terms_of_service.url | default: '/policies/terms-of-service' }}</span>
+          </label>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="nc-btn nc-btn--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
-            <button class="nc-btn nc-btn--primary" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+            <button class="nc-btn nc-btn--primary" type="submit" name="checkout" data-nc-terms-btn disabled aria-disabled="true">{{ 'cart.checkout' | t }}</button>
           </div>
         </div>
       {%- endform -%}

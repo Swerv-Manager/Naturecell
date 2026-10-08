@@ -65,8 +65,8 @@
           "type": "milestone",
           "settings": {
             "year": "2019",
-            "title": "Først godkendt i DK",
-            "text": "NatureCell bliver den første CBD-hudplejeserie godkendt til salg i Danmark.",
+            "title": "Først med tilladelse til CBD",
+            "text": "NatureCell får som den første danske hudplejeserie tilladelse til at tilsætte CBD.",
             "url": "/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt",
             "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972",
             "fit": "contain"
@@ -218,7 +218,7 @@
           "type": "stat",
           "settings": {
             "num": "2019",
-            "label": "Først godkendt til salg i Danmark"
+            "label": "Først med tilladelse til CBD i Danmark"
           }
         },
         "s2": {

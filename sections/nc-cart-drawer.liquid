@@ -62,6 +62,7 @@
   .nc-drawer__totals strong { font-family: var(--font-body); font-weight: 700; font-size: 22px; color: var(--sage-700); }
   .nc-drawer__checkout { display: block; text-align: center; border: 0; cursor: pointer; background: var(--sage-500); color: #fff; border-radius: 999px; padding: 15px; font-family: var(--font-body); font-weight: 600; font-size: 15px; margin-top: 4px; text-decoration: none; }
   .nc-drawer__checkout:hover, .nc-drawer__checkout:focus-visible { background: var(--sage-600); color: #fff; }
+  .nc-drawer__terms { margin: 10px 0 2px; font-size: 13.5px; }
   .nc-drawer__note { margin: 6px 0 0; text-align: center; font-size: 12px; color: var(--ink-400); }
 {%- endstyle -%}
 
@@ -162,7 +163,11 @@
           <span>{{ 'cart.subtotal' | t }}</span>
           <strong>{{ cart.total_price | money }}</strong>
         </div>
-        <a class="nc-drawer__checkout" href="{{ routes.cart_url }}/checkout">{{ 'cart.checkout' | t }} →</a>
+        <label class="nc-terms nc-drawer__terms" data-nc-terms-scope>
+          <input type="checkbox" data-nc-terms>
+          <span>{{ 'cart.accept_terms_html' | t: url: shop.terms_of_service.url | default: '/policies/terms-of-service' }}</span>
+        </label>
+        <a class="nc-drawer__checkout" href="{{ routes.cart_url }}/checkout" data-nc-terms-btn aria-disabled="true">{{ 'cart.checkout' | t }} →</a>
         <p class="nc-drawer__note">{{ 'cart.vat_note' | t }}</p>
       </div>
     {%- else -%}

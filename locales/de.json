@@ -45,7 +45,7 @@
     "not_found_body": "Die gesuchte Seite wurde verschoben oder existiert nicht mehr.",
     "all": "Alle",
     "free_shipping": "Kostenloser Versand ab {{ amount }}",
-    "announce_tail": "Vegan & pflanzenbasiert · Dänemarks erste zugelassene CBD-Hautpflege",
+    "announce_tail": "Vegan & pflanzenbasiert · Dänische Hautpflege seit 2018",
     "tp_line_html": "<strong>{{ score }}/5</strong> · {{ count }} Bewertungen auf Trustpilot",
     "tp_agg_html": "<strong>{{ score }}</strong> von 5 · <strong>{{ count }}</strong> Bewertungen auf Trustpilot",
     "tp_num": "{{ score }}/5",
@@ -102,6 +102,7 @@
     "jesper": "Jesper Buch & Løvens Hule"
   },
   "cart": {
+    "accept_terms_html": "Ich akzeptiere die <a href=\"{{ url }}\" target=\"_blank\" rel=\"noopener\">AGB</a>",
     "empty": "Ihr Warenkorb ist leer",
     "empty_dot": "Ihr Warenkorb ist leer.",
     "subtotal": "Zwischensumme",

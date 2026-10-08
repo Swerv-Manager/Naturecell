@@ -540,6 +540,12 @@ a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color:
   .nc-table--stack td { display: block; border: 0; padding: 4px 0; }
 }
 
+/* Handelsbetingelser i kurv og kurv-skuffe (som paa det nuvaerende site): kassen aabnes foerst efter accept */
+.nc-terms { display: flex; align-items: flex-start; gap: 10px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-700); cursor: pointer; }
+.nc-terms input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--sage-500); cursor: pointer; }
+.nc-terms a { color: var(--sage-700); text-decoration: underline; text-underline-offset: 2px; }
+.nc-btn[disabled], .nc-btn[aria-disabled="true"], .nc-drawer__checkout[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
 /* --- Utility --- */
 .nc-skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; padding: 12px 20px; background: var(--cloud); color: var(--ink-900); }
 .nc-skip-link:focus { left: 0; }
@@ -565,7 +571,9 @@ a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color:
 .nc-cbd-i { position: relative; white-space: nowrap; }
 /* Skaermlaesere: "CBD" kommer fra CSS, saa ordet ikke staar i HTML'en, som Google laeser */
 .nc-cbd-i::after { content: "CBD"; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
-.nc-cbd { display: inline-block; height: max(0.86em, 11px); width: calc(max(0.86em, 11px) * 2.0431); vertical-align: -0.1em; margin: 0 0.04em; overflow: visible; flex: none; }
+.nc-cbg-i::after { content: "CBG"; }
+/* Kundens rettelse 07-10 (Allan): ikonet har samme stoerrelse overalt, uanset skriftstoerrelse */
+.nc-cbd { display: inline-block; height: 15px; width: 30.6px; vertical-align: -2px; margin: 0 1px; overflow: visible; flex: none; }
 .nc-cbd-w { white-space: nowrap; }
 /* Ikonet er et ord: det foelger altid tekstens farve og drejes aldrig med harmonika-pile o.l. */
 svg.nc-cbd { color: inherit !important; transform: none !important; transition: none !important; }

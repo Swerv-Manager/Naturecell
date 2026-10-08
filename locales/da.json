@@ -109,6 +109,7 @@
     "jesper": "Jesper Buch & Løvens Hule"
   },
   "cart": {
+    "accept_terms_html": "Jeg accepterer <a href=\"{{ url }}\" target=\"_blank\" rel=\"noopener\">handelsbetingelserne</a>",
     "empty": "Din kurv er tom",
     "empty_dot": "Din kurv er tom.",
     "subtotal": "Subtotal",

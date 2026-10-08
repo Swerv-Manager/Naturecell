@@ -6,6 +6,12 @@
 {%- endcomment -%}
 {%- liquid
   assign t = title | strip
+  # Kundens rettelse 07-10 (Allan): "NatureCell" staar som eyebrow over titlen og fjernes derfor fra selve titlen
+  # ("Natcreme NatureCell" -> "Natcreme"). Sidetitel, metabeskrivelse og strukturerede data bruger stadig product.title.
+  assign t = t | replace: 'NATURECELL', 'NatureCell' | replace: 'Naturecell', 'NatureCell'
+  if t != 'NatureCell' and t contains 'NatureCell'
+    assign t = t | replace: ' NatureCell', '' | replace: 'NatureCell ', '' | strip
+  endif
   assign up = t | upcase
   if t != blank and t == up
     assign words = t | split: ' '

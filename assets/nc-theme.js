@@ -119,6 +119,31 @@
     update();
   });
 
+  /* --- Handelsbetingelser i kurv og kurv-skuffe: kassen aabnes foerst, naar boksen er krydset af.
+         Delegeret, saa det ogsaa virker efter at skuffen er gentegnet. --- */
+  function syncTerms(scope) {
+    var box = $('[data-nc-terms]', scope);
+    var btn = scope.parentNode ? $('[data-nc-terms-btn]', scope.parentNode) : null;
+    if (!box || !btn) return;
+    var ok = box.checked;
+    if (btn.tagName === 'BUTTON') btn.disabled = !ok;
+    btn.setAttribute('aria-disabled', ok ? 'false' : 'true');
+  }
+  document.addEventListener('change', function (e) {
+    var scope = e.target.closest && e.target.closest('[data-nc-terms-scope]');
+    if (scope) syncTerms(scope);
+  });
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-nc-terms-btn]');
+    if (btn && btn.getAttribute('aria-disabled') === 'true') {
+      e.preventDefault();
+      var scope = btn.parentNode && $('[data-nc-terms-scope]', btn.parentNode);
+      var box = scope && $('[data-nc-terms]', scope);
+      if (box) box.focus();
+    }
+  });
+  $all('[data-nc-terms-scope]').forEach(syncTerms);
+
   /* --- Megamenu + mobilnav --- */
   var header = $('[data-nc-header]');
   if (header) {
