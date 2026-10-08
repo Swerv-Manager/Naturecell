@@ -29,6 +29,18 @@
   #shopify-section-{{ section.id }} .nc-product-card__info { gap: 7px; padding: 18px 18px 20px; line-height: 1.7; }
   #shopify-section-{{ section.id }} .nc-product-card__rating { margin-top: 2px; box-sizing: border-box; height: 27.2px; padding-bottom: 2.2px; align-items: center; }
   #shopify-section-{{ section.id }} .nc-product-card__price { margin-top: auto; padding: 12.5px 0 4.2px; }
+  /* Mobil (08-10): to kort + kig paa det tredje, fade + prikker i stedet for pile, kompakt tekstblok som de oevrige kort */
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .nc-relrail { padding: 48px 0 40px; }
+    #shopify-section-{{ section.id }} .nc-relrail__head { margin-bottom: 16px; }
+    #shopify-section-{{ section.id }} .nc-relrail__head h2 { font-size: 24px; }
+    #shopify-section-{{ section.id }} .nc-relrail__nav { display: none; }
+    #shopify-section-{{ section.id }} .nc-relrail__rail { grid-auto-columns: calc(44% - 6px); gap: 12px; padding-bottom: 6px; }
+    #shopify-section-{{ section.id }} .nc-product-card__title { max-width: none; }
+    #shopify-section-{{ section.id }} .nc-product-card__info { gap: 5px; padding: 12px 12px 14px; line-height: 1.6; }
+    #shopify-section-{{ section.id }} .nc-product-card__rating { height: 22px; padding-bottom: 0; margin-top: 0; }
+    #shopify-section-{{ section.id }} .nc-product-card__price { padding: 8px 0 0; }
+  }
 {%- endstyle -%}
 
 <div class="nc-relrail">
@@ -45,7 +57,7 @@
       </div>
     </div>
 
-    <div class="nc-relrail__rail" data-nc-railscroll>
+    <div class="nc-relrail__rail" data-nc-railscroll data-nc-rail>
       {%- assign pinned_size = section.settings.pinned | size -%}
       {%- if pinned_size > 0 -%}
         {%- for item in section.settings.pinned limit: section.settings.limit -%}

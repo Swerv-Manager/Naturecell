@@ -179,6 +179,19 @@
     .nc-header__burger { display: none; }
     .nc-langs { display: inline-flex; }
   }
+  /* Mobil (kundens mobiloptimering 08-10): raekken maa ikke blive bredere end skaermen
+     (burger + logo + fire ikoner), og topbjaelken holder een linje: kun foerste led (fri fragt) vises. */
+  @media (max-width: 749px) {
+    .nc-announce { padding: 8px var(--gutter); font-size: 12px; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nc-announce__tail { display: none; }
+    .nc-header__row { gap: 6px; min-height: 62px; }
+    .nc-header__burger { margin-left: -8px; }
+    .nc-header__logo img { height: min({{ section.settings.logo_height | default: 36 }}px, 30px); }
+    .nc-header__actions { gap: 0; }
+    .nc-header__action { width: 40px; height: 40px; }
+    .nc-header__action--sm { width: 36px; height: 36px; }
+    .nc-header__actions .nc-header__action:last-child { margin-right: -8px; }
+  }
 {%- endstyle -%}
 
 {%- comment -%}
@@ -200,7 +213,17 @@
   endif
 -%}
 {%- if announce != blank -%}
-  <div class="nc-announce">{% render 'nc-cbd', text: announce %}</div>
+  {%- comment -%} Leddene efter det foerste (" · ") skjules paa mobil, saa bjaelken holder een linje. {%- endcomment -%}
+  {%- assign ann_parts = announce | split: ' · ' -%}
+  <div class="nc-announce">
+    {%- for ann_part in ann_parts -%}
+      {%- if forloop.first -%}
+        <span class="nc-announce__lead">{% render 'nc-cbd', text: ann_part %}</span>
+      {%- else -%}
+        <span class="nc-announce__tail"> · {% render 'nc-cbd', text: ann_part %}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
 {%- endif -%}
 
 <header class="nc-header" data-nc-header>

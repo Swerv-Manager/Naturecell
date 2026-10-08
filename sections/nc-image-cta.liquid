@@ -19,6 +19,14 @@
   #shopify-section-{{ section.id }} .nc-imgcta__inner h2 { margin: 0; color: #fff; font-size: clamp(30px, 4vw, 44px); line-height: 1.08; letter-spacing: normal; }
   #shopify-section-{{ section.id }} .nc-imgcta__inner p { margin: 0; font-size: 16px; color: rgba(246, 244, 238, 0.9); line-height: 1.7; }
   #shopify-section-{{ section.id }} .nc-imgcta__inner .nc-btn { min-height: 0; padding: 14px 28px; line-height: normal; letter-spacing: normal; border-width: 0; background: var(--paper); color: var(--sage-700); }
+  /* Mobil (08-10): lavere baand, mindre overskrift og tekst */
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .nc-imgcta { min-height: 320px; }
+    #shopify-section-{{ section.id }} .nc-imgcta__pad { padding: 40px 0; }
+    #shopify-section-{{ section.id }} .nc-imgcta__inner h2 { font-size: clamp(26px, 7.4vw, 32px); line-height: 1.12; }
+    #shopify-section-{{ section.id }} .nc-imgcta__inner p { font-size: 15.5px; line-height: 1.6; }
+    #shopify-section-{{ section.id }} .nc-imgcta__inner .nc-btn { padding: 13px 22px; font-size: 14px; }
+  }
 {%- endstyle -%}
 
 <div class="nc-imgcta nc-on-dark">

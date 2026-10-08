@@ -425,7 +425,7 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 .nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: var(--ink-300); }
 /* Ens korthoejde (kundens rettelse 08-10): titlen reserverer 2 linjer, stoerrelse og rating har fast hoejde, prisen staar i bunden */
 .nc-product-card__title { min-height: calc(2em * var(--leading-snug)); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-.nc-product-card__size { min-height: 1.5rem; }
+.nc-product-card__size { min-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nc-product-card__rating { min-height: 27px; }
 /* PriceTag (md) fra designsystemet: 22px/500, line-height 1, foer-pris 14px ink-400, baseline-justeret med 10px gap */
 .nc-product-card__price { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 10px; font-size: var(--text-xl); font-weight: 500; line-height: 1; color: var(--ink-900); }
@@ -446,6 +446,33 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 .nc-grid { display: grid; gap: clamp(16px, 2vw, 24px); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0; padding: 0; }
 
 .nc-rail-wrap { position: relative; }
+
+/* Rails med synlig indikator (kundens mobiloptimering 08-10): data-nc-rail i nc-theme.js saetter is-more/is-before,
+   som fader kanten hvor der er mere at se, og tilfoejer prikker (.nc-raildots) pr. "side" under railen. */
+[data-nc-rail].is-more { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
+[data-nc-rail].is-before { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px); mask-image: linear-gradient(90deg, transparent, #000 40px); }
+[data-nc-rail].is-before.is-more { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 56px), transparent); }
+.nc-raildots { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 0; min-height: 8px; }
+.nc-raildots[hidden] { display: none; }
+.nc-raildots button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: var(--radius-pill); background: var(--ink-300); cursor: pointer; transition: width var(--dur-base) var(--ease-soft), background-color var(--dur-base) var(--ease-soft); }
+.nc-raildots button.is-active { width: 22px; background: var(--sage-500); }
+
+/* Mobil (08-10): kompakte, ens produktkort: mindre tekst og knapper, taettere grid */
+@media (max-width: 749px) {
+  .nc-grid { gap: 12px; }
+  .nc-product-card__info { gap: 5px; padding: 12px 12px 14px; line-height: 1.6; }
+  .nc-product-card__eyebrow { font-size: 10px; }
+  .nc-product-card__title { font-size: 16px; }
+  .nc-product-card__size { font-size: 12px; min-height: 1.25rem; }
+  .nc-product-card__rating { font-size: 12px; min-height: 22px; gap: 5px; }
+  .nc-product-card__rating .nc-stars svg { width: 13px; height: 13px; }
+  .nc-product-card__price { font-size: 18px; gap: 8px; padding-top: 8px; }
+  .nc-product-card__compare { font-size: 12px; }
+  .nc-product-card__tags { top: 8px; left: 8px; gap: 4px; }
+  .nc-product-card__fav { width: 34px; height: 34px; top: 8px; right: 8px; }
+  .nc-product-card__fav svg { width: 17px; height: 17px; }
+  .nc-product-card__add { width: 38px; height: 38px; right: 10px; bottom: 10px; }
+}
 .nc-rail-scroll { display: flex; gap: clamp(16px, 2vw, 24px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
 .nc-rail-scroll::-webkit-scrollbar { display: none; }
 .nc-rail-scroll > * { flex: 0 0 min(280px, 78vw); scroll-snap-align: start; }
@@ -552,6 +579,7 @@ svg.nc-cbd { color: inherit !important; transform: none !important; transition: 
 .nc-band--pale .nc-band__eyebrow { color: var(--sage-600); }
 .nc-band__eyebrow { margin: 0 0 14px; font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
 .nc-band__title { margin: 0; font-size: clamp(34px, 4vw, 52px); line-height: 1.1; }
+@media (max-width: 749px) { .nc-band__title { font-size: clamp(28px, 8vw, 34px); } }
 .nc-band__intro { margin: 18px 0 0; font-size: clamp(15px, 1.3vw, 17px); line-height: 1.7; }
 .nc-band--center { text-align: center; }
 .nc-band--center .nc-band__intro { max-width: 600px; margin-left: auto; margin-right: auto; color: var(--ink-700); }

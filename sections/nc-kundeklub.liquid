@@ -71,6 +71,12 @@
   .nc-footer.nc-on-dark { background: #85A49B; }
   .nc-footer .nc-footer__bottom { background: var(--nc-footer-bg, #80A097); box-shadow: 0 0 0 100vmax var(--nc-footer-bg, #80A097); clip-path: inset(0 -100vmax); }
   .nc-footer .nc-footer__bottom p { max-width: 80ch; }
+  /* Mobil (08-10): kortere hero med mindre overskrift */
+  @media (max-width: 749px) {
+    .nc-klub__hero { padding: 40px 0 44px; }
+    .nc-klub__hero h1 { font-size: clamp(30px, 8.4vw, 36px); line-height: 1.1; }
+    .nc-klub__hero p { font-size: 16px; line-height: 1.6; }
+  }
 {%- endstyle -%}
 
 {%- liquid

@@ -27,6 +27,14 @@
   .nc-shoptabs__label { display: flex; flex-direction: column; gap: 3px; padding: 16px 12px 18px; line-height: normal; }
   .nc-shoptabs__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--sage-700); }
   .nc-shoptabs__label span { font-size: 12.5px; color: var(--ink-400); }
+  /* Mobil (08-10): to kort + et synligt kig paa det tredje, fade i kanten og prikker (data-nc-rail i nc-theme.js) */
+  @media (max-width: 749px) {
+    .nc-shoptabs__grid { grid-auto-columns: calc(44% - 6px); gap: 12px; padding-bottom: 6px; }
+    .nc-shoptabs__label { padding: 12px 8px 14px; }
+    .nc-shoptabs__label strong { font-size: 16px; }
+    .nc-shoptabs__label span { font-size: 12px; }
+    .nc-shoptabs__pill { padding: 8px 18px; font-size: 13px; }
+  }
 {%- endstyle -%}
 
 <section class="nc-section">
@@ -42,7 +50,7 @@
     </div>
 
     <div data-nc-panel="area">
-      <div class="nc-shoptabs__grid">
+      <div class="nc-shoptabs__grid" data-nc-rail>
         {%- for block in section.blocks -%}
           {%- if block.type == 'area' -%}
             <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
@@ -64,7 +72,7 @@
     </div>
 
     <div data-nc-panel="need" hidden>
-      <div class="nc-shoptabs__grid">
+      <div class="nc-shoptabs__grid" data-nc-rail>
         {%- for block in section.blocks -%}
           {%- if block.type == 'need' -%}
             <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>

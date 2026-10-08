@@ -31,6 +31,14 @@
   /* Designets h3 saetter ingen font-weight => UA-default 700 (Philosopher Bold) */
   .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
   .nc-case-card__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
+  /* Mobil (08-10): kortene fylder 76 % med et synligt kig paa det naeste, pilene erstattes af fade + prikker */
+  @media (max-width: 749px) {
+    .nc-caseteaser__rail { grid-auto-columns: min(300px, 76%); gap: 14px; padding-bottom: 8px; }
+    .nc-case-card__media { height: auto; aspect-ratio: 1 / 1; }
+    .nc-case-card__title { font-size: 18px; }
+    #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-iconbtn { display: none; }
+    #shopify-section-{{ section.id }} .nc-caseteaser__nav .nc-btn { margin-left: 0; }
+  }
 {%- endstyle -%}
 
 <section class="nc-section">
@@ -55,7 +63,7 @@
     </div>
 
     {%- if section.settings.blog != blank -%}
-      <div class="nc-scroll nc-caseteaser__rail" data-nc-railscroll>
+      <div class="nc-scroll nc-caseteaser__rail" data-nc-railscroll data-nc-rail>
         {%- for article in section.settings.blog.articles limit: section.settings.limit -%}
           <a class="nc-case-card" href="{{ article.url }}">
             <span class="nc-case-card__media">

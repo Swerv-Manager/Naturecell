@@ -69,8 +69,33 @@
   .nc-hero__dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: var(--radius-pill); background: rgba(246, 244, 238, 0.45); cursor: pointer; transition: width var(--dur-base) var(--ease-soft), background-color var(--dur-base) var(--ease-soft); }
   .nc-hero__dot.is-active { width: 26px; background: var(--paper); }
 
+  /* Mobil (kundens mobiloptimering 08-10): kortere slides, mindre typografi, tekst der ikke loeber
+     over flere skaerme, packshot under teksten og synlige prikker. Pilene er skjult: man swiper. */
   @media (max-width: 699px) {
     .nc-hero__arrow { display: none; }
+    .nc-hero__slide { min-height: 0; }
+    .nc-hero__inner { min-height: 0; padding: 0 var(--gutter) 52px; }
+    .nc-hero__inner--grid { gap: 0; align-items: start; }
+    .nc-hero__text { gap: 14px; padding: 34px 0 6px; max-width: none; }
+    .nc-hero__slide--split .nc-hero__text { gap: 14px; padding: 34px 0 10px; }
+    .nc-hero__eyebrow { font-size: 11px; letter-spacing: 0.12em; }
+    .nc-hero__h1 { font-size: clamp(32px, 9vw, 40px); line-height: 1.06; }
+    .nc-hero__h2 { font-size: clamp(28px, 8vw, 36px); line-height: 1.08; max-width: none; }
+    .nc-hero__body { font-size: 15.5px; line-height: 1.6; max-width: none; }
+    .nc-hero__ctas { gap: 10px; margin-top: 2px; }
+    .nc-hero__ctas .nc-btn { min-height: 44px; padding: 13px 20px; font-size: 14px; }
+    .nc-hero .nc-btn--light { padding: 13px 20px; }
+    .nc-hero__trust { gap: 10px; margin-top: 4px; }
+    .nc-hero__trust .nc-stars svg { width: 15px; height: 15px; }
+    .nc-hero__trust span { font-size: 13px; }
+    .nc-hero__packshot-wrap { padding: 10px 0 0; }
+    .nc-hero__glow { width: 240px; height: 240px; }
+    .nc-hero__packshot { max-width: 66%; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35)); }
+    .nc-hero__slide--image .nc-hero__inner--stack { min-height: 520px; gap: 14px; padding-bottom: 60px; }
+    .nc-hero__wash { background: linear-gradient(180deg, rgba(40, 64, 59, 0.3), rgba(40, 64, 59, 0.78)); }
+    .nc-hero__split-media { padding: 0 0 6px; }
+    .nc-hero__split-media img { aspect-ratio: 16 / 10; border-radius: 14px; box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3); }
+    .nc-hero__dots { bottom: 16px; }
   }
 {%- endstyle -%}
 
@@ -127,7 +152,7 @@
           </div>
 
         {%- when 'image_slide' -%}
-          <div class="nc-hero__slide" data-nc-slide {{ block.shopify_attributes }}>
+          <div class="nc-hero__slide nc-hero__slide--image" data-nc-slide {{ block.shopify_attributes }}>
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 2200 | image_tag: class: 'nc-hero__bg', alt: '', widths: '800, 1200, 1600, 2200', sizes: '100vw', loading: 'lazy' }}
             {%- elsif block.settings.fallback_asset != blank -%}

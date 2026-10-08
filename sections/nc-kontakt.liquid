@@ -36,6 +36,11 @@
   .nc-kontakt__submit:hover, .nc-kontakt__submit:focus-visible { background: var(--sage-600); }
   .nc-kontakt__status { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--sage-700); }
   .nc-kontakt__status[role="alert"] { color: var(--accent-berry); }
+  /* Mobil (08-10): mindre overskrift */
+  @media (max-width: 749px) {
+    .nc-kontakt__hero h1 { font-size: clamp(32px, 9vw, 40px); }
+    .nc-kontakt__hero p { font-size: 16px; }
+  }
 {%- endstyle -%}
 
 <section class="nc-kontakt__hero">

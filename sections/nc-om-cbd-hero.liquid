@@ -14,6 +14,11 @@
   #shopify-section-{{ section.id }} .nc-cbdhero__inner .nc-eyebrow { margin: 0; line-height: var(--leading-relaxed); font-size: 12px; letter-spacing: 0.14em; color: var(--sage-200); }
   #shopify-section-{{ section.id }} .nc-cbdhero__inner h1 { margin: 0; font-size: clamp(40px, 5.5vw, 64px); line-height: 1.03; letter-spacing: -0.01em; color: var(--paper); }
   #shopify-section-{{ section.id }} .nc-cbdhero__inner p { margin: 0; font-size: 19px; line-height: 1.7; color: rgba(246, 244, 238, 0.88); max-width: 620px; }
+  /* Mobil (08-10): mindre overskrift og intro */
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .nc-cbdhero__inner h1 { font-size: clamp(30px, 8.4vw, 36px); line-height: 1.1; }
+    #shopify-section-{{ section.id }} .nc-cbdhero__inner p { font-size: 16px; line-height: 1.6; }
+  }
 {%- endstyle -%}
 
 <section class="nc-cbdhero nc-on-dark">

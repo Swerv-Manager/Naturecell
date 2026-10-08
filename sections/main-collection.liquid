@@ -54,6 +54,26 @@
   .nc-coll__empty p { margin: 0; font-size: 15.5px; color: var(--ink-500); }
   .nc-coll__empty a { display: inline-flex; border: 1.5px solid var(--sage-500); color: var(--sage-700); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: var(--radius-pill); text-decoration: none; }
   .nc-coll-main .nc-pagination { margin-top: 40px; }
+  /* Mobil (08-10): filtrene er vandrette sliders (label over, chips paa een linje med fade i kanten),
+     og kortene er kompakte med samme raekker som paa forsiden */
+  @media (max-width: 749px) {
+    .nc-coll__header { margin-bottom: 18px; }
+    .nc-coll__header h1 { line-height: 1.3; }
+    .nc-coll__desc { font-size: 15px; }
+    .nc-coll__toolbar { gap: 12px; padding: 14px 0 16px; margin-bottom: 20px; }
+    .nc-coll__search { height: 40px; }
+    .nc-coll__filter-row { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 6px; }
+    .nc-coll__filter-label { min-width: 0; }
+    .nc-coll__row-chips { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; margin: 0 calc(-1 * var(--gutter)); padding: 2px var(--gutter); scroll-padding: 0 var(--gutter); }
+    .nc-coll__row-chips::-webkit-scrollbar { display: none; }
+    .nc-coll-main .nc-coll__filter-row .nc-chip { flex: none; white-space: nowrap; padding: 7px 13px; font-size: 12.5px; }
+    .nc-coll__filter-row--sort { padding-top: 12px; margin-top: 0; }
+    .nc-coll__countrow { margin-bottom: 12px; }
+    .nc-coll-main .nc-grid { gap: 12px; }
+    .nc-coll-main .nc-product-card__info { padding-bottom: 14px; }
+    .nc-coll-main .nc-product-card__price { padding-top: 8px; }
+    .nc-coll-main .nc-pagination { margin-top: 28px; }
+  }
 {%- endstyle -%}
 
 <div class="nc-section nc-coll-main">
@@ -114,7 +134,7 @@
           {%- if section.settings.chips != blank -%}
             <div class="nc-coll__filter-row" role="group" aria-label="{{ section.settings.chips_label | escape }}">
               <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.chips_label %}</span>
-              <div class="nc-coll__row-chips">
+              <div class="nc-coll__row-chips" data-nc-rail="nodots">
                 {%- assign chips = section.settings.chips | newline_to_br | split: '<br />' -%}
                 {%- for chip in chips -%}
                   {%- assign parts = chip | strip | split: '|' -%}
@@ -168,7 +188,7 @@
             {%- if need_html != blank -%}
               <div class="nc-coll__filter-row" role="group" aria-label="{{ section.settings.need_label | escape }}">
                 <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.need_label %}</span>
-                <div class="nc-coll__row-chips">{{ need_html }}</div>
+                <div class="nc-coll__row-chips" data-nc-rail="nodots">{{ need_html }}</div>
               </div>
             {%- endif -%}
           {%- endif -%}
@@ -176,7 +196,7 @@
           {%- if section.settings.sort_chips != blank -%}
             <div class="nc-coll__filter-row nc-coll__filter-row--sort" aria-label="{{ section.settings.sort_label | escape }}">
               <span class="nc-coll__filter-label">{% render 'nc-cbd', text: section.settings.sort_label %}</span>
-              <div class="nc-coll__row-chips">
+              <div class="nc-coll__row-chips" data-nc-rail="nodots">
                 {%- assign chips = section.settings.sort_chips | newline_to_br | split: '<br />' -%}
                 {%- for chip in chips -%}
                   {%- assign parts = chip | strip | split: '|' -%}

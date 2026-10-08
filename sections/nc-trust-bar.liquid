@@ -6,8 +6,11 @@
   .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
   .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
   .nc-trust__item svg { color: var(--sage-600); flex: none; }
+  /* Mobil (08-10): to lige kolonner i stedet for en skaev ombrydning */
   @media (max-width: 749px) {
-    .nc-trust__row { justify-content: flex-start; }
+    .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
+    .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
+    .nc-trust__item svg { margin-top: 1px; }
   }
 {%- endstyle -%}
 

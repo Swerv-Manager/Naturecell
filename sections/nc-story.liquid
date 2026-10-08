@@ -33,6 +33,13 @@
   .nc-story__play:hover .nc-story__playicon, .nc-story__play:focus-visible .nc-story__playicon { transform: translate(-50%, -50%) scale(1.06); }
   .nc-story__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
   .nc-story__media.is-playing::after, .nc-story__media.is-playing .nc-story__caption { display: none; }
+  /* Mobil (08-10): mindre overskrift og broedtekst, kortere sektion */
+  @media (max-width: 749px) {
+    .nc-story.nc-section { padding-top: 44px; padding-bottom: 44px; }
+    .nc-story__text { gap: 16px; }
+    .nc-story__text h2 { font-size: clamp(28px, 8vw, 34px); line-height: 1.1; }
+    .nc-story__body { font-size: 16px; line-height: 1.65; }
+  }
 {%- endstyle -%}
 
 {%- comment -%} nc-flush-footer: designet har ingen luft mellem historie-striben og footeren (footeren nulstiller sin margin-top). {%- endcomment -%}

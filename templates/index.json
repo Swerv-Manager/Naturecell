@@ -6,28 +6,17 @@
         "slide1": {
           "type": "product_slide",
           "settings": {
-            "cta_url": "/collections/cbd-hudpleje",
+            "cta_url": "/products/hudpleje-startpakke-plus-1",
             "cta2_url": "/blogs/kundecases",
-            "eyebrow": "Danmarks første godkendte CBD-hudpleje",
-            "heading": "Ægte pleje, til al slags hud",
-            "body": "Plantebaseret hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser.",
-            "cta_text": "Shop nu →",
+            "eyebrow": "Kompletpakken til ansigtet",
+            "heading": "Hele rutinen i én pakke",
+            "body": "Rensegel, dagcreme, natcreme og hudpleje olie. Dansk udviklet, vegansk og uden syntetisk parfume.",
+            "cta_text": "Se Kompletpakken →",
             "cta2_text": "Se kundecases",
             "show_trustpilot": true
           }
         },
         "slide2": {
-          "type": "image_slide",
-          "settings": {
-            "cta_url": "/collections/cbd-hudpleje",
-            "fallback_asset": "nc-hero-botanik.jpg",
-            "eyebrow": "Plantebaseret & dansk",
-            "heading": "CBD i samspil med ren botanik",
-            "body": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume, udviklet og testet i Danmark.",
-            "cta_text": "Udforsk produkterne →"
-          }
-        },
-        "slide3": {
           "type": "image_slide",
           "settings": {
             "eyebrow": "Ægte oplevelser",
@@ -37,24 +26,11 @@
             "cta_url": "/blogs/kundecases",
             "fallback_asset": "nc-hero-kunder.jpg"
           }
-        },
-        "slide4": {
-          "type": "split_slide",
-          "settings": {
-            "cta_url": "/blogs/artikler/vores-oplevelse-i-lovens-hule",
-            "fallback_asset": "nc-hero-jesper-buch.jpg",
-            "eyebrow": "Investering i Løvens Hule",
-            "heading": "Jesper Buch er trådt ind som investor",
-            "body": "Et stærkt skulderklap til dansk hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg.",
-            "cta_text": "Læs historien →"
-          }
         }
       },
       "block_order": [
         "slide1",
-        "slide2",
-        "slide3",
-        "slide4"
+        "slide2"
       ]
     },
     "trust": {

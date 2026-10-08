@@ -61,6 +61,11 @@
   endcapture
   assign card_title = card_title | strip
   assign card_sub = product.metafields.ncell.size.value | default: title_parts[1]
+  comment
+    Pakkernes undertitel ("Indhold: Dagcreme, Rensegel ...") vises uden praefiks og paa een linje (ellipsis i CSS),
+    saa alle kort faar samme hoejde, ogsaa paa mobil (kundens mobiloptimering 08-10).
+  endcomment
+  assign card_sub = card_sub | remove_first: 'Indhold:' | strip
 
   assign show_badge = true
   if settings.show_save_badge == false
@@ -143,7 +148,7 @@
     <span class="nc-product-card__eyebrow">{{ eyebrow }}</span>
     <h3 class="nc-product-card__title"><a href="{{ product.url }}">{% render 'nc-cbd', text: card_title %}</a></h3>
     {%- comment -%} Stoerrelse og rating gengives altid (tomme som pladsholder), saa alle kort faar samme raekker og hoejde (kundens rettelse 08-10). {%- endcomment -%}
-    <span class="nc-product-card__size">{% if card_sub != blank %}{% render 'nc-cbd', text: card_sub %}{% else %}&nbsp;{% endif %}</span>
+    <span class="nc-product-card__size"{% if card_sub != blank %} title="{{ card_sub | escape }}"{% endif %}>{% if card_sub != blank %}{% render 'nc-cbd', text: card_sub %}{% else %}&nbsp;{% endif %}</span>
     {%- if rating != blank and rating_count != blank -%}
       <span class="nc-product-card__rating">
         <span class="nc-stars" aria-hidden="true">

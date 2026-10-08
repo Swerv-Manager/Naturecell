@@ -48,6 +48,19 @@
   .nc-cart__discount { color: var(--accent-berry); }
   .nc-cart__was { color: var(--ink-400); font-weight: 400; margin-right: 4px; }
   .nc-cart__savings { font-size: 14px; color: var(--accent-berry); }
+  /* Mobil (08-10): varen paa fuld bredde, antal og pris paa linjen under, ingen tabelhoved */
+  @media (max-width: 749px) {
+    .nc-cart__table { width: 100%; border-collapse: collapse; }
+    .nc-cart__table thead { display: none; }
+    .nc-cart__table tbody tr { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 12px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); }
+    .nc-cart__table td { display: block; border: 0; padding: 0; }
+    .nc-cart__table td:first-child { grid-column: 1 / -1; }
+    .nc-cart__table td:nth-child(3) { text-align: right; font-weight: 600; white-space: nowrap; }
+    .nc-cart__item { align-items: flex-start; }
+    .nc-cart__item img { width: 64px; height: 64px; }
+    .nc-cart__item a { font-size: 15px; }
+    .nc-cart__qty { width: 72px; }
+  }
 {%- endstyle -%}
 
 <div class="nc-section">

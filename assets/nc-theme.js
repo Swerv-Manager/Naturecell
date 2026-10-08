@@ -75,6 +75,50 @@
     });
   });
 
+  /* --- Rails med synlig indikator (kundens mobiloptimering 08-10): fade i kanten naar der er mere at se,
+         og prikker pr. "side" under railen (data-nc-rail="nodots" giver kun fade, fx filter-chips) --- */
+  $all('[data-nc-rail]').forEach(function (rail) {
+    var dots = null, pages = 0;
+    if (rail.getAttribute('data-nc-rail') !== 'nodots') {
+      dots = document.createElement('div');
+      dots.className = 'nc-raildots';
+      dots.setAttribute('aria-hidden', 'true');
+      dots.hidden = true;
+      rail.insertAdjacentElement('afterend', dots);
+    }
+    function build() {
+      var n = rail.clientWidth ? Math.ceil((rail.scrollWidth - 2) / rail.clientWidth) : 1;
+      if (n === pages) return;
+      pages = n;
+      dots.innerHTML = '';
+      dots.hidden = n < 2;
+      for (var i = 0; i < n; i++) {
+        (function (idx) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.tabIndex = -1;
+          b.addEventListener('click', function () { rail.scrollTo({ left: idx * rail.clientWidth, behavior: 'smooth' }); });
+          dots.appendChild(b);
+        })(i);
+      }
+    }
+    function update() {
+      var max = rail.scrollWidth - rail.clientWidth;
+      rail.classList.toggle('is-more', rail.scrollLeft < max - 4);
+      rail.classList.toggle('is-before', rail.scrollLeft > 4);
+      if (!dots) return;
+      build();
+      if (pages < 2) return;
+      var cur = rail.scrollLeft >= max - 4 ? pages - 1 : Math.min(pages - 1, Math.round(rail.scrollLeft / rail.clientWidth));
+      var bs = dots.children;
+      for (var i = 0; i < bs.length; i++) bs[i].classList.toggle('is-active', i === cur);
+    }
+    rail.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(rail);
+    update();
+  });
+
   /* --- Megamenu + mobilnav --- */
   var header = $('[data-nc-header]');
   if (header) {
