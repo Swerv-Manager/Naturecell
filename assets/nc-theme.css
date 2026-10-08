@@ -423,8 +423,9 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 .nc-product-card__rating .nc-stars { gap: 2px; }
 .nc-product-card__rating .nc-stars svg { width: 16px; height: 16px; display: block; fill: var(--sage-500); stroke: var(--sage-500); stroke-width: 1.5; stroke-linejoin: round; }
 .nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: var(--ink-300); }
-/* Ens korthoejde (kundens rettelse 08-10): titlen reserverer 2 linjer, stoerrelse og rating har fast hoejde, prisen staar i bunden */
-.nc-product-card__title { min-height: calc(2em * var(--leading-snug)); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* Ens korthoejde (kundens rettelse 08-10): titlen holder hoejst 2 linjer, stoerrelse og rating har fast hoejde, prisen staar i bunden.
+   Ingen reserveret tom linje under titlen (Allan 08-10). */
+.nc-product-card__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .nc-product-card__size { display: block; min-width: 0; min-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Kortet maa aldrig blive bredere end sin kolonne (lange undertitler tvang kolonnen bred paa mobil 08-10) */
 .nc-product-card, .nc-product-card__info { min-width: 0; }

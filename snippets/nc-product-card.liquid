@@ -66,6 +66,57 @@
     saa alle kort faar samme hoejde, ogsaa paa mobil (kundens mobiloptimering 08-10).
   endcomment
   assign card_sub = card_sub | remove_first: 'Indhold:' | strip
+  assign sub_is_content = false
+  if title_parts[1] contains 'Indhold'
+    assign sub_is_content = true
+  endif
+
+  comment
+    Kundens rettelse 08-10 (Allan): "med CBD"/"med CBG" staar paa stoerrelseslinjen sammen med ml, ikke i titlen,
+    og linjen skrives ens: "30ml · med CBD". Titlen bliver fx "Hudpleje Olie" / "Eye Gel".
+  endcomment
+  assign nc_med = ''
+  if card_title contains ' med '
+    assign nc_tp = card_title | split: ' med '
+    if nc_tp.size == 2
+      assign nc_tail = nc_tp[1] | strip
+      if nc_tail contains 'CBD' or nc_tail contains 'CBG'
+        assign card_title = nc_tp[0] | strip
+        if nc_tail contains ' - '
+          assign nc_dp = nc_tail | split: ' - '
+          assign nc_tail = nc_dp[0] | strip
+          if card_sub == blank
+            assign card_sub = nc_dp[1] | strip
+          endif
+        endif
+        assign nc_med = 'med ' | append: nc_tail
+      endif
+    endif
+  endif
+  assign card_sub = card_sub | replace: 'Indeholder CBD', 'med CBD'
+  if sub_is_content == false
+    if card_sub contains 'med CBD' or card_sub contains 'med CBG'
+      if nc_med == blank
+        if card_sub contains 'med CBG'
+          assign nc_med = 'med CBG'
+        else
+          assign nc_med = 'med CBD'
+        endif
+      endif
+      assign card_sub = card_sub | remove: 'med CBD' | remove: 'med CBG' | strip
+    endif
+    assign nc_pref = card_title | append: ','
+    if card_sub contains nc_pref
+      assign card_sub = card_sub | remove_first: nc_pref | strip
+    endif
+    if nc_med != blank
+      if card_sub != blank
+        assign card_sub = card_sub | append: ' · ' | append: nc_med
+      else
+        assign card_sub = nc_med
+      endif
+    endif
+  endif
 
   assign show_badge = true
   if settings.show_save_badge == false
