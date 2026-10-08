@@ -28,8 +28,14 @@
       {%- render 'nc-structured-data' -%}
     {%- endif -%}
 
+    {%- comment -%} Favicon: temaets indstilling, ellers temaets eget ikon (bladmaerket). {%- endcomment -%}
     {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="icon" type="image/png" sizes="192x192" href="{{ settings.favicon | image_url: width: 192, height: 192 }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" sizes="512x512" href="{{ 'nc-favicon.png' | asset_url }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ 'nc-touch-icon.png' | asset_url }}">
     {%- endif -%}
 
     {%- comment -%}

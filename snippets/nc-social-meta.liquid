@@ -1,7 +1,8 @@
 {%- comment -%}
   nc-social-meta: Open Graph og Twitter-kort, saa delinger paa Facebook, Messenger,
   LinkedIn, Slack m.fl. viser rigtig titel, tekst og billede. Billede: sidens eget
-  (produkt-, artikel- eller kollektionsbillede), ellers temaets delingsbillede, ellers logoet.
+  (produkt-, artikel- eller kollektionsbillede), ellers temaets delingsbillede (Temaindstillinger),
+  ellers butikkens delingsbillede fra Shopify-praeferencer (page_image), ellers temaets nc-share.jpg.
 {%- endcomment -%}
 {%- liquid
   assign og_title = page_title | default: shop.name
@@ -39,8 +40,13 @@
 <meta property="og:image:height" content="{{ 1200 | divided_by: og_image.aspect_ratio | round }}">
 {%- if og_image.alt != blank %}<meta property="og:image:alt" content="{{ og_image.alt | escape }}">{% endif %}
 {%- else %}
-<meta property="og:image" content="https:{{ 'nc-logo-wordmark.webp' | asset_url }}">
+<meta property="og:image" content="https:{{ 'nc-share.jpg' | asset_url }}">
+<meta property="og:image:secure_url" content="https:{{ 'nc-share.jpg' | asset_url }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="NatureCell, plantebaseret hudpleje udviklet i Danmark">
 {%- endif %}
+<meta name="twitter:image" content="https:{% if og_image != blank %}{{ og_image | image_url: width: 1200 }}{% else %}{{ 'nc-share.jpg' | asset_url }}{% endif %}">
 {%- if request.page_type == 'product' %}
 <meta property="product:price:amount" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}">
 <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">

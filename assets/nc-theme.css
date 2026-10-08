@@ -425,7 +425,9 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 .nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: var(--ink-300); }
 /* Ens korthoejde (kundens rettelse 08-10): titlen reserverer 2 linjer, stoerrelse og rating har fast hoejde, prisen staar i bunden */
 .nc-product-card__title { min-height: calc(2em * var(--leading-snug)); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-.nc-product-card__size { min-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nc-product-card__size { display: block; min-width: 0; min-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Kortet maa aldrig blive bredere end sin kolonne (lange undertitler tvang kolonnen bred paa mobil 08-10) */
+.nc-product-card, .nc-product-card__info { min-width: 0; }
 .nc-product-card__rating { min-height: 27px; }
 /* PriceTag (md) fra designsystemet: 22px/500, line-height 1, foer-pris 14px ink-400, baseline-justeret med 10px gap */
 .nc-product-card__price { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 10px; font-size: var(--text-xl); font-weight: 500; line-height: 1; color: var(--ink-900); }
@@ -443,7 +445,7 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 .nc-stars svg { width: 15px; height: 15px; fill: currentColor; }
 
 /* --- Grid og rails --- */
-.nc-grid { display: grid; gap: clamp(16px, 2vw, 24px); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.nc-grid { display: grid; gap: clamp(16px, 2vw, 24px); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); min-width: 0; list-style: none; margin: 0; padding: 0; }
 
 .nc-rail-wrap { position: relative; }
 
@@ -460,6 +462,7 @@ img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origi
 /* Mobil (08-10): kompakte, ens produktkort: mindre tekst og knapper, taettere grid */
 @media (max-width: 749px) {
   .nc-grid { gap: 12px; }
+  .nc-grid > li { min-width: 0; }
   .nc-product-card__info { gap: 5px; padding: 12px 12px 14px; line-height: 1.6; }
   .nc-product-card__eyebrow { font-size: 10px; }
   .nc-product-card__title { font-size: 16px; }

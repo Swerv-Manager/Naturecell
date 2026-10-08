@@ -15,7 +15,7 @@
   .nc-best__link:hover { color: var(--sage-600); }
   #shopify-section-{{ section.id }} .nc-best .nc-grid { gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(47%, 238px), 1fr)); }
   @media (max-width: 749px) {
-    #shopify-section-{{ section.id }} .nc-best .nc-grid { gap: 12px; grid-template-columns: 1fr 1fr; }
+    #shopify-section-{{ section.id }} .nc-best .nc-grid { gap: 12px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   }
 {%- endstyle -%}
 
