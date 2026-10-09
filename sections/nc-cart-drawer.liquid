@@ -119,7 +119,7 @@
               {%- unless item.product.has_only_default_variant -%}
                 <span class="nc-drawer__line-meta">{{ item.variant.title }}</span>
               {%- endunless -%}
-              {%- if item.unit_price_measurement -%}
+              {%- if item.unit_price_measurement and request.locale.iso_code != 'da' or item.unit_price_measurement and settings.nc_unit_price_da -%}
                 <span class="nc-drawer__line-meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</span>
               {%- endif -%}
               {%- comment -%} Rabatter (fx Kachings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}

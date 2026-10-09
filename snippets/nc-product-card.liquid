@@ -228,7 +228,7 @@
       Den korte momsnote vises kun paa andre sprog end dansk: det godkendte danske
       design har ingen note paa kortene, mens tysk lov kraever den taet paa listepriser.
     {%- endcomment -%}
-    {%- if v.unit_price_measurement -%}
+    {%- if v.unit_price_measurement and request.locale.iso_code != 'da' or v.unit_price_measurement and settings.nc_unit_price_da -%}
       <span class="nc-product-card__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
     {%- endif -%}
     {%- if request.locale.iso_code != 'da' -%}

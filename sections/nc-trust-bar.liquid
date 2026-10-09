@@ -43,6 +43,10 @@
 
 {%- liquid
   assign nc_tp_url = settings.nc_trustpilot_url | default: 'https://dk.trustpilot.com/review/naturecell.dk'
+  # Tyske kunder sendes til Trustpilots tyske side for samme profil (samme anmeldelser, tysk brugerflade)
+  if request.locale.iso_code == 'de'
+    assign nc_tp_url = nc_tp_url | replace: '://dk.trustpilot.com', '://de.trustpilot.com' | replace: '://www.trustpilot.com', '://de.trustpilot.com'
+  endif
   assign nc_trust_cls = ''
   if section.settings.mobile_mode == 'tp'
     assign nc_trust_cls = ' nc-trust--m-tp'

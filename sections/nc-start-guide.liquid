@@ -87,7 +87,7 @@
                 <p class="nc-start__price">
                   {%- if p.price_varies -%}{{ 'product.from' | t }} {% endif -%}
                   {{- p.price | money -}}
-                  {%- if v.unit_price_measurement -%}
+                  {%- if v.unit_price_measurement and request.locale.iso_code != 'da' or v.unit_price_measurement and settings.nc_unit_price_da -%}
                     <span class="nc-start__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ v.unit_price | money }} / {% if v.unit_price_measurement.reference_value != 1 %}{{ v.unit_price_measurement.reference_value }} {% endif %}{{ v.unit_price_measurement.reference_unit }}</span>
                   {%- endif -%}
                 </p>

@@ -90,7 +90,7 @@
                       {%- unless item.product.has_only_default_variant -%}
                         <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
                       {%- endunless -%}
-                      {%- if item.unit_price_measurement -%}
+                      {%- if item.unit_price_measurement and request.locale.iso_code != 'da' or item.unit_price_measurement and settings.nc_unit_price_da -%}
                         <div class="nc-cart__meta">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }} {% endif %}{{ item.unit_price_measurement.reference_unit }}</div>
                       {%- endif -%}
                       {%- comment -%} Rabatter (fx Katchings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
