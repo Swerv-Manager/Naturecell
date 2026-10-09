@@ -1,0 +1,1991 @@
+[
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "7ca7dea906800f87091b819132ecf2aa2b7ea14c9841fa18b9db121d3bbe82dc",
+  "da": "Water",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "30e7f960e9110e8b6fb79ddb65201fc8728733b771ecd12cdcd5839f78ffeca6",
+  "da": "gid://shopify/MediaImage/46301043786066",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "05df35dd921720d41f5703fa97c6fc12bab55f66202f9b0d375c9303842b9968",
+  "da": "This is text",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "77ece162d9baa419e63c4c8ee5f120aae421869a0cbbcb738359565a80132e59",
+  "da": "This is longer text",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "db6ce2d1e7043e465d8dc169aa17a394c5e408e93be762ba8691a776237b62ea",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"BENEFITS\",\"bold\":true}]},{\"listType\":\"unordered\",\"type\":\"list\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Hydrating\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Refreshing\"}]}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592346962",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "168e335c7a21a88514181937745251295e10d4b58ad36229436f9badb2aa9d90",
+  "da": "water, hydrating",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592412498",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "2142149f732893de1666a85d66c924557688a6116bea96522e1e81e744c9a3f4",
+  "da": "Cannabis Sativa L Extract",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592412498",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "30e7f960e9110e8b6fb79ddb65201fc8728733b771ecd12cdcd5839f78ffeca6",
+  "da": "gid://shopify/MediaImage/46301043786066",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592412498",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "3b3c15fbdff5add4c64db5b30442b0c0e0e4e9a4fc4c1032b612ff3dbf0d7ebf",
+  "da": "Cannabis extract 100% øko",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592412498",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "a3b79466bccdd028807a38c714cfa8892c911998d0aa208016a2dcc2d40546b9",
+  "da": "Cannabis extract 100% øko, som bidrager til bedre hud",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592412498",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "7d2bc08c8434de974e4dc40026029ed5520e420be3cb595720fd7212953e1af0",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"BENEFITS\",\"bold\":true}]},{\"listType\":\"unordered\",\"type\":\"list\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Afslappende\"}]}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "45f5ea0e072d1f51b8df0606e41a1cbc94d08b1bc9b27c38100694a08eef2f1b",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "3e1bd841c75242dc01eeeb275271a05b04258ecf05e4ab91a352afb8066a409c",
+  "da": "gid://shopify/MediaImage/47816044446034",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "45f5ea0e072d1f51b8df0606e41a1cbc94d08b1bc9b27c38100694a08eef2f1b",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "45f5ea0e072d1f51b8df0606e41a1cbc94d08b1bc9b27c38100694a08eef2f1b",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "0e5f3ea809fdf3996290261d27bf4561448dac3a5c7906f0d3e42aae038c46f0",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Koldpresset hamp frøolie\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/109592478034",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4905f738c4ca3e21a2258c874814adf8d794e64617f5fc9539d330a75322daa6",
+  "da": "hamp",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/111075328338",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "abaa68c541efe0fc9bdc55fedf664487cf572ec27dbeb35223bdb4f8faa2e709",
+  "da": "Julie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/111075328338",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "b0f15c4d8400432068ae4ca67e277261c400bc17cfed769967995e9f3518f9ad",
+  "da": "gid://shopify/MediaImage/47157338866002",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123564884306",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5c5a493f53cd5d76636909a33ae8e432617cfe56e497d5c4921ffff7413bc62a",
+  "da": "Voksne",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123564917074",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "0a3d352f4d679ec543b303a183a8db8e6fe726cc71bda666035e3eb4343a10a3",
+  "da": "Fuldspektret CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123564949842",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "ffba1bf4f5f17f84885216d1c52d4815819bd3506d6097eb95363fb5cb39eef2",
+  "da": "Hampefrøolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123564982610",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "f153bd17ec74cb87f16ea1c8abb2816331d57c158f0b389717aa006ad072a10d",
+  "da": "Terpener",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123565015378",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "43f072029e21dcc05268ffa875b2bb19b7dde0a88ffa1bf05a3b61c11975a418",
+  "da": "Flavonoider",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123565048146",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d538e86114388e59883177b978e32d6123cbd519509711356112afb5b280636e",
+  "da": "E-vitamin",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123565080914",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "041aff14c6b68f14150bf5fef99c752f95bfa7d2aa6268face225a853a97a706",
+  "da": "Vegansk",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/123565113682",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "27bd97f9d74144cc58418b183805b6e48f6ae6284f922ef6d228ec9eef2c1d79",
+  "da": "Vegetarisk",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
+  "da": "Test",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "022da70d36f1144a1aea7e6875f889953968dda25442093ea6debe91d60c3d82",
+  "da": "gid://shopify/MediaImage/51552192725330",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8fc29c52759f5bb989f95fb57822f2b8cd389fef80a9c92c18493d7081d33e8e",
+  "da": "Her er en kort beskrivelse",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "30589ea7d3d642654c0dc36646229af9ccf76c9971d9d39a8bb7f4efd3a415c3",
+  "da": "Her er en meget lang beskrivelse. Her er en meget lang beskrivelse. Her er en meget lang beskrivelse.\n\nHer er en meget lang beskrivelse. Her er en meget lang beskrivelse.",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "49417d2cd7422b8ed0787d117834107848bec834ca33962922d2091e8a7a4023",
+  "da": "{\"type\":\"root\",\"children\":[{\"listType\":\"unordered\",\"type\":\"list\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"1 - wow\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"2 - oow\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"3 - wwo\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"4 - owo\"}]}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196642898258",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c99716a02be98506beaf3444361ee29e595099ee0c5d4922513b688c55b97ab4",
+  "da": "Test, Wow",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "f94b5232d2b7e889a47ba283d15025f16a23fff315944655f876f6ad280ee07f",
+  "da": "gid://shopify/MediaImage/51858041340242",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "f24d4b2a2fda199e7bcf395e4bb60e7fad6cb4650d3ec6a11a1f47d9c9250b63",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"CBD\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196656234834",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196781867346",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "da": "test",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196781867346",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "915060529d142c36caa5532e15f29de6c10105ac4278f66fbd9efa4617140270",
+  "da": "gid://shopify/MediaImage/51930907836754",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196781867346",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "da": "test",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196814242130",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "96b9192a02cc2896df3218137ab1c02c98f655f2524ce5d1e2b0f6d474201aba",
+  "da": "CBD (Cannabidiol)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196814242130",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "129d8a08f3446434be4f3fa6c2327cdf70550b32cf7b178e77c74ca41052f041",
+  "da": "gid://shopify/MediaImage/61103353954642",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196814242130",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e47b6f15d07d002e13ef2b1f10951a5c1d05c5d3c796258cfed105144a379eba",
+  "da": "SKIN CONDITIONING | ANTIOXODANT",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196814242130",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "54661ab07f3b65379873c8cca24163ed9340c09d4a3f37515428df28db3df9de",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"CBD anvendes i hudpleje for sine plejende og balancerende egenskaber.\\nStoffet bidrager til en mere ensartet og smidig hudoverflade\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Balancer huden\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/196814242130",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c7a6f4baa4e6c24be070022cb086aaa834c76483b68d4b3a96477adf5ca4c2bb",
+  "da": "BALANCE",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/197046927698",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "3e0d5533b412dda75690af8f5bc577b94bc5aa426dc1ba81eb224817b5f9d33f",
+  "da": "Sheasmør (Butyrospermum Parkii Butter)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/197046927698",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "901d6267fd4526c57930e67c5d0a0288562998e0c84e25546236271a82483362",
+  "da": "gid://shopify/MediaImage/61103354020178",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/197046927698",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "a22317263ff1d479fbc8348bbe647291885ad0a86397fc47dcaed7a41a483368",
+  "da": "OCCLUSIVE | SKIN CONDITIONING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/197046927698",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "4e82983285df5518e50baf205fac5e5b84f6b5f92082404f499b20f6ae8ee294",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt smør, der beskytter mod udtørring og giver huden en blød og smidig overflade\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/197046927698",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5fda555467a320f6231131109aec6caa3ccdfd2d203c6610a4397496f8a4c696",
+  "da": "Beskyttende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/246680420690",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "627af1ba44e49788c4049286e052d7db770060efef179e4587bbd8a8a2b5573b",
+  "da": "Lavendelolie (Lavandula  Angustifolia Oil)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/246680420690",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "d1e594cadb9dc6297c943660cc48066008115d83b895a4dfb5b387e963f2009e",
+  "da": "gid://shopify/MediaImage/61103353823570",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/246680420690",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9d37e23a1355ec2c81dd10a38d123d93265c2dba1e637b683755d318d6ff451f",
+  "da": " FRAGRANCE | SKIN CONDITIONING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/246680420690",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "57ce5389169d746b0f7635ef321bed1fb6771dcad7ccf866f5965cc41fcfc2d8",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\" Naturlig duftolie, der samtidig har milde plejende egenskaber – ofte anvendt i beroligende hudpleje.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/246680420690",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "953c3e639dac691f6c1d39df89e81cd28724baf61e92552531dbcbfea1faab8f",
+  "da": "Duft & Ro",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8565fa1b180aa0649523a9bb427847f3c5edc59edeb59841c40a581da9ae9bfa",
+  "da": "Cannabis Sativa Leaf Extract",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "8c2eb1cd4bfce1516a1d1a534f865bc640b4e3563c8f0c22730f8b28bc9881db",
+  "da": "gid://shopify/MediaImage/61103354052946",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9a286d2fb2325a04b51ba0d44d20dc0e70ddbcb8003ccb6ad4029f50793a68c5",
+  "da": "SKIN CONDITIONING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "ingredient_description",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "cfe8f1e53cdd7c79b04f8df47ab3005092c85eaeb260f558a3e05653b9b6425f",
+  "da": "Ekstrakt fra hampblade,  som hjælper med at blødgøre og pleje huden – ofte brugt i formuleringer til sart eller  tør hud.",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "1d771cc838aa8bfc69c0bae27b5e0c51ecbdf22ad8d46add4645ab9175f8ca73",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ekstrakt fra hampblade,  som hjælper med at blødgøre og pleje huden – ofte brugt i formuleringer til sart eller  tør hud.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253341073746",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b2fe561a6cea808a351c49cf55652ba4bfc882f34360e52058d75195b6aa1119",
+  "da": "Næring",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349069138",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4009de9069684f967bdf8b8eed11d33cd43665ed55bdaad085fd655f7232cc67",
+  "da": "CBG  (Cannabigerol)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349069138",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "45a0303fe82716606dd0ed6ecffe0895aeb59d556df769907e2f18593146322d",
+  "da": "gid://shopify/MediaImage/61103353692498",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349069138",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5aef25070f753c00aa86309755741209c949ad2abb270e78d5af38ef55130fa7",
+  "da": "SKIN CONDITIONING ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349069138",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "027f5fbf3a0d1a6cc22f155bca239b2370d63a09b649bdb752c273099225aa7e",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Bruges i hudpleje for at  understøtte hudens naturlige balance og pleje, og kombineres ofte med CBD.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349069138",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d730d7cf1dfc16c568698c600e256157b2cb36618893384a3d58f6dbf9c2fb99",
+  "da": "Hudpleje",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349200210",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "71bf2fcaa4b3d3ddae5c5d6ee07583ce1c8cdcc36071305183a09cb405526a54",
+  "da": "Niacinamide (Vitamin B3)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349200210",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "086ff1f56582a4a32c92bf3c88f66f3b494c6388eb43d5ccf0a31b04d0d0d302",
+  "da": "gid://shopify/MediaImage/61103353758034",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349200210",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "01b0635314acf58aa137f0a1d9ecd15f879ba773c02218dda9c08aa2a1b52668",
+  "da": "SKIN CONDITIONING | SKIN BRIGHTENING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349200210",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "8eb479f14345627c46fe13adbd62268c82a1d253a6e93d411969b5b2e3295c55",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Velkendt ingrediens, der  kan bidrage til en mere  ensartet hudtone og  forbedret hudstruktur.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253349200210",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "a5f871e15f93d7455001217ff7064ca9b4009aa7ce4b5df51aef49b0049efed9",
+  "da": "Udstråling",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253372498258",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "474d5645e2dd3ef0d8a9d2f6ecfb62af3392046b59f7e7d08d8617cb4a021287",
+  "da": "Squalane",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253372498258",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "a31a9e495c9dfdffe3716ff6946ba841aefcbb6f680549774c5782044a84b768",
+  "da": "gid://shopify/MediaImage/61103354085714",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253372498258",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "29f236da120a89ae0332fc7b3a0c5b8b51916bb99522d9ea0e5f10c49328287f",
+  "da": "EMOLLIENT   | SKIN CONDITIONING ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253372498258",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "5db113fd99d0a21f494b8523b6ad022f6489140f2c1168cea271c9165b01a3be",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Let, ikke-fedtende olie,  der hjælper med at fugte  og udglatte huden.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253372498258",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c62f06598a9547bea43d67094c409f719660bafc749acc8d9698793f90518573",
+  "da": "Pleje",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253373710674",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e53c8e01ec712fe249cbee6052444905ac8e5ced0e46f27d5bc86d43b1a3dcbc",
+  "da": "Hyaluronsyre  (Sodium Hyaluronate)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253373710674",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "c156b4ea913c0f7a4a75d7522255c43addfebc74e7bdf1ff8fb7c63a50b2205c",
+  "da": "gid://shopify/MediaImage/61103353856338",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253373710674",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5e6631c15a9c39ec71a94658ab51a6ae17cc377a43e1dbc942193443deb11885",
+  "da": "HUMECTANT ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253373710674",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "fe1773ac0e9352ee150fc17c823bb7524f00ad3f25b541848bd29463ace6860c",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Binder fugt i huden og  bidrager til en glat og  fyldig hudoverflade.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253373710674",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "13e056f6f40c5ce7307c604788d27398e80d140592665a68b08361774d959476",
+  "da": "Fugt",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374071122",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "3e5de50019a1586910398c157f820f72f36faebe9709955b899ffd96cf2f8cd7",
+  "da": "Urea",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374071122",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "39663620ee106861a0f95d2e4e1d852f8cef6a91007b0e28dcd7bb674665b233",
+  "da": "gid://shopify/MediaImage/61103353790802",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374071122",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5e6631c15a9c39ec71a94658ab51a6ae17cc377a43e1dbc942193443deb11885",
+  "da": "HUMECTANT ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374071122",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "b097fd21ebd050d61b170edf01dac45667d96e70cd4f2fed6e7cf8efb547fbdf",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Effektiv fugtgiver, der hjælper med at blødgøre huden og opretholde dens elasticitet.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374071122",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "13e056f6f40c5ce7307c604788d27398e80d140592665a68b08361774d959476",
+  "da": "Fugt",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374824786",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "1040664d82da5d47a00f890f6e9c2fe0a1ac53b593c7259b95bd912f7efb0a80",
+  "da": "Mandelolie (Prunus Amygdalus  Dulcis Oil)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374824786",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "4626b54d8961d9583f0516779c1f7603b94b86d0519072adcf4bb23eb12a1d5e",
+  "da": "gid://shopify/MediaImage/61103353725266",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374824786",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "15837132c0e7b5d99f4d10f653765e12b56d2fc3a0e1bce1d9364a9169898d7f",
+  "da": "EMOLLIENT  | SKIN CONDITIONING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374824786",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "6ecc7e02f950ac2d761503c8479c5dff2ccb47b2441f68b9fedd7cee4989bef0",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Nærende olie, der virker blødgørende og beroligende  – særligt velegnet til tør  eller sensitiv hud.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253374824786",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b2fe561a6cea808a351c49cf55652ba4bfc882f34360e52058d75195b6aa1119",
+  "da": "Næring",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375086930",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "61f65e406a70cf45a4c8b57a5af7544c7dfded5db4ca778a0f3398882f78f3fd",
+  "da": "Tocopherol (Vitamin E)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375086930",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "8e44c614f6ed97df9570bf1a2850057f72be36c54dea2c89d462d1eee788ed18",
+  "da": "gid://shopify/MediaImage/61103353921874",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375086930",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9363e8f50e04960ba4bf2fe879c1738e3ca59f5c38924484f387e94e488c71b6",
+  "da": "ANTIOXIDANT  | SKIN CONDITIONING",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375086930",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "ebfd4bfe3ff75cef6571677eaffceb342361f7281653464fcb2d11983873f4e2",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hjælper med at beskytte huden mod ydre påvirkninger og styrker hudens naturlige barriere.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375086930",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "eed3273dc38d983f2e86c6c4c5930398adb1d9c9986591f71a600f608f361cb3",
+  "da": "Beskyttelse",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375185234",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "849b5feef9a40cda30107113cf6b9cf6dc316bccdc0bed6ccc63e395cfaa29b7",
+  "da": "Mangifera Indica Seed Butter  (Mango Butter)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375185234",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "85c081f0e473588dcc958b52f0e53fa4b9fd9f05a99631eea489511842884f77",
+  "da": "gid://shopify/MediaImage/61103353889106",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375185234",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5beaeaca732874631246fff54eff6c9ef275a6a16cc308cb46750e0542bfc003",
+  "da": "EMOLLIENT ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375185234",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "e297341d7ebce6b72dca6139fe04f047b626f47777bdbae0d57d1904b40fbf1f",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt smør, der beskytter og fugter huden – især brugt i produkter til tør hud.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253375185234",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c62f06598a9547bea43d67094c409f719660bafc749acc8d9698793f90518573",
+  "da": "Pleje",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253384032594",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "2028e79de696fcd7588170eeb7b266ee26c2993e24ca7567eedc128a6d45a349",
+  "da": "Caprylic/Capric Triglyceride",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253384032594",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "cca76c49b2a0f08587a2f74098b4a896071f630657f05ca481f62ee71c1e207e",
+  "da": "gid://shopify/MediaImage/61103354118482",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253384032594",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "471b7ac345d6d74f80c6f6e04473eb34899552aa51a9fd6444175b0a4bdab1ff",
+  "da": "EMOLLIENT  | DISPERSING AGENT",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253384032594",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "1807c05f7cda495d79cdbc86321043539630d0fb38f6f24742b2ef1995b0c0d0",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Let og stabil olie fra kokos og glycerin, der giver blødhed og hjælper med at sprede andre ingredienser i cremen.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253384032594",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9c7076711dd6e100a2b2bd87622e118692eb5b29470fd54db047d34f940fad56",
+  "da": "Formulering",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253385343314",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5e2cb17c050843d59fd2e7c1ca0ca0ac4ec11956480ee4ec734396ffd02b8a5d",
+  "da": "Natural  Myrcene",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253385343314",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "275c961ba98b6736c0fb35913f386638b0d0953e112cf7c01d969cc5ac5ea387",
+  "da": "gid://shopify/MediaImage/53866634445138",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253385343314",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "55b2ff4cac00c4aaca9e3a078572ccb1365f4284a3f02904a42ecec46c073799",
+  "da": "FRAGRANCE ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253385343314",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "cbbac4933a8976d495ac028dc41e70e4f6035561683102fe37af5918da534851",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt duftstof fra planter, anvendt i kosmetik for sin  karakteristiske grønne og  krydrede duft.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253385343314",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "67d93b0ee805df69b855ab2cc173478721603febd151c2689ed8e972415f0579",
+  "da": "Duft",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253386260818",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "98970393c5de856dec959a21893d5d9642c41ff069eaca6bbbe81c09ccdbcc30",
+  "da": "Natural  Alpha-Pinene",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253386260818",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "c20c4baa6528070723e6691fdc451d05af1b62aa7a56e20c95defa5dab025921",
+  "da": "gid://shopify/MediaImage/53866634215762",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253386260818",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "55b2ff4cac00c4aaca9e3a078572ccb1365f4284a3f02904a42ecec46c073799",
+  "da": "FRAGRANCE ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253386260818",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "30738d9c20c40a20dc8229c6fc2810bb8b91a2e9029f66cc005bb2f55c8f47a1",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Aromatisk stof udvundet af nåletræer – anvendes som naturlig parfumeingrediens.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253386260818",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "67d93b0ee805df69b855ab2cc173478721603febd151c2689ed8e972415f0579",
+  "da": "Duft",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389668690",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "15e02ba98dd956ceded8e9808be1809295aac8e8dabdfc69e53459855e9d5c08",
+  "da": "Citrus Aurantium Dulcis Oil (Orange)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389668690",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "e0b6f44a31f8d0dc23c3e8c2b0ff541f21bd00aa4fe63fb55f7b67dc9835d407",
+  "da": "gid://shopify/MediaImage/53866634903890",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389668690",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "48d76cf4d1bd12e2a507ca17ec00311a916342cf0b2b9329189af27db1cb1204",
+  "da": "FRAGRANCE | SKIN CONDITIONING ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389668690",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "341782670259a77f9248fd81133eeed53129d98ea0f463f6ca539356264a9d9e",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Æterisk olie fra appelsin,  der giver en frisk duft og  samtidig plejer huden mildt.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389668690",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e1b9e1942cc1e19b11fbe56801e632c8626e461b676161dbd3734a551b7a69ca",
+  "da": "Duft & Friskhed",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389734226",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "57a8b3fb1dec0671438d0ceb698b0d3189351355f0e1f70bdca12d861446c424",
+  "da": "Citrus Medica  Limonum Oil  (Lemon)",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389734226",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "3802b62e95c25e45b79168b7bdd5e83824d56194f8fd8829ac078ddfe85a52a5",
+  "da": "gid://shopify/MediaImage/53866634871122",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389734226",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "48d76cf4d1bd12e2a507ca17ec00311a916342cf0b2b9329189af27db1cb1204",
+  "da": "FRAGRANCE | SKIN CONDITIONING ",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389734226",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "cbe0b5ed4234c44e332bcd159366824fd21edd2f0ba84dc22d1fcf324bdccec0",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Olie fra citronskal, der  tilføjer frisk citrusduft og let pleje til huden.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253389734226",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5015aa737b9bd147c129700f50f161beda84ffdec07fc0579b1185c8eaaa0cbc",
+  "da": "Duft & Klarhed",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253390389586",
+  "key": "name",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d15db7ec28ce7c6174ea2601e8cb6ee299344b279166b8f882240e2b75f972e9",
+  "da": "Natural Beta- Caryophyllene",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253390389586",
+  "key": "image",
+  "type": "FILE_REFERENCE",
+  "digest": "b58bbf9c7804bc9cf3383f3edbdf7169874152dc97584a6086675e49d17b3d5c",
+  "da": "gid://shopify/MediaImage/53866634674514",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253390389586",
+  "key": "short_description",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "1c72b7f3b656f74320d7b6cb8f4ab93a8b6cf3a785cb1ffabfe0f035e8e0f494",
+  "da": "FRAGRANCE",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253390389586",
+  "key": "benefits",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "0b54b29d19ee3f84bd1e10701974c031455dfa713a80504118713a8dbd5ffad2",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Duftkomponent udvundet  fra planter som peber og  nellike – brugt i parfumerede hudplejeprodukter.\"}]}]}",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/253390389586",
+  "key": "tags",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "67d93b0ee805df69b855ab2cc173478721603febd151c2689ed8e972415f0579",
+  "da": "Duft",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624322386",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c8ea3f0944aa9116c78d97845887aacbcb4da02a7111c2b82c409d65d263567c",
+  "da": "Fløde",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624355154",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4c60c28350d0271a73b8a5347a9ca62a0c6cc76799f1177cb4fde6c1e3b0f3f7",
+  "da": "Letvægts",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624387922",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b5346bdbe8691b284e02ab0e0569da093a941d12e800691d254e995c37d10fcf",
+  "da": "Mat",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624420690",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "bb31012419acb4cd21bba224d7440c364dea3598971bc26ed67edd60dcf8eb6a",
+  "da": "Økologisk",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624453458",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "2200e4fefbb5f459ed1bb1001ce67510f39c861150ddab12b8fabf6a3ce365d0",
+  "da": "Pumpeflaske",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624486226",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "33aae227dab17196d79e24c5901daebcab5542ccb66a98e3b3f8e59fe21c0505",
+  "da": "Plast",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624518994",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d58c86d7fcf721f445a82340d14fa6281ad1d2e6edc6565ff715288f96b9258f",
+  "da": "Alle hudtyper",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624551762",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "03ffbb482f363cadaea02d8c8dd5ffa42650c1ad41f0fd835c4cb019814c237f",
+  "da": "Til hele dagen",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624584530",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "2200e4fefbb5f459ed1bb1001ce67510f39c861150ddab12b8fabf6a3ce365d0",
+  "da": "Pumpeflaske",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624617298",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "308295bd044666de1083fc67457e8adca3d386f5aa26fabe9fd08e29830d333e",
+  "da": "Duftfri",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624650066",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9183fe060b87d4704ec747bcef662eba3c6f4f391fc4d8469bf7b843726d28e3",
+  "da": "Hurtigtvirkende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624682834",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c73acab8994a7e3024c2472463b28c8c825a5995f39c992b98db14e25d19e02d",
+  "da": "Unisex",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624715602",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624748370",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9d1fb0e14eb5bf085db237e7d358986f96e389a2df664f1cfe07e1944aadd081",
+  "da": "Hydrerende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624781138",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9d1fb0e14eb5bf085db237e7d358986f96e389a2df664f1cfe07e1944aadd081",
+  "da": "Hydrerende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624813906",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "38d76bb1297c9a01945c32a9f35c24e43bb88ef1d5f1c7709a1c2d09dceeac49",
+  "da": "Ikke-fedtet",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624846674",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "a1b9a234ebdcaafe590605355490a087a56d3f44ac6690c7c2c0b7f8976a38d2",
+  "da": "Naturlig",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624879442",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4c2c4791b1538c0bded2e76aad105d7b7848b9a93789a0044c156322667754c9",
+  "da": "Uparfumeret",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624912210",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "3517f589f737fcf2d45e12d126925880ab4225740e3851384e9ed66242d65de8",
+  "da": "Ingen kunstig duft",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624944978",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "19bfa89facceba8a986f73a143c63beb89a1ef087a54445d93c1bd3733b5cb60",
+  "da": "Fedtet",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393624977746",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "93aadd55a0dfd87d93f71575a4ce6072c3a4551eec6f3ff7724703d3fe7bf660",
+  "da": "Boks",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625010514",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "38d76bb1297c9a01945c32a9f35c24e43bb88ef1d5f1c7709a1c2d09dceeac49",
+  "da": "Ikke-fedtet",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625043282",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "7992018615210a1cca9f7b79747a42b7e8c3018cd51e513f521695b25fd6a40f",
+  "da": "Beroligende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625076050",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "7992018615210a1cca9f7b79747a42b7e8c3018cd51e513f521695b25fd6a40f",
+  "da": "Beroligende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625108818",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e103b2bd872532b56b23413ae152ea40f876c704da4bd4b466baf36cbadae82e",
+  "da": "Sensitiv",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625141586",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "febd9807d00afaa31d3eb8c18c1c6645fdb5b701f739c8cad234bcb537f47138",
+  "da": "Fugtgivende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625174354",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "febd9807d00afaa31d3eb8c18c1c6645fdb5b701f739c8cad234bcb537f47138",
+  "da": "Fugtgivende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625207122",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "30ed1a02dc5a4a5be0b9b559720b56c6ef6344c1491db5b727b15a6320cabfb5",
+  "da": "Tør",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393625239890",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "fff5560755364d0b168fbfda6adc0732167513b8a8868cda30c19bd45d7265fd",
+  "da": "Ujævn hudfarve",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626190162",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "82ddcd820c38100080ea289f2add3bf176dbe155476e31e1f2ac15dfb9fbcb5a",
+  "da": "Nærende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626222930",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "1c88c5cedc6cdd2f0c99aec62770fadf727f97cb6c955ea29a591e399449c2f7",
+  "da": "Sheasmør",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626255698",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "82ddcd820c38100080ea289f2add3bf176dbe155476e31e1f2ac15dfb9fbcb5a",
+  "da": "Nærende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626288466",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "041aff14c6b68f14150bf5fef99c752f95bfa7d2aa6268face225a853a97a706",
+  "da": "Vegansk",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626321234",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "ca4dcb6dee6a5c717a0a6965af65794abd053f4fc8977b5d5822c343e8da5fca",
+  "da": "Udglattende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626354002",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "daf488b3142714c5c64c128eac8b2c98ba8b9293818a886458cb527d94be207d",
+  "da": "Parabenfri",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393626419538",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "a1c5ae7bcb34bbf48104488eff8deede31b059aceceab562a6aace384f7fd64f",
+  "da": "Problem",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627795794",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "00f89e2d6a6018005911fa3a97da4d26f20e8906815435fe0caea87cfcd9bce9",
+  "da": "Blødgørende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627828562",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "2c9f6ec96de31139aa5c396132f9d423a82d1acb92009829f1ff5ec5796c6b8d",
+  "da": "Olie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627861330",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8bd2f360353b77840aec9382f7c236756d1acd0b78cfe96efa8e7a9783d0a475",
+  "da": "Strålende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627894098",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8fbdbfe0cb2e9d7623e49959ac1cac93892518b1575e09f617ba31543871ba0f",
+  "da": "Flaske",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627926866",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "861980b7b5d39205624b7536df8c2067cdb918207537a003b3819f209f48de26",
+  "da": "Glas",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627959634",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "65e908584fd9380c7634ad3dc2bd26db9c3ff20bd7fc83544adf7b7145ae27a4",
+  "da": "Oplysende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393627992402",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "63932b94f5a5157bc769c6d4e89b240c53c314c4d49e4552c6e76ce918e583ec",
+  "da": "Lysende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393628025170",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "aea85d350f84a0bdac5d63627a5dd0206f56be5f9b8453857d624c3bccce8a4b",
+  "da": "Ansigt",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393628057938",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9700da24cc265335ea670dc4e38fa84d16b1fc2a9d2e54f7df9813c5874191ab",
+  "da": "Pap",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393628090706",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d8aad3d6a61a095c7772c7ac8c71fcd3879bda06f3487ed3c5f63c0f5c66389c",
+  "da": "CBD",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393628123474",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "67b74fe501b13efba35dd7c0eb55c91878cf12d6bf8a3ca47e95edbbc3353b15",
+  "da": "Æterisk olie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651618130",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5061b45bd7b67fc1e88783f942abe254180d151b31b0f78b67bc9b9d971aeb98",
+  "da": "Mand",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651650898",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "80451736a729b844ff76f26b4ed13b0bdb7dbf8f6b5e619960fe549f1afad0e5",
+  "da": "Genbalancerende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651683666",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "16eddf1578aee94c7b5263733073b5c63362785e77583fc4b188e5d8881fe3a3",
+  "da": "Citrus",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651716434",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "febd9807d00afaa31d3eb8c18c1c6645fdb5b701f739c8cad234bcb537f47138",
+  "da": "Fugtgivende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651749202",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "f24588f9924dc5d0a1a88993525ef1bc2d32dd4171ac2f06034e699ba30c4e59",
+  "da": "Aloe vera",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651781970",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8fbdbfe0cb2e9d7623e49959ac1cac93892518b1575e09f617ba31543871ba0f",
+  "da": "Flaske",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651814738",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b64259fb15c0983d7a3dfc7e01e510a9f91ad14eb7eb1f480d7f290f1b84dc7d",
+  "da": "Rensende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651847506",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4e8526852a445d4e778cc5a686104710ab21b6113ec98799b2343ff1fd947e68",
+  "da": "Frugtagtig",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651880274",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "ab5c27fb90759a0ff1f3007389e5180e39d88d99da170d087414c8735e704817",
+  "da": "Glycerin",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651913042",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "347448b0831b426a3a105cc56c4782694e3433e9dbd8c8fa13a8e2c5eb1f67c2",
+  "da": "Solsikkekerneolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651945810",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "62976e66bc037c2109820a3d851bfd95e9624d2c4fabd652e7e39a1507cf5e0d",
+  "da": "Mandelolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393651978578",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "d538e86114388e59883177b978e32d6123cbd519509711356112afb5b280636e",
+  "da": "E-vitamin",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654010194",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e57f04571aed175f82685e84658b230053d771d161bda8385c8b155e2f60f8b5",
+  "da": "Opstrammende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654042962",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e7cba397384116043001f27451daddf4b3318054e00aa825cc1a8a8db00b6a24",
+  "da": "Anti-aging",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654075730",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c8655acd491312a96c8dc5f85acc17f2e00caba728655b82d0da016955bff819",
+  "da": "Let at påføre",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654108498",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "265a44dd36628bdd2ca52e84fc4dc8160576547edfb878c48a1a5b4526426b6e",
+  "da": "Olivenolie",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654141266",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "a5524e49c59f1991668c2554a602bf4748609748bab31790d4d2db0bf167dd09",
+  "da": "Normalt",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654174034",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "ee296c88d0a1dd13feeb807aa68e8e6db38dfe887d57bcf85eb97d830e255cec",
+  "da": "Anti-rynker",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654206802",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "5fda555467a320f6231131109aec6caa3ccdfd2d203c6610a4397496f8a4c696",
+  "da": "Beskyttende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654239570",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "e3793aab17b5e85ccd605150c6c9f84c213a295b814ff33443290d6c279c3c7a",
+  "da": "Kombineret",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654272338",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "aea85d350f84a0bdac5d63627a5dd0206f56be5f9b8453857d624c3bccce8a4b",
+  "da": "Ansigt",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/393654305106",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b64259fb15c0983d7a3dfc7e01e510a9f91ad14eb7eb1f480d7f290f1b84dc7d",
+  "da": "Rensende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/395259150674",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b369dafbdf968f798a8afb792ecb3323796796377c7573a6953ce4632d95e250",
+  "da": "Glasflaske",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879349074",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b23b6b4d061476fd5593e7a314839fbe6e8039fcd59f2f31686b872625d900c8",
+  "da": "Universal",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879381842",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "4caa44f124d9c5e52860e90392e6355782c83029f7ade653af6d101bd557d071",
+  "da": "Ingen",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879414610",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "bece3a6c6459302a03ca7e375df2678934a55ca816f7dc9009eb01b1ce1c7bf9",
+  "da": "Hvid",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879447378",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "bfcaf92210f1173f9db6ccf116c02c07d03e1800e5765d8fa596208cf0336ec2",
+  "da": "Fuld krop",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879480146",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "f3ad3fe101c1d8aa6ac227b91df09868bdb6b798cb6e6b4e9889491334db1a4f",
+  "da": "Eksfolierende",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879512914",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "b8b311b0f2739e0cc32af32a91b5913e852ed565cf319a4eceb58898e3f50a9c",
+  "da": "Solid",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879545682",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "3d1c1935485050454921d57bd55de9f2c87bdf054682fa205d0956b95d879d68",
+  "da": "Viskose",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879578450",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "c606dc64b09429a77b595472506f510fbc5c01594950d17bde7a8a153d12038d",
+  "da": "Intet håndtag",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/402879611218",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "1a5246fc722d597e7e7b986f857034a6da180b4a16944294c62511d1c91b30fc",
+  "da": "Blid",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/438246900050",
+  "key": "label",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "fe919551e583e89703f146d9f11b08a99e0c789806c3fde4346a070c1f799bc6",
+  "da": "Kasse",
+  "old_de": null,
+  "st": "missing"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936312658",
+  "key": "text",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "8de1a6012ca87d8aac66c8edcc4f90d712d5c2c1a5456b4a57c0689011b9faf8",
+  "da": "Alle produkter er kosmetiske og udviklet i Danmark sammen med hudplejespecialister. Exfoliating Handsken kan bruges inden lotion eller olie, når du vil forberede huden.",
+  "old_de": "Alle Produkte sind Kosmetika und werden in GMP- und ISO-zertifizierten Anlagen in Dänemark hergestellt. Der Peeling-Handschuh kann vor Lotion oder Öl verwendet werden, wenn Sie die Haut vorbereiten möchten.",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936410962",
+  "key": "text",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "1b654cfb5c242ba0d8b589e94b493c97ce41843604b233e89274060e0693032e",
+  "da": "Fodplejen følger seriens princip om få, velvalgte ingredienser og ingen syntetisk parfume, og den er udviklet i Danmark.",
+  "old_de": "Die Fußpflege folgt dem Prinzip der Serie: wenige, gut gewählte Inhaltsstoffe, kein synthetisches Parfum und Produktion in GMP- und ISO-zertifizierten Anlagen in Dänemark.",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936574802",
+  "key": "title",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "9b0932ab7393582c56598bb2b12d2f55d88ec1ba017c08650cf4face5d4b09e0",
+  "da": "Certificeret produktion og test",
+  "old_de": "Dänische Produktion und Tests",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936574802",
+  "key": "text",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "ce838738c6a017d04d7b188b83d864220c726173c19660a4abb62732d71f2a66",
+  "da": "Olierne fremstilles på GMP- og ISO-certificerede faciliteter, og hvert parti testes. Analysecertifikatet kan rekvireres pr. parti, så du ved præcis, hvad flasken indeholder.",
+  "old_de": "Die Öle werden in GMP- und ISO-zertifizierten Anlagen in Dänemark hergestellt, und jede Charge wird getestet. Das Analysezertifikat kann pro Charge angefordert werden, damit Sie genau wissen, was die Flasche enthält.",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936607570",
+  "key": "title",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8c9a72fbcc7d748da8ed4f3a18f9087df7bcc78930bbe2e2cb378140250b0811",
+  "da": "Må ikke indtages",
+  "old_de": "Zur äußerlichen Anwendung",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/493936607570",
+  "key": "text",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "cc7bfb9bd220c5123172a9aff02ce79a46e642358cfeab9365bbb32f297a91e9",
+  "da": "Vores olier er kosmetiske produkter og må ikke indtages. Har du spørgsmål til valg af koncentration, er du velkommen til at skrive til vores danske kundeservice.",
+  "old_de": "Unsere Öle sind kosmetische Produkte zur äußerlichen Anwendung. Bei Fragen zur Wahl der Konzentration schreiben Sie gerne an unseren dänischen Kundenservice.",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/557099909458",
+  "key": "text",
+  "type": "MULTI_LINE_TEXT_FIELD",
+  "digest": "b19d51d1777b075821126f92df69f3240440a35eb97521ec0e641dab095eb369",
+  "da": "Alle produkter er kosmetik og sikkerhedsvurderet efter EU's regler. THC-indholdet er under 0,2 %, og der følger et analysecertifikat med hvert parti. Dagcremen og natcremen er begge testet hos Dermatest og har begge fået Kolbe A i Kemiluppen.",
+  "old_de": "Alle Produkte sind Kosmetik und nach den EU-Vorschriften sicherheitsbewertet. Der THC-Gehalt liegt unter 0,2 %, und jeder Charge liegt ein Analysezertifikat bei. Die Tagescreme wurde bei Dermatest mit dem Ergebnis „Sehr gut“ getestet, und die Nachtcreme erhielt bei Kemiluppen die Bewertung Kolbe A.",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metaobject/557099974994",
+  "key": "answer",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "6683ba6629a7675d50c5b07c3908bd747a3826d912beb83e66e6e9a2de03fc77",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ja. Produkterne er kosmetik og sikkerhedsvurderet efter EU's kosmetikregler, og THC-indholdet er under 0,2 %. Der følger et analysecertifikat med hvert parti, og NatureCell fik i 2019 som den første danske hudplejeserie tilladelse til at tilsætte CBD.\"}]}]}",
+  "old_de": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ja. Die Produkte sind Kosmetik und nach den EU-Kosmetikvorschriften sicherheitsbewertet, und der THC-Gehalt liegt unter 0,2 %. Jeder Charge liegt ein Analysezertifikat bei, und NatureCell wurde 2019 die erste CBD-Hautpflegeserie, die in Dänemark zum Verkauf zugelassen wurde.\"}]}]}",
+  "st": "outdated"
+ }
+]

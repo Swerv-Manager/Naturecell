@@ -1,0 +1,1154 @@
+[
+ {
+  "id": "109592346962:name",
+  "field": "name",
+  "da": "Water",
+  "old_de": null
+ },
+ {
+  "id": "109592346962:short_description",
+  "field": "short_description",
+  "da": "This is text",
+  "old_de": null
+ },
+ {
+  "id": "109592346962:ingredient_description",
+  "field": "ingredient_description",
+  "da": "This is longer text",
+  "old_de": null
+ },
+ {
+  "id": "109592346962:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"BENEFITS\",\"bold\":true}]},{\"listType\":\"unordered\",\"type\":\"list\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Hydrating\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Refreshing\"}]}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "109592346962:tags",
+  "field": "tags",
+  "da": "water, hydrating",
+  "old_de": null
+ },
+ {
+  "id": "109592412498:name",
+  "field": "name",
+  "da": "Cannabis Sativa L Extract",
+  "old_de": null
+ },
+ {
+  "id": "109592412498:short_description",
+  "field": "short_description",
+  "da": "Cannabis extract 100% øko",
+  "old_de": null
+ },
+ {
+  "id": "109592412498:ingredient_description",
+  "field": "ingredient_description",
+  "da": "Cannabis extract 100% øko, som bidrager til bedre hud",
+  "old_de": null
+ },
+ {
+  "id": "109592412498:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"BENEFITS\",\"bold\":true}]},{\"listType\":\"unordered\",\"type\":\"list\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Afslappende\"}]}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "109592478034:name",
+  "field": "name",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null
+ },
+ {
+  "id": "109592478034:short_description",
+  "field": "short_description",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null
+ },
+ {
+  "id": "109592478034:ingredient_description",
+  "field": "ingredient_description",
+  "da": "Koldpresset hamp frøolie",
+  "old_de": null
+ },
+ {
+  "id": "109592478034:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Koldpresset hamp frøolie\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "109592478034:tags",
+  "field": "tags",
+  "da": "hamp",
+  "old_de": null
+ },
+ {
+  "id": "111075328338:name",
+  "field": "name",
+  "da": "Julie",
+  "old_de": null
+ },
+ {
+  "id": "123564884306:label",
+  "field": "label",
+  "da": "Voksne",
+  "old_de": null
+ },
+ {
+  "id": "123564917074:label",
+  "field": "label",
+  "da": "Fuldspektret CBD",
+  "old_de": null
+ },
+ {
+  "id": "123564949842:label",
+  "field": "label",
+  "da": "Hampefrøolie",
+  "old_de": null
+ },
+ {
+  "id": "123564982610:label",
+  "field": "label",
+  "da": "Terpener",
+  "old_de": null
+ },
+ {
+  "id": "123565015378:label",
+  "field": "label",
+  "da": "Flavonoider",
+  "old_de": null
+ },
+ {
+  "id": "123565048146:label",
+  "field": "label",
+  "da": "E-vitamin",
+  "old_de": null
+ },
+ {
+  "id": "123565080914:label",
+  "field": "label",
+  "da": "Vegansk",
+  "old_de": null
+ },
+ {
+  "id": "123565113682:label",
+  "field": "label",
+  "da": "Vegetarisk",
+  "old_de": null
+ },
+ {
+  "id": "196656234834:name",
+  "field": "name",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "196656234834:short_description",
+  "field": "short_description",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "196656234834:ingredient_description",
+  "field": "ingredient_description",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "196656234834:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"CBD\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "196656234834:tags",
+  "field": "tags",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "196814242130:name",
+  "field": "name",
+  "da": "CBD (Cannabidiol)",
+  "old_de": null
+ },
+ {
+  "id": "196814242130:short_description",
+  "field": "short_description",
+  "da": "SKIN CONDITIONING | ANTIOXODANT",
+  "old_de": null
+ },
+ {
+  "id": "196814242130:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"CBD anvendes i hudpleje for sine plejende og balancerende egenskaber.\\nStoffet bidrager til en mere ensartet og smidig hudoverflade\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Balancer huden\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "196814242130:tags",
+  "field": "tags",
+  "da": "BALANCE",
+  "old_de": null
+ },
+ {
+  "id": "197046927698:name",
+  "field": "name",
+  "da": "Sheasmør (Butyrospermum Parkii Butter)",
+  "old_de": null
+ },
+ {
+  "id": "197046927698:short_description",
+  "field": "short_description",
+  "da": "OCCLUSIVE | SKIN CONDITIONING",
+  "old_de": null
+ },
+ {
+  "id": "197046927698:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt smør, der beskytter mod udtørring og giver huden en blød og smidig overflade\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "197046927698:tags",
+  "field": "tags",
+  "da": "Beskyttende",
+  "old_de": null
+ },
+ {
+  "id": "246680420690:name",
+  "field": "name",
+  "da": "Lavendelolie (Lavandula  Angustifolia Oil)",
+  "old_de": null
+ },
+ {
+  "id": "246680420690:short_description",
+  "field": "short_description",
+  "da": " FRAGRANCE | SKIN CONDITIONING",
+  "old_de": null
+ },
+ {
+  "id": "246680420690:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\" Naturlig duftolie, der samtidig har milde plejende egenskaber – ofte anvendt i beroligende hudpleje.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "246680420690:tags",
+  "field": "tags",
+  "da": "Duft & Ro",
+  "old_de": null
+ },
+ {
+  "id": "253341073746:name",
+  "field": "name",
+  "da": "Cannabis Sativa Leaf Extract",
+  "old_de": null
+ },
+ {
+  "id": "253341073746:short_description",
+  "field": "short_description",
+  "da": "SKIN CONDITIONING",
+  "old_de": null
+ },
+ {
+  "id": "253341073746:ingredient_description",
+  "field": "ingredient_description",
+  "da": "Ekstrakt fra hampblade,  som hjælper med at blødgøre og pleje huden – ofte brugt i formuleringer til sart eller  tør hud.",
+  "old_de": null
+ },
+ {
+  "id": "253341073746:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ekstrakt fra hampblade,  som hjælper med at blødgøre og pleje huden – ofte brugt i formuleringer til sart eller  tør hud.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253341073746:tags",
+  "field": "tags",
+  "da": "Næring",
+  "old_de": null
+ },
+ {
+  "id": "253349069138:name",
+  "field": "name",
+  "da": "CBG  (Cannabigerol)",
+  "old_de": null
+ },
+ {
+  "id": "253349069138:short_description",
+  "field": "short_description",
+  "da": "SKIN CONDITIONING ",
+  "old_de": null
+ },
+ {
+  "id": "253349069138:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Bruges i hudpleje for at  understøtte hudens naturlige balance og pleje, og kombineres ofte med CBD.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253349069138:tags",
+  "field": "tags",
+  "da": "Hudpleje",
+  "old_de": null
+ },
+ {
+  "id": "253349200210:name",
+  "field": "name",
+  "da": "Niacinamide (Vitamin B3)",
+  "old_de": null
+ },
+ {
+  "id": "253349200210:short_description",
+  "field": "short_description",
+  "da": "SKIN CONDITIONING | SKIN BRIGHTENING",
+  "old_de": null
+ },
+ {
+  "id": "253349200210:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Velkendt ingrediens, der  kan bidrage til en mere  ensartet hudtone og  forbedret hudstruktur.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253349200210:tags",
+  "field": "tags",
+  "da": "Udstråling",
+  "old_de": null
+ },
+ {
+  "id": "253372498258:name",
+  "field": "name",
+  "da": "Squalane",
+  "old_de": null
+ },
+ {
+  "id": "253372498258:short_description",
+  "field": "short_description",
+  "da": "EMOLLIENT   | SKIN CONDITIONING ",
+  "old_de": null
+ },
+ {
+  "id": "253372498258:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Let, ikke-fedtende olie,  der hjælper med at fugte  og udglatte huden.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253372498258:tags",
+  "field": "tags",
+  "da": "Pleje",
+  "old_de": null
+ },
+ {
+  "id": "253373710674:name",
+  "field": "name",
+  "da": "Hyaluronsyre  (Sodium Hyaluronate)",
+  "old_de": null
+ },
+ {
+  "id": "253373710674:short_description",
+  "field": "short_description",
+  "da": "HUMECTANT ",
+  "old_de": null
+ },
+ {
+  "id": "253373710674:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Binder fugt i huden og  bidrager til en glat og  fyldig hudoverflade.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253373710674:tags",
+  "field": "tags",
+  "da": "Fugt",
+  "old_de": null
+ },
+ {
+  "id": "253374071122:name",
+  "field": "name",
+  "da": "Urea",
+  "old_de": null
+ },
+ {
+  "id": "253374071122:short_description",
+  "field": "short_description",
+  "da": "HUMECTANT ",
+  "old_de": null
+ },
+ {
+  "id": "253374071122:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Effektiv fugtgiver, der hjælper med at blødgøre huden og opretholde dens elasticitet.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253374071122:tags",
+  "field": "tags",
+  "da": "Fugt",
+  "old_de": null
+ },
+ {
+  "id": "253374824786:name",
+  "field": "name",
+  "da": "Mandelolie (Prunus Amygdalus  Dulcis Oil)",
+  "old_de": null
+ },
+ {
+  "id": "253374824786:short_description",
+  "field": "short_description",
+  "da": "EMOLLIENT  | SKIN CONDITIONING",
+  "old_de": null
+ },
+ {
+  "id": "253374824786:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Nærende olie, der virker blødgørende og beroligende  – særligt velegnet til tør  eller sensitiv hud.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253374824786:tags",
+  "field": "tags",
+  "da": "Næring",
+  "old_de": null
+ },
+ {
+  "id": "253375086930:name",
+  "field": "name",
+  "da": "Tocopherol (Vitamin E)",
+  "old_de": null
+ },
+ {
+  "id": "253375086930:short_description",
+  "field": "short_description",
+  "da": "ANTIOXIDANT  | SKIN CONDITIONING",
+  "old_de": null
+ },
+ {
+  "id": "253375086930:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hjælper med at beskytte huden mod ydre påvirkninger og styrker hudens naturlige barriere.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253375086930:tags",
+  "field": "tags",
+  "da": "Beskyttelse",
+  "old_de": null
+ },
+ {
+  "id": "253375185234:name",
+  "field": "name",
+  "da": "Mangifera Indica Seed Butter  (Mango Butter)",
+  "old_de": null
+ },
+ {
+  "id": "253375185234:short_description",
+  "field": "short_description",
+  "da": "EMOLLIENT ",
+  "old_de": null
+ },
+ {
+  "id": "253375185234:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt smør, der beskytter og fugter huden – især brugt i produkter til tør hud.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253375185234:tags",
+  "field": "tags",
+  "da": "Pleje",
+  "old_de": null
+ },
+ {
+  "id": "253384032594:name",
+  "field": "name",
+  "da": "Caprylic/Capric Triglyceride",
+  "old_de": null
+ },
+ {
+  "id": "253384032594:short_description",
+  "field": "short_description",
+  "da": "EMOLLIENT  | DISPERSING AGENT",
+  "old_de": null
+ },
+ {
+  "id": "253384032594:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Let og stabil olie fra kokos og glycerin, der giver blødhed og hjælper med at sprede andre ingredienser i cremen.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253384032594:tags",
+  "field": "tags",
+  "da": "Formulering",
+  "old_de": null
+ },
+ {
+  "id": "253385343314:name",
+  "field": "name",
+  "da": "Natural  Myrcene",
+  "old_de": null
+ },
+ {
+  "id": "253385343314:short_description",
+  "field": "short_description",
+  "da": "FRAGRANCE ",
+  "old_de": null
+ },
+ {
+  "id": "253385343314:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Naturligt duftstof fra planter, anvendt i kosmetik for sin  karakteristiske grønne og  krydrede duft.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253385343314:tags",
+  "field": "tags",
+  "da": "Duft",
+  "old_de": null
+ },
+ {
+  "id": "253386260818:name",
+  "field": "name",
+  "da": "Natural  Alpha-Pinene",
+  "old_de": null
+ },
+ {
+  "id": "253386260818:short_description",
+  "field": "short_description",
+  "da": "FRAGRANCE ",
+  "old_de": null
+ },
+ {
+  "id": "253386260818:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Aromatisk stof udvundet af nåletræer – anvendes som naturlig parfumeingrediens.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253386260818:tags",
+  "field": "tags",
+  "da": "Duft",
+  "old_de": null
+ },
+ {
+  "id": "253389668690:name",
+  "field": "name",
+  "da": "Citrus Aurantium Dulcis Oil (Orange)",
+  "old_de": null
+ },
+ {
+  "id": "253389668690:short_description",
+  "field": "short_description",
+  "da": "FRAGRANCE | SKIN CONDITIONING ",
+  "old_de": null
+ },
+ {
+  "id": "253389668690:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Æterisk olie fra appelsin,  der giver en frisk duft og  samtidig plejer huden mildt.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253389668690:tags",
+  "field": "tags",
+  "da": "Duft & Friskhed",
+  "old_de": null
+ },
+ {
+  "id": "253389734226:name",
+  "field": "name",
+  "da": "Citrus Medica  Limonum Oil  (Lemon)",
+  "old_de": null
+ },
+ {
+  "id": "253389734226:short_description",
+  "field": "short_description",
+  "da": "FRAGRANCE | SKIN CONDITIONING ",
+  "old_de": null
+ },
+ {
+  "id": "253389734226:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Olie fra citronskal, der  tilføjer frisk citrusduft og let pleje til huden.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253389734226:tags",
+  "field": "tags",
+  "da": "Duft & Klarhed",
+  "old_de": null
+ },
+ {
+  "id": "253390389586:name",
+  "field": "name",
+  "da": "Natural Beta- Caryophyllene",
+  "old_de": null
+ },
+ {
+  "id": "253390389586:short_description",
+  "field": "short_description",
+  "da": "FRAGRANCE",
+  "old_de": null
+ },
+ {
+  "id": "253390389586:benefits",
+  "field": "benefits",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Duftkomponent udvundet  fra planter som peber og  nellike – brugt i parfumerede hudplejeprodukter.\"}]}]}",
+  "old_de": null
+ },
+ {
+  "id": "253390389586:tags",
+  "field": "tags",
+  "da": "Duft",
+  "old_de": null
+ },
+ {
+  "id": "393624322386:label",
+  "field": "label",
+  "da": "Fløde",
+  "old_de": null
+ },
+ {
+  "id": "393624355154:label",
+  "field": "label",
+  "da": "Letvægts",
+  "old_de": null
+ },
+ {
+  "id": "393624387922:label",
+  "field": "label",
+  "da": "Mat",
+  "old_de": null
+ },
+ {
+  "id": "393624420690:label",
+  "field": "label",
+  "da": "Økologisk",
+  "old_de": null
+ },
+ {
+  "id": "393624453458:label",
+  "field": "label",
+  "da": "Pumpeflaske",
+  "old_de": null
+ },
+ {
+  "id": "393624486226:label",
+  "field": "label",
+  "da": "Plast",
+  "old_de": null
+ },
+ {
+  "id": "393624518994:label",
+  "field": "label",
+  "da": "Alle hudtyper",
+  "old_de": null
+ },
+ {
+  "id": "393624551762:label",
+  "field": "label",
+  "da": "Til hele dagen",
+  "old_de": null
+ },
+ {
+  "id": "393624584530:label",
+  "field": "label",
+  "da": "Pumpeflaske",
+  "old_de": null
+ },
+ {
+  "id": "393624617298:label",
+  "field": "label",
+  "da": "Duftfri",
+  "old_de": null
+ },
+ {
+  "id": "393624650066:label",
+  "field": "label",
+  "da": "Hurtigtvirkende",
+  "old_de": null
+ },
+ {
+  "id": "393624682834:label",
+  "field": "label",
+  "da": "Unisex",
+  "old_de": null
+ },
+ {
+  "id": "393624715602:label",
+  "field": "label",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "393624748370:label",
+  "field": "label",
+  "da": "Hydrerende",
+  "old_de": null
+ },
+ {
+  "id": "393624781138:label",
+  "field": "label",
+  "da": "Hydrerende",
+  "old_de": null
+ },
+ {
+  "id": "393624813906:label",
+  "field": "label",
+  "da": "Ikke-fedtet",
+  "old_de": null
+ },
+ {
+  "id": "393624846674:label",
+  "field": "label",
+  "da": "Naturlig",
+  "old_de": null
+ },
+ {
+  "id": "393624879442:label",
+  "field": "label",
+  "da": "Uparfumeret",
+  "old_de": null
+ },
+ {
+  "id": "393624912210:label",
+  "field": "label",
+  "da": "Ingen kunstig duft",
+  "old_de": null
+ },
+ {
+  "id": "393624944978:label",
+  "field": "label",
+  "da": "Fedtet",
+  "old_de": null
+ },
+ {
+  "id": "393624977746:label",
+  "field": "label",
+  "da": "Boks",
+  "old_de": null
+ },
+ {
+  "id": "393625010514:label",
+  "field": "label",
+  "da": "Ikke-fedtet",
+  "old_de": null
+ },
+ {
+  "id": "393625043282:label",
+  "field": "label",
+  "da": "Beroligende",
+  "old_de": null
+ },
+ {
+  "id": "393625076050:label",
+  "field": "label",
+  "da": "Beroligende",
+  "old_de": null
+ },
+ {
+  "id": "393625108818:label",
+  "field": "label",
+  "da": "Sensitiv",
+  "old_de": null
+ },
+ {
+  "id": "393625141586:label",
+  "field": "label",
+  "da": "Fugtgivende",
+  "old_de": null
+ },
+ {
+  "id": "393625174354:label",
+  "field": "label",
+  "da": "Fugtgivende",
+  "old_de": null
+ },
+ {
+  "id": "393625207122:label",
+  "field": "label",
+  "da": "Tør",
+  "old_de": null
+ },
+ {
+  "id": "393625239890:label",
+  "field": "label",
+  "da": "Ujævn hudfarve",
+  "old_de": null
+ },
+ {
+  "id": "393626190162:label",
+  "field": "label",
+  "da": "Nærende",
+  "old_de": null
+ },
+ {
+  "id": "393626222930:label",
+  "field": "label",
+  "da": "Sheasmør",
+  "old_de": null
+ },
+ {
+  "id": "393626255698:label",
+  "field": "label",
+  "da": "Nærende",
+  "old_de": null
+ },
+ {
+  "id": "393626288466:label",
+  "field": "label",
+  "da": "Vegansk",
+  "old_de": null
+ },
+ {
+  "id": "393626321234:label",
+  "field": "label",
+  "da": "Udglattende",
+  "old_de": null
+ },
+ {
+  "id": "393626354002:label",
+  "field": "label",
+  "da": "Parabenfri",
+  "old_de": null
+ },
+ {
+  "id": "393626419538:label",
+  "field": "label",
+  "da": "Problem",
+  "old_de": null
+ },
+ {
+  "id": "393627795794:label",
+  "field": "label",
+  "da": "Blødgørende",
+  "old_de": null
+ },
+ {
+  "id": "393627828562:label",
+  "field": "label",
+  "da": "Olie",
+  "old_de": null
+ },
+ {
+  "id": "393627861330:label",
+  "field": "label",
+  "da": "Strålende",
+  "old_de": null
+ },
+ {
+  "id": "393627894098:label",
+  "field": "label",
+  "da": "Flaske",
+  "old_de": null
+ },
+ {
+  "id": "393627926866:label",
+  "field": "label",
+  "da": "Glas",
+  "old_de": null
+ },
+ {
+  "id": "393627959634:label",
+  "field": "label",
+  "da": "Oplysende",
+  "old_de": null
+ },
+ {
+  "id": "393627992402:label",
+  "field": "label",
+  "da": "Lysende",
+  "old_de": null
+ },
+ {
+  "id": "393628025170:label",
+  "field": "label",
+  "da": "Ansigt",
+  "old_de": null
+ },
+ {
+  "id": "393628057938:label",
+  "field": "label",
+  "da": "Pap",
+  "old_de": null
+ },
+ {
+  "id": "393628090706:label",
+  "field": "label",
+  "da": "CBD",
+  "old_de": null
+ },
+ {
+  "id": "393628123474:label",
+  "field": "label",
+  "da": "Æterisk olie",
+  "old_de": null
+ },
+ {
+  "id": "393651618130:label",
+  "field": "label",
+  "da": "Mand",
+  "old_de": null
+ },
+ {
+  "id": "393651650898:label",
+  "field": "label",
+  "da": "Genbalancerende",
+  "old_de": null
+ },
+ {
+  "id": "393651683666:label",
+  "field": "label",
+  "da": "Citrus",
+  "old_de": null
+ },
+ {
+  "id": "393651716434:label",
+  "field": "label",
+  "da": "Fugtgivende",
+  "old_de": null
+ },
+ {
+  "id": "393651749202:label",
+  "field": "label",
+  "da": "Aloe vera",
+  "old_de": null
+ },
+ {
+  "id": "393651781970:label",
+  "field": "label",
+  "da": "Flaske",
+  "old_de": null
+ },
+ {
+  "id": "393651814738:label",
+  "field": "label",
+  "da": "Rensende",
+  "old_de": null
+ },
+ {
+  "id": "393651847506:label",
+  "field": "label",
+  "da": "Frugtagtig",
+  "old_de": null
+ },
+ {
+  "id": "393651880274:label",
+  "field": "label",
+  "da": "Glycerin",
+  "old_de": null
+ },
+ {
+  "id": "393651913042:label",
+  "field": "label",
+  "da": "Solsikkekerneolie",
+  "old_de": null
+ },
+ {
+  "id": "393651945810:label",
+  "field": "label",
+  "da": "Mandelolie",
+  "old_de": null
+ },
+ {
+  "id": "393651978578:label",
+  "field": "label",
+  "da": "E-vitamin",
+  "old_de": null
+ },
+ {
+  "id": "393654010194:label",
+  "field": "label",
+  "da": "Opstrammende",
+  "old_de": null
+ },
+ {
+  "id": "393654042962:label",
+  "field": "label",
+  "da": "Anti-aging",
+  "old_de": null
+ },
+ {
+  "id": "393654075730:label",
+  "field": "label",
+  "da": "Let at påføre",
+  "old_de": null
+ },
+ {
+  "id": "393654108498:label",
+  "field": "label",
+  "da": "Olivenolie",
+  "old_de": null
+ },
+ {
+  "id": "393654141266:label",
+  "field": "label",
+  "da": "Normalt",
+  "old_de": null
+ },
+ {
+  "id": "393654174034:label",
+  "field": "label",
+  "da": "Anti-rynker",
+  "old_de": null
+ },
+ {
+  "id": "393654206802:label",
+  "field": "label",
+  "da": "Beskyttende",
+  "old_de": null
+ },
+ {
+  "id": "393654239570:label",
+  "field": "label",
+  "da": "Kombineret",
+  "old_de": null
+ },
+ {
+  "id": "393654272338:label",
+  "field": "label",
+  "da": "Ansigt",
+  "old_de": null
+ },
+ {
+  "id": "393654305106:label",
+  "field": "label",
+  "da": "Rensende",
+  "old_de": null
+ },
+ {
+  "id": "395259150674:label",
+  "field": "label",
+  "da": "Glasflaske",
+  "old_de": null
+ },
+ {
+  "id": "402879349074:label",
+  "field": "label",
+  "da": "Universal",
+  "old_de": null
+ },
+ {
+  "id": "402879381842:label",
+  "field": "label",
+  "da": "Ingen",
+  "old_de": null
+ },
+ {
+  "id": "402879414610:label",
+  "field": "label",
+  "da": "Hvid",
+  "old_de": null
+ },
+ {
+  "id": "402879447378:label",
+  "field": "label",
+  "da": "Fuld krop",
+  "old_de": null
+ },
+ {
+  "id": "402879480146:label",
+  "field": "label",
+  "da": "Eksfolierende",
+  "old_de": null
+ },
+ {
+  "id": "402879512914:label",
+  "field": "label",
+  "da": "Solid",
+  "old_de": null
+ },
+ {
+  "id": "402879545682:label",
+  "field": "label",
+  "da": "Viskose",
+  "old_de": null
+ },
+ {
+  "id": "402879578450:label",
+  "field": "label",
+  "da": "Intet håndtag",
+  "old_de": null
+ },
+ {
+  "id": "402879611218:label",
+  "field": "label",
+  "da": "Blid",
+  "old_de": null
+ },
+ {
+  "id": "438246900050:label",
+  "field": "label",
+  "da": "Kasse",
+  "old_de": null
+ },
+ {
+  "id": "493936312658:text",
+  "field": "text",
+  "da": "Alle produkter er kosmetiske og udviklet i Danmark sammen med hudplejespecialister. Exfoliating Handsken kan bruges inden lotion eller olie, når du vil forberede huden.",
+  "old_de": "Alle Produkte sind Kosmetika und werden in GMP- und ISO-zertifizierten Anlagen in Dänemark hergestellt. Der Peeling-Handschuh kann vor Lotion oder Öl verwendet werden, wenn Sie die Haut vorbereiten möchten."
+ },
+ {
+  "id": "493936410962:text",
+  "field": "text",
+  "da": "Fodplejen følger seriens princip om få, velvalgte ingredienser og ingen syntetisk parfume, og den er udviklet i Danmark.",
+  "old_de": "Die Fußpflege folgt dem Prinzip der Serie: wenige, gut gewählte Inhaltsstoffe, kein synthetisches Parfum und Produktion in GMP- und ISO-zertifizierten Anlagen in Dänemark."
+ },
+ {
+  "id": "493936574802:title",
+  "field": "title",
+  "da": "Certificeret produktion og test",
+  "old_de": "Dänische Produktion und Tests"
+ },
+ {
+  "id": "493936574802:text",
+  "field": "text",
+  "da": "Olierne fremstilles på GMP- og ISO-certificerede faciliteter, og hvert parti testes. Analysecertifikatet kan rekvireres pr. parti, så du ved præcis, hvad flasken indeholder.",
+  "old_de": "Die Öle werden in GMP- und ISO-zertifizierten Anlagen in Dänemark hergestellt, und jede Charge wird getestet. Das Analysezertifikat kann pro Charge angefordert werden, damit Sie genau wissen, was die Flasche enthält."
+ },
+ {
+  "id": "493936607570:title",
+  "field": "title",
+  "da": "Må ikke indtages",
+  "old_de": "Zur äußerlichen Anwendung"
+ },
+ {
+  "id": "493936607570:text",
+  "field": "text",
+  "da": "Vores olier er kosmetiske produkter og må ikke indtages. Har du spørgsmål til valg af koncentration, er du velkommen til at skrive til vores danske kundeservice.",
+  "old_de": "Unsere Öle sind kosmetische Produkte zur äußerlichen Anwendung. Bei Fragen zur Wahl der Konzentration schreiben Sie gerne an unseren dänischen Kundenservice."
+ },
+ {
+  "id": "557099909458:text",
+  "field": "text",
+  "da": "Alle produkter er kosmetik og sikkerhedsvurderet efter EU's regler. THC-indholdet er under 0,2 %, og der følger et analysecertifikat med hvert parti. Dagcremen og natcremen er begge testet hos Dermatest og har begge fået Kolbe A i Kemiluppen.",
+  "old_de": "Alle Produkte sind Kosmetik und nach den EU-Vorschriften sicherheitsbewertet. Der THC-Gehalt liegt unter 0,2 %, und jeder Charge liegt ein Analysezertifikat bei. Die Tagescreme wurde bei Dermatest mit dem Ergebnis „Sehr gut“ getestet, und die Nachtcreme erhielt bei Kemiluppen die Bewertung Kolbe A."
+ },
+ {
+  "id": "557099974994:answer",
+  "field": "answer",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ja. Produkterne er kosmetik og sikkerhedsvurderet efter EU's kosmetikregler, og THC-indholdet er under 0,2 %. Der følger et analysecertifikat med hvert parti, og NatureCell fik i 2019 som den første danske hudplejeserie tilladelse til at tilsætte CBD.\"}]}]}",
+  "old_de": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Ja. Die Produkte sind Kosmetik und nach den EU-Kosmetikvorschriften sicherheitsbewertet, und der THC-Gehalt liegt unter 0,2 %. Jeder Charge liegt ein Analysezertifikat bei, und NatureCell wurde 2019 die erste CBD-Hautpflegeserie, die in Dänemark zum Verkauf zugelassen wurde.\"}]}]}"
+ },
+ {
+  "id": "31112498381138:value",
+  "field": "value",
+  "da": "SAMPAKKER",
+  "old_de": "Verpflegungszuschuss"
+ },
+ {
+  "id": "31112506507602:value",
+  "field": "value",
+  "da": "SAMPAKKER",
+  "old_de": "Verpflegungszuschuss"
+ },
+ {
+  "id": "75750443843922:value",
+  "field": "value",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Her finder du hele NatureCells sortiment af hudpleje med CBD. Til ansigtet er der rensegel, dagcreme, natcreme, serum, Eye Gel og hudplejeolie, til hænderne håndcreme og Re-New Balm, til kroppen bodylotion og Body Oil, og desuden fodcreme, shampoo, conditioner og sampakker, der samler en hel rutine. CBD indgår som en gennemgående del af formuleringerne sammen med planteolier og ingredienser med naturlig oprindelse.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Er du ny hos os, er dagcremen eller hudplejeolien et enkelt sted at begynde. Vil du have hele ansigtsrutinen fra første dag, samler sampakkerne rensegel, creme og olie i én pakke. Produkterne er udviklet til at bruges morgen og aften som en fast del af hverdagen.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Bag NatureCell står Lizbeth & Allan. Vores webshop er dansk og e-mærket, og vi hjælper dig gerne med at vælge produkter til din hud. Du kan også købe vores produkter i vores lille shop-in-shop i butiksfællesskabet Lille Nyhavn i Skanderborg. Vi sælger hudpleje og lover ikke mirakler: Vi fortæller om produkternes indhold, og hvordan de føles at bruge. Under kundecases deler kunderne deres egne erfaringer og rutiner.\"}]}]}",
+  "old_de": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hier finden Sie das gesamte Hautpflegesortiment von NatureCell mit CBD. Für das Gesicht gibt es Reinigungsgel, Tagescreme, Nachtcreme, Serum, Eye Gel und Hautpflegeöl, für die Hände Handcreme und Re-New Balm, für den Körper Bodylotion und Body Oil, außerdem Fußcreme, Shampoo, Conditioner und Sets, die eine ganze Routine vereinen. CBD ist ein durchgehender Bestandteil der Rezepturen, zusammen mit Pflanzenölen und Inhaltsstoffen natürlichen Ursprungs.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Wenn Sie NatureCell zum ersten Mal ausprobieren, sind die Tagescreme oder das Hautpflegeöl ein einfacher Einstieg. Möchten Sie die komplette Gesichtsroutine vom ersten Tag an, vereinen die Sets Reinigungsgel, Creme und Öl in einem Paket. Die Produkte sind dafür entwickelt, morgens und abends ein fester Bestandteil des Alltags zu sein.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hinter NatureCell stehen Lizbeth & Allan, und unser Laden liegt in Lille Nyhavn in Skanderborg. Der Webshop ist dänisch und trägt das e-mærket-Siegel. Wir versprechen keine Wunder: Wir beschreiben, wie die Produkte zusammengesetzt sind und wie sie sich anfühlen, und unter Kundenberichte erzählen Kundinnen und Kunden selbst von ihren Routinen.\"}]}]}"
+ }
+]

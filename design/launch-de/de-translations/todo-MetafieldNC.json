@@ -1,0 +1,29 @@
+[
+ {
+  "rid": "gid://shopify/Metafield/31112498381138",
+  "key": "value",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8a891a692dd6ed8bab8e4c164385cce933b27dd92ab7de9b9b565b734ff81898",
+  "da": "SAMPAKKER",
+  "old_de": "Verpflegungszuschuss",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metafield/31112506507602",
+  "key": "value",
+  "type": "SINGLE_LINE_TEXT_FIELD",
+  "digest": "8a891a692dd6ed8bab8e4c164385cce933b27dd92ab7de9b9b565b734ff81898",
+  "da": "SAMPAKKER",
+  "old_de": "Verpflegungszuschuss",
+  "st": "outdated"
+ },
+ {
+  "rid": "gid://shopify/Metafield/75750443843922",
+  "key": "value",
+  "type": "RICH_TEXT_FIELD",
+  "digest": "32acd364b32f31cf655381455b4cc66508e320d4b7ca4546db457a721a61d14a",
+  "da": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Her finder du hele NatureCells sortiment af hudpleje med CBD. Til ansigtet er der rensegel, dagcreme, natcreme, serum, Eye Gel og hudplejeolie, til hænderne håndcreme og Re-New Balm, til kroppen bodylotion og Body Oil, og desuden fodcreme, shampoo, conditioner og sampakker, der samler en hel rutine. CBD indgår som en gennemgående del af formuleringerne sammen med planteolier og ingredienser med naturlig oprindelse.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Er du ny hos os, er dagcremen eller hudplejeolien et enkelt sted at begynde. Vil du have hele ansigtsrutinen fra første dag, samler sampakkerne rensegel, creme og olie i én pakke. Produkterne er udviklet til at bruges morgen og aften som en fast del af hverdagen.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Bag NatureCell står Lizbeth & Allan. Vores webshop er dansk og e-mærket, og vi hjælper dig gerne med at vælge produkter til din hud. Du kan også købe vores produkter i vores lille shop-in-shop i butiksfællesskabet Lille Nyhavn i Skanderborg. Vi sælger hudpleje og lover ikke mirakler: Vi fortæller om produkternes indhold, og hvordan de føles at bruge. Under kundecases deler kunderne deres egne erfaringer og rutiner.\"}]}]}",
+  "old_de": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hier finden Sie das gesamte Hautpflegesortiment von NatureCell mit CBD. Für das Gesicht gibt es Reinigungsgel, Tagescreme, Nachtcreme, Serum, Eye Gel und Hautpflegeöl, für die Hände Handcreme und Re-New Balm, für den Körper Bodylotion und Body Oil, außerdem Fußcreme, Shampoo, Conditioner und Sets, die eine ganze Routine vereinen. CBD ist ein durchgehender Bestandteil der Rezepturen, zusammen mit Pflanzenölen und Inhaltsstoffen natürlichen Ursprungs.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Wenn Sie NatureCell zum ersten Mal ausprobieren, sind die Tagescreme oder das Hautpflegeöl ein einfacher Einstieg. Möchten Sie die komplette Gesichtsroutine vom ersten Tag an, vereinen die Sets Reinigungsgel, Creme und Öl in einem Paket. Die Produkte sind dafür entwickelt, morgens und abends ein fester Bestandteil des Alltags zu sein.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Hinter NatureCell stehen Lizbeth & Allan, und unser Laden liegt in Lille Nyhavn in Skanderborg. Der Webshop ist dänisch und trägt das e-mærket-Siegel. Wir versprechen keine Wunder: Wir beschreiben, wie die Produkte zusammengesetzt sind und wie sie sich anfühlen, und unter Kundenberichte erzählen Kundinnen und Kunden selbst von ihren Routinen.\"}]}]}",
+  "st": "outdated"
+ }
+]
