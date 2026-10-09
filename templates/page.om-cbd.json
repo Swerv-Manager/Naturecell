@@ -175,7 +175,7 @@
           "settings": {
             "title": "100% plantebaseret CBD",
             "text": "NatureCell anvender 100% plantebaseret CBD, udvundet fra hampeplanter dyrket i EU for at sikre den højeste kvalitet og fuld sporbarhed. CBD'en produceres på GMP- og ISO-certificeret fabrik, hvor der stilles krav til renhed, sikkerhed og dokumenteret kvalitet i alle produktionsled. Den overholder EU's kosmetiklovgivning og gældende regler for skadelige stoffer.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_CBD.webp?v=1753956182"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_CBD_500x500px.jpg"
           }
         },
         "e2": {
@@ -183,7 +183,7 @@
           "settings": {
             "title": "Hampfrøolie",
             "text": "NatureCell-produkter er formuleret med vores egen koldpressede hampfrøolie, en olie rig på essentielle omega-fedtsyrer og proteiner. Den leverer antioxidanter (vitamin E), caroten (forløber for vitamin A), phytosteroler, phospholipider og en række mineraler som calcium, magnesium, svovl, kalium og fosfor, sammen med beskedne mængder jern og zink.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Cannabis_Sativa_Leaf_Extract.webp?v=1753956183"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_Cannabis_Sativa_Leaf_Extract_500x500px.jpg"
           }
         },
         "e3": {
@@ -191,7 +191,7 @@
           "settings": {
             "title": "Hydrerende",
             "text": "Fugtgivende naturlige ingredienser som glycerin, mandelolie, hampolie og squalane i kombination med CBD absorberes hurtigt af huden og sikrer hydrering.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Hyaluronsyre_500x500px.jpg?v=1790952246"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_Hyaluronsyre_500x500px.jpg"
           }
         },
         "e4": {
@@ -199,7 +199,7 @@
           "settings": {
             "title": "Full Spectrum industriel hamp",
             "text": "NatureCell-produkter produceres med Full Spectrum industriel hampekstrakt, der indeholder mindre end 0,2% THC. Vores hel-plante-koncept betyder, at produkterne indeholder yderligere cannabinoider og terpener, der findes naturligt i hampeplanten, for maksimal effekt.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_CBG.webp?v=1753956182"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_CBG_500x500px.jpg"
           }
         },
         "e5": {
@@ -207,7 +207,7 @@
           "settings": {
             "title": "Genopretter hudens balance",
             "text": "CBD bidrager til at bevare hudens naturlige balance og understøtter en sund og velplejet hudbarriere. Dens plejende egenskaber hjælper huden med at fremstå mere harmonisk, glat og velfugtet.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Shea_Butter.png?v=1755254404"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_Sheasmoer_500x500px.jpg"
           }
         },
         "e6": {
@@ -215,7 +215,7 @@
           "settings": {
             "title": "Unik terpeneprofil",
             "text": "En kombination af terpener og cannabinoider forbedrer de gavnlige egenskaber ved vores produkter.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_Slider_Lavendel_Olie.png?v=1755254410"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_Lavendelolie_500x500px.jpg"
           }
         },
         "e7": {
@@ -223,7 +223,7 @@
           "settings": {
             "title": "Gør mere med mindre",
             "text": "NatureCell-produkter er formuleret uden fyldstoffer, smagsstoffer eller unødvendige ingredienser. De indeholder kun Full Spectrum industriel hampekstrakt, naturlige terpener og certificerede ingredienser.",
-            "image_url": "https://cdn.shopify.com/s/files/1/0600/7111/6981/files/NatureCell_Ingrediens_E-Vitamin_500x500px.jpg?v=1790952246"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_E-Vitamin_500x500px.jpg"
           }
         }
       },
