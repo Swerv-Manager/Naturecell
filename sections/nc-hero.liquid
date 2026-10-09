@@ -108,11 +108,14 @@
   .nc-hero__welcome { display: none; position: relative; overflow: hidden; }
   /* Velkomstbanner paa alle skaerme (Frederik 09-10): samme banner erstatter karrusellen paa computer */
   .nc-hero--welcome-all .nc-hero__welcome { display: block; }
-  .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal, 50% 50%); }
+  .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal-m, 50% 50%); }
   @media (min-width: 700px) {
-    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__inner--stack { min-height: clamp(540px, 82vh, 600px); padding-bottom: 72px; padding-top: 48px; gap: 18px; }
-    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__h1 { max-width: 640px; }
-    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body { max-width: 560px; font-size: 17.5px; }
+    /* Produktbanneret (Frederik 09-10) er 1920x620: hoejden foelger billedets format, saa alle produkter er med,
+       og billedet ankres med fokuspunktet (fx 0% 50%), saa teksten faar den tomme vaeg til venstre. */
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal, 50% 50%); }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__inner--stack { min-height: clamp(440px, 40vw, 560px); padding-bottom: 56px; padding-top: 40px; gap: 16px; justify-content: center; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__h1 { max-width: 520px; font-size: clamp(38px, 4.2vw, 60px); }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body { max-width: 430px; font-size: 17px; line-height: 1.6; }
     .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -6px; }
     .nc-hero--welcome-all .nc-hero__welcome .nc-hero__wash { background: linear-gradient(90deg, rgba(40, 64, 59, 0.78) 0%, rgba(40, 64, 59, 0.5) 50%, rgba(40, 64, 59, 0.22) 100%); }
   }
@@ -125,7 +128,7 @@
     assign welcome_all = true
   endif
 -%}
-<section class="nc-hero{% if welcome_all %} nc-hero--welcome-all{% elsif section.settings.m_welcome %} nc-hero--m-welcome{% endif %}"{% unless welcome_all %} data-nc-carousel="{{ autoplay_ms }}"{% endunless %} aria-label="{{ 'general.featured_content' | t }}"{% if welcome_all and section.settings.w_focal != blank %} style="--nc-welcome-focal: {{ section.settings.w_focal }};"{% endif %}>
+<section class="nc-hero{% if welcome_all %} nc-hero--welcome-all{% elsif section.settings.m_welcome %} nc-hero--m-welcome{% endif %}"{% unless welcome_all %} data-nc-carousel="{{ autoplay_ms }}"{% endunless %} aria-label="{{ 'general.featured_content' | t }}"{% if welcome_all %} style="--nc-welcome-focal: {{ section.settings.w_focal | default: '50% 50%' }}; --nc-welcome-focal-m: {{ section.settings.m_focal | default: '50% 50%' }};"{% endif %}>
   {%- if section.settings.m_welcome -%}
     {%- comment -%}
       Velkomstbanner, kun paa mobil (Lizbeth 08-10): fast billede med velkomsttekst, saa man med det samme
@@ -300,7 +303,8 @@
     { "type": "select", "id": "welcome_scope", "label": "Hvor", "options": [ { "value": "mobile", "label": "Kun på mobil" }, { "value": "all", "label": "På alle skærme" } ], "default": "mobile", "info": "På alle skærme vises slides slet ikke." },
     { "type": "image_picker", "id": "m_image", "label": "Billede, mobil (stående format passer bedst)" },
     { "type": "image_picker", "id": "w_image_desktop", "label": "Billede, computer (liggende)", "info": "Tomt: mobilbilledet bruges også på computer." },
-    { "type": "text", "id": "w_focal", "label": "Billedets fokuspunkt (computer)", "default": "50% 50%", "info": "Fx 70% 50% for at vise højre side af billedet." },
+    { "type": "text", "id": "w_focal", "label": "Billedets fokuspunkt (computer)", "default": "50% 50%", "info": "Fx 0% 50% ankrer billedet til venstre, så teksten får den tomme side." },
+    { "type": "text", "id": "m_focal", "label": "Billedets fokuspunkt (mobil)", "default": "50% 50%" },
     { "type": "text", "id": "m_fallback_asset", "label": "Fallback-billede (asset)", "default": "nc-hero-kunder.jpg", "info": "Bruges kun hvis der ikke er valgt et billede." },
     { "type": "text", "id": "m_eyebrow", "label": "Overlinje", "default": "Velkommen" },
     { "type": "text", "id": "m_heading", "label": "Overskrift", "default": "Hudpleje med omtanke" },
