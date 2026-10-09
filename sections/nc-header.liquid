@@ -285,7 +285,7 @@
 
       <div class="nc-header__actions">
         {%- comment -%} Sprogskift via Shopifys localization-form: virker baade med undermapper (/de) og egne domaener (naturecell.de) under Markets. {%- endcomment -%}
-        {%- if localization.available_languages.size > 1 -%}
+        {%- if localization.available_languages.size > 1 and section.settings.show_lang -%}
           {%- form 'localization', id: 'nc-lang-form', class: 'nc-langs' -%}
             <input type="hidden" name="return_to" value="{{ request.path }}">
             {%- for language in localization.available_languages -%}
@@ -406,7 +406,7 @@
       {%- endif -%}
       <div class="nc-mobilenav__head-right">
         {%- comment -%} Sprogskift i mobilmenuen (Allan 08-10): samme localization-form som paa computer, oeverst saa den er til at finde. {%- endcomment -%}
-        {%- if localization.available_languages.size > 1 -%}
+        {%- if localization.available_languages.size > 1 and section.settings.show_lang -%}
           {%- form 'localization', id: 'nc-lang-form-mobile', class: 'nc-langs nc-langs--mobile' -%}
             <input type="hidden" name="return_to" value="{{ request.path }}">
             {%- for language in localization.available_languages -%}
@@ -451,6 +451,13 @@
   "tag": "header",
   "class": "nc-header-section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_lang",
+      "label": "Vis sprogskifter (DA/DE)",
+      "default": true,
+      "info": "Slaaet fra indtil den tyske version er klar. /de virker stadig, knappen er bare skjult."
+    },
     {
       "type": "checkbox",
       "id": "announce_auto",
