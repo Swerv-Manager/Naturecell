@@ -13,12 +13,17 @@
   .nc-trust__item--tp strong { font-weight: 700; color: var(--sage-700); }
   /* Mobil (08-10): to lige kolonner i stedet for en skaev ombrydning */
   .nc-trust__item--tp a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+  .nc-trust__item--tpw { display: block; width: 330px; max-width: 100%; line-height: 1; }
+  .nc-trust__item--tpw .trustpilot-widget { min-height: 20px; }
+  .nc-trust__item--tpw .trustpilot-widget > a { font-size: 13.5px; line-height: 20px; }
   .nc-trust__item--tp a:hover span:last-child, .nc-trust__item--tp a:focus-visible span:last-child { text-decoration: underline; }
   @media (max-width: 749px) {
     .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
     .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
     .nc-trust__item svg { margin-top: 1px; }
     .nc-trust__item--tp { grid-column: 1 / -1; justify-content: center; }
+    .nc-trust__item--tpw { width: 100%; }
+    .nc-trust__item--tpw .trustpilot-widget > a { justify-content: center; width: 100%; }
     .nc-trust__item--tp a { align-items: flex-start; }
     /* Kundens rettelse (Lizbeth 08-10): paa mobil kommer Trustpilot lige under banneret, og de fire punkter
        rykkes ned under "Shop efter omraade/behov". Derfor kan samme sektion vises i to tilstande. */
@@ -51,6 +56,18 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'trustpilot' -%}
           {%- capture tp_line %}{% render 'nc-trustpilot', format: 'line' %}{% endcapture -%}
+          {%- if block.settings.style == 'widget' and settings.trustpilot_script and settings.nc_tp_business_id != blank -%}
+            {%- comment -%}
+              Rigtig TrustBox (Lizbeth 08-10, Frederik 09-10): Micro Combo-templaten, der viser stjerner, score og antal
+              live fra Trustpilot. Linket inde i div'en er fallback indtil scriptet har tegnet widgetten.
+            {%- endcomment -%}
+            <span class="nc-trust__item nc-trust__item--tp nc-trust__item--tpw" {{ block.shopify_attributes }}>
+              <div class="trustpilot-widget" data-locale="{{ request.locale.iso_code | downcase }}-{{ localization.country.iso_code | default: 'DK' | upcase }}" data-template-id="5419b6ffb0d04a076446a9af" data-businessunit-id="{{ settings.nc_tp_business_id | strip }}" data-style-height="20px" data-style-width="100%" data-theme="light" data-text-color="{{ block.settings.widget_text | default: '#2f4b45' }}">
+                <a href="{{ nc_tp_url }}" target="_blank" rel="noopener">{{ tp_line | default: 'Trustpilot' }}</a>
+              </div>
+            </span>
+            {%- continue -%}
+          {%- endif -%}
           {%- if tp_line != blank -%}
             {%- comment -%} Kundens rettelse (Lizbeth 08-10): et rigtigt Trustpilot-link som paa den gamle side. {%- endcomment -%}
             <span class="nc-trust__item nc-trust__item--tp" {{ block.shopify_attributes }}>
@@ -104,7 +121,8 @@
       "name": "Trustpilot",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Viser stjerner og Trustpilot-tallene fra Temaindstillinger → Integrationer." }
+        { "type": "select", "id": "style", "label": "Visning", "options": [ { "value": "widget", "label": "Trustpilot-widget (live tal)" }, { "value": "line", "label": "Temaets egen linje" } ], "default": "widget", "info": "Widgetten kræver at Trustpilot-scriptet er slået til under Temaindstillinger → Integrationer. Ellers vises temaets egen linje." },
+        { "type": "color", "id": "widget_text", "label": "Widget: tekstfarve", "default": "#2f4b45" }
       ]
     },
     {

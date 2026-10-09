@@ -40,7 +40,10 @@
         "m_heading": "Hudpleje med omtanke",
         "m_body": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
         "m_cta_text": "Se produkterne",
-        "m_cta_url": "/collections/cbd-hudpleje"
+        "m_cta_url": "/collections/cbd-hudpleje",
+        "welcome_scope": "all",
+        "w_image_desktop": "shopify://shop_images/naturecell-cbd-lizbeth-allan-butik-lille-nyhavn-2800x650px.webp",
+        "w_focal": "50% 50%"
       }
     },
     "trust": {
@@ -48,7 +51,10 @@
       "blocks": {
         "tp": {
           "type": "trustpilot",
-          "settings": {}
+          "settings": {
+            "style": "widget",
+            "widget_text": "#2f4b45"
+          }
         },
         "t1": {
           "type": "item",

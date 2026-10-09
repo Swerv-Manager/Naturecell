@@ -106,18 +106,42 @@
     .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -4px; }
   }
   .nc-hero__welcome { display: none; position: relative; overflow: hidden; }
+  /* Velkomstbanner paa alle skaerme (Frederik 09-10): samme banner erstatter karrusellen paa computer */
+  .nc-hero--welcome-all .nc-hero__welcome { display: block; }
+  .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal, 50% 50%); }
+  @media (min-width: 700px) {
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__inner--stack { min-height: clamp(540px, 82vh, 600px); padding-bottom: 72px; padding-top: 48px; gap: 18px; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__h1 { max-width: 640px; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body { max-width: 560px; font-size: 17.5px; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -6px; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__wash { background: linear-gradient(90deg, rgba(40, 64, 59, 0.78) 0%, rgba(40, 64, 59, 0.5) 50%, rgba(40, 64, 59, 0.22) 100%); }
+  }
 {%- endstyle -%}
 
 {%- assign autoplay_ms = section.settings.autoplay | default: 7 | times: 1000 -%}
-<section class="nc-hero{% if section.settings.m_welcome %} nc-hero--m-welcome{% endif %}" data-nc-carousel="{{ autoplay_ms }}" aria-label="{{ 'general.featured_content' | t }}">
+{%- liquid
+  assign welcome_all = false
+  if section.settings.m_welcome and section.settings.welcome_scope == 'all'
+    assign welcome_all = true
+  endif
+-%}
+<section class="nc-hero{% if welcome_all %} nc-hero--welcome-all{% elsif section.settings.m_welcome %} nc-hero--m-welcome{% endif %}"{% unless welcome_all %} data-nc-carousel="{{ autoplay_ms }}"{% endunless %} aria-label="{{ 'general.featured_content' | t }}"{% if welcome_all and section.settings.w_focal != blank %} style="--nc-welcome-focal: {{ section.settings.w_focal }};"{% endif %}>
   {%- if section.settings.m_welcome -%}
     {%- comment -%}
       Velkomstbanner, kun paa mobil (Lizbeth 08-10): fast billede med velkomsttekst, saa man med det samme
       ser hvem man er kommet til. Karrusellen vises stadig paa computer. Billedet er mobilens LCP-element.
     {%- endcomment -%}
     <div class="nc-hero__welcome">
-      {%- if section.settings.m_image != blank -%}
-        {{ section.settings.m_image | image_url: width: 1400 | image_tag: class: 'nc-hero__bg', alt: '', widths: '500, 700, 900, 1200, 1400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+      {%- if welcome_all and section.settings.w_image_desktop != blank -%}
+        {%- comment -%} Eget billede til computer (liggende), mobilbilledet bruges under 700px. {%- endcomment -%}
+        <picture>
+          {%- if section.settings.m_image != blank -%}
+            <source media="(max-width: 699px)" srcset="{{ section.settings.m_image | image_url: width: 700 }} 700w, {{ section.settings.m_image | image_url: width: 1000 }} 1000w, {{ section.settings.m_image | image_url: width: 1400 }} 1400w" sizes="100vw">
+          {%- endif -%}
+          {{ section.settings.w_image_desktop | image_url: width: 2400 | image_tag: class: 'nc-hero__bg', alt: '', widths: '1000, 1400, 1800, 2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+        </picture>
+      {%- elsif section.settings.m_image != blank -%}
+        {{ section.settings.m_image | image_url: width: 2000 | image_tag: class: 'nc-hero__bg', alt: '', widths: '500, 700, 900, 1200, 1400, 2000', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
       {%- elsif section.settings.m_fallback_asset != blank -%}
         <img class="nc-hero__bg" src="{{ section.settings.m_fallback_asset | asset_url }}" alt="" width="1400" height="1050" loading="eager" fetchpriority="high" style="object-position: 60% 50%;">
       {%- endif -%}
@@ -126,7 +150,11 @@
         {%- if section.settings.m_eyebrow != blank -%}
           <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: section.settings.m_eyebrow %}</p>
         {%- endif -%}
-        <h2 class="nc-hero__h2">{% render 'nc-cbd', text: section.settings.m_heading %}</h2>
+        {%- if welcome_all -%}
+          <h1 class="nc-hero__h1">{% render 'nc-cbd', text: section.settings.m_heading %}</h1>
+        {%- else -%}
+          <h2 class="nc-hero__h2">{% render 'nc-cbd', text: section.settings.m_heading %}</h2>
+        {%- endif -%}
         {%- assign m_paras = section.settings.m_body | newline_to_br | split: '<br />' -%}
         {%- for para in m_paras -%}
           {%- assign para_s = para | strip -%}
@@ -140,6 +168,7 @@
       </div>
     </div>
   {%- endif -%}
+  {%- unless welcome_all -%}
   <div class="nc-hero__track" data-nc-track>
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -247,6 +276,7 @@
       {%- endfor -%}
     </div>
   {%- endif -%}
+  {%- endunless -%}
 </section>
 
 {% schema %}
@@ -265,9 +295,12 @@
       "unit": "s",
       "default": 7
     },
-    { "type": "header", "content": "Velkomstbanner på mobil" },
-    { "type": "checkbox", "id": "m_welcome", "label": "Vis ét fast velkomstbanner på mobil i stedet for karrusellen", "default": false, "info": "Karrusellen vises stadig på computer og tablet." },
-    { "type": "image_picker", "id": "m_image", "label": "Billede (stående format passer bedst)" },
+    { "type": "header", "content": "Velkomstbanner" },
+    { "type": "checkbox", "id": "m_welcome", "label": "Vis ét fast velkomstbanner i stedet for karrusellen", "default": false },
+    { "type": "select", "id": "welcome_scope", "label": "Hvor", "options": [ { "value": "mobile", "label": "Kun på mobil" }, { "value": "all", "label": "På alle skærme" } ], "default": "mobile", "info": "På alle skærme vises slides slet ikke." },
+    { "type": "image_picker", "id": "m_image", "label": "Billede, mobil (stående format passer bedst)" },
+    { "type": "image_picker", "id": "w_image_desktop", "label": "Billede, computer (liggende)", "info": "Tomt: mobilbilledet bruges også på computer." },
+    { "type": "text", "id": "w_focal", "label": "Billedets fokuspunkt (computer)", "default": "50% 50%", "info": "Fx 70% 50% for at vise højre side af billedet." },
     { "type": "text", "id": "m_fallback_asset", "label": "Fallback-billede (asset)", "default": "nc-hero-kunder.jpg", "info": "Bruges kun hvis der ikke er valgt et billede." },
     { "type": "text", "id": "m_eyebrow", "label": "Overlinje", "default": "Velkommen" },
     { "type": "text", "id": "m_heading", "label": "Overskrift", "default": "Hudpleje med omtanke" },

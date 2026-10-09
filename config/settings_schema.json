@@ -275,7 +275,14 @@
         "id": "trustpilot_script",
         "label": "Indlæs Trustpilot-widget-script",
         "default": false,
-        "info": "Slå til, hvis der indsættes TrustBox-widgets i temaet."
+        "info": "Slå til, hvis der indsættes TrustBox-widgets i temaet (fx i trust-baren)."
+      },
+      {
+        "type": "text",
+        "id": "nc_tp_business_id",
+        "label": "Trustpilot: business unit-id",
+        "default": "5d5bafba5563e40001e11a6e",
+        "info": "Fra Trustpilot Business → TrustBox. NatureCells id er 5d5bafba5563e40001e11a6e (samme som på den gamle side)."
       }
     ]
   }
