@@ -32,6 +32,8 @@ Opgaven: "Sørg for at ALT er oversat. ALLE links virker. Alt er optimeret efter
    med `reg/reg-final.json`. Agenterne kopierer værdierne manuelt, så tegn som
    hårde mellemrum kan være skiftet ud. Afvigelser registreres igen fra filen.
 4. Render-tjek af /de på dev-temaet, Nexus-changelog og rapport til Frederik.
+5. Slå sprogskifteren (DA/DE) til igen: Tema-editor, Header, "Vis sprogskifter (DA/DE)",
+   eller `show_lang: true` i `sections/header-group.json`. Den blev skjult 09-10 (commit 981fcae).
 
 ## Flag til Frederik (beslutninger, ikke kode)
 
