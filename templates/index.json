@@ -34,16 +34,16 @@
       ],
       "settings": {
         "m_welcome": true,
-        "m_image": "shopify://shop_images/nc-hero-produkter.webp",
-        "m_fallback_asset": "nc-hero-produkter.webp",
+        "m_image": "shopify://shop_images/Butik_Lille_Nyhavn.webp",
+        "m_fallback_asset": "nc-hero-kunder.jpg",
         "m_eyebrow": "Velkommen",
         "m_heading": "Hudpleje med omtanke",
         "m_body": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
         "m_cta_text": "Se produkterne",
         "m_cta_url": "/collections/cbd-hudpleje",
         "welcome_scope": "all",
-        "w_image_desktop": "shopify://shop_images/nc-hero-produkter.webp",
-        "w_focal": "0% 50%",
+        "w_image_desktop": "shopify://shop_images/naturecell-cbd-lizbeth-allan-butik-lille-nyhavn-2800x650px.webp",
+        "w_focal": "50% 50%",
         "m_focal": "50% 50%"
       }
     },
