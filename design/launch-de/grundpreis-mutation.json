@@ -1,0 +1,265 @@
+{
+ "query": "mutation($p0: ID!, $v0: [ProductVariantsBulkInput!]!, $p1: ID!, $v1: [ProductVariantsBulkInput!]!, $p2: ID!, $v2: [ProductVariantsBulkInput!]!, $p3: ID!, $v3: [ProductVariantsBulkInput!]!, $p4: ID!, $v4: [ProductVariantsBulkInput!]!, $p5: ID!, $v5: [ProductVariantsBulkInput!]!, $p6: ID!, $v6: [ProductVariantsBulkInput!]!, $p7: ID!, $v7: [ProductVariantsBulkInput!]!, $p8: ID!, $v8: [ProductVariantsBulkInput!]!, $p9: ID!, $v9: [ProductVariantsBulkInput!]!, $p10: ID!, $v10: [ProductVariantsBulkInput!]!, $p11: ID!, $v11: [ProductVariantsBulkInput!]!, $p12: ID!, $v12: [ProductVariantsBulkInput!]!, $p13: ID!, $v13: [ProductVariantsBulkInput!]!, $p14: ID!, $v14: [ProductVariantsBulkInput!]!, $p15: ID!, $v15: [ProductVariantsBulkInput!]!, $p16: ID!, $v16: [ProductVariantsBulkInput!]!, $p17: ID!, $v17: [ProductVariantsBulkInput!]!, $p18: ID!, $v18: [ProductVariantsBulkInput!]!, $p19: ID!, $v19: [ProductVariantsBulkInput!]!) { u0: productVariantsBulkUpdate(productId: $p0, variants: $v0) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u1: productVariantsBulkUpdate(productId: $p1, variants: $v1) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u2: productVariantsBulkUpdate(productId: $p2, variants: $v2) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u3: productVariantsBulkUpdate(productId: $p3, variants: $v3) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u4: productVariantsBulkUpdate(productId: $p4, variants: $v4) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u5: productVariantsBulkUpdate(productId: $p5, variants: $v5) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u6: productVariantsBulkUpdate(productId: $p6, variants: $v6) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u7: productVariantsBulkUpdate(productId: $p7, variants: $v7) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u8: productVariantsBulkUpdate(productId: $p8, variants: $v8) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u9: productVariantsBulkUpdate(productId: $p9, variants: $v9) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u10: productVariantsBulkUpdate(productId: $p10, variants: $v10) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u11: productVariantsBulkUpdate(productId: $p11, variants: $v11) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u12: productVariantsBulkUpdate(productId: $p12, variants: $v12) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u13: productVariantsBulkUpdate(productId: $p13, variants: $v13) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u14: productVariantsBulkUpdate(productId: $p14, variants: $v14) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u15: productVariantsBulkUpdate(productId: $p15, variants: $v15) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u16: productVariantsBulkUpdate(productId: $p16, variants: $v16) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u17: productVariantsBulkUpdate(productId: $p17, variants: $v17) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u18: productVariantsBulkUpdate(productId: $p18, variants: $v18) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } u19: productVariantsBulkUpdate(productId: $p19, variants: $v19) { userErrors { field message } productVariants { id unitPriceMeasurement { quantityValue quantityUnit referenceValue referenceUnit } } } }",
+ "variables": {
+  "p0": "gid://shopify/Product/6985263481013",
+  "v0": [
+   {
+    "id": "gid://shopify/ProductVariant/41035481907381",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 50,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p1": "gid://shopify/Product/6985313714357",
+  "v1": [
+   {
+    "id": "gid://shopify/ProductVariant/41035672125621",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 100,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p2": "gid://shopify/Product/6985330819253",
+  "v2": [
+   {
+    "id": "gid://shopify/ProductVariant/41035752308917",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 100,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p3": "gid://shopify/Product/6985345040565",
+  "v3": [
+   {
+    "id": "gid://shopify/ProductVariant/41035816468661",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 50,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p4": "gid://shopify/Product/6985354248373",
+  "v4": [
+   {
+    "id": "gid://shopify/ProductVariant/41035859034293",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 100,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p5": "gid://shopify/Product/6985381642421",
+  "v5": [
+   {
+    "id": "gid://shopify/ProductVariant/41035988172981",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p6": "gid://shopify/Product/7364619763893",
+  "v6": [
+   {
+    "id": "gid://shopify/ProductVariant/42511357509813",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 200,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p7": "gid://shopify/Product/8590558003538",
+  "v7": [
+   {
+    "id": "gid://shopify/ProductVariant/47067745550674",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 400,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p8": "gid://shopify/Product/8641164345682",
+  "v8": [
+   {
+    "id": "gid://shopify/ProductVariant/47253017493842",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p9": "gid://shopify/Product/8641377304914",
+  "v9": [
+   {
+    "id": "gid://shopify/ProductVariant/47254132097362",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 50,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p10": "gid://shopify/Product/8856107286866",
+  "v10": [
+   {
+    "id": "gid://shopify/ProductVariant/48045504987474",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p11": "gid://shopify/Product/8856124981586",
+  "v11": [
+   {
+    "id": "gid://shopify/ProductVariant/48045527564626",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p12": "gid://shopify/Product/9956725391698",
+  "v12": [
+   {
+    "id": "gid://shopify/ProductVariant/50339509240146",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 100,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p13": "gid://shopify/Product/9956730208594",
+  "v13": [
+   {
+    "id": "gid://shopify/ProductVariant/50339536175442",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 300,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p14": "gid://shopify/Product/9956731552082",
+  "v14": [
+   {
+    "id": "gid://shopify/ProductVariant/50339540762962",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 300,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p15": "gid://shopify/Product/10164928119122",
+  "v15": [
+   {
+    "id": "gid://shopify/ProductVariant/51110758121810",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p16": "gid://shopify/Product/10816081002834",
+  "v16": [
+   {
+    "id": "gid://shopify/ProductVariant/53576497955154",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 50,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p17": "gid://shopify/Product/10816087228754",
+  "v17": [
+   {
+    "id": "gid://shopify/ProductVariant/53576516010322",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 50,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p18": "gid://shopify/Product/10816092012882",
+  "v18": [
+   {
+    "id": "gid://shopify/ProductVariant/53576538489170",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 30,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ],
+  "p19": "gid://shopify/Product/11062106227026",
+  "v19": [
+   {
+    "id": "gid://shopify/ProductVariant/54366033150290",
+    "showUnitPrice": true,
+    "unitPriceMeasurement": {
+     "quantityValue": 60,
+     "quantityUnit": "ML",
+     "referenceValue": 100,
+     "referenceUnit": "ML"
+    }
+   }
+  ]
+ }
+}
