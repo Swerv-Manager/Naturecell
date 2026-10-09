@@ -6,6 +6,7 @@
   .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
   .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
   .nc-trust__item svg { color: var(--sage-600); flex: none; }
+  .nc-trust__text { min-width: 0; }
   /* Kundens rettelse 57 (09-10): Trustpilot hoejt paa forsiden, i trust-baren og i temaets groenne, ikke lyseroed */
   .nc-trust__item--tp .nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
   .nc-trust__item--tp .nc-stars svg { width: 15px; height: 15px; fill: currentColor; stroke: none; }
@@ -43,7 +44,7 @@
           {%- else -%}
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           {%- endif -%}
-          {% render 'nc-cbd', text: block.settings.label %}
+          <span class="nc-trust__text">{% render 'nc-cbd', text: block.settings.label %}</span>
         </span>
       {%- endfor -%}
     </div>
