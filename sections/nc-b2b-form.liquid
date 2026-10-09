@@ -20,6 +20,10 @@
   .nc-b2bform__status { margin: 0 0 16px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--sage-50); color: var(--sage-700); font-size: 14.5px; }
   .nc-b2bform__status[role="alert"] { background: var(--paper-2); color: var(--ink-700); }
   .nc-b2bform__login { margin-top: 20px; font-size: 14px; color: var(--ink-500); }
+  /* Kundens oenske (Lizbeth 08-10): et billede fra butikken nederst, saa man kan se hvordan en butik kan se ud. */
+  .nc-b2bform__photo { margin: 34px 0 0; }
+  .nc-b2bform__photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); border: 1px solid var(--border-soft); }
+  .nc-b2bform__photo figcaption { margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink-500); }
 {%- endstyle -%}
 
 <section class="nc-section" id="b2b-ansoegning" style="padding-top: 10px;">
@@ -78,6 +82,14 @@
         {{ 'forms.b2b_login_hint' | t }}
         <a href="{{ routes.account_login_url }}">{{ 'forms.b2b_login' | t }}</a>
       </p>
+      {%- if section.settings.photo != blank -%}
+        <figure class="nc-b2bform__photo">
+          {{ section.settings.photo | image_url: width: 1400 | image_tag: alt: section.settings.photo_caption, widths: '500, 700, 1000, 1400', sizes: '(min-width: 700px) 660px, 100vw', loading: 'lazy' }}
+          {%- if section.settings.photo_caption != blank -%}
+            <figcaption>{% render 'nc-cbd', text: section.settings.photo_caption %}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -88,7 +100,10 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Anmod om en B2B-konto" },
-    { "type": "textarea", "id": "intro", "label": "Tekst", "default": "Fortæl os kort om din butik eller klinik. Vi vender tilbage inden for to hverdage med priser, betingelser og adgang til B2B-login." }
+    { "type": "textarea", "id": "intro", "label": "Tekst", "default": "Fortæl os om din virksomhed. Vi vurderer hver ansøgning individuelt og kontakter dig inden for 7 arbejdsdage om muligheden for et samarbejde." },
+    { "type": "header", "content": "Billede fra butikken" },
+    { "type": "image_picker", "id": "photo", "label": "Billede", "info": "Vises nederst, så man kan se hvordan en butik kan se ud." },
+    { "type": "text", "id": "photo_caption", "label": "Billedtekst", "default": "Sådan kan en NatureCell-butik se ud" }
   ],
   "presets": [ { "name": "B2B-ansøgning" } ]
 }

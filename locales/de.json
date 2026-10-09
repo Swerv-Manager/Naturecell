@@ -59,7 +59,9 @@
     "page_n": "Seite {{ page }}",
     "scroll_left": "Nach links scrollen",
     "scroll_right": "Nach rechts scrollen",
-    "close": "Schließen"
+    "close": "Schließen",
+    "tp_open": "Unsere Bewertungen auf Trustpilot ansehen",
+    "language": "Sprache"
   },
   "blog": {
     "read_also": "Lesen Sie auch",
@@ -235,7 +237,7 @@
     "b2b_phone": "Telefon",
     "b2b_message": "Erzählen Sie kurz von Ihrem Geschäft und dem erwarteten Volumen",
     "b2b_submit": "Anfrage senden",
-    "b2b_success": "Vielen Dank für Ihre Anfrage. Wir melden uns innerhalb von zwei Werktagen.",
+    "b2b_success": "Vielen Dank für Ihre Anfrage. Wir prüfen jede Anfrage individuell und melden uns innerhalb von 7 Werktagen.",
     "b2b_login_hint": "Bereits B2B-Kunde?",
     "b2b_login": "Hier anmelden",
     "b2b_email": "Firmen-E-Mail",

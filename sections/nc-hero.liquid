@@ -96,11 +96,50 @@
     .nc-hero__split-media { padding: 0 0 6px; }
     .nc-hero__split-media img { aspect-ratio: 16 / 10; border-radius: 14px; box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3); }
     .nc-hero__dots { bottom: 16px; }
+    /* Kundens rettelse (Lizbeth 08-10): paa mobil eet fast velkomstbillede i stedet for to koerende bannere. */
+    .nc-hero--m-welcome .nc-hero__track, .nc-hero--m-welcome .nc-hero__dots, .nc-hero--m-welcome .nc-hero__arrow { display: none; }
+    .nc-hero--m-welcome .nc-hero__welcome { display: block; }
+    .nc-hero__welcome .nc-hero__inner--stack { min-height: min(560px, 78vh); justify-content: flex-end; gap: 12px; padding: 34px var(--gutter) 40px; }
+    .nc-hero__welcome .nc-hero__wash { background: linear-gradient(180deg, rgba(40, 64, 59, 0.12) 0%, rgba(40, 64, 59, 0.42) 45%, rgba(40, 64, 59, 0.86) 100%); }
+    .nc-hero__welcome .nc-hero__h2 { font-size: clamp(32px, 9vw, 40px); line-height: 1.06; }
+    .nc-hero__welcome .nc-hero__body { font-size: 15px; line-height: 1.55; color: rgba(246, 244, 238, 0.92); }
+    .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -4px; }
   }
+  .nc-hero__welcome { display: none; position: relative; overflow: hidden; }
 {%- endstyle -%}
 
 {%- assign autoplay_ms = section.settings.autoplay | default: 7 | times: 1000 -%}
-<section class="nc-hero" data-nc-carousel="{{ autoplay_ms }}" aria-label="{{ 'general.featured_content' | t }}">
+<section class="nc-hero{% if section.settings.m_welcome %} nc-hero--m-welcome{% endif %}" data-nc-carousel="{{ autoplay_ms }}" aria-label="{{ 'general.featured_content' | t }}">
+  {%- if section.settings.m_welcome -%}
+    {%- comment -%}
+      Velkomstbanner, kun paa mobil (Lizbeth 08-10): fast billede med velkomsttekst, saa man med det samme
+      ser hvem man er kommet til. Karrusellen vises stadig paa computer. Billedet er mobilens LCP-element.
+    {%- endcomment -%}
+    <div class="nc-hero__welcome">
+      {%- if section.settings.m_image != blank -%}
+        {{ section.settings.m_image | image_url: width: 1400 | image_tag: class: 'nc-hero__bg', alt: '', widths: '500, 700, 900, 1200, 1400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+      {%- elsif section.settings.m_fallback_asset != blank -%}
+        <img class="nc-hero__bg" src="{{ section.settings.m_fallback_asset | asset_url }}" alt="" width="1400" height="1050" loading="eager" fetchpriority="high" style="object-position: 60% 50%;">
+      {%- endif -%}
+      <div class="nc-hero__wash" aria-hidden="true"></div>
+      <div class="nc-hero__inner nc-hero__inner--stack">
+        {%- if section.settings.m_eyebrow != blank -%}
+          <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: section.settings.m_eyebrow %}</p>
+        {%- endif -%}
+        <h2 class="nc-hero__h2">{% render 'nc-cbd', text: section.settings.m_heading %}</h2>
+        {%- assign m_paras = section.settings.m_body | newline_to_br | split: '<br />' -%}
+        {%- for para in m_paras -%}
+          {%- assign para_s = para | strip -%}
+          {%- if para_s != blank -%}
+            <p class="nc-hero__body">{% render 'nc-cbd', text: para_s %}</p>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.settings.m_cta_text != blank -%}
+          <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: section.settings.m_cta_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.m_cta_text %}</a></div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
   <div class="nc-hero__track" data-nc-track>
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -214,6 +253,7 @@
 {
   "name": "Hero-karrusel",
   "tag": "section",
+  "class": "nc-sec-hero",
   "settings": [
     {
       "type": "range",
@@ -224,7 +264,16 @@
       "step": 1,
       "unit": "s",
       "default": 7
-    }
+    },
+    { "type": "header", "content": "Velkomstbanner på mobil" },
+    { "type": "checkbox", "id": "m_welcome", "label": "Vis ét fast velkomstbanner på mobil i stedet for karrusellen", "default": false, "info": "Karrusellen vises stadig på computer og tablet." },
+    { "type": "image_picker", "id": "m_image", "label": "Billede (stående format passer bedst)" },
+    { "type": "text", "id": "m_fallback_asset", "label": "Fallback-billede (asset)", "default": "nc-hero-kunder.jpg", "info": "Bruges kun hvis der ikke er valgt et billede." },
+    { "type": "text", "id": "m_eyebrow", "label": "Overlinje", "default": "Velkommen" },
+    { "type": "text", "id": "m_heading", "label": "Overskrift", "default": "Hudpleje med omtanke" },
+    { "type": "textarea", "id": "m_body", "label": "Tekst", "default": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.", "info": "Linjeskift giver et nyt afsnit." },
+    { "type": "text", "id": "m_cta_text", "label": "Knap", "default": "Se produkterne" },
+    { "type": "url", "id": "m_cta_url", "label": "Knap: link" }
   ],
   "blocks": [
     {

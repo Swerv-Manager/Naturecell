@@ -173,6 +173,9 @@
   .nc-mobilenav__panel nav a { display: block; padding: 13px 2px; font-size: 17px; font-family: var(--font-display); color: var(--sage-700); text-decoration: none; border-bottom: 1px solid var(--border-soft); }
   .nc-mobilenav__sub { padding: 4px 0 10px; }
   .nc-mobilenav__sub a { font-family: var(--font-body) !important; font-size: 14.5px !important; color: var(--ink-700) !important; border-bottom: 0 !important; padding: 8px 2px 8px 14px !important; }
+  .nc-mobilenav__head-right { display: flex; align-items: center; gap: 10px; }
+  .nc-mobilenav__head-right .nc-langs { display: inline-flex; margin-right: 0; }
+  .nc-mobilenav__head-right .nc-langs button { padding: 8px 11px; font-size: 12px; }
 
   @media (min-width: 1041px) {
     .nc-header__nav { display: block; }
@@ -401,9 +404,20 @@
       {%- else -%}
         <img src="{{ 'nc-logo-wordmark.webp' | asset_url }}" alt="{{ shop.name | escape }}" style="height: 32px; width: auto;" width="220" height="53">
       {%- endif -%}
-      <button class="nc-iconbtn" data-nc-close aria-label="{{ 'general.close_menu' | t }}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
+      <div class="nc-mobilenav__head-right">
+        {%- comment -%} Sprogskift i mobilmenuen (Allan 08-10): samme localization-form som paa computer, oeverst saa den er til at finde. {%- endcomment -%}
+        {%- if localization.available_languages.size > 1 -%}
+          {%- form 'localization', id: 'nc-lang-form-mobile', class: 'nc-langs nc-langs--mobile' -%}
+            <input type="hidden" name="return_to" value="{{ request.path }}">
+            {%- for language in localization.available_languages -%}
+              <button type="submit" name="language_code" value="{{ language.iso_code }}" lang="{{ language.iso_code }}" class="{% if language.iso_code == localization.language.iso_code %}is-active{% endif %}" aria-label="{{ language.endonym_name }}">{{ language.iso_code | upcase }}</button>
+            {%- endfor -%}
+          {%- endform -%}
+        {%- endif -%}
+        <button class="nc-iconbtn" data-nc-close aria-label="{{ 'general.close_menu' | t }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
     </div>
     <nav aria-label="{{ 'general.mobile_menu' | t }}">
       <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>

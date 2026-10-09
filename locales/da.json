@@ -59,7 +59,9 @@
     "page_n": "Side {{ page }}",
     "scroll_left": "Rul til venstre",
     "scroll_right": "Rul til højre",
-    "close": "Luk"
+    "close": "Luk",
+    "tp_open": "Se vores anmeldelser på Trustpilot",
+    "language": "Sprog"
   },
   "shopify": {
     "checkout": {
@@ -242,7 +244,7 @@
     "b2b_phone": "Telefon",
     "b2b_message": "Fortæl kort om jeres butik og forventet volumen",
     "b2b_submit": "Send ansøgning",
-    "b2b_success": "Tak for din ansøgning. Vi vender tilbage inden for to hverdage.",
+    "b2b_success": "Tak for din ansøgning. Vi vurderer hver ansøgning individuelt og kontakter dig inden for 7 arbejdsdage.",
     "b2b_login_hint": "Allerede B2B-kunde?",
     "b2b_login": "Log ind her",
     "b2b_email": "Firma-email",

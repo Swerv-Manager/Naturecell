@@ -31,7 +31,17 @@
       "block_order": [
         "slide1",
         "slide2"
-      ]
+      ],
+      "settings": {
+        "m_welcome": true,
+        "m_image": "shopify://shop_images/Butik_Lille_Nyhavn.webp",
+        "m_fallback_asset": "nc-hero-kunder.jpg",
+        "m_eyebrow": "Velkommen",
+        "m_heading": "Hudpleje med omtanke",
+        "m_body": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
+        "m_cta_text": "Se produkterne",
+        "m_cta_url": "/collections/cbd-hudpleje"
+      }
     },
     "trust": {
       "type": "nc-trust-bar",
@@ -75,7 +85,10 @@
         "t2",
         "t3",
         "t4"
-      ]
+      ],
+      "settings": {
+        "mobile_mode": "tp"
+      }
     },
     "press": {
       "type": "nc-press",
@@ -300,12 +313,55 @@
         "s2",
         "s3"
       ]
+    },
+    "trust2": {
+      "type": "nc-trust-bar",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "label": "Tilladelse til CBD i Danmark · 2019",
+            "icon": "check"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "label": "Vegansk & plantebaseret",
+            "icon": "shield"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "label": "e-mærket webshop",
+            "icon": "shield"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "label": "GMP- & ISO-certificeret",
+            "icon": "check"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "mobile_mode": "items"
+      }
     }
   },
   "order": [
     "hero",
     "trust",
     "press",
+    "trust2",
     "shoptabs",
     "lifestyle",
     "bestsellers",
