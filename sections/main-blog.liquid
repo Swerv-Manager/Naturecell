@@ -107,6 +107,9 @@
   #shopify-section-{{ section.id }} .nc-bcard:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
   #shopify-section-{{ section.id }} .nc-bcard__media { border-radius: 0; }
   #shopify-section-{{ section.id }} .nc-bcard__text { padding: 16px 18px 18px; }
+  {%- comment -%} Kundens rettelse 63 (09-10): lige hoejt tekstfelt: titlen reserverer 3 linjer og klippes derefter, navnet altid paa egen linje {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-bcard__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; min-height: calc(3 * 1.2em); }
+  #shopify-section-{{ section.id }} .nc-bcard__who { min-height: 1.2em; }
   {%- endif -%}
   #shopify-section-{{ section.id }} .nc-bcard:hover { text-decoration: none; }
   #shopify-section-{{ section.id }} .nc-bcard__media { position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
@@ -281,9 +284,7 @@
             <span class="nc-bcard__text">
               <h3 class="nc-bcard__title">{% render 'nc-cbd', text: clean_title %}</h3>
               {%- if is_cases -%}
-                {%- if person != blank -%}
-                  <span class="nc-bcard__who">{{ person }}</span>
-                {%- endif -%}
+                <span class="nc-bcard__who">{% if person != blank %}{{ person }}{% else %}&nbsp;{% endif %}</span>
               {%- else -%}
                 {%- assign card_text = article.excerpt_or_content | strip_html | truncate: 320 -%}
                 <p class="nc-bcard__excerpt">{% render 'nc-cbd', text: card_text %}</p>

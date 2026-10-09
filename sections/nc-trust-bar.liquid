@@ -6,11 +6,16 @@
   .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
   .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
   .nc-trust__item svg { color: var(--sage-600); flex: none; }
+  /* Kundens rettelse 57 (09-10): Trustpilot hoejt paa forsiden, i trust-baren og i temaets groenne, ikke lyseroed */
+  .nc-trust__item--tp .nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+  .nc-trust__item--tp .nc-stars svg { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+  .nc-trust__item--tp strong { font-weight: 700; color: var(--sage-700); }
   /* Mobil (08-10): to lige kolonner i stedet for en skaev ombrydning */
   @media (max-width: 749px) {
     .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
     .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
     .nc-trust__item svg { margin-top: 1px; }
+    .nc-trust__item--tp { grid-column: 1 / -1; }
   }
 {%- endstyle -%}
 
@@ -18,6 +23,20 @@
   <div class="nc-container">
     <div class="nc-trust__row">
       {%- for block in section.blocks -%}
+        {%- if block.type == 'trustpilot' -%}
+          {%- capture tp_line %}{% render 'nc-trustpilot', format: 'line' %}{% endcapture -%}
+          {%- if tp_line != blank -%}
+            <span class="nc-trust__item nc-trust__item--tp" {{ block.shopify_attributes }}>
+              <span class="nc-stars" aria-hidden="true">
+                {%- for i in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                {%- endfor -%}
+              </span>
+              <span>{{ tp_line }}</span>
+            </span>
+          {%- endif -%}
+          {%- continue -%}
+        {%- endif -%}
         <span class="nc-trust__item" {{ block.shopify_attributes }}>
           {%- if block.settings.icon == 'shield' -%}
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/></svg>
@@ -38,6 +57,14 @@
   "settings": [],
   "blocks": [
     {
+      "type": "trustpilot",
+      "name": "Trustpilot",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Viser stjerner og Trustpilot-tallene fra Temaindstillinger → Integrationer." }
+      ]
+    },
+    {
       "type": "item",
       "name": "Punkt",
       "settings": [
@@ -50,6 +77,7 @@
     {
       "name": "Trust-bar",
       "blocks": [
+        { "type": "trustpilot" },
         { "type": "item", "settings": { "label": "Tilladelse til CBD i Danmark · 2019", "icon": "check" } },
         { "type": "item", "settings": { "label": "Vegansk & plantebaseret", "icon": "shield" } },
         { "type": "item", "settings": { "label": "e-mærket webshop", "icon": "shield" } },

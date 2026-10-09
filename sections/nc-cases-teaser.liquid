@@ -31,6 +31,9 @@
   #shopify-section-{{ section.id }} .nc-case-card__video { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: var(--radius-pill); background: rgba(32, 38, 35, 0.62); color: #fff; font-size: 10.5px; font-weight: 600; line-height: normal; letter-spacing: 0.06em; text-transform: uppercase; }
   /* Designets h3 saetter ingen font-weight => UA-default 700 (Philosopher Bold) */
   .nc-case-card__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
+  /* Kundens rettelse 63 (09-10): tekstfeltet er lige hoejt paa alle kort: titlen reserverer 3 linjer og klippes derefter, navnet staar altid paa sin egen linje */
+  .nc-case-card__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; min-height: calc(3 * 1.2em); }
+  .nc-case-card__who { min-height: 1.2em; }
   .nc-case-card__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
   /* Mobil (08-10): kortene fylder 76 % med et synligt kig paa det naeste, pilene erstattes af fade + prikker */
   @media (max-width: 749px) {
@@ -92,7 +95,7 @@
             </span>
             <div class="nc-case-card__meta">
               <h3 class="nc-case-card__title">{% render 'nc-cbd', text: article.title %}</h3>
-              <span class="nc-case-card__who">{{ article.metafields.ncell.name | default: article.author }}</span>
+              <span class="nc-case-card__who">{{ article.metafields.ncell.name | default: article.author | default: '&nbsp;' }}</span>
             </div>
           </a>
         {%- endfor -%}

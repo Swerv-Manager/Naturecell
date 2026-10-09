@@ -5,9 +5,9 @@
       "settings": {
         "search_placeholder": "Søg på produkt, ingrediens, behov …",
         "chips_label": "Område",
-        "chips": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje",
+        "chips": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje\nOlier | /collections/cbd-olie",
         "need_label": "Behov",
-        "need_chips": "Tør hud | /collections/cbd-hudpleje/tor-hud\nFugt | /collections/cbd-hudpleje/fugt\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nUren hud | /collections/cbd-hudpleje/uren-hud\nGenopbygning | /collections/cbd-hudpleje/genopbygning",
+        "need_chips": "Fugt | /collections/cbd-hudpleje/fugt\nGenopbygning | /collections/cbd-hudpleje/genopbygning\nModen hud | /collections/cbd-hudpleje/moden-hud\nNormal hud | /collections/cbd-hudpleje/normal-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nTør hud | /collections/cbd-hudpleje/tor-hud\nUren hud | /collections/cbd-hudpleje/uren-hud",
         "sort_label": "Sortiment",
         "sort_chips": "Hele sortimentet | /collections/cbd-hudpleje\n♂ Herre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
       }
