@@ -19,6 +19,14 @@ Opgaven: "Sørg for at ALT er oversat. ALLE links virker. Alt er optimeret efter
   grundpris vises på tysk, tyske kunder sendes til de.trustpilot.com.
 - Grundpris-data til lanceringsdagen: `grundpreis-mutation.json` (IKKE kørt, se README.md).
 
+## Vigtigt: tema-ID skifter (11-10-2026)
+
+Det nye tema (205218971986) blev publiceret 09-10. Cookiebot-broen (commit c794ea5) er lagt
+i kopien "Kopi af Swerv // Nyt tema (under udvikling)" (209410687314), som Frederik
+publicerer. Derefter er 209410687314 det live tema, og live-temaet kan ikke skrives via
+connectoren. Fremtidige ændringer: lav en upubliceret kopi, upload dertil, mennesket publicerer.
+Tjek også at de tyske tema-oversættelser fulgte med kopien, før arbejdet herunder genoptages.
+
 ## Mangler (fortsæt herfra)
 
 1. Registrér de resterende chunks i `de-translations/reg/chunks/` (c01-c04, c06-c09,
