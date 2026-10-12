@@ -167,7 +167,14 @@
                 {%- if parts[0] != blank and parts[1] != blank -%}
                   {%- assign chip_url = parts[1] | strip -%}
                   {%- assign chip_segs = chip_url | split: '/' -%}
-                  {%- if chip_segs.size == 4 and chip_segs[1] == 'collections' -%}
+                  {%- comment -%} Rettelse 66 (12-10): valgfrit 3. felt "kun: handle1, handle2" viser behovet kun i de kollektioner (fx Sensitiv hovedbund kun under Hår). {%- endcomment -%}
+                  {%- assign chip_only_ok = true -%}
+                  {%- if parts[2] != blank -%}
+                    {%- assign chip_only = parts[2] | remove: 'kun:' | split: ',' -%}
+                    {%- assign chip_only_ok = false -%}
+                    {%- for co in chip_only -%}{%- assign co_h = co | strip -%}{%- if co_h == collection.handle -%}{%- assign chip_only_ok = true -%}{%- endif -%}{%- endfor -%}
+                  {%- endif -%}
+                  {%- if chip_only_ok and chip_segs.size == 4 and chip_segs[1] == 'collections' -%}
                     {%- assign chip_tag = chip_segs[3] -%}
                     {%- if collection.all_tags contains chip_tag -%}
                       {%- assign chip_label = parts[0] | strip -%}
@@ -177,7 +184,7 @@
                         <a class="nc-chip" href="{{ collection.url }}/{{ chip_tag }}" rel="nofollow">{%- assign chip_text = parts[0] | strip -%}{% render 'nc-cbd', text: chip_text %}</a>
                       {%- endif -%}
                     {%- endif -%}
-                  {%- else -%}
+                  {%- elsif chip_only_ok -%}
                     {%- capture chip_href %}{% render 'nc-url', url: chip_url %}{% endcapture -%}
                     {%- assign chip_href = chip_href | strip -%}
                     <a class="nc-chip{% if chip_href == collection.url %} is-active{% endif %}" href="{{ chip_href }}">{%- assign chip_text = parts[0] | strip -%}{% render 'nc-cbd', text: chip_text %}</a>
@@ -298,6 +305,7 @@
       "type": "textarea",
       "id": "need_chips",
       "label": "Chips, 2. række (én pr. linje: Tekst | /url)",
+      "info": "Valgfrit 3. felt viser chippen kun i bestemte kollektioner, fx: Sensitiv hovedbund | /collections/cbd-hudpleje/sensitiv-hovedbund | kun: cbd-haarpleje",
       "default": "Tør hud | /collections/cbd-hudpleje/tor-hud\nFugt | /collections/cbd-hudpleje/fugt\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nUren hud | /collections/cbd-hudpleje/uren-hud\nGenopbygning | /collections/cbd-hudpleje/genopbygning"
     },
     { "type": "text", "id": "sort_label", "label": "Label for 3. række", "default": "Sortiment" },

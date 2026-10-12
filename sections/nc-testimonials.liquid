@@ -19,6 +19,14 @@
       assign t_reviews = t_reviews | plus: 1
     endif
   endfor
+  assign t_tp = false
+  if section.settings.tp_widget and settings.nc_tp_business_id != blank and settings.trustpilot_script
+    assign t_tp = true
+  endif
+  assign nc_tp_url = settings.nc_trustpilot_url | default: 'https://dk.trustpilot.com/review/naturecell.dk'
+  if request.locale.iso_code == 'de'
+    assign nc_tp_url = nc_tp_url | replace: '://dk.trustpilot.com', '://de.trustpilot.com' | replace: '://www.trustpilot.com', '://de.trustpilot.com'
+  endif
   assign t_agg = section.settings.agg_text
   if t_agg == blank
     capture t_agg
@@ -51,6 +59,9 @@
   .nc-testi__card strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.7; color: var(--sage-700); }
   .nc-testi__card small { display: block; font-size: 12.5px; line-height: 1.7; color: var(--ink-400); }
   .nc-testi__app { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+  /* Rettelse 67 (12-10): Trustpilots egen widget (TrustBox) med rigtige anmeldelser */
+  .nc-testi__tp { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+  .nc-testi__tp-fallback { display: block; text-align: center; font-size: 14px; color: var(--sage-700); }
   .nc-testi__more { display: flex; justify-content: center; margin-top: 28px; padding: 0 var(--gutter); }
   .nc-testi__note { margin: 18px auto 0; padding: 0 var(--gutter); max-width: 46rem; text-align: center; font-size: 12.5px; line-height: 1.6; color: var(--ink-500); }
 {%- endstyle -%}
@@ -59,7 +70,7 @@
   <div class="nc-testi__head">
     <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
     <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
-    {%- if t_agg != blank -%}
+    {%- if t_agg != blank and t_tp == false -%}
       <div class="nc-testi__agg">
         <span class="nc-stars" aria-hidden="true">
           {%- for i in (1..5) -%}
@@ -71,7 +82,13 @@
     {%- endif -%}
   </div>
 
-  {%- if t_app -%}
+  {%- if t_tp -%}
+    <div class="nc-testi__tp">
+      <div class="trustpilot-widget" data-locale="{{ request.locale.iso_code | downcase }}-{{ localization.country.iso_code | default: 'DK' | upcase }}" data-template-id="{{ section.settings.tp_template | default: '53aa8912dec7e10d38f59f36' | strip }}" data-businessunit-id="{{ settings.nc_tp_business_id | strip }}" data-style-height="{{ section.settings.tp_height | default: 140 }}px" data-style-width="100%" data-theme="light">
+        <a class="nc-testi__tp-fallback" href="{{ nc_tp_url }}" target="_blank" rel="noopener">Trustpilot</a>
+      </div>
+    </div>
+  {%- elsif t_app -%}
     <div class="nc-testi__app">
       {%- for block in section.blocks -%}
         {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
@@ -127,7 +144,16 @@
   {%- if section.settings.link_text != blank -%}
     <div class="nc-testi__more"><a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.link_url, fallback: '/blogs/kundecases' %}">{% render 'nc-cbd', text: section.settings.link_text %}</a></div>
   {%- endif -%}
-  {%- if t_reviews > 0 or t_app -%}
+  {%- liquid
+    assign t_note = false
+    if t_reviews > 0 or t_app
+      assign t_note = true
+    endif
+    if t_tp
+      assign t_note = false
+    endif
+  -%}
+  {%- if t_note -%}
     <p class="nc-testi__note">{{ 'general.reviews_disclaimer' | t }}</p>
   {%- endif -%}
 </section>
@@ -166,6 +192,33 @@
       "id": "link_url",
       "label": "Link: adresse",
       "default": "/blogs/kundecases"
+    },
+    {
+      "type": "header",
+      "content": "Trustpilot-widget"
+    },
+    {
+      "type": "checkbox",
+      "id": "tp_widget",
+      "label": "Vis Trustpilot-widget med anmeldelser",
+      "default": false,
+      "info": "Bruger virksomheds-ID og Trustpilot-script fra Temaindstillinger. Erstatter kortene."
+    },
+    {
+      "type": "text",
+      "id": "tp_template",
+      "label": "TrustBox skabelon-ID",
+      "default": "53aa8912dec7e10d38f59f36",
+      "info": "Carousel: 53aa8912dec7e10d38f59f36. Slider: 54ad5defc6454f065c28af8b."
+    },
+    {
+      "type": "range",
+      "id": "tp_height",
+      "label": "Højde (px)",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "default": 140
     }
   ],
   "blocks": [

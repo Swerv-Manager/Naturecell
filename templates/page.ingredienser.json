@@ -143,7 +143,7 @@
         "cannabis": {
           "type": "ingredient",
           "settings": {
-            "name": "Cannabis Sativa",
+            "name": "Hampefrøolie",
             "latin": "Cannabis Sativa Seed Oil",
             "category": "Næring",
             "category_tone": "sage",
@@ -151,7 +151,7 @@
             "intro": "Hampefrøolie presses af frøene fra Cannabis Sativa og er en let, nærende olie med en naturlig balance af essentielle fedtsyrer.",
             "body": "<p>Hampefrøolie er rig på omega-fedtsyrer i et forhold, der harmonerer godt med hudens egne lipider. Det gør den til en effektiv blødgørende ingrediens, der nærer huden uden at føles tung eller fedtet.</p><p>Vi bruger den koldpresset for at bevare så mange af de naturlige næringsstoffer som muligt. Den indgår især i vores olier og nærende formuleringer, hvor den supplerer CBD og giver huden en smidig, velplejet overflade.</p>",
             "benefits": "Rig på essentielle omega-fedtsyrer\nNærer uden at føles tung\nKoldpresset for maksimal næring",
-            "image": "shopify://shop_images/NatureCell_Ingrediens_Cannabis_Sativa_Leaf_Extract_500x500px.jpg"
+            "image": "shopify://shop_images/hamp_froe.webp"
           }
         },
         "mct": {

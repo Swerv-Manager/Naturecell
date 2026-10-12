@@ -577,7 +577,8 @@ a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color:
 .nc-cbd-i::after { content: "CBD"; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 .nc-cbg-i::after { content: "CBG"; }
 /* Kundens rettelse 07-10 (Allan): ikonet har samme stoerrelse overalt, uanset skriftstoerrelse */
-.nc-cbd { display: inline-block; height: 15px; width: 30.6px; vertical-align: -2px; margin: 0 1px; overflow: visible; flex: none; }
+/* Rettelse 72 + 69 (12-10): ikonet er gjort stoerre (17 px i broedtekst) og vokser med store overskrifter, saa det ikke ser lille ud i fx "Hvad er CBD?" */
+.nc-cbd { display: inline-block; height: max(17px, 0.8em); width: max(34.7px, 1.632em); vertical-align: -0.16em; margin: 0 1px; overflow: visible; flex: none; }
 .nc-cbd-w { white-space: nowrap; }
 /* Ikonet er et ord: det foelger altid tekstens farve og drejes aldrig med harmonika-pile o.l. */
 svg.nc-cbd { color: inherit !important; transform: none !important; transition: none !important; }

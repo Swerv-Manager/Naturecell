@@ -19,7 +19,12 @@
   .nc-faqsec--compact .nc-acc__head { padding-block: 12px; }
   @media (min-width: 860px) {
     .nc-faqsec--compact .nc-acc { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(36px, 5vw, 72px); align-items: start; }
+    /* Rettelse 65 (12-10): faa spoergsmaal (fx Tilbud) staar i een kolonne i stedet for to loese halvdele */
+    .nc-faqsec--few .nc-acc { grid-template-columns: 1fr; max-width: 780px; }
   }
+  /* Rettelse 65 (12-10): luft og en tynd linje mellem produkterne og FAQ'en, saa den ikke klistrer til gitteret */
+  .nc-faqsec--compact.nc-section { padding-top: clamp(28px, 4vw, 48px); }
+  .nc-faqsec--compact .nc-faqsec__wrap { border-top: 1px solid var(--border-soft); padding-top: clamp(20px, 2.6vw, 30px); }
   /* PDP-variant (valgfri): Philosopher-spoergsmaal som i godkendt PDP-design */
   .nc-faqsec--display.nc-section { padding-top: clamp(38px, 5vw, 64px); padding-bottom: clamp(48px, 6vw, 80px); }
   .nc-faqsec--display .nc-faqsec__wrap { max-width: 712px; }
@@ -53,7 +58,8 @@
   .nc-faqsec--list .nc-faqsec__note p { margin: 0; font-size: 15px; color: var(--ink-500); }
 {%- endstyle -%}
 
-<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% endif %} {% if section.settings.display_style %}nc-faqsec--display{% endif %} {% if section.settings.list_style %}nc-faqsec--list{% endif %}" id="faq">
+{%- assign nc_faq_qs = section.blocks | where: 'type', 'qa' | size -%}
+<section class="nc-section nc-faqsec {% if section.settings.compact %}nc-faqsec--compact{% if nc_faq_qs < 4 %} nc-faqsec--few{% endif %}{% endif %} {% if section.settings.display_style %}nc-faqsec--display{% endif %} {% if section.settings.list_style %}nc-faqsec--list{% endif %}" id="faq">
   <div class="nc-container">
     <div class="nc-faqsec__wrap">
       {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subtext != blank -%}

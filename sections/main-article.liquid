@@ -62,6 +62,31 @@
     endif
   endif
 
+  # Rettelse 71 (12-10): kundevideoerne har tekster braendt ind i billedet. YouTube maa ikke
+  # vise sine egne undertekster oven i dem (cc_load_policy=0). Den sikre loesning er at fjerne
+  # undertekst-sporet i YouTube Studio for videoer med indbraendte tekster.
+  if body_html contains 'youtube.com/embed/'
+    assign yt_parts = body_html | split: 'youtube.com/embed/'
+    capture body_html
+      for yt_part in yt_parts
+        if forloop.first
+          echo yt_part
+        else
+          assign yt_src = yt_part | split: '"' | first
+          if yt_src contains 'cc_load_policy'
+            assign yt_new = yt_src
+          elsif yt_src contains '?'
+            assign yt_new = yt_src | append: '&cc_load_policy=0'
+          else
+            assign yt_new = yt_src | append: '?cc_load_policy=0'
+          endif
+          echo 'youtube.com/embed/'
+          echo yt_part | replace_first: yt_src, yt_new
+        endif
+      endfor
+    endcapture
+  endif
+
   assign author_name = article.author | strip
   assign author_img = blank
   if section.settings.author_avatar != blank

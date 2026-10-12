@@ -335,7 +335,8 @@
         "heading": "Det siger vores kunder",
         "agg_text": "",
         "link_text": "Se kundecases",
-        "link_url": "/blogs/kundecases"
+        "link_url": "/blogs/kundecases",
+        "tp_widget": true
       }
     },
     "story": {

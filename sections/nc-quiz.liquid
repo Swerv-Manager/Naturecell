@@ -12,7 +12,7 @@
   .nc-quizband__inner { max-width: 760px; margin: 0 auto; padding: clamp(26px, 5vw, 44px) clamp(16px, 4vw, 24px) clamp(18px, 6vw, 30px); display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center; }
   .nc-quizband .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
   {%- comment -%} Designets h1 saetter ingen line-height og arver body'ens 1.7; det giver baandets hoejde. {%- endcomment -%}
-  .nc-quizband h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(27px, 4.3vw, 44px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
+  .nc-quizband h1, .nc-quizband .nc-quizband__h { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(27px, 4.3vw, 44px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
   .nc-quiz__progress { width: 100%; max-width: 420px; height: 6px; border-radius: 3px; background: var(--sage-100); overflow: hidden; }
   .nc-quiz__progress div { height: 100%; width: 0; background: var(--sage-500); transition: width var(--dur-base) var(--ease-out); }
 
@@ -82,7 +82,8 @@
       {%- if section.settings.eyebrow != blank -%}
         <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
       {%- endif -%}
-      <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
+      {%- comment -%} Rettelse 68 (12-10): paa andre sider (fx Hvor skal jeg starte?) er quizzen en underoverskrift, saa siden kun har een h1. {%- endcomment -%}
+      {%- if section.settings.as_subsection -%}<h2 class="nc-quizband__h">{%- else -%}<h1>{%- endif -%}{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}{%- if section.settings.as_subsection -%}</h2>{%- else -%}</h1>{%- endif -%}
       <div class="nc-quiz__progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="{{ section.settings.heading | default: page.title | escape }}"><div data-nc-quiz-progress></div></div>
     </div>
   </section>
@@ -183,6 +184,7 @@
   "name": "Hudpleje-quiz",
   "tag": "section",
   "settings": [
+    { "type": "checkbox", "id": "as_subsection", "label": "Vis som underafsnit (h2)", "default": false, "info": "Slå til, når quizzen ligger på en side med sin egen hovedoverskrift." },
     { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Find din rutine" },
     { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hudpleje-quiz" },
     { "type": "textarea", "id": "intro_text", "label": "Intro, tekst", "default": "Svar på to hurtige spørgsmål, så guider vi dig til de NatureCell-produkter, der passer bedst til din hud. Ingen løfter om mirakler, bare et godt sted at starte." },
