@@ -16,13 +16,17 @@
 - Priser: katalog "Tyskland (EUR, hele euro)" (MarketCatalog/208453992786) med prisliste
   PriceList/40816378194: 61 faste priser i hele euro (54,95 -> 55, 68,95 -> 69 osv.),
   uden foerpris (compare-at) i Tyskland (PAngV § 11: ingen 30-dages historik i nyt marked).
-  Gavekort: 27/41/68/96/136 € (afrundet omregning). Priserne slaar foerst igennem, naar markedet
+  Gavekort i Tyskland: 25/40/70/95/135 € med tyske titler, handles og vaerdier i euro
+  (kundeservice udsteder koden til det betalte eurobeloeb). Priserne slaar foerst igennem, naar markedet
   aktiveres; contextualPricing viser stadig ,95 saa laenge markedet er kladde.
 - Lovtekster paa tysk (oversaettelser af butikkens politikker, filer i `legal/`):
   Impressum (§ 5 DDG) i "Juridisk meddelelse", AGB, Widerrufsbelehrung efter lovens model
   med Muster-Widerrufsformular, Versand, Kontakt. Ingen kr.-beloeb, ingen EU-ODR-link
   (lukket juli 2025), Naevnenes Hus + Forbrug Europa som klageinstanser, USt-IdNr. DK42256013.
   Footeren viser alle politikker + "Vertrag widerrufen" (Avada, /pages/widerrufsformular).
+- Fuld dansk-detektor over alle ressourcetyper og temaet (169 fund, 33 falske positiver):
+  154 tekster i 7 ubrugte kollektionsskabeloner oversat, Loevepakken-SEO, delingsbilledets alt,
+  gavekortenes kr.-vaerdier rettet. Tilbage er kun egennavne (Matas-adresser, vindere, Miljoestyrelsen).
 - Tysk indhold: 137 alt-tekster (artikel-, kollektions- og mediebilleder) + 50 handles/titler
   (gamle sider, interne rabatkollektioner, blog "gemt", testmetaobjekter) registreret.
 - Rettelse 71: artikler kan nu have en Shopify-hostet video (metafelt ncell.video) i stedet for
