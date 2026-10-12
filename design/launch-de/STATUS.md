@@ -1,56 +1,51 @@
-# Tysk version (naturecell.de): status ved pause 09-10-2026
+# Tysk version (naturecell.de): status 12-10-2026
 
-Opgaven: "Sørg for at ALT er oversat. ALLE links virker. Alt er optimeret efter Tyskland."
+## Temaer (vigtigt)
 
-## Færdigt
+- Live: "Kopi af Swerv // Nyt tema (under udvikling)" (209410687314). Kan ikke skrives via connectoren.
+- Arbejdstema: "Swerv // Nyt tema (under udvikling)" (205218971986), upubliceret. Indeholder alt fra
+  live (synket 12-10, inkl. Cookiebot-broen) + rettelser 64-72 + ALLE tyske oversaettelser.
+  Det er dette tema, der skal publiceres. De tyske tema-oversaettelser ligger pr. tema.
+- Butikken har 20 temaer (Shopifys maksimum), saa nye kopier kan ikke oprettes foer et slettes.
 
-- Audit af alt tysk indhold mod den danske master (tema, produkter, sider, artikler,
-  metaobjekter, metafelter, menuer, kollektioner, shop-SEO).
-- 570 tekster oversat og kontrolleret: samme HTML og links som dansk, ingen tankestreger,
-  intet "zugelassen", Sie-form. Ligger i `de-translations/wp/out-*.json`.
-- Body-links i tysk indhold omskrevet til relative URLs med tyske handles
-  (`de-translations/reg/merged-loc.json`).
-- Tysk shop-SEO registreret: titel "NatureCell: CBD-Hautpflege, in Dänemark entwickelt",
-  beskrivelse uden "zugelassen" og uden "Bio".
-- Chunk c25 registreret og bekræftet: SETS-metafelter, kollektionen "Sets",
-  menupunkterne "Shop", "Über CBD" og "Über uns" samt taksonomi-labels.
-- Chunks c00, c05, c10, c15 registreret uden fejl. c20 er ifølge agenten registreret, men har ingen resultatfil.
-- Tema (commit b0be830, uploadet til dev-tema 205218971986, md5 verificeret):
-  grundpris vises på tysk, tyske kunder sendes til de.trustpilot.com.
-- Grundpris-data til lanceringsdagen: `grundpreis-mutation.json` (IKKE kørt, se README.md).
+## Tysk indhold: faerdigt og verificeret 12-10
 
-## Vigtigt: tema-ID skifter (11-10-2026)
+- Revision af alt (tema, produkter, kollektioner, sider, artikler, metaobjekter, metafelter,
+  menuer, politikker, shop): 589 manglende/foraeldede tekster.
+- 471 registreret og laest tilbage: 470 identiske, 1 handle fik "-1" (haeufige-fragen findes i
+  forvejen). Data i `de-translations-2026-10-12/`.
+- Bevidst ikke oversat: app-data (Judge.me m.fl.), interne rabat-kollektioner, testindgange,
+  billedfilnavne, gamle sidehandles og 7 ubrugte kollektionsskabeloner.
+- Links i tyske tekster peger paa tyske, relative URL'er. Menuer og temaet oversaetter selv.
+- Tysk shop-SEO uden "zugelassen"/"Bio". Trustpilot paa tysk. Grundpris vises paa tysk.
 
-Det nye tema (205218971986) blev publiceret 09-10. Cookiebot-broen (commit c794ea5) er lagt
-i kopien "Kopi af Swerv // Nyt tema (under udvikling)" (209410687314), som Frederik
-publicerer. Derefter er 209410687314 det live tema, og live-temaet kan ikke skrives via
-connectoren. Fremtidige ændringer: lav en upubliceret kopi, upload dertil, mennesket publicerer.
-Tjek også at de tyske tema-oversættelser fulgte med kopien, før arbejdet herunder genoptages.
+## Ved lanceringen (i denne raekkefoelge)
 
-## Mangler (fortsæt herfra)
+1. Publicér arbejdstemaet 205218971986.
+2. Koer `grundpreis-mutation.json` (pris pr. 100 ml), se README.md.
+3. Aktivér markedet "Tyskland" i Shopify Markets (menneskeklik).
+4. Sprogskifter: paa naturecell.de er der kun tysk, saa knappen skjules af sig selv.
+   Paa naturecell.dk boer den forblive skjult (show_lang: false), saa tyskere bruger .de.
+5. Tjek naturecell.de i browser: forside, produkt, kurv, checkout paa tysk, Cookiebot paa tysk.
 
-1. Registrér de resterende chunks i `de-translations/reg/chunks/` (c01-c04, c06-c09,
-   c11-c14, c16-c19, c20-c24). Registrering er idempotent, så kør hellere en for meget.
-   Format: `{"query", "variables"}` til Shopify `translationsRegister`. Bekræft butikken
-   (get-shop-info = "Naturecell.dk") før første kald.
-2. Kør derefter `de-translations/reg/fix-paths.json`. Den sætter de fire sti-lister
-   (kollektionschips og footer-menuer) tilbage til danske stier, som temaets nc-url selv
-   oversætter. Den SKAL køres efter chunks med temaet, ellers overskrives den.
-3. Læs alle oversættelser tilbage (`reg/verify-ids.json` + temaressourcen) og sammenlign
-   med `reg/reg-final.json`. Agenterne kopierer værdierne manuelt, så tegn som
-   hårde mellemrum kan være skiftet ud. Afvigelser registreres igen fra filen.
-4. Render-tjek af /de på dev-temaet, Nexus-changelog og rapport til Frederik.
-5. Slå sprogskifteren (DA/DE) til igen: Tema-editor, Header, "Vis sprogskifter (DA/DE)",
-   eller `show_lang: true` i `sections/header-group.json`. Den blev skjult 09-10 (commit 981fcae).
+## Kraever beslutning foer lancering (ikke kode)
 
-## Flag til Frederik (beslutninger, ikke kode)
+- Fragt til Tyskland: i dag fast 499 kr (ca. 67 €) eller CR Fragtintegration, ingen fri fragt i EUR.
+  Naar beloebet er besluttet: tilfoej "EUR: <beloeb>" i temaindstillingen nc_free_shipping.
+- Tyske handelsbetingelser: "59 kr. bei Bestellungen unter 399,- kr.", Naevnenes Hus og det
+  lukkede EU-ODR-link (ec.europa.eu/odr, nedlagt juli 2025). Widerruf: "1.000 kr."
+  Impressum mangler Geschaeftsfuehrer og USt-IdNr. (DK42256013). Tysk jurist boer laese.
+- Widerrufsbutton (§ 356a BGB): tjek Avada-fortrydelsesformularens tyske knaptekster.
+- Klaviyo: den danske popup VaKaSc og kladden RU7CmG skal udelukke "*naturecell.de*" eller
+  have en tysk version.
+- Ordrebekraeftelser m.m.: tjek Shopify-notifikationerne paa tysk (egne danske skabeloner?).
+- Betalingsmetoder for Tyskland (PayPal, Klarna, giropay/SEPA) i Shopify Payments.
 
-- Fragt EU: fast 499 kr (ca. 67 €) og ingen fri fragt i EUR. Kræver beslutning i Shopify.
-- Impressum mangler Geschäftsführer og USt-IdNr. Handelsbetingelserne nævner DKK og
-  Nævnenes Hus, og EU ODR-linket er nedlagt. Tysk jurist bør læse dem.
-- Dansk shop-meta siger "godkendt til salg" og "Organiske". Rettes i Shopify Præferencer.
-- Klaviyo: den aktive popup VaKaSc er dansk og vises også på naturecell.de. Den nye
-  kladde RU7CmG udelukker kun naturecell.dk/de. Tilføj "*naturecell.de*" i begge.
-- Indhold med effektpåstande (akne, betændelse, træning, sårheling) er oversat tro mod
-  dansk. Overvej om artiklerne skal med på .de.
-- Menuen "om-cbd" har et hårdkodet link til naturecell.dk/blogs/artikler (bruges ikke af det nye tema).
+## Rettelser 64-72 (DK), 12-10
+
+Paa arbejdstemaet: 64 linjeskift, 65 FAQ paa tilbud, 66 Sensitiv hovedbund (kun Haar),
+67 TrustBox-karrusel, 68 quiz paa Hvor skal jeg starte, 70 Hampefroeolie, 71 cc_load_policy=0,
+72/69 stoerre CBD-ikon. Data (live med det samme): shampoo-tag sensitiv-hovedbund,
+ansigtsolie og Body Oil i Olier, "godkendt til salg" fjernet 4 steder.
+Mangler fra kunden: skarpe billeder til Om CBD (56/69, CKAT), Drive-billeder 52-55,
+undertekstspor fjernes i YouTube Studio (71).
