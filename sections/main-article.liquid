@@ -53,7 +53,65 @@
   endcomment
   assign body_html = article.content
   assign case_has_video = false
-  if is_case and body_html contains '<iframe'
+
+  # Rettelse 71: video hostet i Shopify i stedet for YouTube. Har artiklen en video i metafeltet
+  # ncell.video (fil-reference), erstatter den artiklens foerste YouTube/Vimeo-iframe paa samme
+  # plads og i samme ramme. Undertekster er valgfrie: WebVTT-tekst i ncell.video_captions
+  # (oversaettelig pr. sprog) vises som spor paa det aktuelle sprog. Uden video er alt som foer.
+  assign nc_video = article.metafields.ncell.video.value
+  if nc_video != blank and nc_video.media_type == 'video' and body_html contains '<iframe'
+    assign nc_ifr_parts = body_html | split: '<iframe'
+    assign nc_ifr_old = ''
+    assign nc_ifr_style = ''
+    for nc_part in nc_ifr_parts offset: 1
+      assign nc_ifr_attrs = nc_part | split: '>' | first
+      if nc_ifr_attrs contains 'youtube' or nc_ifr_attrs contains 'youtu.be' or nc_ifr_attrs contains 'vimeo'
+        assign nc_ifr_end = nc_part | split: '</iframe>' | first
+        assign nc_ifr_old = '<iframe' | append: nc_ifr_end | append: '</iframe>'
+        if nc_ifr_attrs contains 'style="'
+          assign nc_ifr_style = nc_ifr_attrs | split: 'style="' | last | split: '"' | first
+        endif
+        break
+      endif
+    endfor
+    if nc_ifr_old != blank
+      assign nc_vid_style = nc_ifr_style | append: ';width:100%;height:auto;max-width:100%;background:#000;object-fit:contain;'
+      if nc_ifr_style contains 'absolute'
+        assign nc_vid_style = nc_ifr_style | append: ';background:#000;object-fit:contain;'
+      endif
+      assign nc_vid_id = ''
+      if is_case
+        assign nc_vid_id = 'nc-case-video'
+        assign case_has_video = true
+      endif
+      if nc_vid_id != blank
+        assign nc_vid_html = nc_video | video_tag: controls: true, preload: 'metadata', playsinline: true, image_size: '1280x', id: nc_vid_id, style: nc_vid_style, class: 'nc-article-video'
+      else
+        assign nc_vid_html = nc_video | video_tag: controls: true, preload: 'metadata', playsinline: true, image_size: '1280x', style: nc_vid_style, class: 'nc-article-video'
+      endif
+      assign nc_vtt = article.metafields.ncell.video_captions.value | strip
+      if nc_vtt != blank
+        assign nc_nl = '%0A' | url_decode
+        assign nc_vtt_head = nc_vtt | slice: 0, 6
+        unless nc_vtt_head == 'WEBVTT'
+          assign nc_vtt = 'WEBVTT' | append: nc_nl | append: nc_nl | append: nc_vtt
+        endunless
+        capture nc_track
+          echo '<track kind="subtitles" default srclang="'
+          echo request.locale.iso_code
+          echo '" label="'
+          echo request.locale.endonym_name | escape
+          echo '" src="data:text/vtt;base64,'
+          echo nc_vtt | base64_encode
+          echo '"></video>'
+        endcapture
+        assign nc_vid_html = nc_vid_html | replace_first: '</video>', nc_track
+      endif
+      assign body_html = body_html | replace_first: nc_ifr_old, nc_vid_html
+    endif
+  endif
+
+  if is_case and case_has_video == false and body_html contains '<iframe'
     assign embed_split = body_html | split: '<iframe'
     assign if_attrs = embed_split[1] | split: '>' | first
     if if_attrs contains 'youtube' or if_attrs contains 'youtu.be' or if_attrs contains 'vimeo'

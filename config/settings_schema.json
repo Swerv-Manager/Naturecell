@@ -91,7 +91,7 @@
         "id": "nc_free_shipping",
         "label": "Fri fragt-grænse pr. valuta",
         "default": "DKK: 399",
-        "info": "Én valuta pr. linje, fx DKK: 399. Står kundens valuta ikke på listen, nævner temaet ikke fri fragt på det marked. EU-zonen har i dag ingen fri fragt i Shopify, så EUR står bevidst ikke her endnu."
+        "info": "Én valuta pr. linje, fx DKK: 399. Står kundens valuta ikke på listen, nævner temaet ikke fri fragt på det marked. Tyskland-zonen i Shopify har fri fragt fra 55 € (EUR: 55). Ret begge steder samtidig."
       },
       {
         "type": "checkbox",
