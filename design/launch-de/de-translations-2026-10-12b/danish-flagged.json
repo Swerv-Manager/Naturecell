@@ -1,0 +1,3327 @@
+[
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10603942969682",
+  "key": "meta_title",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "ACTIVE",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Løvepakken: Reinigung, Öl und zwei Cremes",
+  "source_da": "Løvepakken: rens, olie, dag- og natcreme",
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Løvepakken:"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10603942969682",
+  "key": "meta_description",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "ACTIVE",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Løvepakken mit Reinigungsgel, Hautpflegeöl 1000 mg, Tagescreme und Nachtcreme. Die ganze Routine für morgens und abends in einem Set.",
+  "source_da": "Løvepakken med rensegel, hudplejeolie 1000 mg, dagcreme og natcreme. Hele rutinen til morgen og aften samlet i én pakke. Udviklet i Danmark.",
+  "german_function_words": 4,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10726059344210",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "DRAFT",
+  "reasons": [
+   "words:alle,se"
+  ],
+  "text": "Verwöhnen Sie einen lieben Menschen – oder sich selbst 💚 Dieses spezielle Muttertagspaket wurde für die tägliche Pflege von Händen, Augenpartie und Gesicht zusa",
+  "source_da": "<p>Forkæl en, du holder af – eller dig selv 💚</p>\n<p>Denne særlige Mors Dag pakke er sammensat til daglig pleje af både hænder, øjenområde og ansigt.</p>\n<p>En ",
+  "german_function_words": 24,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10816081002834",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "ACTIVE",
+  "reasons": [
+   "words:alle,du"
+  ],
+  "text": "Tagescreme – den ganzen Tag ein gepflegtes Aussehen 50 ml. Wenn du eine Haut haben möchtest, die von morgens bis abends strahlt, fängst du hier an. Die ALFALAB ",
+  "source_da": "<p data-end=\"123\" data-start=\"85\"><strong data-end=\"123\" data-start=\"85\">Dagcreme – Se skarp ud hele dagen</strong></p>\n<p data-end=\"131\" data-start=\"125\">50 ml",
+  "german_function_words": 21,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10816105546066",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "DRAFT",
+  "reasons": [
+   "words:alle,du"
+  ],
+  "text": "Die komplette Gesichtsroutine – einfach, effektiv und für Männer gemacht Schluss mit halben Sachen. Wenn du eine gesund aussehende und frische Haut haben möchte",
+  "source_da": "<p data-end=\"139\" data-start=\"72\"><strong data-end=\"139\" data-start=\"72\">Den komplette ansigts rutine – enkel, effektiv og lavet til mænd</strong></p>\n<p data-e",
+  "german_function_words": 23,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/10819435495762",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "ACTIVE",
+  "reasons": [
+   "words:alle,du"
+  ],
+  "text": "Die komplette Gesichtsroutine – einfach, effektiv und für Männer gemacht Schluss mit halben Lösungen. Wenn du eine Haut haben willst, die gesund aussieht und si",
+  "source_da": "<p data-start=\"72\" data-end=\"139\"><strong data-start=\"72\" data-end=\"139\">Den komplette ansigts rutine – enkel, effektiv og lavet til mænd</strong></p>\n<p data-s",
+  "german_function_words": 24,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PRODUCT",
+  "resourceId": "gid://shopify/Product/7394024456373",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "DRAFT",
+  "reasons": [
+   "words:alle,gratis"
+  ],
+  "text": "Das Exclusive Package enthält 6 CBD-Produkte: Tagescreme Nachtcreme Öl 500mg Multiserum + Fußcreme für 0 €. + Reinigungsgel für 0 €. Erhalten Sie eine effektive",
+  "source_da": "<p data-mce-fragment=\"1\"><strong data-mce-fragment=\"1\">The Exclusive Package indeholder 6 CBD-produkter:<br></strong></p>\n<p data-mce-fragment=\"1\"><strong data-",
+  "german_function_words": 24,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PAGE",
+  "resourceId": "gid://shopify/Page/180268335442",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "published",
+  "reasons": [
+   "æøå",
+   "words:jeg,og,på"
+  ],
+  "text": "Hier haben wir die Berichterstattung über NatureCell in Zeitungen, Zeitschriften und im Fernsehen gesammelt. Von den ersten Artikeln über CBD in der Hautpflege ",
+  "source_da": "<p>Her har vi samlet omtalen af NatureCell i aviser, magasiner og på tv. Fra de første artikler om CBD i hudpleje i 2019 til Løvens Hule i 2026.</p><ul>\n<li>\n<s",
+  "german_function_words": 20,
+  "danish_fragments": [
+   "Body Oil in „Nyt på Hylden“ ."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "PAGE",
+  "resourceId": "gid://shopify/Page/84783005877",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "published",
+  "reasons": [
+   "words:alle,kunde"
+  ],
+  "text": "Viel mehr als nur Hautpflege Willkommen bei NatureCell, einer Pionier-Marke mit Leidenschaft und dem Glauben, dass sowohl die Natur als auch wir selbst einen Ei",
+  "source_da": "<h1 style=\"text-align: center;\">Meget mere end bare hudpleje</h1>\n<p>Velkommen til NatureCell – et pioner-brand med passion og en tro på at både naturen og vi s",
+  "german_function_words": 25,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "PAGE",
+  "resourceId": "gid://shopify/Page/84810465461",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "published",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Geschäft Straßenname Postleitzahl Stadtname Matas St. Kongensgade 47 1264 København K Matas Nørreport - Frederiksborggade 18 1360 København K Matas Nytorv 3 / N",
+  "source_da": "<table width=\"514\">\n<tbody>\n<tr>\n<td width=\"86\"><strong>Butik</strong></td>\n<td width=\"231\"><strong>Gadenavn</strong></td>\n<td width=\"82\"><strong>Postnummer</st",
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Kongensgade 47 1264 København K Matas Nørreport - Frederiksborggade 18 1360 København K Matas Nytorv 3 / Nygade 7 1450 K",
+   "10 2800 Kongens Lyngby Matas Geels Plads 18, Postbox 57 2830 Virum Matas Søborg Hovedgade 221 2860 Søborg Matas Hovedgad",
+   "41 3400 Hillerød Matas M.D.",
+   "Madsensvej 14-16 3450 Allerød Matas Hovedgaden 37 3460 Birkerød Matas Farum Bytorv 14, Postboks 218 3520 Farum Matas Sil",
+   "Torvegade 3-5 3700 Rønne Matas Algade 2 4000 Roskilde Matas Skomagergade 26 4000 Roskilde Matas Ro's Torv 1 st."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/607975145810",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Wir haben die folgende Nachricht und Bilder von unserer Kundin Emma erhalten, die uns die Erlaubnis gegeben hat, ihre Erfahrungen zu teilen: „Hallo, ich benutze",
+  "source_da": "<p>Vi har modtaget følgende besked og billeder fra vores kunde Emma, som har givet samtykke til, at vi deler hendes oplevelse:</p>\n<p> </p>\n<div style=\"max-widt",
+  "german_function_words": 30,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609237860690",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:alle,du"
+  ],
+  "text": "Ja, die Überschrift ist etwas scherzhaft, und dafür kann ich mich bei meinem Akupunkteur Torben in Hørning bedanken. Torben, der selbst im Skanderborger See win",
+  "source_da": "<p data-mce-fragment=\"1\">Ja, overskriften er lidt spøgefuld, og jeg kan takke min <a title=\"Akupunkturpunktet Akupunktør Hørning\" href=\"https://akupunkturpunkte",
+  "german_function_words": 28,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609237860690",
+  "key": "meta_description",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Torben, der selbst im Skanderborg Sø winterbadet, weiß, dass ich direkt am Wasser wohne, und er konnte es sich nicht verkneifen, eine humorvolle Bemerkung vorzu",
+  "source_da": "Torben, som selv vinterbader i Skanderborg Sø, ved, at jeg bor lige ned til vandet, og han kunne ikke lade være med at foreslå en humoristisk bemærkning...",
+  "german_function_words": 7,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609272529234",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Bei NatureCell möchten wir mehr Offenheit schaffen und Menschen, die mit Lichen Sclerosus (LS) leben, durch den Austausch von Erfahrungen und Kundengeschichten ",
+  "source_da": "<p data-mce-fragment=\"1\">Hos NatureCell ønsker vi at skabe mere åbenhed og hjælpe mennesker, der lever med Lichen Sclerosus (LS), gennem deling af erfaringer og",
+  "german_function_words": 31,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609460420946",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Gewinnen Sie 365 Tage Verwöhnung für Ihre Haut Jeden Monat verlosen wir einen Jahresvorrat unserer Tagescreme: 6 Stück. Melden Sie sich für unseren Newsletter a",
+  "source_da": "<h2 data-pm-slice=\"1 1 []\"><strong><span>Vind 365 dages forkælelse til din hud </span></strong></h2>\n<p><span>Hver måned udlodder vi et </span><strong><span>års",
+  "german_function_words": 20,
+  "danish_fragments": [
+   "LIVE-Verlosungen Susann Jeppesen, Nexø:",
+   "Peter Præstrud, 1 Komplett-Set Juni 2026:",
+   "Verlosung unter den Newsletter-Empfängern Lisbeth Rasmussen, Næstved:",
+   "Gewinnspiel zu Produktnamen Lotte Gårn Gulstad:"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609862746450",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Einführung Bei NatureCell glauben wir an echte Ergebnisse von echten Menschen . In einer Zeit, in der das Internet voller gefälschter Bewertungen und Vorher-Nac",
+  "source_da": "<hr>\n<h3><strong>Introduktion</strong></h3>\n<p>Hos NatureCell tror vi på <strong>ægte resultater fra ægte mennesker</strong>. I en tid, hvor internettet kan vær",
+  "german_function_words": 30,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609866023250",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:alle,kunde"
+  ],
+  "text": "Bei NatureCell möchten wir unseren Kunden die bestmögliche Erfahrung bieten: von dem Moment an, in dem Sie unseren Webshop besuchen, bis Sie Ihre CBD-Hautpflege",
+  "source_da": "<p style=\"mso-margin-top-alt: auto; mso-margin-bottom-alt: auto;\" class=\"MsoNormal\"><b><span style=\"font-family: 'Times New Roman',serif; mso-fareast-font-famil",
+  "german_function_words": 32,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/609916977490",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Es war ein schrecklicher Schock, als wir die traurige Nachricht erhielten, dass in der Scheune von Møllerup Gods ein Feuer ausgebrochen war. Unsere Familie hat ",
+  "source_da": "<p>Det kom som et forfærdeligt chok, da vi modtog den triste nyhed om at der var gået ild i laden på <a title=\"Møllerup Gods Naturecells rødder\" href=\"https://m",
+  "german_function_words": 26,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/610793554258",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "words:alle,kr,og"
+  ],
+  "text": "NatureCell Body Oil in Ude og Hjemme Diese Woche ist NatureCell in Ude og Hjemme vertreten, wo die Verbraucherjournalistin Gitte Gerner Eriksen unser CBD Body O",
+  "source_da": "<h2 data-start=\"758\" data-end=\"797\"><strong data-start=\"758\" data-end=\"797\">NatureCell Body Oil i Ude og Hjemme</strong></h2>\n<p data-start=\"799\" data-end=\"957\"",
+  "german_function_words": 27,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/610793554258",
+  "key": "meta_description",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:og,på"
+  ],
+  "text": "NatureCell Body Oil ist diese Woche in der \"Ude og Hjemme\". Lesen Sie, was die Journalistin Gitte Gerner Eriksen über unser CBD Body Oil in \"Nyt på Hylden\" schr",
+  "source_da": "NatureCell Body Oil er med i Ude og Hjemme i denne uge. Se hvad journalist Gitte Gerner Eriksen skriver om vores CBD Body Oil i \"Nyt på Hylden\"",
+  "german_function_words": 4,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/611627827538",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Eine Kundengeschichte über die Pflege trockener Haut an den Händen Mariannes Erfahrung \"Marianne, 73 Jahre alt, erzählt, dass sie viele Jahre als Praxisassisten",
+  "source_da": "<h2>En kundehistorie om pleje af tør hud på hænderne<br>\n</h2>\n<p style=\"text-align: center;\"><strong>Mariannes oplevelse</strong></p>\n<blockquote>\n<p>\"Marianne",
+  "german_function_words": 31,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/611891806546",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Wie die Idee für NatureCell entstand Die Idee für NatureCell entstand 2017 durch Allans familiäre Verbindung zum Møllerup Gods auf Djursland. Das Gut gehört der",
+  "source_da": "<h2>Hvor idéen til NatureCell opstod</h2>\n<p>Idéen til NatureCell opstod i 2017 gennem Allans familieforbindelse til Møllerup Gods på Djursland. Godset ejes af ",
+  "german_function_words": 27,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/612387357010",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "words:alle,du"
+  ],
+  "text": "Gitte aus Skanderborg hatte alles ausprobiert, aber erst als sie ihre Tochter mit der Handcreme von NatureCell eincremte, fand sie etwas, das tatsächlich gegen ",
+  "source_da": "<p>Gitte fra Skanderborg havde prøvet alt, men først da hun smurte sin datter med håndcreme fra NatureCell, fandt hun noget, der rent faktisk virkede mod tør hu",
+  "german_function_words": 29,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/613260034386",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "words:alle,kunde"
+  ],
+  "text": "Artikelinhalt CBD-Hautpflege ist zu einem Inhaltsstoff geworden, auf den viele neugierig sind. In diesem Leitfaden erklären wir, was CBD-Hautpflege ist, wie Can",
+  "source_da": "<h2>Indhold i artiklen</h2>\n<p>CBD hudpleje er blevet en ingrediens mange er nysgerrige på. I denne guide forklarer vi hvad CBD hudpleje er, hvordan cannabidiol",
+  "german_function_words": 31,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/614621380946",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Nach einem Tag in der Sonne: Die 3 unverzichtbaren Schichten, ohne die meine Haut nicht leben kann Es sind die langen, hellen Abende auf der Terrasse. Es sind d",
+  "source_da": "<h1>Efter en dag i solen: De 3 uundværlige lag, min hud ikke kan leve uden</h1>\n<p>Det er de lange, lyse aftener på terrassen. Det er gåturene i SMUK-skoven, en",
+  "german_function_words": 33,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/614906757458",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Als wir Birgit Kortbæk in ihrem Atelier besuchten, war sie in vollem Gange beim Malen. Die Farben füllten die Leinwand, die Pinsel lagen bereit, und die Hände a",
+  "source_da": "<p class=\"isSelectedEnd\"><span>Da vi besøgte Birgit Kortbæk i hendes atelier, var hun i fuld gang med at male. Farverne fyldte lærredet, penslerne lå klar, og h",
+  "german_function_words": 31,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/616848621906",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Zimmermannslehrling, Leistungshandballer und fast immer unterwegs. Frederik verwendet NatureCell seit ein paar Jahren. Mit Staub und Schmutz bei der Arbeit, vie",
+  "source_da": "<p><strong><span>Tømrerlærling, elitehåndboldspiller og næsten altid på farten. Frederik har brugt NatureCell i et par år. Med støv og snavs på arbejdet, masser",
+  "german_function_words": 27,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/617098740050",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:alle,kunde"
+  ],
+  "text": "Die Haut arbeitet jeden Tag. Sie hilft dabei, Wasser zu halten, schützt uns vor äußeren Einflüssen und erneuert laufend ihre Oberfläche. Gleichzeitig ist sie So",
+  "source_da": "<p>Huden arbejder hver dag. Den hjælper med at holde på vand, beskytter os mod omgivelserne og fornyer løbende sin overflade. Samtidig møder den sollys, vejr, v",
+  "german_function_words": 32,
+  "danish_fragments": [
+   "Miljøstyrelsen (dänische Umweltschutzbehörde):",
+   "Miljøstyrelsen:",
+   "Miljøstyrelsen:",
+   "Kræftens Bekæmpelse (Dänische Krebsgesellschaft):"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606074601810",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Hautprobleme sind kein Tabu mehr – und das sollen sie auch nicht sein Ein Artikel in Avisen.dk hebt hervor, wie immer mehr junge Menschen ihre Haut pflegen und ",
+  "source_da": "<h2>Hudproblemer er ikke længere et tabu – og det skal de heller ikke være</h2>\n<p>En <a href=\"https://www.avisen.dk/flere-unge-gaar-til-kosmetolog_730872.aspx\"",
+  "german_function_words": 28,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606140989778",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Erwähnung: Skønhed Hair.dk Immer mehr junge Menschen suchen Hilfe bei Hautproblemen – Lesen Sie mehr bei Hair.dk In den letzten Jahren ist es für junge Menschen",
+  "source_da": "<p>Omtale: Skønhed Hair.dk</p>\n<p data-start=\"0\" data-end=\"67\"><strong data-start=\"0\" data-end=\"65\">Flere unge søger hjælp til hudproblemer – Læs med hos Hair.d",
+  "german_function_words": 18,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606289297746",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Pigmentflecken und ein ungleichmäßiger Hautton sind etwas, das viele Menschen im Laufe ihres Lebens erleben – oft im Zusammenhang mit Sonneneinstrahlung, hormon",
+  "source_da": "<p>Pigmentpletter og ujævn hudtone er noget, mange oplever gennem livet – ofte i forbindelse med solpåvirkning, hormonelle forandringer eller graviditet. For no",
+  "german_function_words": 32,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606355816786",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Was tun, wenn die Haut reagiert und man gleichzeitig skeptisch ist, mehr Geld für Produkte auszugeben, die vielleicht gar nicht zur eigenen Haut passen? Genau i",
+  "source_da": "<p>Hvad gør man, når huden reagerer, og man samtidig er skeptisk over for at bruge flere penge på produkter, der måske slet ikke passer til ens hud?</p>\n<p> Det",
+  "german_function_words": 28,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606418305362",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Wir freuen uns, Pias Bewertung des 1000 mg CBD-Öls und ihre Geschichte mit Ihnen teilen zu dürfen: Wenn sonnengeschädigte Haut im Alltag besondere Pflege benöti",
+  "source_da": "<p>Vi er taknemmelige over at få lov at bringe Pias anmeldelse af 1000 mg CBD olien og bringe hendes historie videre ud til jer:</p>\n<h2>\n<meta charset=\"utf-8\">",
+  "german_function_words": 20,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/606460379474",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Pia teilt ihre persönliche Erfahrung mit einer pflanzenbasierten CBD-Bodylotion von NatureCell Nach vielen Jahren der Suche nach Hautpflege, die zu ihrer Haut p",
+  "source_da": "<h2>Pia deler sin personlige oplevelse med en plantebaseret CBD-bodylotion fra NatureCell</h2>\n<p>Efter mange års søgen efter hudpleje, der passede til hendes h",
+  "german_function_words": 27,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/607492800850",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Wenn die Haut rot und aus dem Gleichgewicht geraten ist E-Mail erhalten von: Sally Barsøe Hallo zusammen! Seit mehreren Jahren hatte ich Phasen, in denen sich m",
+  "source_da": "<h2>Når huden føles rød og i ubalance</h2>\n<blockquote>\n<p><!-- YouTube video embed (Shopify) --><!-- YouTube video embed (Shopify) --></p>\n<div style=\"position",
+  "german_function_words": 31,
+  "danish_fragments": [
+   "Sally Barsøe Hallo zusammen!",
+   "// Sally Barsøe Wichtige Informationen zu persönlichen Kundenberichten."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "ARTICLE",
+  "resourceId": "gid://shopify/Article/607759466834",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": false,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Die eigenen Worte und Erfahrungen einer Kundin Hallo liebe Leser 💚 Wir haben eine Nachricht von einer unserer Kundinnen, Bente Højmark Sørensen, erhalten, die i",
+  "source_da": "<h2>En kundes egne ord og erfaring</h2>\n<p>Hej kære læser 💚<br></p>\n<p>Vi har modtaget en hilsen fra en af vores kunder, Bente Højmark Sørensen, som har valgt a",
+  "german_function_words": 30,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "METAFIELD",
+  "resourceId": "gid://shopify/Metafield/71530996269394",
+  "key": "value",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Birgit Kortbæk",
+  "source_da": "Birgit Kortbæk",
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Birgit Kortbæk"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "SHOP_POLICY",
+  "resourceId": "gid://shopify/ShopPolicy/25075220661",
+  "key": "body",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,kunde"
+  ],
+  "text": "Letzte Fassung: 11. Dezember 2025 Naturecell.dk betreibt diesen Shop und diese Website, einschließlich aller zugehörigen Informationen, Inhalte, Funktionen, Too",
+  "source_da": "<div>\n  <p>Senest opdateret: 11. december 2025</p>\n  <p>Naturecell.dk driver denne butik og dette website, herunder alle relaterede oplysninger, indhold, funkti",
+  "german_function_words": 32,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "EMAIL_TEMPLATE",
+  "resourceId": "gid://shopify/EmailTemplate/55008559442",
+  "key": "body_html",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,du"
+  ],
+  "text": "Vielen Dank für deinen Abonnementkauf! Wir benachrichtigen dich, sobald deine Bestellung versendet wurde. Bis zu deiner Kündigung werden dir alle für jede weite",
+  "source_da": "{% assign buyer_email_rtl = false %}{% if locale_direction == 'rtl' %}{% assign buyer_email_rtl = true %}{% endif %}{% capture email_title %}\n  Tak for dit abon",
+  "german_function_words": 9,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "MEDIA_IMAGE",
+  "resourceId": "gid://shopify/MediaImage/61215264866642",
+  "key": "alt",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,til"
+  ],
+  "text": "NatureCell delingsbillede 1200x630 (til Shopify-praeferencer og temaets delingsbillede)",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "NatureCell delingsbillede 1200x630 (til Shopify-praeferencer og temaets delingsbillede)"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.seo.body:1cc6o8ec1hmvw",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,alle,du,hvordan,ikke,kunder,med,og,på,til,uden,vi,vores"
+  ],
+  "text": "NatureCells ansigtspleje er bygget op som en rutine, du kan holde fast i. Rensegel, dagcreme, natcreme, serum, eye gel og hudplejeolie er udviklet til at bruges",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Rensegel, dagcreme, natcreme, serum, eye gel og hudplejeolie er udviklet til at bruges sammen, så du kan starte med ét p",
+   "CBD indgår som en gennemgående del af formuleringen sammen med planteolier og fugtgivende ingredienser med naturlig opri",
+   "Alle produkter er kosmetiske, veganske og uden syntetisk parfume.",
+   "De er udviklet i Danmark og produceret på GMP- og ISO-certificerede faciliteter.",
+   "NatureCell fik i 2019 som den første danske hudplejeserie tilladelse til at tilsætte CBD, og vi er stadig en familiedrev"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.seo.t1.text:1vttxu4ctxx2n",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,du,med,mere,og"
+  ],
+  "text": "Start med Rensegel morgen og aften. Følg op med Dagcreme om morgenen og Natcreme om aftenen. Ønsker du mere fugt i rutinen, lægger du Hyaluronic Serum under cre",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Start med Rensegel morgen og aften.",
+   "Følg op med Dagcreme om morgenen og Natcreme om aftenen.",
+   "Ønsker du mere fugt i rutinen, lægger du Hyaluronic Serum under cremen, og slutter du af med et par dråber Hudplejeolie,"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.seo.t2.text:1h5b24qcivib0",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:har,med,og,til"
+  ],
+  "text": "Cremerne er formuleret med en let konsistens, der optages nemt, så de fungerer under makeup om morgenen og som et roligt sidste trin om aftenen. Eye Gel med CBG",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Cremerne er formuleret med en let konsistens, der optages nemt, så de fungerer under makeup om morgenen og som et roligt",
+   "Eye Gel med CBG har en kølig, let tekstur til området omkring øjnene."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.seo.t3.text:1aqzg8l7axe3x",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,og,på,se,til,vi,vores"
+  ],
+  "text": "Hvert produkt er udvalgt til at passe ind i en travl hverdag: få trin, tydelig brug og ingredienser vi selv bruger. Du kan læse om hver enkelt ingrediens på vor",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "få trin, tydelig brug og ingredienser vi selv bruger.",
+   "Du kan læse om hver enkelt ingrediens på vores ingrediensside og se rigtige rutiner under kundecases."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.heading:1czg4nu7eqyq3",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.links_label:3g6nakpyq8jjd",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.links:ki9v4m1ujv8w",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.disclaimer:2b38ywdc2clsw",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q1.q:7dwy6x305vux",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:jeg,med,skal"
+  ],
+  "text": "Hvilket produkt skal jeg starte med?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvilket produkt skal jeg starte med?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q1.a:7dwy6x305ift",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:du,hudpleje,med,og"
+  ],
+  "text": "Dagcreme er det enkleste startpunkt. Vil du have hele rutinen fra dag ét, er Komplet CBD Hudpleje samlet med Rensegel, Dagcreme, Natcreme og Hudplejeolie.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vil du have hele rutinen fra dag ét, er Komplet CBD Hudpleje samlet med Rensegel, Dagcreme, Natcreme og Hudplejeolie."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q2.q:2kuhxaakjx9d6",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hudpleje,jeg,med"
+  ],
+  "text": "Kan jeg bruge produkterne sammen med min nuværende hudpleje?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Kan jeg bruge produkterne sammen med min nuværende hudpleje?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q2.a:2kuhxaakjwvy2",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ja. Produkterne kan indgå i de fleste rutiner. Mange bruger fx Hudplejeolien som sidste trin oven på deres egen creme.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Produkterne kan indgå i de fleste rutiner.",
+   "Mange bruger fx Hudplejeolien som sidste trin oven på deres egen creme."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q3.a:2i96bjhe95pi3",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,og,uden"
+  ],
+  "text": "Ja. Alle produkter er uden syntetisk parfume og veganske. Duften kommer alene fra ingredienserne.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Alle produkter er uden syntetisk parfume og veganske."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q4.q:39a27hn518mek",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hvad,og,på"
+  ],
+  "text": "Hvad er forskellen på Dagcreme og Natcreme?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad er forskellen på Dagcreme og Natcreme?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q4.a:39a27hn5188zg",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:har,og,også,til"
+  ],
+  "text": "Dagcremen har den letteste konsistens og er tænkt til morgenrutinen, også under makeup. Natcremen er rigere og bruges som sidste trin om aftenen.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Dagcremen har den letteste konsistens og er tænkt til morgenrutinen, også under makeup."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q5.q:3u0oxky6mmjgt",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.ansigtspleje.json.faq.q5.a:3u0oxky6mm61p",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Vi afsender fra Danmark, og webshoppen er e-mærket."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.seo.heading:33kgjgehd9olc",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,olie,til"
+  ],
+  "text": "CBD Olie fra NatureCell: dansk, testet og til udvortes brug",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "dansk, testet og til udvortes brug"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.seo.body:e5qw80k5tr7c",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,alle,din,du,efter,hvad,ikke,med,og,på,til,vi"
+  ],
+  "text": "NatureCells CBD-olier fås i fire koncentrationer, 5 %, 10 %, 15 % og 20 %, alle i 10 ml med pipette. Olierne er til udvortes brug og produceres på GMP- og ISO-c",
+  "source_da": null,
+  "german_function_words": 2,
+  "danish_fragments": [
+   "NatureCells CBD-olier fås i fire koncentrationer, 5 %, 10 %, 15 % og 20 %, alle i 10 ml med pipette.",
+   "Olierne er til udvortes brug og produceres på GMP- og ISO-certificerede faciliteter i Danmark.",
+   "Alle partier testes, og der findes analysecertifikat pr.",
+   "Procenten angiver mængden af CBD i flasken:",
+   "5 % svarer til 500 mg i 10 ml, 10 % til 1000 mg, 15 % til 1500 mg og 20 % til 2000 mg."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.seo.t1.text:gfxct4uotukr",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,ikke,mere,olie"
+  ],
+  "text": "Procenten er mængden af CBD i den samlede olie. En 10 % olie i 10 ml indeholder 1000 mg CBD. Højere procent betyder mere CBD pr. dråbe, ikke en anden type olie.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Procenten er mængden af CBD i den samlede olie.",
+   "Højere procent betyder mere CBD pr.",
+   "dråbe, ikke en anden type olie."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.seo.t2.text:9n880w6hqa88",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,hvad,og,på"
+  ],
+  "text": "Olierne fremstilles på GMP- og ISO-certificerede faciliteter i Danmark, og hvert parti testes. Analysecertifikatet kan rekvireres pr. parti, så du ved præcis, h",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Olierne fremstilles på GMP- og ISO-certificerede faciliteter i Danmark, og hvert parti testes.",
+   "parti, så du ved præcis, hvad flasken indeholder."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.seo.t3.text:i3wce8ft2z9l",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,du,har,til,vores"
+  ],
+  "text": "Vores olier er kosmetiske produkter til udvortes brug. Har du spørgsmål til valg af koncentration, er du velkommen til at skrive til vores danske kundeservice.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores olier er kosmetiske produkter til udvortes brug.",
+   "Har du spørgsmål til valg af koncentration, er du velkommen til at skrive til vores danske kundeservice."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.heading:2kj6ob9rzsnzj",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.links_label:3m99n2jpdanyl",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.links:3qbbtlsd3dkpg",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.disclaimer:s2avo0csca4k",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q1.q:kquoykewmzsd",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:jeg,skal"
+  ],
+  "text": "Hvilken koncentration skal jeg vælge?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvilken koncentration skal jeg vælge?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q1.a:kquoykewmmd9",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,eller,hvis,med,mere,og"
+  ],
+  "text": "Start med 5 % eller 10 %, og vælg en højere koncentration, hvis du foretrækker mere CBD pr. dråbe.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Start med 5 % eller 10 %, og vælg en højere koncentration, hvis du foretrækker mere CBD pr.",
+   "dråbe."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q2.a:1x9xuvxcmbkym",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:har,ikke,og"
+  ],
+  "text": "Nej. CBD er ikke psykoaktivt, og produkterne har ingen berusende effekt.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "CBD er ikke psykoaktivt, og produkterne har ingen berusende effekt."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q3.q:3lxb0a98iu9nz",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hvordan,jeg"
+  ],
+  "text": "Hvordan opbevarer jeg olien?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvordan opbevarer jeg olien?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q3.a:3lxb0a98itw8v",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:med,og"
+  ],
+  "text": "Køligt og mørkt med låget godt lukket.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Køligt og mørkt med låget godt lukket."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q4.a:31rhm8brn8l20",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,og"
+  ],
+  "text": "Ja. Alle partier testes, og der findes analysecertifikat pr. parti.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Alle partier testes, og der findes analysecertifikat pr."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q5.q:u9gqllheysyx",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.cbd-olie.json.faq.q5.a:u9gqllheyfjt",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Vi afsender fra Danmark, og webshoppen er e-mærket."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.heading:32zan1fp49mpo",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "CBD Fodpleje: et aftenritual for trætte fødder",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "et aftenritual for trætte fødder"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.body:2ylog837jl24k",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:efter,eller,hvordan,ikke,kunder,med,og,på,til,uden,vi,vores"
+  ],
+  "text": "Fødder får sjældent den samme opmærksomhed som ansigt og hænder. NatureCells fodpleje gør det enkelt at ændre på: Fodcreme med en rig, blød konsistens til aften",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Fødder får sjældent den samme opmærksomhed som ansigt og hænder.",
+   "NatureCells fodpleje gør det enkelt at ændre på:",
+   "Fodcreme med en rig, blød konsistens til aftenrutinen, Hudplejeolie som et let sidste lag og Re-New Balm til små, udvalg",
+   "CBD indgår i formuleringerne sammen med sheasmør og planteolier med naturlig oprindelse.",
+   "Produkterne er kosmetiske, veganske, uden syntetisk parfume og produceret i Danmark."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.t1.heading:m1f2pf1a11j6",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Sådan bruger du Fodcremen",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Sådan bruger du Fodcremen"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.t1.text:175x2a0in3flj",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,med,og,på,til"
+  ],
+  "text": "Massér Fodcremen ind i rene fødder om aftenen, gerne med et par minutter til hæle og fodsåler. Konsistensen er rig men optages, så du kan tage sokker på bagefte",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Massér Fodcremen ind i rene fødder om aftenen, gerne med et par minutter til hæle og fodsåler.",
+   "Konsistensen er rig men optages, så du kan tage sokker på bagefter."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.t2.text:she6kmic10tw",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,og,på"
+  ],
+  "text": "Vil du have et ekstra lag, kan du lægge et par dråber Hudplejeolie oven på Fodcremen. Olien er let og efterlader huden blød at røre ved.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vil du have et ekstra lag, kan du lægge et par dråber Hudplejeolie oven på Fodcremen.",
+   "Olien er let og efterlader huden blød at røre ved."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.seo.t3.text:m32kohd42wmt",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:og,på"
+  ],
+  "text": "Fodplejen følger seriens princip om få, velvalgte ingredienser, ingen syntetisk parfume og produktion på GMP- og ISO-certificerede faciliteter i Danmark.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fodplejen følger seriens princip om få, velvalgte ingredienser, ingen syntetisk parfume og produktion på GMP- og ISO-cer"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.heading:859irhw3trgz",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.links_label:27qqy06i93s35",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.links:j6ld6ikfbox4",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.disclaimer:3677qsoqeaoag",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q1.q:2dgwf028ymdg1",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:jeg,på"
+  ],
+  "text": "Hvornår på dagen bruger jeg Fodcremen?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvornår på dagen bruger jeg Fodcremen?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q1.a:2dgwf028ymqv5",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,til"
+  ],
+  "text": "Om aftenen fungerer den bedst, så cremen får ro til at trække ind, mens du sover.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Om aftenen fungerer den bedst, så cremen får ro til at trække ind, mens du sover."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q2.q:us3d2dkdla5u",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hvad,og,på"
+  ],
+  "text": "Hvad er forskellen på Fodcreme og Re-New Balm?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad er forskellen på Fodcreme og Re-New Balm?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q2.a:us3d2dkdlnky",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Fodcremen er til hele foden hver aften. Re-New Balm er en tæt balm til små, udvalgte områder.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Re-New Balm er en tæt balm til små, udvalgte områder."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q3.a:s6rrbke2uh4z",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,uden"
+  ],
+  "text": "Ja. Den er uden syntetisk parfume og vegansk.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Den er uden syntetisk parfume og vegansk."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q4.q:1j7nn9q4uwn78",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:jeg,på"
+  ],
+  "text": "Kan jeg bruge Fodcremen på hænderne?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Kan jeg bruge Fodcremen på hænderne?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q4.a:1j7nn9q4ux0mc",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:og,til"
+  ],
+  "text": "Ja, men til daglig håndpleje er Håndcremen lettere i konsistensen og optages hurtigere.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ja, men til daglig håndpleje er Håndcremen lettere i konsistensen og optages hurtigere."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q5.q:23yadd16gak9h",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.fodpleje.json.faq.q5.a:23yadd16gaxol",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Webshoppen er e-mærket, og vi afsender fra Danmark.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Webshoppen er e-mærket, og vi afsender fra Danmark."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.heading:35rzqli9m7edn",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:og,til"
+  ],
+  "text": "CBD Hårpleje: shampoo og conditioner til hverdagen",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "CBD Hårpleje:",
+   "shampoo og conditioner til hverdagen"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.body:2qqd3tkq3624z",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,hvordan,ikke,kunder,med,og,på,til,uden,vi,vores"
+  ],
+  "text": "NatureCells hårpleje består af Shampoo og Conditioner med CBD som en del af formuleringen, begge i 300 ml til daglig brug. Shampooen skummer let og skylles nemt",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "NatureCells hårpleje består af Shampoo og Conditioner med CBD som en del af formuleringen, begge i 300 ml til daglig bru",
+   "Shampooen skummer let og skylles nemt ud, og Conditioneren efterlader håret blødt at rede igennem.",
+   "Komplet Hårpleje samler de to i én pakke.",
+   "Produkterne er kosmetiske, veganske og uden syntetisk parfume.",
+   "De er udviklet i Danmark og produceret på GMP- og ISO-certificerede faciliteter."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.t1.heading:1irlxc9egicl1",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,og"
+  ],
+  "text": "Sådan bruger du Shampoo og Conditioner",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Sådan bruger du Shampoo og Conditioner"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.t1.text:21jrs9pq6d02o",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,med,og"
+  ],
+  "text": "Fordel Shampooen i vådt hår og hovedbund, massér og skyl ud. Følg op med Conditioner fra midten af håret og ud i spidserne, lad den sidde et øjeblik, og skyl gr",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Fordel Shampooen i vådt hår og hovedbund, massér og skyl ud.",
+   "Følg op med Conditioner fra midten af håret og ud i spidserne, lad den sidde et øjeblik, og skyl grundigt."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.t2.text:2l970v03ly2ub",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,og,uden"
+  ],
+  "text": "Ligesom resten af serien er hårplejen formuleret uden syntetisk parfume. Duften kommer fra ingredienserne, og oplevelsen er rolig og neutral.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ligesom resten af serien er hårplejen formuleret uden syntetisk parfume."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.seo.t3.text:h283s54kctr6",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,eller,læs,og,på,til,vores"
+  ],
+  "text": "Shampoo og Conditioner kan bruges af hele husstanden og passer til en enkel rutine morgen eller aften. Læs om ingredienserne på vores ingrediensside.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Shampoo og Conditioner kan bruges af hele husstanden og passer til en enkel rutine morgen eller aften.",
+   "Læs om ingredienserne på vores ingrediensside."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.heading:2b5mfmhdbfdr8",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.links_label:2up05r9baqyva",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.links:icn3tiagluxr",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.disclaimer:32n16lvakxs6n",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q1.a:1fty1srf7y0qe",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:din,du,efter,og,til"
+  ],
+  "text": "Den er lavet til daglig brug, men du bestemmer selv rytmen efter din hårtype og hverdag.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Den er lavet til daglig brug, men du bestemmer selv rytmen efter din hårtype og hverdag."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q2.q:2yir3qg3szhfp",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Er Conditioneren nødvendig?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Er Conditioneren nødvendig?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q2.a:2yir3qg3sz40l",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Nej, men mange oplever, at håret er nemmere at rede igennem, når de bruger begge.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Nej, men mange oplever, at håret er nemmere at rede igennem, når de bruger begge."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q3.q:2ds4dn527lkdg",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Er hårplejen uden parfume?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Er hårplejen uden parfume?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q3.a:2ds4dn527l6yc",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,uden"
+  ],
+  "text": "Ja. Begge produkter er uden syntetisk parfume og veganske.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Begge produkter er uden syntetisk parfume og veganske."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q4.q:1mr8hozbfj0w3",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Hvad indeholder Komplet Hårpleje?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad indeholder Komplet Hårpleje?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q5.q:1pck3fshqa7c2",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.haarpleje.json.faq.q5.a:1pck3fshq9twy",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Vi afsender fra Danmark, og webshoppen er e-mærket."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.heading:30m7mxyp42ysy",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "CBD Håndpleje til hænder, der bruges hele dagen",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "CBD Håndpleje til hænder, der bruges hele dagen"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.body:3knw6514ohb62",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:alle,du,efter,eller,hvordan,ikke,kunder,med,mere,og,på,til,uden,vi,vores"
+  ],
+  "text": "Hænder vaskes, tørres og bruges fra morgen til aften. NatureCells håndpleje er lavet til netop det: en Håndcreme med let konsistens, der optages hurtigt, så du ",
+  "source_da": null,
+  "german_function_words": 2,
+  "danish_fragments": [
+   "Hænder vaskes, tørres og bruges fra morgen til aften.",
+   "NatureCells håndpleje er lavet til netop det:",
+   "CBD indgår i formuleringen sammen med sheasmør og planteolier med naturlig oprindelse.",
+   "Til en mere komplet rutine kan du kombinere Håndcremen med Hudplejeolie 1000 mg som et rigere aftenlag, eller vælge Hånd",
+   "Re-New Balm er den tætteste tekstur i serien og bruges på små, udvalgte områder."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.t1.heading:11pc092iqodqk",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Sådan bruger du Håndcremen",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Sådan bruger du Håndcremen"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.t1.text:2cppfyulgntdl",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,eller,ikke,med,og"
+  ],
+  "text": "En lille mængde er nok. Fordel den over hænder og fingre, og giv den et øjeblik. Konsistensen er let og efterlader ikke en fedtet fornemmelse, så du kan tage fa",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "En lille mængde er nok.",
+   "Fordel den over hænder og fingre, og giv den et øjeblik.",
+   "Konsistensen er let og efterlader ikke en fedtet fornemmelse, så du kan tage fat i tastaturet eller rattet med det samme"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.t2.heading:1hil2fpdwlxpr",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Aftenrutine for hænder",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Aftenrutine for hænder"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.t2.text:2k6kvfh6xuure",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,og,på"
+  ],
+  "text": "Om aftenen kan du lægge et par dråber Hudplejeolie oven på Håndcremen. Olien er let og optages nemt, og kombinationen giver et blødt sidste lag inden natten.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Om aftenen kan du lægge et par dråber Hudplejeolie oven på Håndcremen.",
+   "Olien er let og optages nemt, og kombinationen giver et blødt sidste lag inden natten."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.seo.t3.text:s85rh9zunn23",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,læs,med,og,på"
+  ],
+  "text": "Håndplejen deler formuleringsprincip med resten af serien: få, velvalgte ingredienser, ingen syntetisk parfume og produktion på GMP- og ISO-certificerede facili",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Håndplejen deler formuleringsprincip med resten af serien:",
+   "få, velvalgte ingredienser, ingen syntetisk parfume og produktion på GMP- og ISO-certificerede faciliteter.",
+   "Læs kundernes egne hverdagsrutiner under kundecases."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.heading:few9k4uamlwd",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.links_label:3sre9lkazlgfz",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.links:s75ap3ccnc9y",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.disclaimer:1m04rudz912ye",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q1.q:37xbwxupun1nj",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Hvor ofte kan jeg bruge Håndcremen?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvor ofte kan jeg bruge Håndcremen?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q1.a:37xbwxupunf2n",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,efter,har,og"
+  ],
+  "text": "Så ofte du har lyst. Mange bruger den efter håndvask og som sidste trin om aftenen.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Så ofte du har lyst.",
+   "Mange bruger den efter håndvask og som sidste trin om aftenen."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q2.q:24wqte30ghpz0",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Er Håndcremen fedtet?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Er Håndcremen fedtet?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q2.a:24wqte30gi3e4",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:har,med,og"
+  ],
+  "text": "Nej. Den har en let konsistens og optages hurtigt, så hænderne kan bruges med det samme.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Den har en let konsistens og optages hurtigt, så hænderne kan bruges med det samme."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q3.q:9q47r66phr31",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hvad,og,på"
+  ],
+  "text": "Hvad er forskellen på Håndcreme og Re-New Balm?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad er forskellen på Håndcreme og Re-New Balm?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q3.a:9q47r66pi4i5",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Håndcremen er til daglig brug over hele hånden. Re-New Balm er en tæt balm til små, udvalgte områder.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Håndcremen er til daglig brug over hele hånden.",
+   "Re-New Balm er en tæt balm til små, udvalgte områder."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q4.q:t587cm8319fe",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Passer produkterne til mænd?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Passer produkterne til mænd?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q4.a:t587cm831mui",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,hudpleje,og,også,se,uden,vores"
+  ],
+  "text": "Ja. Produkterne er uden parfume og bruges af både kvinder og mænd. Se også vores herre hudpleje.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Produkterne er uden parfume og bruges af både kvinder og mænd.",
+   "Se også vores herre hudpleje."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q5.q:3hfxykvscyuu3",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.handpleje.json.faq.q5.a:3hfxykvscz897",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Webshoppen er e-mærket, og vi afsender fra Danmark.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Webshoppen er e-mærket, og vi afsender fra Danmark."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.heading:3ka2yndbfkmdr",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Herre Hudpleje: få trin, ingen parfume",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "få trin, ingen parfume"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.body:qgag0z12saon",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,alle,du,hudpleje,ikke,med,og,på,til,uden,vi"
+  ],
+  "text": "NatureCells herre hudpleje er en enkel rutine uden dikkedarer: Rensegel, en let creme og Deodorant uden syntetisk parfume. Produkterne er udvalgt til dig, der v",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "NatureCells herre hudpleje er en enkel rutine uden dikkedarer:",
+   "Rensegel, en let creme og Deodorant uden syntetisk parfume.",
+   "Produkterne er udvalgt til dig, der vil have få trin, en neutral duft og en konsistens, der optages hurtigt, så du er vi",
+   "CBD indgår som en gennemgående del af formuleringerne sammen med planteolier og fugtgivende ingredienser med naturlig op",
+   "Alle produkter er kosmetiske, veganske og produceret på GMP- og ISO-certificerede faciliteter i Danmark."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.t1.heading:2mdb40w2ec7e9",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Rutinen på ét minut",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Rutinen på ét minut"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.t1.text:317b0xuxdq6lg",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:du,med,og"
+  ],
+  "text": "Rens med Rensegel under badet, fordel en let creme bagefter, og brug Deodoranten som du plejer. Tre trin, der passer ind i en morgen, hvor tiden er knap.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Rens med Rensegel under badet, fordel en let creme bagefter, og brug Deodoranten som du plejer."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.t2.text:3fvtwn8xosld3",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,din,eller,ikke,med,uden"
+  ],
+  "text": "Alle produkter er uden syntetisk parfume. Det giver en rolig, neutral oplevelse, der ikke konkurrerer med din aftershave eller parfume.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Alle produkter er uden syntetisk parfume.",
+   "Det giver en rolig, neutral oplevelse, der ikke konkurrerer med din aftershave eller parfume."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.seo.t3.text:3ma5ije2wqpk6",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,hudpleje,ikke,med,til"
+  ],
+  "text": "Herre hudpleje er ikke en særskilt formel, men et udvalg fra serien, der passer til en enkel mandlig rutine. Produkterne kan frit kombineres med resten af sorti",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Herre hudpleje er ikke en særskilt formel, men et udvalg fra serien, der passer til en enkel mandlig rutine.",
+   "Produkterne kan frit kombineres med resten af sortimentet."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.heading:1aycepquxmao",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.links_label:qngubl2siugy",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.links:1f08m4z4vb17",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.disclaimer:1lde1itmekp7v",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q1.q:3fmaao7zhgm02",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Er produkterne kun til mænd?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Er produkterne kun til mænd?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q1.a:3fmaao7zhg8ky",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:af,alle,til"
+  ],
+  "text": "Nej. Udvalget er sat sammen til en enkel rutine, men produkterne bruges af alle.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Udvalget er sat sammen til en enkel rutine, men produkterne bruges af alle."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q2.q:35pscpt0m8wu9",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:efter,jeg"
+  ],
+  "text": "Kan jeg bruge cremen efter barbering?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Kan jeg bruge cremen efter barbering?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q2.a:35pscpt0m8jf5",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:har,og,uden"
+  ],
+  "text": "Ja. Cremen har en let konsistens og er uden syntetisk parfume.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Cremen har en let konsistens og er uden syntetisk parfume."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q3.a:14r0xbno8g1io",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,og,tilføj"
+  ],
+  "text": "Rensegel og Dagcreme er det enkleste startpunkt. Tilføj Deodoranten, når du vil have hele rutinen.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Tilføj Deodoranten, når du vil have hele rutinen."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q4.a:1y8zz8eb49k0n",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,uden"
+  ],
+  "text": "Ja. Hele serien er uden syntetisk parfume og vegansk.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hele serien er uden syntetisk parfume og vegansk."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q5.q:363o916wz4sti",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.herre.json.faq.q5.a:363o916wz4fee",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Webshoppen er e-mærket, og vi afsender fra Danmark.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Webshoppen er e-mærket, og vi afsender fra Danmark."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.seo.body:1fpsftbkbya4c",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,din,du,efter,hvordan,ikke,kunder,med,og,også,på,til,uden,vi,vores"
+  ],
+  "text": "NatureCells kropspleje er tænkt som et roligt ritual efter badet. Bodylotion med let konsistens til hele kroppen, Body Oil som et blødt sidste lag og Deodorant ",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "NatureCells kropspleje er tænkt som et roligt ritual efter badet.",
+   "Bodylotion med let konsistens til hele kroppen, Body Oil som et blødt sidste lag og Deodorant uden syntetisk parfume til",
+   "CBD indgår i formuleringerne sammen med planteolier og fugtgivende ingredienser med naturlig oprindelse.",
+   "Produkterne er lavet til at bruges sammen, men fungerer også hver for sig, så du kan begynde med det, der passer bedst i",
+   "Vi lover ikke mirakler."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.seo.t1.text:3l2jnxcw6wr4f",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:du,efter,eller,hud,og,på,til"
+  ],
+  "text": "Bodylotionen er den lette hverdagsløsning til hele kroppen og optages hurtigt. Body Oil bruges bedst på let fugtig hud efter badet, alene eller som sidste lag o",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Bodylotionen er den lette hverdagsløsning til hele kroppen og optages hurtigt.",
+   "Body Oil bruges bedst på let fugtig hud efter badet, alene eller som sidste lag oven på lotionen, når du vil have et rig"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.seo.t2.text:1mr9skljkpwng",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:af,du,med,og,på,til,uden"
+  ],
+  "text": "Deodoranten er formuleret uden syntetisk parfume og med CBD som en del af formuleringen. Den ruller let på og passer til en rutine, hvor du foretrækker få ingre",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Deodoranten er formuleret uden syntetisk parfume og med CBD som en del af formuleringen.",
+   "Den ruller let på og passer til en rutine, hvor du foretrækker få ingredienser."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.seo.t3.text:mnvu78l0uszx",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:alle,du,eller,og,olie,på"
+  ],
+  "text": "Alle produkter er kosmetiske og produceret på GMP- og ISO-certificerede faciliteter i Danmark. Exfoliating Handsken kan bruges inden lotion eller olie, når du v",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Alle produkter er kosmetiske og produceret på GMP- og ISO-certificerede faciliteter i Danmark.",
+   "Exfoliating Handsken kan bruges inden lotion eller olie, når du vil forberede huden."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.heading:9nn8mc7dh9uz",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Ofte stillede spørgsmål",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Ofte stillede spørgsmål"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.links_label:3ipefi8jles95",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Populære søgninger",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Populære søgninger"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.links:1gilpg6xjp5n4",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:hud,hudpleje,med,til"
+  ],
+  "text": "CBD creme | /collections/cbd-ansigtspleje Dagcreme | /collections/cbd-ansigtspleje Natcreme | /collections/cbd-ansigtspleje Håndcreme til tørre hænder | /collec",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "/collections/cbd-ansigtspleje Håndcreme til tørre hænder",
+   "/collections/cbd-handpleje Fodcreme til hælrevner",
+   "/collections/cbd-fodpleje Bodylotion til tør hud",
+   "/collections/cbd-ansigtspleje Hudpleje til tør hud",
+   "/collections/cbd-hudpleje/tor-hud Hudpleje til moden hud"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.disclaimer:ryf692e4z1mo",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hudpleje,ikke,og,vi,vores"
+  ],
+  "text": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. A",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Vores produkter er hudpleje, ikke medicin.",
+   "Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien.",
+   "Anvend ikke vores produkter som erstatning for medicinsk behandling."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q1.q:1j7ggfvon2ju1",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:hvordan,jeg"
+  ],
+  "text": "Hvordan bruger jeg Body Oil bedst?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvordan bruger jeg Body Oil bedst?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q1.a:1j7ggfvon26ex",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:efter,eller,hud,på"
+  ],
+  "text": "Fordel et par pumpetryk på let fugtig hud lige efter badet, eller læg den som sidste lag oven på Bodylotionen.",
+  "source_da": null,
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Fordel et par pumpetryk på let fugtig hud lige efter badet, eller læg den som sidste lag oven på Bodylotionen."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q2.a:3v1f9vnqi2vbu",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:alle,og,uden"
+  ],
+  "text": "Ja. Alle produkter er uden syntetisk parfume og veganske.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Alle produkter er uden syntetisk parfume og veganske."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q3.a:3r3h7nfpf0e63",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:og,til,vi"
+  ],
+  "text": "Bodylotionen er lavet til kroppen. Til ansigtet anbefaler vi Dagcreme og Natcreme fra ansigtsplejen.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Til ansigtet anbefaler vi Dagcreme og Natcreme fra ansigtsplejen."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q4.a:1dmsh12n7sue4",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:med,og"
+  ],
+  "text": "Pakken samler Hudplejeolie 1000 mg, Body Oil og Eye Gel med CBG i én rutine.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Pakken samler Hudplejeolie 1000 mg, Body Oil og Eye Gel med CBG i én rutine."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q5.q:19ouesum4qqnh",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:fragt,hvad"
+  ],
+  "text": "Hvad koster fragt?",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Hvad koster fragt?"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.collection.kropspleje.json.faq.q5.a:19ouesum4qd8d",
+  "has_de": false,
+  "outdated": null,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:fragt,fri,kr,køb,og,vi"
+  ],
+  "text": "Fri fragt ved køb over 399 kr. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+  "source_da": null,
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Fri fragt ved køb over 399 kr.",
+   "Vi afsender fra Danmark, og webshoppen er e-mærket."
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.page.presse.json.main.p7.title:15n93soc51gdi",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Body Oil in „Nyt på Hylden“",
+  "source_da": "Body Oil i Nyt på Hylden",
+  "german_function_words": 0,
+  "danish_fragments": [
+   "Body Oil in „Nyt på Hylden“"
+  ],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.page.presse.json.main.p7.text:uznz8qagzfq3",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå",
+   "words:og,på"
+  ],
+  "text": "Verbraucherjournalistin Gitte Gerner Eriksen wählte unser Body Oil für die Rubrik „Nyt på Hylden“ (Neu im Regal) in Ude og Hjemme.",
+  "source_da": "Forbrugerjournalist Gitte Gerner Eriksen valgte vores Body Oil til Nyt på Hylden i Ude og Hjemme.",
+  "german_function_words": 2,
+  "danish_fragments": [],
+  "likely_false_positive": false
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.page.presse.json.main.p8.text:3hujb7dqc5vo4",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "words:jeg,og"
+  ],
+  "text": "In der Rubrik „Jeg tester“ (Ich teste) hat Ude og Hjemme unser Öl 1000 mg ausprobiert.",
+  "source_da": "I rubrikken Jeg tester prøvede Ude og Hjemme vores olie 1000 mg.",
+  "german_function_words": 3,
+  "danish_fragments": [],
+  "likely_false_positive": true
+ },
+ {
+  "type": "THEME",
+  "resourceId": "gid://shopify/OnlineStoreTheme/205218971986",
+  "key": "section.product.json.story.heading_1:3kf632uiihgqo",
+  "has_de": true,
+  "outdated": false,
+  "is_handle": null,
+  "status": "",
+  "reasons": [
+   "æøå"
+  ],
+  "text": "Gemacht für [område]",
+  "source_da": "Skabt til [område]",
+  "german_function_words": 1,
+  "danish_fragments": [
+   "Gemacht für [område]"
+  ],
+  "likely_false_positive": false
+ }
+]
