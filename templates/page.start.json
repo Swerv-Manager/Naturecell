@@ -1,25 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "nc-page-hero",
       "settings": {
         "tone": "soft",
-        "eyebrow": "Din guide til en enkel rutine",
+        "eyebrow": "Ny hos NatureCell?",
         "heading": "Hvor skal jeg starte?",
-        "intro": "Ét produkt eller hele rutinen? Her er fire enkle steder at begynde, alt efter hvad du allerede bruger, og hvor meget du vil bruge. Du kan altid bygge videre i dit eget tempo."
+        "intro": "Ét produkt eller hele rutinen? Her er fire enkle steder at begynde, alt efter hvad du allerede bruger, og hvor meget du vil bruge. Du kan altid bygge videre i dit eget tempo.\nStart med det, der passer dig",
+        "center": false,
+        "band_compact": false,
+        "intro_wide": false,
+        "image_url": ""
       }
     },
     "guide": {
       "type": "nc-start-guide",
-      "settings": {
-        "heading": "Vælg dit udgangspunkt",
-        "intro": "Vælg efter de produkter, du allerede har, og dit budget. Alle fire er en enkel rutine til morgen og aften, og produkterne er lavet til at bruges sammen.",
-        "closing_heading": "Begynd enkelt, og mærk efter",
-        "closing_text": "<p>Vælg det sted at begynde, der passer til dig og den rutine, du allerede har. Prøver du flere nye produkter, kan du tage dem ind ét ad gangen og starte med en lille mængde.</p><p>Husk solbeskyttelse som sidste trin om morgenen ved behov. Hudolien og cremerne indeholder ikke SPF.</p><p>Er du i tvivl om, hvor du skal begynde, så skriv eller ring til os. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
-        "closing_cta_label": "Skriv til os",
-        "closing_cta_url": "mailto:hello@naturecell.dk",
-        "closing_phone": "+45 40 55 00 42"
-      },
       "blocks": {
         "o1": {
           "type": "option",
@@ -34,7 +38,9 @@
             "detail_text": "<p>Vil du prøve ét produkt fra NatureCell, er hudolien et enkelt sted at begynde. Den er nem at føje til den hudpleje, du allerede bruger, og du skal kun bruge få dråber.</p><p><strong>Det får du:</strong> Hudpleje Olie 1000 mg, 30 ml.</p><p><strong>Om ingredienserne:</strong> Olien består af MCT-olie og olier fra appelsin- og citronskal, og CBD er en gennemgående del af formuleringen. Konsistensen er let og uden fedtet fornemmelse.</p><p><strong>Sådan bruger du den:</strong> Fordel 2 til 3 dråber på nyrenset hud morgen og aften, og massér dem ind med cirkulære bevægelser. Bruger du allerede en creme, kommer den bagefter. Undgå området tæt på øjnene.</p>",
             "detail_cta_label": "Se hudolien",
             "routine_1_label": "Morgen og aften",
-            "routine_1_steps": "Hudolie | Din sædvanlige creme, hvis du bruger en"
+            "routine_1_steps": "Hudolie | Din sædvanlige creme, hvis du bruger en",
+            "routine_2_label": "",
+            "routine_2_steps": ""
           }
         },
         "o2": {
@@ -50,7 +56,9 @@
             "detail_text": "<p>Vil du have en enkel morgenrutine med både olie og creme, er hudolie og dagcreme et godt næste skridt. De to produkter er lavet til at bruges sammen.</p><p><strong>Det får du:</strong> Hudpleje Olie 1000 mg, 30 ml, og dagcreme, 50 ml.</p><p><strong>Om ingredienserne:</strong> Dagcremen indeholder blandt andet aloe vera, glycerin, solsikkeolie, sheasmør og E-vitamin, som bidrager til pleje og fugt. Den har en let konsistens og er testet hos Dermatest med resultatet \"Excellent\".</p><p><strong>Sådan bruger du dem:</strong> Påfør 2 til 3 dråber hudolie på nyrenset hud om morgenen, og fordel derefter dagcremen i ansigtet. Vil du holde rutinen til de to produkter, kan dagcremen også bruges om aftenen efter hudolien.</p>",
             "detail_cta_label": "Se pakken med hudolie og dagcreme",
             "routine_1_label": "Morgen",
-            "routine_1_steps": "Hudolie | Dagcreme"
+            "routine_1_steps": "Hudolie | Dagcreme",
+            "routine_2_label": "",
+            "routine_2_steps": ""
           }
         },
         "o3": {
@@ -95,7 +103,16 @@
         "o2",
         "o3",
         "o4"
-      ]
+      ],
+      "settings": {
+        "heading": "Vælg dit udgangspunkt",
+        "intro": "Vælg efter de produkter, du allerede har, og dit budget. Alle fire er en enkel rutine til morgen og aften, og produkterne er lavet til at bruges sammen.",
+        "closing_heading": "Begynd enkelt, og mærk efter",
+        "closing_text": "<p>Vælg det sted at begynde, der passer til dig og den rutine, du allerede har. Prøver du flere nye produkter, kan du tage dem ind ét ad gangen og starte med en lille mængde.</p><p>Husk solbeskyttelse som sidste trin om morgenen ved behov. Hudolien og cremerne indeholder ikke SPF.</p><p>Er du i tvivl om, hvor du skal begynde, så skriv eller ring til os. Vi tager selv telefonen, og sammen finder vi det produkt, der passer til din rutine.</p>",
+        "closing_cta_label": "Skriv til os",
+        "closing_cta_url": "mailto:hello@naturecell.dk",
+        "closing_phone": "+45 40 55 00 42"
+      }
     }
   },
   "order": [

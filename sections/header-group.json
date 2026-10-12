@@ -1,13 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
   "sections": {
     "header": {
       "type": "nc-header",
-      "settings": {
-        "best_collection": "cbd-hudpleje",
-        "show_lang": false
-      },
       "blocks": {
         "area_ansigt": {
           "type": "area",
@@ -77,7 +82,7 @@
           "settings": {
             "label": "Tør hud",
             "desc": "Fugt & pleje",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/tor-hud",
             "product": "natcreme"
           }
         },
@@ -86,7 +91,7 @@
           "settings": {
             "label": "Fugt",
             "desc": "Serum & creme",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/fugt",
             "product": "naturecell-cbd-hyaluronic-serum"
           }
         },
@@ -95,7 +100,7 @@
           "settings": {
             "label": "Moden hud",
             "desc": "Eye gel & natcreme",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/moden-hud",
             "product": "cbg-eye-gel"
           }
         },
@@ -104,7 +109,7 @@
           "settings": {
             "label": "Sensitiv hud",
             "desc": "Mild & uden parfume",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/sensitiv-hud",
             "product": "rensegel"
           }
         },
@@ -113,7 +118,7 @@
           "settings": {
             "label": "Uren hud",
             "desc": "Rensegel & pleje",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/uren-hud",
             "product": "rensegel"
           }
         },
@@ -122,7 +127,7 @@
           "settings": {
             "label": "Genopbygning",
             "desc": "Olie & balm",
-            "url": "/collections/cbd-hudpleje",
+            "url": "/collections/cbd-hudpleje/genopbygning",
             "product": "cbd-olie-1000mg"
           }
         }
@@ -141,7 +146,29 @@
         "need_sensitiv",
         "need_uren",
         "need_genopbygning"
-      ]
+      ],
+      "settings": {
+        "show_lang": false,
+        "announce_auto": true,
+        "announcement": "",
+        "logo_height": 36,
+        "all_url": "",
+        "mix_show": false,
+        "mix_label": "Bland selv",
+        "mix_badge": "Køb 3 og spar 25 %",
+        "mix_url": "",
+        "cases_url": "",
+        "articles_url": "",
+        "about_url": "",
+        "omcbd_url": "",
+        "ingredients_url": "",
+        "faq_url": "",
+        "show_jesper": true,
+        "jesper_url": "",
+        "kundeklub_url": "",
+        "favorites_url": "",
+        "best_collection": "cbd-hudpleje"
+      }
     }
   },
   "order": [

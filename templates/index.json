@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -6,14 +15,15 @@
         "slide1": {
           "type": "product_slide",
           "settings": {
-            "cta_url": "/products/hudpleje-startpakke-plus-1",
-            "cta2_url": "/blogs/kundecases",
             "eyebrow": "Kompletpakken til ansigtet",
             "heading": "Hele rutinen i én pakke",
             "body": "Rensegel, dagcreme, natcreme og hudpleje olie. Dansk udviklet, vegansk og uden syntetisk parfume.",
             "cta_text": "Se Kompletpakken →",
+            "cta_url": "/products/hudpleje-startpakke-plus-1",
             "cta2_text": "Se kundecases",
-            "show_trustpilot": false
+            "cta2_url": "/blogs/kundecases",
+            "show_trustpilot": false,
+            "trust_text": ""
           }
         },
         "slide2": {
@@ -33,34 +43,28 @@
         "slide2"
       ],
       "settings": {
+        "autoplay": 7,
         "m_welcome": true,
-        "m_image": "shopify://shop_images/Butik_Lille_Nyhavn.webp",
+        "welcome_scope": "all",
+        "m_image": "shopify://shop_images/NatureCell_LizbethAllan_1224_LilleNyhavn.webp",
+        "w_image_desktop": "shopify://shop_images/NatureCell_Hero_Banner_Allan_Lizbeth.jpg",
+        "w_focal": "50% 50%",
+        "m_focal": "50% 50%",
         "m_fallback_asset": "nc-hero-kunder.jpg",
         "m_eyebrow": "Velkommen",
         "m_heading": "Hudpleje med omtanke",
         "m_body": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
         "m_cta_text": "Se produkterne",
-        "m_cta_url": "/collections/cbd-hudpleje",
-        "welcome_scope": "all",
-        "w_image_desktop": "shopify://shop_images/naturecell-cbd-lizbeth-allan-butik-lille-nyhavn-2800x650px.webp",
-        "w_focal": "50% 50%",
-        "m_focal": "50% 50%"
+        "m_cta_url": "/collections/cbd-hudpleje"
       }
     },
-    "trust": {
+    "trust2": {
       "type": "nc-trust-bar",
       "blocks": {
-        "tp": {
-          "type": "trustpilot",
-          "settings": {
-            "style": "widget",
-            "widget_text": "#2f4b45"
-          }
-        },
         "t1": {
           "type": "item",
           "settings": {
-            "label": "Tilladelse til CBD i Danmark · 2019",
+            "label": "Første danske CBD hudpleje · 2019",
             "icon": "check"
           }
         },
@@ -87,23 +91,13 @@
         }
       },
       "block_order": [
-        "tp",
         "t1",
         "t2",
         "t3",
         "t4"
       ],
       "settings": {
-        "mobile_mode": "tp"
-      }
-    },
-    "press": {
-      "type": "nc-press",
-      "settings": {
-        "eyebrow": "Omtalt i",
-        "names": "Løvens Hule, Børsen, JydskeVestkysten, Stiften, Ritzau, Ude og Hjemme, Helse, ALT Beauty, Beautyspace, Hair.dk",
-        "link_text": "Se al presseomtale",
-        "link_url": "/pages/presse"
+        "mobile_mode": "items"
       }
     },
     "shoptabs": {
@@ -154,15 +148,6 @@
             "product": "shampoo-300ml"
           }
         },
-        "n1": {
-          "type": "need",
-          "settings": {
-            "label": "Tør hud",
-            "desc": "Fugt & pleje",
-            "url": "/collections/cbd-hudpleje/tor-hud",
-            "product": "natcreme"
-          }
-        },
         "n2": {
           "type": "need",
           "settings": {
@@ -170,33 +155,6 @@
             "desc": "Serum & creme",
             "url": "/collections/cbd-hudpleje/fugt",
             "product": "naturecell-cbd-hyaluronic-serum"
-          }
-        },
-        "n3": {
-          "type": "need",
-          "settings": {
-            "label": "Moden hud",
-            "desc": "Eye gel & natcreme",
-            "url": "/collections/cbd-hudpleje/moden-hud",
-            "product": "cbg-eye-gel"
-          }
-        },
-        "n4": {
-          "type": "need",
-          "settings": {
-            "label": "Sensitiv hud",
-            "desc": "Mild & uden parfume",
-            "url": "/collections/cbd-hudpleje/sensitiv-hud",
-            "product": "rensegel"
-          }
-        },
-        "n5": {
-          "type": "need",
-          "settings": {
-            "label": "Uren hud",
-            "desc": "Rensegel & pleje",
-            "url": "/collections/cbd-hudpleje/uren-hud",
-            "product": "rensegel"
           }
         },
         "n6": {
@@ -208,6 +166,15 @@
             "product": "cbd-olie-1000mg"
           }
         },
+        "n3": {
+          "type": "need",
+          "settings": {
+            "label": "Moden hud",
+            "desc": "Eye gel & natcreme",
+            "url": "/collections/cbd-hudpleje/moden-hud",
+            "product": "cbg-eye-gel"
+          }
+        },
         "n7": {
           "type": "need",
           "settings": {
@@ -215,6 +182,33 @@
             "desc": "Dag- & natcreme",
             "url": "/collections/cbd-hudpleje/normal-hud",
             "product": "dagcreme"
+          }
+        },
+        "n4": {
+          "type": "need",
+          "settings": {
+            "label": "Sensitiv hud",
+            "desc": "Mild & uden parfume",
+            "url": "/collections/cbd-hudpleje/sensitiv-hud",
+            "product": "rensegel"
+          }
+        },
+        "n1": {
+          "type": "need",
+          "settings": {
+            "label": "Tør hud",
+            "desc": "Fugt & pleje",
+            "url": "/collections/cbd-hudpleje/tor-hud",
+            "product": "natcreme"
+          }
+        },
+        "n5": {
+          "type": "need",
+          "settings": {
+            "label": "Uren hud",
+            "desc": "Rensegel & pleje",
+            "url": "/collections/cbd-hudpleje/uren-hud",
+            "product": "rensegel"
           }
         }
       },
@@ -238,36 +232,100 @@
         "subtext": "Vælg hvor du har brug for pleje, eller hvad din hud har brug for."
       }
     },
+    "trust": {
+      "type": "nc-trust-bar",
+      "blocks": {
+        "tp": {
+          "type": "trustpilot",
+          "settings": {
+            "style": "widget",
+            "widget_text": "#2f4b45"
+          }
+        },
+        "t1": {
+          "type": "item",
+          "settings": {
+            "label": "Første danske CBD hudpleje · 2019",
+            "icon": "check"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "label": "Vegansk & plantebaseret",
+            "icon": "shield"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "label": "e-mærket webshop",
+            "icon": "shield"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "label": "GMP- & ISO-certificeret",
+            "icon": "check"
+          }
+        }
+      },
+      "block_order": [
+        "tp",
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "mobile_mode": "tp"
+      }
+    },
     "lifestyle": {
       "type": "nc-lifestyle",
       "settings": {
         "eyebrow": "Pleje med omtanke",
         "heading": "Et øjeblik for dig, hver dag",
         "subtext": "Mærk trygheden i hudpleje med nøje udvalgte ingredienser og uden unødvendige tilsætninger. Giv din hud fugt og omsorg, og gør plejen til dit daglige pusterum.",
-        "main_caption_eyebrow": "Se ritualet",
-        "main_caption_title": "Plantebaseret hudpleje",
-        "main_url": "/pages/hvor-skal-jeg-starte"
+        "use_asset_video": true,
+        "main_caption_eyebrow": "NY HOS NATURECELL",
+        "main_caption_title": "Hvor skal jeg starte?",
+        "main_url": "/pages/hvor-skal-jeg-starte",
+        "image_2_url": "https://naturecell.dk/cdn/shop/files/NatureCell_CBD_skincare_billed_pige_ser_paa_produkterne_kopier.webp?v=1757145901",
+        "image_3_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp?v=1757146053"
+      }
+    },
+    "press": {
+      "type": "nc-press",
+      "settings": {
+        "eyebrow": "Omtalt i",
+        "names": "Løvens Hule, Børsen, JydskeVestkysten, Stiften, Ritzau, Ude og Hjemme, Helse, ALT Beauty, Beautyspace, Hair.dk",
+        "link_text": "Se al presseomtale",
+        "link_url": "/pages/presse",
+        "speed": 32
       }
     },
     "bestsellers": {
       "type": "nc-bestsellers",
       "settings": {
+        "eyebrow": "Mest elskede",
+        "heading": "Kundernes favoritter",
         "collection": "cbd-hudpleje",
         "limit": 8,
         "link_text": "Se alle",
-        "eyebrow": "Mest elskede",
-        "heading": "Kundernes favoritter"
+        "bg": ""
       }
     },
     "cases": {
       "type": "nc-cases-teaser",
       "settings": {
-        "blog": "kundecases",
-        "limit": 10,
         "eyebrow": "Ægte oplevelser",
         "heading": "Kundecases",
         "subtext": "Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger.",
-        "link_text": "Se alle cases →"
+        "link_text": "Se alle cases →",
+        "blog": "kundecases",
+        "limit": 10
       }
     },
     "testimonials": {
@@ -275,23 +333,13 @@
       "settings": {
         "eyebrow": "Anmeldelser",
         "heading": "Det siger vores kunder",
+        "agg_text": "",
         "link_text": "Se kundecases",
         "link_url": "/blogs/kundecases"
       }
     },
     "story": {
       "type": "nc-story",
-      "settings": {
-        "cta_url": "/pages/om-os",
-        "eyebrow": "Vores historie",
-        "heading": "Danmarks første, og stadig drevet af én familie",
-        "body": "I 2019 fik NatureCell som den første danske hudplejeserie tilladelse til at tilsætte CBD. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk udvikling og ægte oplevelser frem for løfter.",
-        "cta_text": "Læs vores historie →",
-        "caption_title": "Lizbeth Falk & Allan Gamborg",
-        "caption_sub": "Grundlæggere af NatureCell",
-        "ratio": "7 / 6",
-        "focal": "0% 50%"
-      },
       "blocks": {
         "s1": {
           "type": "stat",
@@ -319,58 +367,27 @@
         "s1",
         "s2",
         "s3"
-      ]
-    },
-    "trust2": {
-      "type": "nc-trust-bar",
-      "blocks": {
-        "t1": {
-          "type": "item",
-          "settings": {
-            "label": "Tilladelse til CBD i Danmark · 2019",
-            "icon": "check"
-          }
-        },
-        "t2": {
-          "type": "item",
-          "settings": {
-            "label": "Vegansk & plantebaseret",
-            "icon": "shield"
-          }
-        },
-        "t3": {
-          "type": "item",
-          "settings": {
-            "label": "e-mærket webshop",
-            "icon": "shield"
-          }
-        },
-        "t4": {
-          "type": "item",
-          "settings": {
-            "label": "GMP- & ISO-certificeret",
-            "icon": "check"
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
       ],
       "settings": {
-        "mobile_mode": "items"
+        "eyebrow": "Vores historie",
+        "heading": "Danmarks første, og stadig drevet af én familie",
+        "body": "I 2019 fik NatureCell som den første danske hudplejeserie tilladelse til at tilsætte CBD. Bag det hele står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk udvikling og ægte oplevelser frem for løfter.",
+        "cta_text": "Læs vores historie →",
+        "cta_url": "/pages/om-os",
+        "caption_title": "Lizbeth Falk & Allan Gamborg",
+        "caption_sub": "Grundlæggere af NatureCell",
+        "ratio": "7 / 6",
+        "focal": "0% 50%"
       }
     }
   },
   "order": [
     "hero",
-    "trust",
-    "press",
     "trust2",
     "shoptabs",
+    "trust",
     "lifestyle",
+    "press",
     "bestsellers",
     "cases",
     "testimonials",
