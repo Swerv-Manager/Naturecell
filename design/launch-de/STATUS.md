@@ -1,51 +1,64 @@
-# Tysk version (naturecell.de): status 12-10-2026
+# Tysk version (naturecell.de): status 12-10-2026 (opdateret aften)
 
 ## Temaer (vigtigt)
 
 - Live: "Kopi af Swerv // Nyt tema (under udvikling)" (209410687314). Kan ikke skrives via connectoren.
 - Arbejdstema: "Swerv // Nyt tema (under udvikling)" (205218971986), upubliceret. Indeholder alt fra
-  live (synket 12-10, inkl. Cookiebot-broen) + rettelser 64-72 + ALLE tyske oversaettelser.
-  Det er dette tema, der skal publiceres. De tyske tema-oversaettelser ligger pr. tema.
+  live (synket 12-10, inkl. Cookiebot-broen) + rettelser 64-72 + ALLE tyske oversaettelser
+  + fri fragt i EUR + Shopify-video i artikler. Det er dette tema, der skal publiceres.
 - Butikken har 20 temaer (Shopifys maksimum), saa nye kopier kan ikke oprettes foer et slettes.
 
-## Tysk indhold: faerdigt og verificeret 12-10
+## Gjort 12-10 (aften)
 
-- Revision af alt (tema, produkter, kollektioner, sider, artikler, metaobjekter, metafelter,
-  menuer, politikker, shop): 589 manglende/foraeldede tekster.
-- 471 registreret og laest tilbage: 470 identiske, 1 handle fik "-1" (haeufige-fragen findes i
-  forvejen). Data i `de-translations-2026-10-12/`.
-- Bevidst ikke oversat: app-data (Judge.me m.fl.), interne rabat-kollektioner, testindgange,
-  billedfilnavne, gamle sidehandles og 7 ubrugte kollektionsskabeloner.
-- Links i tyske tekster peger paa tyske, relative URL'er. Menuer og temaet oversaetter selv.
-- Tysk shop-SEO uden "zugelassen"/"Bio". Trustpilot paa tysk. Grundpris vises paa tysk.
+- Fragt: ny zone "Tyskland" (DE taget ud af EU-zonen). Standardversand 7 € under 55 €,
+  Kostenloser Versand fra 55 €, "2 bis 4 Werktage". Satserne er gemt i EUR.
+  Temaet: nc_free_shipping = "DKK: 399 / EUR: 55" (kurvens fragtbar, PDP, FAQ).
+- Priser: katalog "Tyskland (EUR, hele euro)" (MarketCatalog/208453992786) med prisliste
+  PriceList/40816378194: 61 faste priser i hele euro (54,95 -> 55, 68,95 -> 69 osv.),
+  uden foerpris (compare-at) i Tyskland (PAngV § 11: ingen 30-dages historik i nyt marked).
+  Gavekort: 27/41/68/96/136 € (afrundet omregning). Priserne slaar foerst igennem, naar markedet
+  aktiveres; contextualPricing viser stadig ,95 saa laenge markedet er kladde.
+- Lovtekster paa tysk (oversaettelser af butikkens politikker, filer i `legal/`):
+  Impressum (§ 5 DDG) i "Juridisk meddelelse", AGB, Widerrufsbelehrung efter lovens model
+  med Muster-Widerrufsformular, Versand, Kontakt. Ingen kr.-beloeb, ingen EU-ODR-link
+  (lukket juli 2025), Naevnenes Hus + Forbrug Europa som klageinstanser, USt-IdNr. DK42256013.
+  Footeren viser alle politikker + "Vertrag widerrufen" (Avada, /pages/widerrufsformular).
+- Tysk indhold: 137 alt-tekster (artikel-, kollektions- og mediebilleder) + 50 handles/titler
+  (gamle sider, interne rabatkollektioner, blog "gemt", testmetaobjekter) registreret.
+- Rettelse 71: artikler kan nu have en Shopify-hostet video (metafelt ncell.video) i stedet for
+  YouTube. Valgfrie undertekster pr. sprog i ncell.video_captions (WebVTT, oversaettes i
+  Translate & Adapt). Testet i Chromium: sporet indlaeses med tyske tegn.
 
 ## Ved lanceringen (i denne raekkefoelge)
 
 1. Publicér arbejdstemaet 205218971986.
 2. Koer `grundpreis-mutation.json` (pris pr. 100 ml), se README.md.
 3. Aktivér markedet "Tyskland" i Shopify Markets (menneskeklik).
-4. Sprogskifter: paa naturecell.de er der kun tysk, saa knappen skjules af sig selv.
-   Paa naturecell.dk boer den forblive skjult (show_lang: false), saa tyskere bruger .de.
-5. Tjek naturecell.de i browser: forside, produkt, kurv, checkout paa tysk, Cookiebot paa tysk.
+4. Tjek naturecell.de i browser: forside, produkt (55 €, Grundpreis), kurv (fragtbar mod 55 €),
+   checkout paa tysk med 7 €/0 € fragt, Cookiebot paa tysk, footer-links til Impressum m.m.
 
-## Kraever beslutning foer lancering (ikke kode)
+## Kraever kunden eller et menneske (ikke kode)
 
-- Fragt til Tyskland: i dag fast 499 kr (ca. 67 €) eller CR Fragtintegration, ingen fri fragt i EUR.
-  Naar beloebet er besluttet: tilfoej "EUR: <beloeb>" i temaindstillingen nc_free_shipping.
-- Tyske handelsbetingelser: "59 kr. bei Bestellungen unter 399,- kr.", Naevnenes Hus og det
-  lukkede EU-ODR-link (ec.europa.eu/odr, nedlagt juli 2025). Widerruf: "1.000 kr."
-  Impressum mangler Geschaeftsfuehrer og USt-IdNr. (DK42256013). Tysk jurist boer laese.
-- Widerrufsbutton (§ 356a BGB): tjek Avada-fortrydelsesformularens tyske knaptekster.
-- Klaviyo: den danske popup VaKaSc og kladden RU7CmG skal udelukke "*naturecell.de*" eller
-  have en tysk version.
-- Ordrebekraeftelser m.m.: tjek Shopify-notifikationerne paa tysk (egne danske skabeloner?).
-- Betalingsmetoder for Tyskland (PayPal, Klarna, giropay/SEPA) i Shopify Payments.
+- Impressum: navn paa direktoeren (vertretungsberechtigter Geschäftsführer) mangler. Kan ikke
+  slaas op herfra (CVR-opslag er blokeret). Tilfoej linjen "Vertreten durch: <navn>".
+- Moms: OSS-registrering og tysk moms (19 %) i Shopify Tax for Tyskland.
+- VerpackG: registrering i LUCID og deltagelse i et tysk emballagesystem (Duales System)
+  foer foerste salg. Uden det er salg af emballerede varer til tyske forbrugere ulovligt.
+- Kosmetik: tysk maerkning paa pakningen (funktion, forsigtighedsregler) og CPNP-notifikation.
+  GPSR/kosmetikforordningen: ansvarlig person i EU er NatureCell selv (DK), ok.
+- Betalingsmetoder for Tyskland (PayPal, Klarna, SEPA/kort) i Shopify Payments.
+- Avada-fortrydelsesformularen: tjek de tyske tekster i appen.
+- Klaviyo: den danske popup VaKaSc og kladden RU7CmG skal udelukke "*naturecell.de*".
+- Cookiebot: tjek at tysk sprog er slaaet til i Cookiebot-kontoen (temaet sender data-culture=DE).
+- Judge.me-anmeldelser er dansk brugerindhold og vises paa dansk.
+- Billeder med indbraendt dansk tekst kan ikke tjekkes herfra (CDN er blokeret).
+- Video (71): kunden uploader ren MP4 under Indhold > Filer og vaelger den i artiklens
+  metafelt "Video (hostet i Shopify)".
 
 ## Rettelser 64-72 (DK), 12-10
 
 Paa arbejdstemaet: 64 linjeskift, 65 FAQ paa tilbud, 66 Sensitiv hovedbund (kun Haar),
-67 TrustBox-karrusel, 68 quiz paa Hvor skal jeg starte, 70 Hampefroeolie, 71 cc_load_policy=0,
-72/69 stoerre CBD-ikon. Data (live med det samme): shampoo-tag sensitiv-hovedbund,
-ansigtsolie og Body Oil i Olier, "godkendt til salg" fjernet 4 steder.
-Mangler fra kunden: skarpe billeder til Om CBD (56/69, CKAT), Drive-billeder 52-55,
-undertekstspor fjernes i YouTube Studio (71).
+67 TrustBox-karrusel, 68 quiz paa Hvor skal jeg starte, 70 Hampefroeolie, 71 cc_load_policy=0
++ Shopify-video, 72/69 stoerre CBD-ikon. Data (live med det samme): shampoo-tag
+sensitiv-hovedbund, ansigtsolie og Body Oil i Olier, "godkendt til salg" fjernet 4 steder.
+Mangler fra kunden: skarpe billeder til Om CBD (56/69, CKAT), Drive-billeder 52-55.
