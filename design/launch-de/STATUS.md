@@ -1,12 +1,15 @@
 # Tysk version (naturecell.de): status 12-10-2026 (opdateret aften)
 
-## Temaer (vigtigt)
+## Temaer (vigtigt, opdateret 13-10)
 
-- Live: "Kopi af Swerv // Nyt tema (under udvikling)" (209410687314). Kan ikke skrives via connectoren.
-- Arbejdstema: "Swerv // Nyt tema (under udvikling)" (205218971986), upubliceret. Indeholder alt fra
-  live (synket 12-10, inkl. Cookiebot-broen) + rettelser 64-72 + ALLE tyske oversaettelser
-  + fri fragt i EUR + Shopify-video i artikler. Det er dette tema, der skal publiceres.
-- Butikken har 20 temaer (Shopifys maksimum), saa nye kopier kan ikke oprettes foer et slettes.
+- Live (MAIN): "Kopi af Kopi af Swerv // Nyt tema (under udvikl..." (209443258706). Kan ikke skrives via connectoren.
+- NY DUBLET, DEN DER SKAL PUBLICERES: "Kopi af Kopi af Kopi af Swerv // Nyt tema (unde..." (209532977490),
+  dublet af live 13-10 kl. 09:13. Indeholder alt fra live (aabningstilbud, kurv uden rabatfelt,
+  Cookiebot-broen) + alle rettelser 64-72 + fri fragt EUR 55 + Shopify-video + 5.677 tyske
+  temaoversaettelser (377 kopieret og verificeret 13-10, 0 mangler, 2 tekniske fokuspunkter forældede).
+  Aabningstilbuddet vises kun paa dansk/DKK.
+- Gamle arbejdstema 205218971986 og 209410687314 bruges ikke mere.
+- Butikken har 20 temaer (Shopifys maksimum).
 
 ## Gjort 12-10 (aften)
 
@@ -35,8 +38,8 @@
 
 ## Ved lanceringen (i denne raekkefoelge)
 
-1. Publicér arbejdstemaet 205218971986.
-2. Koer `grundpreis-mutation.json` (pris pr. 100 ml), se README.md.
+1. Publicér den nye dublet 209532977490 (tjek foerst, om live er rettet i editoren efter 13-10 09:13).
+2. Grundpris: KOERT 13-10 (20 varianter, pris pr. 100 ml, vises kun paa tysk).
 3. Aktivér markedet "Tyskland" i Shopify Markets (menneskeklik).
 4. Tjek naturecell.de i browser: forside, produkt (55 €, Grundpreis), kurv (fragtbar mod 55 €),
    checkout paa tysk med 7 €/0 € fragt, Cookiebot paa tysk, footer-links til Impressum m.m.
@@ -54,6 +57,8 @@
 - Avada-fortrydelsesformularen: tjek de tyske tekster i appen.
 - Klaviyo: den danske popup VaKaSc og kladden RU7CmG skal udelukke "*naturecell.de*".
 - Cookiebot: tjek at tysk sprog er slaaet til i Cookiebot-kontoen (temaet sender data-culture=DE).
+- Forsidens hero er slaaet fra paa live (aabningstilbud til 15/10). Paa .de vises tilbuddet ikke,
+  saa forsiden starter uden hero. Slaa hero til igen foer .de-lancering / naar tilbuddet udloeber.
 - Judge.me-anmeldelser er dansk brugerindhold og vises paa dansk.
 - Billeder med indbraendt dansk tekst kan ikke tjekkes herfra (CDN er blokeret).
 - Video (71): kunden uploader ren MP4 under Indhold > Filer og vaelger den i artiklens
