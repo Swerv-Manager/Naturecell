@@ -1,1 +1,129 @@
-<section data-section="routine"></section>
+<section data-section="routine" id="rutine" class="routine nc-section on-night nc-grain" aria-labelledby="routine-title" data-mode="morgen">
+  <span class="routine-thread" aria-hidden="true"></span>
+
+  <div class="nc-container routine-wrap">
+    <header class="routine-head" data-reveal>
+      <div class="routine-head__intro">
+        <p class="nc-eyebrow routine-eyebrow">Byg din rutine <span class="routine-eyebrow__sep" aria-hidden="true">·</span> 25% på hele hudplejeserien</p>
+        <h2 class="nc-section__title routine-title" id="routine-title">Din rutine, <span class="routine-title__soft">trin for trin</span></h2>
+      </div>
+      <p class="nc-section__lead routine-lead">Vælg de trin, din hud har brug for. Vi stiller dem op i den rigtige rækkefølge morgen og aften, lægger Black Week-priserne sammen – og giver dig automatisk den bedste sampakkepris.</p>
+    </header>
+
+    <div class="routine-grid">
+      <!-- Stage: WebGL still life (sage stone plinth) + DOM overlay for the dotted feature lines -->
+      <div class="routine-stage" data-reveal>
+        <div class="routine-stage__glow" aria-hidden="true"><i class="routine-stage__glow-m"></i><i class="routine-stage__glow-a"></i></div>
+        <canvas class="routine-canvas" aria-hidden="true"></canvas>
+        <div class="routine-fallback" aria-hidden="true">
+          <div class="routine-fallback__row"></div>
+          <div class="routine-fallback__plinth"></div>
+        </div>
+        <svg class="routine-lines" aria-hidden="true"></svg>
+        <div class="routine-tags" aria-hidden="true"></div>
+
+        <div class="routine-mode" role="group" aria-label="Vis rutinen til">
+          <span class="routine-mode__pill" aria-hidden="true"></span>
+          <button type="button" class="routine-mode__btn" data-mode="morgen" aria-pressed="true">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.6v1.6M10 15.8v1.6M2.6 10h1.6M15.8 10h1.6M4.8 4.8l1.1 1.1M14.1 14.1l1.1 1.1M4.8 15.2l1.1-1.1M14.1 5.9l1.1-1.1"/></svg>
+            Morgen
+          </button>
+          <button type="button" class="routine-mode__btn" data-mode="aften" aria-pressed="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.6 12.4A6.2 6.2 0 0 1 7.6 4.4a6.2 6.2 0 1 0 8 8Z"/></svg>
+            Aften
+          </button>
+        </div>
+
+        <div class="routine-spot" aria-hidden="true" hidden>
+          <span class="routine-spot__disc">
+            <span class="routine-spot__name">Komplet Pakken</span>
+            <span class="routine-spot__price" data-spot-price>899 kr.</span>
+            <span class="routine-spot__was" data-spot-was>Førpris 1.198 kr.</span>
+          </span>
+        </div>
+
+        <p class="routine-stage__caption" data-caption>Let og beskyttende – klar til dagen.</p>
+        <p class="routine-stage__empty" data-empty hidden>Vælg et trin – så stiller vi det frem.</p>
+      </div>
+
+      <!-- Panel: steps, live total, meters, CTA, Komplet Pakken nudge -->
+      <div class="routine-panel" data-reveal>
+        <div class="routine-panel__head">
+          <h3 class="routine-panel__title">Vælg dine trin</h3>
+          <p class="routine-panel__count" data-count>4 af 5 valgt</p>
+        </div>
+
+        <ul class="routine-steps" role="list">
+          <li><button type="button" class="routine-step" data-key="rens" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/rens.webp" alt="" width="379" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Rens</span><span class="routine-step__name">CBD Rensegel <span class="routine-step__size">100 ml</span></span><span class="routine-step__when">Morgen og aften</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="serum" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/serum.webp" alt="" width="352" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Serum</span><span class="routine-step__name">CBD Hyaluronic Serum <span class="routine-step__size">30 ml</span></span><span class="routine-step__when">Morgen og aften – før creme</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="dag" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/dag.webp" alt="" width="240" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Dag</span><span class="routine-step__name">CBD Dagcreme <span class="routine-step__size">50 ml</span></span><span class="routine-step__when">Morgen</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="nat" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/nat.webp" alt="" width="243" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Nat</span><span class="routine-step__name">CBD Natcreme <span class="routine-step__size">50 ml</span></span><span class="routine-step__when">Aften</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="olie" aria-pressed="false">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/olie.webp" alt="" width="219" height="677" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Olie</span><span class="routine-step__name">Vidunder Olien <span class="routine-step__size">1000 mg · 30 ml</span></span><span class="routine-step__when">Aften – som sidste trin</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+        </ul>
+
+        <div class="routine-sum" aria-live="polite" aria-atomic="true">
+          <div class="routine-sum__row">
+            <span class="routine-sum__label">Din rutine i Black Week</span>
+            <span class="routine-sum__total" data-total>1.084 kr.</span>
+          </div>
+          <p class="routine-sum__meta"><span data-was-total>Førpris 1.446 kr.</span><span class="routine-sum__save" data-save>Du sparer 362 kr.</span></p>
+          <p class="routine-sum__bundle" data-bundle-note hidden></p>
+        </div>
+
+        <div class="routine-meter" data-meter>
+          <div class="routine-meter__track" aria-hidden="true">
+            <span class="routine-meter__fill"></span>
+            <span class="routine-meter__mark" data-mark="ship"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-meter__mark" data-mark="gift"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+          </div>
+          <div class="routine-meter__labels" aria-hidden="true">
+            <span data-lbl="ship">Fri fragt<small>399 kr.</small></span>
+            <span data-lbl="gift">Gratis Lip Balm<small>699 kr.</small></span>
+          </div>
+          <p class="routine-meter__status" data-meter-status>Fri fragt og gratis CBD Lip Balm (værdi 79 kr.) følger med.</p>
+        </div>
+
+        <button type="button" class="nc-btn nc-btn--light nc-btn--lg routine-cta" data-cta>
+          <span class="routine-cta__label">Læg rutinen i kurv</span>
+          <span class="routine-cta__sum" data-cta-sum>1.084 kr.</span>
+          <span class="routine-cta__done" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg>Lagt i kurven</span>
+        </button>
+        <p class="routine-cta__note">Rabatten er trukket fra – ingen kode. 14 dages fortrydelsesret.</p>
+
+        <aside class="routine-bundle" data-bundle aria-label="Komplet Pakken">
+          <img class="routine-bundle__badge" src="../assets/badges/komplet-pakken.svg" alt="" width="60" height="60">
+          <div class="routine-bundle__body">
+            <p class="routine-bundle__title">Komplet Pakken <span class="routine-bundle__price"><b data-kp-price>899 kr.</b> <span>Førpris <s data-kp-was>1.198 kr.</s></span></span></p>
+            <p class="routine-bundle__text" data-bundle-text>Rens, Dag, Nat og Olie samlet til én pris.</p>
+          </div>
+          <button type="button" class="routine-bundle__btn" data-bundle-btn>Vælg Komplet Pakken</button>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>

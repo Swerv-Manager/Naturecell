@@ -298,7 +298,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         totalEmissiveRadiance *= 0.04 + 0.96 * pow(ndv, 2.2); }`);
   };
   const oilPool = new THREE.MeshPhysicalMaterial({
-    color: C('#2e1804'), roughness: 0.03, metalness: 0, emissive: C('#c98328'), emissiveIntensity: 0.3,
+    color: C('#241203'), roughness: 0.03, metalness: 0, emissive: C('#c98328'), emissiveIntensity: 0.34,
     clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 2.2, specularIntensity: 1,
   });
   const blackPP = new THREE.MeshPhysicalMaterial({ color: C('#151817'), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1.0 });
@@ -425,6 +425,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', `#include <common>
         uniform float uAge; uniform vec2 uImpact; uniform float uAmp;
+        varying float vPoolT; varying float vPoolR; varying vec2 vPoolXZ;
         float wave(float r){
           float h = 0.0;
           for (int i = 0; i < 3; i++){
@@ -448,13 +449,35 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         #endif`)
       .replace('#include <begin_vertex>', `
         vec3 transformed = vec3(position);
+        vPoolT = clamp(1.0 - position.y / ${POOL_H.toFixed(3)}, 0.0, 1.0);
+        vPoolR = clamp(length(position.xz) / 0.82, 0.0, 1.2);
+        vPoolXZ = position.xz;
         { vec2 xz = position.xz - uImpact; float r = length(xz); transformed.y += wave(r) * smoothstep(0.0, ${(POOL_H * 0.6).toFixed(3)}, position.y); }`);
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+        varying float vPoolT; varying float vPoolR; varying vec2 vPoolXZ;`)
+      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        {
+          // vPoolT: 0 on the flat top, → 1 down the meniscus. Deep oil absorbs, the thin rim glows gold.
+          float rim = max(0.55 * smoothstep(0.35, 1.05, vPoolR), smoothstep(0.02, 0.6, vPoolT));
+          diffuseColor.rgb *= mix(0.75, 1.6, rim);
+          totalEmissiveRadiance *= mix(0.62, 2.1, rim);
+          totalEmissiveRadiance += vec3(1.0, 0.78, 0.42) * 0.22 * smoothstep(0.35, 0.95, vPoolT);
+          float ndv = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
+          totalEmissiveRadiance *= 0.55 + 0.45 * ndv;
+          // glossy sheen of the warm key light across the far half of the film (follows the ripple via the normal)
+          vec2 hq = (vPoolXZ - vec2(-0.12, -0.3)) / vec2(0.42, 0.13);
+          float sheen = exp(-dot(hq, hq)) * (1.0 - smoothstep(0.0, 0.5, vPoolT));
+          sheen *= 0.6 + 0.4 * smoothstep(0.6, 1.0, normalize(normal).y + 0.4);
+          totalEmissiveRadiance += vec3(1.0, 0.88, 0.68) * 0.32 * sheen;
+        }`);
   };
   const pool = new THREE.Mesh(poolGeometry(0.82, POOL_H), oilPool);
   pool.position.set(tipW.x + 0.12, 0, tipW.z - 0.05);
   pool.renderOrder = 1;
   scene.add(pool);
-  decal(softDisk, shadowCol, 0.35, 2.4, 2.1, pool.position.x, pool.position.z + 0.05);              // pool edge occlusion
+  decal(softDisk, shadowCol, 0.16, 2.05, 1.85, pool.position.x, pool.position.z + 0.05);             // pool edge occlusion (whisper)
+  decal(radialTex([[0, 0.9], [0.55, 0.55], [0.8, 0.18], [1, 0]]), '#b8741f', 0.12, 2.0, 1.85, pool.position.x, pool.position.z, 0, true); // thin oil film halo – softens the rim
   decal(radialTex([[0, 1], [0.4, 0.4], [1, 0]]), '#e0a040', 0.22, 3.2, 1.6, pool.position.x + 0.9, pool.position.z - 0.5, -0.42, true); // pool glow spill
   poolU.uImpact.value.set(tipW.x - pool.position.x, tipW.z - pool.position.z);
 
