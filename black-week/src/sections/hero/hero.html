@@ -1,1 +1,53 @@
-<section data-section="hero"></section>
+<section data-section="hero" id="indhold" class="nc-grain on-night" aria-labelledby="hero-title" tabindex="-1">
+  <!-- 3D stage: Vidunder Olien, the floating dropper, the slow golden drop -->
+  <div class="hero-stage" aria-hidden="true">
+    <img class="hero-fallback" data-src="../src/sections/hero/hero-fallback.webp" alt="" width="1024" height="860" decoding="async" fetchpriority="low">
+    <canvas class="hero-canvas"></canvas>
+  </div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <!-- product overlays, tracked to the bottle in 3D (flat, never rotated) -->
+  <div class="hero-overlays">
+    <div class="hero-bubble" aria-hidden="true">
+      <span class="hero-bubble__disc nc-bubble nc-bubble--sale"><span class="hero-bubble__pct">&minus;25%</span><span class="hero-bubble__sub">hele ugen</span></span>
+    </div>
+    <div class="hero-tag">
+      <span class="hero-tag__lead" aria-hidden="true"><i></i></span>
+      <div class="hero-tag__card">
+        <p class="hero-tag__name">Vidunder Olien</p>
+        <p class="hero-tag__meta">CBD Hudpleje Olie · 1000 mg</p>
+        <p class="nc-price hero-tag__price"><span class="nc-price__now" data-hero-price>374 kr.</span><span class="nc-price__was">Førpris <s data-hero-was>499 kr.</s></span></p>
+        <button class="hero-tag__add" type="button" data-hero-add aria-label="Læg Vidunder Olien i kurv">
+          <svg class="hero-tag__ico hero-tag__ico--plus" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
+          <svg class="hero-tag__ico hero-tag__ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nc-container hero-inner">
+    <div class="hero-copy">
+      <p class="hero-eyebrow"><span class="hero-eyebrow__dot" aria-hidden="true"></span>Black Week <span class="hero-eyebrow__sep" aria-hidden="true">·</span> 23.–30. november</p>
+      <h1 class="hero-title" id="hero-title">
+        <span class="hero-title__l1">Black Week</span><span class="nc-sr"> – </span>
+        <em class="hero-title__l2">i ro og mag.</em>
+      </h1>
+      <p class="hero-lead"><strong>25% på hele hudplejeserien.</strong> Ingen larm – bare dansk CBD-hudpleje til en god pris, hele ugen.</p>
+      <div class="hero-ctas">
+        <a class="nc-btn nc-btn--light nc-btn--lg hero-cta" href="#deals">Shop Black Week <span class="hero-pil" aria-hidden="true"></span></a>
+        <a class="nc-btn nc-btn--outline-light nc-btn--lg hero-cta hero-cta--ghost" href="#offers">Se Sampakker</a>
+      </div>
+      <ul class="hero-facts" aria-label="Kampagnevilkår">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l4.5 4.5L19.5 6.5"/></svg>Rabatten trækkes automatisk</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="M12 7.5V12l3 2"/></svg>Slutter mandag 30. nov. kl. 23.59</li>
+      </ul>
+    </div>
+    <p class="hero-trust">
+      <span class="hero-trust__item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.2 1.6 2.7-.1.8 2.6 2.2 1.6-.9 2.6.9 2.6-2.2 1.6-.8 2.6-2.7-.1L12 20.5l-2.2-1.6-2.7.1-.8-2.6-2.2-1.6.9-2.6-.9-2.6 2.2-1.6.8-2.6 2.7.1z"/><path d="M9.2 12.2l1.9 1.9 3.8-4"/></svg>Danmarks første godkendte CBD-hudpleje</span>
+      <span class="hero-trust__dot" aria-hidden="true"></span>
+      <span class="hero-trust__item"><span>e-mærket<span class="hero-trust__opt"> webshop</span></span></span>
+      <span class="hero-trust__dot" aria-hidden="true"></span>
+      <span class="hero-trust__item">Dansk familievirksomhed</span>
+    </p>
+  </div>
+</section>
