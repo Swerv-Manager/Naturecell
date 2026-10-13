@@ -1,0 +1,100 @@
+/* NatureCell Design System — what tokens.json does not declare.
+   Loaded after tokens.css. The Google Fonts import is the brand's real faces
+   (Philosopher headlines, Roboto Flex body); the :root block keeps the role
+   aliases, newsletter specs (pt), composite borders and motion; the rest is the
+   base layer (resets and text-role helpers). */
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,900&display=swap');
+
+:root {
+  --type-eyebrow-family:   var(--font-body);
+  --type-eyebrow-size:     var(--text-xs);
+  --type-eyebrow-weight:   var(--weight-semibold);
+  --type-eyebrow-tracking: var(--tracking-wider);
+  --type-display-family: var(--font-display);
+  --type-display-weight: var(--weight-regular);
+  --type-heading-family: var(--font-display);
+  --type-heading-weight: var(--weight-bold);
+  --type-body-family: var(--font-body);
+  --type-body-weight: var(--weight-regular);
+  --type-body-size:   var(--text-md);
+  --type-body-leading: var(--leading-relaxed);
+  --type-editorial-family:  var(--font-serif);
+  --type-editorial-weight:  var(--weight-regular);
+  --mail-h1-family:  var(--font-display);   /* Philosopher Bold */
+  --mail-h1-weight:  var(--weight-bold);
+  --mail-h1-size:    24pt;
+  --mail-h1-leading: 24pt;
+  --mail-body-family:  var(--font-body);    /* Roboto Flex Medium */
+  --mail-body-weight:  var(--weight-medium);
+  --mail-body-size:    14pt;
+  --mail-body-leading: 20pt;
+  --mail-strong-weight:  var(--weight-bold); /* Roboto Flex Bold 15/18 */
+  --mail-strong-size:    15pt;
+  --mail-strong-leading: 18pt;
+  --mail-legal-size:    12pt;                /* Roboto Flex Italic 12/14 */
+  --mail-legal-leading: 14pt;
+  --border-hairline: 1px solid var(--border-default);
+  --border-soft-1:   1px solid var(--border-soft);
+  --border-sage-1:   1px solid var(--border-sage);
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-soft:  cubic-bezier(0.4, 0, 0.2, 1);       /* @kind other */
+  --dur-fast:   140ms;  /* @kind other */
+  --dur-base:   240ms;  /* @kind other */
+  --dur-slow:   420ms;  /* @kind other */
+  --gutter:         var(--space-5);
+  --section-y:      var(--space-10);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Text roles ------------------------------------------------------- */
+.nc-eyebrow {
+  font-family: var(--type-eyebrow-family);
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+.nc-display {
+  font-family: var(--type-display-family);
+  font-weight: var(--type-display-weight);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.nc-heading {
+  font-family: var(--type-heading-family);
+  font-weight: var(--type-heading-weight);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.nc-body { font-family: var(--font-body); color: var(--text-body); }
+
+.nc-editorial {
+  font-family: var(--type-editorial-family);
+  font-weight: var(--type-editorial-weight);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+
+/* --- The DENMARK lockup spacing helper -------------------------------- */
+.nc-spaced { letter-spacing: var(--tracking-widest); text-transform: uppercase; }
+
+a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }

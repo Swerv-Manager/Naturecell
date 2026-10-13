@@ -1,0 +1,157 @@
+/* NatureCell Design System — generated from tokens.json */
+:root, [data-theme="light"] {
+  --sage-900: #28403b;
+  --sage-800: #324e48;
+  --sage-700: #3e5d58;
+  --sage-600: #5a7a72;
+  --sage-500: #80a097;
+  --sage-400: #9ab4ac;
+  --sage-300: #b6c9c2;
+  --sage-200: #d2dfdb;
+  --sage-100: #e7eeeb;
+  --sage-50: #f2f6f4;
+  --stone-600: #6f7271;
+  --stone-500: #8c8f8f;
+  --stone-300: #b9bbb8;
+  --stone-100: #e4e4e0;
+  --sand-500: #ddbfa3;
+  --sand-300: #e8d6c3;
+  --sand-100: #f4ece3;
+  --linen-500: #d5d1c3;
+  --linen-300: #e3e0d6;
+  --linen-100: #f1efe8;
+  --clay-600: #7e6243;
+  --clay-500: #9c7a58;
+  --clay-300: #c7ae92;
+  --clay-100: #ebe2d6;
+  --paper: #f6f4ee;
+  --paper-2: #fbfaf5;
+  --cloud: #ffffff;
+  --ink-900: #3e5d58;
+  --ink-700: #4d625c;
+  --ink-500: #6f7271;
+  --ink-400: #8c8f8f;
+  --ink-300: #aab0ad;
+  --ink-200: #d3d6d1;
+  --ink-100: #e7e8e2;
+  --accent-mauve: #b07a7f;
+  --accent-pink: #f9b5c4;
+  --accent-berry: #84334e;
+  --sage-100pct: #80a097;  --sage-75pct:  #a0b8b1;  --sage-50pct:  #bfcfcb;
+  --green-100pct: #3e5d58;  --green-75pct: #6e8682;  --green-50pct: #9eaeac;
+  --stone-100pct: #8c8f8f;  --stone-75pct: #a9abab;  --stone-50pct: #c6c7c7;
+  --sand-100pct: #ddbfa3;  --sand-75pct:  #e6cfba;  --sand-50pct:  #eedfd1;
+  --linen-100pct: #d5d1c3;  --linen-75pct: #e0ddd2;  --linen-50pct: #eae8e1;
+  --mauve-100pct: #b07a7f;  --mauve-75pct: #c49b9f;  --mauve-50pct: #d8bcbf;
+  --pink-100pct: #f9b5c4;  --pink-75pct:  #fbc8d3;  --pink-50pct:  #fcdae2;
+  --berry-100pct: #84334e;  --berry-75pct: #a3667a;  --berry-50pct: #c199a7;
+  --thread-mauve: var(--accent-mauve);
+  --thread-pink: var(--accent-pink);
+  --thread-sand: var(--sand-500);
+  --thread-sage: var(--sage-400);
+  --success: #3e5d58;
+  --warning: #b89169;
+  --danger: #84334e;
+  --info: #8c8f8f;
+  --sale: #84334e;
+  --surface-page: var(--paper);
+  --surface-card: var(--cloud);
+  --surface-raised: var(--paper-2);
+  --surface-sage: var(--sage-100);
+  --surface-sage-deep: var(--sage-500);
+  --surface-green-deep: var(--sage-700);
+  --surface-sand: var(--sand-100);
+  --surface-ink: var(--ink-900);
+  --surface-photo: var(--cloud);
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-faint: var(--ink-400);
+  --text-on-sage: var(--cloud);
+  --text-on-ink: var(--paper);
+  --text-brand: var(--sage-700);
+  --border-soft: var(--ink-100);
+  --border-default: var(--ink-200);
+  --border-strong: var(--ink-300);
+  --border-sage: var(--sage-200);
+  --action: var(--sage-500);
+  --action-hover: var(--sage-600);
+  --action-pressed: var(--sage-700);
+  --action-contrast: var(--cloud);
+  --focus-ring: var(--sage-600);
+  --brand-sage: var(--sage-500);
+  --brand-green: var(--sage-700);
+  --brand-ink: var(--ink-900);
+  --shadow-xs: 0 1px 2px rgba(62, 93, 88, 0.06);
+  --shadow-sm: 0 2px 8px rgba(62, 93, 88, 0.07);
+  --shadow-md: 0 6px 20px rgba(62, 93, 88, 0.09);
+  --shadow-lg: 0 14px 40px rgba(62, 93, 88, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(128, 160, 151, 0.35);
+}
+:root {
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-9: 4rem;
+  --space-10: 5rem;
+  --space-12: 7.5rem;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+  --tracking-widest: 0.24em;
+  --container-max: 1240px;
+  --container-text: 680px;
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
+  --z-toast: 1200;
+  --font-display: "Philosopher", Georgia, "Times New Roman", serif;
+  --font-body: "Roboto Flex", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Philosopher", Georgia, "Times New Roman", serif;
+}
+.display-hero { font-family: var(--font-display); font-size: 4rem; line-height: 1.1; font-weight: 400; letter-spacing: -0.01em; }
+.hero { font-family: var(--font-display); font-size: 3rem; line-height: 1.1; font-weight: 400; letter-spacing: -0.01em; }
+.heading-page { font-family: var(--font-display); font-size: 2.25rem; line-height: 1.25; font-weight: 700; }
+.heading-section { font-family: var(--font-display); font-size: 1.75rem; line-height: 1.25; font-weight: 700; }
+.card-title { font-family: var(--font-display); font-size: 1.375rem; line-height: 1.25; font-weight: 700; }
+.lead { font-family: var(--font-body); font-size: 1.125rem; line-height: 1.7; font-weight: 400; }
+.body { font-family: var(--font-body); font-size: 1rem; line-height: 1.7; font-weight: 400; }
+.caption { font-family: var(--font-body); font-size: 0.875rem; line-height: 1.5; font-weight: 400; }
+.eyebrow { font-family: var(--font-body); font-size: 0.75rem; line-height: 1.5; font-weight: 600; letter-spacing: 0.12em; }
+.legal { font-family: var(--font-body); font-size: 0.6875rem; line-height: 1.5; font-weight: 400; }
+.editorial { font-family: var(--font-serif); font-size: 1.125rem; line-height: 1.7; font-weight: 400; font-style: italic; }
