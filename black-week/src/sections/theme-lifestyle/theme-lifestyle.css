@@ -1,0 +1,23 @@
+/* Port of theme-src/sections/nc-lifestyle.liquid {% style %} (section "lifestyle" in templates/index.json).
+   #shopify-section-{{ section.id }} -> this section's wrapper id. Bare selectors are scoped with :where([data-section]),
+   which adds no specificity, so the cascade against the theme CSS is exactly the live site's. */
+/* 1:1 fra designets LIFESTYLE-baand: sage-50 flade, 1px linje over, 76px top/bund, hoved gap 10 + 38 under */
+:where([data-section="theme-lifestyle"]) .nc-lifestyle { background: var(--nc-lifestyle-bg); border-top: 1px solid var(--border-soft); }
+#shopify-section-template--naturecell-index__lifestyle .nc-lifestyle.nc-section { padding: clamp(42px, 6vw, 76px) 0; }
+#shopify-section-template--naturecell-index__lifestyle .nc-lifestyle .nc-section-head { max-width: none; display: flex; flex-direction: column; gap: 10px; align-items: center; margin-bottom: 38px; }
+#shopify-section-template--naturecell-index__lifestyle .nc-lifestyle .nc-eyebrow { margin: 0; line-height: 1.7; letter-spacing: 0.12em; color: var(--sage-600); }
+#shopify-section-template--naturecell-index__lifestyle .nc-lifestyle .nc-section-head h2 { margin: 0; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.08; letter-spacing: normal; text-wrap: wrap; color: var(--sage-700); }
+#shopify-section-template--naturecell-index__lifestyle .nc-lifestyle .nc-section-head p:not(.nc-eyebrow) { margin: 4px 0 0; max-width: 560px; font-size: 16px; line-height: 1.7; color: var(--ink-500); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__main { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 16 / 11; background: var(--sage-100); box-shadow: var(--shadow-sm); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__main video, :where([data-section="theme-lifestyle"]) .nc-lifestyle__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__main::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(31, 45, 41, 0) 42%, rgba(31, 45, 41, 0.55) 100%); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__caption { position: absolute; left: 22px; bottom: 20px; z-index: 2; display: flex; flex-direction: column; gap: 2px; color: #fff; pointer-events: none; }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__caption small { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 600; line-height: 1.7; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__caption strong { font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.7; color: #fff; }
+:where([data-section="theme-lifestyle"]) a.nc-lifestyle__main { display: block; color: #fff; text-decoration: none; }
+:where([data-section="theme-lifestyle"]) a.nc-lifestyle__main .nc-lifestyle__caption strong::after { content: ' →'; transition: margin var(--dur-fast) var(--ease-soft); }
+:where([data-section="theme-lifestyle"]) a.nc-lifestyle__main:hover .nc-lifestyle__caption strong, :where([data-section="theme-lifestyle"]) a.nc-lifestyle__main:focus-visible .nc-lifestyle__caption strong { text-decoration: underline; text-underline-offset: 4px; }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__side { display: grid; gap: 20px; grid-template-rows: 1fr 1fr; }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__side > div { position: relative; border-radius: var(--radius-xl); overflow: hidden; min-height: 170px; background: var(--sage-100); box-shadow: var(--shadow-sm); }
+:where([data-section="theme-lifestyle"]) .nc-lifestyle__side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }

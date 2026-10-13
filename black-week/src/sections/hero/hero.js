@@ -46,14 +46,20 @@ export default function init(root, ctx) {
 
   let scene = null;
   let tracked = false;
-  let bubbleR = 70;
-  const measure = () => { bubbleR = bubbleEl.firstElementChild.offsetWidth / 2 + 14; };
-  measure();
-  const onFrame = ({ bubble, tag, W }) => {
-    // keep the flat −25% bubble fully inside the stage (it is never rotated, only translated)
-    const r = bubbleR;
-    const bx = Math.min(Math.max(bubble[0], r), W - r);
-    bubbleEl.style.transform = `translate3d(${bx.toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
+  const copyEl = root.querySelector('.hero-copy');
+  // sizes of the flat DOM overlays, so the 3D spheres flow around them (and the disc stays inside the stage)
+  const measure = () => {
+    if (!scene) return;
+    const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
+    scene.setOverlays({
+      discR: bubbleEl.firstElementChild.offsetWidth / 2,
+      tagW: tagEl.offsetWidth, tagH: tagEl.offsetHeight,
+      copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0),
+    });
+  };
+  const onFrame = ({ bubble, tag }) => {
+    // the flat −25% bubble is never rotated, only translated (the scene keeps it inside the stage)
+    bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
     tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
     if (!tracked) { tracked = true; root.classList.add('is-tracked'); }
   };
@@ -63,6 +69,8 @@ export default function init(root, ctx) {
     onFirstFrame: () => requestAnimationFrame(() => root.classList.add('is-live')),
   }).then((s) => {
     scene = s;
+    measure();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
     let visible = true;
     const sync = () => { (visible && !document.hidden) ? s.start() : s.stop(); };
     visibilityGate(root, (v) => { visible = v; sync(); });

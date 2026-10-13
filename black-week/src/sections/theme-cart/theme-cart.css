@@ -1,0 +1,63 @@
+/* theme-cart: 1:1 copy of the {%- style -%} block in theme-src/sections/nc-cart-drawer.liquid */
+  .nc-drawer { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; }
+  .nc-drawer__overlay { position: absolute; inset: 0; background: rgba(32, 38, 35, 0.42); opacity: 0; transition: opacity var(--dur-base) var(--ease-soft); }
+  .nc-drawer__panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(430px, 92vw); background: var(--paper); box-shadow: var(--shadow-lg); transform: translateX(102%); transition: transform var(--dur-base) var(--ease-out); display: flex; flex-direction: column; }
+  .nc-drawer.is-open { pointer-events: auto; }
+  .nc-drawer.is-open .nc-drawer__overlay { opacity: 1; }
+  .nc-drawer.is-open .nc-drawer__panel { transform: translateX(0); }
+
+  .nc-drawer__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: normal; color: var(--sage-700); }
+  .nc-drawer__close { border: 0; background: none; cursor: pointer; color: var(--ink-500); padding: 4px; display: flex; }
+
+  .nc-drawer__ship { padding: 16px 24px; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__ship p { margin: 0 0 9px; display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-700); }
+  .nc-drawer__ship svg { flex: none; color: var(--sage-600); }
+  .nc-drawer__bar { height: 6px; border-radius: 3px; background: var(--sage-100); overflow: hidden; }
+  .nc-drawer__fill { height: 100%; background: var(--sage-500); transition: width var(--dur-base) var(--ease-out); }
+
+  .nc-drawer__lines { flex: 1; overflow-y: auto; padding: 6px 24px; }
+  .nc-drawer__line { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border-soft); }
+  .nc-drawer__line-media { width: 74px; height: 74px; flex: none; background: var(--cloud); border-radius: var(--radius-md); border: 1px solid var(--border-soft); display: block; overflow: hidden; padding: 0; }
+  .nc-drawer__line-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .nc-drawer__line-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+  .nc-drawer__line-title { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 1.3; color: var(--sage-700); text-decoration: none; }
+  .nc-drawer__line-meta { font-size: 12.5px; color: var(--ink-500); }
+  .nc-drawer__line-discount { font-size: 11.5px; font-weight: 600; color: var(--sage-700); }
+  .nc-drawer__line-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 3px; }
+  .nc-drawer__qty { display: inline-flex; align-items: center; border: 1px solid var(--border-default); border-radius: 999px; overflow: hidden; }
+  .nc-drawer__qty button { border: 0; background: none; cursor: pointer; padding: 5px 10px; color: var(--ink-700); font-size: 15px; line-height: 1.2; font-family: var(--font-body); }
+  .nc-drawer__qty span { font-size: 13px; min-width: 20px; text-align: center; }
+  .nc-drawer__line-price { font-weight: 600; font-size: 14px; color: var(--sage-700); white-space: nowrap; }
+  .nc-drawer__line-was { font-weight: 400; color: var(--ink-400); margin-right: 4px; }
+  .nc-drawer__remove { border: 0; background: none; cursor: pointer; color: var(--ink-300); align-self: flex-start; padding: 2px; display: flex; }
+  .nc-drawer__remove:hover { color: var(--ink-700); }
+
+  .nc-drawer__code { display: flex; gap: 8px; margin: 16px 0 6px; }
+  .nc-drawer__code input { flex: 1; min-width: 0; border: 1px solid var(--border-default); background: var(--cloud); border-radius: 999px; padding: 11px 16px; font-family: var(--font-body); font-size: 13.5px; outline: none; color: var(--sage-700); }
+  .nc-drawer__code input:focus-visible { border-color: var(--sage-500); }
+  .nc-drawer__code button { border: 1.5px solid var(--sage-500); background: transparent; cursor: pointer; color: var(--sage-700); border-radius: 999px; padding: 11px 18px; font-family: var(--font-body); font-weight: 600; font-size: 13.5px; }
+  .nc-drawer__code-note { margin: 0 0 8px; font-size: 12px; color: var(--ink-500); }
+  .nc-drawer__code-note[hidden] { display: none; }
+
+  .nc-drawer__empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--ink-400); padding: 40px; text-align: center; }
+  .nc-drawer__empty p { margin: 0; font-size: 15px; color: var(--ink-400); }
+  .nc-drawer__empty a { display: inline-block; border: 1.5px solid var(--sage-500); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 11px 22px; border-radius: 999px; text-decoration: none; }
+
+  .nc-drawer__foot { padding: clamp(11px, 5vw, 18px) clamp(16px, 4vw, 24px) clamp(14px, 6vw, 24px); border-top: 1px solid var(--border-soft); background: var(--paper-2); display: flex; flex-direction: column; gap: 9px; }
+  .nc-drawer__savings { display: flex; justify-content: space-between; align-items: center; background: var(--sage-100); border-radius: var(--radius-md); padding: 11px 14px; }
+  .nc-drawer__savings span:first-child { font-size: 13.5px; font-weight: 600; color: var(--sage-700); }
+  .nc-drawer__savings span:last-child { font-size: 15px; font-weight: 700; color: var(--sage-700); }
+  .nc-drawer__totals { display: flex; justify-content: space-between; align-items: baseline; }
+  .nc-drawer__totals span { font-size: 15px; color: var(--ink-700); }
+  .nc-drawer__totals strong { font-family: var(--font-body); font-weight: 700; font-size: 22px; color: var(--sage-700); }
+  .nc-drawer__checkout { display: block; text-align: center; border: 0; cursor: pointer; background: var(--sage-500); color: #fff; border-radius: 999px; padding: 15px; font-family: var(--font-body); font-weight: 600; font-size: 15px; margin-top: 4px; text-decoration: none; }
+  .nc-drawer__checkout:hover, .nc-drawer__checkout:focus-visible { background: var(--sage-600); color: #fff; }
+  .nc-drawer__terms { margin: 10px 0 2px; font-size: 13.5px; }
+  .nc-drawer__note { margin: 6px 0 0; text-align: center; font-size: 12px; color: var(--ink-400); }
+
+/* Mockup only. Live line images are square Shopify packshots on white, where `cover` shows the whole product;
+   our local packshots are transparent and partly portrait, so `contain` gives the same visual result. */
+[data-section="theme-cart"] .nc-drawer__line-media img { object-fit: contain; padding: 4px; }
+/* The gift line (fixed qty 1) shows its quantity in the same pill, without steppers */
+[data-section="theme-cart"] .theme-cart-gift-qty { padding: 5px 12px; font-size: 13px; color: var(--ink-700); }

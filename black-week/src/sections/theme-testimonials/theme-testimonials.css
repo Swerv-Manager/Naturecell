@@ -1,0 +1,81 @@
+/* Port of theme-src/sections/nc-testimonials.liquid {% style %} (section "testimonials" in templates/index.json:
+   tp_widget on, so the TrustBox replaces the cards and the aggregate line).
+   #shopify-section-{{ section.id }} -> this section's wrapper id; bare selectors are scoped with :where([data-section]),
+   which adds no specificity, so the cascade against the theme CSS stays exactly the live site's. */
+/* 1:1 fra designets TESTIMONIALS: sage-50 flade, 1px linje over, 64px top/bund, hoved + 40 under, raekker gap 20 */
+:where([data-section="theme-testimonials"]) .nc-testi { background: var(--nc-testimonials-bg); border-top: 1px solid var(--border-soft); overflow: hidden; }
+#shopify-section-template--naturecell-index__testimonials .nc-testi.nc-section { padding: clamp(37px, 7vw, 64px) 0; }
+:where([data-section="theme-testimonials"]) .nc-testi__head { max-width: var(--container-max); margin: 0 auto 40px; padding: 0 var(--gutter); text-align: center; }
+/* Designets eyebrow er en inline span i en 16px/1.7 linjeboks (27.2px) */
+#shopify-section-template--naturecell-index__testimonials .nc-testi__head .nc-eyebrow { margin: 0; line-height: 27.2px; letter-spacing: 0.14em; color: var(--sage-600); }
+:where([data-section="theme-testimonials"]) .nc-testi__head h2 { margin: 10px 0 14px; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; color: var(--sage-700); }
+:where([data-section="theme-testimonials"]) .nc-testi__agg { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink-700); vertical-align: top; }
+:where([data-section="theme-testimonials"]) .nc-testi__agg .nc-stars { gap: 3px; color: var(--sage-500); }
+:where([data-section="theme-testimonials"]) .nc-testi__agg .nc-stars svg { width: 22px; height: 22px; }
+:where([data-section="theme-testimonials"]) .nc-testi__agg strong { color: var(--sage-700); }
+:where([data-section="theme-testimonials"]) .nc-testi__rows { display: flex; flex-direction: column; gap: 20px; }
+:where([data-section="theme-testimonials"]) .nc-testi .nc-rail { gap: 20px; animation-duration: 60s; }
+:where([data-section="theme-testimonials"]) .nc-testi__app { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+/* Rettelse 67 (12-10): Trustpilots egen widget (TrustBox) med rigtige anmeldelser */
+:where([data-section="theme-testimonials"]) .nc-testi__tp { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+:where([data-section="theme-testimonials"]) .nc-testi__tp-fallback { display: block; text-align: center; font-size: 14px; color: var(--sage-700); }
+:where([data-section="theme-testimonials"]) .nc-testi__more { display: flex; justify-content: center; margin-top: 28px; padding: 0 var(--gutter); }
+:where([data-section="theme-testimonials"]) .nc-testi__note { margin: 18px auto 0; padding: 0 var(--gutter); max-width: 46rem; text-align: center; font-size: 12.5px; line-height: 1.6; color: var(--ink-500); }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   TrustBox "Carousel" (template 53aa8912dec7e10d38f59f36, data-style-height 140px, width 100%, light theme).
+   On the live site Trustpilot's bootstrap (settings.trustpilot_script) swaps the fallback link for an iframe; the mockup
+   has no network, so theme-testimonials.js draws a static replica: summary (rating word, star image, review count,
+   logo) on the left, a row of review cards with arrows on the right. Trustpilot's own type and colours, not the theme's.
+   --------------------------------------------------------------------------------------------------------------- */
+[data-section="theme-testimonials"] .tp-cr { --tp-ink: #191919; --tp-mute: #6f6f6f; --tp-green: #00b67a; display: flex; align-items: stretch; gap: 24px; height: 140px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--tp-ink); -webkit-font-smoothing: antialiased; text-align: left; }
+[data-section="theme-testimonials"] .tp-cr a { color: inherit; }
+[data-section="theme-testimonials"] .tp-cr__sum { flex: 0 0 196px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; text-decoration: none; text-align: center; }
+[data-section="theme-testimonials"] .tp-cr__word { font-size: 22px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+[data-section="theme-testimonials"] .tp-cr__sum .tp-stars { width: 128px; height: 23.5px; }
+[data-section="theme-testimonials"] .tp-cr__based { font-size: 13px; line-height: 1.3; }
+[data-section="theme-testimonials"] .tp-cr__based b { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+[data-section="theme-testimonials"] .tp-cr__sum:hover .tp-cr__based b, [data-section="theme-testimonials"] .tp-cr__sum:focus-visible .tp-cr__based b { text-decoration-thickness: 2px; }
+[data-section="theme-testimonials"] .tp-logo { display: inline-flex; align-items: center; gap: 3px; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--tp-ink); }
+[data-section="theme-testimonials"] .tp-logo svg { display: block; width: 19px; height: 19px; margin-top: -3px; color: var(--tp-green); }
+[data-section="theme-testimonials"] .tp-cr__main { position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+[data-section="theme-testimonials"] .tp-cr__row { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 0; }
+[data-section="theme-testimonials"] .tp-cr__track { flex: 1 1 auto; min-width: 0; display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 18px) / 4); gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; height: 100%; padding: 6px 0 2px; }
+[data-section="theme-testimonials"] .tp-cr__track::-webkit-scrollbar { display: none; }
+[data-section="theme-testimonials"] .tp-cr__arrow { flex: none; width: 26px; height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; background: none; color: #8c8c8c; cursor: pointer; border-radius: 4px; }
+[data-section="theme-testimonials"] .tp-cr__arrow:hover { color: var(--tp-ink); }
+[data-section="theme-testimonials"] .tp-cr__arrow:focus-visible { outline: 2px solid var(--sage-500); outline-offset: 1px; }
+[data-section="theme-testimonials"] .tp-cr__arrow[disabled] { opacity: 0.3; cursor: default; }
+[data-section="theme-testimonials"] .tp-cr__arrow svg { width: 16px; height: 16px; }
+[data-section="theme-testimonials"] .tp-rv { scroll-snap-align: start; display: flex; flex-direction: column; gap: 5px; min-width: 0; text-decoration: none; }
+[data-section="theme-testimonials"] .tp-rv__top { display: flex; align-items: center; gap: 8px; }
+[data-section="theme-testimonials"] .tp-rv .tp-stars { width: 86px; height: 16px; flex: none; }
+[data-section="theme-testimonials"] .tp-rv__ver { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: var(--tp-mute); }
+[data-section="theme-testimonials"] .tp-rv__ver svg { width: 11px; height: 11px; }
+[data-section="theme-testimonials"] .tp-rv__title { margin: 2px 0 0; font-size: 13.5px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+[data-section="theme-testimonials"] .tp-rv__text { margin: 0; font-size: 13px; line-height: 1.35; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+[data-section="theme-testimonials"] .tp-rv__who { margin-top: auto; font-size: 12px; line-height: 1.3; color: var(--tp-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+[data-section="theme-testimonials"] .tp-rv__who b { font-weight: 600; color: var(--tp-ink); }
+[data-section="theme-testimonials"] .tp-rv:hover .tp-rv__title { text-decoration: underline; }
+[data-section="theme-testimonials"] .tp-cr__foot { flex: none; padding: 4px 26px 0; font-size: 11px; line-height: 1.3; color: var(--tp-mute); text-align: right; }
+
+/* TrustBox carousel, narrow widths: summary as one compact row above, one review at a time */
+@media (max-width: 749px) {
+  [data-section="theme-testimonials"] .tp-cr { flex-direction: column; gap: 12px; height: auto; }
+  [data-section="theme-testimonials"] .tp-cr__sum { flex: none; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
+  [data-section="theme-testimonials"] .tp-cr__word { font-size: 17px; }
+  [data-section="theme-testimonials"] .tp-cr__sum .tp-stars { width: 96px; height: 17.6px; }
+  [data-section="theme-testimonials"] .tp-cr__based { font-size: 12.5px; }
+  [data-section="theme-testimonials"] .tp-logo { font-size: 15px; }
+  [data-section="theme-testimonials"] .tp-logo svg { width: 16px; height: 16px; }
+  [data-section="theme-testimonials"] .tp-cr__row { height: 112px; flex: none; }
+  [data-section="theme-testimonials"] .tp-cr__track { grid-auto-columns: 100%; }
+  [data-section="theme-testimonials"] .tp-cr__arrow { width: 32px; height: 44px; }
+  [data-section="theme-testimonials"] .tp-cr__foot { text-align: center; padding: 2px 0 0; }
+}
+@media (min-width: 750px) and (max-width: 1023px) {
+  [data-section="theme-testimonials"] .tp-cr__track { grid-auto-columns: calc((100% - 2 * 18px) / 3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-section="theme-testimonials"] .tp-cr__track { scroll-behavior: auto; }
+}

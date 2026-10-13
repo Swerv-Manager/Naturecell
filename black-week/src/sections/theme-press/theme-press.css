@@ -1,0 +1,9 @@
+/* Port of theme-src/sections/nc-press.liquid {% style %} – scoped to this section. Marquee keyframes/.nc-marqwrap/.nc-rail
+   (incl. hover pause and reduced motion) come from the theme's global CSS. */
+/* Design: padding 44px 0, papir-baggrund, 1px linje under raekken, logoer med gap clamp(26px,5vw,64px) */
+[data-section="theme-press"] .nc-press { padding: 44px 0; background: var(--paper); border-bottom: 1px solid var(--border-soft); overflow: hidden; }
+[data-section="theme-press"] .nc-press .nc-eyebrow { text-align: center; margin: 0 0 26px; line-height: 1.7; letter-spacing: 0.14em; color: var(--ink-400); }
+[data-section="theme-press"] .nc-press .nc-rail { gap: clamp(26px, 5vw, 64px); padding-right: 64px; }
+[data-section="theme-press"] .nc-press__name { font-family: var(--font-display); font-size: 26px; line-height: 1.7; letter-spacing: 0.02em; color: var(--ink-300); white-space: nowrap; padding: 0; }
+[data-section="theme-press"] .nc-press__more { display: flex; justify-content: center; margin: 22px 0 0; }
+[data-section="theme-press"] .nc-press__more a { font-weight: 600; font-size: 14px; color: var(--sage-700); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }

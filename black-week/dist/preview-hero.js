@@ -166,7 +166,8 @@
     kr: (n) => `${Math.round(n).toLocaleString("da-DK")} kr.`,
     pct: (n) => `${Math.round(n)}%`
   };
-  var ASSETS = window.NC_ASSET_BASE || "../assets/";
+  var SCRIPT_SRC = document.currentScript && document.currentScript.src;
+  var ASSETS = window.NC_ASSET_BASE || (SCRIPT_SRC ? new URL("../assets/", SCRIPT_SRC).href : "../assets/");
   var asset = (p) => ASSETS + p;
   function boot() {
     const ctx = {
@@ -181,9 +182,13 @@
       isMobile: () => matchMedia("(max-width: 760px)").matches
     };
     const run = () => {
+      let found = 0;
       for (const [id, init2] of registry) {
         const root = document.querySelector(`[data-section="${id}"]`);
         if (!root) continue;
+        found++;
+        if (root.dataset.ncInit) continue;
+        root.dataset.ncInit = "1";
         try {
           init2(root, ctx);
         } catch (e) {
@@ -196,10 +201,19 @@
           io.unobserve(e.target);
         }
       }), { rootMargin: "0px 0px -8% 0px" });
-      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+      document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
+      return found;
+    };
+    const start = () => {
+      if (run() >= registry.length) return;
+      const mo = new MutationObserver(() => {
+        if (run() >= registry.length) mo.disconnect();
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+      setTimeout(() => mo.disconnect(), 2e4);
     };
     window.NCBW = { ctx, run };
-    if (!window.NC_DEFER_BOOT) document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", run) : run();
+    if (!window.NC_DEFER_BOOT) document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start) : start();
   }
 
   // src/core/three-utils.js
@@ -21529,10 +21543,11 @@ void main() {
   UnrealBloomPass.BlurDirectionY = new Vector2(0, 1);
 
   // src/sections/hero/label.js
-  var SAGE = "#80a097";
-  var SAGE_LIGHT = "#89a99f";
-  var PALE = "#dde8e3";
-  var THREAD = "#7b5ea7";
+  var FIELD = "#6c998c";
+  var FIELD_LOW = "#5f8b7f";
+  var PALE = "#d3dfd9";
+  var HATCH = "rgba(226,238,233,0.34)";
+  var THREAD = "#7a478a";
   var INK = "#ffffff";
   async function loadSvg(url, w, h) {
     const txt = await (await fetch(url)).text();
@@ -21556,69 +21571,73 @@ void main() {
     const g = c.getContext("2d");
     const cx = W / 2;
     const F = W / 3;
-    g.fillStyle = SAGE;
+    const PXD = W / (360 * 0.97);
+    const X = (deg) => cx + deg * PXD;
+    const V = [X(3), H * 0.82];
+    const L = [X(-79), H * 0.27];
+    const R = [X(79), H * 0.28];
+    const unit = (a, b) => {
+      const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy);
+      return [dx / l, dy / l];
+    };
+    const uL = unit(V, L), uR = unit(V, R);
+    const along = (p, u, k) => [p[0] + u[0] * k, p[1] + u[1] * k];
+    const nL = [uL[1], -uL[0]];
+    const off = (p, k) => [p[0] + nL[0] * k, p[1] + nL[1] * k];
+    const FAR = W;
+    const cutB = along(V, uR, -(H + 10 - V[1]) / -uR[1]);
+    g.fillStyle = FIELD;
     g.fillRect(0, 0, W, H);
-    const P2 = [cx, H * 0.905];
-    const side = F * 0.744;
-    const armL = [cx - side, H * 0.4];
-    const armR = [cx + side, H * 0.44];
-    const dx = P2[0] - armL[0], dy = P2[1] - armL[1];
-    const len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
-    const nx = uy, ny = -ux;
-    const ext = (pt, k) => [pt[0] - ux * k, pt[1] - uy * k];
-    g.fillStyle = SAGE_LIGHT;
+    g.fillStyle = FIELD_LOW;
     g.beginPath();
-    g.moveTo(...ext(armL, F));
-    g.lineTo(...P2);
-    g.lineTo(armR[0] + (armR[0] - P2[0]) * 1.5, armR[1] + (armR[1] - P2[1]) * 1.5);
-    g.lineTo(W, H);
-    g.lineTo(0, H);
+    g.moveTo(...V);
+    g.lineTo(...along(V, uR, FAR));
+    g.lineTo(W + 10, H + 10);
+    g.lineTo(...cutB);
     g.closePath();
     g.fill();
-    g.strokeStyle = "rgba(255,255,255,0.10)";
-    g.lineWidth = 3;
-    g.beginPath();
-    g.moveTo(...P2);
-    g.lineTo(armR[0] + (armR[0] - P2[0]) * 1.5, armR[1] + (armR[1] - P2[1]) * 1.5);
-    g.stroke();
-    const bw2 = F * 0.105;
-    const A0 = ext(armL, F * 1.2), A1 = [P2[0] + ux * F * 0.02, P2[1] + uy * F * 0.02];
-    const off = (pt, k) => [pt[0] - nx * k, pt[1] - ny * k];
-    g.fillStyle = PALE;
-    g.beginPath();
-    g.moveTo(...A0);
-    g.lineTo(...A1);
-    g.lineTo(...off(A1, bw2));
-    g.lineTo(...off(A0, bw2));
-    g.closePath();
-    g.fill();
+    const BW = 150, TH = 13;
     g.save();
     g.beginPath();
-    g.moveTo(...off(A0, bw2));
-    g.lineTo(...off(A1, bw2));
-    g.lineTo(A1[0], H + 10);
-    g.lineTo(0, H + 10);
-    g.lineTo(0, A0[1]);
+    g.moveTo(...along(V, uL, FAR));
+    g.lineTo(...V);
+    g.lineTo(...cutB);
+    g.lineTo(X(-125), H + 10);
+    g.lineTo(X(-125), -10);
     g.closePath();
     g.clip();
-    g.strokeStyle = "rgba(255,255,255,0.3)";
-    g.lineWidth = 2.4;
-    for (let k = 1; k < 30; k++) {
-      const o = bw2 + 22 + k * 15;
-      g.globalAlpha = Math.max(0, 1 - k / 30);
+    g.fillStyle = PALE;
+    g.beginPath();
+    g.moveTo(...along(V, uL, FAR));
+    g.lineTo(...along(V, uL, -FAR));
+    g.lineTo(...off(along(V, uL, -FAR), BW));
+    g.lineTo(...off(along(V, uL, FAR), BW));
+    g.closePath();
+    g.fill();
+    g.fillStyle = THREAD;
+    g.beginPath();
+    g.moveTo(...off(along(V, uL, FAR), BW - TH));
+    g.lineTo(...off(along(V, uL, -FAR), BW - TH));
+    g.lineTo(...off(along(V, uL, -FAR), BW));
+    g.lineTo(...off(along(V, uL, FAR), BW));
+    g.closePath();
+    g.fill();
+    g.strokeStyle = HATCH;
+    g.lineWidth = 5;
+    g.lineCap = "butt";
+    for (let k = 0; k < 26; k++) {
+      const o = BW + 24 + k * 27;
       g.beginPath();
-      g.moveTo(...off(ext(A0, F * 0.4), o));
-      g.lineTo(...off([A1[0] + ux * F * 0.6, A1[1] + uy * F * 0.6], o));
+      g.moveTo(...off(along(V, uL, FAR), o));
+      g.lineTo(...off(along(V, uL, -FAR), o));
       g.stroke();
     }
     g.restore();
-    g.globalAlpha = 1;
-    g.strokeStyle = THREAD;
-    g.lineWidth = 8;
-    g.lineCap = "butt";
+    g.strokeStyle = "rgba(255,255,255,0.10)";
+    g.lineWidth = 2;
     g.beginPath();
-    g.moveTo(...off(A0, bw2 + 9));
-    g.lineTo(...off([P2[0] - ux * F * 0.05, P2[1] - uy * F * 0.05], bw2 + 9));
+    g.moveTo(...along(V, uL, FAR));
+    g.lineTo(...V);
     g.stroke();
     const [mark, word] = await Promise.all([
       loadSvg(asset2("logo-mark-white.svg"), 600, 600),
@@ -21628,10 +21647,10 @@ void main() {
       await Promise.all([document.fonts.load("700 60px Philosopher"), document.fonts.load("400 60px Philosopher"), document.fonts.load('500 40px "Roboto Flex"')]);
     } catch (e) {
     }
-    const markS = F * 0.33;
-    g.drawImage(mark, cx - markS / 2, H * 0.085, markS, markS);
-    const wordW = F * 0.7, wordH = wordW * 302 / 1071;
-    g.drawImage(word, cx - wordW / 2 + wordW * 0.025, H * 0.29, wordW, wordH);
+    const markS = 30 * PXD;
+    g.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
+    const wordW = 79 * PXD, wordH = wordW * 302 / 1071;
+    g.drawImage(word, cx - wordW / 2 + wordW * 0.025, H * 0.285, wordW, wordH);
     g.fillStyle = INK;
     g.textAlign = "center";
     g.textBaseline = "alphabetic";
@@ -21648,17 +21667,17 @@ void main() {
     g.font = fit("1000 mg", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.19);
     g.fillText("1000 mg", cx, H * 0.66);
     g.textAlign = "right";
-    const rx = cx + F * 0.4;
+    const rx = X(50);
     g.font = `400 ${Math.round(F * 0.04)}px "Roboto Flex", Arial, sans-serif`;
-    g.fillText("For all skin types", rx, H * 0.83);
-    g.font = `500 ${Math.round(F * 0.042)}px "Roboto Flex", Arial, sans-serif`;
-    g.fillText("Contains natural &", rx, H * 0.868);
-    g.fillText("organic ingredients", rx, H * 0.903);
+    g.fillText("For all skin types", rx, H * 0.85);
+    g.font = `500 ${Math.round(F * 0.043)}px "Roboto Flex", Arial, sans-serif`;
+    g.fillText("Contains natural &", rx, H * 0.892);
+    g.fillText("organic ingredients", rx, H * 0.929);
     g.font = `400 ${Math.round(F * 0.03)}px "Roboto Flex", Arial, sans-serif`;
-    g.fillText("30 ml/1 oz \u212E", rx, H * 0.94);
+    g.fillText("30 ml/1 oz \u212E", rx, H * 0.968);
     g.fillStyle = "rgba(255,255,255,0.55)";
     const r = rng(7);
-    for (const bx of [W * 0.06, W * 0.8]) {
+    for (const bx of [X(-168), X(124)]) {
       for (let i = 0; i < 22; i++) {
         const w = F * (0.32 + r() * 0.22);
         g.fillRect(bx, H * 0.22 + i * H * 0.026, w, H * 8e-3);
@@ -21730,16 +21749,18 @@ void main() {
     g.computeVertexNormals();
     return g;
   }
-  function poolGeometry(R, H, rings = 40, segs = 120, seed = 3) {
-    const pos = [], idx = [];
-    const rimR = (a) => R * (1 + 0.07 * Math.sin(2 * a + seed) + 0.045 * Math.sin(3 * a + 1.7 * seed) + 0.025 * Math.sin(5 * a + 0.3));
+  function poolGeometry(R, H, rings = 44, segs = 128, seed = 3) {
+    const pos = [], idx = [], ts = [];
+    const rimR = (a) => R * (1 + 0.075 * Math.sin(2 * a + seed) + 0.05 * Math.sin(3 * a + 1.7 * seed) + 0.022 * Math.sin(5 * a + 0.3) + 0.012 * Math.sin(9 * a + 2.1));
     pos.push(0, H, 0);
+    ts.push(0);
     for (let i = 1; i <= rings; i++) {
-      const t = i / rings;
+      const t = Math.pow(i / rings, 0.8);
       for (let j = 0; j < segs; j++) {
         const a = j / segs * TAU, rr = rimR(a) * t;
-        const h = H * Math.sqrt(Math.max(0, 1 - Math.pow(t, 14)));
+        const h = H * Math.pow(Math.max(0, 1 - t * t), 0.55);
         pos.push(Math.sin(a) * rr, h, Math.cos(a) * rr);
+        ts.push(t);
       }
     }
     for (let j = 0; j < segs; j++) idx.push(0, 1 + j, 1 + (j + 1) % segs);
@@ -21752,6 +21773,7 @@ void main() {
     }
     const g = new BufferGeometry();
     g.setAttribute("position", new Float32BufferAttribute(pos, 3));
+    g.setAttribute("aT", new Float32BufferAttribute(ts, 1));
     g.setIndex(idx);
     g.computeVertexNormals();
     return g;
@@ -21855,15 +21877,15 @@ void main() {
   var BUBBLE_VERT = (
     /* glsl */
     `
-  attribute vec3 iColor; attribute float iSoft; attribute float iAlpha;
-  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN;
+  attribute vec3 iColor; attribute float iSoft; attribute float iAlpha; attribute vec3 iHi;
+  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi;
   void main(){
     mat4 m = modelMatrix * instanceMatrix;
     vec4 wp = m * vec4(position, 1.0);
     vN = normalize(mat3(m) * normal);
     vV = normalize(cameraPosition - wp.xyz);
     vVN = normalize(normalMatrix * mat3(instanceMatrix) * normal);
-    vColor = iColor; vSoft = iSoft; vAlpha = iAlpha;
+    vColor = iColor; vSoft = iSoft; vAlpha = iAlpha; vHi = iHi;
     gl_Position = projectionMatrix * viewMatrix * wp;
   }`
   );
@@ -21872,23 +21894,62 @@ void main() {
     `
   precision highp float;
   uniform vec3 uKey; uniform vec3 uRim; uniform float uFade;
-  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN;
+  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi;
   void main(){
     vec3 n = normalize(vN), v = normalize(vV), nv = normalize(vVN);
     float ndv = clamp(dot(n, v), 0.0, 1.0);
-    float fres = pow(1.0 - ndv, 2.6);
-    float edge = smoothstep(0.0, 0.05 + vSoft * 0.6, ndv);            // depth-of-field softness at the silhouette
-    // glass/oil sphere: key highlight top-left, focused light (caustic crescent) inside, lower-right
-    vec3 L = normalize(vec3(-0.62, 0.66, 0.42));
-    float sp = pow(max(dot(n, normalize(L + v)), 0.0), mix(220.0, 40.0, vSoft));
-    vec2 Ld = normalize(vec2(-0.62, 0.72));
-    float caust = smoothstep(0.15, 0.95, dot(nv.xy, -Ld)) * smoothstep(0.02, 0.5, ndv);
-    vec3 body = vColor * (0.32 + 0.55 * fres) + vColor * caust * 0.85 + uRim * fres * 0.08;
-    float a = (0.16 + 0.42 * fres + caust * 0.28) * edge;
-    vec3 col = body + uKey * sp * 1.5 * (1.0 - vSoft * 0.7);
-    a += sp * 0.8 * (1.0 - vSoft * 0.6);
-    a *= vAlpha * uFade;
-    gl_FragColor = vec4(col * a, a);                                   // premultiplied
+    float rimT = 1.0 - ndv;
+    float fres = pow(rimT, 3.0);
+    float edge = smoothstep(0.0, 0.05 + vSoft * 0.6, ndv);                 // depth-of-field softness at the silhouette
+    // refraction: the sphere inverts the dark room \u2192 a darker band just inside the rim, clear centre
+    float band = smoothstep(0.42, 0.74, rimT) * (1.0 - smoothstep(0.86, 0.985, rimT));
+    // key highlight (upper-left, jittered per sphere) + a faint secondary window from the fill, lower-right
+    vec3 L = normalize(vec3(-0.62 + vHi.x, 0.66 + vHi.y, 0.42));
+    float sharp = mix(260.0, 36.0, vSoft);
+    float sp = pow(max(dot(n, normalize(L + v)), 0.0), sharp);
+    vec3 L2 = normalize(vec3(0.55, -0.35, 0.5));
+    float sp2 = pow(max(dot(n, normalize(L2 + v)), 0.0), sharp * 0.35) * 0.18;
+    // focused light inside the sphere, opposite the key (caustic crescent)
+    vec2 Ld = normalize(vec2(-0.62 + vHi.x, 0.72 + vHi.y));
+    float caust = smoothstep(0.2, 0.95, dot(nv.xy, -Ld)) * smoothstep(0.05, 0.5, ndv);
+    // thin-film iridescence, only at grazing angles, very quiet
+    vec3 irid = 0.5 + 0.5 * cos(6.2831 * (rimT * 1.3 + vHi.z + vec3(0.0, 0.33, 0.67)));
+    vec3 rimCol = mix(vColor, irid, 0.38) * 0.75 + uRim * 0.12;
+    vec3 col = vColor * (0.05 + caust * 0.6) + rimCol * fres * 0.75;
+    float a = 0.05 + band * 0.32 + fres * 0.42 + caust * 0.12;
+    col *= edge; a *= edge;
+    float hi = (sp * 1.5 + sp2) * (1.0 - vSoft * 0.7);
+    col += uKey * hi; a += hi * 0.55;
+    float k = vAlpha * uFade;
+    gl_FragColor = vec4(col * k, clamp(a, 0.0, 1.0) * k);
+  }`
+  );
+  var POOL_TINT_VERT = (
+    /* glsl */
+    `
+  attribute float aT;
+  varying float vT; varying vec3 vWN; varying vec3 vWV;
+  void main(){
+    vT = aT;
+    vec4 wp = modelMatrix * vec4(position, 1.0);
+    vWN = normalize(mat3(modelMatrix) * normal);
+    vWV = normalize(cameraPosition - wp.xyz);
+    gl_Position = projectionMatrix * viewMatrix * wp;
+  }`
+  );
+  var POOL_TINT_FRAG = (
+    /* glsl */
+    `
+  precision highp float;
+  uniform vec3 uSigma; uniform float uFeather;
+  varying float vT; varying vec3 vWN; varying vec3 vWV;
+  void main(){
+    float ndv = max(abs(dot(normalize(vWN), normalize(vWV))), 0.16);
+    float thick = 1.0 - smoothstep(0.35, 1.0, vT);                       // film thins toward the rim
+    float feather = 1.0 - smoothstep(1.0 - uFeather, 1.0, vT);           // no hard edge
+    vec3 T = exp(-uSigma * thick / ndv * 0.1);
+    float F = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);                          // light reflected away is not transmitted
+    gl_FragColor = vec4(mix(vec3(1.0), T * (1.0 - F * 0.85), feather), 1.0);
   }`
   );
   var FINAL_SHADER = {
@@ -21953,7 +22014,7 @@ void main() {
       uPoolR: { value: new Vector2(300, 60) },
       uTA: { value: new Vector2() },
       uTB: { value: new Vector2() },
-      uThreadAlpha: { value: 0.5 }
+      uThreadAlpha: { value: 0.36 }
     };
     const bg = new Mesh(new PlaneGeometry(2, 2), new ShaderMaterial({ uniforms: bgU, vertexShader: BG_VERT, fragmentShader: BG_FRAG, depthWrite: false, depthTest: false }));
     bg.frustumCulled = false;
@@ -21980,70 +22041,113 @@ void main() {
       specularIntensity: 1,
       envMapIntensity: 1.35
     });
-    const clearGlass = new MeshPhysicalMaterial({
-      color: 16777215,
-      roughness: 0.02,
-      transmission: 1,
-      ior: 1.52,
-      thickness: 0.3,
-      attenuationColor: C("#eef2e6"),
-      attenuationDistance: 2,
-      envMapIntensity: 2.2,
-      specularIntensity: 1
+    const glassRimU = { uAxis: { value: new Vector3(0, 1, 0) }, uK1: { value: new Vector3(-17, 7, -9).normalize() }, uK2: { value: new Vector3(-7, 9, 8).normalize() }, uK3: { value: new Vector3(16, 7, -5).normalize() } };
+    const glassRim = new ShaderMaterial({
+      uniforms: glassRimU,
+      transparent: true,
+      depthWrite: false,
+      blending: AdditiveBlending,
+      vertexShader: (
+        /* glsl */
+        `
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); vY = position.y;
+        gl_Position = projectionMatrix * viewMatrix * wp; }`
+      ),
+      fragmentShader: (
+        /* glsl */
+        `
+      precision highp float;
+      uniform vec3 uAxis, uK1, uK2, uK3;
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      float streak(vec3 r, vec3 L, float p){ vec3 rp = normalize(r - uAxis * dot(r, uAxis)); vec3 lp = normalize(L - uAxis * dot(L, uAxis)); return pow(max(dot(rp, lp), 0.0), p); }
+      void main(){
+        vec3 n = normalize(vN), v = normalize(vV);
+        float ndv = clamp(abs(dot(n, v)), 0.0, 1.0);
+        vec3 r = reflect(-v, n);
+        float rim = pow(1.0 - ndv, 7.0);
+        float s = streak(r, uK1, 900.0) * 1.1 + streak(r, uK2, 420.0) * 0.55 + streak(r, uK3, 700.0) * 0.5;
+        float lenFade = smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${(PIPETTE_LEN - 0.25).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
+        vec3 c = vec3(1.0, 0.97, 0.92) * (rim * 0.42 + s * 1.0) * lenFade;
+        gl_FragColor = vec4(c, 1.0);
+      }`
+      )
     });
     const oilOpaque = new MeshPhysicalMaterial({
-      // oil inside the pipette (opaque so it refracts through the glass)
-      color: C("#3a1d05"),
-      emissive: C("#eaa53c"),
-      emissiveIntensity: 0.95,
-      roughness: 0.1,
+      color: C("#2a1404"),
+      emissive: C("#e9a440"),
+      emissiveIntensity: 1,
+      roughness: 0.08,
       metalness: 0,
       clearcoat: 1,
-      clearcoatRoughness: 0.05,
-      envMapIntensity: 1.2
+      clearcoatRoughness: 0.04,
+      envMapIntensity: 1.4
     });
     oilOpaque.onBeforeCompile = (sh) => {
-      sh.fragmentShader = sh.fragmentShader.replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
-      { float ndv = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
-        totalEmissiveRadiance *= 0.05 + 0.95 * pow(ndv, 1.7); }`);
+      sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying float vOilY;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOilY = position.y;");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOilY;").replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
+      { vec3 nn = normalize(vNormal); float ndv = clamp(dot(nn, normalize(vViewPosition)), 0.0, 1.0);
+        float body = 0.1 + 0.62 * pow(ndv, 1.8);
+        float side = dot(normalize(nn.xy + 1e-4), normalize(vec2(-0.55, 0.83)));
+        float lineB = exp(-pow((ndv - 0.34) / 0.1, 2.0)) * smoothstep(0.1, 0.8, -side);
+        float thin = 1.0 - smoothstep(-${(PIPETTE_LEN - 0.2).toFixed(2)}, -${(PIPETTE_LEN - 2.4).toFixed(2)}, vOilY);
+        float e = (body + lineB * 0.95) * mix(0.82, 1.45, thin) * smoothstep(0.0, 0.2, ndv);
+        totalEmissiveRadiance *= e; }`);
     };
     const oilDrop = new MeshPhysicalMaterial({
-      color: C("#ffd27a"),
-      roughness: 0.01,
-      transmission: 0.55,
+      color: C("#ffd890"),
+      roughness: 0,
+      transmission: 0.9,
       ior: 1.47,
-      thickness: 0.4,
-      attenuationColor: C("#e09a2a"),
-      attenuationDistance: 0.5,
-      emissive: C("#eda43a"),
-      emissiveIntensity: 0.9,
-      envMapIntensity: 3.2,
+      thickness: 0.6,
+      attenuationColor: C("#e09a2e"),
+      attenuationDistance: 0.6,
+      emissive: C("#f2b04a"),
+      emissiveIntensity: 1,
+      envMapIntensity: 2.6,
       specularIntensity: 1,
       clearcoat: 1,
       clearcoatRoughness: 0
     });
     oilDrop.onBeforeCompile = (sh) => {
       sh.fragmentShader = sh.fragmentShader.replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
-      { float ndv = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
-        totalEmissiveRadiance *= 0.04 + 0.96 * pow(ndv, 2.2); }`);
+      { vec3 nn = normalize(vNormal); float ndv = clamp(dot(nn, normalize(vViewPosition)), 0.0, 1.0);
+        vec2 c = nn.xy - vec2(0.26, -0.38);
+        float core = exp(-dot(c, c) / 0.12);
+        float e = (0.2 + 0.25 * ndv + 1.5 * core) * smoothstep(0.04, 0.5, ndv);
+        totalEmissiveRadiance *= e; }`);
     };
+    const poolTintMat = new ShaderMaterial({
+      uniforms: { uSigma: { value: new Vector3(0.45, 1.6, 4.2) }, uFeather: { value: 0.3 } },
+      vertexShader: POOL_TINT_VERT,
+      fragmentShader: POOL_TINT_FRAG,
+      transparent: true,
+      depthWrite: false,
+      blending: CustomBlending,
+      blendEquation: AddEquation,
+      blendSrc: ZeroFactor,
+      blendDst: SrcColorFactor
+    });
     const oilPool = new MeshPhysicalMaterial({
-      color: C("#241203"),
+      color: 0,
       roughness: 0.03,
       metalness: 0,
-      emissive: C("#c98328"),
-      emissiveIntensity: 0.34,
-      clearcoat: 1,
-      clearcoatRoughness: 0.02,
-      envMapIntensity: 2.2,
-      specularIntensity: 1
+      ior: 1.47,
+      specularIntensity: 1,
+      envMapIntensity: 2,
+      emissive: C("#c27b22"),
+      emissiveIntensity: 1,
+      transparent: true,
+      depthWrite: false,
+      blending: AdditiveBlending
     });
     const blackPP = new MeshPhysicalMaterial({ color: C("#151817"), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1 });
     const rubber = new MeshPhysicalMaterial({ color: C("#1a1c1b"), roughness: 0.58, sheen: 0.6, sheenRoughness: 0.5, sheenColor: C("#5a6662"), envMapIntensity: 0.9 });
     const bottle = new Group();
     bottle.position.set(BOTTLE_X, 0, BOTTLE_Z);
-    bottle.rotation.y = -0.32;
+    bottle.rotation.y = -0.26;
     scene.add(bottle);
+    bottle.updateMatrixWorld(true);
     const glassProfile = [
       [0, 0.16],
       [0.55, 0.13],
@@ -22079,14 +22183,14 @@ void main() {
     ];
     const glass = new Mesh(lathe(glassProfile, 128), amberGlass);
     bottle.add(glass);
-    const labelMat = new MeshPhysicalMaterial({ color: C("#80a097"), roughness: 0.78, metalness: 0, sheen: 0.25, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.5 });
+    const labelMat = new MeshPhysicalMaterial({ color: C("#6c998c"), roughness: 0.78, metalness: 0, sheen: 0.1, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.42 });
     const labelGeo = new CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
     const label = new Mesh(labelGeo, labelMat);
     label.position.y = 0.48 + 4.75 / 2;
     label.rotation.y = 0;
     bottle.add(label);
     for (const y of [0.48, 0.48 + 4.75]) {
-      const ring = new Mesh(new TorusGeometry(1.613, 6e-3, 6, 160), new MeshStandardMaterial({ color: C("#a9c2ba"), roughness: 0.8 }));
+      const ring = new Mesh(new TorusGeometry(1.613, 6e-3, 6, 160), new MeshStandardMaterial({ color: C("#9dbab0"), roughness: 0.8 }));
       ring.rotation.x = Math.PI / 2;
       ring.position.y = y;
       bottle.add(ring);
@@ -22100,37 +22204,12 @@ void main() {
       rough.colorSpace = NoColorSpace;
       labelMat.map = tex;
       labelMat.roughnessMap = rough;
-      reflLabelMat.map = tex;
-      reflLabelMat.color.set(16777215).multiplyScalar(0.42);
-      reflLabelMat.needsUpdate = true;
       labelMat.roughness = 1;
       labelMat.color.set(16777215);
       labelMat.needsUpdate = true;
       dirty = true;
       if (reduced && firstFrameDone) renderOnce();
     }).catch((e) => console.warn("[hero] label", e));
-    const fadeMat = (opts, k) => {
-      const m = new MeshBasicMaterial({ transparent: true, depthWrite: false, side: DoubleSide, toneMapped: false, ...opts });
-      m.onBeforeCompile = (sh) => {
-        sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying float vWY;").replace("#include <project_vertex>", "#include <project_vertex>\nvWY = (modelMatrix * vec4(transformed, 1.0)).y;");
-        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vWY;").replace("#include <map_fragment>", "#ifdef USE_MAP\n diffuseColor *= texture2D(map, vMapUv, 3.5);\n#endif").replace("#include <dithering_fragment>", `#include <dithering_fragment>
-gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
-      };
-      return m;
-    };
-    const reflLabelMat = fadeMat({ color: C("#80a097").multiplyScalar(0.55) }, 0.15);
-    const refl = new Group();
-    refl.position.set(BOTTLE_X, 0, BOTTLE_Z);
-    refl.rotation.y = bottle.rotation.y;
-    refl.scale.y = -1;
-    refl.add(new Mesh(glass.geometry, fadeMat({ color: C("#5a2408") }, 0.3)));
-    const reflLabel = new Mesh(labelGeo, reflLabelMat);
-    reflLabel.position.y = label.position.y;
-    refl.add(reflLabel);
-    refl.traverse((o) => {
-      o.renderOrder = -60;
-    });
-    scene.add(refl);
     const dropper = new Group();
     const dropperPivot = new Group();
     dropperPivot.position.copy(DROPPER_BASE);
@@ -22166,15 +22245,60 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       [0, 4.14]
     ], 96, 80), rubber);
     dropper.add(bulb);
-    const pip = [[0, -PIPETTE_LEN + 0.02], [0.075, -PIPETTE_LEN], [0.1, -PIPETTE_LEN + 0.1], [0.15, -PIPETTE_LEN + 0.4], [0.24, -PIPETTE_LEN + 0.85], [0.29, -PIPETTE_LEN + 1.15], [0.3, -PIPETTE_LEN + 1.4], [0.3, 0.05], [0, 0.05]];
-    const pipette = new Mesh(lathe(pip, 64), clearGlass);
-    dropper.add(pipette);
-    const pipOil = new Mesh(lathe([[0, -PIPETTE_LEN + 0.06], [0.06, -PIPETTE_LEN + 0.05], [0.08, -PIPETTE_LEN + 0.12], [0.13, -PIPETTE_LEN + 0.4], [0.21, -PIPETTE_LEN + 0.85], [0.245, -PIPETTE_LEN + 1.15], [0.25, -PIPETTE_LEN + 1.4], [0.25, -2.6], [0.23, -2.52], [0.12, -2.49], [0, -2.48]], 48), oilOpaque);
+    const PL = PIPETTE_LEN;
+    const pip = [
+      [0, -PL],
+      [0.05, -PL],
+      [0.066, -PL + 0.02],
+      [0.078, -PL + 0.1],
+      [0.1, -PL + 0.32],
+      [0.15, -PL + 0.62],
+      [0.22, -PL + 0.95],
+      [0.275, -PL + 1.22],
+      [0.298, -PL + 1.45],
+      [0.302, -PL + 1.7],
+      [0.302, 0.05],
+      [0, 0.05]
+    ];
+    const pipGeo = lathe(pip, 72, 60);
+    const pipTint = new Mesh(pipGeo, new ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: CustomBlending,
+      blendEquation: AddEquation,
+      blendSrc: ZeroFactor,
+      blendDst: SrcColorFactor,
+      vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
+      fragmentShader: `precision highp float; varying vec3 vN; varying vec3 vV; void main(){ float ndv = clamp(abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0);
+      vec3 c = mix(vec3(0.9, 0.93, 0.91), vec3(0.5, 0.56, 0.54), pow(1.0 - ndv, 2.2)); gl_FragColor = vec4(c, 1.0); }`
+    }));
+    pipTint.renderOrder = 4;
+    dropper.add(pipTint);
+    const pipRim = new Mesh(pipGeo, glassRim);
+    pipRim.renderOrder = 5;
+    dropper.add(pipRim);
+    const OT = -2.5;
+    const pipOil = new Mesh(lathe([
+      [0, -PL + 0.012],
+      [0.034, -PL + 0.014],
+      [0.042, -PL + 0.1],
+      [0.06, -PL + 0.32],
+      [0.105, -PL + 0.62],
+      [0.168, -PL + 0.95],
+      [0.212, -PL + 1.22],
+      [0.228, -PL + 1.45],
+      [0.23, -PL + 1.7],
+      [0.23, OT],
+      [0.222, OT - 0.03],
+      [0.19, OT - 0.06],
+      [0.12, OT - 0.078],
+      [0, OT - 0.082]
+    ], 48, 60), oilOpaque);
     dropper.add(pipOil);
     dropper.traverse((o) => {
-      if (o.isMesh) o.renderOrder = 2;
+      if (o.isMesh && o !== pipRim && o !== pipTint) o.renderOrder = 2;
     });
-    const tipLocal = new Vector3(0, -PIPETTE_LEN - 5e-3, 0);
+    const tipLocal = new Vector3(0, -PIPETTE_LEN + 4e-3, 0);
     const softDisk = radialTex([[0, 1], [0.35, 0.72], [0.7, 0.22], [1, 0]]);
     const featherDisk = radialTex([[0, 1], [0.5, 0.45], [1, 0]]);
     const decal = (tex, color, opacity, sx, sz, x, z, rot = 0, additive = false) => {
@@ -22207,78 +22331,139 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
     const dropShadow = decal(featherDisk, shadowCol, 0.18, 4.6, 1.5, -2.5, 0.2, -0.62);
     dropperPivot.updateMatrixWorld(true);
     const tipW = dropper.localToWorld(tipLocal.clone());
-    const POOL_H = 0.032;
-    const poolU = { uAge: { value: 99 }, uImpact: { value: new Vector2(0, 0) }, uAmp: { value: 0.02 } };
+    const POOL_H = 0.016, POOL_R = 1.1;
+    const poolU = { uAge: { value: 99 }, uImpact: { value: new Vector2(0, 0) }, uAmp: { value: 0.012 } };
+    const WAVE_GLSL = `
+        uniform float uAge; uniform vec2 uImpact; uniform float uAmp;
+        float wave(float r){
+          float h = 0.0;
+          for (int i = 0; i < 2; i++){
+            float age = uAge - float(i) * 0.5;
+            if (age <= 0.0) continue;
+            float front = 0.5 * age + 0.03;
+            float d = r - front;
+            h += uAmp * exp(-1.4 * age) * exp(-d * d / 0.03) * cos(d * 15.0) * (1.0 - float(i) * 0.35);
+          }
+          return h;
+        }`;
     oilPool.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, poolU);
       sh.vertexShader = sh.vertexShader.replace("#include <common>", `#include <common>
-        uniform float uAge; uniform vec2 uImpact; uniform float uAmp;
-        varying float vPoolT; varying float vPoolR; varying vec2 vPoolXZ;
-        float wave(float r){
-          float h = 0.0;
-          for (int i = 0; i < 3; i++){
-            float age = uAge - float(i) * 0.38;
-            if (age <= 0.0) continue;
-            float front = 0.55 * age + 0.02;
-            float d = r - front;
-            h += uAmp * exp(-1.5 * age) * exp(-d * d / 0.022) * cos(d * 26.0) * (1.0 - float(i) * 0.3);
-          }
-          return h;
-        }`).replace("#include <beginnormal_vertex>", `
+        attribute float aT;
+        varying float vPoolT; varying vec2 vPoolXZ; varying float vRipple;
+        ${WAVE_GLSL}`).replace("#include <beginnormal_vertex>", `
         vec3 objectNormal = vec3(normal);
         {
           vec2 xz = position.xz - uImpact; float r = max(length(xz), 1e-4);
           float e = 0.01; float dw = (wave(r + e) - wave(max(r - e, 0.0))) / (2.0 * e);
-          objectNormal = normalize(objectNormal + vec3(-dw * xz.x / r, 0.0, -dw * xz.y / r) * 1.0);
+          objectNormal = normalize(objectNormal + vec3(-dw * xz.x / r, 0.0, -dw * xz.y / r) * 1.4);
+          vRipple = abs(dw);
         }
         #ifdef USE_TANGENT
           vec3 objectTangent = vec3( tangent.xyz );
         #endif`).replace("#include <begin_vertex>", `
         vec3 transformed = vec3(position);
-        vPoolT = clamp(1.0 - position.y / ${POOL_H.toFixed(3)}, 0.0, 1.0);
-        vPoolR = clamp(length(position.xz) / 0.82, 0.0, 1.2);
-        vPoolXZ = position.xz;
-        { vec2 xz = position.xz - uImpact; float r = length(xz); transformed.y += wave(r) * smoothstep(0.0, ${(POOL_H * 0.6).toFixed(3)}, position.y); }`);
+        vPoolT = aT; vPoolXZ = position.xz;
+        { vec2 xz = position.xz - uImpact; float r = length(xz); transformed.y += wave(r) * (1.0 - smoothstep(0.6, 0.95, aT)); }`);
       sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>
-        varying float vPoolT; varying float vPoolR; varying vec2 vPoolXZ;`).replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
+        varying float vPoolT; varying vec2 vPoolXZ; varying float vRipple;`).replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
         {
-          // vPoolT: 0 on the flat top, \u2192 1 down the meniscus. Deep oil absorbs, the thin rim glows gold.
-          float rim = max(0.55 * smoothstep(0.35, 1.05, vPoolR), smoothstep(0.02, 0.6, vPoolT));
-          diffuseColor.rgb *= mix(0.75, 1.6, rim);
-          totalEmissiveRadiance *= mix(0.62, 2.1, rim);
-          totalEmissiveRadiance += vec3(1.0, 0.78, 0.42) * 0.22 * smoothstep(0.35, 0.95, vPoolT);
-          float ndv = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
-          totalEmissiveRadiance *= 0.55 + 0.45 * ndv;
-          // glossy sheen of the warm key light across the far half of the film (follows the ripple via the normal)
-          vec2 hq = (vPoolXZ - vec2(-0.12, -0.3)) / vec2(0.42, 0.13);
-          float sheen = exp(-dot(hq, hq)) * (1.0 - smoothstep(0.0, 0.5, vPoolT));
-          sheen *= 0.6 + 0.4 * smoothstep(0.6, 1.0, normalize(normal).y + 0.4);
-          totalEmissiveRadiance += vec3(1.0, 0.88, 0.68) * 0.32 * sheen;
-        }`);
+          float thick = 1.0 - smoothstep(0.3, 1.0, vPoolT);
+          // key light scattered back up through the film from the floor: warm, strongest where the oil is thick
+          float back = smoothstep(0.5, -0.7, vPoolXZ.y / ${POOL_R.toFixed(2)});   // light enters from the key side, glows toward the back
+          totalEmissiveRadiance *= (0.05 + 0.2 * thick * (0.55 + 0.45 * back)) + 0.22 * min(vRipple * 5.0, 1.0) * thick;
+          // one crisp glint streak of the key softbox across the far half (follows the ripple via the normal)
+          vec3 nn = normalize(vNormal);
+          vec2 hq = (vPoolXZ - vec2(-0.1, -0.36)) / vec2(0.54, 0.05);
+          float gl = exp(-pow(dot(hq, hq), 1.5)) * (1.0 + 0.8 * min(vRipple * 4.0, 1.0));   // flat core, crisp falloff
+          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 0.8 * gl * thick;
+          // meniscus: the thin rim catches a hairline of warm light on the far side only
+          float far = smoothstep(0.1, -0.6, vPoolXZ.y / ${POOL_R.toFixed(2)});
+          totalEmissiveRadiance += vec3(1.0, 0.8, 0.5) * 0.07 * smoothstep(0.72, 0.86, vPoolT) * (1.0 - smoothstep(0.86, 0.97, vPoolT)) * far;
+        }`).replace("#include <dithering_fragment>", `#include <dithering_fragment>
+        gl_FragColor.rgb *= 1.0 - smoothstep(0.7, 1.0, vPoolT);`);
     };
-    const pool = new Mesh(poolGeometry(0.82, POOL_H), oilPool);
-    pool.position.set(tipW.x + 0.12, 0, tipW.z - 0.05);
-    pool.renderOrder = 1;
-    scene.add(pool);
-    decal(softDisk, shadowCol, 0.16, 2.05, 1.85, pool.position.x, pool.position.z + 0.05);
-    decal(radialTex([[0, 0.9], [0.55, 0.55], [0.8, 0.18], [1, 0]]), "#b8741f", 0.12, 2, 1.85, pool.position.x, pool.position.z, 0, true);
-    decal(radialTex([[0, 1], [0.4, 0.4], [1, 0]]), "#e0a040", 0.22, 3.2, 1.6, pool.position.x + 0.9, pool.position.z - 0.5, -0.42, true);
+    poolTintMat.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, poolU);
+    };
+    const poolGeo = poolGeometry(POOL_R, POOL_H);
+    const poolTint = new Mesh(poolGeo, poolTintMat);
+    poolTint.renderOrder = 1;
+    const pool = new Mesh(poolGeo, oilPool);
+    pool.renderOrder = 2;
+    pool.position.set(tipW.x + 0.1, 3e-3, tipW.z - 0.05);
+    poolTint.position.copy(pool.position);
+    scene.add(poolTint, pool);
+    decal(softDisk, shadowCol, 0.1, POOL_R * 2.3, POOL_R * 1.9, pool.position.x, pool.position.z + 0.05);
+    const poolCaustic = decal(radialTex([[0, 1], [0.3, 0.5], [0.65, 0.12], [1, 0]]), "#e9a443", 0.12, 1.9, 0.9, pool.position.x + 0.6, pool.position.z - 0.55, -0.42, true);
     poolU.uImpact.value.set(tipW.x - pool.position.x, tipW.z - pool.position.z);
+    const PEND_SEGS = 40, PEND_PTS = 34;
+    const pendGeo = new LatheGeometry(Array.from({ length: PEND_PTS }, (_, j) => new Vector2(0.01, -j * 0.01)), PEND_SEGS);
+    const pendant = new Mesh(pendGeo, oilDrop);
+    pendant.renderOrder = 3;
+    pendant.frustumCulled = false;
+    scene.add(pendant);
+    const prof = Array.from({ length: PEND_PTS }, () => [0, 0]);
+    const smax = (a, b, k) => {
+      const h = clamp2(0.5 + 0.5 * (b - a) / k, 0, 1);
+      return a * (1 - h) + b * h + k * h * (1 - h);
+    };
+    function setPendant(rt2, r, sag, neckLen, pinch) {
+      const yc = -(neckLen + r * 0.92);
+      const rvT = r * 0.95, rvB = r * sag;
+      const NU = 18;
+      for (let j = 0; j < NU; j++) {
+        const s = j / NU, y = yc * Math.pow(s, 0.85);
+        const bulb2 = Math.abs(y - yc) < rvT ? r * Math.sqrt(1 - Math.pow((y - yc) / rvT, 2)) : 0;
+        const neckR = (rt2 + (rt2 * 0.55 - rt2) * smooth(0, 1, -y / Math.max(-yc, 1e-3))) * (1 - pinch * smooth(0.2, 0.9, -y / Math.max(-yc, 1e-3)));
+        prof[j][0] = Math.max(5e-4, smax(neckR, bulb2, 0.035 * (1 - pinch * 0.8) + 4e-3));
+        prof[j][1] = y;
+      }
+      for (let j = NU; j < PEND_PTS; j++) {
+        const a = (j - NU) / (PEND_PTS - 1 - NU) * Math.PI / 2;
+        prof[j][0] = r * Math.cos(a);
+        prof[j][1] = yc - rvB * Math.sin(a);
+      }
+      prof[PEND_PTS - 1][0] = 0;
+      const p = pendGeo.attributes.position.array, nrm = pendGeo.attributes.normal.array;
+      for (let j = 0; j < PEND_PTS; j++) {
+        const a = prof[Math.max(0, j - 1)], b = prof[Math.min(PEND_PTS - 1, j + 1)];
+        let tx = b[0] - a[0], ty = b[1] - a[1];
+        const tl = Math.hypot(tx, ty) || 1;
+        tx /= tl;
+        ty /= tl;
+        let nx = -ty, ny = tx;
+        if (j === PEND_PTS - 1) {
+          nx = 0;
+          ny = -1;
+        }
+        for (let i = 0; i <= PEND_SEGS; i++) {
+          const phi = i / PEND_SEGS * TAU, sn = Math.sin(phi), cs = Math.cos(phi), k = (i * PEND_PTS + (PEND_PTS - 1 - j)) * 3;
+          p[k] = prof[j][0] * sn;
+          p[k + 1] = prof[j][1];
+          p[k + 2] = prof[j][0] * cs;
+          nrm[k] = nx * sn;
+          nrm[k + 1] = ny;
+          nrm[k + 2] = nx * cs;
+        }
+      }
+      pendGeo.attributes.position.needsUpdate = true;
+      pendGeo.attributes.normal.needsUpdate = true;
+      return yc - rvB;
+    }
     const drop = new Mesh(new SphereGeometry(1, 48, 32), oilDrop);
     drop.renderOrder = 3;
     scene.add(drop);
-    const neck = new Mesh(new CylinderGeometry(1, 1, 1, 24, 1, true), oilDrop);
-    neck.renderOrder = 3;
-    scene.add(neck);
     let mobileNow = false;
     const isMobile = () => mobileNow;
     const NB = 10;
     const tints = [C("#9ab4ac"), C("#f9b5c4"), C("#ddbfa3"), C("#b6c9c2"), C("#e8d6c3"), C("#c49b9f")];
     const bubbleGeo = new SphereGeometry(1, 40, 28);
-    const iColor = new Float32Array(NB * 3), iSoft = new Float32Array(NB), iAlpha = new Float32Array(NB);
+    const iColor = new Float32Array(NB * 3), iSoft = new Float32Array(NB), iAlpha = new Float32Array(NB), iHi = new Float32Array(NB * 3);
     bubbleGeo.setAttribute("iColor", new InstancedBufferAttribute(iColor, 3));
     bubbleGeo.setAttribute("iSoft", new InstancedBufferAttribute(iSoft, 1));
     bubbleGeo.setAttribute("iAlpha", new InstancedBufferAttribute(iAlpha, 1));
+    bubbleGeo.setAttribute("iHi", new InstancedBufferAttribute(iHi, 3));
     const bubbleMat = new ShaderMaterial({
       uniforms: { uKey: { value: C("#fff6ea").multiplyScalar(1.6) }, uRim: { value: C("#f6f4ee") }, uFade: { value: 1 } },
       vertexShader: BUBBLE_VERT,
@@ -22297,39 +22482,49 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
     const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
     const B = [];
     const START = [
-      [3.9, 8.6, -2.5, 0.36, 0, 0.12],
-      [-3.1, 10.2, -1.5, 0.24, 1, 0.08],
-      [4.5, 3.2, 1.2, 0.2, 2, 0.04],
-      [-6.2, 7.4, -4.5, 0.5, 3, 0.4],
-      [2.4, 11.4, -5, 0.62, 2, 0.5],
-      [-1.9, 3.3, 1.6, 0.13, 1, 0.02],
-      [5.6, 6.4, -1.5, 0.3, 5, 0.12],
-      [-4.4, 11.6, 0.8, 0.2, 4, 0.06],
-      [6.6, 10.4, -0.5, 0.42, 1, 0.45],
-      [-2.6, 7, -4.8, 0.32, 0, 0.3],
-      [3.2, 5.2, -5.5, 0.24, 4, 0.2],
-      [0.2, 12.2, 0.6, 0.17, 5, 0.05]
+      [3.9, 8.9, -2.5, 0.3, 0, 0.12],
+      [-3.1, 10.2, -1.5, 0.22, 1, 0.08],
+      [4.6, 2.6, 1.2, 0.17, 2, 0.04],
+      [-6, 7.4, -4.5, 0.34, 3, 0.42],
+      [2.6, 11.6, -5, 0.4, 2, 0.5],
+      [-1.9, 3.3, 1.6, 0.12, 1, 0.02],
+      [5.9, 5.6, -1.5, 0.26, 5, 0.12],
+      [-4.4, 11.6, 0.8, 0.18, 4, 0.06],
+      [6.6, 10.4, -0.5, 0.32, 1, 0.45],
+      [-2.6, 7, -4.8, 0.28, 0, 0.3]
     ];
+    const setHi = (i) => {
+      iHi[i * 3] = (rnd() - 0.5) * 0.26;
+      iHi[i * 3 + 1] = (rnd() - 0.5) * 0.2;
+      iHi[i * 3 + 2] = rnd();
+    };
     for (let i = 0; i < NB; i++) {
       const [x, y, z, r, t, s] = START[i];
-      B.push({ p: new Vector3(x, y, z), v: new Vector3(), r, tint: t, soft: s, phase: rnd() * 100, born: -10, life: 1 });
+      B.push({ p: new Vector3(x, y, z), v: new Vector3(), r, tint: t, soft: s, phase: rnd() * 100, born: -10, a: 0 });
       tints[t].toArray(iColor, i * 3);
       iSoft[i] = s;
-      iAlpha[i] = 1;
+      iAlpha[i] = 0;
+      setHi(i);
     }
     const BOUNDS = { x0: -7, x1: 7.5, y0: -1, y1: 13.2, z0: -6, z1: 2.5 };
     function respawn(b, t) {
-      b.p.set(BOUNDS.x0 + rnd() * (BOUNDS.x1 - BOUNDS.x0), -0.6 + rnd() * 5.5, BOUNDS.z0 + rnd() * (BOUNDS.z1 - BOUNDS.z0));
+      const i = B.indexOf(b);
+      b.p.set(BOUNDS.x0 + rnd() * (BOUNDS.x1 - BOUNDS.x0), -0.4 + rnd() * 3.2, BOUNDS.z0 + rnd() * (BOUNDS.z1 - BOUNDS.z0));
       b.v.set(0, 0, 0);
       b.born = t;
-      b.r = 0.13 + Math.pow(rnd(), 1.8) * 0.5;
-      b.soft = clamp2((b.p.z > 2 ? 0.5 : 0) + (b.p.z < -4 ? 0.35 : 0) + rnd() * 0.15, 0, 0.85);
+      b.a = 0;
+      b.r = 0.12 + Math.pow(rnd(), 1.8) * 0.3;
+      b.soft = clamp2((b.p.z > 1.6 ? 0.5 : 0) + (b.p.z < -4 ? 0.35 : 0) + rnd() * 0.15, 0, 0.85);
       b.tint = Math.floor(rnd() * tints.length);
-      tints[b.tint].toArray(iColor, B.indexOf(b) * 3);
-      iSoft[B.indexOf(b)] = b.soft;
+      tints[b.tint].toArray(iColor, i * 3);
+      iSoft[i] = b.soft;
+      setHi(i);
       bubbleGeo.attributes.iColor.needsUpdate = true;
       bubbleGeo.attributes.iSoft.needsUpdate = true;
+      bubbleGeo.attributes.iHi.needsUpdate = true;
     }
+    const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9 };
+    const ovDisc = [0, 0], ovTag = [0, 0];
     const pointer = { ndc: new Vector2(0.3, 0), target: new Vector2(0.3, 0), active: false, vel: new Vector2() };
     const ray = new Raycaster();
     const tmp = new Vector3(), tmp2 = new Vector3(), tmp3 = new Vector3();
@@ -22349,8 +22544,8 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       composer.setSize(W, H);
       camera.aspect = W / H;
       if (mobile) {
-        const hs = Math.min(345, W * 0.9, H * 0.46);
-        frame = { fx: 0.5, fy: (14 + hs / 2) / H, hs, D: 0 };
+        const hs = Math.min(300, W * 0.78, H * 0.42);
+        frame = { fx: 0.5, fy: (38 + hs / 2) / H, hs, D: 0 };
       } else {
         const wide = W / H;
         const hs = Math.min(H * 0.8, W * 0.44 * (11 / 7.6));
@@ -22403,8 +22598,8 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       // on the label surface (set from the bottle each frame)
       glow: new Vector3(BOTTLE_X - 0.6, 4.6, -1.5),
       pool: new Vector3(BOTTLE_X - 1.6, 0, 0.4),
-      tA: new Vector3(BOTTLE_X + 12, 8.6, -6),
-      tB: new Vector3(BOTTLE_X - 1.5, 14.6, -6)
+      tA: new Vector3(BOTTLE_X + 9.5, 12.8, -4),
+      tB: new Vector3(BOTTLE_X - 2.6, -1.55, -4)
     };
     function step(dt, t) {
       st.intro = reduced ? 0 : Math.max(0, st.intro - dt / 2.6);
@@ -22426,42 +22621,52 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       dropperPivot.updateMatrixWorld(true);
       const tip = dropper.localToWorld(tmp.copy(tipLocal));
       dropShadow.position.x = tip.x + 1.6 + bob * 0.4;
+      glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
+      bottle.localToWorld(anchors.tag.copy(tagLocal));
+      {
+        const d = toPx(anchors.bubble), m = OV.discR + 14;
+        ovDisc[0] = clamp2(d[0], m, W - m);
+        ovDisc[1] = d[1];
+        const tg = toPx(anchors.tag);
+        ovTag[0] = tg[0];
+        ovTag[1] = tg[1];
+      }
       const ph = reduced ? 2.3 : (t + st.phase) % DROP.period;
       const cyc = Math.floor((t + st.phase) / DROP.period);
-      const R1 = 0.19;
+      const R1 = 0.19, RT = 0.046;
+      pendant.position.copy(tip);
       if (ph < DROP.grow + DROP.hang) {
         st.falling = false;
         st.landed = false;
         st.dropV = 0;
         const g2 = easeInOut(clamp2(ph / DROP.grow, 0, 1));
-        const r = 0.035 + (R1 - 0.035) * g2;
-        const sag = 1 + 0.32 * g2 + (ph > DROP.grow ? 0.06 * smooth(DROP.grow, DROP.grow + DROP.hang, ph) : 0);
-        const neckLen = 0.02 + 0.09 * g2 + (ph > DROP.grow ? 0.07 * smooth(DROP.grow, DROP.grow + DROP.hang, ph) : 0);
-        dropPos.set(tip.x, tip.y - neckLen - r * sag * 0.92, tip.z);
-        drop.position.copy(dropPos);
-        drop.scale.set(r * (1 - 0.04 * g2), r * sag, r * (1 - 0.04 * g2));
-        drop.visible = true;
-        const nr = 0.075 * (1 - 0.55 * g2) * (ph > DROP.grow ? 1 - smooth(DROP.grow, DROP.grow + DROP.hang, ph) * 0.8 : 1);
-        neck.visible = true;
-        neck.position.set(tip.x, tip.y - neckLen * 0.5 - 0.01, tip.z);
-        neck.scale.set(nr, neckLen + 0.04, nr);
-        st.dropY = dropPos.y;
+        const hp = ph > DROP.grow ? smooth(DROP.grow, DROP.grow + DROP.hang, ph) : 0;
+        const r = RT + (R1 - RT) * g2;
+        const sag = 1.02 + 0.3 * g2 + 0.1 * hp;
+        const neckLen = 8e-3 + 0.05 * g2 + 0.12 * hp;
+        setPendant(RT, r, sag, neckLen, smooth(0.35, 1, hp));
+        pendant.visible = true;
+        drop.visible = false;
+        st.dropY = tip.y - (neckLen + r * 0.92);
       } else {
-        neck.visible = false;
+        const since = ph - (DROP.grow + DROP.hang);
+        setPendant(RT, RT + 0.034 * Math.exp(-since * 5), 1.04, 4e-3, 0);
+        pendant.visible = true;
         if (!st.falling && !st.landed) {
           st.falling = true;
-          st.dropY = tip.y - 0.2 - R1 * 1.38 * 0.92;
-          st.dropV = 0;
           st.cyc = cyc;
+          st.x0 = tip.x;
+          st.z0 = tip.z;
+          st.y0 = tip.y - (8e-3 + 0.05 + 0.12 + R1 * 0.92);
         }
         if (st.falling) {
-          st.dropV += (DROP.fallG - DROP.drag * st.dropV) * dt;
-          st.dropY -= st.dropV * dt;
+          const gc = DROP.fallG / DROP.drag, ec = Math.exp(-DROP.drag * since);
+          st.dropV = gc * (1 - ec);
+          st.dropY = st.y0 - gc * (since - (1 - ec) / DROP.drag);
           const stretch = 1 + clamp2(st.dropV / 3.2, 0, 1) * 0.16;
-          const since = ph - (DROP.grow + DROP.hang);
-          const settle = 1 + 0.38 * Math.exp(-since * 7);
+          const settle = 1 + 0.42 * Math.exp(-since * 7);
           drop.scale.set(R1 / Math.sqrt(stretch * settle), R1 * stretch * settle, R1 / Math.sqrt(stretch * settle));
-          drop.position.set(tip.x, st.dropY, tip.z);
+          drop.position.set(st.x0, st.dropY, st.z0);
           drop.visible = true;
           const surface = POOL_H + 0.01;
           if (st.dropY - R1 * stretch < surface + 0.02) {
@@ -22471,7 +22676,7 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
             if (st.impactT < 0 || st.impactCyc !== st.cyc) {
               st.impactT = t;
               st.impactCyc = st.cyc;
-              poolU.uImpact.value.set(tip.x - pool.position.x, tip.z - pool.position.z);
+              poolU.uImpact.value.set(st.x0 - pool.position.x, st.z0 - pool.position.z);
             }
             if (m >= 1) {
               st.falling = false;
@@ -22482,7 +22687,7 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
         } else drop.visible = false;
       }
       poolU.uAge.value = reduced ? 99 : t - st.impactT;
-      if (!reduced) {
+      {
         ray.setFromCamera(pointer.ndc, camera);
         const mobile = isMobile();
         for (let i = 0; i < NB; i++) {
@@ -22492,7 +22697,7 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
           const ax = Math.sin(t * 0.21 + b.phase) * 0.06 + Math.sin(t * 0.47 + b.phase * 1.7) * 0.03;
           const az = Math.cos(t * 0.17 + b.phase * 0.7) * 0.03;
           let fx = ax, fy = drag * vt, fz = az;
-          if (pointer.active && !mobile) {
+          if (pointer.active && !mobile && !reduced) {
             ray.ray.closestPointToPoint(b.p, tmp2);
             const dx = b.p.x - tmp2.x, dy = b.p.y - tmp2.y, dz = b.p.z - tmp2.z;
             const d = Math.hypot(dx, dy, dz), R = 1.9 + b.r;
@@ -22505,10 +22710,12 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
               fy += pointer.vel.y * 2 * (1 - d / R);
             }
           }
-          b.v.x += (fx - drag * b.v.x) * dt;
-          b.v.y += (fy - drag * b.v.y) * dt;
-          b.v.z += (fz - drag * b.v.z) * dt;
-          b.p.addScaledVector(b.v, dt);
+          if (!reduced) {
+            b.v.x += (fx - drag * b.v.x) * dt;
+            b.v.y += (fy - drag * b.v.y) * dt;
+            b.v.z += (fz - drag * b.v.z) * dt;
+            b.p.addScaledVector(b.v, dt);
+          }
           const avoid = (ax0, ay0, az0, ax1, ay1, az1, rad) => {
             const sx = ax1 - ax0, sy = ay1 - ay0, sz = az1 - az0;
             const h = clamp2(((b.p.x - ax0) * sx + (b.p.y - ay0) * sy + (b.p.z - az0) * sz) / (sx * sx + sy * sy + sz * sz), 0, 1);
@@ -22530,20 +22737,51 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
             }
           };
           const front = b.p.z > -1.5;
+          let vis = 1;
           {
-            const dxb = b.p.x - anchors.bubble.x, dyb = b.p.y - anchors.bubble.y, db = Math.hypot(dxb, dyb), mb = 1.5 + b.r;
-            if (front && db < mb) {
-              b.p.x = anchors.bubble.x + dxb / db * mb;
-              b.p.y = anchors.bubble.y + dyb / db * mb;
+            tmp3.copy(b.p).applyMatrix4(camera.matrixWorldInverse);
+            const ppw = camera.projectionMatrix.elements[5] * H * 0.5 / Math.max(-tmp3.z, 0.1);
+            tmp3.copy(b.p).project(camera);
+            const sx = (tmp3.x * 0.5 + 0.5) * W, sy = (-tmp3.y * 0.5 + 0.5) * H, sr = b.r * ppw;
+            const PAD = 26, kp = Math.min(1, dt * 3) / ppw;
+            const pushPx = (dx, dy, px2) => {
+              b.p.x += dx * px2 * kp;
+              b.p.y -= dy * px2 * kp;
+              const vn = b.v.x * dx - b.v.y * dy;
+              if (vn < 0) {
+                b.v.x -= vn * dx;
+                b.v.y += vn * dy;
+              }
+            };
+            if (OV.discR > 0) {
+              const dx = sx - ovDisc[0], dy = sy - ovDisc[1], d = Math.hypot(dx, dy) || 1e-3;
+              const gap = d - sr - OV.discR;
+              if (gap < PAD) pushPx(dx / d, dy / d, PAD - gap);
+              vis = Math.min(vis, smooth(2, PAD, gap));
+            }
+            if (OV.tagW > 0) {
+              const x0 = ovTag[0] - 8, x1 = ovTag[0] + OV.tagW, y0 = ovTag[1] - OV.tagH / 2, y1 = ovTag[1] + OV.tagH / 2;
+              const qx = clamp2(sx, x0, x1), qy = clamp2(sy, y0, y1);
+              let dx = sx - qx, dy = sy - qy, d = Math.hypot(dx, dy), gap = d - sr;
+              if (d < 1e-3) {
+                const up = sy - y0, dn = y1 - sy;
+                dx = 0;
+                dy = up < dn ? -1 : 1;
+                d = 1;
+                gap = -Math.min(up, dn) - sr;
+              }
+              if (gap < PAD) pushPx(dx / d, dy / d, PAD - gap);
+              vis = Math.min(vis, smooth(2, PAD, gap));
             }
             if (!mobile) {
-              tmp3.copy(b.p).project(camera);
-              const edgeNdc = exclNdc + b.r * ppuNdc;
-              if (tmp3.x < edgeNdc) {
-                b.p.x += (edgeNdc - tmp3.x) / ppuNdc * Math.min(1, dt * 2.5);
-                b.v.x = Math.max(b.v.x, 0);
-              }
+              const gap = sx - sr - (exclNdc * 0.5 + 0.5) * W;
+              if (gap < 0) pushPx(1, 0, -gap);
+              vis = Math.min(vis, smooth(0, 48, gap));
+            } else {
+              vis = Math.min(vis, smooth(6, 40, OV.copyTop - (sy + sr)));
             }
+            vis = Math.min(vis, smooth(0, 80, sy - sr), smooth(0, 36, W - sx - sr), smooth(0, 36, sx - sr));
+            if (sy + sr < 0) b.p.y = BOUNDS.y1 + 1;
           }
           const zb = front ? b.p.z : BOTTLE_Z;
           avoid(BOTTLE_X, -0.5, zb, BOTTLE_X, 7.3, zb, 1.85);
@@ -22552,9 +22790,9 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
           avoid(cb.x, cb.y, zd, cb.x + 4.1 * s, cb.y + 4.1 * c, zd, 1.35);
           avoid(cb.x, cb.y, zd, cb.x - PIPETTE_LEN * s, cb.y - PIPETTE_LEN * c, zd, 0.5);
           avoid(cb.x - PIPETTE_LEN * s, -0.5, zd, cb.x - PIPETTE_LEN * s, cb.y - PIPETTE_LEN * c, zd, 0.6);
-          const fadeIn = smooth(0, 1.6, t - b.born);
-          const fadeOut = 1 - smooth(BOUNDS.y1 - 2.4, BOUNDS.y1, b.p.y);
-          iAlpha[i] = fadeIn * fadeOut;
+          const target2 = smooth(0, 2.4, t - b.born) * (1 - smooth(BOUNDS.y1 - 2.4, BOUNDS.y1, b.p.y)) * vis;
+          b.a = reduced || target2 < b.a ? target2 : b.a + (target2 - b.a) * Math.min(1, dt * 3);
+          iAlpha[i] = b.a;
           if (b.p.y > BOUNDS.y1 || b.p.x < BOUNDS.x0 - 2 || b.p.x > BOUNDS.x1 + 2) respawn(b, t);
         }
         for (let i = 0; i < NB; i++) for (let j = i + 1; j < NB; j++) {
@@ -22578,8 +22816,6 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
         bubbles.setMatrixAt(i, m4);
       }
       bubbles.instanceMatrix.needsUpdate = true;
-      if (isMobile()) bubbles.count = 9;
-      else bubbles.count = NB;
       const g = toPx(anchors.glow);
       bgU.uGlow.value.set(g[0] * pr, (H - g[1]) * pr);
       const unit = toPx(tmp2.set(anchors.glow.x, anchors.glow.y + 1, anchors.glow.z));
@@ -22588,13 +22824,17 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       const pl = toPx(anchors.pool);
       bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr);
       bgU.uPoolR.value.set(ppu * 7.5 * pr, ppu * 1.9 * pr);
-      const a = toPx(anchors.tA), b2 = toPx(anchors.tB);
+      let a = toPx(anchors.tA), b2 = toPx(anchors.tB);
+      if (isMobile()) {
+        const fl = toPx(tmp2.set(BOTTLE_X, 0, 0));
+        a = [-24, H * 0.05];
+        b2 = [W + 24, Math.max(fl[1] - 34, ovDisc[1] + OV.discR + 90)];
+      }
       bgU.uTA.value.set(a[0] * pr, (H - a[1]) * pr);
       bgU.uTB.value.set(b2[0] * pr, (H - b2[1]) * pr);
       finalPass.uniforms.uTime.value = t;
       caustic.material.opacity = 0.26 + 0.04 * Math.sin(t * 0.7);
-      bottle.localToWorld(anchors.tag.copy(tagLocal));
-      onFrame && onFrame({ bubble: toPx(anchors.bubble), tag: toPx(anchors.tag), ppu, W, H });
+      onFrame && onFrame({ bubble: ovDisc, tag: ovTag, ppu, W, H });
     }
     let acc = 0, n = 0, warm = 0;
     function render(now2) {
@@ -22657,6 +22897,9 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
         pointer.target.set(nx, ny);
         pointer.active = active;
       },
+      setOverlays(o) {
+        Object.assign(OV, o);
+      },
       get dirty() {
         return dirty;
       },
@@ -22714,15 +22957,19 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
     }
     let scene = null;
     let tracked = false;
-    let bubbleR = 70;
+    const copyEl = root.querySelector(".hero-copy");
     const measure = () => {
-      bubbleR = bubbleEl.firstElementChild.offsetWidth / 2 + 14;
+      if (!scene) return;
+      const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
+      scene.setOverlays({
+        discR: bubbleEl.firstElementChild.offsetWidth / 2,
+        tagW: tagEl.offsetWidth,
+        tagH: tagEl.offsetHeight,
+        copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0)
+      });
     };
-    measure();
-    const onFrame = ({ bubble, tag, W }) => {
-      const r = bubbleR;
-      const bx = Math.min(Math.max(bubble[0], r), W - r);
-      bubbleEl.style.transform = `translate3d(${bx.toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
+    const onFrame = ({ bubble, tag }) => {
+      bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
       tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
       if (!tracked) {
         tracked = true;
@@ -22738,6 +22985,8 @@ gl_FragColor.a *= ${k.toFixed(3)} * pow(smoothstep(-2.2, 0.0, vWY), 1.8);`);
       onFirstFrame: () => requestAnimationFrame(() => root.classList.add("is-live"))
     }).then((s) => {
       scene = s;
+      measure();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
       let visible = true;
       const sync = () => {
         visible && !document.hidden ? s.start() : s.stop();

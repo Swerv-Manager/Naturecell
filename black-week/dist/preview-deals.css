@@ -178,12 +178,11 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-relaxed); color: var(--text-body); background: var(--surface-page); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: hidden; }
-img, svg, canvas { display: block; max-width: 100%; }
+body { margin: 0; overflow-x: hidden; }
+[data-bw] img, [data-bw] svg, [data-bw] canvas { display: block; max-width: 100%; }
 button { font: inherit; cursor: pointer; }
 a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-.nc-container { width: 100%; max-width: var(--container-max); margin-inline: auto; padding-inline: var(--gutter); }
-.nc-eyebrow { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--text-brand); }
+[data-bw] .nc-eyebrow { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--text-brand); }
 .nc-display { font-family: var(--font-display); font-weight: 400; line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); color: var(--text-strong); margin: 0; }
 .nc-heading { font-family: var(--font-display); font-weight: 700; line-height: var(--leading-snug); color: var(--text-strong); margin: 0; }
 .nc-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -205,6 +204,8 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   /* matte paper grain (packaging reference) – apply with .nc-grain on dark panels only */
   --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
+/* Everything below is scoped to the Black Week sections ([data-bw]) so the live theme's own nc-* components keep their look. */
+[data-bw] {
 .nc-grain { position: relative; isolation: isolate; }
 .nc-grain::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); opacity: .07; mix-blend-mode: soft-light; pointer-events: none; z-index: 0; }
 
@@ -257,13 +258,693 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 .on-night .nc-section__lead { color: var(--bw-muted-on-night); }
 .on-night .nc-eyebrow { color: var(--sand-500); }
 
+}
+
+/* core/03-theme.css */
+/* ============================================================
+   NatureCell tema — designsystem og basiskomponenter
+   Oversat 1:1 fra NatureCell Design System (52829db1) og
+   NatureCell.dc.html (godkendt 10-08-2026).
+   Farverne er laast: ingen hex uden for systemet.
+   ============================================================ */
+
+/* --- Webfonts (selvhostet, OFL-licens; ingen eksterne kald) --- */
+@font-face {
+  font-family: 'Philosopher';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/theme/nc-philosopher-regular.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Philosopher';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/theme/nc-philosopher-bold.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Philosopher';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/theme/nc-philosopher-italic.woff2") format('woff2');
+}
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: 300 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("../assets/theme/nc-robotoflex.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: 300 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("../assets/theme/nc-robotoflex-ext.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --- Tokens --- */
+:root {
+  /* Groenne skala (officiel: 80a097 + 3e5d58) */
+  --sage-900: #28403B;
+  --sage-800: #324E48;
+  --sage-700: #3E5D58;
+  --sage-600: #657D79; /* runtime-vaerdi fra godkendt design */
+  --sage-500: #80A097;
+  --sage-400: #9AB4AC;
+  --sage-300: #B6C9C2;
+  --sage-200: #D2DFDB;
+  --sage-100: #D9E3E0; /* runtime-vaerdi */
+  --sage-50:  #E6ECEA; /* runtime-vaerdi */
+
+  --stone-600: #6F7271;
+  --stone-500: #8C8F8F;
+  --stone-300: #B9BBB8;
+  --stone-100: #E4E4E0;
+
+  --sand-500: #DDBFA3;
+  --sand-300: #E8D6C3;
+  --sand-100: #F4ECE3;
+  --linen-500: #D5D1C3;
+  --linen-300: #E3E0D6;
+  --linen-100: #F1EFE8;
+
+  --paper:   #F6F4EE;
+  --paper-2: #FBFAF5;
+  --cloud:   #FFFFFF;
+
+  --ink-900: #233330;
+  --ink-700: #516D69; /* runtime broedtekst */
+  --ink-500: #788E8A; /* runtime daempet */
+  --ink-400: #828A87;
+  --ink-300: #AAB0AD;
+  --ink-200: #D3D6D1;
+  --ink-100: #E7E8E2;
+
+  --accent-mauve: #B07A7F;
+  --accent-pink:  #F9B5C4;
+  --accent-berry: #84334E;
+  --sale: #84334E;
+
+  /* Sektionsbaggrunde fra godkendt design */
+  --nc-announce: #3E5D58;
+  --nc-footer-bg: #80A097;
+  --nc-trust-bg: #F2F6F5;
+  --nc-lifestyle-bg: #E6ECEA;
+  --nc-bestsellers-bg: #F2F6F5;
+  --nc-testimonials-bg: #E6ECEA;
+  --nc-foundervid-bg: #F2F6F5;
+  --nc-founder-bg: #F2F6F5;
+  --nc-reviews-bg: #E6ECEA;
+  --nc-hero-bg: #80A097;
+  --nc-product-tint: #ECF0EE; /* color-mix(3E5D58 10%, hvid) */
+
+  /* Semantik */
+  --surface-page: var(--paper);
+  --surface-card: var(--cloud);
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-brand: var(--sage-700);
+  --text-on-sage: var(--cloud);
+  --border-soft: var(--ink-100);
+  --border-default: var(--ink-200);
+  --border-sage: var(--sage-200);
+  --action: var(--sage-500);
+  --action-hover: var(--sage-600);
+  --focus-ring: var(--sage-600);
+
+  /* Typografi */
+  --font-display: 'Philosopher', Georgia, 'Times New Roman', serif;
+  --font-body: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
+  --weight-display: 400; /* Philosopher Regular er default for overskrifter */
+  --weight-heading: 700;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+  --tracking-tight: -0.01em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+  --tracking-widest: 0.24em;
+
+  /* Rytme og layout */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-9: 4rem;
+  --space-10: 5rem;
+  --space-12: 7.5rem;
+  --container-max: 1240px;
+  --container-text: 680px;
+  --gutter: clamp(16px, 4vw, 24px);
+  --section-y: clamp(48px, 7vw, 80px);
+
+  /* Form, skygge, bevaegelse */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --shadow-xs: 0 1px 2px rgba(62, 93, 88, 0.06);
+  --shadow-sm: 0 2px 8px rgba(62, 93, 88, 0.07);
+  --shadow-md: 0 6px 20px rgba(62, 93, 88, 0.09);
+  --shadow-lg: 0 14px 40px rgba(62, 93, 88, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(128, 160, 151, 0.35);
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
+}
+
+/* --- Basis --- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--sage-700);
+  margin: 0 0 0.4em;
+  text-wrap: pretty;
+}
+
+h1 { font-size: clamp(2rem, 4vw, var(--text-4xl)); }
+/* Designets sektions-h2 (template.html:1324-1426): clamp(24px,3.7vw,38px) = 38px ved 1440, ingen letter-spacing */
+h2 { font-size: clamp(24px, 3.7vw, 38px); letter-spacing: normal; }
+h3 { font-size: var(--text-xl); letter-spacing: normal; }
+
+p { margin: 0 0 1em; }
+
+a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+img { max-width: 100%; height: auto; }
+
+button { font-family: inherit; }
+
+/* --- Tekstroller --- */
+/* Designets eyebrow-span: 12px/600, 0.12em, sage-600, linjehoejde arvet fra body (1.8).
+   Designets h2 arver body-linjehoejden, saa den visuelle afstand eyebrow -> h2-glyf er ca. 36px;
+   med temaets h2 (line-height 1.1) giver 22px margin samme afstand. */
+.nc-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1.8;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--sage-600);
+  margin: 0 0 22px;
+}
+
+.nc-editorial { font-family: var(--font-display); font-style: italic; }
+
+.nc-spaced { letter-spacing: var(--tracking-widest); text-transform: uppercase; }
+
+/* --- Layout --- */
+.nc-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.nc-section { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+
+.nc-section-head { max-width: 640px; }
+
+.nc-section-head--center { margin-left: auto; margin-right: auto; text-align: center; }
+
+/* --- Knapper --- */
+.nc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px; /* designets pille: padding 15px 28px, 15px/600 => 48px hoej */
+  padding: 15px 28px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft);
+}
+
+.nc-btn:hover, .nc-btn:focus-visible { transform: translateY(-2px); }
+.nc-btn:active { transform: translateY(0); }
+.nc-btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+.nc-btn--primary { background: var(--sage-700); color: var(--cloud); border-color: var(--sage-700); }
+.nc-btn--primary:hover, .nc-btn--primary:focus-visible { background: var(--sage-800); border-color: var(--sage-800); color: var(--cloud); }
+
+.nc-btn--sage { background: var(--sage-500); color: var(--cloud); border-color: var(--sage-500); }
+.nc-btn--sage:hover, .nc-btn--sage:focus-visible { background: var(--sage-600); border-color: var(--sage-600); color: var(--cloud); }
+
+/* Designets lyse knap paa sage-baand er papir (#F6F4EE), ikke hvid */
+.nc-btn--light { background: var(--paper); color: var(--sage-700); border-color: var(--paper); }
+.nc-btn--light:hover, .nc-btn--light:focus-visible { background: var(--cloud); border-color: var(--cloud); color: var(--sage-700); }
+
+.nc-btn--outline { background: transparent; color: var(--sage-700); border-color: var(--border-default); }
+.nc-btn--outline:hover, .nc-btn--outline:focus-visible { border-color: var(--sage-700); color: var(--sage-700); background: rgba(62, 93, 88, 0.05); }
+
+.nc-btn--outline-light { background: transparent; color: var(--paper); border-color: rgba(246, 244, 238, 0.4); }
+.nc-btn--outline-light:hover, .nc-btn--outline-light:focus-visible { border-color: var(--paper); color: var(--paper); background: rgba(255, 255, 255, 0.12); }
+
+.nc-on-dark .nc-btn--outline { color: var(--paper); border-color: rgba(246, 244, 238, 0.4); }
+.nc-on-dark .nc-btn--outline:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--cloud); color: var(--cloud); }
+
+/* Rund ikonknap (pil, plus, luk) */
+.nc-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-default);
+  background: var(--cloud);
+  color: var(--sage-700);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
+}
+
+.nc-iconbtn:hover, .nc-iconbtn:focus-visible { border-color: var(--sage-500); color: var(--sage-500); transform: translateY(-1px); }
+.nc-iconbtn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.nc-iconbtn--solid { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+.nc-iconbtn--solid:hover, .nc-iconbtn--solid:focus-visible { background: var(--sage-600); border-color: var(--sage-600); color: var(--cloud); }
+
+/* --- Chips --- */
+.nc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-700);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft);
+}
+
+.nc-chip:hover { border-color: var(--sage-500); color: var(--sage-700); }
+.nc-chip.is-active { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+
+/* Lille etiket-pille (områdechip på kort, SAMPAKKE, SPAR %) */
+.nc-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.nc-tag--light { background: rgba(255, 255, 255, 0.92); color: var(--sage-700); }
+.nc-tag--sage { background: var(--sage-100); color: var(--sage-700); }
+.nc-tag--sale { background: var(--sale); color: var(--cloud); }
+
+/* --- Kort --- */
+.nc-card { background: var(--surface-card); border-radius: var(--radius-lg); overflow: hidden; }
+
+/* --- Formularer --- */
+.nc-input, .nc-select, .nc-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--cloud);
+  color: var(--ink-900);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.nc-input:focus-visible, .nc-select:focus-visible, .nc-textarea:focus-visible {
+  outline: none;
+  border-color: var(--sage-500);
+  box-shadow: var(--shadow-focus);
+}
+
+.nc-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  color: var(--ink-700);
+}
+
+/* --- Produktkort --- */
+/* 1:1 fra NCProductCard.dc.html: hvid flade med 1px soft-kant (ingen hvileskygge), hover -3px + shadow-md */
+.nc-product-card { position: relative; display: flex; flex-direction: column; height: 100%; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft); }
+.nc-product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.nc-product-card__media { position: relative; display: block; aspect-ratio: 1 / 1; background: var(--nc-product-tint); }
+.nc-product-card__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; padding: 0; transition: opacity var(--dur-base) var(--ease-soft); }
+/* Packshots (kundens rettelse 39): contain + multiply paa tinten; nc-packshot.js stiller produkterne paa samme underkant */
+img.nc-packshot { object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; }
+.nc-product-card__media img.nc-packshot { object-fit: contain; object-position: 50% 50%; mix-blend-mode: multiply; }
+.nc-product-card__media img.nc-img-hover { opacity: 0; object-fit: cover; padding: 0; mix-blend-mode: normal; }
+.nc-product-card:hover .nc-product-card__media img.nc-img-hover,
+.nc-product-card:focus-within .nc-product-card__media img.nc-img-hover { opacity: 1; }
+.nc-product-card:hover .nc-product-card__media img.nc-img-primary.has-hover,
+.nc-product-card:focus-within .nc-product-card__media img.nc-img-primary.has-hover { opacity: 0; }
+
+.nc-product-card__tags { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; z-index: 2; }
+
+.nc-product-card__fav { position: absolute; top: 10px; right: 10px; z-index: 3; width: 38px; height: 38px; border: 0; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.9); color: var(--ink-400); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
+.nc-product-card__fav:hover { color: var(--accent-berry); transform: scale(1.1); }
+.nc-product-card__fav.is-active { color: var(--accent-berry); }
+.nc-product-card__fav.is-active svg { fill: currentColor; }
+
+.nc-product-card__add { position: absolute; right: 12px; bottom: 12px; z-index: 2; width: 42px; height: 42px; border: 0; border-radius: var(--radius-pill); background: var(--sage-500); color: var(--cloud); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: background-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
+.nc-product-card__add:hover { background: var(--sage-600); transform: translateY(-1px); }
+
+/* Tekstblok 1:1 fra NCProductCard.dc.html: gap 7, padding 18/18/20, body-linjehoejde 1.8 (designets body),
+   eyebrow 11px sage-600, titel 18px/1.25, stoerrelse 13px ink-400, rating +2px, pris skubbes til bunden (+10px) */
+.nc-product-card__info { display: flex; flex-direction: column; flex: 1 1 auto; gap: 7px; padding: 18px 18px 20px; line-height: 1.8; }
+.nc-product-card__eyebrow { font-size: var(--text-2xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-600); }
+.nc-product-card__title { margin: 0; font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-lg); line-height: var(--leading-snug); letter-spacing: normal; color: var(--sage-700); }
+.nc-product-card__title a { color: inherit; text-decoration: none; }
+.nc-product-card__title a::after { content: ''; position: absolute; inset: 0; }
+.nc-product-card__size { font-size: 0.8125rem; color: var(--ink-400); }
+.nc-product-card__rating { display: inline-flex; align-items: center; gap: 7px; margin-top: 2px; font-size: var(--text-sm); color: var(--ink-500); }
+.nc-product-card__rating .nc-stars { gap: 2px; }
+.nc-product-card__rating .nc-stars svg { width: 16px; height: 16px; display: block; fill: var(--sage-500); stroke: var(--sage-500); stroke-width: 1.5; stroke-linejoin: round; }
+.nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: var(--ink-300); }
+/* Ens korthoejde (kundens rettelse 08-10): titlen holder hoejst 2 linjer, stoerrelse og rating har fast hoejde, prisen staar i bunden.
+   Ingen reserveret tom linje under titlen (Allan 08-10). */
+.nc-product-card__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.nc-product-card__size { display: block; min-width: 0; min-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Kortet maa aldrig blive bredere end sin kolonne (lange undertitler tvang kolonnen bred paa mobil 08-10) */
+.nc-product-card, .nc-product-card__info { min-width: 0; }
+.nc-product-card__rating { min-height: 27px; }
+/* PriceTag (md) fra designsystemet: 22px/500, line-height 1, foer-pris 14px ink-400, baseline-justeret med 10px gap */
+.nc-product-card__price { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 10px; font-size: var(--text-xl); font-weight: 500; line-height: 1; color: var(--ink-900); }
+.nc-product-card__price.is-sale .nc-product-card__amount { color: var(--sale); }
+.nc-product-card__compare { margin: 0; font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--ink-400); text-decoration: line-through; }
+.nc-product-card__stock { font-size: var(--text-sm); font-weight: 400; color: var(--ink-500); }
+
+/* Prisvisning (snippets/nc-price.liquid) = PriceTag md */
+.nc-price { display: inline-flex; align-items: baseline; gap: 10px; font-family: var(--font-body); }
+.nc-price__current { font-size: var(--text-xl); font-weight: 500; line-height: 1; color: var(--ink-900); }
+.nc-price__compare { font-size: var(--text-sm); line-height: 1; color: var(--ink-400); text-decoration: line-through; }
+
+/* Stjerner */
+.nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+.nc-stars svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* --- Grid og rails --- */
+.nc-grid { display: grid; gap: clamp(16px, 2vw, 24px); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); min-width: 0; list-style: none; margin: 0; padding: 0; }
+
+.nc-rail-wrap { position: relative; }
+
+/* Rails med synlig indikator (kundens mobiloptimering 08-10): data-nc-rail i nc-theme.js saetter is-more/is-before,
+   som fader kanten hvor der er mere at se, og tilfoejer prikker (.nc-raildots) pr. "side" under railen. */
+[data-nc-rail].is-more { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
+[data-nc-rail].is-before { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px); mask-image: linear-gradient(90deg, transparent, #000 40px); }
+[data-nc-rail].is-before.is-more { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 56px), transparent); }
+.nc-raildots { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 0; min-height: 8px; }
+.nc-raildots[hidden] { display: none; }
+.nc-raildots button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: var(--radius-pill); background: var(--ink-300); cursor: pointer; transition: width var(--dur-base) var(--ease-soft), background-color var(--dur-base) var(--ease-soft); }
+.nc-raildots button.is-active { width: 22px; background: var(--sage-500); }
+
+/* Mobil (08-10): kompakte, ens produktkort: mindre tekst og knapper, taettere grid */
+@media (max-width: 749px) {
+  .nc-grid { gap: 12px; }
+  .nc-grid > li { min-width: 0; }
+  .nc-product-card__info { gap: 5px; padding: 12px 12px 14px; line-height: 1.6; }
+  .nc-product-card__eyebrow { font-size: 10px; }
+  .nc-product-card__title { font-size: 16px; }
+  .nc-product-card__size { font-size: 12px; min-height: 1.25rem; }
+  .nc-product-card__rating { font-size: 12px; min-height: 22px; gap: 5px; }
+  .nc-product-card__rating .nc-stars svg { width: 13px; height: 13px; }
+  .nc-product-card__price { font-size: 18px; gap: 8px; padding-top: 8px; }
+  .nc-product-card__compare { font-size: 12px; }
+  .nc-product-card__tags { top: 8px; left: 8px; gap: 4px; }
+  .nc-product-card__fav { width: 34px; height: 34px; top: 8px; right: 8px; }
+  .nc-product-card__fav svg { width: 17px; height: 17px; }
+  .nc-product-card__add { width: 38px; height: 38px; right: 10px; bottom: 10px; }
+}
+.nc-rail-scroll { display: flex; gap: clamp(16px, 2vw, 24px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
+.nc-rail-scroll::-webkit-scrollbar { display: none; }
+.nc-rail-scroll > * { flex: 0 0 min(280px, 78vw); scroll-snap-align: start; }
+
+/* --- Marquee --- */
+@keyframes nc-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes nc-marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.nc-marqwrap { overflow: hidden; }
+.nc-rail { display: flex; gap: 20px; width: max-content; animation: nc-marquee 60s linear infinite; }
+.nc-rail--rev { animation-name: nc-marquee-rev; }
+.nc-marqwrap:hover .nc-rail { animation-play-state: paused; }
+
+@keyframes nc-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Scrollbar-styling til vandrette lister --- */
+.nc-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+.nc-scroll::-webkit-scrollbar-thumb { background: var(--sage-300); border-radius: 3px; }
+
+/* --- Accordion --- */
+.nc-acc { border-top: 1px solid var(--border-soft); }
+.nc-acc__item { border-bottom: 1px solid var(--border-soft); }
+.nc-acc__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 18px 2px; background: none; border: 0; text-align: left; font-family: var(--font-body); font-size: var(--text-md); font-weight: 600; color: var(--ink-900); cursor: pointer; }
+.nc-acc__head svg { flex: none; transition: transform var(--dur-base) var(--ease-soft); color: var(--sage-600); }
+.nc-acc__item[open] .nc-acc__head svg, .nc-acc__item.is-open .nc-acc__head svg { transform: rotate(180deg); }
+.nc-acc__body { padding: 0 2px 18px; color: var(--ink-700); }
+.nc-acc__head::-webkit-details-marker { display: none; }
+summary.nc-acc__head { list-style: none; }
+
+/* --- Paginering --- */
+.nc-pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: clamp(28px, 4vw, 48px); flex-wrap: wrap; }
+.nc-pagination__item { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 42px; height: 42px; padding: 0 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-default); background: var(--cloud); text-decoration: none; font-size: var(--text-sm); font-weight: 600; line-height: 1; color: var(--ink-700); transition: border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
+a.nc-pagination__item:hover, a.nc-pagination__item:focus-visible { border-color: var(--sage-500); color: var(--sage-700); }
+.nc-pagination__item.is-current { background: var(--sage-500); border-color: var(--sage-500); color: var(--cloud); }
+.nc-pagination__arrow { padding: 0; width: 42px; }
+.nc-pagination__arrow svg { width: 18px; height: 18px; }
+.nc-pagination__gap { display: inline-flex; align-items: flex-end; justify-content: center; min-width: 20px; height: 42px; padding-bottom: 12px; box-sizing: border-box; color: var(--ink-400); }
+
+/* --- Artikelindhold (blogs, sider) --- */
+.nc-article-body { font-family: var(--font-body); font-size: 17px; line-height: 1.8; color: var(--ink-700); }
+.nc-article-body h1 { font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.15; color: var(--sage-700); margin: 30px 0 8px; }
+.nc-article-body h2 { font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; color: var(--sage-700); margin: 34px 0 8px; }
+.nc-article-body h3 { font-family: var(--font-display); font-weight: 400; font-size: 21px; line-height: 1.25; color: var(--sage-700); margin: 26px 0 6px; }
+.nc-article-body p { margin: 14px 0; }
+.nc-article-body ul, .nc-article-body ol { margin: 14px 0; padding-left: 22px; }
+.nc-article-body li { margin: 6px 0; }
+.nc-article-body a { color: var(--sage-700); text-decoration: underline; }
+.nc-article-body img { max-width: 100%; height: auto; border-radius: var(--radius-lg); margin: 20px 0; display: block; }
+.nc-article-body strong { color: var(--sage-700); font-weight: 600; }
+.nc-article-body iframe { max-width: 100%; border-radius: var(--radius-lg); }
+
+/* Foerste bogstav i lead-afsnit (kundecases) */
+.nc-lead::first-letter { font-family: var(--font-display); font-size: 3.6em; line-height: 0.82; float: left; margin: 6px 12px 0 0; color: var(--sage-600); font-weight: 400; }
+
+/* --- Tabeller (kurv, konto) --- */
+.nc-table { width: 100%; border-collapse: collapse; }
+.nc-table th { text-align: left; font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700); padding: 0 12px 12px 0; border-bottom: 1px solid var(--border-default); }
+.nc-table td { padding: 16px 12px 16px 0; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
+
+@media (max-width: 749px) {
+  .nc-table--stack thead { display: none; }
+  .nc-table--stack tr { display: block; padding: 12px 0; }
+  .nc-table--stack td { display: block; border: 0; padding: 4px 0; }
+}
+
+/* Handelsbetingelser i kurv og kurv-skuffe (som paa det nuvaerende site): kassen aabnes foerst efter accept */
+.nc-terms { display: flex; align-items: flex-start; gap: 10px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-700); cursor: pointer; }
+.nc-terms input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--sage-500); cursor: pointer; }
+.nc-terms a { color: var(--sage-700); text-decoration: underline; text-underline-offset: 2px; }
+.nc-btn[disabled], .nc-btn[aria-disabled="true"], .nc-drawer__checkout[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+/* "NatureCell®": lille, haevet ® (kundens rettelse 49) */
+.nc-reg { font-size: 0.5em; line-height: 0; vertical-align: 0.9em; margin-left: 0.04em; font-weight: 400; }
+
+/* --- Utility --- */
+.nc-skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; padding: 12px 20px; background: var(--cloud); color: var(--ink-900); }
+.nc-skip-link:focus { left: 0; }
+
+/* Soegeforslag (sections/predictive-search.liquid), dropdown under soegefelterne */
+.nc-ps-box { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: min(480px, calc(100vw - 2 * var(--gutter, 16px))); max-height: min(70vh, 540px); overflow-y: auto; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 8px; text-align: left; }
+.nc-ps-box[hidden] { display: none; }
+.nc-ps__head { margin: 10px 8px 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-400); }
+.nc-ps__products, .nc-ps__links, .nc-ps__queries { list-style: none; margin: 0; padding: 0; }
+.nc-ps__product { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 12px; padding: 8px; border-radius: var(--radius-md); text-decoration: none; }
+.nc-ps__product img, .nc-ps__noimg { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 10px; background: var(--sage-50); }
+.nc-ps__name { font-family: var(--font-display); font-size: 16px; line-height: 1.25; color: var(--sage-700); }
+.nc-ps__price { font-size: 13.5px; font-weight: 600; color: var(--ink-700); white-space: nowrap; }
+.nc-ps__links a, .nc-ps__queries a { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 8px; border-radius: var(--radius-md); font-size: 14.5px; color: var(--ink-700); text-decoration: none; }
+.nc-ps__links small { flex: none; font-size: 11.5px; color: var(--ink-400); }
+.nc-ps__queries mark { background: none; color: var(--sage-700); font-weight: 700; }
+.nc-ps__product:hover, .nc-ps__product:focus-visible, .nc-ps__links a:hover, .nc-ps__links a:focus-visible, .nc-ps__queries a:hover, .nc-ps__queries a:focus-visible { background: var(--sage-50); outline: none; }
+.nc-ps__empty { margin: 10px 8px; font-size: 14px; line-height: 1.5; color: var(--ink-500); }
+.nc-ps__all { display: block; margin-top: 6px; padding: 12px 8px 6px; border-top: 1px solid var(--border-soft); font-size: 14px; font-weight: 600; color: var(--sage-700); text-decoration: none; }
+.nc-ps__all:hover, .nc-ps__all:focus-visible { text-decoration: underline; outline: none; }
+
+/* CBD-ikonet (snippets/nc-cbd.liquid): bogstaverne som figur i en pille, arver tekstfarven */
+.nc-cbd-i { position: relative; white-space: nowrap; }
+/* Skaermlaesere: "CBD" kommer fra CSS, saa ordet ikke staar i HTML'en, som Google laeser */
+.nc-cbd-i::after { content: "CBD"; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+.nc-cbg-i::after { content: "CBG"; }
+/* Kundens rettelse 07-10 (Allan): ikonet har samme stoerrelse overalt, uanset skriftstoerrelse */
+/* Rettelse 72 + 69 (12-10): ikonet er gjort stoerre (17 px i broedtekst) og vokser med store overskrifter, saa det ikke ser lille ud i fx "Hvad er CBD?" */
+.nc-cbd { display: inline-block; height: max(17px, 0.8em); width: max(34.7px, 1.632em); vertical-align: -0.16em; margin: 0 1px; overflow: visible; flex: none; }
+.nc-cbd-w { white-space: nowrap; }
+/* Ikonet er et ord: det foelger altid tekstens farve og drejes aldrig med harmonika-pile o.l. */
+svg.nc-cbd { color: inherit !important; transform: none !important; transition: none !important; }
+.nc-visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.nc-on-dark { color: rgba(255, 255, 255, 0.88); }
+.nc-on-dark h1, .nc-on-dark h2, .nc-on-dark h3 { color: var(--cloud); }
+.nc-on-dark .nc-eyebrow { color: var(--sage-200); } /* designets baand-eyebrows er sage-200 */
+
+/* --- Sideheroer (baand) --- */
+.nc-band { padding: clamp(40px, 5vw, 72px) 0; }
+.nc-band--pale { background: var(--sage-50); padding-bottom: clamp(52px, 5.8vw, 84px); }
+.nc-band--sage { background: var(--sage-500); }
+.nc-band--pale .nc-band__eyebrow { color: var(--sage-600); }
+.nc-band__eyebrow { margin: 0 0 14px; font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+.nc-band__title { margin: 0; font-size: clamp(34px, 4vw, 52px); line-height: 1.1; }
+@media (max-width: 749px) { .nc-band__title { font-size: clamp(28px, 8vw, 34px); } }
+.nc-band__intro { margin: 18px 0 0; font-size: clamp(15px, 1.3vw, 17px); line-height: 1.7; }
+.nc-band--center { text-align: center; }
+.nc-band--center .nc-band__intro { max-width: 600px; margin-left: auto; margin-right: auto; color: var(--ink-700); }
+
+/* --- Kort: kundecases & artikler --- */
+.nc-ccard { display: block; text-decoration: none; color: inherit; }
+.nc-ccard:hover { text-decoration: none; }
+.nc-ccard__media { position: relative; display: block; overflow: hidden; border-radius: var(--radius-lg); background: var(--sage-100); aspect-ratio: 1 / 1; }
+.nc-ccard__media--wide { aspect-ratio: 4 / 3; }
+.nc-ccard__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--motion-slow, 420ms) cubic-bezier(0.4, 0, 0.2, 1); }
+.nc-ccard:hover .nc-ccard__media img { transform: scale(1.04); }
+.nc-ccard__area { position: absolute; top: 10px; left: 10px; z-index: 1; display: inline-flex; align-items: center; padding: 5px 11px; border-radius: var(--radius-pill); background: var(--paper); border: 1px solid var(--border-soft); color: var(--sage-700); font-size: 10.5px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+.nc-ccard__video { position: absolute; top: 10px; right: 10px; z-index: 1; display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: var(--radius-pill); background: rgba(35, 51, 48, 0.78); color: var(--cloud); font-size: 10.5px; font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+.nc-ccard__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.nc-ccard__play span { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, 0.88); color: var(--sage-700); box-shadow: var(--shadow-sm); }
+.nc-ccard__title { margin: 14px 0 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+.nc-ccard:hover .nc-ccard__title { color: var(--sage-900); }
+.nc-ccard__who { display: block; margin-top: 5px; font-size: 14px; line-height: 1.15; color: var(--ink-500); }
+.nc-ccard__excerpt { margin: 8px 0 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-700); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.nc-ccard__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--ink-900); }
+.nc-ccard:hover .nc-ccard__more { color: var(--sage-700); }
+
+/* --- Blogvaerktoejer: chips + soegning --- */
+.nc-blogtools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: clamp(20px, 3vw, 32px) 0 clamp(18px, 2.4vw, 26px); }
+.nc-blogtools__chips { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 auto; min-width: 0; }
+.nc-blogtools__search { position: relative; flex: 0 1 260px; min-width: 200px; }
+.nc-blogtools__search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-400); pointer-events: none; }
+.nc-blogtools__search input { width: 100%; min-height: 42px; padding: 8px 14px 8px 36px; border: 1px solid var(--border-default); border-radius: var(--radius-pill); background: var(--cloud); font-family: inherit; font-size: var(--text-sm); color: var(--ink-900); }
+.nc-blogtools__search input:focus-visible { outline: 2px solid var(--sage-500); outline-offset: 1px; }
+
+/* --- Artikeltypografi: citater & lead --- */
+.nc-article-body blockquote { margin: 30px 0; padding: 18px 22px; border: 0; border-left: 3px solid var(--sage-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--sage-50); font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.6; color: var(--sage-800); }
+.nc-article-body blockquote p { margin: 0; }
+.nc-article-body blockquote p + p { margin-top: 10px; }
+.nc-case-body > p:first-of-type::first-letter { float: left; font-family: var(--font-display); font-size: 58px; line-height: 0.9; padding: 4px 10px 0 0; color: var(--sage-700); }
+.nc-avatar { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.22); color: currentColor; flex: none; }
+.nc-avatar--light { background: var(--sage-50); color: var(--sage-700); }
+.nc-backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; text-decoration: none; }
+.nc-backlink:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* --- Reduceret bevaegelse --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-play-state: paused !important; }
+  .nc-btn:hover, .nc-btn:focus-visible, .nc-btn:active, .nc-iconbtn:hover { transform: none; }
+  .nc-rail { animation: none !important; }
+  .nc-ccard:hover .nc-ccard__media img { transform: none; }
+}
+
+/* --- PDP-scoped (kun produktsider): footer-brandtekst ombrydes i fire linjer
+   som i det godkendte produktdesign. Additiv regel; roerer ikke andre skabeloner. --- */
+.template-product .nc-footer__brand p:first-of-type { max-width: 206px; }
+
+/* Enhedspris (Grundpreis) og kort momsnote paa produktkort: tysk PAngV-krav. */
+.nc-product-card__unit, .nc-product-card__taxnote, .nc-price__unit { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; line-height: 1.3; color: var(--ink-400); }
+
+/* --- Kundevideo i et vindue paa siden (nc-video-rail, data-nc-yt) --- */
+.nc-ytbox { position: fixed; inset: 0; z-index: var(--z-modal); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.nc-ytbox__back { position: absolute; inset: 0; background: rgba(35, 51, 48, 0.8); }
+.nc-ytbox__frame { position: relative; width: min(960px, 100%); aspect-ratio: 16 / 9; max-height: 92vh; background: #000; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); }
+.nc-ytbox--portrait .nc-ytbox__frame { width: auto; height: min(92vh, 820px); max-width: 100%; aspect-ratio: 9 / 16; }
+.nc-ytbox__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.nc-ytbox__close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 40px; height: 40px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.92); color: var(--sage-700); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); }
+body.nc-ytbox-open { overflow: hidden; }
+
+/* Forside paa mobil (Lizbeth 08-10): banner, Trustpilot, Shop efter omraade/behov, derefter Omtalt i og trustpunkterne.
+   Computer-raekkefoelgen er uaendret; kun wrapperne flyttes med flex-order. */
+@media (max-width: 749px) {
+  .template-index #nc-main { display: flex; flex-direction: column; }
+  .template-index #nc-main > .shopify-section { order: 5; }
+  .template-index #nc-main > .nc-sec-hero { order: 1; }
+  .template-index #nc-main > .nc-sec-trust { order: 2; }
+  .template-index #nc-main > .nc-sec-shoptabs { order: 3; }
+  .template-index #nc-main > .nc-sec-press { order: 4; }
+}
+
 /* section deals */
 /* ==========================================================================
    DEALS – "Black Week-favoritter"
-   Paper section · white cards · one consistent contact shadow · damped tilt + sheen ·
-   FLIP filter · fly-to-cart · quick view. Every selector scoped under [data-section="deals"]
-   or a .deals- prefixed class.
+   Paper section · cards with a soft sage studio ground (harmonises with the theme's shop tiles) ·
+   every pack stands on ONE floor line at ONE truthful scale · specular light band masked to the packshot ·
+   damped tilt · FLIP filter · fly-to-cart · quick view. Every selector scoped under [data-section="deals"]
+   or a .deals- prefixed class. Colours are tokens only (color-mix for alpha).
    ========================================================================== */
+
+@property --deals-lx { syntax: '<percentage>'; inherits: true; initial-value: -40%; }
+@property --deals-g { syntax: '<number>'; inherits: true; initial-value: 0; }
 
 [data-section="deals"] {
   --dl-visc: cubic-bezier(.16, 1, .3, 1);          /* long, oil-like settle */
@@ -271,8 +952,13 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   --dl-gap: clamp(14px, 1.55vw, 22px);
   --dl-radius: var(--radius-lg);
   --dl-ink: var(--sage-900);
-  --dl-card-shadow: 0 1px 2px rgba(40, 64, 59, .04), 0 12px 32px -20px rgba(40, 64, 59, .22);
-  --dl-card-shadow-hi: 0 1px 2px rgba(40, 64, 59, .05), 0 28px 56px -26px rgba(40, 64, 59, .34);
+  --dl-sh: var(--sage-900);
+  --dl-card-shadow: 0 1px 2px color-mix(in srgb, var(--dl-sh) 4%, transparent), 0 12px 32px -20px color-mix(in srgb, var(--dl-sh) 22%, transparent);
+  --dl-card-shadow-hi: 0 1px 2px color-mix(in srgb, var(--dl-sh) 5%, transparent), 0 30px 60px -28px color-mix(in srgb, var(--dl-sh) 36%, transparent);
+  /* stage geometry – shared by every card so packs share one floor line and one scale */
+  --dl-stage-ar: .84;     /* stage height / width of a single card */
+  --dl-floor: .145;       /* floor line, fraction of stage height from the bottom */
+  --dl-top: .06;          /* head-room above the tallest pack */
   position: relative;
   background: var(--paper);
   color: var(--text-body);
@@ -284,7 +970,7 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 [data-section="deals"] .deals-thread {
   position: absolute; pointer-events: none; z-index: 0;
   right: 2%; top: 0; width: 30%; height: clamp(150px, 15vw, 220px);
-  background: linear-gradient(to bottom left, transparent calc(50% - .5px), rgba(176, 122, 127, .38) 50%, transparent calc(50% + .5px));
+  background: linear-gradient(to bottom left, transparent calc(50% - .5px), color-mix(in srgb, var(--accent-mauve) 40%, transparent) 50%, transparent calc(50% + .5px));
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 55%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 55%, transparent 100%);
 }
@@ -293,13 +979,18 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 /* ---------------------------------------------------------------- head */
 [data-section="deals"] .deals-head {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 48px;
-  margin-bottom: clamp(28px, 3.4vw, 48px);
+  margin-bottom: clamp(28px, 3.4vw, 44px);
 }
 [data-section="deals"] .deals-head__text { display: grid; gap: 14px; max-width: 640px; }
 [data-section="deals"] .deals-eyebrow { margin: 0; display: inline-flex; align-items: center; gap: 10px; color: var(--sage-700); }
-[data-section="deals"] .deals-eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-berry); flex: none; }
+[data-section="deals"] .deals-eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-berry); flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
 [data-section="deals"] .deals-title { font-size: clamp(2.125rem, 1.3rem + 2.6vw, 3.5rem); }
 [data-section="deals"] .deals-lead { font-size: var(--text-lg); max-width: 52ch; }
+
+[data-section="deals"] .deals-hd { opacity: 0; transform: translateY(14px); transition: opacity 700ms var(--dl-ease), transform 900ms var(--dl-visc); }
+[data-section="deals"] .deals-hd.deals-filter { transition-delay: 120ms; }
+[data-section="deals"] .deals-hd.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { [data-section="deals"] .deals-hd { opacity: 1; transform: none; } }
 
 /* filter – a calm segmented control with a sliding ink pill */
 [data-section="deals"] .deals-filter {
@@ -310,7 +1001,7 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 [data-section="deals"] .deals-filter::-webkit-scrollbar { display: none; }
 [data-section="deals"] .deals-filter__ink {
   position: absolute; left: 0; top: 4px; bottom: 4px; width: 0; border-radius: var(--radius-pill);
-  background: var(--sage-700); box-shadow: 0 6px 14px -8px rgba(40, 64, 59, .6), inset 0 1px 0 rgba(255, 255, 255, .08);
+  background: var(--sage-700); box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--dl-sh) 60%, transparent), inset 0 1px 0 color-mix(in srgb, var(--cloud) 8%, transparent);
   opacity: 0; transition: transform 620ms var(--dl-visc), width 620ms var(--dl-visc), opacity 200ms;
 }
 [data-section="deals"] .deals-filter__ink.is-on { opacity: 1; }
@@ -321,9 +1012,11 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   -webkit-tap-highlight-color: transparent;
 }
 [data-section="deals"] .deals-chip:hover { color: var(--text-strong); }
-[data-section="deals"] .deals-chip[aria-pressed="true"] { background: transparent; border-color: transparent; color: #fff; }
+[data-section="deals"] .deals-chip[aria-pressed="true"] { background: transparent; border-color: transparent; color: var(--cloud); }
 [data-section="deals"] .deals-chip:focus-visible { outline-offset: -2px; }
-[data-section="deals"] .deals-chip__n { font-size: 11px; font-weight: 600; opacity: .55; font-variant-numeric: tabular-nums; transform: translateY(-.35em); }
+/* counts: inline, full contrast (≥ 4.5:1 on white and on the pressed pill) */
+[data-section="deals"] .deals-chip__n { margin-left: .3em; font-size: 12px; font-weight: 500; color: var(--text-muted); font-variant-numeric: tabular-nums; transition: color 360ms var(--dl-ease); }
+[data-section="deals"] .deals-chip[aria-pressed="true"] .deals-chip__n { color: color-mix(in srgb, var(--cloud) 82%, transparent); }
 
 /* ---------------------------------------------------------------- grid */
 [data-section="deals"] .deals-grid {
@@ -333,7 +1026,7 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 }
 [data-section="deals"] .deals-item { position: relative; min-width: 0; display: flex; }
 [data-section="deals"] .deals-item[hidden] { display: none; }
-[data-section="deals"] .deals-item--set { grid-column: span 2; }
+[data-section="deals"] .deals-item--set { grid-column: span 2; container-type: inline-size; }
 [data-section="deals"] .deals-item.is-leaving { z-index: 0; pointer-events: none; }
 /* the grid reveals as one composition: calm stagger, no bounce */
 [data-section="deals"] .deals-rv .deals-item { opacity: 0; transform: translateY(16px); transition: opacity 700ms var(--dl-ease), transform 1000ms var(--dl-visc); transition-delay: calc(min(var(--ri, 0), 9) * 65ms); }
@@ -349,53 +1042,83 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   transform-origin: 50% 60%;
 }
 @media (hover: hover) and (pointer: fine) {
-  [data-section="deals"] .deals-card:hover { box-shadow: var(--dl-card-shadow-hi); border-color: var(--ink-100); will-change: transform; }
+  [data-section="deals"] .deals-card:hover { box-shadow: var(--dl-card-shadow-hi); border-color: var(--ink-200); will-change: transform; }
 }
 
-/* stage: transparent packshot on white, standing on one shared floor */
+/* stage: a soft sage studio ground with a warm floor; packs stand on one shared floor line */
 [data-section="deals"] .deals-card__stage {
-  --fill: .8; --wmax: .8; --floor: 12.5%;
-  position: relative; aspect-ratio: 1 / .92; overflow: hidden; cursor: pointer;
+  position: relative; aspect-ratio: 1 / var(--dl-stage-ar); overflow: hidden; cursor: zoom-in; isolation: isolate;
   border-radius: calc(var(--dl-radius) - 1px) calc(var(--dl-radius) - 1px) 0 0;
-  background: var(--cloud);
   container-type: size;
+  --wfit: .64;
+}
+[data-section="deals"] .deals-ground {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(46% 40% at 50% 40%, color-mix(in srgb, var(--paper-2) 85%, transparent), transparent 72%),
+    radial-gradient(70% 22% at 50% calc(100% - var(--dl-floor) * 100%), color-mix(in srgb, var(--sand-100) 90%, transparent), transparent 75%),
+    linear-gradient(180deg, var(--sage-50) 0%, color-mix(in srgb, var(--sage-100) 72%, var(--sand-100)) 100%);
+}
+/* the light also moves on the ground: a faint warm pool that follows the cursor */
+[data-section="deals"] .deals-ground::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(38% 34% at calc(20% + var(--deals-lx, 50%) * .6) 38%, color-mix(in srgb, var(--cloud) 70%, transparent), transparent 70%);
+  opacity: calc(var(--h, 0) * .9); transition: opacity 400ms var(--dl-ease);
+}
+
+/* the line: one or more packs, centred, standing on the floor. --u = px height of one "unit" (shampoo = 1). */
+[data-section="deals"] .deals-line {
+  --u: min(calc(100cqh * (1 - var(--dl-floor) - var(--dl-top))), calc(100cqw * var(--wfit) / var(--lw)));
+  position: absolute; left: 0; right: 0; bottom: calc(var(--dl-floor) * 100cqh);
+  display: flex; justify-content: center; align-items: flex-end; gap: calc(var(--u) * var(--lgap, .13));
+  pointer-events: none;
 }
 [data-section="deals"] .deals-prod {
-  position: absolute; left: 50%; bottom: var(--floor);
-  height: min(calc(var(--ph) * var(--fill) * 100cqh), calc(var(--wmax) * 100cqw / var(--ar)));
-  aspect-ratio: var(--ar);
-  transform: translateX(calc(-50% + var(--px, 0) * 5px)) translateY(calc(var(--h, 0) * -5px)) scale(calc(1 + var(--h, 0) * .028));
+  position: relative; flex: none;
+  height: calc(var(--ph) * var(--u)); aspect-ratio: var(--ar);
+  /* depth: the pack parallaxes a few px against the tilting card and lifts like a bubble in serum */
+  transform: translate(calc(var(--px, 0) * 3px), calc(var(--py, 0) * -2px - var(--h, 0) * 4px)) scale(calc(1 + var(--h, 0) * .02));
   transform-origin: 50% 100%;
 }
 [data-section="deals"] .deals-prod__pack { position: absolute; inset: 0; overflow: hidden; }
-/* group shots carry a photographed floor that is cut at the image edge – feather it out */
-[data-section="deals"] .deals-prod--set .deals-prod__pack, [data-section="deals"] .deals-fly.deals-prod--set {
-  -webkit-mask: linear-gradient(#000, #000) top / 100% 93% no-repeat, linear-gradient(to right, transparent, #000 14%, #000 86%, transparent) bottom / 100% 7.2% no-repeat;
-  mask: linear-gradient(#000, #000) top / 100% 93% no-repeat, linear-gradient(to right, transparent, #000 14%, #000 86%, transparent) bottom / 100% 7.2% no-repeat;
-}
 [data-section="deals"] .deals-prod__pack img { position: absolute; max-width: none; height: auto; user-select: none; -webkit-user-drag: none; }
-/* the ONE contact shadow – soft ambient pool + tight occlusion core, sage-tinted, light from above */
+/* the ONE contact shadow – soft ambient pool + tight occlusion core, sage-tinted; it counter-moves against the tilt */
 [data-section="deals"] .deals-prod__shadow {
-  position: absolute; left: -16%; right: -16%; bottom: -12px; height: 24px; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(40, 64, 59, .20), rgba(40, 64, 59, .08) 55%, rgba(40, 64, 59, 0));
-  transform: translateY(calc(var(--h, 0) * 5px)) scaleX(calc(1 + var(--h, 0) * .06));
-  opacity: calc(1 - var(--h, 0) * .25);
+  position: absolute; left: -18%; right: -18%; bottom: -12px; height: 24px; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--dl-sh) 22%, transparent), color-mix(in srgb, var(--dl-sh) 8%, transparent) 55%, transparent);
+  transform: translate(calc(var(--px, 0) * -5px), calc(var(--h, 0) * 4px)) scaleX(calc(1 + var(--h, 0) * .08));
+  opacity: calc(1 - var(--h, 0) * .3);
 }
 [data-section="deals"] .deals-prod__shadow::after {
-  content: ""; position: absolute; left: 12%; right: 12%; top: 50%; height: 6px; margin-top: -3px;
-  background: radial-gradient(closest-side, rgba(40, 64, 59, .34), rgba(40, 64, 59, 0));
-  opacity: calc(1 - var(--h, 0) * .55);
+  content: ""; position: absolute; left: 14%; right: 14%; top: 50%; height: 6px; margin-top: -3px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--dl-sh) 38%, transparent), transparent);
+  opacity: calc(1 - var(--h, 0) * .6);
 }
-
-/* light that follows the cursor: a highlight on the pack + a faint falloff on the white */
-[data-section="deals"] .deals-sheen {
-  position: absolute; inset: 0; pointer-events: none; opacity: var(--h, 0);
+/* specular band, masked to the packshot itself – reads as light gliding over glass, carton and label */
+[data-section="deals"] .deals-gloss {
+  position: absolute; pointer-events: none;
+  --lxl: calc((var(--deals-lx) - var(--o, 0%)) / var(--s, 1));
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   background:
-    radial-gradient(42% 38% at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 70%),
-    linear-gradient(112deg, rgba(255, 255, 255, 0) calc(var(--mx, 50%) - 22%), rgba(255, 255, 255, .32) var(--mx, 50%), rgba(255, 255, 255, 0) calc(var(--mx, 50%) + 22%));
-  mix-blend-mode: soft-light;
+    linear-gradient(106deg,
+      transparent calc(var(--lxl) - 6.5% / var(--wu, .45)),
+      color-mix(in srgb, var(--cloud) 22%, transparent) calc(var(--lxl) - 2.8% / var(--wu, .45)),
+      color-mix(in srgb, var(--cloud) 78%, transparent) calc(var(--lxl) - .8% / var(--wu, .45)),
+      color-mix(in srgb, var(--cloud) 78%, transparent) calc(var(--lxl) + .8% / var(--wu, .45)),
+      color-mix(in srgb, var(--cloud) 18%, transparent) calc(var(--lxl) + 2.4% / var(--wu, .45)),
+      transparent calc(var(--lxl) + 4.4% / var(--wu, .45)),
+      color-mix(in srgb, var(--cloud) 40%, transparent) calc(var(--lxl) + 5.6% / var(--wu, .45)),
+      transparent calc(var(--lxl) + 6.6% / var(--wu, .45)));
+  mix-blend-mode: screen;
+  opacity: max(calc(var(--h, 0) * .85), var(--deals-g));
 }
-
+[data-section="deals"] .is-sweep { animation: deals-sweep 1900ms cubic-bezier(.45, .05, .3, 1) both; }
+@keyframes deals-sweep {
+  0%   { --deals-lx: -35%; --deals-g: 0; }
+  18%  { --deals-g: .95; }
+  78%  { --deals-g: .95; }
+  100% { --deals-lx: 135%; --deals-g: 0; }
+}
 
 /* sale bubble – flat berry disc, never rotated */
 [data-section="deals"] .deals-bubble {
@@ -403,32 +1126,29 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   font: 700 14px/1 var(--font-body); letter-spacing: -.01em; font-variant-numeric: tabular-nums;
 }
 
-/* quick view affordance */
+/* quick view: a quiet round eye top-right (mirrors the bubble) – it never covers a pack; the whole stage also opens it */
 [data-section="deals"] .deals-quick {
-  position: absolute; z-index: 3; left: 50%; bottom: 14px;
-  display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 15px 0 12px;
-  border: 1px solid rgba(62, 93, 88, .14); border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, .86); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2);
-  color: var(--sage-800); font: 600 12.5px/1 var(--font-body); letter-spacing: .02em; white-space: nowrap;
-  box-shadow: 0 8px 20px -12px rgba(40, 64, 59, .45);
-  opacity: 0; transform: translate(-50%, 10px);
-  transition: opacity 320ms var(--dl-ease), transform 520ms var(--dl-visc), background 200ms, color 200ms;
+  position: absolute; z-index: 3; top: 10px; right: 10px; width: 44px; height: 44px; padding: 0; border: 0; background: transparent;
+  display: grid; place-items: center; color: var(--sage-800); cursor: pointer; isolation: isolate;
+  opacity: 0; transform: translateY(-4px) scale(.92);
+  transition: opacity 320ms var(--dl-ease), transform 520ms var(--dl-visc), color 200ms;
+}
+[data-section="deals"] .deals-quick::before {
+  content: ""; position: absolute; inset: 4px; z-index: -1; border-radius: 50%;
+  background: color-mix(in srgb, var(--cloud) 92%, transparent); border: 1px solid color-mix(in srgb, var(--sage-700) 14%, transparent);
+  box-shadow: 0 8px 18px -12px color-mix(in srgb, var(--dl-sh) 50%, transparent);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background 220ms, border-color 220ms, transform 520ms var(--dl-visc);
 }
 [data-section="deals"] .deals-quick svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-[data-section="deals"] .deals-quick:hover { background: var(--sage-800); color: #fff; border-color: var(--sage-800); }
+[data-section="deals"] .deals-quick:hover { color: var(--cloud); }
+[data-section="deals"] .deals-quick:hover::before { background: var(--sage-800); border-color: var(--sage-800); transform: scale(1.06); }
 [data-section="deals"] .deals-card:hover .deals-quick,
 [data-section="deals"] .deals-card:focus-within .deals-quick,
-[data-section="deals"] .deals-quick:focus-visible { opacity: 1; transform: translate(-50%, 0); }
-/* touch: always-visible 44px icon button (no hover on phones) */
-[data-section="deals"].deals-touch .deals-quick {
-  left: auto; right: 8px; bottom: auto; top: 8px; width: 44px; height: 44px; min-height: 44px; padding: 0; justify-content: center;
-  opacity: 1; transform: none; box-shadow: none; border-color: transparent; background: transparent; color: var(--sage-700); isolation: isolate;
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-}
-[data-section="deals"].deals-touch .deals-quick::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: rgba(255, 255, 255, .86); border: 1px solid rgba(62, 93, 88, .12); z-index: -1; }
-[data-section="deals"].deals-touch .deals-quick svg { width: 17px; height: 17px; }
-[data-section="deals"].deals-touch .deals-card:hover .deals-quick, [data-section="deals"].deals-touch .deals-card:focus-within .deals-quick { transform: none; }
-[data-section="deals"].deals-touch .deals-quick__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+[data-section="deals"] .deals-quick:focus-visible { opacity: 1; transform: none; }
+[data-section="deals"] .deals-quick:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -1px; border-radius: 50%; }
+[data-section="deals"].deals-touch .deals-quick { opacity: 1; transform: none; top: 6px; right: 6px; }
+[data-section="deals"].deals-touch .deals-quick::before { box-shadow: none; }
 
 /* body */
 [data-section="deals"] .deals-card__body { position: relative; flex: 1; display: flex; flex-direction: column; padding: 18px 20px 20px; }
@@ -445,18 +1165,18 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 }
 [data-section="deals"] .deals-card__buy { margin-top: auto; padding-top: 16px; }
 
-/* price: Black Week price · Spar · Førpris (§ 9 a) */
-[data-section="deals"] .deals-price { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 2px; }
-[data-section="deals"] .deals-price__now { font: 700 1.3125rem/1.1 var(--font-body); color: var(--sage-900); letter-spacing: -.012em; font-variant-numeric: tabular-nums; }
+/* price: Black Week price · Spar · Førpris (§ 9 a). Fixed line boxes so every price/button row shares one line. */
+[data-section="deals"] .deals-price { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 0; }
+[data-section="deals"] .deals-price__now { font: 700 1.3125rem/32px var(--font-body); color: var(--sage-900); letter-spacing: -.012em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 [data-section="deals"] .deals-price__save { margin-left: auto; font: 600 12px/1.2 var(--font-body); color: var(--accent-berry); letter-spacing: .01em; white-space: nowrap; }
-[data-section="deals"] .deals-price__was { flex-basis: 100%; font-size: 12px; line-height: 1.4; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+[data-section="deals"] .deals-price__was { flex-basis: 100%; font-size: 12px; line-height: 18px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.75rem; }
 [data-section="deals"] .deals-price--big .deals-price__save { font-size: 13px; }
 
 /* add to cart – morphs to "Lagt i kurv" with an ink that spreads like a drop of oil */
 [data-section="deals"] .deals-add {
-  --bg: var(--sage-700); --fg: #fff;
-  position: relative; overflow: hidden; isolation: isolate; width: 100%; margin-top: 14px; min-height: 46px; padding: 0 16px;
+  --bg: var(--sage-700); --fg: var(--cloud);
+  position: relative; overflow: hidden; isolation: isolate; width: 100%; margin-top: 12px; min-height: 46px; padding: 0 16px;
   font-size: 14px;
 }
 [data-section="deals"] .deals-add:hover { --bg: var(--sage-800); }
@@ -479,26 +1199,44 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 @keyframes deals-ink { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(40); opacity: 1; } }
 @keyframes deals-draw { to { stroke-dashoffset: 0; } }
 
-/* ---------------------------------------------------------------- featured Sampakke card */
-[data-section="deals"] .deals-card--set { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); }
-[data-section="deals"] .deals-card--set .deals-card__stage {
-  --fill: .6; --wmax: .8; --floor: 18%;
-  aspect-ratio: auto; height: 100%; min-height: 100%;
-  border-radius: calc(var(--dl-radius) - 1px) 0 0 calc(var(--dl-radius) - 1px);
+/* numbered dots shared by the line-up labels and the contents list */
+[data-section="deals"] .deals-no {
+  display: inline-grid; place-items: center; flex: none; width: 17px; height: 17px; margin-right: 7px; border-radius: 50%;
+  background: var(--cloud); border: 1px solid var(--sage-200); color: var(--sage-700);
+  font: 700 11px/1 var(--font-body); letter-spacing: 0; font-variant-numeric: tabular-nums;
 }
-[data-section="deals"] .deals-card--set .deals-bubble { width: 60px; font-size: 16px; top: 18px; left: 18px; }
-[data-section="deals"] .deals-card--set .deals-card__body { padding: 28px 28px 28px 8px; justify-content: center; }
-[data-section="deals"] .deals-card--set .deals-card__buy { margin-top: 0; padding-top: 22px; }
-[data-section="deals"] .deals-set__badge { width: 64px; height: 64px; flex: none; margin: 0 0 18px -3px; }
-[data-section="deals"] .deals-card__name--set { font-size: clamp(1.5rem, 1.1rem + .8vw, 1.875rem); line-height: 1.08; }
-[data-section="deals"] .deals-card__claim--set { -webkit-line-clamp: 3; line-clamp: 3; min-height: 0; margin-top: 14px; font-size: 14px; }
-/* contents with dotted leader lines (dotted, never solid) */
-[data-section="deals"] .deals-set__list { margin: 16px 0 0; display: grid; gap: 5px; font-size: 12.5px; line-height: 1.35; }
-[data-section="deals"] .deals-set__row { display: flex; align-items: baseline; gap: 8px; color: var(--text-muted); }
-[data-section="deals"] .deals-set__row dt { flex: none; }
-[data-section="deals"] .deals-set__row::after { content: ""; order: 1; flex: 1; min-width: 12px; border-bottom: 1.5px dotted var(--sage-300); transform: translateY(-3px); }
-[data-section="deals"] .deals-set__row dd { order: 2; margin: 0; font-variant-numeric: tabular-nums; }
-[data-section="deals"] .deals-set__row--sum { margin-top: 4px; padding-top: 7px; border-top: 1px solid var(--border-soft); color: var(--text-strong); font-weight: 600; }
+
+/* ---------------------------------------------------------------- Sampakke card: the real bottles in a line-up */
+[data-section="deals"] .deals-card--set .deals-card__stage {
+  aspect-ratio: auto; height: calc(((100cqw - var(--dl-gap)) / 2 - 2px) * var(--dl-stage-ar));
+  --wfit: .9;
+}
+[data-section="deals"] .deals-line--set { --lgap: .22; }
+[data-section="deals"] .deals-prod__lbl {
+  position: absolute; left: 50%; top: calc(100% + 13px); transform: translateX(-50%);
+  display: inline-flex; align-items: center; white-space: nowrap;
+  font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--sage-700);
+}
+[data-section="deals"] .deals-prod__lbl .deals-no { margin-right: 6px; width: 17px; height: 17px; font-size: 11px; letter-spacing: 0; }
+[data-section="deals"] .deals-set__badge { width: 56px; height: 56px; margin: 0 0 14px -2px; }
+[data-section="deals"] .deals-card--set .deals-bubble { width: 58px; font-size: 15px; }
+
+[data-section="deals"] .deals-set__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(20px, 2.4vw, 32px); padding: 18px 22px 20px; }
+[data-section="deals"] .deals-set__intro, [data-section="deals"] .deals-set__side { display: flex; flex-direction: column; min-width: 0; }
+[data-section="deals"] .deals-card__name--set { font-size: clamp(1.5rem, 1.15rem + .7vw, 1.875rem); line-height: 1.08; }
+[data-section="deals"] .deals-card__claim--set { -webkit-line-clamp: 3; line-clamp: 3; margin-top: 10px; font-size: 14px; }
+[data-section="deals"] .deals-set__perks { list-style: none; margin: auto 0 0; padding: 16px 0 2px; display: grid; gap: 7px; font-size: 13px; line-height: 1.35; color: var(--sage-800); }
+[data-section="deals"] .deals-set__perks li { display: flex; align-items: flex-start; gap: 8px; }
+[data-section="deals"] .deals-set__perks svg { width: 17px; height: 17px; flex: none; margin-top: -1px; fill: none; stroke: var(--sage-600); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+/* contents with dotted leader lines (dotted, never solid); prices are labelled as single-item førpriser (§ 9 a) */
+[data-section="deals"] .deals-set__cap { display: flex; justify-content: space-between; gap: 12px; margin: 2px 0 8px; font: 600 11px/1.3 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+[data-section="deals"] .deals-set__list { margin: 0; display: grid; gap: 6px; font-size: 13px; line-height: 1.35; }
+[data-section="deals"] .deals-set__row { display: flex; align-items: center; gap: 8px; color: var(--text-body); }
+[data-section="deals"] .deals-set__row dt { flex: none; display: inline-flex; align-items: center; }
+[data-section="deals"] .deals-set__row::after { content: ""; order: 1; flex: 1; min-width: 12px; border-bottom: 1.5px dotted var(--sage-300); transform: translateY(3px); }
+[data-section="deals"] .deals-set__row dd { order: 2; margin: 0; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+[data-section="deals"] .deals-set__row--sum { margin-top: 3px; padding-top: 8px; border-top: 1px solid var(--border-soft); color: var(--text-strong); font-weight: 600; }
+[data-section="deals"] .deals-set__row--sum dd { color: var(--text-strong); }
 [data-section="deals"] .deals-set__row--sum::after { border-bottom-color: var(--sage-400); }
 
 /* ---------------------------------------------------------------- gift tile (follows the cart) */
@@ -506,75 +1244,108 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 [data-section="deals"] .deals-gift {
   position: relative; flex: 1; min-width: 0; overflow: hidden; border-radius: var(--dl-radius);
   background: var(--bw-night); color: var(--paper);
-  box-shadow: 0 24px 48px -30px rgba(40, 64, 59, .6);
+  box-shadow: 0 24px 48px -30px color-mix(in srgb, var(--dl-sh) 60%, transparent);
 }
 [data-section="deals"] .deals-gift.nc-grain::after { z-index: 1; opacity: .09; }
 [data-section="deals"] .deals-gift__glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(70% 55% at 100% 0%, rgba(221, 191, 163, .17), rgba(221, 191, 163, 0) 70%),
-    radial-gradient(80% 60% at 0% 100%, rgba(50, 78, 72, .95), rgba(50, 78, 72, 0) 70%);
+    radial-gradient(60% 40% at 44% 46%, color-mix(in srgb, var(--sand-500) 16%, transparent), transparent 72%),
+    radial-gradient(80% 60% at 0% 100%, color-mix(in srgb, var(--sage-800) 95%, transparent), transparent 70%);
 }
-[data-section="deals"] .deals-gift__mark { position: absolute; z-index: 0; right: -22%; bottom: -16%; width: 78%; max-width: 280px; opacity: .06; pointer-events: none; }
-[data-section="deals"] .deals-gift__in { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; gap: 14px; padding: 26px 22px 24px; }
-[data-section="deals"] .deals-gift__head { display: block; }
-[data-section="deals"] .deals-gift__bubbles { position: relative; flex: 1; min-height: 120px; display: grid; place-items: center; }
-[data-section="deals"] .deals-gift__bubble { position: absolute; width: 104px; padding: 0; font: 700 15px/1 var(--font-body); letter-spacing: .01em; left: 50%; top: 50%; margin: -64px 0 0 -78px; }
-[data-section="deals"] .deals-gift__bubble--val { width: 70px; margin: 2px 0 0 4px; font: 600 11.5px/1.2 var(--font-body); box-shadow: 0 0 0 4px var(--bw-night); }
+[data-section="deals"] .deals-gift__in { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 22px; }
 [data-section="deals"] .deals-gift__eyebrow { margin: 0 0 8px; font: 600 11px/1.3 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sand-500); }
 [data-section="deals"] .deals-gift__title { margin: 0; font: 700 1.5rem/1.12 var(--font-display); color: var(--paper); text-wrap: balance; }
-[data-section="deals"] .deals-gift__copy { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--bw-muted-on-night); }
+/* art: one drop of skin oil (decorative) drifting with buoyancy, its value on a single sand bubble beside it */
+[data-section="deals"] .deals-gift__art { position: relative; flex: 1; min-height: 150px; }
+[data-section="deals"] .deals-drop {
+  --d: clamp(84px, 46cqw, 132px);
+  position: absolute; left: 36%; top: 46%; width: var(--d); aspect-ratio: 1; margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  border-radius: 50%;
+  /* a glass/oil sphere: almost clear body, warm caustic pooled at the bottom, cool rim, one soft window highlight */
+  background:
+    radial-gradient(70% 46% at 50% 92%, color-mix(in srgb, var(--sand-500) 62%, transparent), transparent 70%),
+    radial-gradient(60% 60% at 50% 50%, transparent 58%, color-mix(in srgb, var(--sage-500) 22%, transparent) 100%),
+    color-mix(in srgb, var(--sand-500) 9%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--paper) 26%, transparent),
+    inset 0 -16px 26px -12px color-mix(in srgb, var(--sand-300) 70%, transparent),
+    inset 0 12px 22px -14px color-mix(in srgb, var(--paper) 40%, transparent),
+    0 26px 46px -22px color-mix(in srgb, var(--sand-500) 30%, transparent);
+  -webkit-backdrop-filter: blur(1.5px) saturate(1.2); backdrop-filter: blur(1.5px) saturate(1.2);
+  animation: deals-buoy 7.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+[data-section="deals"] .deals-drop__core { position: absolute; inset: 52% 22% 6% 22%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-100) 70%, transparent), transparent); filter: blur(3px); }
+[data-section="deals"] .deals-drop__spec { position: absolute; left: 21%; top: 11%; width: 36%; height: 20%; border-radius: 50%; transform: rotate(-26deg); background: radial-gradient(closest-side, color-mix(in srgb, var(--paper) 80%, transparent), color-mix(in srgb, var(--paper) 18%, transparent) 60%, transparent); }
+[data-section="deals"] .deals-drop__floor {
+  position: absolute; left: 36%; top: calc(46% + clamp(84px, 46cqw, 132px) / 2 + 16px); width: calc(clamp(84px, 46cqw, 132px) * .8); height: 12px; margin-left: calc(clamp(84px, 46cqw, 132px) * -.4);
+  border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 30%, transparent), transparent);
+  animation: deals-buoy-sh 7.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+@keyframes deals-buoy { from { transform: translateY(4px); } to { transform: translateY(-7px); } }
+@keyframes deals-buoy-sh { from { transform: scaleX(1); opacity: .9; } to { transform: scaleX(.8); opacity: .55; } }
+[data-section="deals"] .deals-gift__bubble {
+  position: absolute; left: 80%; top: 78%; width: clamp(62px, 28cqw, 80px); margin: calc(clamp(62px, 28cqw, 80px) / -2) 0 0 calc(clamp(62px, 28cqw, 80px) / -2); padding: 0;
+  font: 700 13px/1.2 var(--font-body); letter-spacing: .01em; text-align: center;
+}
+[data-section="deals"] .deals-gift__copy { margin: 0; font-size: 14px; line-height: 1.5; color: var(--bw-muted-on-night); }
 [data-section="deals"] .deals-gift__meter { padding-top: 4px; }
 [data-section="deals"] .deals-gift__track {
   position: relative; height: 6px; border-radius: var(--radius-pill);
-  background: radial-gradient(circle, rgba(246, 244, 238, .34) 1px, transparent 1.4px) 0 50% / 7px 6px repeat-x;
+  background: radial-gradient(circle, color-mix(in srgb, var(--paper) 34%, transparent) 1px, transparent 1.4px) 0 50% / 7px 6px repeat-x;
 }
 [data-section="deals"] .deals-gift__fill {
   position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--p, 0) * 100%); border-radius: inherit;
   background: linear-gradient(90deg, var(--sage-500), var(--sand-500));
-  box-shadow: 0 0 14px rgba(221, 191, 163, .35);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--sand-500) 35%, transparent);
   transition: width 1100ms var(--dl-visc);
 }
 [data-section="deals"] .deals-gift__tick {
   position: absolute; top: 50%; left: var(--at); width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
-  background: var(--bw-night); border: 1.5px solid rgba(246, 244, 238, .5);
+  background: var(--bw-night); border: 1.5px solid color-mix(in srgb, var(--paper) 50%, transparent);
   transition: background 500ms var(--dl-ease), border-color 500ms var(--dl-ease), transform 600ms var(--dl-visc);
 }
 [data-section="deals"] .deals-gift__tick--end { margin-left: -12px; }
 [data-section="deals"] .deals-gift.is-ship .deals-gift__tick:not(.deals-gift__tick--end),
 [data-section="deals"] .deals-gift.is-done .deals-gift__tick--end { background: var(--sand-500); border-color: var(--sand-500); transform: scale(1.15); }
-[data-section="deals"] .deals-gift__labels { position: relative; height: 18px; margin-top: 10px; font: 600 10.5px/1 var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: rgba(246, 244, 238, .62); }
+[data-section="deals"] .deals-gift__labels { position: relative; height: 14px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
 [data-section="deals"] .deals-gift__labels span { position: absolute; top: 0; left: var(--at); transform: translateX(-50%); white-space: nowrap; }
 [data-section="deals"] .deals-gift__labels span:last-child { left: auto; right: 0; transform: none; }
 [data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); min-height: 3em; }
 [data-section="deals"] .deals-gift__status b { color: var(--paper); font-weight: 600; }
-/* wide gift tile (span ≥ 2): text left, meter right */
+/* narrow gift tile (phone): smaller drop up-left, bubble down-right – never touching; labels never collide */
+@container (max-width: 240px) {
+  [data-section="deals"] .deals-drop { --d: 40cqw; left: 38%; top: 40%; }
+  [data-section="deals"] .deals-drop__floor { left: 38%; top: calc(40% + 20cqw + 12px); width: 34cqw; margin-left: -17cqw; }
+  [data-section="deals"] .deals-gift__bubble { left: 76%; top: 80%; }
+  [data-section="deals"] .deals-gift__labels span:first-child { transform: translateX(calc(-100% + 7px)); }
+}
+/* wide gift tile (span ≥ 2, e.g. a filtered view): text left, drop right */
 @container (min-width: 480px) {
   [data-section="deals"] .deals-gift__in {
-    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); grid-template-rows: auto auto auto auto;
-    align-content: center; column-gap: clamp(24px, 5cqw, 64px); row-gap: 14px; padding: 36px clamp(28px, 5cqw, 52px);
+    display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); grid-template-rows: auto auto auto auto;
+    align-content: center; column-gap: clamp(24px, 5cqw, 64px); row-gap: 12px; padding: 34px clamp(28px, 5cqw, 52px);
   }
   [data-section="deals"] .deals-gift__head, [data-section="deals"] .deals-gift__copy,
   [data-section="deals"] .deals-gift__meter, [data-section="deals"] .deals-gift__status { grid-column: 1; }
   [data-section="deals"] .deals-gift__title { font-size: 1.875rem; }
-  [data-section="deals"] .deals-gift__copy { max-width: 46ch; }
   [data-section="deals"] .deals-gift__meter { padding-top: 10px; max-width: 420px; }
   [data-section="deals"] .deals-gift__status { min-height: 0; }
-  [data-section="deals"] .deals-gift__bubbles { grid-column: 2; grid-row: 1 / -1; min-height: 180px; }
-  [data-section="deals"] .deals-gift__bubble { width: 128px; font-size: 17px; margin: -78px 0 0 -96px; }
-  [data-section="deals"] .deals-gift__bubble--val { width: 84px; font-size: 13px; margin: 6px 0 0 6px; }
-  [data-section="deals"] .deals-gift__mark { right: -6%; bottom: -30%; width: 40%; max-width: 360px; }
+  [data-section="deals"] .deals-gift__art { grid-column: 2; grid-row: 1 / -1; min-height: 180px; }
+  [data-section="deals"] .deals-drop { --d: 128px; }
+  [data-section="deals"] .deals-drop__floor { top: calc(46% + 82px); width: 115px; margin-left: -58px; }
+  [data-section="deals"] .deals-gift__bubble { width: 84px; margin: -42px 0 0 -42px; }
 }
-/* full-row gift tile (e.g. "Sampakker"): a calm banner */
+/* full-row gift tile: a calm banner */
 @container (min-width: 900px) {
-  [data-section="deals"] .deals-gift__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 200px; grid-template-rows: auto auto; padding-block: 30px; }
+  [data-section="deals"] .deals-gift__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 260px; grid-template-rows: auto auto; padding-block: 28px; }
   [data-section="deals"] .deals-gift__head { grid-column: 1; grid-row: 1; }
   [data-section="deals"] .deals-gift__copy { grid-column: 1; grid-row: 2; }
   [data-section="deals"] .deals-gift__meter { grid-column: 2; grid-row: 1; align-self: end; max-width: none; }
   [data-section="deals"] .deals-gift__status { grid-column: 2; grid-row: 2; align-self: start; }
-  [data-section="deals"] .deals-gift__bubbles { grid-column: 3; grid-row: 1 / -1; min-height: 140px; }
-  [data-section="deals"] .deals-gift__bubble { width: 108px; font-size: 15px; margin: -64px 0 0 -80px; }
-  [data-section="deals"] .deals-gift__bubble--val { width: 72px; font-size: 11.5px; margin: 4px 0 0 4px; }
+  [data-section="deals"] .deals-gift__art { grid-column: 3; grid-row: 1 / -1; min-height: 150px; }
+  [data-section="deals"] .deals-drop { --d: 104px; }
+  [data-section="deals"] .deals-drop__floor { top: calc(46% + 68px); width: 94px; margin-left: -47px; }
 }
 
 /* ---------------------------------------------------------------- foot */
@@ -592,12 +1363,12 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 [data-section="deals"] .deals-fly {
   position: fixed; z-index: 1200; overflow: hidden; pointer-events: none; margin: 0;
   transform-origin: 50% 50%; will-change: transform, opacity;
-  filter: drop-shadow(0 10px 14px rgba(40, 64, 59, .22));
+  filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--dl-sh) 22%, transparent));
 }
 [data-section="deals"] .deals-fly img { position: absolute; max-width: none; height: auto; }
 [data-section="deals"] .deals-fly__drop {
   position: fixed; left: 0; top: 0; z-index: 1195; width: 12px; height: 12px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .9), rgba(221, 191, 163, .7) 45%, rgba(128, 160, 151, 0) 72%);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--cloud) 90%, transparent), color-mix(in srgb, var(--sand-500) 70%, transparent) 45%, transparent 72%);
 }
 
 /* ---------------------------------------------------------------- quick view */
@@ -606,38 +1377,35 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   width: min(980px, calc(100vw - 48px)); max-width: none; max-height: calc(100dvh - 48px);
   padding: 0; border: 0; background: transparent; color: var(--text-body); overflow: visible;
 }
-[data-section="deals"] .deals-qv::backdrop { background: rgba(40, 64, 59, .46); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: deals-fade 420ms var(--dl-ease); }
+[data-section="deals"] .deals-qv::backdrop { background: color-mix(in srgb, var(--sage-900) 46%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: deals-fade 420ms var(--dl-ease); }
 [data-section="deals"] .deals-qv.is-closing::backdrop { opacity: 0; transition: opacity 220ms; }
 @keyframes deals-fade { from { opacity: 0; } }
 [data-section="deals"] .deals-qv__sheet {
   position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-rows: minmax(560px, auto);
   background: var(--cloud); border-radius: 24px; overflow: hidden; max-height: calc(100dvh - 48px);
-  box-shadow: 0 40px 90px -30px rgba(20, 34, 31, .55);
+  box-shadow: 0 40px 90px -30px color-mix(in srgb, var(--sage-900) 60%, transparent);
 }
 [data-section="deals"] .deals-qv__close {
   position: absolute; z-index: 5; top: 14px; right: 14px; width: 44px; height: 44px; display: grid; place-items: center;
-  border: 1px solid var(--border-soft); border-radius: 50%; background: rgba(255, 255, 255, .9); color: var(--sage-800);
+  border: 1px solid var(--border-soft); border-radius: 50%; background: color-mix(in srgb, var(--cloud) 90%, transparent); color: var(--sage-800);
   transition: background 200ms, color 200ms, transform 420ms var(--dl-visc);
 }
-[data-section="deals"] .deals-qv__close:hover { background: var(--sage-800); color: #fff; transform: rotate(90deg); }
+[data-section="deals"] .deals-qv__close:hover { background: var(--sage-800); color: var(--cloud); transform: rotate(90deg); }
 [data-section="deals"] .deals-qv__close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
 [data-section="deals"] .deals-qv__stage {
-  --fill: .7; --wmax: .78; --floor: 15%;
-  position: relative; background: var(--cloud); container-type: size; overflow: hidden;
+  --wfit: .7; --dl-floor: .16; --dl-top: .2; --h: .35; --deals-lx: 30%;
+  position: relative; container-type: size; overflow: hidden; isolation: isolate;
 }
-[data-section="deals"] .deals-qv__stage .deals-prod--qvset { --fill: .6; }
-[data-section="deals"] .deals-qv__light {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(62% 40% at 50% 84%, var(--sand-100), rgba(244, 236, 227, 0) 72%), radial-gradient(80% 60% at 50% 20%, var(--paper-2), rgba(251, 250, 245, 0) 70%);
-  opacity: .55;
-}
+[data-section="deals"] .deals-qv__stage--set { --wfit: .84; --dl-top: .3; }
+[data-section="deals"] .deals-qv__stage .deals-prod { transform: none; }
 [data-section="deals"] .deals-bubble--qv { top: 22px; left: 22px; width: 64px; font-size: 17px; }
 [data-section="deals"] .deals-qv__badge { position: absolute; z-index: 2; top: 22px; left: 96px; width: 64px; height: 64px; }
-[data-section="deals"] .deals-qv__body { padding: 48px 44px 36px 20px; overflow-y: auto; display: flex; flex-direction: column; }
+[data-section="deals"] .deals-qv__body { padding: 48px 44px 36px 32px; overflow-y: auto; display: flex; flex-direction: column; }
 [data-section="deals"] .deals-qv__title { margin: 0; font: 700 clamp(1.75rem, 1.3rem + 1vw, 2.25rem)/1.08 var(--font-display); color: var(--text-strong); padding-right: 44px; }
 [data-section="deals"] .deals-qv__body .deals-card__size { font-size: 13.5px; margin-top: 8px; }
 [data-section="deals"] .deals-qv__claim { margin: 18px 0 0; font-size: var(--text-md); line-height: 1.65; color: var(--text-body); }
 [data-section="deals"] .deals-qv__notes { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+[data-section="deals"] .deals-qv__body .deals-set__contents { margin-top: 20px; }
 [data-section="deals"] .deals-qv__rule { margin: 24px 0 20px; width: 100%; color: var(--sage-300); opacity: 1; }
 [data-section="deals"] .deals-qv__buy .deals-add { margin-top: 18px; }
 [data-section="deals"] .deals-qv__usp { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 9px; font-size: 13px; color: var(--text-body); }
@@ -652,56 +1420,55 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 
 /* ---------------------------------------------------------------- mobile: 2-col grid (more products per scroll, thumb-reachable add) */
 @media (max-width: 760px) {
-  [data-section="deals"] { --dl-gap: 10px; --dl-radius: 16px; }
-  [data-section="deals"] .deals-thread { width: 52%; right: -6%; height: 360px; }
+  [data-section="deals"] { --dl-gap: 10px; --dl-radius: 16px; --dl-stage-ar: .94; --dl-floor: .14; --dl-top: .09; }
+  [data-section="deals"] .deals-thread { width: 34%; right: -4%; height: 92px; }
   [data-section="deals"] .deals-head { gap: 20px; }
   [data-section="deals"] .deals-head__text { gap: 10px; }
   [data-section="deals"] .deals-lead { font-size: var(--text-md); line-height: 1.55; }
-  [data-section="deals"] .deals-filter { justify-self: start; }
-  [data-section="deals"] .deals-filter { margin-inline: calc(var(--gutter) * -1); max-width: calc(100% + var(--gutter) * 2); border-radius: 0; border-width: 1px 0; padding-inline: var(--gutter); box-shadow: none; background: transparent; border: 0; }
-  [data-section="deals"] .deals-filter { gap: 8px; padding-block: 0; }
+  [data-section="deals"] .deals-filter {
+    justify-self: start; gap: 6px; padding: 0 var(--gutter); margin-inline: calc(var(--gutter) * -1); max-width: calc(100% + var(--gutter) * 2);
+    border: 0; border-radius: 0; box-shadow: none; background: transparent;
+  }
   [data-section="deals"] .deals-filter__ink { top: 0; bottom: 0; }
-  [data-section="deals"] .deals-filter { gap: 6px; }
-  [data-section="deals"] .deals-chip { padding: 0 12px; font-size: 13px; gap: .3em; border: 1px solid var(--border-default); background: var(--cloud); }
+  [data-section="deals"] .deals-chip { padding: 0 14px; font-size: 13.5px; border: 1px solid var(--border-default); background: var(--cloud); }
   [data-section="deals"] .deals-chip[aria-pressed="true"] { border-color: transparent; background: transparent; }
   [data-section="deals"] .deals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 12px; }
-  [data-section="deals"] .deals-card__stage { aspect-ratio: 1 / .96; --fill: .8; --wmax: .7; --floor: 11%; }
-  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-card__claim { display: none; }
+  [data-section="deals"] .deals-card__stage { --wfit: .66; }
   [data-section="deals"] .deals-bubble { width: 40px; top: 8px; left: 8px; font-size: 11.5px; }
   [data-section="deals"] .deals-card__body { padding: 12px 12px 12px; }
-  [data-section="deals"] .deals-card__eyebrow { font-size: 9.5px; letter-spacing: .1em; margin-bottom: 5px; }
+  [data-section="deals"] .deals-card__eyebrow { font-size: 11px; letter-spacing: .08em; margin-bottom: 5px; }
   [data-section="deals"] .deals-card__name { font-size: 1.0625rem; line-height: 1.15; }
-  [data-section="deals"] .deals-card__size { font-size: 11.5px; margin-top: 3px; }
-  [data-section="deals"] .deals-card__claim { font-size: 12.5px; line-height: 1.45; margin-top: 7px; }
+  [data-section="deals"] .deals-card__size { font-size: 12px; margin-top: 3px; }
+  [data-section="deals"] .deals-card__claim { font-size: 12.5px; line-height: 1.45; margin-top: 7px; -webkit-line-clamp: 2; line-clamp: 2; }
   [data-section="deals"] .deals-card__buy { padding-top: 12px; }
   [data-section="deals"] .deals-price { column-gap: 6px; }
-  [data-section="deals"] .deals-price__now { font-size: 1.125rem; }
-  [data-section="deals"] .deals-price__save { margin-left: 0; font-size: 11px; }
-  [data-section="deals"] .deals-price__was { font-size: 11px; }
+  [data-section="deals"] .deals-price__now { font-size: 1.125rem; line-height: 26px; }
+  [data-section="deals"] .deals-price__save { margin-left: 0; font-size: 11.5px; }
+  [data-section="deals"] .deals-price__was { font-size: 11.5px; }
   [data-section="deals"] .deals-add { min-height: 44px; margin-top: 10px; padding: 0 10px; font-size: 13px; }
   [data-section="deals"] .deals-add__a, [data-section="deals"] .deals-add__b { gap: 6px; }
   [data-section="deals"] .deals-add svg { width: 16px; height: 16px; }
 
-  [data-section="deals"] .deals-card--set { display: flex; }
-  [data-section="deals"] .deals-card--set .deals-card__stage { --fill: .74; --wmax: .76; --floor: 11%; aspect-ratio: 16 / 11; height: auto; min-height: 0; border-radius: 15px 15px 0 0; }
+  /* the Sampakke card goes full-width; its stage is a touch taller so the line-up reads on a phone */
+  [data-section="deals"] .deals-card--set .deals-card__stage { height: calc(((100cqw - var(--dl-gap)) / 2 - 2px) * var(--dl-stage-ar) * 1.28); --wfit: .86; }
   [data-section="deals"] .deals-card--set .deals-bubble { width: 50px; font-size: 14px; top: 12px; left: 12px; }
-  [data-section="deals"] .deals-card--set .deals-card__body { padding: 18px 16px 16px; }
-  [data-section="deals"] .deals-set__badge { position: absolute; top: -66px; right: 14px; width: 52px; height: 52px; margin: 0; }
+  [data-section="deals"] .deals-set__badge { position: absolute; top: 14px; right: 16px; width: 50px; height: 50px; margin: 0; }
+  [data-section="deals"] .deals-set__body { grid-template-columns: 1fr; padding: 16px 16px 16px; row-gap: 16px; }
   [data-section="deals"] .deals-card__name--set { font-size: 1.5rem; }
-  [data-section="deals"] .deals-card__claim--set { font-size: 13.5px; margin-top: 10px; }
-  [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.5rem; }
+  [data-section="deals"] .deals-card__claim--set { font-size: 13.5px; margin-top: 8px; -webkit-line-clamp: 3; line-clamp: 3; }
+  [data-section="deals"] .deals-set__perks { margin-top: 0; padding-top: 12px; font-size: 13px; }
+  [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.5rem; line-height: 30px; }
   [data-section="deals"] .deals-price--big .deals-price__save { margin-left: auto; font-size: 12.5px; }
   [data-section="deals"] .deals-card--set .deals-add { min-height: 48px; font-size: 14px; }
 
-  [data-section="deals"] .deals-gift__in { padding: 18px 14px 16px; gap: 10px; }
-  [data-section="deals"] .deals-gift__bubbles { min-height: 96px; }
-  [data-section="deals"] .deals-gift__bubble { width: 76px; font-size: 12.5px; margin: -50px 0 0 -58px; }
-  [data-section="deals"] .deals-gift__bubble--val { width: 54px; font-size: 9.5px; margin: 0 0 0 2px; }
-  [data-section="deals"] .deals-gift__eyebrow { font-size: 9.5px; letter-spacing: .1em; margin-bottom: 6px; }
+  [data-section="deals"] .deals-gift__in { padding: 16px 14px 14px; gap: 10px; }
+  [data-section="deals"] .deals-gift__art { min-height: 112px; }
+  [data-section="deals"] .deals-gift__eyebrow { font-size: 11px; letter-spacing: .08em; margin-bottom: 6px; }
   [data-section="deals"] .deals-gift__title { font-size: 1.1875rem; }
-  [data-section="deals"] .deals-gift__copy { font-size: 12px; line-height: 1.5; }
-  [data-section="deals"] .deals-gift__status { font-size: 12px; }
-  [data-section="deals"] .deals-gift__labels { font-size: 9px; letter-spacing: .08em; }
+  [data-section="deals"] .deals-gift__bubble { font-size: 11px; }
+  [data-section="deals"] .deals-gift__copy { font-size: 13px; line-height: 1.45; }
+  [data-section="deals"] .deals-gift__status { font-size: 12px; min-height: 0; }
+  [data-section="deals"] .deals-gift__labels { font-size: 11px; letter-spacing: .04em; }
 
   [data-section="deals"] .deals-foot { flex-direction: column; align-items: flex-start; }
   [data-section="deals"] .deals-foot__usp { gap: 10px 18px; font-size: 12.5px; }
@@ -709,7 +1476,7 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
   /* quick view becomes a bottom sheet */
   [data-section="deals"] .deals-qv { width: 100vw; max-height: 94dvh; margin: auto 0 0; inset: auto 0 0 0; }
   [data-section="deals"] .deals-qv__sheet { grid-template-columns: 1fr; grid-template-rows: 300px auto; border-radius: 22px 22px 0 0; max-height: 94dvh; overflow-y: auto; }
-  [data-section="deals"] .deals-qv__stage { --fill: .74; }
+  [data-section="deals"] .deals-qv__stage { --dl-top: .14; }
   [data-section="deals"] .deals-qv__body { padding: 6px 20px calc(24px + env(safe-area-inset-bottom)); overflow: visible; }
   [data-section="deals"] .deals-qv__close { top: 12px; right: 12px; }
   [data-section="deals"] .deals-bubble--qv { width: 54px; font-size: 15px; top: 16px; left: 16px; }
@@ -719,4 +1486,5 @@ a { color: var(--text-brand); text-decoration-thickness: 1px; text-underline-off
 @media (prefers-reduced-motion: reduce) {
   [data-section="deals"] .deals-card { transform: none !important; }
   [data-section="deals"] .deals-add.is-added .deals-add__ink { animation: none; transform: scale(40); opacity: 1; }
+  [data-section="deals"] .deals-drop, [data-section="deals"] .deals-drop__floor, [data-section="deals"] .is-sweep { animation: none; }
 }

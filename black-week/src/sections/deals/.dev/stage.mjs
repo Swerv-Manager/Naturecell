@@ -46,6 +46,9 @@ await pg.click('.deals-qv [data-add]'); await pg.waitForTimeout(700); await snap
 await pg.waitForTimeout(1200);
 await pg.evaluate(() => document.querySelector('.deals-item[data-id="all-day-facial"]').scrollIntoView({ block: 'center' }));
 await pg.click('.deals-item[data-id="all-day-facial"] [data-qv]', { force: true }); await pg.waitForTimeout(1100); await snap('qv-set');
-await pg.keyboard.press('Escape'); await pg.waitForTimeout(500);
+await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
+await pg.evaluate(() => document.querySelector('.deals-item[data-id="komplet-pakken"]').scrollIntoView({ block: 'center' })); await pg.waitForTimeout(400);
+await pg.click('.deals-item[data-id="komplet-pakken"] [data-add]'); await pg.waitForTimeout(2600); await snap('fly-set');
+await pg.waitForTimeout(9000);
 console.log('subtotal', await pg.evaluate(() => window.NCBW.ctx.store.subtotal()));
 await b.close(); srv.close();

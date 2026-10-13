@@ -1,0 +1,33 @@
+/* Port of theme-src/sections/nc-shop-tabs.liquid {% style %} – "#shopify-section-{{ section.id }}" and the section's
+   global classes are scoped to this section. */
+/* 1:1 fra designets "SHOP BY AREA / NEED": sektion 72px top/bund, centreret hoved (eyebrow, h2 +14, p +12, toggle +20, bund 34) */
+[data-section="theme-shop-tabs"] .nc-section { padding: clamp(43px, 5vw, 72px) 0 clamp(43px, 6vw, 72px); }
+[data-section="theme-shop-tabs"] .nc-section-head { max-width: none; margin-bottom: 34px; }
+[data-section="theme-shop-tabs"] .nc-eyebrow { display: block; margin: 0; line-height: 1.7; letter-spacing: 0.12em; color: var(--sage-600); }
+[data-section="theme-shop-tabs"] .nc-section-head h2 { margin: 14px 0 0; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; text-wrap: wrap; color: var(--sage-700); }
+[data-section="theme-shop-tabs"] .nc-section-head p:not(.nc-eyebrow) { margin: 12px auto 0; max-width: 560px; font-size: 16px; line-height: 1.6; color: var(--ink-500); }
+
+[data-section="theme-shop-tabs"] .nc-shoptabs__pills { display: inline-flex; gap: 0; background: var(--sage-50); border: 1px solid var(--border-sage); border-radius: var(--radius-pill); padding: 4px; margin-top: 20px; vertical-align: top; }
+[data-section="theme-shop-tabs"] .nc-shoptabs__pill { border: 0; background: transparent; color: var(--ink-700); padding: 9px 22px; border-radius: var(--radius-pill); font-family: var(--font-body); font-size: 14px; font-weight: 600; line-height: normal; cursor: pointer; transition: background var(--dur-fast), color var(--dur-fast); }
+[data-section="theme-shop-tabs"] .nc-shoptabs__pill.is-active { background: var(--sage-500); color: #fff; }
+
+/* Designets raekke: grid-auto-flow column, minmax(180px,1fr), gap 16, vandret scroll uden scrollbar */
+[data-section="theme-shop-tabs"] .nc-shoptabs__grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(180px, 1fr); gap: 16px; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 10px; }
+[data-section="theme-shop-tabs"] .nc-shoptabs__grid::-webkit-scrollbar { display: none; }
+/* NCCat kind="tile": hvid flise med 1px soft-kant, mint panel 180px med multiply-packshot, tekst 16/12/18 */
+[data-section="theme-shop-tabs"] .nc-shoptabs__card { display: flex; flex-direction: column; width: 100%; text-decoration: none; text-align: center; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; scroll-snap-align: start; transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base); }
+[data-section="theme-shop-tabs"] .nc-shoptabs__card:hover { border-color: var(--sage-400); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
+[data-section="theme-shop-tabs"] .nc-shoptabs__media { display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--sage-50); }
+/* Packshots: contain + multiply paa mint-panelet; nc-packshot.js stiller produkterne paa samme underkant (kundens rettelse 39). */
+[data-section="theme-shop-tabs"] .nc-shoptabs__media img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; }
+[data-section="theme-shop-tabs"] .nc-shoptabs__label { display: flex; flex-direction: column; gap: 3px; padding: 16px 12px 18px; line-height: normal; }
+[data-section="theme-shop-tabs"] .nc-shoptabs__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--sage-700); }
+[data-section="theme-shop-tabs"] .nc-shoptabs__label span { font-size: 12.5px; color: var(--ink-400); }
+/* Mobil (08-10): to kort + et synligt kig paa det tredje, fade i kanten og prikker (data-nc-rail i nc-theme.js) */
+@media (max-width: 749px) {
+  [data-section="theme-shop-tabs"] .nc-shoptabs__grid { grid-auto-columns: calc(44% - 6px); gap: 12px; padding-bottom: 6px; }
+  [data-section="theme-shop-tabs"] .nc-shoptabs__label { padding: 12px 8px 14px; }
+  [data-section="theme-shop-tabs"] .nc-shoptabs__label strong { font-size: 16px; }
+  [data-section="theme-shop-tabs"] .nc-shoptabs__label span { font-size: 12px; }
+  [data-section="theme-shop-tabs"] .nc-shoptabs__pill { padding: 8px 18px; font-size: 13px; }
+}

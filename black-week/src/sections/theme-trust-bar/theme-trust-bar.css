@@ -1,0 +1,36 @@
+/* Port of theme-src/sections/nc-trust-bar.liquid {% style %} – instance "trust2" (mobile_mode: items). Scoped to this section. */
+/* Design: max-width 1240, padding 18px 24px, space-between, gap 20 => 59px hoej bjaelke over fuld indholdsbredde */
+[data-section="theme-trust-bar"] .nc-trust { background: var(--nc-trust-bg); border-bottom: 1px solid var(--border-soft); }
+[data-section="theme-trust-bar"] .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
+[data-section="theme-trust-bar"] .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
+[data-section="theme-trust-bar"] .nc-trust__item svg { color: var(--sage-600); flex: none; }
+[data-section="theme-trust-bar"] .nc-trust__text { min-width: 0; }
+/* Kundens rettelse 57 (09-10): Trustpilot hoejt paa forsiden, i trust-baren og i temaets groenne, ikke lyseroed */
+[data-section="theme-trust-bar"] .nc-trust__item--tp .nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+[data-section="theme-trust-bar"] .nc-trust__item--tp .nc-stars svg { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+[data-section="theme-trust-bar"] .nc-trust__item--tp strong { font-weight: 700; color: var(--sage-700); }
+[data-section="theme-trust-bar"] .nc-trust__item--tp a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+[data-section="theme-trust-bar"] .nc-trust__item--tpw { display: block; width: 330px; max-width: 100%; line-height: 1; }
+[data-section="theme-trust-bar"] .nc-trust__item--tpw .trustpilot-widget { min-height: 20px; }
+[data-section="theme-trust-bar"] .nc-trust__item--tpw .trustpilot-widget > a { font-size: 13.5px; line-height: 20px; }
+[data-section="theme-trust-bar"] .nc-trust__item--tp a:hover span:last-child, [data-section="theme-trust-bar"] .nc-trust__item--tp a:focus-visible span:last-child { text-decoration: underline; }
+@media (max-width: 749px) {
+  [data-section="theme-trust-bar"] .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
+  [data-section="theme-trust-bar"] .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
+  [data-section="theme-trust-bar"] .nc-trust__item svg { margin-top: 1px; }
+  [data-section="theme-trust-bar"] .nc-trust__item--tp { grid-column: 1 / -1; justify-content: center; }
+  [data-section="theme-trust-bar"] .nc-trust__item--tpw { width: 100%; }
+  [data-section="theme-trust-bar"] .nc-trust__item--tpw .trustpilot-widget > a { justify-content: center; width: 100%; }
+  [data-section="theme-trust-bar"] .nc-trust__item--tp a { align-items: flex-start; }
+  /* Kundens rettelse (Lizbeth 08-10): paa mobil kommer Trustpilot lige under banneret, og de fire punkter
+     rykkes ned under "Shop efter omraade/behov". Derfor kan samme sektion vises i to tilstande. */
+  [data-section="theme-trust-bar"] .nc-trust--m-tp .nc-trust__item:not(.nc-trust__item--tp) { display: none; }
+  [data-section="theme-trust-bar"] .nc-trust--m-tp .nc-trust__row { padding: 12px 0; }
+  [data-section="theme-trust-bar"] .nc-trust--m-items .nc-trust__item--tp { display: none; }
+}
+@media (min-width: 750px) {
+  [data-section="theme-trust-bar"] .nc-trust--m-items { display: none; }
+}
+/* mobile_mode == 'items': the whole Shopify section wrapper is hidden on computer and shown on mobile only */
+[data-section="theme-trust-bar"] { display: none; }
+@media (max-width: 749px) { [data-section="theme-trust-bar"] { display: block; } }

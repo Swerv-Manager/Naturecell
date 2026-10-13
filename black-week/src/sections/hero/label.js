@@ -3,10 +3,13 @@
 // 1000 mg", the pale chevron band with the violet product thread, fine hatching and the small print bottom-right.
 // The canvas wraps the full cylinder: u = 0.5 is the front of the bottle.
 
-const SAGE = '#80a097';      // --sage-500 (label field)
-const SAGE_LIGHT = '#89a99f'; // lower field, a hair lighter than the V
-const PALE = '#dde8e3';      // pale chevron band
-const THREAD = '#7b5ea7';    // the oil's violet product thread (true to pack)
+// Colours sampled from the real 30 ml label (assets/extra/product-transparent.png, skin-oil-hires.webp) and
+// pre-compensated for the scene's warm key + grade, so the rendered label reads as the printed teal-sage.
+const FIELD = '#6c998c';      // main field (upper + the heart of the V)
+const FIELD_LOW = '#5f8b7f';  // lower-right field, a step deeper (as printed)
+const PALE = '#d3dfd9';       // pale chevron band
+const HATCH = 'rgba(226,238,233,0.34)';
+const THREAD = '#7a478a';     // Vidunder Olien's violet product thread (true to pack)
 const INK = '#ffffff';
 
 async function loadSvg(url, w, h) {
@@ -31,47 +34,49 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   const cx = W / 2;
   const F = W / 3;              // width of the visible front face (≈120° of the wrap)
 
+  // Geometry measured on the real bottle, in label space: θ (degrees around the bottle, 0 = front centre) and
+  // y as a fraction of the label height. Straight lines in print → they curve naturally as the label wraps.
+  const PXD = W / (360 * 0.97);                       // canvas px per degree (the label wraps 97% of the bottle)
+  const X = (deg) => cx + deg * PXD;
+  const V = [X(3), H * 0.82];                         // V point, a hair right of centre
+  const L = [X(-79), H * 0.27];                       // left arm reaches the silhouette at ~27% height
+  const R = [X(79), H * 0.28];
+  const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy); return [dx / l, dy / l]; };
+  const uL = unit(V, L), uR = unit(V, R);             // from the V point outward along each arm
+  const along = (p, u, k) => [p[0] + u[0] * k, p[1] + u[1] * k];
+  const nL = [uL[1], -uL[0]];                         // normal of the left arm, pointing down-left (outside the V)
+  const off = (p, k) => [p[0] + nL[0] * k, p[1] + nL[1] * k];
+  const FAR = W;                                      // long enough to run off the canvas
+  // the band and hatching end on the right arm's line continued down-left through the V point
+  const cutB = along(V, uR, -(H + 10 - V[1]) / -uR[1]);  // V − uR·t, reaching just past the bottom edge
+
   // ---- field
-  g.fillStyle = SAGE; g.fillRect(0, 0, W, H);
+  g.fillStyle = FIELD; g.fillRect(0, 0, W, H);
+  // lower-right field: below the right arm and right of its continuation
+  g.fillStyle = FIELD_LOW;
+  g.beginPath(); g.moveTo(...V); g.lineTo(...along(V, uR, FAR)); g.lineTo(W + 10, H + 10); g.lineTo(...cutB); g.closePath(); g.fill();
 
-  // lower field (outside the V) – a hair lighter, like the printed pack
-  const P = [cx, H * 0.905];                 // V point
-  const side = F * 0.744;                    // arc distance from the front centre to the silhouette (90°)
-  const armL = [cx - side, H * 0.40];
-  const armR = [cx + side, H * 0.44];
-  const dx = P[0] - armL[0], dy = P[1] - armL[1];
-  const len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
-  const nx = uy, ny = -ux;                   // normal pointing down-left (outside the V)
-  const ext = (pt, k) => [pt[0] - ux * k, pt[1] - uy * k];
-  g.fillStyle = SAGE_LIGHT;
-  g.beginPath(); g.moveTo(...ext(armL, F)); g.lineTo(...P); g.lineTo(armR[0] + (armR[0] - P[0]) * 1.5, armR[1] + (armR[1] - P[1]) * 1.5);
-  g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
-  // V edge on the right: a whisper of a lighter line
-  g.strokeStyle = 'rgba(255,255,255,0.10)'; g.lineWidth = 3;
-  g.beginPath(); g.moveTo(...P); g.lineTo(armR[0] + (armR[0] - P[0]) * 1.5, armR[1] + (armR[1] - P[1]) * 1.5); g.stroke();
-
-  // pale band hugging the left arm (outside of it)
-  const bw = F * 0.105;
-  const A0 = ext(armL, F * 1.2), A1 = [P[0] + ux * F * 0.02, P[1] + uy * F * 0.02];
-  const off = (pt, k) => [pt[0] - nx * k, pt[1] - ny * k];
-  g.fillStyle = PALE;
-  g.beginPath(); g.moveTo(...A0); g.lineTo(...A1); g.lineTo(...off(A1, bw)); g.lineTo(...off(A0, bw)); g.closePath(); g.fill();
-
-  // hatching below the band (fine diagonal lines, fading out)
+  // clip everything left of the cut line and below the left arm
+  const BW = 150, TH = 13;                            // band width, violet thread width (canvas px, perpendicular)
   g.save();
-  g.beginPath(); g.moveTo(...off(A0, bw)); g.lineTo(...off(A1, bw)); g.lineTo(A1[0], H + 10); g.lineTo(0, H + 10); g.lineTo(0, A0[1]); g.closePath(); g.clip();
-  g.strokeStyle = 'rgba(255,255,255,0.3)'; g.lineWidth = 2.4;
-  for (let k = 1; k < 30; k++) {
-    const o = bw + 22 + k * 15;
-    g.globalAlpha = Math.max(0, 1 - k / 30);
-    g.beginPath(); g.moveTo(...off(ext(A0, F * 0.4), o)); g.lineTo(...off([A1[0] + ux * F * 0.6, A1[1] + uy * F * 0.6], o)); g.stroke();
+  g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.lineTo(...cutB); g.lineTo(X(-125), H + 10); g.lineTo(X(-125), -10); g.closePath();
+  g.clip();
+  // pale band hugging the left arm
+  g.fillStyle = PALE;
+  g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...along(V, uL, -FAR)); g.lineTo(...off(along(V, uL, -FAR), BW)); g.lineTo(...off(along(V, uL, FAR), BW)); g.closePath(); g.fill();
+  // violet thread on the band's lower edge
+  g.fillStyle = THREAD;
+  g.beginPath(); g.moveTo(...off(along(V, uL, FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW)); g.lineTo(...off(along(V, uL, FAR), BW)); g.closePath(); g.fill();
+  // fine parallel hatching below the thread
+  g.strokeStyle = HATCH; g.lineWidth = 5; g.lineCap = 'butt';
+  for (let k = 0; k < 26; k++) {
+    const o = BW + 24 + k * 27;
+    g.beginPath(); g.moveTo(...off(along(V, uL, FAR), o)); g.lineTo(...off(along(V, uL, -FAR), o)); g.stroke();
   }
   g.restore();
-  g.globalAlpha = 1;
-
-  // violet product thread along the band's outer edge
-  g.strokeStyle = THREAD; g.lineWidth = 8; g.lineCap = 'butt';
-  g.beginPath(); g.moveTo(...off(A0, bw + 9)); g.lineTo(...off([P[0] - ux * F * 0.05, P[1] - uy * F * 0.05], bw + 9)); g.stroke();
+  // a whisper of paper edge along the band's top (print registration)
+  g.strokeStyle = 'rgba(255,255,255,0.10)'; g.lineWidth = 2;
+  g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.stroke();
 
   // ---- logo + typography (white print)
   const [mark, word] = await Promise.all([
@@ -80,10 +85,10 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   ]);
   try { await Promise.all([document.fonts.load('700 60px Philosopher'), document.fonts.load('400 60px Philosopher'), document.fonts.load('500 40px "Roboto Flex"')]); } catch (e) { /* fonts optional */ }
 
-  const markS = F * 0.33;
-  g.drawImage(mark, cx - markS / 2, H * 0.085, markS, markS);
-  const wordW = F * 0.70, wordH = wordW * 302 / 1071;
-  g.drawImage(word, cx - wordW / 2 + wordW * 0.025, H * 0.29, wordW, wordH);
+  const markS = 30 * PXD;
+  g.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
+  const wordW = 79 * PXD, wordH = wordW * 302 / 1071;
+  g.drawImage(word, cx - wordW / 2 + wordW * 0.025, H * 0.285, wordW, wordH);
 
   g.fillStyle = INK; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
   const fit = (txt, font, width) => { g.font = font(100); const w = g.measureText(txt).width; return font(Math.round(100 * width / w)); };
@@ -97,19 +102,19 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
 
   // small print, bottom-right of the front face
   g.textAlign = 'right';
-  const rx = cx + F * 0.4;
+  const rx = X(50);
   g.font = `400 ${Math.round(F * 0.04)}px "Roboto Flex", Arial, sans-serif`;
-  g.fillText('For all skin types', rx, H * 0.83);
-  g.font = `500 ${Math.round(F * 0.042)}px "Roboto Flex", Arial, sans-serif`;
-  g.fillText('Contains natural &', rx, H * 0.868);
-  g.fillText('organic ingredients', rx, H * 0.903);
+  g.fillText('For all skin types', rx, H * 0.85);
+  g.font = `500 ${Math.round(F * 0.043)}px "Roboto Flex", Arial, sans-serif`;
+  g.fillText('Contains natural &', rx, H * 0.892);
+  g.fillText('organic ingredients', rx, H * 0.929);
   g.font = `400 ${Math.round(F * 0.03)}px "Roboto Flex", Arial, sans-serif`;
-  g.fillText('30 ml/1 oz \u212e', rx, H * 0.94);
+  g.fillText('30 ml/1 oz \u212e', rx, H * 0.968);
 
   // back of the label – unreadable small-print blocks (only ever seen at the edges)
   g.fillStyle = 'rgba(255,255,255,0.55)';
   const r = rng(7);
-  for (const bx of [W * 0.06, W * 0.80]) {
+  for (const bx of [X(-168), X(124)]) {
     for (let i = 0; i < 22; i++) {
       const w = F * (0.32 + r() * 0.22);
       g.fillRect(bx, H * 0.22 + i * H * 0.026, w, H * 0.008);

@@ -26,18 +26,18 @@ fs.writeFileSync(path.join(P, 'bw/app.css'), css);
 fs.writeFileSync(path.join(P, 'bw/app.js'), fs.readFileSync(path.join(ROOT, 'dist/index.js'), 'utf8').replaceAll('../src/sections/', 'src/sections/'));
 for (const sec of fs.readdirSync(path.join(ROOT, 'src/sections'))) {
   const walkImg = (d) => { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) { if (!f.startsWith('.')) walkImg(p); }
-    else if (/\.(webp|png|svg|jpg|woff2)$/.test(f)) { const rel = path.relative(ROOT, p); fs.mkdirSync(path.dirname(path.join(P, rel)), { recursive: true }); fs.copyFileSync(p, path.join(P, rel)); } } };
+    else if (/\.(webp|png|svg|jpg|woff2|webm|mp4)$/.test(f)) { const rel = path.relative(ROOT, p); fs.mkdirSync(path.dirname(path.join(P, rel)), { recursive: true }); fs.copyFileSync(p, path.join(P, rel)); } } };
   walkImg(path.join(ROOT, 'src/sections', sec));
 }
 
 // assets referenced anywhere in markup/css/js
 const used = new Set();
-const scan = (s) => { for (const m of s.matchAll(/assets\/([A-Za-z0-9_\-./]+\.(?:webp|png|svg|woff2|jpg))/g)) used.add(m[1]); };
+const scan = (s) => { for (const m of s.matchAll(/assets\/([A-Za-z0-9_\-./]+\.(?:webp|png|svg|woff2|jpg|mp4))/g)) used.add(m[1]); };
 scan(body); scan(css.replaceAll('../assets/', 'assets/'));
 const js = fs.readFileSync(path.join(P, 'bw/app.js'), 'utf8');
-for (const m of js.matchAll(/["'`]((?:products|badges|icons|seals|extra|fonts|logo)[A-Za-z0-9_\-./]*\.(?:webp|png|svg|woff2|jpg))/g)) used.add(m[1]);
+for (const m of js.matchAll(/["'`]((?:products|badges|icons|seals|extra|fonts|logo|theme)[A-Za-z0-9_\-./]*\.(?:webp|png|svg|woff2|jpg|mp4))/g)) used.add(m[1]);
 // data-driven paths: include every product image + logos + badges + icons + seals + fonts to be safe
-for (const d of ['products', 'badges', 'icons', 'seals', 'fonts', 'extra']) for (const f of fs.readdirSync(path.join(ROOT, 'assets', d))) used.add(`${d}/${f}`);
+for (const d of ['products', 'badges', 'icons', 'seals', 'fonts', 'extra', 'theme']) for (const f of fs.readdirSync(path.join(ROOT, 'assets', d))) used.add(`${d}/${f}`);
 for (const f of fs.readdirSync(path.join(ROOT, 'assets'))) if (f.endsWith('.svg')) used.add(f);
 for (const u of used) {
   const src = path.join(ROOT, 'assets', u);

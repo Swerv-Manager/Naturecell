@@ -1,0 +1,45 @@
+/* Port of theme-src/sections/nc-trust-bar.liquid {% style %} – instance "trust" (mobile_mode: tp). Scoped to this section. */
+/* Design: max-width 1240, padding 18px 24px, space-between, gap 20 => 59px hoej bjaelke over fuld indholdsbredde */
+[data-section="theme-trust"] .nc-trust { background: var(--nc-trust-bg); border-bottom: 1px solid var(--border-soft); }
+[data-section="theme-trust"] .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
+[data-section="theme-trust"] .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
+[data-section="theme-trust"] .nc-trust__item svg { color: var(--sage-600); flex: none; }
+[data-section="theme-trust"] .nc-trust__text { min-width: 0; }
+/* Kundens rettelse 57 (09-10): Trustpilot hoejt paa forsiden, i trust-baren og i temaets groenne, ikke lyseroed */
+[data-section="theme-trust"] .nc-trust__item--tp .nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+[data-section="theme-trust"] .nc-trust__item--tp .nc-stars svg { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+[data-section="theme-trust"] .nc-trust__item--tp strong { font-weight: 700; color: var(--sage-700); }
+[data-section="theme-trust"] .nc-trust__item--tp a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+[data-section="theme-trust"] .nc-trust__item--tpw { display: block; width: 330px; max-width: 100%; line-height: 1; }
+[data-section="theme-trust"] .nc-trust__item--tpw .trustpilot-widget { min-height: 20px; }
+[data-section="theme-trust"] .nc-trust__item--tpw .trustpilot-widget > a { font-size: 13.5px; line-height: 20px; }
+[data-section="theme-trust"] .nc-trust__item--tp a:hover span:last-child, [data-section="theme-trust"] .nc-trust__item--tp a:focus-visible span:last-child { text-decoration: underline; }
+@media (max-width: 749px) {
+  [data-section="theme-trust"] .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
+  [data-section="theme-trust"] .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
+  [data-section="theme-trust"] .nc-trust__item svg { margin-top: 1px; }
+  [data-section="theme-trust"] .nc-trust__item--tp { grid-column: 1 / -1; justify-content: center; }
+  [data-section="theme-trust"] .nc-trust__item--tpw { width: 100%; }
+  [data-section="theme-trust"] .nc-trust__item--tpw .trustpilot-widget > a { justify-content: center; width: 100%; }
+  [data-section="theme-trust"] .nc-trust__item--tp a { align-items: flex-start; }
+  /* Kundens rettelse (Lizbeth 08-10): paa mobil kommer Trustpilot lige under banneret, og de fire punkter
+     rykkes ned under "Shop efter omraade/behov". Derfor kan samme sektion vises i to tilstande. */
+  [data-section="theme-trust"] .nc-trust--m-tp .nc-trust__item:not(.nc-trust__item--tp) { display: none; }
+  [data-section="theme-trust"] .nc-trust--m-tp .nc-trust__row { padding: 12px 0; }
+  [data-section="theme-trust"] .nc-trust--m-items .nc-trust__item--tp { display: none; }
+}
+@media (min-width: 750px) {
+  [data-section="theme-trust"] .nc-trust--m-items { display: none; }
+}
+
+/* TrustBox "Micro Combo" (template 5419b6ffb0d04a076446a9af). On the live site Trustpilot's bootstrap script replaces
+   the fallback link with an iframe; this mockup has no network, so theme-trust.js draws a static replica of the widget
+   (same row: rating word, star image, review count, logo; 20px high, centred, text colour from data-text-color). */
+[data-section="theme-trust"] .nc-trust__item--tp a.tp-mc { display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; overflow: hidden; color: var(--tp-text, #2f4b45); text-decoration: none; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 20px; white-space: nowrap; -webkit-font-smoothing: antialiased; }
+[data-section="theme-trust"] .tp-mc__in { display: inline-flex; align-items: center; gap: 4px; flex: none; transform-origin: 50% 50%; }
+[data-section="theme-trust"] .tp-mc__word { font-weight: 600; margin-right: 2px; }
+[data-section="theme-trust"] .tp-mc__stars { display: block; width: 70px; height: 12.8px; flex: none; margin-right: 2px; }
+[data-section="theme-trust"] .tp-mc__count b { font-weight: 600; }
+[data-section="theme-trust"] .tp-mc__logo { display: inline-flex; align-items: center; gap: 2px; font-weight: 700; letter-spacing: -0.015em; }
+[data-section="theme-trust"] .tp-mc__logo svg { display: block; width: 15px; height: 15px; margin-top: -2px; color: #00b67a; }
+[data-section="theme-trust"] .tp-mc:hover .tp-mc__count, [data-section="theme-trust"] .tp-mc:focus-visible .tp-mc__count { text-decoration: underline; text-underline-offset: 2px; }
