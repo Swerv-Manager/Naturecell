@@ -144,12 +144,6 @@
           </div>
         {%- endfor -%}
 
-        <form class="nc-drawer__code" data-nc-discount action="{% render 'nc-url', url: '/discount' %}" method="get">
-          <label class="nc-visually-hidden" for="nc-drawer-code">{{ 'cart.discount_code' | t }}</label>
-          <input id="nc-drawer-code" type="text" name="code" placeholder="{{ 'cart.discount_code' | t }}" autocomplete="off" autocapitalize="characters">
-          <button type="submit">{{ 'cart.apply' | t }}</button>
-        </form>
-        <p class="nc-drawer__code-note" data-nc-discount-note hidden>{{ 'cart.discount_applied' | t }}</p>
       </div>
 
       <div class="nc-drawer__foot">

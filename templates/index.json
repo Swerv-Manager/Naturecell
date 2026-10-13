@@ -1,14 +1,15 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
+    "nc_opening_offer": {
+      "type": "nc-opening-offer",
+      "settings": {
+        "enabled": true,
+        "form_id": "TVPZaF",
+        "hand_price": "199,20",
+        "oil_price": "399,20",
+        "foot_price": "239,20"
+      }
+    },
     "hero": {
       "type": "nc-hero",
       "blocks": {
@@ -42,6 +43,7 @@
         "slide1",
         "slide2"
       ],
+      "disabled": true,
       "settings": {
         "autoplay": 7,
         "m_welcome": true,
@@ -383,6 +385,7 @@
     }
   },
   "order": [
+    "nc_opening_offer",
     "hero",
     "trust2",
     "shoptabs",

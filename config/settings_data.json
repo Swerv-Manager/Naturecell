@@ -4,12 +4,12 @@
     "use_brand_fonts": true,
     "social_instagram": "https://www.instagram.com/naturecell_dk",
     "social_facebook": "https://www.facebook.com/NatureCellDK",
+    "nc_free_shipping": "DKK: 399\nEUR: 55",
     "nc_schema_rating": false,
     "nc_share_image": "shopify://shop_images/naturecell-delingsbillede-1200x630.jpg",
     "nc_trustpilot_url": "https://dk.trustpilot.com/review/naturecell.dk",
     "trustpilot_script": true,
     "nc_tp_business_id": "5d5bafba5563e40001e11a6e",
-    "nc_free_shipping": "DKK: 399\nEUR: 55",
     "sections": {
       "nc-cart-drawer": {
         "type": "nc-cart-drawer",
@@ -47,8 +47,6 @@
         "settings": {
           "greeting_message": "👋 Hej! Send os en besked, hvis du har spørgsmål. Vi hjælper dig gerne!",
           "button_color": "#80a097",
-          "secondary_color": "#FFFFFF",
-          "ternary_color": "#6A6A6A",
           "button_icon": "chat_bubble",
           "button_text": "no_text",
           "button_horizontal_position": "bottom_right",

@@ -107,9 +107,9 @@
             "functions": "Antioxidant, Talgkontrollerende, Hudplejende, Hudbeskyttende",
             "intro": "CBD er en central ingrediens i NatureCells hudpleje og udvindes af hampeplanten. Vi vælger den for dens kosmetiske funktioner og som en del af vores fokus på velplejet hud.",
             "body": "<p>I EU’s ingrediensdatabase CosIng er CBD registreret med fire funktioner: Det modvirker oxidation, hjælper med at kontrollere hudens talgproduktion, holder huden i god stand og hjælper med at beskytte den mod skadelige påvirkninger fra ydre faktorer.</p><p>Vores CBD kommer fra Europa og produceres på en ISO- og GMP-certificeret fabrik. Via produktets batchnummer kan vi spore den anvendte CBD tilbage til den konkrete råvarebatch. Det giver os kontrol med kvaliteten og dig tryghed om ingrediensens oprindelse.</p>",
+            "why_heading": "Derfor bruger vi CBD",
             "benefits": "Antioxidant: Modvirker oxidation.\nTalgkontrollerende: Hjælper med at kontrollere hudens talgproduktion.\nHudplejende: Hjælper med at holde huden i god stand.\nHudbeskyttende: Hjælper med at beskytte huden mod skadelige påvirkninger fra ydre faktorer.",
-            "image": "shopify://shop_images/NatureCell_Ingrediens_CBD_500x500px.jpg",
-            "why_heading": "Derfor bruger vi CBD"
+            "image": "shopify://shop_images/NatureCell_Ingrediens_CBD_500x500px.jpg"
           }
         },
         "shea": {
@@ -226,7 +226,8 @@
         "aloe",
         "squalane",
         "hyaluron"
-      ]
+      ],
+      "settings": {}
     }
   },
   "order": [

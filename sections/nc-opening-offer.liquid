@@ -1,0 +1,78 @@
+{%- liquid
+  assign nc_now = 'now' | date: '%s' | plus: 0
+  assign nc_end = '2026-10-15T23:59:00+02:00' | date: '%s' | plus: 0
+-%}
+{%- comment -%} Dansk kampagne med kr.-priser: vises kun paa dansk i DKK, aldrig paa naturecell.de. {%- endcomment -%}
+{%- if section.settings.enabled and nc_now <= nc_end and request.locale.iso_code == 'da' and cart.currency.iso_code == 'DKK' -%}
+<section id="nc-opening-{{ section.id }}" class="nc-opening" aria-labelledby="nc-opening-heading-{{ section.id }}" data-expires="2026-10-15T23:59:00+02:00">
+  <div class="nc-opening__copy">
+    <p class="nc-opening__eyebrow"><span class="nc-opening__flag" aria-hidden="true"></span> ÅBNINGSTILBUD <span class="nc-opening__flag" aria-hidden="true"></span></p>
+    <h2 id="nc-opening-heading-{{ section.id }}">Ny hjemmeside<br>Det skal fejres!</h2>
+    <p class="nc-opening__invite">Spar 20% på tre favoritter</p>
+    <div class="nc-opening__offers">
+      <div><p>Håndcreme <span>100 ml</span></p><strong>{{ section.settings.hand_price | escape }} kr.</strong> <s>249 kr.</s></div>
+      <div><p>Hudplejeolie <span>1000 mg CBD · 30 ml</span></p><strong>{{ section.settings.oil_price | escape }} kr.</strong> <s>499 kr.</s></div>
+      <div><p>Fodcreme <span>100 ml</span></p><strong>{{ section.settings.foot_price | escape }} kr.</strong> <s>299 kr.</s></div>
+    </div>
+    <p class="nc-opening__invite">Tilmeld dig nyhedsbrevet og få koden med det samme.</p>
+    <button type="button" class="nc-opening__cta" data-opening-form="{{ section.settings.form_id | escape }}">Tilmeld dig og få tilbudskoden</button>
+    <p class="nc-opening__terms">Gælder de første 100 kunder, én gang pr. kunde, så længe lager haves, og senest 15. oktober 2026 kl. 23.59. Kan ikke kombineres med andre tilbud eller rabatter.</p>
+    <p class="nc-opening__status" role="status" hidden>Formularen kunne ikke åbnes. Prøv igen om lidt.</p>
+  </div>
+  <div class="nc-opening__visual"><img src="https://cdn.klaviyomail.com/company/WPpXvR/images/716abc2a-2fa1-49c2-bccc-e5803d6333a4.jpeg" alt="NatureCell håndcreme og hudplejeolie med to små danske flag" width="1536" height="1024" loading="lazy"></div>
+</section>
+<style>
+  #nc-main > #shopify-section-{{ section.id }}{order:0}
+  #nc-opening-{{ section.id }}{display:grid;grid-template-columns:1.05fr 1fr;max-width:1280px;margin:36px auto;background:var(--paper,#f6f4ee);border-radius:12px;overflow:hidden;color:var(--sage-700,#3e5d58)}
+  #nc-opening-{{ section.id }} .nc-opening__copy{padding:clamp(24px,3.5vw,48px)}
+  #nc-opening-{{ section.id }} .nc-opening__eyebrow{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--sale,#84334e);margin:0 0 15px}
+  #nc-opening-{{ section.id }} .nc-opening__flag{position:relative;width:22px;height:15px;background:#b51f2b;display:inline-block;transform:rotate(-8deg)}
+  #nc-opening-{{ section.id }} .nc-opening__flag:before{content:'';position:absolute;left:7px;top:0;width:3px;height:100%;background:white}
+  #nc-opening-{{ section.id }} .nc-opening__flag:after{content:'';position:absolute;left:0;top:6px;width:100%;height:3px;background:white}
+  #nc-opening-{{ section.id }} .nc-opening__flag:last-child{transform:rotate(8deg)}
+  #nc-opening-{{ section.id }} h2{font-family:var(--font-display,Georgia,serif);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.08;margin:0 0 20px;color:inherit}
+  #nc-opening-{{ section.id }} .nc-opening__offers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:16px 0;border-top:1px solid #80a09766;border-bottom:1px solid #80a09766}
+  #nc-opening-{{ section.id }} .nc-opening__offers>div+div{border-left:1px solid #80a09766;padding-left:12px}
+  #nc-opening-{{ section.id }} .nc-opening__offers p{margin:0 0 10px;font-size:15px}
+  #nc-opening-{{ section.id }} .nc-opening__offers p span{display:block;font-size:11px;line-height:1.4;color:var(--text,#516d69);margin-top:4px}
+  #nc-opening-{{ section.id }} .nc-opening__offers strong{font-family:var(--font-display,Georgia,serif);font-size:26px;font-weight:400;white-space:nowrap}
+  #nc-opening-{{ section.id }} .nc-opening__offers s{font-size:12px;white-space:nowrap;color:#516d69}
+  #nc-opening-{{ section.id }} .nc-opening__invite{font-size:14px;line-height:1.5;margin:16px 0 12px}
+  #nc-opening-{{ section.id }} .nc-opening__cta{background:var(--sage-700,#3e5d58);color:white;border:0;border-radius:999px;min-height:48px;padding:14px 24px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  #nc-opening-{{ section.id }} .nc-opening__cta:focus-visible{outline:3px solid #80a097;outline-offset:3px}
+  #nc-opening-{{ section.id }} .nc-opening__terms{font-size:11px;line-height:1.5;max-width:460px;margin:14px 0 0;color:#516d69}
+  #nc-opening-{{ section.id }} .nc-opening__visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+  #nc-opening-{{ section.id }} .nc-opening__status{font-size:12px;color:#84334e}
+  @media(max-width:749px){#nc-opening-{{ section.id }}{grid-template-columns:1fr;margin:24px 16px}#nc-opening-{{ section.id }} .nc-opening__visual{grid-row:1;height:230px}#nc-opening-{{ section.id }} .nc-opening__visual img{object-position:50% 48%}#nc-opening-{{ section.id }} .nc-opening__cta{width:100%}#nc-opening-{{ section.id }} .nc-opening__offers strong{font-size:23px}}
+  @media(max-width:480px){
+    #nc-opening-{{ section.id }} .nc-opening__offers{grid-template-columns:1fr;gap:12px}
+    #nc-opening-{{ section.id }} .nc-opening__offers>div{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;row-gap:2px}
+    #nc-opening-{{ section.id }} .nc-opening__offers>div+div{border-left:0;border-top:1px solid #80a09766;padding:12px 0 0}
+    #nc-opening-{{ section.id }} .nc-opening__offers p{grid-row:span 2;margin:0}
+    #nc-opening-{{ section.id }} .nc-opening__offers strong,#nc-opening-{{ section.id }} .nc-opening__offers s{grid-column:2;text-align:right}
+  }
+</style>
+<script>
+(()=>{
+  const root=document.getElementById('nc-opening-{{ section.id }}');
+  if(!root)return;
+  const expires=Date.parse(root.dataset.expires);
+  function valid(){if(Date.now()>expires){root.hidden=true;root.style.display='none';return false;}return true;}
+  if(!valid())return;
+  const button=root.querySelector('[data-opening-form]');
+  button.addEventListener('click',()=>{
+    if(!valid())return;
+    const id=button.dataset.openingForm;
+    if(!id){root.querySelector('[role=status]').hidden=false;return;}
+    window._klOnsite=window._klOnsite||[];
+    window._klOnsite.push(['openForm',id]);
+  });
+  document.addEventListener('visibilitychange',valid);
+  const timeLeft=expires-Date.now();
+  if(timeLeft<2147483647)setTimeout(valid,timeLeft+1000);
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{"name":"Åbningstilbud oktober","settings":[{"type":"checkbox","id":"enabled","label":"Vis åbningstilbud","default":false},{"type":"text","id":"form_id","label":"Klaviyo formular-ID","default":"TVPZaF"},{"type":"text","id":"hand_price","label":"Tilbudspris håndcreme","default":"199,20"},{"type":"text","id":"oil_price","label":"Tilbudspris hudplejeolie","default":"399,20"},{"type":"text","id":"foot_price","label":"Tilbudspris fodcreme","default":"239,20"}],"presets":[{"name":"Åbningstilbud oktober"}]}
+{% endschema %}
