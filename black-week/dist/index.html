@@ -412,19 +412,952 @@
   <p class="nc-sr" aria-live="polite" data-deals-live></p>
 </section>
 
-<section data-section="routine"></section>
+<section data-section="routine" id="rutine" class="routine nc-section on-night nc-grain" aria-labelledby="routine-title" data-mode="morgen">
+  <span class="routine-thread" aria-hidden="true"></span>
 
-<section data-section="ingredients"></section>
+  <div class="nc-container routine-wrap">
+    <header class="routine-head" data-reveal>
+      <div class="routine-head__intro">
+        <p class="nc-eyebrow routine-eyebrow">Byg din rutine <span class="routine-eyebrow__sep" aria-hidden="true">·</span> 25% på hele hudplejeserien</p>
+        <h2 class="nc-section__title routine-title" id="routine-title">Din rutine, <span class="routine-title__soft">trin for trin</span></h2>
+      </div>
+      <p class="nc-section__lead routine-lead">Vælg de trin, din hud har brug for. Vi stiller dem op i den rigtige rækkefølge morgen og aften, lægger Black Week-priserne sammen – og giver dig automatisk den bedste sampakkepris.</p>
+    </header>
 
-<section data-section="stories"></section>
+    <div class="routine-grid">
+      <!-- Stage: WebGL still life (sage stone plinth) + DOM overlay for the dotted feature lines -->
+      <div class="routine-stage" data-reveal>
+        <div class="routine-stage__glow" aria-hidden="true"><i class="routine-stage__glow-m"></i><i class="routine-stage__glow-a"></i></div>
+        <canvas class="routine-canvas" aria-hidden="true"></canvas>
+        <div class="routine-fallback" aria-hidden="true">
+          <div class="routine-fallback__row"></div>
+          <div class="routine-fallback__plinth"></div>
+        </div>
+        <svg class="routine-lines" aria-hidden="true"></svg>
+        <div class="routine-tags" aria-hidden="true"></div>
 
-<section data-section="trust"></section>
+        <div class="routine-mode" role="group" aria-label="Vis rutinen til">
+          <span class="routine-mode__pill" aria-hidden="true"></span>
+          <button type="button" class="routine-mode__btn" data-mode="morgen" aria-pressed="true">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.6v1.6M10 15.8v1.6M2.6 10h1.6M15.8 10h1.6M4.8 4.8l1.1 1.1M14.1 14.1l1.1 1.1M4.8 15.2l1.1-1.1M14.1 5.9l1.1-1.1"/></svg>
+            Morgen
+          </button>
+          <button type="button" class="routine-mode__btn" data-mode="aften" aria-pressed="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.6 12.4A6.2 6.2 0 0 1 7.6 4.4a6.2 6.2 0 1 0 8 8Z"/></svg>
+            Aften
+          </button>
+        </div>
 
-<section data-section="faq"></section>
+        <div class="routine-spot" aria-hidden="true" hidden>
+          <span class="routine-spot__disc">
+            <span class="routine-spot__name">Komplet Pakken</span>
+            <span class="routine-spot__price" data-spot-price>899 kr.</span>
+            <span class="routine-spot__was" data-spot-was>Førpris 1.198 kr.</span>
+          </span>
+        </div>
 
-<section data-section="footer"></section>
+        <p class="routine-stage__caption" data-caption>Let og beskyttende – klar til dagen.</p>
+        <p class="routine-stage__empty" data-empty hidden>Vælg et trin – så stiller vi det frem.</p>
+      </div>
 
-<section data-section="cart"></section>
+      <!-- Panel: steps, live total, meters, CTA, Komplet Pakken nudge -->
+      <div class="routine-panel" data-reveal>
+        <div class="routine-panel__head">
+          <h3 class="routine-panel__title">Vælg dine trin</h3>
+          <p class="routine-panel__count" data-count>4 af 5 valgt</p>
+        </div>
+
+        <ul class="routine-steps" role="list">
+          <li><button type="button" class="routine-step" data-key="rens" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/rens.webp" alt="" width="379" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Rens</span><span class="routine-step__name">CBD Rensegel <span class="routine-step__size">100 ml</span></span><span class="routine-step__when">Morgen og aften</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="serum" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/serum.webp" alt="" width="352" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Serum</span><span class="routine-step__name">CBD Hyaluronic Serum <span class="routine-step__size">30 ml</span></span><span class="routine-step__when">Morgen og aften – før creme</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="dag" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/dag.webp" alt="" width="240" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Dag</span><span class="routine-step__name">CBD Dagcreme <span class="routine-step__size">50 ml</span></span><span class="routine-step__when">Morgen</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="nat" aria-pressed="true">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/nat.webp" alt="" width="243" height="1100" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Nat</span><span class="routine-step__name">CBD Natcreme <span class="routine-step__size">50 ml</span></span><span class="routine-step__when">Aften</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+          <li><button type="button" class="routine-step" data-key="olie" aria-pressed="false">
+            <span class="routine-step__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-step__thumb" aria-hidden="true"><img src="../src/sections/routine/img/olie.webp" alt="" width="219" height="677" loading="lazy" decoding="async"></span>
+            <span class="routine-step__text"><span class="routine-step__step"><span data-n></span>Olie</span><span class="routine-step__name">Vidunder Olien <span class="routine-step__size">1000 mg · 30 ml</span></span><span class="routine-step__when">Aften – som sidste trin</span></span>
+            <span class="routine-step__price"><span class="routine-step__now" data-now></span><span class="routine-step__was">Førpris <s data-was></s></span></span>
+          </button></li>
+        </ul>
+
+        <div class="routine-sum" aria-live="polite" aria-atomic="true">
+          <div class="routine-sum__row">
+            <span class="routine-sum__label">Din rutine i Black Week</span>
+            <span class="routine-sum__total" data-total>1.084 kr.</span>
+          </div>
+          <p class="routine-sum__meta"><span data-was-total>Førpris 1.446 kr.</span><span class="routine-sum__save" data-save>Du sparer 362 kr.</span></p>
+          <p class="routine-sum__bundle" data-bundle-note hidden></p>
+        </div>
+
+        <div class="routine-meter" data-meter>
+          <div class="routine-meter__track" aria-hidden="true">
+            <span class="routine-meter__fill"></span>
+            <span class="routine-meter__mark" data-mark="ship"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+            <span class="routine-meter__mark" data-mark="gift"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg></span>
+          </div>
+          <div class="routine-meter__labels" aria-hidden="true">
+            <span data-lbl="ship">Fri fragt<small>399 kr.</small></span>
+            <span data-lbl="gift">Gratis Lip Balm<small>699 kr.</small></span>
+          </div>
+          <p class="routine-meter__status" data-meter-status>Fri fragt og gratis CBD Lip Balm (værdi 79 kr.) følger med.</p>
+        </div>
+
+        <button type="button" class="nc-btn nc-btn--light nc-btn--lg routine-cta" data-cta>
+          <span class="routine-cta__label">Læg rutinen i kurv</span>
+          <span class="routine-cta__sum" data-cta-sum>1.084 kr.</span>
+          <span class="routine-cta__done" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.5L12 5.4"/></svg>Lagt i kurven</span>
+        </button>
+        <p class="routine-cta__note">Rabatten er trukket fra – ingen kode. 14 dages fortrydelsesret.</p>
+
+        <aside class="routine-bundle" data-bundle aria-label="Komplet Pakken">
+          <img class="routine-bundle__badge" src="../assets/badges/komplet-pakken.svg" alt="" width="60" height="60">
+          <div class="routine-bundle__body">
+            <p class="routine-bundle__title">Komplet Pakken <span class="routine-bundle__price"><b data-kp-price>899 kr.</b> <span>Førpris <s data-kp-was>1.198 kr.</s></span></span></p>
+            <p class="routine-bundle__text" data-bundle-text>Rens, Dag, Nat og Olie samlet til én pris.</p>
+          </div>
+          <button type="button" class="routine-bundle__btn" data-bundle-btn>Vælg Komplet Pakken</button>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-section="ingredients" id="ingredienser" class="nc-section ing" aria-labelledby="ing-title">
+  <!-- one thread per composition: a single sand hairline crossing the field -->
+  <svg class="ing-thread" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line class="ing-thread__d" x1="44" y1="-1" x2="101" y2="33" /><line class="ing-thread__m" x1="-1" y1="31" x2="101" y2="52" /></svg>
+
+  <div class="nc-container ing-grid">
+    <header class="nc-section__head ing-head" data-reveal>
+      <p class="nc-eyebrow">Ingredienserne</p>
+      <h2 class="nc-section__title" id="ing-title">Hvad er der i?</h2>
+      <p class="nc-section__lead ing-lead">Få, plantebaserede ingredienser, som huden kender – og ikke én for meget. Vegansk, uden syntetisk parfume og til alle hudtyper.</p>
+    </header>
+
+    <ol class="ing-list" aria-label="Ingredienser i NatureCell® hudpleje" data-reveal>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="0" aria-pressed="true" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">01</span>
+          <span class="ing-item__dot" style="--c: var(--clay-500)" aria-hidden="true"></span>
+          <span class="ing-item__name">CBD</span>
+          <span class="ing-item__tag">Balance</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#c09a68" data-deep="#7a5530" data-r="0.66">
+          <p data-k="inci">Cannabidiol</p>
+          <p data-k="desc">Plantebaseret CBD i samspil med naturlige olier. Bidrager til en mere jævn, balanceret og rolig hud – testet til under 0,2% THC, med analysecertifikat pr. parti.</p>
+          <p data-k="in">Hele hudplejeserien</p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="1" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">02</span>
+          <span class="ing-item__dot" style="--c: var(--sand-500)" aria-hidden="true"></span>
+          <span class="ing-item__name">Mandelolie</span>
+          <span class="ing-item__tag">Blødhed</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#e2c3a4" data-deep="#b48d66" data-r="0.5">
+          <p data-k="inci">Prunus Amygdalus Dulcis Oil</p>
+          <p data-k="desc">En mild, nærende olie fra søde mandler, der efterlader huden blød, smidig og velplejet.</p>
+          <p data-k="in">CBD Natcreme</p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="2" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">03</span>
+          <span class="ing-item__dot" style="--c: var(--linen-500)" aria-hidden="true"></span>
+          <span class="ing-item__name">Squalane</span>
+          <span class="ing-item__tag">Fugt</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#ece9df" data-deep="#a9a596" data-r="0.44">
+          <p data-k="inci">Squalane</p>
+          <p data-k="desc">Let og silkeblød. Understøtter hudens naturlige fugt og trækker ind uden at fedte.</p>
+          <p data-k="in">CBD Natcreme</p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="3" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">04</span>
+          <span class="ing-item__dot" style="--c: var(--sage-400)" aria-hidden="true"></span>
+          <span class="ing-item__name">Aloe vera</span>
+          <span class="ing-item__tag">Frisk fugt</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#b9d0c6" data-deep="#6f9286" data-r="0.56">
+          <p data-k="inci">Aloe Barbadensis Leaf Juice</p>
+          <p data-k="desc">Den klare, kølige gel fra aloe-bladet giver fugt og efterlader huden frisk og glat.</p>
+          <p data-k="in">CBD Dagcreme</p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="4" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">05</span>
+          <span class="ing-item__dot" style="--c: var(--clay-300)" aria-hidden="true"></span>
+          <span class="ing-item__name">Sheasmør</span>
+          <span class="ing-item__tag">Beskyttelse</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#f0e2cf" data-deep="#c2a27f" data-r="0.5">
+          <p data-k="inci">Butyrospermum Parkii Butter</p>
+          <p data-k="desc">Rig og cremet. Beskytter mod udtørring og hjælper med at opretholde en jævn og velplejet hud.</p>
+          <p data-k="in">CBD Dagcreme</p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="5" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">06</span>
+          <span class="ing-item__dot" style="--c: var(--sage-600)" aria-hidden="true"></span>
+          <span class="ing-item__name">Hampefrøolie</span>
+          <span class="ing-item__tag">Næring</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#8fa78b" data-deep="#46624f" data-r="0.52">
+          <p data-k="inci">Cannabis Sativa Seed Oil</p>
+          <p data-k="desc">Olien fra hampens frø er naturligt rig på fedtsyrer og giver intensiv fugtighed til tør hud.</p>
+          <p data-k="in"></p>
+        </div>
+      </li>
+      <li class="ing-list__row">
+        <button class="ing-item" type="button" data-ing="6" aria-pressed="false" aria-controls="ing-card">
+          <span class="ing-item__no" aria-hidden="true">07</span>
+          <span class="ing-item__dot" style="--c: var(--sage-300)" aria-hidden="true"></span>
+          <span class="ing-item__name">Agurkeekstrakt</span>
+          <span class="ing-item__tag">Friskhed</span>
+        </button>
+        <div class="ing-detail" hidden data-color="#d3e2d4" data-deep="#86a68e" data-r="0.42">
+          <p data-k="inci">Cucumis Sativus Fruit Extract</p>
+          <p data-k="desc">Frisk og let. Giver fugt og bidrager til et udhvilet, friskt hududtryk.</p>
+          <p data-k="in"></p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="ing-viz" data-reveal>
+      <div class="ing-stage">
+        <div class="ing-pool" aria-hidden="true"></div>
+        <canvas class="ing-canvas" aria-hidden="true"></canvas>
+        <!-- static fallback (no WebGL): flat droplets in the same colours, still interactive -->
+        <div class="ing-fallback" aria-hidden="true"></div>
+        <p class="ing-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2"/></svg>
+          <span class="ing-hint__desk">Peg på en dråbe</span><span class="ing-hint__touch">Tryk på en dråbe</span>
+        </p>
+      </div>
+      <svg class="ing-lines" aria-hidden="true" focusable="false">
+        <path class="ing-line" d="M0 0" />
+        <circle class="ing-line__ring" r="6" cx="-20" cy="-20" />
+        <circle class="ing-line__end" r="3" cx="-20" cy="-20" />
+      </svg>
+      <article class="ing-card" id="ing-card" aria-live="polite" aria-atomic="true">
+        <div class="ing-card__inner">
+          <p class="ing-card__count"><span class="ing-card__swatch" aria-hidden="true"></span><span data-card="count">Ingrediens 01 / 07</span></p>
+          <h3 class="ing-card__name" data-card="name">CBD</h3>
+          <p class="ing-card__inci" data-card="inci">Cannabidiol</p>
+          <p class="ing-card__desc" data-card="desc">Plantebaseret CBD i samspil med naturlige olier. Bidrager til en mere jævn, balanceret og rolig hud – testet til under 0,2% THC, med analysecertifikat pr. parti.</p>
+          <p class="ing-card__in" data-card="in-wrap"><span class="ing-card__in-label">Findes i</span> <span data-card="in">Hele hudplejeserien</span></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="ing-badges" data-reveal>
+      <ul class="ing-badges__list" role="list">
+        <li class="ing-badge"><img src="../assets/badges/vegan-friendly.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Vegansk</span></li>
+        <li class="ing-badge"><img src="../assets/badges/plantebaseret-cbd.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Plantebaseret CBD</span></li>
+        <li class="ing-badge"><img src="../assets/badges/lab-tested.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Testet til under 0,2% THC</span></li>
+        <li class="ing-badge"><img src="../assets/badges/for-alle-skin-types.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Til alle hudtyper</span></li>
+        <li class="ing-badge"><img src="../assets/badges/mild-calming.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Mild mod huden</span></li>
+        <li class="ing-badge"><img src="../assets/badges/moisture-softening.svg" alt="" width="60" height="60" loading="lazy" decoding="async"><span>Fugt og blødhed</span></li>
+      </ul>
+      <p class="ing-badges__note">Uden syntetisk parfume <span aria-hidden="true">·</span> GMP/ISO-certificeret olieproduktion <span aria-hidden="true">·</span> Analysecertifikat pr. parti</p>
+    </div>
+  </div>
+</section>
+
+<section data-section="stories" id="kundecases" class="nc-section nc-grain on-night stories" aria-labelledby="stories-title">
+  <!-- one thread per composition: a single mauve hairline across the night field -->
+  <svg class="stories-thread" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line x1="-1" y1="62" x2="101" y2="27" /></svg>
+  <div class="stories-glow" aria-hidden="true"></div>
+
+  <div class="nc-container stories-head">
+    <div class="stories-head__text" data-reveal>
+      <p class="nc-eyebrow stories-eyebrow">Kundecases</p>
+      <h2 class="nc-section__title stories-title" id="stories-title">Vi lover ikke mirakler – vi lader vores kunder fortælle.</h2>
+    </div>
+    <p class="nc-section__lead stories-lead" data-reveal>Seks kunder, seks rutiner. Her fortæller de med egne ord, hvordan NatureCell® passer ind i deres hverdag.</p>
+  </div>
+
+  <!-- MOCKUP: quotes are stand-ins – replace with verbatim NatureCell® kundecase quotes before launch. -->
+  <div class="stories-carousel" role="region" aria-roledescription="karrusel" aria-label="Kundecases" data-stories-carousel>
+    <div class="stories-viewport" data-stories-viewport>
+      <ol class="stories-track" id="stories-track" data-stories-track>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="1 af 6: Annette" data-tone="1">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">01</span><span class="stories-portrait__initial">A</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Et par dråber om aftenen er blevet mit lille ritual. Min hud føles blød og velplejet, når jeg vågner – og jeg glæder mig faktisk til det.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Annette</span><span class="stories-desc">Aftenrutinen med Vidunder Olien</span></p>
+            <div class="stories-product" data-product="skin-oil"></div>
+          </div>
+        </li>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="2 af 6: Pia" data-tone="2">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">02</span><span class="stories-portrait__initial">P</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Om vinteren bliver min hud hurtigt tør. Natcremen giver den fugt, og jeg kan godt lide, at den er uden syntetisk parfume.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Pia</span><span class="stories-desc">Fugt til den tørre vinterhud</span></p>
+            <div class="stories-product" data-product="night-cream"></div>
+          </div>
+        </li>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="3 af 6: Christian" data-tone="3">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">03</span><span class="stories-portrait__initial">C</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Jeg ville bare have noget enkelt. Den trækker hurtigt ind, fedter ikke, og huden føles blød hele dagen.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Christian</span><span class="stories-desc">En enkel rutine efter træning</span></p>
+            <div class="stories-product" data-product="body-lotion"></div>
+          </div>
+        </li>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="4 af 6: Mai-Britt" data-tone="4">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">04</span><span class="stories-portrait__initial">M</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Komplet Pakken gjorde det let at komme i gang. Rens, dag, nat og olie – min hud føles jævn og velplejet, og jeg skal ikke tænke over det.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Mai-Britt</span><span class="stories-desc">Hele rutinen, morgen og aften</span></p>
+            <div class="stories-product" data-product="komplet-pakken"></div>
+          </div>
+        </li>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="5 af 6: Jan" data-tone="5">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">05</span><span class="stories-portrait__initial">J</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Nu bruger hele familien den. Den er mild, og mit hår føles rent uden at føles udtørret bagefter.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Jan</span><span class="stories-desc">Én shampoo til hele familien</span></p>
+            <div class="stories-product" data-product="shampoo"></div>
+          </div>
+        </li>
+        <li class="stories-card" role="group" aria-roledescription="kundecase" aria-label="6 af 6: Luna" data-tone="6">
+          <div class="stories-portrait" aria-hidden="true"><span class="stories-portrait__no">06</span><span class="stories-portrait__initial">L</span></div>
+          <div class="stories-body">
+            <blockquote class="stories-quote"><p>Serummet er det første, jeg tager på om morgenen. Huden føles fugtig hele dagen og ser mere udhvilet ud.</p></blockquote>
+            <p class="stories-who"><span class="stories-name">Luna</span><span class="stories-desc">Morgenrutinen før arbejde</span></p>
+            <div class="stories-product" data-product="serum"></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="nc-container stories-foot">
+      <p class="stories-count" aria-hidden="true"><span class="stories-count__now" data-stories-now>01</span><span class="stories-count__sep"></span><span class="stories-count__all">06</span></p>
+      <div class="stories-progress" aria-hidden="true"><span class="stories-progress__thumb" data-stories-thumb></span></div>
+      <div class="stories-nav">
+        <button class="stories-btn stories-btn--prev" type="button" aria-label="Forrige kundecase" aria-controls="stories-track" data-stories-prev><span class="stories-pil" aria-hidden="true"></span></button>
+        <button class="stories-btn stories-btn--next" type="button" aria-label="Næste kundecase" aria-controls="stories-track" data-stories-next><span class="stories-pil" aria-hidden="true"></span></button>
+      </div>
+      <p class="stories-note">Resultater kan variere fra person til person.</p>
+    </div>
+    <p class="nc-sr" aria-live="polite" data-stories-live></p>
+  </div>
+  <div class="stories-cursor" aria-hidden="true" data-stories-cursor><span>Træk</span></div>
+</section>
+
+<section data-section="trust" id="trust" class="trust nc-grain on-night" aria-labelledby="trust-title">
+  <div class="trust-light" aria-hidden="true"></div>
+  <span class="trust-thread" aria-hidden="true"></span>
+
+  <div class="nc-container trust-grid">
+
+    <header class="trust-head" data-reveal>
+      <p class="nc-eyebrow trust-eyebrow"><span class="trust-eyebrow__rule" aria-hidden="true"></span>Hvorfor NatureCell®</p>
+      <h2 class="nc-section__title trust-title" id="trust-title">Danmarks første godkendte CBD-hudpleje.</h2>
+      <p class="nc-section__lead trust-lead">Black Week ændrer ikke på, hvordan vi arbejder. Vi tester stadig hvert eneste parti, og du handler lige så trygt som resten af året.</p>
+    </header>
+
+    <!-- The bindrune mark: drawn as a slow glowing line, then settles into the white logo mark. -->
+    <figure class="trust-stage" aria-hidden="true">
+      <div class="trust-stage__pool"></div>
+      <div class="trust-mark">
+        <svg class="trust-mark__svg" viewBox="36 62 150 150" focusable="false">
+          <path class="trust-mark__fill" d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15ZM76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09M97.92,161.09l-10.33-11.15,10.33-9.48v20.63ZM78.6,149.62l25.72,27.66v-51.7l-25.72,24.05ZM44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83ZM114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78ZM121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52ZM114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16ZM174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/>
+          <g class="trust-mark__strokes">
+            <path pathLength="1" style="--i:4" d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15Z"/>
+            <path pathLength="1" style="--i:2" d="M76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09"/>
+            <path pathLength="1" style="--i:5" d="M97.92,161.09l-10.33-11.15,10.33-9.48v20.63Z"/>
+            <path pathLength="1" style="--i:3" d="M78.6,149.62l25.72,27.66v-51.7l-25.72,24.05Z"/>
+            <path pathLength="1" style="--i:1" d="M44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41"/>
+            <path pathLength="1" style="--i:0" d="M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87"/>
+            <path pathLength="1" style="--i:4" d="M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83Z"/>
+            <path pathLength="1" style="--i:2" d="M114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78Z"/>
+            <path pathLength="1" style="--i:5" d="M121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52Z"/>
+            <path pathLength="1" style="--i:3" d="M114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16Z"/>
+            <path pathLength="1" style="--i:1" d="M174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49"/>
+            <path pathLength="1" style="--i:0" d="M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/>
+          </g>
+        </svg>
+        <span class="trust-call trust-call--a"><i class="trust-call__dot"></i><i class="trust-call__line"></i><span class="trust-call__label">Beskyttelse</span></span>
+        <span class="trust-call trust-call--b"><i class="trust-call__dot"></i><i class="trust-call__line"></i><span class="trust-call__label">Modstandsdygtighed</span></span>
+      </div>
+    </figure>
+
+    <ul class="trust-stats" role="list">
+      <li class="trust-stat" data-reveal style="--d:0">
+        <p class="trust-stat__fig">2019</p>
+        <p class="trust-stat__txt">Godkendt i Danmark <span class="trust-nowrap">– som de første</span></p>
+      </li>
+      <li class="trust-stat" data-reveal style="--d:1">
+        <p class="trust-stat__fig"><span class="trust-stat__lt">&lt;</span>0,2<span class="trust-stat__unit">%</span></p>
+        <p class="trust-stat__txt">THC – analysecertifikat på hvert parti</p>
+      </li>
+      <li class="trust-stat" data-reveal style="--d:2">
+        <p class="trust-stat__fig">14<span class="trust-stat__unit">dage</span></p>
+        <p class="trust-stat__txt">Fortrydelsesret – også i Black Week</p>
+      </li>
+    </ul>
+
+    <ul class="trust-facts" role="list">
+      <li class="trust-fact" data-reveal style="--d:0">
+        <span class="trust-fact__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.2 18.6 6v5.1c0 4.3-2.8 7.9-6.6 9.7-3.8-1.8-6.6-5.4-6.6-9.7V6L12 3.2Z"/><path d="m9.2 12.1 2 2 3.7-3.9"/></svg></span>
+        <p class="trust-fact__t">E-mærket webshop</p>
+        <p class="trust-fact__d">Tryg handel efter <span class="trust-nowrap">e-mærkets</span> regler.</p>
+      </li>
+      <li class="trust-fact" data-reveal style="--d:1">
+        <span class="trust-fact__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 10.6 12 4.8l7.5 5.8"/><path d="M6.5 9.2v9.3c0 .6.4 1 1 1h9c.6 0 1-.4 1-1V9.2"/><path d="M10 19.5v-4.6c0-.6.4-1 1-1h2c.6 0 1 .4 1 1v4.6"/></svg></span>
+        <p class="trust-fact__t">Dansk familievirksomhed</p>
+        <p class="trust-fact__d">Ejet og drevet af <span class="trust-nowrap">Lizbeth &amp; Allan.</span></p>
+      </li>
+      <li class="trust-fact" data-reveal style="--d:2">
+        <span class="trust-fact__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.6c3.1 3.7 6 7.1 6 10.4a6 6 0 0 1-12 0c0-3.3 2.9-6.7 6-10.4Z"/><path d="M9.4 14.6a2.7 2.7 0 0 0 2.2 2.4"/></svg></span>
+        <p class="trust-fact__t">Vegansk &amp; uden syntetisk parfume</p>
+        <p class="trust-fact__d">Til alle hudtyper.</p>
+      </li>
+    </ul>
+
+    <figure class="trust-quote" data-reveal>
+      <svg class="trust-quote__mark" viewBox="0 0 60 60" aria-hidden="true" focusable="false"><path d="M22.18 50.38c1.87-2.03 2.8-4.64 2.77-7.83-.03-2.96-1-5.4-2.9-7.34-1.91-1.94-4.4-2.89-7.48-2.86l-3.72 1.1c-.03-3.55.62-6.75 1.96-9.6 1.33-2.85 3.12-5.41 5.34-7.68 2.23-2.26 4.52-4.18 6.87-5.74l-2.69-3.7c-6.94 4.44-11.98 9.36-15.13 14.77-3.15 5.41-4.69 11.66-4.63 18.76.03 3.79 1.06 6.94 3.1 9.46 2.03 2.53 4.94 3.77 8.73 3.74 3.31-.03 5.9-1.06 7.78-3.08Z"/><path transform="translate(32.2 -.28)" d="M22.18 50.38c1.87-2.03 2.8-4.64 2.77-7.83-.03-2.96-1-5.4-2.9-7.34-1.91-1.94-4.4-2.89-7.48-2.86l-3.72 1.1c-.03-3.55.62-6.75 1.96-9.6 1.33-2.85 3.12-5.41 5.34-7.68 2.23-2.26 4.52-4.18 6.87-5.74l-2.69-3.7c-6.94 4.44-11.98 9.36-15.13 14.77-3.15 5.41-4.69 11.66-4.63 18.76.03 3.79 1.06 6.94 3.1 9.46 2.03 2.53 4.94 3.77 8.73 3.74 3.31-.03 5.9-1.06 7.78-3.08Z"/></svg>
+      <blockquote class="trust-quote__text"><p>Vi valgte bindrunen, fordi den betyder beskyttelse og modstandsdygtighed. Det er stadig det, vi tænker på, hver gang vi sender et nyt parti afsted.</p></blockquote>
+      <figcaption class="trust-quote__by"><span class="trust-quote__names">Lizbeth &amp; Allan</span><span class="trust-quote__role">Stiftere af NatureCell®</span></figcaption>
+    </figure>
+
+    <div class="trust-seals" data-reveal>
+      <img class="trust-seal" src="../assets/seals/dansk-firma-seal.png" width="827" height="827" alt="Segl: Vi er et 100% dansk firma" loading="lazy" decoding="async">
+      <img class="trust-seal" src="../assets/seals/skonne-produkter-seal.png" width="827" height="827" alt="Segl: Skønne produkter – dansk firma" loading="lazy" decoding="async">
+      <p class="trust-seals__txt"><strong>100% dansk firma</strong><span>GMP/ISO-certificeret olieproduktion</span></p>
+    </div>
+
+  </div>
+</section>
+
+<section data-section="faq" id="faq" class="faq" aria-labelledby="faq-title">
+  <div class="faq-light" aria-hidden="true"></div>
+
+  <div class="nc-container faq-grid">
+
+    <!-- Left: heading, Black Week in brief, help card (sticky on desktop) -->
+    <aside class="faq-side">
+      <header class="faq-head" data-reveal>
+        <p class="nc-eyebrow faq-eyebrow"><span class="faq-eyebrow__rule" aria-hidden="true"></span>Spørgsmål &amp; svar</p>
+        <h2 class="nc-section__title faq-title" id="faq-title">Godt at vide, før du handler.</h2>
+        <p class="nc-section__lead faq-lead">Det korte svar på det, vi oftest bliver spurgt om i Black Week. Intet med småt.</p>
+      </header>
+
+      <dl class="faq-facts" data-reveal aria-label="Black Week i korte træk">
+        <div class="faq-fact">
+          <dt>Rabat</dt>
+          <dd>25% på hele hudplejeserien</dd>
+        </div>
+        <div class="faq-fact">
+          <dt>Gave</dt>
+          <dd>Gratis CBD Lip Balm over 699 kr.</dd>
+        </div>
+        <div class="faq-fact">
+          <dt>Fragt</dt>
+          <dd>Fri fragt over 399 kr.</dd>
+        </div>
+        <div class="faq-fact">
+          <dt>Slutter</dt>
+          <dd>30. nov. kl. 23.59</dd>
+        </div>
+      </dl>
+
+      <div class="faq-help" data-reveal>
+        <svg class="faq-help__mark" viewBox="36 62 150 150" aria-hidden="true" focusable="false"><path d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15ZM76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09M97.92,161.09l-10.33-11.15,10.33-9.48v20.63ZM78.6,149.62l25.72,27.66v-51.7l-25.72,24.05ZM44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83ZM114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78ZM121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52ZM114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16ZM174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/></svg>
+        <p class="faq-help__title">Mangler du et svar?</p>
+        <p class="faq-help__text">Vi er en dansk familievirksomhed, og vi svarer gerne selv – også i Black Week.</p>
+        <a class="faq-help__link" href="#kontakt">Skriv til os<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M13 6.5 18.5 12 13 17.5"/></svg></a>
+      </div>
+    </aside>
+
+    <!-- Right: accordion -->
+    <div class="faq-list" data-faq-list>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q1" aria-expanded="false" aria-controls="faq-a1">
+            <span class="faq-btn__no" aria-hidden="true">01</span>
+            <span class="faq-btn__text">Hvornår slutter Black Week?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Black Week løber fra mandag 23. november til <strong>mandag 30. november 2026 kl. 23.59</strong>. Indtil da gælder rabatten på hele hudplejeserien – derefter vender priserne tilbage til normalt.</p>
+            <p class="faq-live" data-faq-countdown hidden><span class="faq-live__dot" aria-hidden="true"></span><span>Slutter om <strong data-faq-left>–</strong></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2">
+            <span class="faq-btn__no" aria-hidden="true">02</span>
+            <span class="faq-btn__text">Skal jeg bruge en rabatkode?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Nej. De 25% trækkes automatisk fra på hele hudplejeserien – både enkeltprodukter og Sampakker. Du ser Black Week-prisen direkte på produktet og igen i kurven, så der er ingen kode at huske.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3">
+            <span class="faq-btn__no" aria-hidden="true">03</span>
+            <span class="faq-btn__text">Hvordan får jeg den gratis Lip Balm?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Handler du for over 699 kr., lægger vi en CBD Lip Balm (værdi 79 kr.) med i pakken. Du skal ikke gøre noget – den følger automatisk med.</p>
+            <div class="faq-gift" data-faq-gift>
+              <div class="faq-gift__row">
+                <span class="faq-gift__label" data-faq-gift-label>Din kurv er tom endnu</span>
+                <span class="faq-gift__sum" data-faq-gift-sum>0 kr. / 699 kr.</span>
+              </div>
+              <div class="faq-gift__track" aria-hidden="true"><span class="faq-gift__fill" data-faq-gift-fill></span><span class="faq-gift__goal"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q4" aria-expanded="false" aria-controls="faq-a4">
+            <span class="faq-btn__no" aria-hidden="true">04</span>
+            <span class="faq-btn__text">Hvornår får jeg min pakke?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Vi pakker og sender så hurtigt, vi overhovedet kan. I Black Week har både vi og fragtfirmaerne travlt, så leveringen kan tage lidt længere end normalt – tak, fordi du er tålmodig med os.</p>
+            <p>Der er fri fragt på alle ordrer over 399 kr.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q5" aria-expanded="false" aria-controls="faq-a5">
+            <span class="faq-btn__no" aria-hidden="true">05</span>
+            <span class="faq-btn__text">Kan jeg fortryde mit køb?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Ja. Du har 14 dages fortrydelsesret – også på alt, du køber i Black Week. Fristen regnes fra den dag, du modtager din pakke. Vi er en e-mærket webshop, så du handler trygt hos os.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q6" aria-expanded="false" aria-controls="faq-a6">
+            <span class="faq-btn__no" aria-hidden="true">06</span>
+            <span class="faq-btn__text">Passer produkterne til min hudtype?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Vores hudpleje er udviklet til alle hudtyper. Produkterne er veganske og uden syntetisk parfume. Er du i tvivl om, hvor du skal starte, er All Day Facial – rens, dag og nat – et roligt sted at begynde.</p>
+            <p>Har du sart hud, kan du altid prøve et nyt produkt på et lille område først.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq-item data-reveal>
+        <h3 class="faq-q">
+          <button class="faq-btn" type="button" id="faq-q7" aria-expanded="false" aria-controls="faq-a7">
+            <span class="faq-btn__no" aria-hidden="true">07</span>
+            <span class="faq-btn__text">Er CBD i hudpleje lovligt?</span>
+            <span class="faq-btn__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </h3>
+        <div class="faq-a" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden="until-found">
+          <div class="faq-a__inner">
+            <p>Ja. Vores CBD-hudpleje er kosmetik – ikke medicin. Hvert parti er testet til under 0,2% THC, og der følger et analysecertifikat med hvert parti. I 2019 blev NatureCell® Danmarks første godkendte CBD-hudpleje.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Newsletter / kundeklub -->
+  <div class="nc-container">
+    <div class="faq-club" data-reveal>
+      <span class="faq-club__thread" aria-hidden="true"></span>
+      <div class="faq-club__bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+      <div class="faq-club__copy">
+        <p class="nc-eyebrow faq-club__eyebrow">Kundeklubben</p>
+        <h3 class="faq-club__title" id="faq-club-title">Bliv medlem af kundeklubben</h3>
+        <p class="faq-club__lead">Nyheder, rolige råd om hudpleje og medlemstilbud – direkte i din indbakke, før alle andre.</p>
+      </div>
+
+      <div class="faq-club__body" data-faq-club>
+        <form class="faq-form" data-faq-form novalidate aria-labelledby="faq-club-title">
+          <div class="faq-field" data-faq-field>
+            <label class="faq-field__label" for="faq-email">Din e-mail</label>
+            <div class="faq-field__row">
+              <input class="faq-field__input" id="faq-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="navn@eksempel.dk" required aria-describedby="faq-consent faq-email-err">
+              <button class="nc-btn faq-form__btn" type="submit" data-faq-submit>
+                <span class="faq-form__btn-label">Tilmeld</span>
+                <span class="faq-form__btn-busy" aria-hidden="true"><i></i><i></i><i></i></span>
+              </button>
+            </div>
+            <p class="faq-field__error" id="faq-email-err" aria-live="polite" data-faq-err></p>
+          </div>
+          <p class="faq-consent" id="faq-consent">Ved tilmelding siger du ja til at modtage nyhedsbreve fra NatureCell® på e-mail. Du kan altid afmelde dig igen med ét klik. Læs vores <a href="#privatlivspolitik">privatlivspolitik</a>.</p>
+        </form>
+
+        <div class="faq-done" data-faq-done hidden tabindex="-1">
+          <span class="faq-done__badge" aria-hidden="true">
+            <svg viewBox="0 0 48 48" focusable="false"><circle cx="24" cy="24" r="22"/><path d="M15 24.5l6.2 6.5L33.5 17.5"/></svg>
+          </span>
+          <div>
+            <p class="faq-done__title">Velkommen i kundeklubben.</p>
+            <p class="faq-done__text">Vi har sendt en bekræftelse til <strong data-faq-done-email></strong>. Kig også i din spam-mappe, hvis den ikke dukker op.</p>
+          </div>
+        </div>
+        <p class="nc-sr" aria-live="polite" data-faq-status></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Hvornår slutter Black Week?","acceptedAnswer":{"@type":"Answer","text":"Black Week løber fra mandag 23. november til mandag 30. november 2026 kl. 23.59."}},
+    {"@type":"Question","name":"Skal jeg bruge en rabatkode?","acceptedAnswer":{"@type":"Answer","text":"Nej. De 25% trækkes automatisk fra på hele hudplejeserien – både enkeltprodukter og Sampakker."}},
+    {"@type":"Question","name":"Hvordan får jeg den gratis Lip Balm?","acceptedAnswer":{"@type":"Answer","text":"Handler du for over 699 kr., lægger vi en CBD Lip Balm (værdi 79 kr.) med i pakken – helt automatisk."}},
+    {"@type":"Question","name":"Hvornår får jeg min pakke?","acceptedAnswer":{"@type":"Answer","text":"Vi sender så hurtigt, vi kan. I Black Week kan leveringen tage lidt længere end normalt. Fri fragt over 399 kr."}},
+    {"@type":"Question","name":"Kan jeg fortryde mit køb?","acceptedAnswer":{"@type":"Answer","text":"Ja. Du har 14 dages fortrydelsesret, regnet fra den dag du modtager din pakke."}},
+    {"@type":"Question","name":"Passer produkterne til min hudtype?","acceptedAnswer":{"@type":"Answer","text":"Vores hudpleje er udviklet til alle hudtyper, vegansk og uden syntetisk parfume."}},
+    {"@type":"Question","name":"Er CBD i hudpleje lovligt?","acceptedAnswer":{"@type":"Answer","text":"Ja. Vores CBD-hudpleje er kosmetik, testet til under 0,2% THC med analysecertifikat pr. parti. NatureCell® blev i 2019 Danmarks første godkendte CBD-hudpleje."}}
+  ]}
+  </script>
+</section>
+
+<footer data-section="footer" id="footer" class="ftr nc-grain on-night" aria-labelledby="ftr-title">
+  <h2 class="nc-sr" id="ftr-title">NatureCell® Denmark – sidefod</h2>
+
+  <!-- light + texture layers (decorative) -->
+  <div class="ftr-light" aria-hidden="true"></div>
+  <span class="ftr-thread" aria-hidden="true"></span>
+  <div class="ftr-mark" aria-hidden="true">
+    <svg class="ftr-mark__base" viewBox="36 62 150 150" focusable="false"><path d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15ZM76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09M97.92,161.09l-10.33-11.15,10.33-9.48v20.63ZM78.6,149.62l25.72,27.66v-51.7l-25.72,24.05ZM44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83ZM114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78ZM121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52ZM114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16ZM174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/></svg>
+    <svg class="ftr-mark__lit" viewBox="36 62 150 150" focusable="false"><path d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15ZM76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09M97.92,161.09l-10.33-11.15,10.33-9.48v20.63ZM78.6,149.62l25.72,27.66v-51.7l-25.72,24.05ZM44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83ZM114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78ZM121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52ZM114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16ZM174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/></svg>
+  </div>
+
+  <div class="nc-container ftr-wrap">
+
+    <!-- 1 · brand + campaign -->
+    <div class="ftr-top">
+      <div class="ftr-brand" data-reveal>
+        <a class="ftr-logo" href="#top" aria-label="NatureCell® Denmark – til toppen af siden">
+          <svg viewBox="38.2 65.2 627.8 142.6" fill="currentColor" aria-hidden="true" focusable="false"><path d="M653.63,100.43c-.4.12-.76.18-1.08.18h-1.58v-6.05c.22-.06.48-.11.78-.15.3-.04.57-.07.8-.07.32,0,.68.06,1.08.18.4.12.78.3,1.14.55.37.25.67.57.9.97.23.4.35.88.35,1.45s-.12,1.06-.35,1.45c-.23.4-.53.71-.9.96-.37.24-.75.42-1.14.54M659.44,108.23c.24-.04.42-.1.54-.15v-.44c-.54-.06-1.03-.26-1.47-.6-.44-.35-.94-.99-1.49-1.92l-2.31-3.85c.54-.13,1.08-.33,1.63-.59.54-.26.99-.65,1.35-1.15.36-.51.54-1.18.54-2.01,0-.7-.13-1.29-.38-1.76-.26-.47-.59-.85-1.01-1.14-.42-.29-.87-.51-1.36-.66-.49-.15-.98-.24-1.46-.3-.48-.05-.91-.08-1.28-.08h-5.72v.44h.44c.66,0,1.08.2,1.26.6.18.4.28.93.28,1.59v11.87h1.98v-6.71h1.54l2.2,3.74c.48.81.93,1.44,1.33,1.9.4.46.81.79,1.23.99.42.2.88.3,1.37.3.29,0,.56-.02.8-.07M663.81,100.86c0,5.85-4.74,10.59-10.59,10.59s-10.59-4.74-10.59-10.59,4.74-10.59,10.59-10.59,10.59,4.74,10.59,10.59M665.54,100.86c0-6.8-5.51-12.32-12.32-12.32s-12.32,5.51-12.32,12.32,5.51,12.32,12.32,12.32,12.32-5.51,12.32-12.32"/><path d="M501.97,175.52c.65,0,1.37.12,2.16.35.79.24,1.56.6,2.29,1.1.74.5,1.34,1.15,1.81,1.94.47.79.71,1.76.71,2.91s-.24,2.12-.71,2.91c-.47.79-1.07,1.43-1.81,1.92-.74.49-1.5.85-2.29,1.08-.8.24-1.52.35-2.16.35h-3.18v-12.14c.44-.12.96-.22,1.57-.31s1.14-.13,1.61-.13M502.33,173.97h-11.47v.88h.88c1.32,0,2.17.4,2.54,1.21.37.81.55,1.88.55,3.2v23.83h3.97v-13.46h3.09l4.41,7.5c.97,1.62,1.86,2.89,2.67,3.82.81.93,1.63,1.59,2.47,1.99.84.4,1.76.6,2.76.6.59,0,1.13-.04,1.61-.13.49-.09.85-.19,1.08-.31v-.88c-1.09-.12-2.07-.52-2.96-1.21-.88-.69-1.88-1.98-3-3.86l-4.63-7.72c1.09-.26,2.18-.66,3.27-1.19,1.09-.53,1.99-1.3,2.71-2.32.72-1.01,1.08-2.36,1.08-4.04,0-1.41-.26-2.59-.77-3.53-.52-.94-1.19-1.71-2.03-2.29-.84-.59-1.75-1.03-2.74-1.32-.99-.29-1.96-.49-2.93-.59-.97-.1-1.83-.16-2.56-.16M461.99,180.15l5.3,12.8h-10.81l5.52-12.8ZM462.65,173.97l-12.36,29.13h1.99l3.53-8.38h12.36l1.1,2.87c.65,1.71,1.43,2.96,2.34,3.77.91.81,1.84,1.34,2.78,1.59.94.25,1.74.38,2.38.38.32,0,.64-.02.95-.07.31-.04.58-.1.82-.16v-.88c-1.24-.12-2.18-.51-2.82-1.17-.65-.66-1.32-1.82-2.03-3.46l-9.71-23.61h-1.32ZM451.51,128.66c0-3.06.46-5.78,1.38-8.17.92-2.38,2.16-4.27,3.71-5.65,1.55-1.38,3.31-2.07,5.29-2.07,3.49,0,6.1,1.37,7.81,4.1,1.71,2.74,2.57,6.66,2.57,11.78h-20.76ZM444.49,119.97c-1.58,3.27-2.37,6.9-2.37,10.9s.77,7.56,2.32,10.86c1.55,3.3,3.86,5.91,6.92,7.86,3.06,1.94,6.9,2.91,11.52,2.91,2.5,0,4.83-.31,6.97-.93,2.14-.62,4.12-1.6,5.93-2.96,1.81-1.35,3.44-3.15,4.89-5.38l-1.98-1.32c-1.71,2.24-3.64,3.97-5.78,5.21-2.14,1.24-4.83,1.85-8.06,1.85-4.22,0-7.5-1.59-9.84-4.77-2.34-3.18-3.51-7.18-3.51-12.01h29.95l.2-3.53c0-4.18-.71-7.71-2.13-10.59-1.42-2.88-3.59-5.08-6.52-6.58-2.93-1.5-6.64-2.25-11.12-2.25-4.09,0-7.61.97-10.58,2.91-2.97,1.94-5.24,4.55-6.82,7.81M406.78,173.97h-4.19v29.13h1.77v-24.93l11.48,24.93h.88l11.03-24.49v16.99c0,2.21.24,4.01.71,5.41.47,1.4,1.3,2.43,2.49,3.09,1.19.66,2.85.99,4.96.99v-.88c-1.44,0-2.5-.77-3.18-2.29-.68-1.53-1.01-3.63-1.01-6.31v-21.63h-3.97l-10.37,22.95-10.59-22.95ZM359.07,173.97h-2.87v.88h.44c1.53,0,2.57.4,3.13,1.21.56.81.84,1.88.84,3.2v23.83h1.76v-23.17l18.98,23.61h.88v-29.57h-1.77v21.85l-15.45-19.2c-.68-.82-1.48-1.47-2.4-1.94-.93-.47-2.11-.71-3.55-.71M353.64,110.12h-7.91v1.76h.99c2.97,0,4.86.81,5.68,2.43.82,1.62,1.23,3.75,1.23,6.4v15.89c0,4.24.82,7.5,2.47,9.8,1.65,2.29,3.76,3.88,6.33,4.77,2.57.88,5.24,1.32,8.01,1.32,2.96,0,5.54-.46,7.71-1.37,2.17-.91,3.89-1.93,5.14-3.05h.5l3.46,3.53h4.94v-41.49h-8.9v33.72c-.79.82-1.71,1.59-2.77,2.3-1.06.71-2.18,1.28-3.36,1.72-1.19.44-2.44.66-3.76.66-1.78,0-3.51-.38-5.19-1.15-1.68-.76-3.05-2.01-4.1-3.75-1.06-1.74-1.58-4.07-1.58-7.02v-15.89c0-2.94-.26-5.18-.79-6.71-.53-1.53-1.43-2.56-2.72-3.09s-3.08-.79-5.39-.79M336.43,173.97h-18.8v.88h.88c1.32,0,2.17.4,2.54,1.21.37.81.55,1.88.55,3.2v23.83h15.23c.88,0,1.6-.2,2.14-.6.54-.4.93-.93,1.17-1.61l1.54-4.19-.88-.22c-.68,1.77-1.6,3.02-2.76,3.75-1.16.74-2.74,1.1-4.74,1.1h-7.72v-12.36h11.92v-1.77h-11.92v-11.48h8.21c1.77,0,3.13.41,4.08,1.21.96.81,1.43,2.1,1.43,3.86h.88v-3.31c0-.59-.1-1.16-.31-1.7-.21-.54-.57-.99-1.1-1.32s-1.31-.51-2.34-.51M251.12,152.49h1.98v-59.14h-3.95v43.69l-34.6-38.4c-1.52-1.65-3.31-2.94-5.39-3.88-2.08-.94-4.73-1.41-7.96-1.41h-6.43v1.76h.99c3.43,0,5.77.81,7.02,2.43,1.25,1.62,1.88,3.75,1.88,6.4v47.66h3.95v-46.34l42.51,47.22ZM293.54,143.22c-.99,1.35-2.19,2.57-3.61,3.66-1.42,1.09-3.35,1.63-5.78,1.63s-4.61-.68-6.52-2.03c-1.91-1.35-2.87-3.47-2.87-6.36,0-2.65,1.4-4.78,4.2-6.4,2.8-1.62,6.67-2.43,11.62-2.43h2.97v11.92ZM297.49,151.61h4.94v-23.83c0-4-.48-7.22-1.43-9.66-.96-2.44-2.24-4.29-3.86-5.56-1.62-1.26-3.46-2.13-5.54-2.6-2.08-.47-4.24-.71-6.48-.71-2.96,0-5.87.24-8.7.71-2.83.47-4.88,1.27-6.13,2.38-1.25,1.12-1.98,2.34-2.17,3.66-.2,1.32-.3,2.75-.3,4.28h4.45c.72-2.88,2.03-4.85,3.9-5.91,1.88-1.06,4.2-1.59,6.97-1.59,1.98,0,3.74.4,5.29,1.19,1.55.79,2.78,2.27,3.71,4.41.92,2.15,1.39,5.28,1.39,9.4h-2.97c-4.42,0-8.55.37-12.41,1.1-3.86.74-6.95,1.99-9.29,3.75-2.34,1.76-3.51,4.27-3.51,7.5,0,2.41.48,4.41,1.43,6,.95,1.59,2.19,2.85,3.71,3.8,1.52.94,3.08,1.6,4.7,1.99,1.61.38,3.11.57,4.5.57,3.76,0,6.75-.53,9-1.59,2.24-1.06,3.86-2.15,4.85-3.27h.49l3.46,3.97ZM299.31,188.53c0,2.65-.51,4.95-1.52,6.91-1.02,1.96-2.39,3.47-4.13,4.52-1.74,1.06-3.69,1.59-5.87,1.59-.41,0-.86-.02-1.35-.07-.49-.04-.99-.11-1.5-.2-.52-.09-1.07-.19-1.65-.31v-24.76c.79-.23,1.57-.41,2.32-.53.75-.12,1.45-.18,2.1-.18,2.26,0,4.27.54,6,1.63,1.74,1.09,3.1,2.6,4.11,4.54,1,1.94,1.5,4.22,1.5,6.84M302.29,195.97c1.22-2.22,1.83-4.76,1.83-7.61,0-4.41-1.43-7.92-4.3-10.5-2.87-2.59-7.22-3.88-13.04-3.88h-11.56v.88h.88c1.32,0,2.17.4,2.54,1.21.37.81.55,1.88.55,3.2v23.83h8.74c3.56,0,6.54-.63,8.94-1.9,2.4-1.26,4.21-3.01,5.43-5.23M318.05,110.12h-6.92v3.53h6.92v27.36c0,4,1.1,6.92,3.31,8.74,2.21,1.82,5.06,2.74,8.55,2.74s6.16-.41,8.01-1.24c1.84-.82,3.3-1.59,4.35-2.29l-.99-1.76c-.99.47-2.04.88-3.16,1.24-1.12.35-2.54.53-4.25.53-2.31,0-4.04-.66-5.19-1.99-1.15-1.32-1.73-3.31-1.73-5.96v-27.36h11.86v-3.53h-11.86v-13.24h-3.96l-4.94,5.3v7.94ZM422.49,110.92c-2.14,1.12-3.77,2.18-4.89,3.18-.53-1.35-1.43-2.35-2.72-3-1.29-.65-3.18-.97-5.68-.97h-7.91v1.76h.99c2.97,0,4.86.81,5.68,2.43.82,1.62,1.24,3.75,1.24,6.4v30.89h8.9v-32.66c.99-1.35,2.31-2.43,3.95-3.22,1.65-.79,3.46-1.19,5.44-1.19,1.71,0,3.28.22,4.7.66,1.42.44,2.49,1.1,3.21,1.99l3.95-2.65c-.53-.88-1.05-1.65-1.58-2.29-.53-.65-1.15-1.21-1.88-1.68-.73-.47-1.65-.81-2.77-1.01-1.12-.21-2.17-.31-3.16-.31-2.83,0-5.32.56-7.46,1.68M543.64,138.87l-1.98-1.32c-2.77,4-5.93,7.06-9.49,9.18-3.56,2.12-8.69,3.63-13.55,2.75-10.14-1.85-12.91-13.24-13.8-16.38-.89-3.15-1.33-6.37-1.33-9.67,0-7.06,1.07-12.65,3.21-16.77,2.14-4.12,5.02-7.06,8.65-8.83,5.89-3.06,13.97-1.29,17.36,1.41,3.39,2.71,5.72,6.94,6.97,12.71h1.98c0-2.65-.1-5.18-.3-7.59-.2-2.41-.92-4.29-2.17-5.65-1.78-1.94-4.65-3.6-8.6-4.99-3.95-1.38-17.57-3.49-27.77,6.85-2.83,2.88-5.26,6.6-6.85,10.45-1.58,3.85-2.37,7.99-2.37,12.4,0,5.53,1.25,10.58,3.76,15.14,10,18.85,29.12,14.42,33.67,12.33,4.55-2.09,9.45-6.49,12.61-12.02M549.29,176.44c-.71.71-1.43,1.43-2.16,2.16l-9.27,9.27v-8.61c0-1.47-.12-2.59-.35-3.35-.24-.76-.64-1.28-1.21-1.54-.57-.26-1.38-.4-2.41-.4h-3.97v.88h.88c1.32,0,2.17.4,2.54,1.21.37.81.55,1.88.55,3.2v23.83h3.97v-14.56l9.27,9.71c1.41,1.47,2.68,2.59,3.8,3.35,1.12.77,2.15,1.28,3.09,1.54.94.26,1.81.4,2.6.4.68,0,1.24-.04,1.7-.13.46-.09.85-.19,1.17-.31v-.84c-.74-.12-1.53-.4-2.38-.86-.85-.46-1.72-1.04-2.58-1.74-.87-.71-1.71-1.47-2.54-2.3l-10.15-10.59,8.61-8.61c1.21-1.21,2.27-2.02,3.2-2.45.93-.43,1.99-.64,3.2-.64v-1.1h-2.21c-1.18,0-2.18.24-3.02.71-.84.47-1.61,1.06-2.32,1.77M577.75,128.66h-20.76c0-3.06.46-5.78,1.38-8.17.92-2.38,2.16-4.27,3.71-5.65,1.55-1.38,3.31-2.07,5.29-2.07,3.49,0,6.1,1.37,7.81,4.1,1.71,2.74,2.57,6.66,2.57,11.78M586.94,132.19l.2-3.53c0-4.18-.71-7.71-2.12-10.59-1.42-2.88-3.59-5.08-6.52-6.58-2.93-1.5-6.64-2.25-11.12-2.25-4.09,0-7.61.97-10.58,2.91-2.97,1.94-5.24,4.55-6.82,7.81-1.58,3.27-2.37,6.9-2.37,10.9s.77,7.56,2.32,10.86c1.55,3.3,3.85,5.91,6.92,7.86,3.06,1.94,6.9,2.91,11.52,2.91,2.5,0,4.83-.31,6.97-.93,2.14-.62,4.12-1.6,5.93-2.96,1.81-1.35,3.44-3.15,4.89-5.38l-1.98-1.32c-1.71,2.24-3.64,3.97-5.78,5.21-2.14,1.24-4.83,1.85-8.06,1.85-4.22,0-7.5-1.59-9.84-4.77-2.34-3.18-3.51-7.18-3.51-12.01h29.95ZM598.9,151.61h8.9v-47.66c0-2.94-.26-5.18-.79-6.71-.53-1.53-1.43-2.56-2.72-3.09-1.28-.53-3.08-.79-5.39-.79h-8.9v1.76h1.98c2.97,0,4.86.81,5.68,2.43.82,1.62,1.24,3.75,1.24,6.4v47.66ZM633.7,151.61v-47.66c0-2.94-.26-5.18-.79-6.71-.53-1.53-1.43-2.56-2.72-3.09-1.29-.53-3.08-.79-5.39-.79h-8.9v1.76h1.98c2.97,0,4.86.81,5.68,2.43.82,1.62,1.24,3.75,1.24,6.4v47.66h8.9Z"/><path d="M98.21,87.81l-11.32-12.29s2.36-.89,5.66-1.73c3.3-.84,5.66-1.13,5.66-1.13v15.15ZM76.27,73.74l28.05,30.16v-38.25c-10.08.73-19.58,3.57-28.05,8.09M97.92,161.09l-10.33-11.15,10.33-9.48v20.63ZM78.6,149.62l25.72,27.66v-51.7l-25.72,24.05ZM44.41,136.03c0-19.87,9.05-37.64,23.27-49.44l26.04,28-36.85,34.45,41.04,43.84v6.57c-30.4-5.27-53.51-31.66-53.51-63.41M104.32,207.38v-17.81l-37.77-40.61,36.72-33.89-34.29-36.87c-18.35,12.84-30.36,34.17-30.36,58.31,0,37.5,28.97,68.21,65.7,70.87M121.2,89.58l.14-16.68s2.36.3,5.66,1.13,7.87,2.71,7.87,2.71l-13.67,12.83ZM114.65,104.44l31.03-29.01c-9.2-5.49-19.75-8.96-31.03-9.77v38.78ZM121.13,118.71l32.13-29.99s.89.62,2.96,2.84c2.08,2.22,2.7,3.21,2.7,3.21l-37.77,35.46-.03-11.52ZM114.65,145.06l52.82-49.39c-4.1-5.85-9.06-11.05-14.7-15.42l-38.12,35.64v29.16ZM174.41,135.82c0,31.57-22.85,57.83-52.99,63.32v-40.06l48.93-45.75c2.62,7,4.06,14.58,4.06,22.49M180.35,136.52c0-12.14-3.04-23.57-8.39-33.57l-57.31,53.58v50.85c36.73-2.65,65.7-33.37,65.7-70.87"/></svg>
+        </a>
+        <p class="ftr-tagline">– bringer din hud i balance –</p>
+        <p class="ftr-about">Dansk, familiedrevet hudpleje med CBD. Vegansk, uden syntetisk parfume og til alle hudtyper – fra Danmarks første godkendte CBD-hudpleje.</p>
+      </div>
+
+      <aside class="ftr-promo" data-reveal style="--d:1" aria-labelledby="ftr-promo-title" data-promo>
+        <span class="ftr-promo__glow" aria-hidden="true"></span>
+        <p class="nc-eyebrow ftr-promo__eyebrow"><span class="ftr-promo__dot" aria-hidden="true"></span><span data-promo-eyebrow><span class="ftr-long">Black Week · til og med mandag 30. november kl. 23.59</span><span class="ftr-short">Black Week · til og med 30. november</span></span></p>
+        <p class="ftr-promo__title" id="ftr-promo-title" data-promo-title>25% på hele hudplejeserien – helt uden rabatkode.</p>
+        <p class="ftr-promo__sub" data-promo-sub><span class="ftr-nw">Gratis CBD Lip Balm <span class="ftr-soft">(værdi 79 kr.)</span></span> <span class="ftr-nw">ved køb over 699 kr.</span> <span class="ftr-nw">Fri fragt over 399 kr.</span></p>
+        <a class="nc-btn nc-btn--light ftr-promo__cta" href="#offers" data-promo-cta><span data-promo-cta-label>Se Black Week-tilbuddene</span><span class="ftr-pil" aria-hidden="true"></span></a>
+      </aside>
+    </div>
+
+    <!-- 2 · link columns (accordions on mobile) + contact -->
+    <div class="ftr-nav">
+      <nav class="ftr-col" data-reveal style="--d:0" aria-labelledby="ftr-h-shop">
+        <h3 class="ftr-col__h" id="ftr-h-shop">
+          <span class="ftr-col__label">Shop</span>
+          <button class="ftr-col__btn" type="button" aria-expanded="false" aria-controls="ftr-l-shop"><span class="ftr-col__txt">Shop</span><span class="ftr-col__ico" aria-hidden="true"><i></i><i></i></span></button>
+        </h3>
+        <div class="ftr-col__panel" id="ftr-l-shop">
+          <ul class="ftr-col__list" role="list">
+            <li><a class="ftr-link" href="#offers">Black Week-tilbud <span class="ftr-tag">25%</span></a></li>
+            <li><a class="ftr-link" href="#deals">Ansigtspleje</a></li>
+            <li><a class="ftr-link" href="#deals">Krop &amp; hår</a></li>
+            <li><a class="ftr-link" href="#offers">Sampakker</a></li>
+            <li><a class="ftr-link" href="#routine">Find din rutine</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <nav class="ftr-col" data-reveal style="--d:1" aria-labelledby="ftr-h-service">
+        <h3 class="ftr-col__h" id="ftr-h-service">
+          <span class="ftr-col__label">Kundeservice</span>
+          <button class="ftr-col__btn" type="button" aria-expanded="false" aria-controls="ftr-l-service"><span class="ftr-col__txt">Kundeservice</span><span class="ftr-col__ico" aria-hidden="true"><i></i><i></i></span></button>
+        </h3>
+        <div class="ftr-col__panel" id="ftr-l-service">
+          <ul class="ftr-col__list" role="list">
+            <li><a class="ftr-link" href="#fragt">Fragt og levering</a></li>
+            <li><a class="ftr-link" href="#retur">Returnering og fortrydelsesret</a></li>
+            <li><a class="ftr-link" href="#betaling">Betaling</a></li>
+            <li><a class="ftr-link" href="#faq">Ofte stillede spørgsmål</a></li>
+            <li><a class="ftr-link" href="#kontakt">Kontakt os</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <nav class="ftr-col" data-reveal style="--d:2" aria-labelledby="ftr-h-about">
+        <h3 class="ftr-col__h" id="ftr-h-about">
+          <span class="ftr-col__label">Om NatureCell<sup>®</sup></span>
+          <button class="ftr-col__btn" type="button" aria-expanded="false" aria-controls="ftr-l-about"><span class="ftr-col__txt">Om NatureCell<sup>®</sup></span><span class="ftr-col__ico" aria-hidden="true"><i></i><i></i></span></button>
+        </h3>
+        <div class="ftr-col__panel" id="ftr-l-about">
+          <ul class="ftr-col__list" role="list">
+            <li><a class="ftr-link" href="#historie">Vores historie</a></li>
+            <li><a class="ftr-link" href="#trust"><span>Hvorfor NatureCell<sup>®</sup></span></a></li>
+            <li><a class="ftr-link" href="#ingredients">Ingredienser</a></li>
+            <li><a class="ftr-link" href="#stories">Kundecases</a></li>
+            <li><a class="ftr-link" href="#analyse">Analysecertifikater</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <address class="ftr-contact" id="kontakt" data-reveal style="--d:3">
+        <h3 class="ftr-col__h ftr-col__h--static">Kontakt</h3>
+        <p class="ftr-contact__lead">Skriv til os – vi svarer personligt, også i Black Week.</p>
+        <a class="ftr-contact__mail" href="mailto:info@naturecell.dk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.75" width="17" height="12.5" rx="2.5"/><path d="m4.5 7.25 7.5 5.5 7.5-5.5"/></svg>
+          <span>info@naturecell.dk</span>
+        </a>
+        <ul class="ftr-social" role="list">
+          <li><a class="ftr-link ftr-link--small" href="#instagram">Instagram</a></li>
+          <li><a class="ftr-link ftr-link--small" href="#facebook">Facebook</a></li>
+        </ul>
+      </address>
+    </div>
+
+    <!-- 3 · trust + payment -->
+    <div class="ftr-trust">
+      <div class="ftr-seals" data-reveal style="--d:0">
+        <img class="ftr-seal" src="../assets/seals/dansk-firma-seal.png" alt="Vi er et 100% dansk firma" width="76" height="76" loading="lazy" decoding="async">
+        <img class="ftr-seal" src="../assets/seals/skonne-produkter-seal.png" alt="Skønne produkter – dansk firma" width="76" height="76" loading="lazy" decoding="async">
+        <div class="ftr-emark">
+          <span class="ftr-emark__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.2 18.6 6v5.1c0 4.3-2.8 7.9-6.6 9.7-3.8-1.8-6.6-5.4-6.6-9.7V6L12 3.2Z"/><path d="m9.2 12.1 2 2 3.7-3.9"/></svg></span>
+          <p class="ftr-emark__t"><strong>E-mærket webshop</strong><span>Tryg nethandel efter e-mærkets regler.</span></p>
+        </div>
+      </div>
+
+      <div class="ftr-pay" data-reveal style="--d:1">
+        <p class="ftr-pay__label" id="ftr-pay-label">Betal trygt med</p>
+        <ul class="ftr-pay__list" role="list" aria-labelledby="ftr-pay-label">
+          <li class="ftr-chip">MobilePay</li>
+          <li class="ftr-chip">Visa</li>
+          <li class="ftr-chip">Mastercard</li>
+          <li class="ftr-chip">Apple Pay</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4 · legal line -->
+    <div class="ftr-legal">
+      <p class="ftr-copy">© 2026 NatureCell<sup>®</sup> Denmark</p>
+      <ul class="ftr-legal__links" role="list">
+        <li><a class="ftr-link ftr-link--small" href="#handelsbetingelser">Handelsbetingelser</a></li>
+        <li><a class="ftr-link ftr-link--small" href="#privatliv">Privatlivspolitik</a></li>
+        <li><a class="ftr-link ftr-link--small" href="#cookies">Cookieindstillinger</a></li>
+      </ul>
+      <a class="ftr-top-btn" href="#top" data-to-top>
+        <span>Til toppen</span>
+        <span class="ftr-top-btn__ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 18.5V6"/><path d="m6.75 11 5.25-5.25L17.25 11"/></svg></span>
+      </a>
+    </div>
+
+    <!-- 5 · disclaimer – always last (BrandGuide) -->
+    <p class="ftr-disclaimer">Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer.</p>
+  </div>
+</footer>
+
+<div data-section="cart" class="cart-root">
+  <svg class="cart-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="cart-i-stars" viewBox="0 0 60 60"><polygon class="cart-star cart-star--a" points="18.84 46.54 12.51 48.58 18.83 50.66 18.81 57.31 22.74 51.94 29.06 54.02 25.16 48.62 29.09 43.25 22.76 45.29 18.86 39.89 18.84 46.54"/><polygon class="cart-star cart-star--b" points="8.88 2.69 8.86 7.01 4.74 8.34 8.85 9.69 8.84 14.01 11.39 10.52 15.5 11.87 12.97 8.36 15.52 4.87 11.41 6.2 8.88 2.69"/><polygon class="cart-star cart-star--c" points="48.59 32.89 44.48 34.22 48.58 35.57 48.57 39.89 51.12 36.4 55.23 37.75 52.7 34.24 55.26 30.75 51.14 32.07 48.61 28.57 48.59 32.89"/></symbol>
+    <symbol id="cart-i-pil" viewBox="10 14 40 36"><path d="M31.63,46.75l12.34-7.13-12.55-6.76.05,3.58c-3.88-.64-12.57-3.63-15.45-17.47,0,0,0,19.64,15.54,23.44l.06,4.33Z"/></symbol>
+    <symbol id="cart-i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="cart-i-plus" viewBox="0 0 24 24"><path d="M12 6.5v11M6.5 12h11"/></symbol>
+    <symbol id="cart-i-minus" viewBox="0 0 24 24"><path d="M6.5 12h11"/></symbol>
+    <symbol id="cart-i-trash" viewBox="0 0 24 24"><path d="M5.5 7.5h13M10 7.5V5.8c0-.7.5-1.3 1.2-1.3h1.6c.7 0 1.2.6 1.2 1.3v1.7M7.3 7.5l.8 10.6c.1 1 .8 1.7 1.8 1.7h4.2c1 0 1.7-.7 1.8-1.7l.8-10.6"/></symbol>
+    <symbol id="cart-i-bag" viewBox="0 0 24 24"><path d="M5.6 8.5h12.8l-.9 10.2a1.8 1.8 0 0 1-1.8 1.6H8.3a1.8 1.8 0 0 1-1.8-1.6L5.6 8.5zM9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
+    <symbol id="cart-i-truck" viewBox="0 0 24 24"><path d="M3.5 7.2c0-.7.6-1.2 1.2-1.2h8.6c.7 0 1.2.5 1.2 1.2v8.3H3.5V7.2zM14.5 9.5h3.2l2.8 3.3v2.7h-6M7.2 18.3a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6zM16.8 18.3a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z"/></symbol>
+    <symbol id="cart-i-gift" viewBox="0 0 24 24"><path d="M4.5 9.5h15v3h-15zM5.8 12.5h12.4v6.3c0 .7-.5 1.2-1.2 1.2H7c-.7 0-1.2-.5-1.2-1.2v-6.3zM12 9.5V20M12 9.5S10.8 5 8.4 5.1C6.6 5.2 6.6 7.8 8.4 8.6c1.2.6 3.6.9 3.6.9zM12 9.5s1.2-4.5 3.6-4.4c1.8.1 1.8 2.7 0 3.5-1.2.6-3.6.9-3.6.9z"/></symbol>
+    <symbol id="cart-i-shield" viewBox="0 0 24 24"><path d="M12 3.8l6.5 2.4v5.2c0 4.2-2.8 7.4-6.5 8.8-3.7-1.4-6.5-4.6-6.5-8.8V6.2L12 3.8zM9.2 12.1l2 2 3.7-4"/></symbol>
+    <symbol id="cart-i-return" viewBox="0 0 24 24"><path d="M8.5 6.5L5 10l3.5 3.5M5.5 10h8.2a4.8 4.8 0 0 1 0 9.6H10"/></symbol>
+    <symbol id="cart-i-lock" viewBox="0 0 24 24"><path d="M6.8 10.5h10.4c.7 0 1.3.6 1.3 1.3v6.9c0 .7-.6 1.3-1.3 1.3H6.8c-.7 0-1.3-.6-1.3-1.3v-6.9c0-.7.6-1.3 1.3-1.3zM8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.2v2.2"/></symbol>
+    <symbol id="cart-i-check" viewBox="0 0 24 24"><path d="M6.5 12.4l3.6 3.6 7.4-7.6"/></symbol>
+  </svg>
+
+  <!-- overlay + drawer -->
+  <div class="cart-overlay" data-cart-overlay aria-hidden="true"></div>
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" inert data-cart-drawer>
+    <div class="cart-drawer__in">
+      <header class="cart-head">
+        <div class="cart-head__titles">
+          <p class="cart-head__eyebrow"><span class="cart-head__dot" aria-hidden="true"></span>Black Week · 25%</p>
+          <h2 class="cart-head__title" id="cart-title" tabindex="-1">Din kurv <span class="cart-head__count" data-cart-count></span></h2>
+        </div>
+        <button class="cart-iconbtn cart-head__close" type="button" data-cart-close aria-label="Luk kurven">
+          <svg class="cart-ico" aria-hidden="true"><use href="#cart-i-close"/></svg>
+        </button>
+      </header>
+
+      <div class="cart-body" data-cart-body>
+        <!-- perks: two meters on night green -->
+        <section class="cart-perks nc-grain" aria-label="Dine Black Week-fordele">
+          <span class="cart-perks__thread" aria-hidden="true"></span>
+          <div class="cart-meter" data-meter="ship">
+            <div class="cart-meter__row">
+              <span class="cart-meter__icon" aria-hidden="true">
+                <svg class="cart-ico cart-meter__base"><use href="#cart-i-truck"/></svg>
+                <svg class="cart-meter__stars" viewBox="0 0 60 60"><use href="#cart-i-stars"/></svg>
+              </span>
+              <p class="cart-meter__label" data-meter-label></p>
+              <span class="cart-meter__goal" data-meter-goal></span>
+            </div>
+            <div class="cart-meter__track" role="progressbar" aria-label="Fri fragt" aria-valuemin="0" aria-valuemax="399" data-meter-track>
+              <span class="cart-meter__fill" data-meter-fill></span>
+              <span class="cart-meter__sheen" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="cart-meter" data-meter="gift">
+            <div class="cart-meter__row">
+              <span class="cart-meter__icon" aria-hidden="true">
+                <svg class="cart-ico cart-meter__base"><use href="#cart-i-gift"/></svg>
+                <svg class="cart-meter__stars" viewBox="0 0 60 60"><use href="#cart-i-stars"/></svg>
+              </span>
+              <p class="cart-meter__label" data-meter-label></p>
+              <span class="cart-meter__goal" data-meter-goal></span>
+            </div>
+            <div class="cart-meter__track" role="progressbar" aria-label="Gratis CBD Lip Balm" aria-valuemin="0" aria-valuemax="699" data-meter-track>
+              <span class="cart-meter__fill" data-meter-fill></span>
+              <span class="cart-meter__sheen" aria-hidden="true"></span>
+            </div>
+          </div>
+        </section>
+
+        <ul class="cart-list" data-cart-list aria-label="Varer i kurven"></ul>
+
+        <!-- empty state -->
+        <div class="cart-empty" data-cart-empty hidden>
+          <svg class="cart-empty__stars" viewBox="0 0 60 60" aria-hidden="true"><use href="#cart-i-stars"/></svg>
+          <h3 class="cart-empty__title">Din kurv er tom</h3>
+          <p class="cart-empty__text">Black Week giver 25% på hele hudplejeserien – til og med mandag 30. november.</p>
+          <a class="cart-empty__link" href="#deals" data-cart-shop>Se ugens tilbud <svg class="cart-pil" aria-hidden="true"><use href="#cart-i-pil"/></svg></a>
+          <p class="cart-empty__eyebrow">Godt at starte med</p>
+          <ul class="cart-quick" data-cart-quick></ul>
+        </div>
+
+        <!-- upsell -->
+        <section class="cart-upsell" data-cart-upsell aria-labelledby="cart-upsell-title" hidden>
+          <div class="cart-upsell__media"><img src="../assets/products/startpakke-plus.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async"></div>
+          <div class="cart-upsell__main">
+            <p class="cart-upsell__eyebrow">Sampakke · Black Week</p>
+            <h3 class="cart-upsell__title" id="cart-upsell-title">Gør det til Komplet Pakken</h3>
+            <p class="cart-upsell__text" data-upsell-text></p>
+            <ul class="cart-upsell__set" data-upsell-set aria-label="Indhold i Komplet Pakken"></ul>
+            <div class="cart-upsell__row">
+              <span class="nc-price cart-upsell__price"><span class="nc-price__now" data-upsell-price></span><span class="nc-price__was">Førpris <s data-upsell-was></s></span></span>
+              <button class="cart-upsell__btn" type="button" data-upsell-btn><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-plus"/></svg><span data-upsell-btn-label>Skift til pakken</span></button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="cart-foot" data-cart-foot>
+        <p class="cart-save" data-cart-save>
+          <svg class="cart-save__stars" viewBox="0 0 60 60" aria-hidden="true"><use href="#cart-i-stars"/></svg>
+          <span>Du sparer <strong data-cart-saved>0 kr.</strong> med Black Week<span class="cart-save__gift" data-cart-save-gift> + en gratis Lip Balm</span></span>
+        </p>
+        <div class="cart-total">
+          <div class="cart-total__label">I alt <span class="cart-total__note" data-cart-ship-note>inkl. moms</span></div>
+          <strong class="cart-total__sum" data-cart-total>0 kr.</strong>
+        </div>
+        <a class="cart-cta" href="#kassen" data-cart-cta>
+          <span>Gå til kassen</span>
+          <svg class="cart-pil" aria-hidden="true"><use href="#cart-i-pil"/></svg>
+        </a>
+        <ul class="cart-trust" aria-label="Tryg handel">
+          <li><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-shield"/></svg>e-mærket</li>
+          <li><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-return"/></svg>14 dages fortrydelsesret</li>
+          <li><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-lock"/></svg>Sikker betaling</li>
+        </ul>
+      </footer>
+    </div>
+  </aside>
+
+  <!-- add-to-cart toast -->
+  <div class="cart-toast" data-cart-toast role="status" aria-live="polite" aria-atomic="true" hidden>
+    <div class="cart-toast__card">
+      <div class="cart-toast__thumb"><img data-toast-img src="" alt="" width="96" height="96" decoding="async"></div>
+      <div class="cart-toast__main">
+        <p class="cart-toast__eyebrow"><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-check"/></svg>Lagt i kurven</p>
+        <p class="cart-toast__name" data-toast-name></p>
+        <p class="cart-toast__price nc-price"><span class="nc-price__now" data-toast-price></span><span class="nc-price__was">Førpris <s data-toast-was></s></span></p>
+      </div>
+      <button class="cart-iconbtn cart-toast__close" type="button" data-toast-close aria-label="Luk besked">
+        <svg class="cart-ico" aria-hidden="true"><use href="#cart-i-close"/></svg>
+      </button>
+      <div class="cart-toast__foot">
+        <p class="cart-toast__hint" data-toast-hint></p>
+        <button class="cart-toast__go" type="button" data-toast-open>Se kurv <svg class="cart-pil" aria-hidden="true"><use href="#cart-i-pil"/></svg></button>
+      </div>
+      <span class="cart-toast__timer" aria-hidden="true"><i data-toast-timer></i></span>
+    </div>
+  </div>
+
+  <!-- mobile sticky bar -->
+  <div class="cart-bar nc-grain" data-cart-bar aria-hidden="true">
+    <a class="cart-bar__shop" href="#deals" data-cart-shop>
+      <span class="cart-bar__title">Shop Black Week <span class="cart-bar__sep" aria-hidden="true">·</span> <span class="cart-bar__pct">25%</span></span>
+      <span class="cart-bar__sub" data-cart-bar-clock>Slutter mandag 30. nov. kl. 23.59</span>
+    </a>
+    <button class="cart-bar__cart" type="button" data-cart-bar-open aria-label="Åbn kurven">
+      <svg class="cart-ico" aria-hidden="true"><use href="#cart-i-bag"/></svg>
+      <span class="cart-bar__badge" data-cart-bar-count hidden>0</span>
+    </button>
+  </div>
+
+  <p class="nc-sr" aria-live="polite" data-cart-announce></p>
+</div>
 
 <script src="index.js"></script>
 </body>
