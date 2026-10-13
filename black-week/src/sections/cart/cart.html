@@ -1,7 +1,7 @@
 <div data-section="cart" class="cart-root">
   <svg class="cart-defs" width="0" height="0" aria-hidden="true" focusable="false">
     <symbol id="cart-i-stars" viewBox="0 0 60 60"><polygon class="cart-star cart-star--a" points="18.84 46.54 12.51 48.58 18.83 50.66 18.81 57.31 22.74 51.94 29.06 54.02 25.16 48.62 29.09 43.25 22.76 45.29 18.86 39.89 18.84 46.54"/><polygon class="cart-star cart-star--b" points="8.88 2.69 8.86 7.01 4.74 8.34 8.85 9.69 8.84 14.01 11.39 10.52 15.5 11.87 12.97 8.36 15.52 4.87 11.41 6.2 8.88 2.69"/><polygon class="cart-star cart-star--c" points="48.59 32.89 44.48 34.22 48.58 35.57 48.57 39.89 51.12 36.4 55.23 37.75 52.7 34.24 55.26 30.75 51.14 32.07 48.61 28.57 48.59 32.89"/></symbol>
-    <symbol id="cart-i-pil" viewBox="10 14 40 36"><path d="M31.63,46.75l12.34-7.13-12.55-6.76.05,3.58c-3.88-.64-12.57-3.63-15.45-17.47,0,0,0,19.64,15.54,23.44l.06,4.33Z"/></symbol>
+    <symbol id="cart-i-pil" viewBox="13 16 34 34"><path d="M31.63,46.75l12.34-7.13-12.55-6.76.05,3.58c-3.88-.64-12.57-3.63-15.45-17.47,0,0,0,19.64,15.54,23.44l.06,4.33Z"/></symbol>
     <symbol id="cart-i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
     <symbol id="cart-i-plus" viewBox="0 0 24 24"><path d="M12 6.5v11M6.5 12h11"/></symbol>
     <symbol id="cart-i-minus" viewBox="0 0 24 24"><path d="M6.5 12h11"/></symbol>
@@ -37,6 +37,7 @@
             <div class="cart-meter__row">
               <span class="cart-meter__icon" aria-hidden="true">
                 <svg class="cart-ico cart-meter__base"><use href="#cart-i-truck"/></svg>
+                <span class="cart-meter__done"><svg class="cart-ico"><use href="#cart-i-check"/></svg></span>
                 <svg class="cart-meter__stars" viewBox="0 0 60 60"><use href="#cart-i-stars"/></svg>
               </span>
               <p class="cart-meter__label" data-meter-label></p>
@@ -51,6 +52,7 @@
             <div class="cart-meter__row">
               <span class="cart-meter__icon" aria-hidden="true">
                 <svg class="cart-ico cart-meter__base"><use href="#cart-i-gift"/></svg>
+                <span class="cart-meter__done"><svg class="cart-ico"><use href="#cart-i-check"/></svg></span>
                 <svg class="cart-meter__stars" viewBox="0 0 60 60"><use href="#cart-i-stars"/></svg>
               </span>
               <p class="cart-meter__label" data-meter-label></p>
@@ -93,7 +95,7 @@
 
       <footer class="cart-foot" data-cart-foot>
         <p class="cart-save" data-cart-save>
-          <svg class="cart-save__stars" viewBox="0 0 60 60" aria-hidden="true"><use href="#cart-i-stars"/></svg>
+          <span class="cart-save__pct" aria-hidden="true">%</span>
           <span>Du sparer <strong data-cart-saved>0 kr.</strong> med Black Week<span class="cart-save__gift" data-cart-save-gift> + en gratis Lip Balm</span></span>
         </p>
         <div class="cart-total">
@@ -114,9 +116,9 @@
   </aside>
 
   <!-- add-to-cart toast -->
-  <div class="cart-toast" data-cart-toast role="status" aria-live="polite" aria-atomic="true" hidden>
+  <div class="cart-toast" data-cart-toast>
     <div class="cart-toast__card">
-      <div class="cart-toast__thumb"><img data-toast-img src="" alt="" width="96" height="96" decoding="async"></div>
+      <div class="cart-toast__thumb"><img class="cart-fit" data-toast-img src="" alt="" decoding="async"></div>
       <div class="cart-toast__main">
         <p class="cart-toast__eyebrow"><svg class="cart-ico" aria-hidden="true"><use href="#cart-i-check"/></svg>Lagt i kurven</p>
         <p class="cart-toast__name" data-toast-name></p>

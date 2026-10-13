@@ -166,7 +166,8 @@
     kr: (n) => `${Math.round(n).toLocaleString("da-DK")} kr.`,
     pct: (n) => `${Math.round(n)}%`
   };
-  var ASSETS = window.NC_ASSET_BASE || "../assets/";
+  var SCRIPT_SRC = document.currentScript && document.currentScript.src;
+  var ASSETS = window.NC_ASSET_BASE || (SCRIPT_SRC ? new URL("../assets/", SCRIPT_SRC).href : "../assets/");
   var asset = (p) => ASSETS + p;
   function boot() {
     const ctx = {
@@ -181,9 +182,13 @@
       isMobile: () => matchMedia("(max-width: 760px)").matches
     };
     const run = () => {
+      let found = 0;
       for (const [id, init2] of registry) {
         const root = document.querySelector(`[data-section="${id}"]`);
         if (!root) continue;
+        found++;
+        if (root.dataset.ncInit) continue;
+        root.dataset.ncInit = "1";
         try {
           init2(root, ctx);
         } catch (e) {
@@ -196,10 +201,19 @@
           io.unobserve(e.target);
         }
       }), { rootMargin: "0px 0px -8% 0px" });
-      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+      document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
+      return found;
+    };
+    const start = () => {
+      if (run() >= registry.length) return;
+      const mo = new MutationObserver(() => {
+        if (run() >= registry.length) mo.disconnect();
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+      setTimeout(() => mo.disconnect(), 2e4);
     };
     window.NCBW = { ctx, run };
-    if (!window.NC_DEFER_BOOT) document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", run) : run();
+    if (!window.NC_DEFER_BOOT) document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start) : start();
   }
 
   // src/sections/stories/stories.js
