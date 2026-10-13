@@ -4,11 +4,14 @@
 // quick view (<dialog>) · gift-progress tile that follows the cart subtotal.
 // Motion language: viscous and critically damped – never springy, never bouncy.
 
+import SKIN_OIL_DUO from './skin-oil-duo.js';
+
 // Packshot geometry: [imgW, imgH, x0, y0, x1, y1] = opaque alpha bbox (product only, no built-in glow)
 // and h = truthful relative height (tallest pack = 1). Used to centre the PRODUCT, stand it on one floor,
 // and give every pack the same contact shadow.
 const SHOT = {
-  'skin-oil':       { src: 'products/skin-oil.webp',          box: [1200, 1200, 473, 242, 722, 1006], h: 0.72 },
+  // Vidunder Olien: dropper + carton (composited from two real packshots, see .dev/duo.py) – matches the serum/cream compositions
+  'skin-oil':       { url: SKIN_OIL_DUO,                         box: [1000, 1000, 232, 100, 769, 960],  h: 0.76 },
   'serum':          { src: 'products/hyaluron-serum.webp',    box: [800, 1200, 108, 225, 718, 1109],  h: 0.74 },
   'day-cream':      { src: 'products/day-cream.webp',         box: [1200, 1200, 345, 97, 875, 1152],  h: 0.86 },
   'night-cream':    { src: 'products/night-cream.webp',       box: [1200, 1200, 345, 96, 881, 1154],  h: 0.86 },
@@ -56,7 +59,7 @@ export default function init(root, ctx) {
   // ------------------------------------------------------------------ markup
   function packHtml(p, cls = '') {
     const s = SHOT[p.id];
-    const src = ctx.asset(s ? s.src : p.img);
+    const src = s && s.url ? s.url : ctx.asset(s ? s.src : p.img);
     if (!s) return `<div class="deals-prod ${cls}" style="--ar:.8;--ph:.8"><span class="deals-prod__shadow"></span><span class="deals-prod__pack"><img src="${src}" alt="" loading="lazy" decoding="async" style="width:100%;left:0;top:0"></span></div>`;
     const [W, H, x0, y0, x1, y1] = s.box; const bw = x1 - x0, bh = y1 - y0;
     const st = `width:${(W / bw * 100).toFixed(3)}%;left:${(-x0 / bw * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
