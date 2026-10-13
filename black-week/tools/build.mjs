@@ -8,7 +8,8 @@ import * as esbuild from 'esbuild';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const args = process.argv.slice(2);
 const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
-const order = JSON.parse(fs.readFileSync(path.join(ROOT, 'sections.json'), 'utf8')).order;
+const SJ = JSON.parse(fs.readFileSync(path.join(ROOT, 'sections.json'), 'utf8'));
+const order = SJ.order, custom = new Set(SJ.custom || []);
 const ids = only ? [only] : order;
 const name = only ? `preview-${only}` : 'index';
 const dist = path.join(ROOT, 'dist');
@@ -36,7 +37,8 @@ await esbuild.build({ entryPoints: [entryPath], bundle: true, format: 'iife', mi
 
 // HTML
 const tpl = read(path.join(ROOT, 'src/index.template.html'));
-const body = ids.map(id => read(path.join(secDir(id), `${id}.html`))).join('\n');
+// Black Week sections get data-bw so the scoped component layer applies; theme sections keep the live theme's look
+const body = ids.map(id => { const h = read(path.join(secDir(id), `${id}.html`)); return custom.has(id) ? h.replace(`data-section="${id}"`, `data-section="${id}" data-bw`) : h; }).join('\n');
 const html = tpl.replaceAll('{{NAME}}', name).replace('<!--SECTIONS-->', body);
 fs.writeFileSync(path.join(dist, `${name}.html`), html);
 console.log(`built dist/${name}.html (${ids.join(', ')})`);

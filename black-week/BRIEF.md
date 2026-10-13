@@ -116,5 +116,38 @@ black-week/
   (packshot image) if WebGL is unavailable, and keep it smooth (target 60fps on a laptop). No external
   network: no CDN models/HDRIs – build environments procedurally (RoomEnvironment, canvas textures,
   custom shaders). three@0.170 is installed.
-- Section order / ids (sections.json): `header`, `hero`, `offers`, `deals`, `routine`, `ingredients`,
-  `stories`, `trust`, `faq`, `footer`, `cart`.
+- Section order / ids: see "Page structure (v2)" below.
+
+## Page structure (v2) – the live theme + three Black Week sections
+
+The page is the **live naturecell.dk homepage** (Swerv's custom NatureCell theme, source in `theme-src/`,
+synced from the live theme 13-10-2026) with a Black Week takeover. Everything is the theme's **standard
+sections, ported 1:1**, except three bespoke Black Week sections:
+
+| order | id | what |
+|---|---|---|
+| 1 | `theme-header` | theme `nc-header` (announcement bar text = Black Week message) |
+| 2 | **`hero`** | **Black Week hero (Three.js)** – replaces `nc-hero` |
+| 3 | **`offers`** | **3-column Black Week offer highlight grid** (new) |
+| 4 | `theme-trust-bar` | theme `nc-trust-bar` (trust2 items) |
+| 5 | **`deals`** | **Black Week product grid** – replaces `nc-bestsellers` |
+| 6 | `theme-shop-tabs` | theme `nc-shop-tabs` |
+| 7 | `theme-trust` | theme `nc-trust-bar` (with Trustpilot block) |
+| 8 | `theme-lifestyle` | theme `nc-lifestyle` |
+| 9 | `theme-press` | theme `nc-press` |
+| 10 | `theme-cases` | theme `nc-cases-teaser` |
+| 11 | `theme-testimonials` | theme `nc-testimonials` |
+| 12 | `theme-story` | theme `nc-story` |
+| 13 | `theme-footer` | theme `nc-footer` |
+| 14 | `theme-cart` | theme `nc-cart-drawer` (wired to `ctx.store`) |
+
+- Global CSS = the theme's own `src/core/03-theme.css` (copy of `theme-src/assets/nc-theme.css`, asset urls →
+  `../assets/theme/`). Theme images/fonts/video are in `assets/theme/`. Theme section settings/content come from
+  `theme-src/templates/index.json`, `theme-src/sections/header-group.json`, `footer-group.json`.
+- The three Black Week sections get `data-bw` on their root automatically (build step); the Black Week component
+  layer (`02-components.css`: `.nc-btn` variants, `.nc-bubble`, `.nc-price`, …) is scoped to `[data-bw]`, so the
+  theme sections keep exactly the live theme's look. Black Week sections should *harmonise* with the theme
+  (same container width/gutters as the theme's `.nc-container`, same type scale feel, same button language),
+  while being the spectacular part of the page.
+- Truthful claims already used on the live site may be reused (Trustpilot 4,7 / 615 anmeldelser pr.
+  07-10-2026, "7.000+ kunder", "Første danske CBD hudpleje · 2019", GMP- & ISO-certificeret, e-mærket).

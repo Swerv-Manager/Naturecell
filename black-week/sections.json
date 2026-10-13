@@ -1,1 +1,4 @@
-{"order":["header","hero","offers","deals","routine","ingredients","stories","trust","faq","footer","cart"]}
+{
+  "order": ["theme-header", "hero", "offers", "theme-trust-bar", "deals", "theme-shop-tabs", "theme-trust", "theme-lifestyle", "theme-press", "theme-cases", "theme-testimonials", "theme-story", "theme-footer", "theme-cart"],
+  "custom": ["hero", "offers", "deals"]
+}

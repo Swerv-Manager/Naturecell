@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<svg id="Lag_1" data-name="Lag 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs></defs>
+  <g>
+    <path fill="#80A097" class="cls-2" d="M30,57.68c15.29,0,27.68-12.39,27.68-27.68S45.29,2.32,30,2.32,2.32,14.71,2.32,30s12.39,27.68,27.68,27.68"></path>
+    <path fill="#ffffff" class="cls-1" d="M47.91,30c0,9.89-8.02,17.91-17.91,17.91s-17.91-8.02-17.91-17.91S20.11,12.1,30,12.1s17.91,8.02,17.91,17.91M49.6,30c0-10.83-8.78-19.6-19.6-19.6S10.4,19.18,10.4,30s8.78,19.6,19.6,19.6,19.6-8.78,19.6-19.6"></path>
+  </g>
+  <rect fill="#ffffff" class="cls-1" x="26.61" y="24.85" width="17.01" height="1.96" transform="translate(-7.25 36.12) rotate(-50)"></rect>
+  <rect fill="#ffffff" class="cls-1" x="25.9" y="36.1" width="20.94" height="1.96" transform="translate(-15.41 41.11) rotate(-50)"></rect>
+  <rect fill="#ffffff" class="cls-1" x="23.64" y="17" width="1.96" height="17.01" transform="translate(-10.63 21.79) rotate(-40)"></rect>
+  <rect fill="#ffffff" class="cls-1" x="22.51" y="26.66" width="1.96" height="20.51" transform="translate(-18.23 23.74) rotate(-40)"></rect>
+  <rect fill="#ffffff" class="cls-1" x="29.02" y="11.71" width="1.96" height="36.98"></rect>
+</svg>
