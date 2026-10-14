@@ -161,7 +161,7 @@ const BG_FRAG = /* glsl */`
     float w = 0.35 * uDpr;
     float line = 1.0 - smoothstep(w, w + 0.9 * uDpr, dl);
     vec2 ab = uTB - uTA; float tt = clamp(dot(p - uTA, ab) / dot(ab, ab), 0.0, 1.0);
-    float fade = smoothstep(0.0, 0.18, tt) * smoothstep(1.0, 0.7, tt);
+    float fade = smoothstep(0.06, 0.22, tt) * smoothstep(1.0, 0.7, tt);   // emerges from nothing below the section top
     col = mix(col, uThread, line * fade * uThreadAlpha);
     gl_FragColor = vec4(col, 1.0);
   }`;
@@ -210,15 +210,16 @@ const BUBBLE_FRAG = /* glsl */`
     float hi = (sp * 1.5 + sp2) * (1.0 - vSoft * 0.7);
     col += uKey * hi; a += hi * 0.55;
     float k = vAlpha * uFade;
-    gl_FragColor = vec4(col * k, clamp(a, 0.0, 1.0) * k);
+    float occl = smoothstep(0.35, 1.0, k) * (1.0 - 0.8 * smoothstep(0.22, 0.5, vSoft));
+    gl_FragColor = vec4(col * k, clamp(a, 0.0, 1.0) * k * occl);
   }`;
 
 // Oil pool, absorption layer: multiplies what is under it by the oil's transmittance (thicker → deeper amber).
 const POOL_TINT_VERT = /* glsl */`
   attribute float aT;
-  varying float vT; varying vec3 vWN; varying vec3 vWV;
+  varying float vT; varying vec3 vWN; varying vec3 vWV; varying vec2 vXZ;
   void main(){
-    vT = aT;
+    vT = aT; vXZ = position.xz;
     vec4 wp = modelMatrix * vec4(position, 1.0);
     vWN = normalize(mat3(modelMatrix) * normal);
     vWV = normalize(cameraPosition - wp.xyz);
@@ -227,14 +228,20 @@ const POOL_TINT_VERT = /* glsl */`
 const POOL_TINT_FRAG = /* glsl */`
   precision highp float;
   uniform vec3 uSigma; uniform float uFeather;
-  varying float vT; varying vec3 vWN; varying vec3 vWV;
+  varying float vT; varying vec3 vWN; varying vec3 vWV; varying vec2 vXZ;
   void main(){
     float ndv = max(abs(dot(normalize(vWN), normalize(vWV))), 0.16);
     float thick = 1.0 - smoothstep(0.35, 1.0, vT);                       // film thins toward the rim
-    float feather = 1.0 - smoothstep(1.0 - uFeather, 1.0, vT);           // no hard edge
-    vec3 T = exp(-uSigma * thick / ndv * 0.1);
+    float fw = max(fwidth(vT), 1e-4);
+    float film = 1.0 - smoothstep(1.0 - 1.4 * fw, 1.0, vT);              // crisp, anti-aliased film edge
+    vec3 T = exp(-uSigma * (0.18 + thick) / ndv * 0.1);
     float F = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);                          // light reflected away is not transmitted
-    gl_FragColor = vec4(mix(vec3(1.0), T * (1.0 - F * 0.85), feather), 1.0);
+    vec3 tint = T * (1.0 - F * 0.85);
+    // near rim: the meniscus edge seen from above reads as one dark hairline
+    float near = smoothstep(-0.1, 0.45, vXZ.y / uFeather);
+    float dl = 1.0 - smoothstep(0.0, 1.3 * fw, abs(vT - (1.0 - 1.6 * fw)));
+    tint *= 1.0 - 0.5 * dl * near;
+    gl_FragColor = vec4(mix(vec3(1.0), tint, film), 1.0);
   }`;
 
 const FINAL_SHADER = {
@@ -326,54 +333,92 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       precision highp float;
       uniform vec3 uAxis, uK1, uK2, uK3;
       varying vec3 vN; varying vec3 vV; varying float vY;
-      float streak(vec3 r, vec3 L, float p){ vec3 rp = normalize(r - uAxis * dot(r, uAxis)); vec3 lp = normalize(L - uAxis * dot(L, uAxis)); return pow(max(dot(rp, lp), 0.0), p); }
       void main(){
         vec3 n = normalize(vN), v = normalize(vV);
         float ndv = clamp(abs(dot(n, v)), 0.0, 1.0);
-        vec3 r = reflect(-v, n);
-        float rim = pow(1.0 - ndv, 7.0);
-        float s = streak(r, uK1, 900.0) * 1.1 + streak(r, uK2, 420.0) * 0.55 + streak(r, uK3, 700.0) * 0.5;
-        float lenFade = smoothstep(-${(PIPETTE_LEN).toFixed(2)}, -${(PIPETTE_LEN - 0.25).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
-        vec3 c = vec3(1.0, 0.97, 0.92) * (rim * 0.42 + s * 1.0) * lenFade;
+        // lateral coordinate across the tube (−1 = silhouette on the key side, +1 = shadow side)
+        vec3 side = normalize(cross(uAxis, v));
+        float lat = dot(n, side) * sign(dot(side, uK2) + 1e-4) * -1.0;
+        // broad soft fresnel: the walls have body instead of a 1px wire
+        float rim = pow(1.0 - ndv, 3.5) * 0.22;
+        // the key softbox seen in the glass: one soft vertical band ~30% in from the lit edge, and a faint
+        // narrow return from the right strip on the shadow side
+        float band = exp(-pow((lat + 0.42) / 0.085, 2.0)) * 0.62 + exp(-pow((lat - 0.8) / 0.05, 2.0)) * 0.2;
+        float lenFade = smoothstep(-${(PIPETTE_LEN).toFixed(2)}, -${(PIPETTE_LEN - 0.3).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
+        vec3 c = vec3(1.0, 0.97, 0.92) * (rim + band) * lenFade;
         gl_FragColor = vec4(c, 1.0);
       }`,
   });
-  // oil inside the pipette (opaque, so it refracts through the glass): deep amber body, a golden core where the
-  // column is thin, a refracted back-light line inside the shadow-side edge, darker toward the silhouette
-  const oilOpaque = new THREE.MeshPhysicalMaterial({
-    color: C('#2a1404'), emissive: C('#e9a440'), emissiveIntensity: 1.0, roughness: 0.08, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.4,
+  // oil inside the pipette: translucent pale-gold MCT oil. Drawn premultiplied over the backdrop (rgb = light the
+  // column adds, a = how much of what is behind it the oil absorbs), so the night green still reads through it.
+  // Cylinder-lens look: straw-gold core where the back light is focused, deep amber toward the silhouette, one
+  // bright refracted back-light line inside the shadow-side edge, and a concave meniscus that climbs the glass.
+  const OT = -2.5;                                   // oil level at the wall (pipette local y)
+  const oilU = { uAxis: glassRimU.uAxis, uKey: glassRimU.uK2, uR: { value: 0.248 }, uTop: { value: OT }, uDepth: { value: 0.235 } };
+  const oilColumn = new THREE.ShaderMaterial({
+    uniforms: oilU, transparent: true, depthWrite: false,
+    blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+    vertexShader: /* glsl */`
+      varying vec3 vN; varying vec3 vV; varying vec3 vL;
+      void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); vL = position;
+        gl_Position = projectionMatrix * viewMatrix * wp; }`,
+    fragmentShader: /* glsl */`
+      precision highp float;
+      uniform vec3 uAxis, uKey; uniform float uR, uTop, uDepth;
+      varying vec3 vN; varying vec3 vV; varying vec3 vL;
+      vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+      void main(){
+        vec3 n = normalize(vN), v = normalize(vV);
+        float ndv = clamp(abs(dot(n, v)), 0.0, 1.0);
+        vec3 side = normalize(cross(uAxis, v));
+        float lat = dot(n, side) * sign(dot(side, uKey) + 1e-4) * -1.0;      // −1 key side … +1 shadow side
+        float edge = pow(1.0 - ndv, 1.6);
+        vec3 straw = lin(vec3(0.906, 0.753, 0.439));                           // #e7c070
+        vec3 deep  = lin(vec3(0.478, 0.259, 0.063));                           // #7a4210
+        // thinner toward the nozzle → paler
+        float thin = 1.0 - smoothstep(-${(PIPETTE_LEN - 0.15).toFixed(2)}, -${(PIPETTE_LEN - 2.2).toFixed(2)}, vL.y);
+        vec3 col = mix(straw * (0.72 + 0.24 * thin), deep * 0.5, pow(1.0 - ndv, 1.3));
+        float a = mix(0.7 - 0.18 * thin, 0.96, edge);
+        // focused back light: a soft brighter core a touch toward the shadow side
+        col += straw * 0.18 * exp(-pow((lat - 0.18) / 0.32, 2.0));
+        // refracted back-light line inside the shadow-side edge (~70% of the radius)
+        float line = exp(-pow((lat - 0.7) / 0.07, 2.0));
+        col += vec3(1.0, 0.86, 0.58) * line * 0.75;
+        // meniscus: concave (spherical cap, wets the glass). Seen from the side, above the U-curve the ray only
+        // grazes oil near the walls → a thinner, paler crescent, bounded below by one bright meniscus line.
+        float x = clamp(abs(lat), 0.0, 1.0) * uR;
+        float Rs = (uR * uR + uDepth * uDepth) / (2.0 * uDepth);
+        float u = uTop - uDepth + (Rs - sqrt(max(Rs * Rs - x * x, 0.0)));     // height of the cap at this lateral offset
+        float above = smoothstep(u - 0.012, u + 0.012, vL.y);
+        float climb = smoothstep(uTop - 0.09, uTop + 0.03, vL.y);              // the wetting film at the wall, fading out
+        col = mix(col, straw * 0.55 + deep * 0.1, above * 0.75);
+        a = mix(a, 0.32 * (1.0 - climb * 0.6) + edge * 0.4, above);
+        float men = exp(-pow((vL.y - u) / 0.022, 2.0)) * (1.0 - edge * 0.6);
+        col += vec3(1.0, 0.9, 0.7) * men * 0.55;
+        a = max(a, men * 0.5);
+        // above the film: no oil
+        float cut = 1.0 - smoothstep(uTop + 0.02, uTop + 0.06, vL.y);
+        gl_FragColor = vec4(col * cut, a * cut);
+      }`,
   });
-  oilOpaque.onBeforeCompile = (sh) => {
-    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying float vOilY;')
-      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvOilY = position.y;');
-    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vOilY;')
-      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-      { vec3 nn = normalize(vNormal); float ndv = clamp(dot(nn, normalize(vViewPosition)), 0.0, 1.0);
-        float body = 0.1 + 0.62 * pow(ndv, 1.8);
-        float side = dot(normalize(nn.xy + 1e-4), normalize(vec2(-0.55, 0.83)));
-        float lineB = exp(-pow((ndv - 0.34) / 0.1, 2.0)) * smoothstep(0.1, 0.8, -side);
-        float thin = 1.0 - smoothstep(-${(PIPETTE_LEN - 0.2).toFixed(2)}, -${(PIPETTE_LEN - 2.4).toFixed(2)}, vOilY);
-        float e = (body + lineB * 0.95) * mix(0.82, 1.45, thin) * smoothstep(0.0, 0.2, ndv);
-        totalEmissiveRadiance *= e; }`);
-  };
   // the drop: clear golden oil – refracts the room (dark rim), a focused caustic core opposite the key light
   const oilDrop = new THREE.MeshPhysicalMaterial({
-    color: C('#ffd890'), roughness: 0.0, transmission: 0.9, ior: 1.47, thickness: 0.6,
-    attenuationColor: C('#e09a2e'), attenuationDistance: 0.6, emissive: C('#f2b04a'), emissiveIntensity: 1.0,
-    envMapIntensity: 2.6, specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.0,
+    color: C('#fff3d6'), roughness: 0.0, transmission: 1, ior: 1.47, thickness: 0.35,
+    attenuationColor: C('#e3a23a'), attenuationDistance: 0.3, emissive: C('#f2b04a'), emissiveIntensity: 0.15,
+    envMapIntensity: 1.6, specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.0,
   });
   oilDrop.onBeforeCompile = (sh) => {
     sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
       { vec3 nn = normalize(vNormal); float ndv = clamp(dot(nn, normalize(vViewPosition)), 0.0, 1.0);
         vec2 c = nn.xy - vec2(0.26, -0.38);
         float core = exp(-dot(c, c) / 0.12);
-        float e = (0.2 + 0.25 * ndv + 1.5 * core) * smoothstep(0.04, 0.5, ndv);
+        float e = (0.12 + 0.2 * ndv + 0.6 * core) * smoothstep(0.04, 0.5, ndv);
         totalEmissiveRadiance *= e; }`);
   };
   // the oil pool: a thin film in two layers – absorption (multiplies the floor by the oil's transmittance) and
   // surface light (env reflections with fresnel, the key glint, warm light scattered back up through the oil)
   const poolTintMat = new THREE.ShaderMaterial({
-    uniforms: { uSigma: { value: new THREE.Vector3(0.45, 1.6, 4.2) }, uFeather: { value: 0.3 } },
+    uniforms: { uSigma: { value: new THREE.Vector3(0.45, 1.6, 4.2) }, uFeather: { value: 1.1 } },   // uFeather = pool radius (near-rim mask)
     vertexShader: POOL_TINT_VERT, fragmentShader: POOL_TINT_FRAG,
     transparent: true, depthWrite: false, blending: THREE.CustomBlending,
     blendEquation: THREE.AddEquation, blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor,
@@ -401,7 +446,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   bottle.add(glass);
 
   // label (wraps ~350°, seam at the back) – drawn async, sage placeholder until ready
-  const labelMat = new THREE.MeshPhysicalMaterial({ color: C('#6c998c'), roughness: 0.78, metalness: 0, sheen: 0.1, sheenRoughness: 0.8, sheenColor: C('#ffffff'), envMapIntensity: 0.42 });
+  const labelMat = new THREE.MeshPhysicalMaterial({ color: C('#7bb1b0'), roughness: 0.78, metalness: 0, sheen: 0.1, sheenRoughness: 0.8, sheenColor: C('#ffffff'), envMapIntensity: 0.42 });
   const labelGeo = new THREE.CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
   // rotate so u = 0.5 faces +z (the front)
   const label = new THREE.Mesh(labelGeo, labelMat);
@@ -451,28 +496,34 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   dropper.add(bulb);
   // pipette (local y goes down from the collar): glass tube with visible walls, tapering to a fine nozzle
   const PL = PIPETTE_LEN;
-  const pip = [[0.0, -PL], [0.05, -PL], [0.066, -PL + 0.02], [0.078, -PL + 0.1], [0.1, -PL + 0.32], [0.15, -PL + 0.62], [0.22, -PL + 0.95],
-    [0.275, -PL + 1.22], [0.298, -PL + 1.45], [0.302, -PL + 1.7], [0.302, 0.05], [0.0, 0.05]];
-  const pipGeo = lathe(pip, 72, 60);
+  const RG = 0.302, RTIP = 0.052, TAPER = 1.95;
+  const pipR = (y) => { const s = clamp((y + PL) / TAPER, 0, 1); return RTIP + (RG - RTIP) * (1 - Math.pow(1 - s, 2.4)); };
+  const pip = [[0.0, -PL], [RTIP * 0.72, -PL], [RTIP * 0.95, -PL + 0.012]];
+  for (let k = 0; k <= 40; k++) { const y = -PL + 0.03 + (TAPER + 0.25 - 0.03) * (k / 40); pip.push([pipR(y), y]); }
+  pip.push([RG, -2.0], [RG, -1.0], [RG, 0.05], [0.0, 0.05]);
+  const pipGeo = lathe(pip, 96);
   // thin glass, drawn as two shells over the oil: absorption (edges darker, where the wall is seen edge-on)
   // and light (fresnel rim + softbox streaks) – crisper than screen-space transmission at this size
   const pipTint = new THREE.Mesh(pipGeo, new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor,
     vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
     fragmentShader: `precision highp float; varying vec3 vN; varying vec3 vV; void main(){ float ndv = clamp(abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0);
-      vec3 c = mix(vec3(0.9, 0.93, 0.91), vec3(0.5, 0.56, 0.54), pow(1.0 - ndv, 2.2)); gl_FragColor = vec4(c, 1.0); }`,
+      vec3 c = mix(vec3(0.92, 0.94, 0.93), vec3(0.42, 0.47, 0.45), pow(1.0 - ndv, 2.2)); gl_FragColor = vec4(c, 1.0); }`,
   }));
   pipTint.renderOrder = 4;
   dropper.add(pipTint);
   const pipRim = new THREE.Mesh(pipGeo, glassRim);
   pipRim.renderOrder = 5;
   dropper.add(pipRim);
-  // oil column: fills the nozzle to the orifice, concave meniscus on top (oil wets glass)
-  const OT = -2.5;
-  const pipOil = new THREE.Mesh(lathe([[0.0, -PL + 0.012], [0.034, -PL + 0.014], [0.042, -PL + 0.1], [0.06, -PL + 0.32], [0.105, -PL + 0.62],
-    [0.168, -PL + 0.95], [0.212, -PL + 1.22], [0.228, -PL + 1.45], [0.23, -PL + 1.7], [0.23, OT], [0.222, OT - 0.03], [0.19, OT - 0.06], [0.12, OT - 0.078], [0.0, OT - 0.082]], 48, 60), oilOpaque);
+  // oil column: concentric with the glass (0.82 of its radius), filling the nozzle to the orifice; the top is
+  // flat at the wall height – the concave meniscus is resolved in the shader
+  const oilProf = [[0.0, -PL + 0.006], [RTIP * 0.7, -PL + 0.008]];
+  for (let k = 0; k <= 40; k++) { const y = -PL + 0.03 + (TAPER + 0.25 - 0.03) * (k / 40); oilProf.push([pipR(y) * 0.82, y]); }
+  oilProf.push([RG * 0.82, OT + 0.06], [0.0, OT + 0.06]);
+  const pipOil = new THREE.Mesh(lathe(oilProf, 64), oilColumn);
+  pipOil.renderOrder = 3;
   dropper.add(pipOil);
-  dropper.traverse(o => { if (o.isMesh && o !== pipRim && o !== pipTint) o.renderOrder = 2; });
+  dropper.traverse(o => { if (o.isMesh && o !== pipRim && o !== pipTint && o !== pipOil) o.renderOrder = 2; });
   const tipLocal = new THREE.Vector3(0, -PIPETTE_LEN + 0.004, 0);
 
   // ---------- floor decals (shadows, caustic, light pool) – no visible floor, just a seamless sweep
@@ -504,11 +555,12 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         float wave(float r){
           float h = 0.0;
           for (int i = 0; i < 2; i++){
-            float age = uAge - float(i) * 0.5;
+            float age = uAge - float(i) * 0.22;
             if (age <= 0.0) continue;
-            float front = 0.5 * age + 0.03;
+            float front = 0.55 * age + 0.04;
             float d = r - front;
-            h += uAmp * exp(-1.4 * age) * exp(-d * d / 0.03) * cos(d * 15.0) * (1.0 - float(i) * 0.35);
+            float life = exp(-2.2 * age) * (1.0 - smoothstep(0.85, 1.2, age));
+            h += uAmp * life * exp(-d * d / 0.0035) * cos(d * 24.0) * (1.0 - float(i) * 0.3);
           }
           return h;
         }`;
@@ -536,24 +588,40 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         { vec2 xz = position.xz - uImpact; float r = length(xz); transformed.y += wave(r) * (1.0 - smoothstep(0.6, 0.95, aT)); }`);
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
-        varying float vPoolT; varying vec2 vPoolXZ; varying float vRipple;`)
+        varying float vPoolT; varying vec2 vPoolXZ; varying float vRipple; float vRipF = 0.0;
+        ${WAVE_GLSL}`)
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+        {
+          // ripple normal per fragment (crisp rings, independent of the mesh density)
+          vec2 xz = vPoolXZ - uImpact; float r = max(length(xz), 1e-4);
+          float e = 0.006; float dw = (wave(r + e) - wave(max(r - e, 0.0))) / (2.0 * e);
+          vec3 dn = vec3(-dw * xz.x / r, 0.0, -dw * xz.y / r) * 1.6;
+          normal = normalize(normal + (viewMatrix * vec4(dn, 0.0)).xyz);
+          vRipF = clamp(-dw * 3.0, 0.0, 1.0);          // only the crest's lit flank → one fine line per ring
+        }`)
       .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
         {
           float thick = 1.0 - smoothstep(0.3, 1.0, vPoolT);
-          // key light scattered back up through the film from the floor: warm, strongest where the oil is thick
-          float back = smoothstep(0.5, -0.7, vPoolXZ.y / ${POOL_R.toFixed(2)});   // light enters from the key side, glows toward the back
-          totalEmissiveRadiance *= (0.05 + 0.2 * thick * (0.55 + 0.45 * back)) + 0.22 * min(vRipple * 5.0, 1.0) * thick;
-          // one crisp glint streak of the key softbox across the far half (follows the ripple via the normal)
-          vec3 nn = normalize(vNormal);
-          vec2 hq = (vPoolXZ - vec2(-0.1, -0.36)) / vec2(0.54, 0.05);
-          float gl = exp(-pow(dot(hq, hq), 1.5)) * (1.0 + 0.8 * min(vRipple * 4.0, 1.0));   // flat core, crisp falloff
-          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 0.8 * gl * thick;
-          // meniscus: the thin rim catches a hairline of warm light on the far side only
-          float far = smoothstep(0.1, -0.6, vPoolXZ.y / ${POOL_R.toFixed(2)});
-          totalEmissiveRadiance += vec3(1.0, 0.8, 0.5) * 0.07 * smoothstep(0.72, 0.86, vPoolT) * (1.0 - smoothstep(0.86, 0.97, vPoolT)) * far;
+          float rn = vPoolXZ.y / ${POOL_R.toFixed(2)};
+          // key light scattered back up through the film: quiet – the pool absorbs (amber), it does not glow
+          float back = smoothstep(0.5, -0.7, rn);
+          totalEmissiveRadiance *= (0.025 + 0.1 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
+          // the key softbox as one curved highlight following the far rim (≤ 35% of the width, Gaussian ends),
+          // its thickness breathing with the ripple normal
+          float far = smoothstep(0.05, -0.45, rn);
+          float across = exp(-pow(vPoolXZ.x / (${POOL_R.toFixed(2)} * 0.27), 2.0));
+          float w = 0.045 * (1.0 + 1.6 * vRipF);
+          float gl = exp(-pow((vPoolT - 0.8) / w, 2.0)) * across * far;
+          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 0.85 * gl;
+          // ripple rings catch the light
+          totalEmissiveRadiance += vec3(1.0, 0.88, 0.66) * 0.2 * vRipF * thick;
+          // meniscus: one crisp 1px bright line on the far rim
+          float fw = max(fwidth(vPoolT), 1e-4);
+          float ml = 1.0 - smoothstep(0.0, 1.2 * fw, abs(vPoolT - (1.0 - 1.4 * fw)));
+          totalEmissiveRadiance += vec3(1.0, 0.86, 0.62) * 0.55 * ml * far;
         }`)
       .replace('#include <dithering_fragment>', `#include <dithering_fragment>
-        gl_FragColor.rgb *= 1.0 - smoothstep(0.7, 1.0, vPoolT);`);
+        { float fw = max(fwidth(vPoolT), 1e-4); gl_FragColor.rgb *= 1.0 - smoothstep(1.0 - 0.6 * fw, 1.0 + 0.4 * fw, vPoolT); }`);
   };
   poolTintMat.onBeforeCompile = (sh) => { Object.assign(sh.uniforms, poolU); };
   const poolGeo = poolGeometry(POOL_R, POOL_H);
@@ -658,7 +726,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   }
   // DOM overlays the spheres must never pass behind (screen px, set from hero.js): the −25% disc, the price tag, the copy
   const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9 };
-  const ovDisc = [0, 0], ovTag = [0, 0];
+  const ovDisc = [0, 0], ovTag = [0, 0, 0, 0], tagRect = [0, 0, 0, 0];   // ovTag: x, y (+ mobile: lead length, card left)
 
   // ---------- pointer (ray in world space, damped)
   const pointer = { ndc: new THREE.Vector2(0.3, 0), target: new THREE.Vector2(0.3, 0), active: false, vel: new THREE.Vector2() };
@@ -668,6 +736,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
 
   // ---------- layout / camera framing
   const SUBJECT = { cx: -0.75, cy: 5.2, h: 11.0 };
+  const DBG_FRAME = (new URLSearchParams(location.search).get('heroframe') || '').split(',').map(Number).filter((v) => v > 0);
+  if (DBG_FRAME.length !== 3) DBG_FRAME.length = 0;
   let exclNdc = -2, ppuNdc = 0.01;
   let W = 1, H = 1, frame = { fx: 0.66, fy: 0.5, hs: 0.8, D: 30 };
   const target = new THREE.Vector3();
@@ -681,13 +751,14 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     camera.aspect = W / H;
     // how big the subject should be on screen, and where
     if (mobile) {
-      const hs = Math.min(300, W * 0.78, H * 0.42);
-      frame = { fx: 0.5, fy: (38 + hs / 2) / H, hs, D: 0 };
+      const hs = Math.min(284, W * 0.73);
+      frame = { fx: 0.5, fy: (30 + hs / 2) / H, hs, D: 0 };
     } else {
       const wide = W / H;
       const hs = Math.min(H * 0.8, W * 0.44 * (11.0 / 7.6));
       frame = { fx: wide > 1.9 ? 0.62 : 0.6, fy: 0.5, hs, D: 0 };
     }
+    if (DBG_FRAME.length) { const [fx, fy, hs] = DBG_FRAME; frame = { fx, fy, hs, D: 0 }; }   // still-plate renders only
     exclNdc = (mobile ? -2 : (Math.min(W * 0.5, 140 + 640) / W) * 2 - 1);
     ppuNdc = 2 * (frame.hs / SUBJECT.h) / W;
     const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
@@ -718,7 +789,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const rt = new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: 4 });
   const composer = new EffectComposer(renderer, rt);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.42, 0.62, 0.86);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.42, 0.62, 0.92);
   composer.addPass(bloom);
   const finalPass = new ShaderPass(FINAL_SHADER);
   composer.addPass(finalPass);
@@ -728,7 +799,10 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const st = { t: 0, phase: 0.6, dropY: 0, dropV: 0, falling: false, landed: false, impactT: -99, cyc: 0, intro: 1 };
   let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
   const dropPos = new THREE.Vector3();
+  const qp = new URLSearchParams(location.search);
+  const DBG_PH = qp.has('herophase') ? +qp.get('herophase') : null, DBG_AGE = qp.has('heroage') ? +qp.get('heroage') : null;
   const tagLocal = new THREE.Vector3(Math.sin(0.95) * 1.62, 2.7, Math.cos(0.95) * 1.62); // label, front-right
+  const tagLocalM = new THREE.Vector3(Math.sin(-0.12) * 1.625, 0.64, Math.cos(-0.12) * 1.625); // mobile: label foot, clear of the small print
   const anchors = {
     bubble: new THREE.Vector3(BOTTLE_X + 2.35, 8.05, 0.2),
     tag: new THREE.Vector3(),                       // on the label surface (set from the bottle each frame)
@@ -765,11 +839,23 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
     // DOM overlay anchors (screen px): the −25% disc (kept inside the stage) and the price tag on the label
     bottle.localToWorld(anchors.tag.copy(tagLocal));
-    { const d = toPx(anchors.bubble), m = OV.discR + 14; ovDisc[0] = clamp(d[0], m, W - m); ovDisc[1] = d[1];
-      const tg = toPx(anchors.tag); ovTag[0] = tg[0]; ovTag[1] = tg[1]; }
+    if (!mobileNow) {
+      const d = toPx(anchors.bubble), m = OV.discR + 14; ovDisc[0] = clamp(d[0], m, W - m); ovDisc[1] = d[1];
+      const tg = toPx(anchors.tag); ovTag[0] = tg[0]; ovTag[1] = tg[1]; ovTag[2] = 0; ovTag[3] = 0;
+      tagRect[0] = tg[0] - 8; tagRect[2] = tg[0] + OV.tagW; tagRect[1] = tg[1] - OV.tagH / 2; tagRect[3] = tg[1] + OV.tagH / 2;
+    } else {
+      // the disc clears the cap and the shoulder; the compact tag hangs under the bottle on a short dotted lead
+      const d = toPx(anchors.bubble), m = OV.discR + 16; ovDisc[0] = clamp(d[0] + 14, m, W - m); ovDisc[1] = d[1] + 10;
+      const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
+      const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
+      const top = base[1] + 16;
+      const left = clamp(dot[0] + 22 - OV.tagW / 2, 16, W - 16 - OV.tagW);
+      ovTag[0] = dot[0]; ovTag[1] = dot[1]; ovTag[2] = Math.max(8, top - dot[1]); ovTag[3] = left - dot[0];
+      tagRect[0] = left; tagRect[2] = left + OV.tagW; tagRect[1] = top; tagRect[3] = top + OV.tagH;
+    }
 
     // the drop: form → detach → slow viscous fall → merge → ripple
-    const ph = reduced ? 2.3 : (t + st.phase) % DROP.period;
+    const ph = reduced ? 2.3 : DBG_PH !== null ? DBG_PH : (t + st.phase) % DROP.period;
     const cyc = Math.floor((t + st.phase) / DROP.period);
     const R1 = 0.19, RT = 0.046;
     pendant.position.copy(tip);
@@ -815,7 +901,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         }
       } else drop.visible = false;
     }
-    poolU.uAge.value = reduced ? 99 : t - st.impactT;
+    poolU.uAge.value = reduced ? 99 : DBG_AGE !== null ? DBG_AGE : t - st.impactT;
 
     // bubbles: buoyancy + viscous drag + low-frequency wander + cursor push + product avoidance
     // (reduced motion: the spheres hold still, but still respect the overlays)
@@ -880,7 +966,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
             vis = Math.min(vis, smooth(2, PAD, gap));
           }
           if (OV.tagW > 0) {
-            const x0 = ovTag[0] - 8, x1 = ovTag[0] + OV.tagW, y0 = ovTag[1] - OV.tagH / 2, y1 = ovTag[1] + OV.tagH / 2;
+            const TP = 28;
+            const x0 = tagRect[0] - TP, x1 = tagRect[2] + TP, y0 = tagRect[1] - TP, y1 = tagRect[3] + TP;
             const qx = clamp(sx, x0, x1), qy = clamp(sy, y0, y1);
             let dx = sx - qx, dy = sy - qy, d = Math.hypot(dx, dy), gap = d - sr;
             if (d < 1e-3) { const up = sy - y0, dn = y1 - sy; dx = 0; dy = up < dn ? -1 : 1; d = 1; gap = -Math.min(up, dn) - sr; }
@@ -920,7 +1007,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       bubbleGeo.attributes.iAlpha.needsUpdate = true;
     }
     const m4 = new THREE.Matrix4();
-    for (let i = 0; i < NB; i++) { const b = B[i]; m4.makeScale(b.r, b.r, b.r).setPosition(b.p); bubbles.setMatrixAt(i, m4); }
+    for (let i = 0; i < NB; i++) { const b = B[i], sr = b.r * (0.85 + 0.15 * b.a); m4.makeScale(sr, sr, sr).setPosition(b.p); bubbles.setMatrixAt(i, m4); }
     bubbles.instanceMatrix.needsUpdate = true;
 
     // screen-space anchors for the backdrop + DOM overlays
@@ -937,7 +1024,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     bgU.uTA.value.set(a[0] * pr, (H - a[1]) * pr); bgU.uTB.value.set(b2[0] * pr, (H - b2[1]) * pr);
     finalPass.uniforms.uTime.value = t;
     caustic.material.opacity = 0.26 + 0.04 * Math.sin(t * 0.7);
-    onFrame && onFrame({ bubble: ovDisc, tag: ovTag, ppu, W, H });
+    onFrame && onFrame({ bubble: ovDisc, tag: ovTag, mobile: mobileNow, ppu, W, H });
   }
 
   // ---------- loop + adaptive resolution

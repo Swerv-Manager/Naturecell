@@ -14,6 +14,7 @@ export default function init(root, ctx) {
   const stage = root.querySelector('.hero-stage');
   const bubbleEl = root.querySelector('.hero-bubble');
   const tagEl = root.querySelector('.hero-tag');
+  const cardEl = root.querySelector('.hero-tag__card');
   const addBtn = root.querySelector('[data-hero-add]');
 
   // ---- prices from the catalogue (Black Week price + § 9 a Førpris)
@@ -51,16 +52,25 @@ export default function init(root, ctx) {
   const measure = () => {
     if (!scene) return;
     const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
+    const mob = matchMedia('(max-width: 760px)').matches;
+    const box = mob ? cardEl : tagEl;               // mobile: the compact card hangs under the bottle on its own lead
     scene.setOverlays({
       discR: bubbleEl.firstElementChild.offsetWidth / 2,
-      tagW: tagEl.offsetWidth, tagH: tagEl.offsetHeight,
+      tagW: box.offsetWidth, tagH: box.offsetHeight,
       copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0),
     });
   };
-  const onFrame = ({ bubble, tag }) => {
+  const onFrame = ({ bubble, tag, mobile }) => {
     // the flat −25% bubble is never rotated, only translated (the scene keeps it inside the stage)
     bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
-    tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
+    if (mobile) {
+      // anchor = the dot on the label; the dotted lead drops to the compact card under the bottle
+      tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0)`;
+      tagEl.style.setProperty('--lead-h', `${tag[2].toFixed(1)}px`);
+      tagEl.style.setProperty('--card-x', `${tag[3].toFixed(1)}px`);
+    } else {
+      tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
+    }
     if (!tracked) { tracked = true; root.classList.add('is-tracked'); }
   };
 

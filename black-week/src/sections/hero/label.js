@@ -5,9 +5,11 @@
 
 // Colours sampled from the real 30 ml label (assets/extra/product-transparent.png, skin-oil-hires.webp) and
 // pre-compensated for the scene's warm key + grade, so the rendered label reads as the printed teal-sage.
-const FIELD = '#6c998c';      // main field (upper + the heart of the V)
-const FIELD_LOW = '#5f8b7f';  // lower-right field, a step deeper (as printed)
-const PALE = '#d3dfd9';       // pale chevron band
+// (pre-compensated cooler – measured per-channel gain of the warm key/softbox on the label – so the rendered front
+// face lands on the printed teal-sage (129,167,155) and the cool pale band (177,195,189) instead of olive/cream)
+const FIELD = '#7bb1b0';      // main field (upper + the heart of the V)
+const FIELD_LOW = '#6b9893';  // lower-right field, a clear step deeper (as printed)
+const PALE = '#b2cfd9';       // pale chevron band (cool pale sage, not cream)
 const HATCH = 'rgba(226,238,233,0.34)';
 const THREAD = '#7a478a';     // Vidunder Olien's violet product thread (true to pack)
 const INK = '#ffffff';
@@ -38,9 +40,9 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   // y as a fraction of the label height. Straight lines in print → they curve naturally as the label wraps.
   const PXD = W / (360 * 0.97);                       // canvas px per degree (the label wraps 97% of the bottle)
   const X = (deg) => cx + deg * PXD;
-  const V = [X(3), H * 0.82];                         // V point, a hair right of centre
-  const L = [X(-79), H * 0.27];                       // left arm reaches the silhouette at ~27% height
-  const R = [X(79), H * 0.28];
+  const V = [X(6), H * 0.79];                         // V point, just right of centre
+  const L = [X(-58), H * 0.44];                       // left arm: a straight diagonal from the left edge of the face
+  const R = [X(62), H * 0.46];
   const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy); return [dx / l, dy / l]; };
   const uL = unit(V, L), uR = unit(V, R);             // from the V point outward along each arm
   const along = (p, u, k) => [p[0] + u[0] * k, p[1] + u[1] * k];

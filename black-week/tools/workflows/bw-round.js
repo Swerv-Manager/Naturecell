@@ -44,6 +44,9 @@ Special wiring: theme-header – the announcement bar shows the Black Week messa
 Only edit files inside your own section folders. Build/check: node tools/build.mjs (full page) and node tools/shoot.mjs index.html shots/port${gi}/check --full ; also node tools/build.mjs --only <id> + node tools/shoot.mjs preview-<id>.html shots/<id>/work --el '[data-section="<id>"]'. Read the PNGs, compare against the Liquid/CSS, fix console errors, iterate until faithful at 1440 and 390. Return a summary.`, { label: `port:${g.join('+')}`, phase: 'Theme port', schema: BUILD_SCHEMA })))
 }
 
+// optional: repair the benchmark so the blind comparison stays a fair fight
+const benchP = args.benchFix ? agent(`Project root: ${ROOT}. The benchmark page ${ROOT}/bench/index.html (+ bench.css/bench.js) is a deliberately conventional, top-tier DTC Black Friday page used as the blind competitor. Judges reported these defects in it – fix them so it is a strong, fair competitor (do not add WebGL; edit only files in ${ROOT}/bench/): ${args.benchFix}. Verify with node tools/shoot.mjs bench/index.html shots/bench/fix --el '[data-bench="hero"]' and Read the PNGs (desktop and mobile). Return a short summary.`, { label: 'bench-fix', phase: 'Build' }) : Promise.resolve(null)
+
 const buildPrompt = (id) => `${SHARED}
 
 You own exactly one Black Week section of the page: "${id}". Edit ONLY files in ${ROOT}/src/sections/${id}/. Other agents work in parallel on other sections.
@@ -56,6 +59,7 @@ Return: summary, known issues, shared-file change requests.`
 
 const results = await pipeline(ids, async (id, _o, idx) => {
   const build = await agent(buildPrompt(id), { label: `build:${id}:r${round}`, phase: 'Build', schema: BUILD_SCHEMA })
+  await benchP
   const swap = (idx + round) % 2 === 1
   const dir = `${ROOT}/shots/${id}/r${round}`
   const [oursAs, benchAs] = swap ? ['B', 'A'] : ['A', 'B']

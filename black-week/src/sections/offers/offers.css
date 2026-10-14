@@ -1,6 +1,6 @@
 /* ==========================================================================
    NatureCell® Black Week – offers: three offer tiles directly under the hero
-   1 · 25% on the whole range   2 · Komplet Pakken (the hero offer)   3 · gift + free shipping (live route)
+   1 · 25% on the whole range   2 · Komplet Pakken (the hero offer)   3 · gift over 699 kr. (+ fri fragt)
    Every selector is scoped under [data-section="offers"].
    ========================================================================== */
 [data-section="offers"] {
@@ -8,47 +8,62 @@
   --viscous-long: cubic-bezier(.16, 1, .3, 1);
   --tile-r: 22px;
   --bleed: 16px;                       /* how far the hero tile rises above/below its neighbours */
+  --pad: 10px;                         /* stage inset inside a tile */
   --copy-x: 22px;                      /* copy inset inside a tile */
-  --shade: 40, 64, 59;                 /* sage-900 as rgb – every shadow is built from it */
+  --shade: 40, 64, 59;                 /* --sage-900 as rgb – every shadow on paper is built from it */
+  --night-shade: 35, 51, 48;           /* --ink-900 as rgb – contact shadows on the night tile */
+  --hl: color-mix(in srgb, var(--paper-2) 92%, transparent);
   position: relative;
   background: var(--paper);
   color: var(--text-body);
-  padding-block: clamp(48px, 5.4vw, 76px) clamp(48px, 5.4vw, 76px);
+  padding-block: var(--section-y);
 }
 
 /* ---------------------------------------------------------------- head */
 [data-section="offers"] .offers-head {
-  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px 40px;
-  margin-bottom: clamp(26px, 3vw, 40px);
+  display: flex; align-items: last baseline; justify-content: space-between; gap: 20px 40px;
+  margin-bottom: clamp(24px, 2.8vw, 38px);
 }
 [data-section="offers"] .offers-title {
   margin: 0; font-family: var(--font-display); font-weight: 400;
-  font-size: clamp(30px, 3.05vw, 44px); line-height: 1.04; letter-spacing: -0.012em;
+  font-size: clamp(32px, 3.4vw, 48px); line-height: 1.04; letter-spacing: -0.012em;
   color: var(--sage-700); text-wrap: balance;
 }
 [data-section="offers"] .offers-title em { font-style: italic; color: var(--sage-600); padding-left: .02em; }
 
-/* countdown – one calm line of rolling digits */
-[data-section="offers"] .offers-clock { display: grid; justify-items: end; gap: 6px; flex: none; }
+/* countdown – one calm line; minutes roll once a minute */
+[data-section="offers"] .offers-clock { display: grid; justify-items: end; gap: 4px; flex: none; }
 [data-section="offers"] .offers-clock__label {
   margin: 0; font: 600 11px/1.3 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700);
   display: inline-flex; align-items: center; gap: 9px;
 }
 [data-section="offers"] .offers-clock__label::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-berry);
-  box-shadow: 0 0 0 0 rgba(132, 51, 78, .35); animation: offers-breathe 3.2s var(--viscous) infinite;
+  animation: offers-breathe 3.6s var(--viscous) infinite;
 }
-@keyframes offers-breathe { 0% { box-shadow: 0 0 0 0 rgba(132, 51, 78, .32); } 70%, 100% { box-shadow: 0 0 0 7px rgba(132, 51, 78, 0); } }
-[data-section="offers"] .offers-clock__digits { display: flex; align-items: baseline; gap: 0 18px; margin: 0; }
-[data-section="offers"] .offers-unit { display: inline-flex; align-items: baseline; gap: 5px; }
-[data-section="offers"] .offers-unit + .offers-unit { position: relative; }
+@keyframes offers-breathe {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-berry) 32%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent-berry) 0%, transparent); }
+}
+[data-section="offers"] .offers-clock__digits { display: flex; align-items: baseline; gap: 0 12px; margin: 0; }
+[data-section="offers"] .offers-unit { position: relative; display: inline-flex; align-items: baseline; gap: 6px; }
+/* separator: a real middle dot in the display face, so it sits on the digits' optical centre */
 [data-section="offers"] .offers-unit + .offers-unit::before {
-  content: ""; position: absolute; left: -11px; top: 50%; width: 3px; height: 3px; border-radius: 50%; background: var(--sand-500); transform: translateY(-20%);
+  content: "\00B7"; margin-right: 6px; margin-left: 0; font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--sand-500);
 }
-[data-section="offers"] .offers-num { display: inline-flex; font-family: var(--font-display); font-size: 34px; line-height: 1; color: var(--sage-700); }
-[data-section="offers"] .offers-dg { position: relative; display: inline-block; width: .58em; height: 1.08em; overflow: hidden; text-align: center; }
-[data-section="offers"] .offers-dg__v { position: absolute; inset: 0; display: block; line-height: 1.08em; will-change: transform; }
-[data-section="offers"] .offers-unit__lbl { font: 500 12.5px/1 var(--font-body); color: var(--text-body); letter-spacing: .01em; }
+[data-section="offers"] .offers-num { display: inline-flex; align-items: baseline; font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--sage-700); }
+/* one digit cell: an in-flow hidden copy gives the true baseline; the rolling copies sit on top of it */
+/* Philosopher: ascent .90 / descent .22, lining digits .68 tall → a .9em line box holds the digit with ~.1em air,
+   so the drum window is tight around the glyph and the feathered edges never touch a resting digit */
+[data-section="offers"] .offers-dg {
+  position: relative; display: inline-block; width: .6em; text-align: center; line-height: .9;
+  clip-path: inset(0 -2px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 11%, #000 89%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 11%, #000 89%, transparent 100%);
+}
+[data-section="offers"] .offers-dg__ghost { visibility: hidden; }
+[data-section="offers"] .offers-dg__v { position: absolute; inset: 0; display: block; will-change: transform; }
+[data-section="offers"] .offers-unit__lbl { font: 500 13px/1 var(--font-body); color: var(--text-body); letter-spacing: .01em; }
 [data-section="offers"] .offers-clock__done { margin: 0; max-width: 34ch; text-align: right; font-size: var(--text-sm); color: var(--text-body); }
 [data-section="offers"] .offers-clock[data-state="ended"] .offers-clock__digits { display: none; }
 [data-section="offers"] .offers-clock[data-state="ended"] .offers-clock__label::before { animation: none; background: var(--stone-500); }
@@ -61,24 +76,20 @@
   margin: 0; padding: var(--bleed) 0; list-style: none;
 }
 [data-section="offers"] .offers-tile {
-  --i: 0;
   position: relative; isolation: isolate;
   grid-row: span 6; display: grid; grid-template-rows: subgrid; row-gap: 0;
-  padding: 10px 10px 24px; border-radius: var(--tile-r);
+  padding: var(--pad) var(--pad) 24px; border-radius: var(--tile-r);
   background: var(--cloud);
-  box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 18px 40px -30px rgba(var(--shade), .30);
-  transition: opacity var(--dur-slow) var(--ease-out), transform 900ms var(--viscous-long), box-shadow 600ms var(--viscous);
-  transition-delay: calc(var(--i) * 90ms);
+  box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 18px 40px -30px rgba(var(--shade), .28);
+  transition: box-shadow 600ms var(--viscous);
 }
-[data-section="offers"] .offers-tile[data-tile="1"] { --i: 1; }
-[data-section="offers"] .offers-tile[data-tile="2"] { --i: 2; }
 [data-section="offers"] .offers-tile::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(var(--shade), .07); pointer-events: none; z-index: 2;
 }
 
-/* stage: every visual shares one aspect ratio, one floor line and one light (top-left) */
+/* stage: identical geometry in every tile → one floor line, one scale (--u = a 50 ml airless bottle), one light (top-left) */
 [data-section="offers"] .offers-stage {
-  --u: 58cqh;       /* height of a 50 ml airless bottle – every product is sized from it (truthful relative sizes) */
+  --u: 58cqh;
   --floor: 15cqh;
   position: relative; aspect-ratio: 6 / 5; container-type: size;
   border-radius: 14px; overflow: hidden;
@@ -111,96 +122,84 @@
 /* 1 · range: pale sage room with a tabletop */
 [data-section="offers"] .offers-stage--range {
   background:
-    radial-gradient(85% 70% at 18% 0%, rgba(251, 250, 245, .95) 0%, rgba(251, 250, 245, 0) 62%),
-    radial-gradient(56% 12% at 50% 86%, rgba(251, 250, 245, .7) 0%, rgba(251, 250, 245, 0) 100%),
+    radial-gradient(85% 70% at 18% 0%, var(--hl) 0%, transparent 62%),
+    radial-gradient(56% 12% at 50% 86%, color-mix(in srgb, var(--paper-2) 70%, transparent) 0%, transparent 100%),
     linear-gradient(180deg, var(--sage-50) 0%, var(--sage-100) 84.6%, color-mix(in srgb, var(--sage-100) 80%, var(--sage-200)) 85.2%, var(--sage-50) 100%);
 }
-/* 2 · hero offer: night green room, warm evening light behind the set */
+
+/* 2 · hero offer: no inner box – the products stand in the night-green tile itself, lit by a warm evening glow */
 [data-section="offers"] .offers-stage--hero {
-  --u: 62cqh;
+  overflow: visible;
   background:
-    radial-gradient(50% 13% at 40% 86%, rgba(221, 191, 163, .13) 0%, rgba(221, 191, 163, 0) 100%),
-    radial-gradient(58% 54% at 40% 50%, rgba(221, 191, 163, .16) 0%, rgba(221, 191, 163, 0) 72%),
-    linear-gradient(180deg, var(--sage-800) 0%, color-mix(in srgb, var(--sage-800) 50%, var(--sage-900)) 84.6%, color-mix(in srgb, var(--sage-800) 70%, var(--sage-900)) 85.2%, var(--sage-900) 100%);
+    radial-gradient(34% 9% at 44% 85%, color-mix(in srgb, var(--sand-500) 16%, transparent) 0%, transparent 100%),
+    radial-gradient(40% 40% at 44% 52%, color-mix(in srgb, var(--sand-500) 13%, transparent) 0%, transparent 100%);
 }
-[data-section="offers"] .offers-stage--hero .offers-row { justify-content: flex-start; padding-left: 8cqw; gap: 1.8cqw; }
-[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, color-mix(in srgb, var(--sage-900) 62%, #000 38%), transparent); }
-[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, color-mix(in srgb, color-mix(in srgb, var(--sage-900) 62%, #000 38%) 45%, transparent), transparent); }
+[data-section="offers"] .offers-stage--hero .offers-row { justify-content: flex-start; padding-left: 9cqw; gap: 1.8cqw; }
+[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--night-shade), .92), rgba(var(--night-shade), 0)); }
+[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--night-shade), .45), rgba(var(--night-shade), 0)); }
 
 [data-section="offers"] .offers-flag {
-  position: absolute; left: 5cqw; top: 6cqh; margin: 0; z-index: 3;
+  position: absolute; left: 4cqw; top: 4cqh; margin: 0; z-index: 3;
   display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 12px 0 10px; border-radius: var(--radius-pill);
-  background: rgba(246, 244, 238, .08); border: 1px solid rgba(246, 244, 238, .18);
+  background: color-mix(in srgb, var(--paper) 8%, transparent); border: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
   font: 600 10.5px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--paper);
 }
 [data-section="offers"] .offers-flag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-pink); }
 [data-section="offers"] .offers-save {
-  position: absolute; right: 5cqw; top: 6cqh; z-index: 3; margin: 0;
-  width: clamp(82px, 25cqw, 98px); padding: 0; gap: 3px; align-content: center; grid-auto-flow: row;
+  position: absolute; right: 4cqw; top: 4cqh; z-index: 3; margin: 0;
+  width: clamp(80px, 25cqw, 96px); padding: 0; gap: 3px; align-content: center; grid-auto-flow: row;
   font-family: var(--font-body);
 }
-[data-section="offers"] .offers-save__k { font: 600 10px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; opacity: .9; }
+[data-section="offers"] .offers-save__k { font: 600 10px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; }
 [data-section="offers"] .offers-save__v { font: 700 19px/1 var(--font-body); letter-spacing: -.01em; white-space: nowrap; }
 
-/* 3 · gift: the route to free shipping and the gift, bound to the real cart */
+/* 3 · gift: warm sand room, a true example basket and the gift bubble */
 [data-section="offers"] .offers-stage--gift {
   background:
-    radial-gradient(70% 60% at 84% 22%, rgba(249, 181, 196, .26) 0%, rgba(249, 181, 196, 0) 70%),
-    linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 60%, var(--sand-300)) 100%);
+    radial-gradient(48% 46% at 80% 30%, color-mix(in srgb, var(--accent-pink) 22%, transparent) 0%, transparent 100%),
+    radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
+    linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) 84.6%, var(--sand-300) 85.2%, var(--sand-100) 100%);
 }
-[data-section="offers"] .offers-route { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-[data-section="offers"] .offers-route__base { fill: none; stroke: var(--clay-500); stroke-width: .62; stroke-linecap: round; stroke-dasharray: 0 2.3; opacity: .7; }
-@keyframes offers-flow { to { stroke-dashoffset: -2.3; } }
-@keyframes offers-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
-[data-section="offers"] .offers-route__base { animation: offers-flow 3.4s linear infinite; }
-[data-section="offers"] .offers-stop--gift .offers-stop__disc { animation: offers-float 6.5s var(--ease-soft) infinite; }
-[data-section="offers"] .offers-route__fill { fill: none; stroke: var(--sage-700); stroke-width: .9; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
-[data-section="offers"] .offers-start {
-  position: absolute; left: 11.667%; top: 82%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
-  border: 1.5px solid var(--clay-500); background: var(--sand-100);
+[data-section="offers"] .offers-stage--gift .offers-row { gap: 2.4cqw; }
+/* the gift is a flat brand bubble standing in the line-up – same floor, same shadows, never rotated */
+[data-section="offers"] .offers-p--gift { --h: .6; aspect-ratio: 1; margin-left: 3cqw; }
+[data-section="offers"] .offers-gift {
+  position: relative; z-index: 1; display: grid; place-content: center; justify-items: center;
+  width: 100%; height: 100%; border-radius: 50%;
+  background: var(--accent-pink); color: var(--accent-berry);
+  font-family: var(--font-display); line-height: 1;
+  transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long);
 }
-[data-section="offers"] .offers-stop { position: absolute; display: grid; justify-items: center; gap: 8px; transform: translate(-50%, 0); }
-[data-section="offers"] .offers-stop--ship { left: 50%; top: 62%; --d: clamp(54px, 17cqw, 64px); margin-top: calc(var(--d) / -2); }
-[data-section="offers"] .offers-stop--gift { left: 81.667%; top: 33%; --d: clamp(78px, 25cqw, 96px); margin-top: calc(var(--d) / -2); }
-[data-section="offers"] .offers-stop__disc {
-  position: relative; display: grid; place-items: center; width: var(--d); height: var(--d); border-radius: 50%;
-  transition: background 700ms var(--viscous), color 700ms var(--viscous), transform 900ms var(--viscous-long);
+[data-section="offers"] .offers-gift { grid-auto-flow: column; align-items: baseline; column-gap: .2em; font-size: 8.8cqh; }
+[data-section="offers"] .offers-gift__plus { font-size: .92em; }
+[data-section="offers"] .offers-gift__w { font-style: italic; margin-top: -.08em; }
+[data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
+
+[data-section="offers"] .offers-note { position: absolute; left: 6cqw; top: 6cqh; right: 6cqw; z-index: 2; display: grid; }
+[data-section="offers"] .offers-note__set {
+  grid-area: 1 / 1; margin: 0; display: grid; gap: 5px; align-content: start;
+  transition: opacity 600ms var(--viscous), transform 900ms var(--viscous-long);
 }
-[data-section="offers"] .offers-stop--ship .offers-stop__disc { background: var(--sage-600); color: var(--cloud); }
-[data-section="offers"] .offers-stop--gift .offers-stop__disc { background: var(--accent-pink); color: var(--accent-berry); }
-[data-section="offers"] .offers-stop__ico,
-[data-section="offers"] .offers-stop__ok { grid-area: 1 / 1; width: 42%; height: 42%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: opacity 500ms var(--viscous), transform 800ms var(--viscous-long); }
-[data-section="offers"] .offers-stop__ok { opacity: 0; transform: scale(.6); stroke-width: 2; }
-[data-section="offers"] .offers-stop__lbl { display: grid; justify-items: center; gap: 4px; font: 600 12.5px/1 var(--font-body); color: var(--sage-900); letter-spacing: .01em; white-space: nowrap; }
-[data-section="offers"] .offers-stop__amt { font-weight: 500; color: var(--text-body); font-variant-numeric: tabular-nums; }
-[data-section="offers"] .offers-stop.is-reached .offers-stop__ico { opacity: 0; transform: scale(.7); }
-[data-section="offers"] .offers-stop.is-reached .offers-stop__ok { opacity: 1; transform: none; }
-[data-section="offers"] .offers-stop--ship.is-reached .offers-stop__disc { background: var(--sage-700); }
-/* a soft halo ring – the bubble's own light */
-[data-section="offers"] .offers-stop__disc::before { content: ""; position: absolute; inset: -9%; border-radius: 50%; border: 1px solid currentColor; opacity: 0; pointer-events: none; }
-[data-section="offers"] .offers-stop--gift .offers-stop__disc::before { inset: -12%; border-color: var(--accent-pink); opacity: .9; }
-[data-section="offers"] .offers-stop--gift .offers-stop__disc::after { content: ""; position: absolute; inset: -26%; border-radius: 50%; border: 1px solid var(--accent-pink); opacity: .45; pointer-events: none; }
-[data-section="offers"] .offers-stop--gift.is-reached .offers-stop__disc::before,
-[data-section="offers"] .offers-stop--gift.is-reached .offers-stop__disc::after { border-color: var(--berry-50pct); }
-[data-section="offers"] .offers-stop--gift.is-reached .offers-stop__disc { background: var(--accent-berry); color: var(--cloud); }
-[data-section="offers"] .offers-cursor {
-  position: absolute; left: 11.667%; top: 82%; z-index: 2; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
-  background: var(--sage-900); box-shadow: 0 0 0 4px var(--cloud), 0 6px 14px -4px rgba(var(--shade), .5);
-  opacity: 0; transform: scale(.4); transition: opacity 500ms var(--viscous), transform 700ms var(--viscous-long);
+[data-section="offers"] .offers-note__k { font: 600 11px/1.3 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700); }
+[data-section="offers"] .offers-note__v { font: 500 12.5px/1.45 var(--font-body); color: var(--sage-900); font-variant-numeric: tabular-nums; }
+[data-section="offers"] .offers-note__v [data-ex-sum] { font-weight: 700; }
+[data-section="offers"] .offers-nw { white-space: nowrap; }
+[data-section="offers"] .offers-note__set--ex .offers-note__v { display: grid; grid-template-columns: auto 1fr; column-gap: 0; align-items: first baseline; }
+[data-section="offers"] .offers-note__fx { margin-right: .35em; font: 600 11px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700); }
+[data-section="offers"] .offers-note__set--live { opacity: 0; transform: translateY(4px); pointer-events: none; }
+[data-section="offers"] [data-gift].has-cart .offers-note__set--ex { opacity: 0; transform: translateY(-4px); }
+[data-section="offers"] [data-gift].has-cart .offers-note__set--live { opacity: 1; transform: none; }
+[data-section="offers"] .offers-meter {
+  position: relative; display: block; height: 3px; margin-top: 4px; border-radius: 3px;
+  background: color-mix(in srgb, var(--clay-500) 22%, transparent);
 }
-[data-section="offers"] [data-route].has-cart .offers-cursor { opacity: 1; transform: none; }
-[data-section="offers"] .offers-cartline {
-  position: absolute; left: 6cqw; top: 7cqh; z-index: 2; margin: 0; display: grid; gap: 5px; max-width: 52cqw;
-  opacity: 0; transform: translateY(4px); transition: opacity 600ms var(--viscous), transform 900ms var(--viscous-long);
-}
-[data-section="offers"] [data-route].has-cart .offers-cartline { opacity: 1; transform: none; }
-[data-section="offers"] .offers-cartline__sum { font: 600 11px/1.3 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700); }
-[data-section="offers"] .offers-cartline__next { font: 500 13.5px/1.35 var(--font-body); color: var(--sage-900); font-variant-numeric: tabular-nums; }
+[data-section="offers"] .offers-meter__fill { position: absolute; inset: 0; border-radius: inherit; background: var(--sage-700); transform-origin: 0 50%; transform: scaleX(0); }
+[data-section="offers"] .offers-meter__tick { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: var(--sand-100); border: 1.5px solid var(--sage-700); left: 57%; }
 
 /* ---------------------------------------------------------------- copy rows */
 [data-section="offers"] .offers-tile > :not(.offers-stage) { margin-inline: var(--copy-x); }
 [data-section="offers"] .offers-tile__eyebrow {
-  margin-block: 24px 0; font: 600 11px/1.4 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-600);
+  margin-block: 24px 0; font: 600 11px/1.4 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700);
 }
 [data-section="offers"] .offers-tile__title {
   margin: 8px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; letter-spacing: -.005em; color: var(--sage-700);
@@ -217,16 +216,18 @@
 [data-section="offers"] .offers-tile__text { margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: var(--text-body); max-width: 36ch; text-wrap: pretty; }
 [data-section="offers"] .offers-tile__cta { margin-top: 22px; align-self: end; }
 [data-section="offers"] .offers-btn { width: 100%; min-height: 50px; gap: 10px; }
-[data-section="offers"] .nc-btn--outline.offers-btn { --fg: var(--sage-700); --bd: rgba(var(--shade), .28); }
-[data-section="offers"] .nc-btn--outline.offers-btn:hover { --bg: var(--sage-50); --bd: var(--sage-500); }
+[data-section="offers"] .nc-btn--outline.offers-btn { --fg: var(--sage-700); --bd: var(--sage-600); }
+[data-section="offers"] .nc-btn--outline.offers-btn:hover { --bg: var(--sage-50); --bd: var(--sage-700); }
 [data-section="offers"] .offers-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- 2 · the elevated hero tile */
 [data-section="offers"] .offers-tile--hero { background: transparent; box-shadow: none; color: var(--paper); z-index: 1; }
 [data-section="offers"] .offers-tile--hero::before {
-  inset: calc(var(--bleed) * -1) 0; border: 1px solid rgba(246, 244, 238, .08); border-radius: calc(var(--tile-r) + 4px);
-  background: radial-gradient(120% 60% at 30% 0%, var(--sage-800) 0%, var(--sage-900) 70%);
-  box-shadow: 0 2px 6px rgba(var(--shade), .10), 0 36px 64px -34px rgba(var(--shade), .55);
+  inset: calc(var(--bleed) * -1) 0; border: 0; border-radius: calc(var(--tile-r) + 4px);
+  background:
+    radial-gradient(70% 34% at 40% 22%, color-mix(in srgb, var(--sage-800) 100%, transparent) 0%, transparent 100%),
+    linear-gradient(180deg, var(--sage-800) 0%, var(--sage-900) 58%);
+  box-shadow: 0 2px 6px rgba(var(--shade), .08), 0 30px 56px -36px rgba(var(--shade), .30);
   z-index: -2;
 }
 [data-section="offers"] .offers-tile--hero.nc-grain::after { inset: calc(var(--bleed) * -1) 0; border-radius: calc(var(--tile-r) + 4px); z-index: -1; opacity: .09; }
@@ -234,27 +235,35 @@
 [data-section="offers"] .offers-tile--hero .offers-tile__title,
 [data-section="offers"] .offers-tile--hero .offers-fig__big { color: var(--paper); }
 [data-section="offers"] .offers-tile--hero .offers-fig__aside,
-[data-section="offers"] .offers-tile--hero .offers-tile__text { color: rgba(246, 244, 238, .80); }
-[data-section="offers"] .offers-tile--hero .offers-stage { box-shadow: inset 0 0 0 1px rgba(246, 244, 238, .06); }
+[data-section="offers"] .offers-tile--hero .offers-tile__text { color: color-mix(in srgb, var(--paper) 82%, var(--sage-900)); }
 
 /* add-to-cart morph */
 [data-section="offers"] .offers-add { --bg: var(--paper); --fg: var(--sage-900); position: relative; overflow: hidden; }
-[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--shade), .9), 0 0 0 5px rgba(246, 244, 238, .07); }
+/* own the colours outright – the theme's .nc-btn--light:hover sets background directly and would mask the added state */
+[data-section="offers"] .offers-add.nc-btn,
+[data-section="offers"] .offers-add.nc-btn:hover,
+[data-section="offers"] .offers-add.nc-btn:focus-visible { background: var(--bg); color: var(--fg); border-color: var(--bg); transition: background-color 500ms var(--viscous), color 500ms var(--viscous), box-shadow 500ms var(--viscous), transform 300ms var(--viscous); }
+[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--night-shade), .9), 0 0 0 5px color-mix(in srgb, var(--paper) 7%, transparent); }
 [data-section="offers"] .offers-add:focus-visible { outline-color: var(--sand-300); outline-offset: 4px; }
 [data-section="offers"] .offers-add__ico { display: grid; width: 18px; height: 18px; }
 [data-section="offers"] .offers-add__ico svg { grid-area: 1 / 1; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: opacity 300ms var(--viscous), transform 600ms var(--viscous-long); }
 [data-section="offers"] .offers-add__check { opacity: 0; transform: scale(.5); }
-[data-section="offers"] .offers-add.is-added { --bg: var(--sage-500); --fg: var(--cloud); }
+[data-section="offers"] .offers-add__txt { display: grid; }
+[data-section="offers"] .offers-add__t { grid-area: 1 / 1; transition: opacity 360ms var(--viscous), transform 700ms var(--viscous-long); }
+[data-section="offers"] .offers-add__t--done { opacity: 0; transform: translateY(8px); }
+[data-section="offers"] .offers-add.is-added { --bg: var(--sage-300); --fg: var(--sage-900); }
 [data-section="offers"] .offers-add.is-added .offers-add__bag { opacity: 0; transform: scale(.5); }
 [data-section="offers"] .offers-add.is-added .offers-add__check { opacity: 1; transform: none; }
+[data-section="offers"] .offers-add.is-added .offers-add__t--idle { opacity: 0; transform: translateY(-8px); }
+[data-section="offers"] .offers-add.is-added .offers-add__t--done { opacity: 1; transform: none; }
 
 /* ---------------------------------------------------------------- hover physics (pointer devices) */
 @media (hover: hover) and (pointer: fine) {
-  [data-section="offers"] .offers-tile:hover .offers-p img { transform: translateY(-1.6cqh); }
+  [data-section="offers"] .offers-tile:hover .offers-p img,
+  [data-section="offers"] .offers-tile:hover .offers-gift { transform: translateY(-1.6cqh); }
   [data-section="offers"] .offers-tile:hover .offers-p::after { transform: scaleX(.9); opacity: .7; }
   [data-section="offers"] .offers-tile:hover .offers-p::before { transform: scaleX(1.06); opacity: .8; }
-  [data-section="offers"] .offers-tile:not(.offers-tile--hero):hover { box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 26px 50px -30px rgba(var(--shade), .36); }
-  [data-section="offers"] .offers-tile--gift:hover .offers-stop--gift .offers-stop__disc { transform: translateY(-3px); }
+  [data-section="offers"] .offers-tile:not(.offers-tile--hero):hover { box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 26px 50px -30px rgba(var(--shade), .34); }
 }
 
 /* ---------------------------------------------------------------- dots + foot */
@@ -263,41 +272,42 @@
   margin: clamp(22px, 2.4vw, 30px) 0 0; max-width: 92ch; font-size: 13px; line-height: 1.55; color: var(--text-body);
 }
 
-/* reveal: tiles rise in sequence */
-[data-section="offers"] .offers-tile[data-reveal] { transform: translateY(14px); }
-[data-section="offers"] .offers-tile[data-reveal].is-in { transform: none; }
+/* no hide-on-load reveal: this section sits right under the hero and must never render empty
+   (observer/scroll-linked reveals leave it blank in full-page captures and on slow first frames) */
 
 /* ---------------------------------------------------------------- tablet */
 @media (max-width: 1100px) {
   [data-section="offers"] { --copy-x: 18px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
-  [data-section="offers"] .offers-num { font-size: 30px; }
-  [data-section="offers"] .offers-stage--hero { --u: 56cqh; }
+  [data-section="offers"] .offers-num,
+  [data-section="offers"] .offers-unit + .offers-unit::before { font-size: 34px; }
   [data-section="offers"] .offers-flag { height: 24px; padding: 0 10px 0 9px; gap: 7px; font-size: 9.5px; }
 }
 
-/* ---------------------------------------------------------------- mobile: snap carousel, rows still shared */
+/* ---------------------------------------------------------------- mobile: snap carousel led by the hero offer */
 @media (max-width: 760px) {
-  [data-section="offers"] { --bleed: 12px; --copy-x: 18px; --tile-r: 20px; padding-block: 44px 40px; }
-  [data-section="offers"] .offers-head { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
-  [data-section="offers"] .offers-title { font-size: 32px; }
+  [data-section="offers"] { --bleed: 12px; --pad: 8px; --copy-x: 18px; --tile-r: 20px; }
+  [data-section="offers"] .offers-head { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 12px; }
+  [data-section="offers"] .offers-title { font-size: 34px; }
   [data-section="offers"] .offers-clock { justify-items: start; }
-  [data-section="offers"] .offers-clock__digits { gap: 0 16px; }
-  [data-section="offers"] .offers-unit + .offers-unit::before { left: -10px; }
-  [data-section="offers"] .offers-num { font-size: 28px; }
+  [data-section="offers"] .offers-clock__digits { gap: 0 18px; }
+  [data-section="offers"] .offers-num,
+  [data-section="offers"] .offers-unit + .offers-unit::before { font-size: 34px; }
   [data-section="offers"] .offers-clock__done { text-align: left; }
 
+  /* the scroll box clips on both axes – give the shadows room inside it, then pull the layout back */
   [data-section="offers"] .offers-rail {
-    margin-inline: calc(var(--gutter) * -1); overflow-x: auto; overscroll-behavior-x: contain;
+    margin: -8px calc(var(--gutter) * -1) -40px; overflow-x: auto; overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; -webkit-overflow-scrolling: touch;
   }
   [data-section="offers"] .offers-rail::-webkit-scrollbar { display: none; }
   [data-section="offers"] .offers-grid {
     grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(80vw, 330px);
-    column-gap: 12px; width: max-content; padding-inline: var(--gutter);
+    column-gap: 12px; width: max-content;
+    padding: calc(var(--bleed) + 8px) var(--gutter) calc(var(--bleed) + 40px);
   }
-  [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: 8px 8px 20px; }
-  [data-section="offers"] .offers-stage--hero { --u: 60cqh; }
+  [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: var(--pad) var(--pad) 20px; }
+  [data-section="offers"] .offers-tile--hero { order: -1; }
   [data-section="offers"] .offers-flag { height: 26px; font-size: 10px; }
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
@@ -306,7 +316,7 @@
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }
   [data-section="offers"] .offers-btn { min-height: 48px; }
 
-  [data-section="offers"] .offers-dots { display: flex; justify-content: center; gap: 2px; margin-top: 6px; }
+  [data-section="offers"] .offers-dots { display: flex; justify-content: center; gap: 2px; margin-top: 2px; position: relative; z-index: 1; }
   [data-section="offers"] .offers-dot {
     position: relative; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer;
   }
@@ -315,12 +325,10 @@
     background: var(--sage-300); transition: width 600ms var(--viscous-long), margin 600ms var(--viscous-long), background 400ms var(--viscous);
   }
   [data-section="offers"] .offers-dot[aria-current="true"]::before { width: 22px; margin-left: -11px; background: var(--sage-700); }
+  [data-section="offers"] .offers-dot:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -6px; border-radius: 50%; }
   [data-section="offers"] .offers-foot { margin-top: 8px; font-size: 12.5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-section="offers"] .offers-clock__label::before,
-  [data-section="offers"] .offers-route__base,
-  [data-section="offers"] .offers-stop--gift .offers-stop__disc { animation: none; }
-  [data-section="offers"] .offers-tile[data-reveal] { transform: none; }
+  [data-section="offers"] .offers-clock__label::before { animation: none; }
 }

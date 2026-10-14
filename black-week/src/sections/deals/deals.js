@@ -29,6 +29,24 @@ const ORDER = ['komplet-pakken', 'skin-oil', 'serum', 'day-cream', 'night-cream'
 const CAT = { 'skin-oil': 'face', serum: 'face', 'day-cream': 'face', 'night-cream': 'face', 'cleansing-gel': 'face', 'body-lotion': 'body', shampoo: 'body' };
 const catOf = (p) => (p.bundle ? 'sets' : CAT[p.id] || 'face');
 const SHORT = { 'cleansing-gel': 'Rens', 'day-cream': 'Dag', 'night-cream': 'Nat', 'skin-oil': 'Olie' };
+// product pages on naturecell.dk (handles from the live theme). Unknown handles fall back to their collection.
+const SHOP = 'https://naturecell.dk';
+const URL_OF = {
+  'skin-oil': '/products/cbd-olie-1000mg', serum: '/products/naturecell-cbd-hyaluronic-serum', 'day-cream': '/products/dagcreme',
+  'night-cream': '/products/natcreme', 'cleansing-gel': '/products/rensegel', 'body-lotion': '/products/bodylotion',
+  shampoo: '/collections/cbd-haarpleje', 'komplet-pakken': '/products/hudpleje-startpakke-plus-1', 'all-day-facial': '/collections/sampakker',
+};
+const hrefOf = (p) => SHOP + (URL_OF[p.id] || (p.handle ? `/products/${p.handle}` : '/collections/cbd-hudpleje'));
+// Danish category eyebrows (match the filter chips); a product nickname wins where it exists
+const EYEBROW = { 'body-lotion': 'Krop', shampoo: 'Hår' };
+const eyebrowOf = (p) => p.nickname || EYEBROW[p.id] || 'Ansigt';
+// one-line claims for the 2-up phone grid (never clamped mid-word) – same cosmetic wording as the long claims
+const CLAIM_S = {
+  'skin-oil': 'Blød og velplejet hud – alle hudtyper.', serum: 'Fugtboost med hyaluronsyre og CBD.',
+  'day-cream': 'Let dagcreme med aloe vera og shea.', 'night-cream': 'Nærende natcreme med mandelolie.',
+  'cleansing-gel': 'Mild rens, der bevarer fugtbalancen.', 'body-lotion': 'Intensiv fugtighed til tør hud.',
+  shampoo: 'Mild shampoo til hele familien.',
+};
 
 const ICON = {
   bag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 8.25h12.8l-1.05 10.6a2 2 0 0 1-1.99 1.8H8.64a2 2 0 0 1-1.99-1.8z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>',
@@ -64,11 +82,12 @@ export default function init(root, ctx) {
   // ------------------------------------------------------------------ markup
   const srcOf = (s, p) => (s && s.url ? s.url : ctx.asset(s ? s.src : p.img));
   // one pack on the floor: contact shadow + packshot + a specular band masked to the packshot's own alpha
-  // o/sw: where this pack sits inside its line (fraction of the line width) – so ONE light band travels across a whole line-up
-  function prodHtml(s, src, alt, lbl = '', o = 0, sw = 1) {
+  // one distant light: every pack in a line-up catches its highlight at the same relative spot (like real bottles on a shelf)
+  function prodHtml(s, src, alt, lbl = '') {
     const [W, H, x0, y0, x1, y1] = s.box; const bw = x1 - x0, bh = y1 - y0;
     const geo = `width:${(W / bw * 100).toFixed(3)}%;left:${(-x0 / bw * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
-    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--o:${(o * 100).toFixed(2)}%;--s:${sw.toFixed(4)};--wu:${(bw / bh * s.h).toFixed(4)}">
+    // --gx0/--gw: where the product itself sits inside its (padded) image box, so the light is placed on the product
+    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${(bw / W).toFixed(4)};--wu:${(bw / bh * s.h).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
       <span class="deals-prod__pack"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};-webkit-mask-image:url('${src}');mask-image:url('${src}')"></span></span>
       ${lbl}
@@ -79,10 +98,9 @@ export default function init(root, ctx) {
     if (p.bundle) {
       const ids = (p.contains || []).filter((id) => BOTTLE[id]);
       const specs = ids.map((id) => BOTTLE[id]);
-      const lw = lineW(specs), wOf = (s) => (s.box[4] - s.box[2]) / (s.box[5] - s.box[3]) * s.h;
-      let x = 0; const pos = specs.map((s) => { const o = x / lw; x += wOf(s) + LINE_GAP; return [o, wOf(s) / lw]; });
+      const lw = lineW(specs);
       return `<div class="deals-line deals-line--set" style="--lw:${lw.toFixed(4)};--n:${ids.length}" role="img" aria-label="${esc(p.name)}: ${ids.map((id) => esc(ctx.byId[id]?.name || id)).join(', ')}">
-        ${ids.map((id, i) => prodHtml(BOTTLE[id], BOTTLE[id].url, '', `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ''}</span>`, pos[i][0], pos[i][1])).join('')}
+        ${ids.map((id, i) => prodHtml(BOTTLE[id], BOTTLE[id].url, '', `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ''}</span>`)).join('')}
       </div>`;
     }
     const s = SHOT[p.id] || { src: p.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.8 };
@@ -139,7 +157,7 @@ export default function init(root, ctx) {
             <div class="deals-set__intro">
               ${p.badge ? `<img class="deals-set__badge" src="${ctx.asset(p.badge)}" alt="" width="56" height="56">` : ''}
               <p class="deals-card__eyebrow">Sampakke · ${n} produkter</p>
-              <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}">${esc(p.name)}</h3>
+              <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
               <p class="deals-card__claim deals-card__claim--set">${esc(p.claim)}</p>
               ${perksHtml(p)}
             </div>
@@ -158,10 +176,11 @@ export default function init(root, ctx) {
           ${lineHtml(p)}${sale(p)}${quick(p)}
         </div>
         <div class="deals-card__body">
-          <p class="deals-card__eyebrow">${esc(p.nickname || p.eyebrow)}</p>
-          <h3 class="deals-card__name" id="deals-n-${p.id}">${esc(p.name)}</h3>
+          <p class="deals-card__eyebrow">${esc(eyebrowOf(p))}</p>
+          <h3 class="deals-card__name" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
           <p class="deals-card__size">${esc(metaLine(p))}</p>
           <p class="deals-card__claim">${esc(p.claim)}</p>
+          ${CLAIM_S[p.id] ? `<p class="deals-card__claim deals-card__claim--s">${esc(CLAIM_S[p.id])}</p>` : ''}
           <div class="deals-card__buy">${priceHtml(p)}${addHtml(p)}</div>
         </div>
       </article>
@@ -173,16 +192,20 @@ export default function init(root, ctx) {
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
+        <div class="deals-gift__art" aria-hidden="true">
+          <span class="deals-gift__stage">
+            <span class="deals-drop__floor"></span>
+            <span class="deals-drop"><span class="deals-drop__core"></span><span class="deals-drop__spec"></span></span>
+            <span class="deals-drop deals-drop--s1"><span class="deals-drop__spec"></span></span>
+            <span class="deals-drop deals-drop--s2"><span class="deals-drop__spec"></span></span>
+          </span>
+          <span class="nc-bubble nc-bubble--sand deals-gift__bubble"><span>Værdi<br>${kr(ctx.campaign.giftValue)}</span></span>
+        </div>
         <div class="deals-gift__head">
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i købet</h3>
         </div>
-        <div class="deals-gift__art" aria-hidden="true">
-          <span class="deals-drop"><span class="deals-drop__core"></span><span class="deals-drop__spec"></span></span>
-          <span class="deals-drop__floor"></span>
-          <span class="nc-bubble nc-bubble--sand deals-gift__bubble"><span>Værdi<br>${kr(ctx.campaign.giftValue)}</span></span>
-        </div>
-        <p class="deals-gift__copy">Gratis, når du handler for over ${kr(giftAt)}</p>
+        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, når du handler for</span> over ${kr(giftAt)}</p>
         <div class="deals-gift__meter">
           <div class="deals-gift__track" role="progressbar" aria-label="Fremskridt mod gratis ${esc(giftName)}" aria-valuemin="0" aria-valuemax="${giftAt}" aria-valuenow="0" aria-valuetext="0 kr. af ${giftAt} kr.">
             <span class="deals-gift__fill"></span>
@@ -195,6 +218,7 @@ export default function init(root, ctx) {
           </div>
         </div>
         <p class="deals-gift__status" data-gift-status></p>
+        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span>Se Komplet Pakken<span class="deals-gift__cta-x"> – udløser gaven</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></button>
       </div>
     </aside>
   </li>`;
@@ -226,7 +250,7 @@ export default function init(root, ctx) {
   new IntersectionObserver((es) => { onScreen = es.some((e) => e.isIntersecting); }, { threshold: 0.15 }).observe(grid);
   function shelfLight(delay = 0) {
     if (RM) return;
-    const cards = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => $('.deals-card', li)).filter(Boolean);
+    const cards = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => $('.deals-card', li)).filter((c) => c && !(tilt.get(c) || {}).th);
     const rows = cards.map((c) => c.getBoundingClientRect()).map((r) => r.top);
     const top0 = Math.min(...rows);
     cards.forEach((c, i) => {
@@ -250,14 +274,27 @@ export default function init(root, ctx) {
     gTile.classList.toggle('is-ship', sub >= shipAt);
     gTile.classList.toggle('is-done', sub >= giftAt);
     let t;
-    if (sub <= 0) t = `Fri fragt fra ${kr(shipAt)} – gaven følger med fra ${kr(giftAt)}`;
+    if (sub <= 0) t = `Fri fragt allerede fra ${kr(shipAt)}`;
     else if (sub < shipAt) t = `Du mangler <b>${kr(shipAt - sub)}</b> til fri fragt og <b>${kr(giftAt - sub)}</b> til din gave.`;
     else if (sub < giftAt) t = `Fri fragt er din. Du mangler <b>${kr(giftAt - sub)}</b> til din gave.`;
     else t = `<b>Din ${esc(giftName)} følger med.</b> Fri fragt er også din.`;
     gStatus.innerHTML = t;
+    gStatus.classList.toggle('is-idle', sub <= 0); // the idle hint repeats the meter – a narrow tile drops it
   }
   giftRender();
   store.on((type) => { if (type === 'cart:add' || type === 'cart:change') giftRender(); });
+  // the gift tile's one action: bring the Komplet Pakken card (899 kr. ≥ 699 kr. – it unlocks the gift) into view and focus it
+  $('[data-gift-cta]').addEventListener('click', () => {
+    const li = $('.deals-item[data-id="komplet-pakken"]', grid); if (!li) return;
+    if (li.hidden) chips.find((c) => c.dataset.filter === 'all')?.click();
+    const card = $('.deals-card', li), link = $('.deals-card__link', li);
+    card.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
+    setTimeout(() => {
+      link.focus({ preventScroll: true });
+      card.classList.remove('is-spot'); void card.offsetWidth; card.classList.add('is-spot');
+      if (!RM) { card.classList.remove('is-sweep'); void card.offsetWidth; card.classList.add('is-sweep'); }
+    }, RM ? 0 : 650);
+  });
 
   // ------------------------------------------------------------------ filter: chips, sliding ink, FLIP
   const bar = $('.deals-filter'), ink = $('.deals-filter__ink');
@@ -273,7 +310,13 @@ export default function init(root, ctx) {
   const pressed = () => chips.find((c) => c.getAttribute('aria-pressed') === 'true') || chips[0];
   requestAnimationFrame(() => moveInk(pressed(), true));
   document.fonts && document.fonts.ready.then(() => moveInk(pressed(), true));
-  new ResizeObserver(() => moveInk(pressed(), true)).observe(bar);
+  // phone: the chip row scrolls sideways when it does not fit – fade the edge where there is more (like the theme's rails)
+  const railEdges = () => {
+    const more = bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2, before = bar.scrollLeft > 2;
+    bar.classList.toggle('is-more', more); bar.classList.toggle('is-before', before);
+  };
+  bar.addEventListener('scroll', railEdges, { passive: true });
+  new ResizeObserver(() => { moveInk(pressed(), true); railEdges(); }).observe(bar);
 
   const lis = () => $$('.deals-item', grid);
   const giftLi = $('.deals-item--gift', grid);
@@ -341,7 +384,7 @@ export default function init(root, ctx) {
   chips.forEach((chip) => chip.addEventListener('click', () => {
     chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
     moveInk(chip);
-    if (bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: chip.offsetLeft - (bar.clientWidth - chip.offsetWidth) / 2, behavior: RM ? 'auto' : 'smooth' });
+    if (bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: chip.offsetLeft - (bar.clientWidth - chip.offsetWidth) / 2, behavior: RM ? 'auto' : 'smooth' }); // pressed chip always in view
     applyFilter(chip.dataset.filter);
     const n = counts[chip.dataset.filter];
     live.textContent = `Viser ${n} ${n === 1 ? 'produkt' : 'produkter'}`;
@@ -359,49 +402,56 @@ export default function init(root, ctx) {
   // against the card, its contact shadow counter-moves, and a specular band masked to the packshot tracks the cursor.
   const tilt = new Map();
   let tRaf = 0, tLast = 0;
+  const DRIFT = 0.18, DRIFT_HZ = 0.12; // while a card is hovered the light keeps drifting ±18 % – it reads even under a still cursor
   function tStep(now) {
     const dt = Math.min(0.05, (now - tLast) / 1000); tLast = now;
-    const f = 1 - Math.exp(-dt * 8), fh = 1 - Math.exp(-dt * 6.5);
+    const f = 1 - Math.exp(-dt * 7), fh = 1 - Math.exp(-dt * 6), fl = 1 - Math.exp(-dt * 4.2);
+    const ts = now / 1000;
     tilt.forEach((s, card) => {
-      s.rx += (s.trx - s.rx) * f; s.ry += (s.try - s.ry) * f; s.h += (s.th - s.h) * fh;
-      s.mx += (s.tmx - s.mx) * f; s.my += (s.tmy - s.my) * f;
-      card.style.transform = `perspective(1200px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 3).toFixed(2)}px)`;
+      // exponential approach, snapped once within a hair so a resting card is pixel-stable (no sub-pixel creep)
+      const ease = (v, t, k) => (Math.abs(t - v) < 0.0015 ? t : v + (t - v) * k);
+      s.rx = ease(s.rx, s.trx, f); s.ry = ease(s.ry, s.try, f); s.h = ease(s.h, s.th, fh);
+      s.mx = ease(s.mx, s.tmx, fl); s.sx = ease(s.sx, s.tsx, fl);
+      const d = Math.sin((ts - s.t0) * Math.PI * 2 * DRIFT_HZ) * DRIFT * s.h; // slow, oil-like drift around the cursor
+      card.style.transform = `perspective(1100px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 4).toFixed(2)}px)`;
       card.style.setProperty('--h', s.h.toFixed(4));
-      card.style.setProperty('--deals-lx', `${(s.mx * 100).toFixed(2)}%`);
-      card.style.setProperty('--px', (s.ry / 5).toFixed(4));
-      card.style.setProperty('--py', (s.rx / 4).toFixed(4));
-      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tmx - s.mx) < 0.002;
-      if (settled && s.th === 0) { card.style.transform = ''; ['--h', '--deals-lx', '--px', '--py'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
+      card.style.setProperty('--deals-lx', `${((s.mx + d) * 100).toFixed(2)}%`);
+      card.style.setProperty('--deals-sx', `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
+      card.style.setProperty('--ry', s.ry.toFixed(3));
+      card.style.setProperty('--rx', s.rx.toFixed(3));
+      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) < 0.002;
+      if (settled && s.th === 0) { card.style.transform = ''; ['--h', '--deals-lx', '--deals-sx', '--ry', '--rx'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
     });
-    // keep breathing while a card is hovered (settles to rest, then idles cheaply); stop when all are home
     tRaf = tilt.size ? requestAnimationFrame(tStep) : 0;
   }
   const tKick = () => { if (!tRaf) { tLast = performance.now(); tRaf = requestAnimationFrame(tStep); } };
-  function tState(card) {
-    let s = tilt.get(card);
-    if (!s) { s = { rx: 0, ry: 0, trx: 0, try: 0, h: 0, th: 0, mx: 0.5, my: 0.3, tmx: 0.5, tmy: 0.3 }; tilt.set(card, s); }
-    return s;
-  }
   if (FINE && !TOUCH && !RM) {
     grid.addEventListener('pointermove', (e) => {
       const card = e.target.closest('.deals-card'); if (!card || e.pointerType !== 'mouse') return;
       hovering = true;
       const r = card.getBoundingClientRect();
       const nx = clamp((e.clientX - r.left) / r.width, 0, 1), ny = clamp((e.clientY - r.top) / r.height, 0, 1);
-      const s = tState(card);
+      // the highlight lives in each pack's own width (0 = its left edge, 1 = its right edge); the card's width maps onto it,
+      // so wherever the pointer is the light is on the glass. The window light on the ground follows in stage coordinates.
+      const lx = -0.08 + nx * 1.16;
+      const st = card.querySelector('[data-stage]').getBoundingClientRect();
+      const sx = clamp((e.clientX - st.left) / st.width, 0, 1);
+      let s = tilt.get(card);
+      if (!s || s.th === 0) {
+        // entering: seed the light where the pointer is (no slide in from a stale spot) and stop a running shelf pass
+        card.classList.remove('is-sweep');
+        if (!s) { s = { rx: 0, ry: 0, h: 0 }; tilt.set(card, s); }
+        Object.assign(s, { mx: lx, sx, t0: performance.now() / 1000 });
+      }
       const k = card.classList.contains('deals-card--set') ? 0.5 : 1; // wide cards tilt less
-      // the light band lives in the line-up's own coordinates (first pack's left edge → last pack's right edge)
-      const ps = card.querySelectorAll('.deals-prod');
-      const a = ps[0].getBoundingClientRect(), b = ps[ps.length - 1].getBoundingClientRect();
-      const lx = clamp((e.clientX - a.left) / Math.max(1, b.right - a.left), -0.4, 1.4);
-      s.try = (nx - 0.5) * 6 * k; s.trx = -(ny - 0.5) * 4.5 * k; s.th = 1; s.tmx = lx; s.tmy = ny;
+      s.try = (nx - 0.5) * 6 * k; s.trx = -(ny - 0.5) * 4 * k; s.th = 1; s.tmx = lx; s.tsx = sx;
       tKick();
     });
     grid.addEventListener('pointerout', (e) => {
       const card = e.target.closest('.deals-card'); if (!card || card.contains(e.relatedTarget)) return;
       hovering = false;
       const s = tilt.get(card); if (!s) return;
-      s.trx = 0; s.try = 0; s.th = 0; s.tmx = 0.5; s.tmy = 0.3; tKick();
+      s.trx = 0; s.try = 0; s.th = 0; s.tsx = 0.3; tKick(); // the window light drifts home
     });
   }
 
@@ -533,8 +583,6 @@ export default function init(root, ctx) {
     if (btn) { const p = ctx.byId[btn.dataset.add]; add(p, btn, e, btn.closest('.deals-card').querySelector('[data-stage]')); return; }
     const q = e.target.closest('[data-qv]');
     if (q) { openQV(ctx.byId[q.dataset.qv], q); return; }
-    const stage = e.target.closest('[data-stage]');
-    if (stage) { const b = stage.querySelector('[data-qv]'); if (b) openQV(ctx.byId[b.dataset.qv], b); }
   });
 
   // ------------------------------------------------------------------ quick view
@@ -543,6 +591,11 @@ export default function init(root, ctx) {
   dlg.setAttribute('aria-labelledby', 'deals-qv-title');
   root.appendChild(dlg);
   let qvReturn = null, qvP = null, closing = false;
+  // in the quick view a product stands alone, so it may fill the stage: its tallest pack reaches ~62 % of the stage height
+  const qvFrac = (p) => {
+    const hs = p.bundle ? (p.contains || []).map((id) => BOTTLE_H[id] || 0.8) : [(SHOT[p.id] || { h: 0.8 }).h];
+    return Math.min(1.05, (p.bundle ? 0.56 : 0.62) / Math.max(...hs));
+  };
   function qvHtml(p) {
     const usp = `<ul class="deals-qv__usp">
       <li>${ICON.truck}Fri fragt over ${kr(ctx.campaign.freeShipping)}</li>
@@ -551,14 +604,14 @@ export default function init(root, ctx) {
     </ul>`;
     return `<div class="deals-qv__sheet">
       <button class="deals-qv__close" type="button" aria-label="Luk hurtig visning" data-qv-close>${ICON.close}</button>
-      <div class="deals-qv__stage${p.bundle ? ' deals-qv__stage--set' : ''}" data-stage>
+      <div class="deals-qv__stage${p.bundle ? ' deals-qv__stage--set' : ''}" data-stage style="--dl-ufrac:${qvFrac(p).toFixed(4)}">
         <span class="deals-ground" aria-hidden="true"></span>
         ${lineHtml(p)}
         <span class="nc-bubble nc-bubble--sale deals-bubble deals-bubble--qv" aria-hidden="true">−${p.pct}%</span>
         ${p.badge && p.bundle ? `<img class="deals-qv__badge" src="${ctx.asset(p.badge)}" alt="" width="64" height="64">` : ''}
       </div>
       <div class="deals-qv__body">
-        <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke · ${(p.contains || []).length} produkter` : (p.nickname ? `${p.nickname} · ${p.eyebrow}` : p.eyebrow))}</p>
+        <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke · ${(p.contains || []).length} produkter` : (p.nickname ? `${p.nickname} · ${EYEBROW[p.id] || 'Ansigt'}` : eyebrowOf(p)))}</p>
         <h2 class="deals-qv__title" id="deals-qv-title">${esc(p.name)}</h2>
         <p class="deals-card__size">${esc(p.bundle ? (p.contains || []).map((id) => SHORT[id] || ctx.byId[id]?.name).join(' · ') : metaLine(p))}</p>
         <p class="deals-qv__claim">${esc(p.claim)}</p>
@@ -566,6 +619,7 @@ export default function init(root, ctx) {
         ${p.bundle ? contentsHtml(p) : ''}
         <hr class="nc-dotline deals-qv__rule">
         <div class="deals-qv__buy">${priceHtml(p, true)}${addHtml(p, ' nc-btn--lg')}</div>
+        <a class="deals-qv__more" href="${hrefOf(p)}">Se alt om ${esc(p.name)}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></a>
         ${usp}
       </div>
     </div>`;

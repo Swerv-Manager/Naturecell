@@ -239,6 +239,30 @@
   var CAT = { "skin-oil": "face", serum: "face", "day-cream": "face", "night-cream": "face", "cleansing-gel": "face", "body-lotion": "body", shampoo: "body" };
   var catOf = (p) => p.bundle ? "sets" : CAT[p.id] || "face";
   var SHORT = { "cleansing-gel": "Rens", "day-cream": "Dag", "night-cream": "Nat", "skin-oil": "Olie" };
+  var SHOP = "https://naturecell.dk";
+  var URL_OF = {
+    "skin-oil": "/products/cbd-olie-1000mg",
+    serum: "/products/naturecell-cbd-hyaluronic-serum",
+    "day-cream": "/products/dagcreme",
+    "night-cream": "/products/natcreme",
+    "cleansing-gel": "/products/rensegel",
+    "body-lotion": "/products/bodylotion",
+    shampoo: "/collections/cbd-haarpleje",
+    "komplet-pakken": "/products/hudpleje-startpakke-plus-1",
+    "all-day-facial": "/collections/sampakker"
+  };
+  var hrefOf = (p) => SHOP + (URL_OF[p.id] || (p.handle ? `/products/${p.handle}` : "/collections/cbd-hudpleje"));
+  var EYEBROW = { "body-lotion": "Krop", shampoo: "H\xE5r" };
+  var eyebrowOf = (p) => p.nickname || EYEBROW[p.id] || "Ansigt";
+  var CLAIM_S = {
+    "skin-oil": "Bl\xF8d og velplejet hud \u2013 alle hudtyper.",
+    serum: "Fugtboost med hyaluronsyre og CBD.",
+    "day-cream": "Let dagcreme med aloe vera og shea.",
+    "night-cream": "N\xE6rende natcreme med mandelolie.",
+    "cleansing-gel": "Mild rens, der bevarer fugtbalancen.",
+    "body-lotion": "Intensiv fugtighed til t\xF8r hud.",
+    shampoo: "Mild shampoo til hele familien."
+  };
   var ICON = {
     bag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 8.25h12.8l-1.05 10.6a2 2 0 0 1-1.99 1.8H8.64a2 2 0 0 1-1.99-1.8z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>',
     check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="deals-check" d="m5.5 12.6 4.1 4.1 8.9-9.4"/></svg>',
@@ -269,11 +293,11 @@
       if (!p.gift && p.img && !items.includes(p) && !/drops|lubricant/.test(p.img)) items.push(p);
     });
     const srcOf = (s, p) => s && s.url ? s.url : ctx.asset(s ? s.src : p.img);
-    function prodHtml(s, src, alt, lbl = "", o = 0, sw = 1) {
+    function prodHtml(s, src, alt, lbl = "") {
       const [W, H, x0, y0, x1, y1] = s.box;
       const bw2 = x1 - x0, bh = y1 - y0;
       const geo = `width:${(W / bw2 * 100).toFixed(3)}%;left:${(-x0 / bw2 * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
-      return `<div class="deals-prod" style="--ar:${(bw2 / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--o:${(o * 100).toFixed(2)}%;--s:${sw.toFixed(4)};--wu:${(bw2 / bh * s.h).toFixed(4)}">
+      return `<div class="deals-prod" style="--ar:${(bw2 / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${(bw2 / W).toFixed(4)};--wu:${(bw2 / bh * s.h).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
       <span class="deals-prod__pack"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};-webkit-mask-image:url('${src}');mask-image:url('${src}')"></span></span>
       ${lbl}
@@ -284,15 +308,9 @@
       if (p.bundle) {
         const ids = (p.contains || []).filter((id) => BOTTLE[id]);
         const specs = ids.map((id) => BOTTLE[id]);
-        const lw = lineW(specs), wOf = (s2) => (s2.box[4] - s2.box[2]) / (s2.box[5] - s2.box[3]) * s2.h;
-        let x = 0;
-        const pos = specs.map((s2) => {
-          const o = x / lw;
-          x += wOf(s2) + LINE_GAP;
-          return [o, wOf(s2) / lw];
-        });
+        const lw = lineW(specs);
         return `<div class="deals-line deals-line--set" style="--lw:${lw.toFixed(4)};--n:${ids.length}" role="img" aria-label="${esc(p.name)}: ${ids.map((id) => esc(ctx.byId[id]?.name || id)).join(", ")}">
-        ${ids.map((id, i) => prodHtml(BOTTLE[id], BOTTLE[id].url, "", `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ""}</span>`, pos[i][0], pos[i][1])).join("")}
+        ${ids.map((id, i) => prodHtml(BOTTLE[id], BOTTLE[id].url, "", `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ""}</span>`)).join("")}
       </div>`;
       }
       const s = SHOT[p.id] || { src: p.img, box: [1e3, 1e3, 0, 0, 1e3, 1e3], h: 0.8 };
@@ -347,7 +365,7 @@
             <div class="deals-set__intro">
               ${p.badge ? `<img class="deals-set__badge" src="${ctx.asset(p.badge)}" alt="" width="56" height="56">` : ""}
               <p class="deals-card__eyebrow">Sampakke \xB7 ${n} produkter</p>
-              <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}">${esc(p.name)}</h3>
+              <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
               <p class="deals-card__claim deals-card__claim--set">${esc(p.claim)}</p>
               ${perksHtml(p)}
             </div>
@@ -366,10 +384,11 @@
           ${lineHtml(p)}${sale(p)}${quick(p)}
         </div>
         <div class="deals-card__body">
-          <p class="deals-card__eyebrow">${esc(p.nickname || p.eyebrow)}</p>
-          <h3 class="deals-card__name" id="deals-n-${p.id}">${esc(p.name)}</h3>
+          <p class="deals-card__eyebrow">${esc(eyebrowOf(p))}</p>
+          <h3 class="deals-card__name" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
           <p class="deals-card__size">${esc(metaLine(p))}</p>
           <p class="deals-card__claim">${esc(p.claim)}</p>
+          ${CLAIM_S[p.id] ? `<p class="deals-card__claim deals-card__claim--s">${esc(CLAIM_S[p.id])}</p>` : ""}
           <div class="deals-card__buy">${priceHtml(p)}${addHtml(p)}</div>
         </div>
       </article>
@@ -381,16 +400,20 @@
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
+        <div class="deals-gift__art" aria-hidden="true">
+          <span class="deals-gift__stage">
+            <span class="deals-drop__floor"></span>
+            <span class="deals-drop"><span class="deals-drop__core"></span><span class="deals-drop__spec"></span></span>
+            <span class="deals-drop deals-drop--s1"><span class="deals-drop__spec"></span></span>
+            <span class="deals-drop deals-drop--s2"><span class="deals-drop__spec"></span></span>
+          </span>
+          <span class="nc-bubble nc-bubble--sand deals-gift__bubble"><span>V\xE6rdi<br>${kr(ctx.campaign.giftValue)}</span></span>
+        </div>
         <div class="deals-gift__head">
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i k\xF8bet</h3>
         </div>
-        <div class="deals-gift__art" aria-hidden="true">
-          <span class="deals-drop"><span class="deals-drop__core"></span><span class="deals-drop__spec"></span></span>
-          <span class="deals-drop__floor"></span>
-          <span class="nc-bubble nc-bubble--sand deals-gift__bubble"><span>V\xE6rdi<br>${kr(ctx.campaign.giftValue)}</span></span>
-        </div>
-        <p class="deals-gift__copy">Gratis, n\xE5r du handler for over ${kr(giftAt)}</p>
+        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, n\xE5r du handler for</span> over ${kr(giftAt)}</p>
         <div class="deals-gift__meter">
           <div class="deals-gift__track" role="progressbar" aria-label="Fremskridt mod gratis ${esc(giftName)}" aria-valuemin="0" aria-valuemax="${giftAt}" aria-valuenow="0" aria-valuetext="0 kr. af ${giftAt} kr.">
             <span class="deals-gift__fill"></span>
@@ -403,6 +426,7 @@
           </div>
         </div>
         <p class="deals-gift__status" data-gift-status></p>
+        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span>Se Komplet Pakken<span class="deals-gift__cta-x"> \u2013 udl\xF8ser gaven</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></button>
       </div>
     </aside>
   </li>`;
@@ -453,7 +477,7 @@
     }, { threshold: 0.15 }).observe(grid);
     function shelfLight(delay = 0) {
       if (RM) return;
-      const cards = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => $(".deals-card", li)).filter(Boolean);
+      const cards = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => $(".deals-card", li)).filter((c) => c && !(tilt.get(c) || {}).th);
       const rows = cards.map((c) => c.getBoundingClientRect()).map((r) => r.top);
       const top0 = Math.min(...rows);
       cards.forEach((c, i) => {
@@ -481,15 +505,34 @@
       gTile.classList.toggle("is-ship", sub >= shipAt);
       gTile.classList.toggle("is-done", sub >= giftAt);
       let t;
-      if (sub <= 0) t = `Fri fragt fra ${kr(shipAt)} \u2013 gaven f\xF8lger med fra ${kr(giftAt)}`;
+      if (sub <= 0) t = `Fri fragt allerede fra ${kr(shipAt)}`;
       else if (sub < shipAt) t = `Du mangler <b>${kr(shipAt - sub)}</b> til fri fragt og <b>${kr(giftAt - sub)}</b> til din gave.`;
       else if (sub < giftAt) t = `Fri fragt er din. Du mangler <b>${kr(giftAt - sub)}</b> til din gave.`;
       else t = `<b>Din ${esc(giftName)} f\xF8lger med.</b> Fri fragt er ogs\xE5 din.`;
       gStatus.innerHTML = t;
+      gStatus.classList.toggle("is-idle", sub <= 0);
     }
     giftRender();
     store2.on((type) => {
       if (type === "cart:add" || type === "cart:change") giftRender();
+    });
+    $("[data-gift-cta]").addEventListener("click", () => {
+      const li = $('.deals-item[data-id="komplet-pakken"]', grid);
+      if (!li) return;
+      if (li.hidden) chips.find((c) => c.dataset.filter === "all")?.click();
+      const card = $(".deals-card", li), link = $(".deals-card__link", li);
+      card.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" });
+      setTimeout(() => {
+        link.focus({ preventScroll: true });
+        card.classList.remove("is-spot");
+        void card.offsetWidth;
+        card.classList.add("is-spot");
+        if (!RM) {
+          card.classList.remove("is-sweep");
+          void card.offsetWidth;
+          card.classList.add("is-sweep");
+        }
+      }, RM ? 0 : 650);
     });
     const bar = $(".deals-filter"), ink = $(".deals-filter__ink");
     const chips = $$(".deals-chip");
@@ -508,7 +551,16 @@
     const pressed = () => chips.find((c) => c.getAttribute("aria-pressed") === "true") || chips[0];
     requestAnimationFrame(() => moveInk(pressed(), true));
     document.fonts && document.fonts.ready.then(() => moveInk(pressed(), true));
-    new ResizeObserver(() => moveInk(pressed(), true)).observe(bar);
+    const railEdges = () => {
+      const more = bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2, before = bar.scrollLeft > 2;
+      bar.classList.toggle("is-more", more);
+      bar.classList.toggle("is-before", before);
+    };
+    bar.addEventListener("scroll", railEdges, { passive: true });
+    new ResizeObserver(() => {
+      moveInk(pressed(), true);
+      railEdges();
+    }).observe(bar);
     const lis = () => $$(".deals-item", grid);
     const giftLi = $(".deals-item--gift", grid);
     const cols = () => getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length || 1;
@@ -619,25 +671,30 @@
     });
     const tilt = /* @__PURE__ */ new Map();
     let tRaf = 0, tLast = 0;
+    const DRIFT = 0.18, DRIFT_HZ = 0.12;
     function tStep(now) {
       const dt = Math.min(0.05, (now - tLast) / 1e3);
       tLast = now;
-      const f = 1 - Math.exp(-dt * 8), fh = 1 - Math.exp(-dt * 6.5);
+      const f = 1 - Math.exp(-dt * 7), fh = 1 - Math.exp(-dt * 6), fl = 1 - Math.exp(-dt * 4.2);
+      const ts = now / 1e3;
       tilt.forEach((s, card) => {
-        s.rx += (s.trx - s.rx) * f;
-        s.ry += (s.try - s.ry) * f;
-        s.h += (s.th - s.h) * fh;
-        s.mx += (s.tmx - s.mx) * f;
-        s.my += (s.tmy - s.my) * f;
-        card.style.transform = `perspective(1200px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 3).toFixed(2)}px)`;
+        const ease = (v, t, k) => Math.abs(t - v) < 15e-4 ? t : v + (t - v) * k;
+        s.rx = ease(s.rx, s.trx, f);
+        s.ry = ease(s.ry, s.try, f);
+        s.h = ease(s.h, s.th, fh);
+        s.mx = ease(s.mx, s.tmx, fl);
+        s.sx = ease(s.sx, s.tsx, fl);
+        const d = Math.sin((ts - s.t0) * Math.PI * 2 * DRIFT_HZ) * DRIFT * s.h;
+        card.style.transform = `perspective(1100px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 4).toFixed(2)}px)`;
         card.style.setProperty("--h", s.h.toFixed(4));
-        card.style.setProperty("--deals-lx", `${(s.mx * 100).toFixed(2)}%`);
-        card.style.setProperty("--px", (s.ry / 5).toFixed(4));
-        card.style.setProperty("--py", (s.rx / 4).toFixed(4));
-        const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tmx - s.mx) < 2e-3;
+        card.style.setProperty("--deals-lx", `${((s.mx + d) * 100).toFixed(2)}%`);
+        card.style.setProperty("--deals-sx", `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
+        card.style.setProperty("--ry", s.ry.toFixed(3));
+        card.style.setProperty("--rx", s.rx.toFixed(3));
+        const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) < 2e-3;
         if (settled && s.th === 0) {
           card.style.transform = "";
-          ["--h", "--deals-lx", "--px", "--py"].forEach((k) => card.style.removeProperty(k));
+          ["--h", "--deals-lx", "--deals-sx", "--ry", "--rx"].forEach((k) => card.style.removeProperty(k));
           tilt.delete(card);
         }
       });
@@ -649,14 +706,6 @@
         tRaf = requestAnimationFrame(tStep);
       }
     };
-    function tState(card) {
-      let s = tilt.get(card);
-      if (!s) {
-        s = { rx: 0, ry: 0, trx: 0, try: 0, h: 0, th: 0, mx: 0.5, my: 0.3, tmx: 0.5, tmy: 0.3 };
-        tilt.set(card, s);
-      }
-      return s;
-    }
     if (FINE && !TOUCH && !RM) {
       grid.addEventListener("pointermove", (e) => {
         const card = e.target.closest(".deals-card");
@@ -664,16 +713,24 @@
         hovering = true;
         const r = card.getBoundingClientRect();
         const nx = clamp((e.clientX - r.left) / r.width, 0, 1), ny = clamp((e.clientY - r.top) / r.height, 0, 1);
-        const s = tState(card);
+        const lx = -0.08 + nx * 1.16;
+        const st = card.querySelector("[data-stage]").getBoundingClientRect();
+        const sx = clamp((e.clientX - st.left) / st.width, 0, 1);
+        let s = tilt.get(card);
+        if (!s || s.th === 0) {
+          card.classList.remove("is-sweep");
+          if (!s) {
+            s = { rx: 0, ry: 0, h: 0 };
+            tilt.set(card, s);
+          }
+          Object.assign(s, { mx: lx, sx, t0: performance.now() / 1e3 });
+        }
         const k = card.classList.contains("deals-card--set") ? 0.5 : 1;
-        const ps = card.querySelectorAll(".deals-prod");
-        const a = ps[0].getBoundingClientRect(), b = ps[ps.length - 1].getBoundingClientRect();
-        const lx = clamp((e.clientX - a.left) / Math.max(1, b.right - a.left), -0.4, 1.4);
         s.try = (nx - 0.5) * 6 * k;
-        s.trx = -(ny - 0.5) * 4.5 * k;
+        s.trx = -(ny - 0.5) * 4 * k;
         s.th = 1;
         s.tmx = lx;
-        s.tmy = ny;
+        s.tsx = sx;
         tKick();
       });
       grid.addEventListener("pointerout", (e) => {
@@ -685,8 +742,7 @@
         s.trx = 0;
         s.try = 0;
         s.th = 0;
-        s.tmx = 0.5;
-        s.tmy = 0.3;
+        s.tsx = 0.3;
         tKick();
       });
     }
@@ -878,17 +934,16 @@
         openQV(ctx.byId[q.dataset.qv], q);
         return;
       }
-      const stage = e.target.closest("[data-stage]");
-      if (stage) {
-        const b = stage.querySelector("[data-qv]");
-        if (b) openQV(ctx.byId[b.dataset.qv], b);
-      }
     });
     const dlg = document.createElement("dialog");
     dlg.className = "deals-qv";
     dlg.setAttribute("aria-labelledby", "deals-qv-title");
     root.appendChild(dlg);
     let qvReturn = null, qvP = null, closing = false;
+    const qvFrac = (p) => {
+      const hs = p.bundle ? (p.contains || []).map((id) => BOTTLE_H[id] || 0.8) : [(SHOT[p.id] || { h: 0.8 }).h];
+      return Math.min(1.05, (p.bundle ? 0.56 : 0.62) / Math.max(...hs));
+    };
     function qvHtml(p) {
       const usp = `<ul class="deals-qv__usp">
       <li>${ICON.truck}Fri fragt over ${kr(ctx.campaign.freeShipping)}</li>
@@ -897,14 +952,14 @@
     </ul>`;
       return `<div class="deals-qv__sheet">
       <button class="deals-qv__close" type="button" aria-label="Luk hurtig visning" data-qv-close>${ICON.close}</button>
-      <div class="deals-qv__stage${p.bundle ? " deals-qv__stage--set" : ""}" data-stage>
+      <div class="deals-qv__stage${p.bundle ? " deals-qv__stage--set" : ""}" data-stage style="--dl-ufrac:${qvFrac(p).toFixed(4)}">
         <span class="deals-ground" aria-hidden="true"></span>
         ${lineHtml(p)}
         <span class="nc-bubble nc-bubble--sale deals-bubble deals-bubble--qv" aria-hidden="true">\u2212${p.pct}%</span>
         ${p.badge && p.bundle ? `<img class="deals-qv__badge" src="${ctx.asset(p.badge)}" alt="" width="64" height="64">` : ""}
       </div>
       <div class="deals-qv__body">
-        <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke \xB7 ${(p.contains || []).length} produkter` : p.nickname ? `${p.nickname} \xB7 ${p.eyebrow}` : p.eyebrow)}</p>
+        <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke \xB7 ${(p.contains || []).length} produkter` : p.nickname ? `${p.nickname} \xB7 ${EYEBROW[p.id] || "Ansigt"}` : eyebrowOf(p))}</p>
         <h2 class="deals-qv__title" id="deals-qv-title">${esc(p.name)}</h2>
         <p class="deals-card__size">${esc(p.bundle ? (p.contains || []).map((id) => SHORT[id] || ctx.byId[id]?.name).join(" \xB7 ") : metaLine(p))}</p>
         <p class="deals-qv__claim">${esc(p.claim)}</p>
@@ -912,6 +967,7 @@
         ${p.bundle ? contentsHtml(p) : ""}
         <hr class="nc-dotline deals-qv__rule">
         <div class="deals-qv__buy">${priceHtml(p, true)}${addHtml(p, " nc-btn--lg")}</div>
+        <a class="deals-qv__more" href="${hrefOf(p)}">Se alt om ${esc(p.name)}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></a>
         ${usp}
       </div>
     </div>`;

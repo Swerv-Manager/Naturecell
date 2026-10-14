@@ -6,28 +6,9 @@
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
 
-  <!-- product overlays, tracked to the bottle in 3D (flat, never rotated) -->
-  <div class="hero-overlays">
-    <div class="hero-bubble" aria-hidden="true">
-      <span class="hero-bubble__disc nc-bubble nc-bubble--sale"><span class="hero-bubble__pct">&minus;25%</span><span class="hero-bubble__sub">hele ugen</span></span>
-    </div>
-    <div class="hero-tag">
-      <span class="hero-tag__lead" aria-hidden="true"><i></i></span>
-      <div class="hero-tag__card">
-        <p class="hero-tag__name">Vidunder Olien</p>
-        <p class="hero-tag__meta">CBD Hudpleje Olie · 1000 mg</p>
-        <p class="nc-price hero-tag__price"><span class="nc-price__now" data-hero-price>374 kr.</span><span class="nc-price__was">Førpris <s data-hero-was>499 kr.</s></span></p>
-        <button class="hero-tag__add" type="button" data-hero-add aria-label="Læg Vidunder Olien i kurv">
-          <svg class="hero-tag__ico hero-tag__ico--plus" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
-          <svg class="hero-tag__ico hero-tag__ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
   <div class="nc-container hero-inner">
     <div class="hero-copy">
-      <p class="hero-eyebrow"><span class="hero-eyebrow__dot" aria-hidden="true"></span>Black Week <span class="hero-eyebrow__sep" aria-hidden="true">·</span> 23.–30. november</p>
+      <p class="hero-eyebrow"><span class="hero-eyebrow__dot" aria-hidden="true"></span>Black Week <span class="hero-eyebrow__sep" aria-hidden="true">·</span> 23.&nbsp;– 30.&nbsp;november</p>
       <h1 class="hero-title" id="hero-title">
         <span class="hero-title__l1">Black Week</span><span class="nc-sr"> – </span>
         <em class="hero-title__l2">i ro og mag.</em>
@@ -49,5 +30,25 @@
       <span class="hero-trust__dot" aria-hidden="true"></span>
       <span class="hero-trust__item">Dansk familievirksomhed</span>
     </p>
+  </div>
+
+  <!-- product overlays, tracked to the bottle in 3D (flat, never rotated). After the copy in the DOM so the
+       tab order and the reading order follow the visual hierarchy: H1 → CTAs → product quick-add -->
+  <div class="hero-overlays">
+    <div class="hero-bubble" aria-hidden="true">
+      <span class="hero-bubble__disc nc-bubble nc-bubble--sale"><span class="hero-bubble__pct">&minus;25%</span><span class="hero-bubble__sub">hele ugen</span></span>
+    </div>
+    <div class="hero-tag">
+      <span class="hero-tag__lead" aria-hidden="true"><i></i></span>
+      <div class="hero-tag__card">
+        <p class="hero-tag__name">Vidunder Olien</p>
+        <p class="hero-tag__meta">CBD Hudpleje Olie · 1000 mg</p>
+        <p class="nc-price hero-tag__price"><span class="nc-price__now" data-hero-price>374 kr.</span><span class="nc-price__was">Førpris <s data-hero-was>499 kr.</s></span></p>
+        <button class="hero-tag__add" type="button" data-hero-add aria-label="Læg Vidunder Olien i kurv">
+          <svg class="hero-tag__ico hero-tag__ico--plus" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
+          <svg class="hero-tag__ico hero-tag__ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg>
+        </button>
+      </div>
+    </div>
   </div>
 </section>
