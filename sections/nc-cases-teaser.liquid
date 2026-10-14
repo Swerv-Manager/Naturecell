@@ -89,7 +89,9 @@
               {%- if area_label != blank -%}
                 <span class="nc-tag nc-case-card__area">{{ area_label }}</span>
               {%- endif -%}
-              {%- if article.tags contains 'video' or article.content contains 'youtube' -%}
+              {%- assign nc_vid_lang_ok = true -%}
+              {%- if settings.nc_case_videos_da_only and request.locale.iso_code != 'da' -%}{%- assign nc_vid_lang_ok = false -%}{%- endif -%}
+              {%- if nc_vid_lang_ok and article.tags contains 'video' or nc_vid_lang_ok and article.content contains 'youtube' -%}
                 <span class="nc-case-card__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.see_video' | t }}</span>
               {%- endif -%}
             </span>

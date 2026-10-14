@@ -40,7 +40,8 @@
             "routine_1_label": "Morgen og aften",
             "routine_1_steps": "Hudolie | Din sædvanlige creme, hvis du bruger en",
             "routine_2_label": "",
-            "routine_2_steps": ""
+            "routine_2_steps": "",
+            "video": "shopify://files/videos/NatureCell-Start-Hudpleje-Olie-1000mg.mov"
           }
         },
         "o2": {
@@ -58,7 +59,8 @@
             "routine_1_label": "Morgen",
             "routine_1_steps": "Hudolie | Dagcreme",
             "routine_2_label": "",
-            "routine_2_steps": ""
+            "routine_2_steps": "",
+            "video": "shopify://files/videos/NatureCell-Start-Hudpleje-Dag.mov"
           }
         },
         "o3": {
@@ -76,7 +78,8 @@
             "routine_1_label": "Morgen",
             "routine_1_steps": "Hudolie | Dagcreme",
             "routine_2_label": "Aften",
-            "routine_2_steps": "Din sædvanlige ansigtsrens | Hudolie | Natcreme"
+            "routine_2_steps": "Din sædvanlige ansigtsrens | Hudolie | Natcreme",
+            "video": "shopify://files/videos/NatureCell-Start-Facial-CBD-Care-3-Produkter.mov"
           }
         },
         "o4": {
@@ -94,7 +97,8 @@
             "routine_1_label": "Morgen",
             "routine_1_steps": "Hudolie | Dagcreme",
             "routine_2_label": "Aften",
-            "routine_2_steps": "Rensegel | Hudolie | Natcreme"
+            "routine_2_steps": "Rensegel | Hudolie | Natcreme",
+            "video": "shopify://files/videos/NatureCell-Start-Komplet-CBD-Hudpleje.mov"
           }
         }
       },

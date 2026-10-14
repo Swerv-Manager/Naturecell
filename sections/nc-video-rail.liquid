@@ -17,7 +17,9 @@
   endif
 -%}
 
-{%- unless product.gift_card? -%}
+{%- assign nc_vid_lang_ok = true -%}
+{%- if settings.nc_case_videos_da_only and request.locale.iso_code != 'da' -%}{%- assign nc_vid_lang_ok = false -%}{%- endif -%}
+{%- unless product.gift_card? or nc_vid_lang_ok == false -%}
 {%- style -%}
   #shopify-section-{{ section.id }} .nc-vidband { background: var(--nc-pdpband-bg, var(--sage-500)); }
   #shopify-section-{{ section.id }} .nc-vidband__inner { max-width: 1140px; margin: 0 auto; padding: clamp(33px, 6vw, 60px) var(--gutter); }

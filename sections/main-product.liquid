@@ -70,6 +70,11 @@
   .nc-pdp__thumbs button { width: 72px; height: 72px; border-radius: var(--radius-md); border: 2px solid var(--border-soft); background: var(--sage-50); cursor: pointer; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .nc-pdp__thumbs button.is-active { border-color: var(--sage-500); }
   .nc-pdp__thumbs img { width: 100%; height: 100%; object-fit: cover; }
+  .nc-pdp__main > img[hidden] { display: none; }
+  .nc-pdp__main.is-video .nc-pdp__badges { display: none; }
+  .nc-pdp__gallery-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; z-index: 1; }
+  .nc-pdp__thumbs .nc-pdp__video-thumb { position: relative; }
+  .nc-pdp__video-thumb svg { position: absolute; width: 28px; height: 28px; padding: 6px; border-radius: 50%; background: rgba(0, 0, 0, 0.65); color: #fff; pointer-events: none; }
 
   .nc-pdp__info { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .nc-pdp__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
@@ -168,7 +173,8 @@
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
         </div>
-        {%- if product.images.size > 1 -%}
+        {%- assign nc_gallery_videos = product.media | where: 'media_type', 'video' -%}
+        {%- if product.images.size > 1 or nc_gallery_videos.size > 0 -%}
           <div class="nc-pdp__thumbs">
             {%- for image in product.images limit: 8 -%}
               {%- comment -%} is-photo bruges af galleri-scriptet; alle billeder fylder rammen. {%- endcomment -%}
@@ -188,6 +194,21 @@
                 aria-label="{{ 'product.show_image' | t: n: forloop.index }}"
               >
                 {{ image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endfor -%}
+            {%- for media in nc_gallery_videos -%}
+              <button
+                type="button"
+                class="nc-pdp__video-thumb"
+                data-nc-video-thumb="{{ media.id }}"
+                aria-label="{{ media.alt | default: main_title | escape }}"
+                aria-pressed="false"
+              >
+                {{ media.preview_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <template data-nc-gallery-video>
+                  {{ media | video_tag: image_size: '1200x', controls: true, autoplay: false, playsinline: true, preload: 'none', class: 'nc-pdp__gallery-video' }}
+                </template>
               </button>
             {%- endfor -%}
           </div>
@@ -391,6 +412,64 @@
     {%- if v.available %}{% assign bar_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: bar_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
   </button>
 </div>
+
+{% javascript %}
+(function () {
+  function initGalleryVideos(root) {
+    root.querySelectorAll('[data-nc-gallery]').forEach(function (gallery) {
+      if (gallery.dataset.ncVideosReady) return;
+      var main = gallery.querySelector('[data-nc-gallery-main]');
+      var image = main && main.querySelector('img');
+      if (!main || !image || !gallery.querySelector('[data-nc-video-thumb]')) return;
+      gallery.dataset.ncVideosReady = 'true';
+      var activeVideo = null;
+      var activeButton = null;
+      var buttons = gallery.querySelectorAll('[data-nc-thumb], [data-nc-video-thumb]');
+      buttons.forEach(function (button) {
+        button.setAttribute('aria-pressed', button.classList.contains('is-active') ? 'true' : 'false');
+      });
+      gallery.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-nc-thumb], [data-nc-video-thumb]');
+        if (!button || !gallery.contains(button)) return;
+        var isVideo = button.hasAttribute('data-nc-video-thumb');
+        if (isVideo && button === activeButton && activeVideo) return;
+        var nextVideo = null;
+        if (isVideo) {
+          var template = button.querySelector('template[data-nc-gallery-video]');
+          if (!template) return;
+          var fragment = template.content.cloneNode(true);
+          nextVideo = fragment.querySelector('video');
+          if (!nextVideo) return;
+        }
+        if (activeVideo) {
+          activeVideo.pause();
+          activeVideo.remove();
+          activeVideo = null;
+        }
+        image.hidden = isVideo;
+        main.classList.toggle('is-video', isVideo);
+        buttons.forEach(function (item) {
+          item.classList.toggle('is-active', item === button);
+          item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+        });
+        activeButton = button;
+        if (nextVideo) {
+          main.appendChild(nextVideo);
+          activeVideo = nextVideo;
+          var play = nextVideo.play();
+          if (play && play.catch) play.catch(function () {});
+        }
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { initGalleryVideos(document); });
+  } else {
+    initGalleryVideos(document);
+  }
+  document.addEventListener('shopify:section:load', function (event) { initGalleryVideos(event.target); });
+})();
+{% endjavascript %}
 
 {% schema %}
 {

@@ -26,6 +26,9 @@
   endif
 
   assign amb_yt = section.settings.youtube_id | strip
+  if settings.nc_case_videos_da_only and request.locale.iso_code != 'da'
+    assign amb_yt = ''
+  endif
   assign amb_poster = section.settings.image
   if amb_poster == blank and amb_case != blank
     assign amb_poster = amb_case.image

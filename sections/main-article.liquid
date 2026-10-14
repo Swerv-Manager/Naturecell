@@ -145,6 +145,15 @@
     endcapture
   endif
 
+  # Kundecase-videoer kun paa dansk (temaindstilling): paa andre sprog indlaeses videoerne
+  # ikke (src flyttes til data-nc-off), og CSS skjuler dem sammen med deres ramme.
+  assign nc_hide_case_vid = false
+  if is_case and settings.nc_case_videos_da_only and request.locale.iso_code != 'da'
+    assign nc_hide_case_vid = true
+    assign case_has_video = false
+    assign body_html = body_html | replace: 'src="https://www.youtube', 'data-nc-off="https://www.youtube' | replace: 'src="//www.youtube', 'data-nc-off="//www.youtube' | replace: 'src="https://youtube', 'data-nc-off="https://youtube' | replace: 'src="https://player.vimeo', 'data-nc-off="https://player.vimeo' | replace: '<video', '<video data-nc-off hidden preload="none"'
+  endif
+
   assign author_name = article.author | strip
   assign author_img = blank
   if section.settings.author_avatar != blank
@@ -157,6 +166,8 @@
 -%}
 
 {%- style -%}
+  {%- comment -%} Skjulte kundecase-videoer (kun dansk): videoen og den ramme, den ligger i. {%- endcomment -%}
+  .nc-novid iframe[data-nc-off], .nc-novid video[data-nc-off], .nc-novid :is(div, p, figure, center):has(> iframe[data-nc-off], > video[data-nc-off]) { display: none !important; }
   /* ===== Kundecase-hero (design template.html l.1965-1984) ===== */
   #shopify-section-{{ section.id }} .nc-casehero { position: relative; background: var(--sage-500); color: var(--paper); padding: 28px 0 clamp(34px, 6vw, 56px); }
   #shopify-section-{{ section.id }} .nc-casehero__fab { position: absolute; right: clamp(16px, 2vw, 30px); bottom: clamp(22px, 3.2vw, 46px); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--sage-700); color: var(--cloud); box-shadow: var(--shadow-md); cursor: pointer; }
@@ -318,7 +329,7 @@
         {%- endif -%}
       {%- endif -%}
 
-      <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead nc-art__inset{% endif %}">
+      <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead nc-art__inset{% endif %}{% if nc_hide_case_vid %} nc-novid{% endif %}">
         {% render 'nc-cbd', text: body_html %}
       </div>
 

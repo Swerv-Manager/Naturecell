@@ -259,6 +259,9 @@
           if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
             assign has_video = true
           endif
+          if is_cases and settings.nc_case_videos_da_only and request.locale.iso_code != 'da'
+            assign has_video = false
+          endif
           assign clean_title = article.title | split: ' | ' | first
           assign person = article.metafields.ncell.name | default: ''
         -%}

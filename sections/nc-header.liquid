@@ -256,7 +256,15 @@
             <li><a class="nc-header__link nc-header__mix" href="{% render 'nc-url', url: section.settings.mix_url, fallback: '/collections/bland-selv' %}">{% render 'nc-cbd', text: section.settings.mix_label %}{%- if section.settings.mix_badge != blank -%}<span class="nc-header__badge">{% render 'nc-cbd', text: section.settings.mix_badge %}</span>{%- endif -%}</a></li>
           {%- endif -%}
           <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a></li>
-          <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a></li>
+          <li class="nc-dd">
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}" aria-haspopup="true">
+              {{ 'nav.articles' | t }}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+            <div class="nc-dd__panel">
+              <a href="{% render 'nc-url', fallback: '/pages/hvor-skal-jeg-starte' %}">{{ 'search.where_to_start' | t }}</a>
+            </div>
+          </li>
           <li class="nc-dd">
             <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}" aria-haspopup="true">
               {{ 'nav.about' | t }}
@@ -433,6 +441,9 @@
       {%- endif -%}
       <a href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a>
+      <div class="nc-mobilenav__sub">
+        <a href="{% render 'nc-url', fallback: '/pages/hvor-skal-jeg-starte' %}">{{ 'search.where_to_start' | t }}</a>
+      </div>
       <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.about' | t }}</a>
       <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{%- assign nc_nav_cbd = 'nav.about_cbd' | t -%}{% render 'nc-cbd', text: nc_nav_cbd %}</a>
       <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
