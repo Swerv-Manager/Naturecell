@@ -299,19 +299,26 @@
       const target = state2 === "pre" ? start : end;
       const left = Math.max(0, Math.floor((target - t) / 6e4));
       const vals = [Math.floor(left / 1440), Math.floor(left / 60) % 24, left % 60];
+      const lead = vals[0] > 0 ? 0 : vals[1] > 0 ? 1 : 2;
       vals.forEach((n, i) => {
         const s = String(Math.min(n, 99)).padStart(2, "0");
         units[i].dgs.forEach((d, k) => roll(d, s[k], animate));
+        units[i].dgs[0].el.toggleAttribute("data-off", i <= lead && n < 10);
+        units[i].el.hidden = i < lead;
       });
-      units[0].dgs[0].el.toggleAttribute("data-off", vals[0] < 10);
-      units[0].el.hidden = vals[0] === 0;
       if (units[0].lbl) units[0].lbl.textContent = vals[0] === 1 ? "dag" : "dage";
       if (units[1].lbl) units[1].lbl.textContent = vals[1] === 1 ? "time" : "timer";
       if (units[2].lbl) units[2].lbl.textContent = vals[2] === 1 ? "minut" : "minutter";
       if (sr && left !== lastMinute) {
         lastMinute = left;
         const [d, h, m] = vals;
-        sr.textContent = `${state2 === "pre" ? "Black Week begynder om" : "Black Week slutter om"} ${d} ${d === 1 ? "dag" : "dage"}, ${h} ${h === 1 ? "time" : "timer"} og ${m} ${m === 1 ? "minut" : "minutter"} \u2013 mandag 30. november kl. 23.59.`;
+        const parts = [];
+        if (lead <= 0) parts.push(`${d} ${d === 1 ? "dag" : "dage"}`);
+        if (lead <= 1) parts.push(`${h} ${h === 1 ? "time" : "timer"}`);
+        parts.push(`${m} ${m === 1 ? "minut" : "minutter"}`);
+        const spoken = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} og ${parts[parts.length - 1]}` : parts[0];
+        const when = state2 === "pre" ? "mandag 23. november kl. 00.00" : "mandag 30. november kl. 23.59";
+        sr.textContent = `${state2 === "pre" ? "Black Week begynder om" : "Black Week slutter om"} ${spoken} \u2013 ${when}.`;
       }
     }
     render(false);
@@ -422,7 +429,7 @@
       st.dataset.level = level;
       if (sum > 0) {
         sumEl.textContent = `Din kurv ${kr(sum)}`;
-        nextEl.textContent = level === 2 ? "Fri fragt og Lip Balm er med" : level === 1 ? `Fri fragt \xB7 ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
+        nextEl.textContent = level === 2 ? "Gave og fri fragt er med" : level === 1 ? `Fri fragt \xB7 ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
       }
       target = Math.min(1, sum / G);
       if (reduced) {

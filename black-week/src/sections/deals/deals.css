@@ -21,7 +21,7 @@
   --dl-card-shadow-hi: 0 1px 2px color-mix(in srgb, var(--dl-sh) 5%, transparent), 0 30px 60px -28px color-mix(in srgb, var(--dl-sh) 36%, transparent);
   /* stage geometry – ONE truthful scale for the whole grid. --dl-u (px per unit, shampoo = 1) is set by deals.js from
      the column width; each row's stage is as tall as its tallest pack (--row-h, in units) + head-room + a floor band */
-  --dl-top-u: .085;       /* head-room above the tallest pack in a row, in units */
+  --dl-top-u: .08;        /* head-room above the tallest pack in a row, in units */
   --dl-flpx: 28px;        /* floor band below the packs (contact shadows) */
   --dl-flpx-set: 44px;    /* …taller in a row with a Sampakke line-up: its 1–4 labels sit there */
   /* quick view keeps its own fit-to-stage geometry */
@@ -195,16 +195,11 @@
 [data-section="deals"] .deals-prod {
   position: relative; flex: none;
   height: calc(var(--ph) * var(--u)); aspect-ratio: var(--ar);
-  /* depth: the pack floats inside the leaning card (parallax against the tilt) and lifts like a bubble in serum
-     (translate only – a scale here would re-rasterise the packshot soft inside the tilted card) */
-  transform: translate(calc(var(--ry, 0) * .8px), calc(var(--rx, 0) * -.6px - var(--h, 0) * 5px));
+  /* depth without resampling: the pack never rotates or scales (that would re-rasterise the photo soft). It lifts like
+     a bubble in serum and parallaxes a few px against the cursor – both snapped to WHOLE pixels, so the packshot is as
+     sharp on hover as at rest. The 3D feel is carried by the light (which walks the glass) and the contact shadow. */
+  transform: translate(round(calc(var(--ry, 0) * .7px), 1px), round(calc(var(--rx, 0) * -.5px - var(--h, 0) * 5px), 1px));
   transform-origin: 50% 100%;
-}
-/* the lean: only the stage's pack layer turns (perspective from the floor line); the card around it stays a flat 2D
-   layer, so its type, price and button stay pixel-crisp while the object moves in the light */
-[data-section="deals"] .deals-card.is-tilt .deals-line {
-  transform: perspective(900px) rotateX(calc(var(--rx, 0) * 1deg)) rotateY(calc(var(--ry, 0) * 1deg));
-  transform-origin: 50% 100%; transform-style: flat; backface-visibility: hidden;
 }
 [data-section="deals"] .deals-prod__pack { position: absolute; inset: 0; overflow: hidden; }
 [data-section="deals"] .deals-prod__pack img { position: absolute; max-width: none; height: auto; user-select: none; -webkit-user-drag: none; }
@@ -220,7 +215,7 @@
   background: radial-gradient(closest-side, color-mix(in srgb, var(--dl-sh) 40%, transparent), transparent);
   opacity: calc(1 - var(--h, 0) * .6);
   /* the occlusion core leans away from the window light (≈ ±6px on a single pack), so the shadow answers the light */
-  transform: translateX(calc((50% - var(--deals-lx, 50%)) * .17));
+  transform: translateX(calc((50% - var(--deals-lx, 50%)) * .3));
 }
 /* the light: one distant window reflected in glass and carton. Three layers, all masked to the packshot's own alpha and
    faded at the shoulders/base (a reflection lives on the body of a bottle, never on its silhouette):
@@ -241,27 +236,23 @@
 /* 1. sheen – the window on the paper faces: a broad moving brightening (soft-light lifts the label colours instead of
    greying them), ~18 % of a pack wide */
 [data-section="deals"] .deals-gloss--sheen {
+  --sw: calc(var(--bk, .5) * (1 + var(--h, 0) * .5));            /* the window's patch widens as the pack is lifted to it */
   background: linear-gradient(90deg,
-    transparent calc(var(--c) - var(--bk, .5) * 7%),
-    color-mix(in srgb, var(--cloud) 40%, transparent) calc(var(--c) - var(--bk, .5) * 3%),
-    color-mix(in srgb, var(--cloud) 62%, transparent) var(--c),
-    color-mix(in srgb, var(--cloud) 40%, transparent) calc(var(--c) + var(--bk, .5) * 3%),
-    transparent calc(var(--c) + var(--bk, .5) * 7%));
+    transparent calc(var(--c) - var(--sw) * 4.2%),
+    color-mix(in srgb, var(--cloud) 50%, transparent) calc(var(--c) - var(--sw) * 2%),
+    var(--cloud) calc(var(--c) - var(--sw) * .5%),
+    var(--cloud) calc(var(--c) + var(--sw) * .5%),
+    color-mix(in srgb, var(--cloud) 50%, transparent) calc(var(--c) + var(--sw) * 2%),
+    transparent calc(var(--c) + var(--sw) * 4.2%));
   mix-blend-mode: soft-light;
   opacity: max(var(--h, 0), var(--deals-g));
 }
 /* 2. plane – the same light lifting the label colours (overlay, never greying), plus a broad wash across the flat
    faces from the side the card leans toward, growing with the lean */
 [data-section="deals"] .deals-gloss--plane {
-  background:
-    linear-gradient(90deg,
-      transparent calc(var(--c) - var(--bk, .5) * 9%),
-      color-mix(in srgb, var(--cloud) 42%, transparent) calc(var(--c) - var(--bk, .5) * 1.5%),
-      color-mix(in srgb, var(--cloud) 42%, transparent) calc(var(--c) + var(--bk, .5) * 2.5%),
-      transparent calc(var(--c) + var(--bk, .5) * 10%)),
-    linear-gradient(var(--pl-ang, 90deg), color-mix(in srgb, var(--cloud) calc(var(--pl, 0) * 80%), transparent), transparent 62%);
+  background: linear-gradient(var(--pl-ang, 90deg), color-mix(in srgb, var(--cloud) calc(var(--pl, 0) * 80%), transparent), transparent 62%);
   mix-blend-mode: overlay;
-  opacity: max(calc(var(--h, 0) * .7), calc(var(--deals-g) * .7), var(--pl, 0));
+  opacity: var(--pl, 0);
 }
 /* 3. glint – the window's edge reflected in the GLASS: a crisp strip (core ≈ 1.2 % of a unit, ~3px on desktop) with a
    soft falloff, a thin secondary line and a wide halo. It is masked to each packshot's own glass map (glass-masks.js:
@@ -289,6 +280,25 @@
     linear-gradient(90deg, transparent calc(var(--g) - var(--gf) * 2), color-mix(in srgb, var(--cloud) 12%, transparent) var(--g), transparent calc(var(--g) + var(--gf) * 2.2));
   mix-blend-mode: screen;
   opacity: max(var(--h, 0), var(--deals-g));
+}
+/* 4. amber – the same window edge where the glass is darkest: the lower body of each bottle (the base band under the
+   label, the label's glass margins). A 4px core with a 14px falloff in screen mode reads as a real, bright reflection
+   on dark amber even at 1x – it is what makes the light visibly travel across the glass. */
+[data-section="deals"] .deals-gloss--amber {
+  --gc: 2px; --gf: 7px;
+  --g: calc(var(--cy0, 0%) + (var(--cy1, 100%) - var(--cy0, 0%)) * .14 + clamp(0%, var(--deals-lx), 100%) * var(--cyw, 1) * .72);
+  -webkit-mask-image: var(--gm), linear-gradient(180deg, transparent 58%, var(--sage-900) 64%);
+  mask-image: var(--gm), linear-gradient(180deg, transparent 58%, var(--sage-900) 64%);
+  background:
+    linear-gradient(90deg,
+      transparent calc(var(--g) - var(--gf)),
+      color-mix(in srgb, var(--paper) 45%, transparent) calc(var(--g) - var(--gc) * 1.6),
+      color-mix(in srgb, var(--paper) 90%, transparent) calc(var(--g) - var(--gc)),
+      color-mix(in srgb, var(--paper) 90%, transparent) calc(var(--g) + var(--gc)),
+      color-mix(in srgb, var(--paper) 45%, transparent) calc(var(--g) + var(--gc) * 1.6),
+      transparent calc(var(--g) + var(--gf)));
+  mix-blend-mode: screen;
+  opacity: max(var(--h, 0), calc(var(--deals-g) * .9));
 }
 /* at rest the window sits a third of the way across every pack – a still, photographic highlight. On arrival it glides
    in from the left and settles there (once); under the cursor it follows the hand. */
@@ -356,6 +366,7 @@
 /* one short claim, whole words, two lines reserved so every price row in a grid row shares one line */
 [data-section="deals"] .deals-card__claim { margin: 7px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-body); text-wrap: pretty; }
 /* a quiet, true fact line under the claim (brief: vegansk, uden syntetisk parfume) – information, not filler */
+[data-section="deals"] .deals-claim-xs { display: none; }
 [data-section="deals"] .deals-card__meta { margin: 6px 0 0; font-size: 12px; line-height: 1.4; color: var(--dl-muted); letter-spacing: .005em; }
 /* one shared name block per row (deals.js sets data-name2 when a neighbour's name wraps) */
 [data-section="deals"] .deals-item[data-name2] .deals-card__name { min-height: 2.32em; }
@@ -549,6 +560,9 @@
     radial-gradient(64px 11px at 50% calc(100% - 26px), color-mix(in srgb, var(--sand-300) 30%, transparent), transparent),
     radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 7%, transparent) 55%, transparent);
 }
+/* the stick is a render until the real packshot lands – said openly, like a museum label under the object */
+[data-section="deals"] .deals-gift__illu { position: absolute; left: 50%; top: calc(100% + 15px); transform: translateX(-50%); font: 500 11px/1 var(--font-body); letter-spacing: .06em; color: color-mix(in srgb, var(--paper) 74%, transparent); white-space: nowrap; }
+[data-section="deals"] .deals-gift__art:has(.deals-gift__illu) .deals-gift__pack { bottom: 38px; }
 [data-section="deals"] .deals-line--gift { position: relative; left: auto; right: auto; bottom: auto; --u: var(--dl-u, 230px); }
 /* on the night-green tile the shared shadow recipe is re-weighted so it still reads as contact, not as a hole */
 [data-section="deals"] .deals-gift .deals-prod__shadow { left: -45%; right: -45%; bottom: -9px; height: 18px;
@@ -563,7 +577,7 @@
 [data-section="deals"] .deals-pil { width: 18px; height: 18px; flex: none; fill: currentColor; stroke: none; transform: rotate(-30deg); transition: transform 420ms var(--dl-visc); }
 [data-section="deals"] .deals-gift__cta:hover .deals-pil, [data-section="deals"] .deals-qv__more:hover .deals-pil { transform: translateX(3px) rotate(-30deg); }
 [data-section="deals"] .deals-gift__copy { margin: 0; font-size: 14px; line-height: 1.5; color: var(--bw-muted-on-night); text-wrap: balance; }
-[data-section="deals"] .deals-gift__copy-s, [data-section="deals"] .deals-gift__ln, [data-section="deals"] .deals-gift__cta-s { display: none; }
+[data-section="deals"] .deals-gift__copy-s, [data-section="deals"] .deals-gift__cta-s { display: none; }
 [data-section="deals"] .deals-gift__meter { padding-top: 4px; }
 [data-section="deals"] .deals-gift__track {
   position: relative; height: 6px; border-radius: var(--radius-pill);
@@ -584,10 +598,13 @@
 [data-section="deals"] .deals-gift.is-ship .deals-gift__tick:not(.deals-gift__tick--end),
 [data-section="deals"] .deals-gift.is-done .deals-gift__tick--end { background: var(--sand-500); border-color: var(--sand-500); transform: scale(1.15); }
 /* each label is centred exactly under its 12px node */
-[data-section="deals"] .deals-gift__labels { position: relative; height: 14px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
-[data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); white-space: nowrap; text-align: center; }
-[data-section="deals"] .deals-gift__labels > .deals-gift__lend { left: calc(100% - 6px); }
-[data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); }
+/* each node: what it gives over what it costs – the same two short lines on every breakpoint. deals.js sets each label
+   flush right with its knob's outer edge (a ruler mark), so the two never touch and nothing leaves the content box */
+[data-section="deals"] .deals-gift__labels { position: relative; height: 30px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
+[data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); white-space: nowrap; display: grid; justify-items: end; row-gap: 4px; text-align: right; }
+[data-section="deals"] .deals-gift__labels > .deals-gift__lend { left: auto; right: 0; }
+[data-section="deals"] .deals-gift__ln { display: block; letter-spacing: 0; text-transform: none; font-weight: 500; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--paper) 86%, transparent); }
+[data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); text-wrap: balance; }
 [data-section="deals"] .deals-gift__status b { color: var(--paper); font-weight: 600; }
 /* narrow gift tile (phone) */
 @container (max-width: 240px) {
@@ -601,12 +618,12 @@
   [data-section="deals"] .deals-gift__art.has-pack { min-height: 128px; margin-bottom: 0; }
   [data-section="deals"] .has-pack .deals-tag { --tw: 70px; top: 14px; left: calc(50% - 10px); }
   [data-section="deals"] .deals-gift__pack { left: calc(50% - 34px); bottom: 16px; }
+  [data-section="deals"] .deals-gift__art:has(.deals-gift__illu) .deals-gift__pack { bottom: 32px; }
+  [data-section="deals"] .deals-gift__illu { top: calc(100% + 12px); }
   [data-section="deals"] .deals-gift__copy-x { display: none; }
   [data-section="deals"] .deals-gift__copy-s { display: inline; }
   /* each node: what it gives over what it costs, two short lines centred under the knob (deals.js keeps them inside) */
-  [data-section="deals"] .deals-gift__labels { height: 30px; letter-spacing: .04em; }
-  [data-section="deals"] .deals-gift__labels > span { display: grid; justify-items: center; row-gap: 4px; transform: none; }
-  [data-section="deals"] .deals-gift__ln { display: block; letter-spacing: 0; text-transform: none; font-weight: 500; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--paper) 86%, transparent); }
+  [data-section="deals"] .deals-gift__labels { letter-spacing: .04em; }
   [data-section="deals"] .deals-gift__cta { padding: 0 8px; font-size: 13px; }
   [data-section="deals"] .deals-gift__cta .deals-pil { width: 13px; height: 13px; }
   [data-section="deals"] .deals-gift__cta-l { display: none; }
@@ -749,11 +766,11 @@
   [data-section="deals"] .deals-card__body { flex: 1 1 auto; }
   [data-section="deals"] .deals-card__eyebrow { font-size: 11px; letter-spacing: .06em; margin-bottom: 4px; }
   [data-section="deals"] .deals-card__name { font-size: 1.125rem; line-height: 1.15; }
-  /* phone: no claim on the single cards – the pack, its name and the price do the work */
-  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-card__claim,
+  /* phone: ONE rule for every single card – one short, true line under the name (never clamped mid-word) */
   [data-section="deals"] .deals-card__meta { display: none; }
-  /* …except next to the (taller) gift tile, where the claim fills what would otherwise be an empty band */
-  [data-section="deals"] .is-giftrow .deals-card:not(.deals-card--set) .deals-card__claim { display: block; font-size: 13px; line-height: 1.45; margin-top: 6px; }
+  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-card__claim { margin-top: 4px; font-size: 12.5px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-claim-l { display: none; }
+  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-claim-xs { display: inline; }
   [data-section="deals"] .deals-card__buy { padding-top: 9px; }
   [data-section="deals"] .deals-price__line { column-gap: 6px; }
   [data-section="deals"] .deals-price__now { font-size: 1.1875rem; line-height: 26px; }

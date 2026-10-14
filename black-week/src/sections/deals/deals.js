@@ -33,7 +33,8 @@ const LIP_SHOT = { url: LIP.url, box: [LIP.w, LIP.h, 0, 0, LIP.w, LIP.h], h: 0.3
 const LINE_GAP = 0.12; // gap between bottles in a line-up, in units (mirrors --lgap in CSS) – grouped like a set on a shelf
 // one truthful scale for the whole grid: a unit (the 300 ml shampoo) is K × one column's width. Every ROW of the grid
 // is then exactly as tall as its tallest pack needs (+ head-room), so no card carries a wall of empty sky.
-const K_UNIT = 0.96;
+// Phones get a slightly larger unit (two columns, so the packs would otherwise read as thumbnails).
+const K_UNIT = 1.06, K_UNIT_PHONE = 1.12;
 
 const ORDER = ['komplet-pakken', 'skin-oil', 'serum', 'day-cream', 'night-cream', 'all-day-facial', 'cleansing-gel', 'body-lotion', 'shampoo'];
 const CAT = { 'skin-oil': 'face', serum: 'face', 'day-cream': 'face', 'night-cream': 'face', 'cleansing-gel': 'face', 'body-lotion': 'body', shampoo: 'body' };
@@ -57,6 +58,12 @@ const CLAIM_S = {
   'day-cream': 'Let dagcreme med aloe vera og shea.', 'night-cream': 'Nærende natcreme med mandelolie.',
   'cleansing-gel': 'Mild rens, der bevarer fugtbalancen.', 'body-lotion': 'Intensiv fugtighed til tør hud.',
   shampoo: 'Mild shampoo til hele familien.',
+};
+// the phone's one-liners (≈ 150px of card body at 12.5px): every single card carries one true line, none more
+const CLAIM_XS = {
+  'skin-oil': 'Til alle hudtyper.', serum: 'Med hyaluronsyre.', 'day-cream': 'Med aloe vera og shea.',
+  'night-cream': 'Med mandelolie.', 'cleansing-gel': 'Bevarer fugtbalancen.', 'body-lotion': 'Fugt til tør hud.',
+  shampoo: 'Til hele familien.',
 };
 
 const ICON = {
@@ -109,7 +116,7 @@ export default function init(root, ctx) {
     const gw = bw / W, wu = packW(s);
     return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)};--cy0:${(s.cyl || [0, 100])[0]}%;--cy1:${(s.cyl || [0, 100])[1]}%;--cyw:${(((s.cyl || [0, 100])[1] - (s.cyl || [0, 100])[0]) / 100).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"></span>` : ''}</span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"></span><span class="deals-gloss deals-gloss--amber" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"></span>` : ''}</span>
       ${lbl}
     </div>`;
   }
@@ -231,7 +238,7 @@ export default function init(root, ctx) {
         <div class="deals-card__body">
           <p class="deals-card__eyebrow">${esc(eyebrow)}</p>
           <h3 class="deals-card__name" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
-          <p class="deals-card__claim">${nb(esc(CLAIM_S[p.id] || p.claim))}</p>
+          <p class="deals-card__claim"><span class="deals-claim-l">${nb(esc(CLAIM_S[p.id] || p.claim))}</span>${CLAIM_XS[p.id] ? `<span class="deals-claim-xs">${nb(esc(CLAIM_XS[p.id]))}</span>` : ''}</p>
           <p class="deals-card__meta">Vegansk · uden syntetisk parfume</p>
           <div class="deals-card__buy">${priceHtml(p)}${addHtml(p)}</div>
         </div>
@@ -242,8 +249,8 @@ export default function init(root, ctx) {
   const giftName = gift ? gift.name : 'CBD Lip Balm';
   const giftImg = gift && gift.img ? ctx.asset(gift.img) : '';
   // The gift stands on the same floor as every pack in the grid – same contact shadow, same window light, same scale.
-  // A real Lip Balm packshot in data.js (img) takes over automatically; until then a studio render of the 6 ml stick in
-  // the family's label language (lip-balm.js) stands in.
+  // A real Lip Balm packshot in data.js (img) takes over automatically; until then a studio render of the 6 ml stick
+  // (lip-balm.js) stands in – openly captioned "Illustration" under the stick, never passed off as a photo.
   const lipShot = giftImg ? { src: gift.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.32 } : LIP_SHOT;
   const lipHtml = `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, '')}</div>`;
   const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
@@ -252,7 +259,7 @@ export default function init(root, ctx) {
       <div class="deals-gift__in">
         <div class="deals-gift__art has-pack" aria-hidden="true">
           <!-- the gift stands in a warm pool of light on the shared floor; its value tag hangs beside it on a sand thread -->
-          <span class="deals-gift__pack">${lipHtml}</span>
+          <span class="deals-gift__pack">${lipHtml}${giftImg ? '' : '<span class="deals-gift__illu">Illustration</span>'}</span>
           <span class="deals-tag">
             <svg class="deals-tag__string" viewBox="0 0 40 60" preserveAspectRatio="none"><path d="M20 0 C 21 18, 26 30, 20 60"/></svg>
             <span class="deals-tag__card">
@@ -364,7 +371,7 @@ export default function init(root, ctx) {
     gTile.classList.toggle('is-empty', sub <= 0);
     let t;
     // empty cart: the reason behind the tile's one action (the Komplet Pakken alone unlocks the gift)
-    if (sub <= 0) t = kp && kp.price >= giftAt ? `<b>${esc(kp.name)}</b> (${kr(kp.price)}) udløser gaven alene.` : `Fri fragt allerede fra ${kr(shipAt)}.`;
+    if (sub <= 0) t = kp && kp.price >= giftAt ? `<b>${esc(kp.name)}</b> (${kr(kp.price)}) udløser gaven\u00a0alene.` : `Fri fragt allerede fra ${kr(shipAt)}.`;
     else if (sub < shipAt) t = `Du mangler <b>${kr(shipAt - sub)}</b> til fri fragt og <b>${kr(giftAt - sub)}</b> til din gave.`;
     else if (sub < giftAt) t = `Fri fragt er din. Du mangler <b>${kr(giftAt - sub)}</b> til din gave.`;
     else t = `<b>Din ${esc(giftName)} følger med.</b> Fri fragt er også din.`;
@@ -415,11 +422,12 @@ export default function init(root, ctx) {
   function placeGiftLabels() {
     const lab = $('.deals-gift__labels'); if (!lab || !gTrack) return;
     const tw = gTrack.clientWidth; if (!tw) return;
-    const pad = Math.max(0, (gTile.clientWidth - tw) / 2 - 4);
+    // one rule for both marks, like a ruler: each label ends flush with the outer edge of its knob ("up to here"), so the
+    // two never run together and the end label never leaves the content box
     [...lab.children].forEach((sp) => {
-      const at = sp.classList.contains('deals-gift__lend') ? tw - 6 : (shipAt / giftAt) * tw;
+      const end = sp.classList.contains('deals-gift__lend');
       const w = sp.offsetWidth;
-      sp.style.left = `${clamp(at - w / 2, -pad, tw + pad - w).toFixed(1)}px`;
+      sp.style.left = `${clamp((end ? tw : (shipAt / giftAt) * tw + 6) - w, 0, tw - w).toFixed(1)}px`;
     });
   }
   // the packaging thread: one hairline diagonal that comes in from the section's top-right edge and runs in behind the
@@ -456,7 +464,7 @@ export default function init(root, ctx) {
     const c = cols();
     const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
     const colW = (grid.clientWidth - gap * (c - 1)) / c;
-    grid.style.setProperty('--dl-u', `${(K_UNIT * colW).toFixed(2)}px`);
+    grid.style.setProperty('--dl-u', `${((innerWidth <= 760 ? K_UNIT_PHONE : K_UNIT) * colW).toFixed(2)}px`);
     const rows = new Map();
     lis().filter((li) => !li.hidden && !li.dataset.leaving).forEach((li) => {
       const t = Math.round(li.offsetTop);

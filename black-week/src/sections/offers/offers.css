@@ -190,29 +190,46 @@
 /* 3 · gift: warm sand room, a true example basket and the gift bubble */
 [data-section="offers"] .offers-stage--gift {
   background:
-    radial-gradient(40% 44% at 34% 40%, color-mix(in srgb, var(--accent-pink) 22%, transparent) 0%, transparent 100%),
+    radial-gradient(34% 40% at 60% 52%, color-mix(in srgb, var(--accent-pink) 24%, transparent) 0%, transparent 100%),
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-/* two products, just over the line – the camera a step closer than the six-up range (one scale inside the stage) */
-[data-section="offers"] .offers-stage--gift { --u: 70cqh; }
-[data-section="offers"] .offers-stage--gift .offers-row { gap: 0; padding-right: 2cqw; }
+/* the basket (olie forward, natcreme behind) and, foremost, the gift itself – one scale inside the stage */
+[data-section="offers"] .offers-stage--gift { --u: 70cqh; --d: clamp(76px, 23cqw, 86px); }
+/* the + gave disc overhangs the stick to the right: pad the row by the same amount so the whole group
+   (basket + gift + disc) is optically centred in the stage */
+[data-section="offers"] .offers-row--gift { gap: 0; padding-right: calc(var(--d) * 1.04); }
 /* olie a step forward, passing clearly in front of the natcreme's foot */
-[data-section="offers"] .offers-stage--gift .offers-p:last-child { margin: 0 0 -3cqh -1.8cqw; z-index: 2; }
-/* the gift is a flat brand bubble – the same disc as the Spar bubble next door – floating with its centre on the
-   natcreme's cap line (cap = top 34% of the jar); never on the floor, never shadowed, never rotated */
+[data-section="offers"] .offers-row--gift .offers-p--front { margin: 0 -1.8cqw -3cqh 0; z-index: 2; }
+[data-section="offers"] .offers-row--gift .offers-p--back { z-index: 1; }
+[data-section="offers"] .offers-row--gift .offers-p--back img { filter: brightness(.97); }
+/* the gift stands on the shelf line beside the natcreme, its own footprint clear of the label below */
+[data-section="offers"] .offers-p--gift { margin: 0 0 0 2.2cqw; z-index: 3; }
+/* a small object casts a smaller shadow – same light, same softness, scaled to its footprint */
+[data-section="offers"] .offers-p--gift::after { left: -14%; right: -30%; bottom: -1cqh; height: 2.4cqh; }
+[data-section="offers"] .offers-p--gift::before { left: 10%; right: -90%; bottom: -1.8cqh; height: 4.4cqh; }
+/* the gift is a flat brand bubble – the same disc as the Spar bubble next door – floating up and to the right of the
+   stick's shoulder, tied to it by a short dotted leader (the brand's feature line); never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
-  --d: clamp(76px, 23cqw, 86px);
-  position: relative; z-index: 1; flex: none; align-self: flex-end;
+  position: absolute; z-index: 1; left: calc(50% + var(--d) * .2); bottom: calc(100% + var(--d) * .1);
   width: var(--d); height: var(--d);
-  margin: 0 max(18px, 5cqw) calc(var(--u) * .66 - var(--d) / 2) 0;
   display: grid; grid-auto-flow: column; place-content: center; align-items: baseline; column-gap: .16em;
   border-radius: 50%; background: var(--accent-pink); color: var(--accent-berry);
   font-family: var(--font-display); font-size: 17px; line-height: 1; white-space: nowrap;
-  transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long), scale 700ms var(--viscous);
+  transition: background 800ms var(--viscous), color 800ms var(--viscous), translate 1100ms var(--viscous-long), scale 700ms var(--viscous);
 }
 [data-section="offers"] .offers-gift__plus { font-size: 1em; }
 [data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: .005em; }
+/* leader: from just above the cap to just short of the disc's lower-left edge (225° on the disc).
+   Disc centre sits .7d right of / .6d above the cap → the 225° point is .346d right, .246d up: 35.4°, .425d long */
+[data-section="offers"] .offers-gift { transition-delay: 0s, 0s, 90ms, 0s; }
+[data-section="offers"] .offers-lead {
+  position: absolute; z-index: 1; left: calc(50% + 1px); bottom: calc(100% + 4px);
+  width: calc(var(--d) * .425 - 7px); height: 0;
+  border-top: 2px dotted var(--accent-berry); opacity: .7;
+  transform-origin: 0 50%; rotate: -35.4deg;
+  transition: translate 1100ms var(--viscous-long) 90ms;
+}
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
 
 /* the shelf-edge label: centred in the tabletop band under the line-up */
@@ -234,9 +251,8 @@
 [data-section="offers"] .offers-note__set--live .offers-note__v { text-align: right; }
 [data-section="offers"] [data-gift].has-cart .offers-note__set--ex { opacity: 0; transform: translateY(-4px); }
 [data-section="offers"] [data-gift].has-cart .offers-note__set--live { opacity: 1; transform: none; }
-/* with a live cart the example basket steps back – only what the customer actually gets stays in focus */
-[data-section="offers"] [data-gift] .offers-p { transition: opacity 700ms var(--viscous), filter 700ms var(--viscous); }
-[data-section="offers"] [data-gift].has-cart .offers-p { opacity: .28; filter: saturate(.4); }
+/* with a live cart nothing fades (a faded packshot reads as "udsolgt"): the shelf label crossfades, the meter fills,
+   and once the gift is earned the disc turns berry */
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { scale: 1.06; }
 [data-section="offers"] .offers-meter {
   position: relative; display: block; height: 3px; border-radius: 3px;
@@ -257,7 +273,9 @@
 [data-section="offers"] .offers-fig__big {
   font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 3.4vw, 48px); line-height: .92; letter-spacing: -.02em; color: var(--sage-700); white-space: nowrap;
 }
-[data-section="offers"] .offers-tile--range .offers-fig__big { color: var(--accent-berry); }
+/* the campaign's headline offer: Philosopher's lining digits are only ~.68em tall, so the −25 is set a size up to
+   carry the same optical weight as "Gratis" and "899" (the row height is still set by the hero's 899) */
+[data-section="offers"] .offers-tile--range .offers-fig__big { color: var(--accent-berry); font-size: clamp(48px, 4.2vw, 60px); }
 [data-section="offers"] .offers-fig__unit { font-size: .5em; letter-spacing: 0; margin-left: .06em; }
 /* the hero's figure grammar: a raised % whose top meets the cap height of the digits */
 [data-section="offers"] .offers-tile--range .offers-fig__unit { display: inline-block; font-size: .5em; transform: translateY(-.78em); margin-left: .04em; }
@@ -266,6 +284,8 @@
 [data-section="offers"] .offers-fig__aside s { text-decoration-thickness: 1px; }
 [data-section="offers"] .offers-tile__text { margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: var(--text-body); max-width: 36ch; text-wrap: pretty; }
 [data-section="offers"] .offers-tile__sub { display: block; }
+/* the hero's contents line uses the tile's full measure, so the four product names hold one line on desktop */
+[data-section="offers"] .offers-tile--hero .offers-tile__text { max-width: none; }
 [data-section="offers"] .offers-tile__cta { margin-top: 22px; align-self: end; }
 [data-section="offers"] .offers-btn { width: 100%; min-height: 50px; gap: 10px; }
 [data-section="offers"] .nc-btn--outline.offers-btn { --fg: var(--sage-700); --bd: var(--sage-600); }
@@ -318,7 +338,9 @@
 /* ---------------------------------------------------------------- hover physics (pointer devices) */
 @media (hover: hover) and (pointer: fine) {
   [data-section="offers"] .offers-tile:hover .offers-p img { transform: translateY(-1.6cqh); }
-  [data-section="offers"] .offers-tile:hover .offers-gift { transform: translateY(-1cqh); }
+  /* the gift lifts as one piece: stick, leader and disc on the stick's own curve and delay */
+  [data-section="offers"] .offers-tile:hover .offers-gift,
+  [data-section="offers"] .offers-tile:hover .offers-lead { translate: 0 -1.6cqh; }
   [data-section="offers"] .offers-tile:hover .offers-p::after { transform: scaleX(.9); opacity: .7; }
   [data-section="offers"] .offers-tile:hover .offers-p::before { transform: scaleX(1.06); opacity: .8; }
   [data-section="offers"] .offers-tile:not(.offers-tile--hero):hover { box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 26px 50px -30px rgba(var(--shade), .34); }
@@ -394,6 +416,15 @@
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
   [data-section="offers"] .offers-fig__big { font-size: 40px; }
+  [data-section="offers"] .offers-tile--range .offers-fig__big { font-size: 48px; }
+  /* narrow stage: the live-cart label stacks (sum over status) instead of wrapping into orphans */
+  [data-section="offers"] .offers-note__line { flex-direction: column; align-items: center; gap: 1px; }
+  [data-section="offers"] .offers-note__k,
+  [data-section="offers"] .offers-note__set--live .offers-note__v { white-space: nowrap; text-align: center; }
+  [data-section="offers"] .offers-note__set--live { gap: 5px; }
+  /* the stacked live label fills the tabletop band: on the narrow stage the basket stands on the shelf line too,
+     side by side with clear air, so no foot ever reaches into the label */
+  [data-section="offers"] .offers-row--gift .offers-p--front { margin: 0 2.2cqw 0 0; }
   [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: 54px; }
   [data-section="offers"] .offers-tile__text { font-size: 14.5px; }
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }

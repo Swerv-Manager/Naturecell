@@ -16,6 +16,7 @@ export default function init(root, ctx) {
   const tagEl = root.querySelector('.hero-tag');
   const cardEl = root.querySelector('.hero-tag__card');
   const addBtn = root.querySelector('[data-hero-add]');
+  const liveEl = root.querySelector('[data-hero-live]');
 
   // ---- prices from the catalogue (Black Week price + § 9 a Førpris)
   const p = ctx.byId['skin-oil'];
@@ -35,6 +36,8 @@ export default function init(root, ctx) {
     ctx.store.add('skin-oil', 1);
     addBtn.classList.add('is-added');
     addBtn.setAttribute('aria-label', 'Vidunder Olien er lagt i kurven');
+    // screen readers hear the confirmation (polite live region), not only a changed button label
+    if (liveEl) { liveEl.textContent = ''; requestAnimationFrame(() => { liveEl.textContent = 'Vidunder Olien er lagt i kurven.'; }); }
     clearTimeout(addT);
     addT = setTimeout(() => { addBtn.classList.remove('is-added'); addBtn.setAttribute('aria-label', 'Læg Vidunder Olien i kurv'); }, 2200);
   });
@@ -105,6 +108,7 @@ export default function init(root, ctx) {
       tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0)`;
       tagEl.style.setProperty('--lead-h', `${tag[2].toFixed(1)}px`);
       tagEl.style.setProperty('--card-x', `${tag[3].toFixed(1)}px`);
+      tagEl.style.setProperty('--lead-w', `${tag[4].toFixed(1)}px`);
     } else {
       tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
     }
