@@ -1039,7 +1039,7 @@ body.nc-ytbox-open { overflow: hidden; }
 /* stage: identical geometry in every tile → one floor line, one scale (--u = a 50 ml airless bottle), one light (top-left) */
 [data-section="offers"] .offers-stage {
   --u: 58cqh;
-  --floor: max(15cqh, 47px);          /* the tabletop band never gets thinner than the shelf label needs */
+  --floor: max(15cqh, 52px);          /* the tabletop band never gets thinner than the shelf label needs */
   --hz-a: min(84.6%, calc(100% - 48px)); /* horizon line in the stage's own background (cq units do not resolve there) */
   --hz-b: min(85.2%, calc(100% - 46px));
   position: relative; aspect-ratio: 6 / 5; container-type: size;
@@ -1057,6 +1057,12 @@ body.nc-ytbox-open { overflow: hidden; }
   position: relative; z-index: 1; display: block; height: 100%; width: auto; max-width: none;
   transition: transform 1100ms var(--viscous-long); transition-delay: calc(var(--k) * 45ms);
 }
+/* one settle on first sight: JS adds .is-settling (products lifted, invisible) and, a frame later, .is-settled –
+   without JS nothing is ever hidden */
+[data-section="offers"] .offers-tile.is-settling:not(.is-settled) .offers-p img { transform: translateY(1.2cqh); opacity: 0; transition: none; }
+[data-section="offers"] .offers-tile.is-settling:not(.is-settled) .offers-p::before,
+[data-section="offers"] .offers-tile.is-settling:not(.is-settled) .offers-p::after { opacity: 0; transition: none; }
+[data-section="offers"] .offers-tile.is-settled .offers-p img { transition: transform 1100ms var(--viscous-long), opacity 1100ms var(--viscous-long); transition-delay: calc(var(--k) * 45ms); }
 /* contact shadow (tight) + cast shadow (soft, falling to the right – light from top-left) */
 [data-section="offers"] .offers-p::before,
 [data-section="offers"] .offers-p::after { content: ""; position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; transition: transform 1100ms var(--viscous-long), opacity 1100ms var(--viscous-long); transition-delay: calc(var(--k) * 45ms); }
@@ -1078,6 +1084,9 @@ body.nc-ytbox-open { overflow: hidden; }
     linear-gradient(180deg, var(--sage-50) 0%, var(--sage-100) var(--hz-a), color-mix(in srgb, var(--sage-100) 80%, var(--sage-200)) var(--hz-b), var(--sage-50) 100%);
 }
 
+/* two planes: serum and olie a step forward on the table (same scale – sizes stay truthful) */
+[data-section="offers"] .offers-row--range .offers-p--front { margin-bottom: -3cqh; margin-inline: -1.4cqw; z-index: 2; }
+
 /* 2 · hero offer: no inner box – the products stand in the night-green tile itself, lit by a warm evening glow */
 [data-section="offers"] .offers-stage--hero {
   --u: 72cqh;                          /* the whole set a step closer to the camera – one scale, so sizes stay truthful */
@@ -1091,7 +1100,7 @@ body.nc-ytbox-open { overflow: hidden; }
   /* the tabletop is a pool of light, not a band – no edge may show against the night panel */
 }
 /* the set: dag + nat stand on the shared shelf line, rens + olie a step forward on the table (same scale, no fake perspective) */
-[data-section="offers"] .offers-row--set { gap: 0; }
+[data-section="offers"] .offers-row--set { gap: 0; padding-right: 6cqw; }
 [data-section="offers"] .offers-row--set .offers-p--front { --fwd: 4.6cqh; margin-bottom: calc(var(--fwd) * -1); z-index: 2; }
 [data-section="offers"] .offers-row--set .offers-p--back { z-index: 1; }
 /* rens and olie stand a little out from the pair, so the set reads as four products, not one block */
@@ -1143,7 +1152,7 @@ body.nc-ytbox-open { overflow: hidden; }
 }
 [data-section="offers"] .offers-note__head { font: 700 12.5px/1.25 var(--font-body); color: var(--sage-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
 [data-section="offers"] .offers-note__fx { font: italic 400 14px/1.25 var(--font-display); color: var(--sage-800); margin-right: .2em; }
-[data-section="offers"] .offers-note__v { font: 400 11.5px/1.3 var(--font-body); color: var(--sage-800); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+[data-section="offers"] .offers-note__v { font: 400 12.5px/1.3 var(--font-body); color: var(--sage-800); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
 [data-section="offers"] .offers-nw { white-space: nowrap; }
 [data-section="offers"] .offers-note__set--live { justify-items: stretch; gap: 6px; padding-inline: 4cqw; opacity: 0; transform: translateY(4px); pointer-events: none; }
 [data-section="offers"] .offers-note__line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
@@ -1176,7 +1185,8 @@ body.nc-ytbox-open { overflow: hidden; }
 }
 [data-section="offers"] .offers-tile--range .offers-fig__big { color: var(--accent-berry); }
 [data-section="offers"] .offers-fig__unit { font-size: .5em; letter-spacing: 0; margin-left: .06em; }
-[data-section="offers"] .offers-tile--range .offers-fig__unit { margin-left: .03em; }
+/* the hero's figure grammar: a raised % whose top meets the cap height of the digits */
+[data-section="offers"] .offers-tile--range .offers-fig__unit { display: inline-block; font-size: .5em; transform: translateY(-.78em); margin-left: .04em; }
 [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: clamp(52px, 4.7vw, 68px); }
 [data-section="offers"] .offers-fig__aside { font: 500 14px/1.2 var(--font-body); color: var(--text-body); white-space: nowrap; }
 [data-section="offers"] .offers-fig__aside s { text-decoration-thickness: 1px; }
@@ -1205,29 +1215,6 @@ body.nc-ytbox-open { overflow: hidden; }
   margin: 0 !important;
   background: radial-gradient(38% 30% at var(--lx, 50%) var(--ly, 26%), color-mix(in srgb, var(--sand-500) 13%, transparent) 0%, transparent 100%);
 }
-/* oil-light bubbles: tiny glass spheres rising through the night, slower than anything else on the page */
-[data-section="offers"] .offers-air { position: absolute; inset: 0 30% var(--floor) 2%; pointer-events: none; z-index: 0;
-  -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 30%, #000 70%, transparent 96%);
-          mask-image: linear-gradient(0deg, transparent 0%, #000 30%, #000 70%, transparent 96%); }
-/* they start behind the set and only show once they have risen clear of it */
-[data-section="offers"] .offers-air i {
-  position: absolute; left: var(--x); bottom: 10%; width: var(--s); height: var(--s); border-radius: 50%;
-  background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--paper) 80%, transparent) 0 10%, color-mix(in srgb, var(--sand-300) 34%, transparent) 26%, color-mix(in srgb, var(--sage-300) 16%, transparent) 62%, color-mix(in srgb, var(--paper) 30%, transparent) 70%, transparent 74%);
-  opacity: 0; transform: translate3d(0, 0, 0);
-  animation: offers-rise var(--d) linear var(--t) infinite;
-  animation-play-state: paused;
-}
-[data-section="offers"] .offers-air.is-on i { animation-play-state: running; }
-/* buoyant and viscous: slow constant climb, a lazy sway, a soft fade at both ends */
-@keyframes offers-rise {
-  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
-  12%  { opacity: .9; }
-  35%  { transform: translate3d(5px, -26cqh, 0); }
-  65%  { transform: translate3d(-3px, -50cqh, 0); }
-  88%  { opacity: .9; }
-  100% { transform: translate3d(2px, -74cqh, 0); opacity: 0; }
-}
-
 [data-section="offers"] .offers-tile--hero .offers-tile__eyebrow { color: var(--sand-500); }
 [data-section="offers"] .offers-tile--hero .offers-tile__title,
 [data-section="offers"] .offers-tile--hero .offers-fig__big { color: var(--paper); }
@@ -1272,10 +1259,18 @@ body.nc-ytbox-open { overflow: hidden; }
 /* no hide-on-load reveal: this section sits right under the hero and must never render empty
    (observer/scroll-linked reveals leave it blank in full-page captures and on slow first frames) */
 
+/* ---------------------------------------------------------------- after 30 Nov 23.59: no Black Week price claims survive a cached page */
+[data-section="offers"][data-campaign="ended"] .offers-rail,
+[data-section="offers"][data-campaign="ended"] .offers-dots,
+[data-section="offers"][data-campaign="ended"] .offers-foot { display: none; }
+
 /* ---------------------------------------------------------------- tablet */
 @media (max-width: 1100px) {
   [data-section="offers"] { --copy-x: 18px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
+  /* narrow columns: the set steps back so the Spar bubble keeps its air */
+  [data-section="offers"] .offers-stage--hero { --u: 62cqh; }
+  [data-section="offers"] .offers-row--set { padding-right: 10cqw; }
   [data-section="offers"] .offers-num,
   [data-section="offers"] .offers-unit + .offers-unit::before { font-size: 34px; }
 }
@@ -1308,7 +1303,11 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: var(--pad) var(--pad) 20px; }
   /* one tile per view: a squarer stage gives the products the room the column layout cannot */
   [data-section="offers"] .offers-stage { aspect-ratio: 1; }
-  [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; }
+  [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
+  /* the square stage is narrower relative to its height: the six-up tablescape steps back to keep air at both edges */
+  [data-section="offers"] .offers-stage--range { --u: 50cqh; }
+  /* the set steps left, so the Spar bubble owns the top-right corner with clear air around the caps */
+  [data-section="offers"] .offers-row--set { padding-right: 14cqw; }
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
   [data-section="offers"] .offers-fig__big { font-size: 40px; }
@@ -1333,5 +1332,7 @@ body.nc-ytbox-open { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   [data-section="offers"] .offers-clock__label::before { animation: none; }
-  [data-section="offers"] .offers-air i { animation: none; opacity: .8; transform: translate3d(0, calc(-30cqh - var(--s) * 4), 0); }
+  [data-section="offers"] .offers-tile.is-settling .offers-p img,
+  [data-section="offers"] .offers-tile.is-settling .offers-p::before,
+  [data-section="offers"] .offers-tile.is-settling .offers-p::after { transform: none; opacity: 1; }
 }

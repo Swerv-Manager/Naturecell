@@ -3,7 +3,8 @@
 // · Komplet Pakken "Læg i kurv" with a quiet morph + polite live announcement
 // · the gift tile: a true example basket, swapped for the live cart and a damped meter once the cart has value
 // · mobile: snap carousel led by the hero offer (first in the DOM), with dots
-// · the night tile: slow rising oil-light bubbles (only while on screen) and a warm light that follows the pointer
+// · the products settle onto the table once, the first time each tile is seen
+// · the night tile: a warm light that follows the pointer
 export default function init(root, ctx) {
   const q = new URLSearchParams(location.search);
   const reduced = ctx.prefersReducedMotion;
@@ -12,6 +13,7 @@ export default function init(root, ctx) {
   initAdd(root, ctx);
   off.push(initGift(root, ctx, q, reduced));
   off.push(initRail(root, reduced));
+  off.push(initSettle(root, reduced));
   off.push(initNight(root, reduced));
   return () => off.forEach((f) => f && f());
 }
@@ -29,6 +31,8 @@ function initClock(root, ctx, q, reduced) {
   const label = el.querySelector('[data-clock-label]');
   const done = el.querySelector('[data-clock-done]');
   const sr = el.querySelector('[data-clock-sr]');
+  const title = root.querySelector('.offers-title');
+  const titleHTML = title ? title.innerHTML : '';
 
   const units = ['d', 'h', 'm'].map((u) => {
     const unit = el.querySelector(`[data-unit="${u}"]`);
@@ -70,6 +74,8 @@ function initClock(root, ctx, q, reduced) {
       label.textContent = state === 'pre' ? 'Black Week begynder om' : state === 'ended' ? 'Black Week er slut' : state === 'last' ? 'Sidste dag – slutter om' : 'Black Week slutter om';
       if (done) done.hidden = state !== 'ended';
       root.dataset.campaign = state;
+      // once it is over the head must not promise three offers that are gone
+      if (title) title.innerHTML = state === 'ended' ? 'Tak for denne gang.' : titleHTML;
     }
     if (state === 'ended') { if (sr) sr.textContent = 'Black Week er slut.'; return; }
     const target = state === 'pre' ? start : end;
@@ -224,18 +230,29 @@ function initRail(root, reduced) {
   return () => io.disconnect();
 }
 
-/* ------------------------------------------------------------------ the night tile: air + evening light */
+/* ------------------------------------------------------------------ the products settle onto the table, once */
+// The markup renders in its end state; only JS lifts the products, and only for one viscous settle on first sight.
+function initSettle(root, reduced) {
+  if (reduced || !('IntersectionObserver' in window)) return null;
+  const tiles = [...root.querySelectorAll('.offers-tile')];
+  const settle = (t) => requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('is-settled')));
+  tiles.forEach((t) => t.classList.add('is-settling'));
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target); settle(e.target);
+  }), { threshold: 0 });
+  tiles.forEach((t) => io.observe(t));
+  // never leave a product hidden (e.g. a capture that never scrolls the rail): settle everything after a while regardless
+  const safety = setTimeout(() => tiles.forEach((t) => t.classList.add('is-settled')), 6000);
+  return () => { io.disconnect(); clearTimeout(safety); tiles.forEach((t) => t.classList.remove('is-settling', 'is-settled')); };
+}
+
+/* ------------------------------------------------------------------ the night tile: evening light */
 function initNight(root, reduced) {
   const tile = root.querySelector('.offers-tile--hero');
-  const air = root.querySelector('.offers-air');
   const glow = root.querySelector('.offers-glow');
   if (!tile) return null;
-  let io = null;
-  if (air && !reduced) {
-    io = new IntersectionObserver((es) => air.classList.toggle('is-on', es[es.length - 1].isIntersecting));
-    io.observe(tile);
-  }
-  if (!glow || reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return () => io && io.disconnect();
+  if (!glow || reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return null;
   // the light rests over the set; under the pointer it follows with a viscous, critically damped lag
   const rest = { x: 50, y: 26 };
   let x = rest.x, y = rest.y, tx = x, ty = y, raf = 0, last = 0;
@@ -257,5 +274,5 @@ function initNight(root, reduced) {
   const leave = () => { tx = rest.x; ty = rest.y; kick(); };
   tile.addEventListener('pointermove', move);
   tile.addEventListener('pointerleave', leave);
-  return () => { cancelAnimationFrame(raf); io && io.disconnect(); tile.removeEventListener('pointermove', move); tile.removeEventListener('pointerleave', leave); };
+  return () => { cancelAnimationFrame(raf); tile.removeEventListener('pointermove', move); tile.removeEventListener('pointerleave', leave); };
 }

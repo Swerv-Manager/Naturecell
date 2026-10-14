@@ -235,7 +235,7 @@
   var BOTTLE_H = { "cleansing-gel": 0.748, "day-cream": 0.841, "night-cream": 0.841, "skin-oil": 0.553 };
   var BOTTLE = Object.fromEntries(Object.entries(set_bottles_default).map(([id, b]) => [id, { url: b.url, box: [b.w, b.h, 0, 0, b.w, b.h], h: BOTTLE_H[id], cyl: [0, 100] }]));
   var LINE_GAP = 0.12;
-  var K_UNIT = 0.86;
+  var K_UNIT = 0.96;
   var ORDER = ["komplet-pakken", "skin-oil", "serum", "day-cream", "night-cream", "all-day-facial", "cleansing-gel", "body-lotion", "shampoo"];
   var CAT = { "skin-oil": "face", serum: "face", "day-cream": "face", "night-cream": "face", "cleansing-gel": "face", "body-lotion": "body", shampoo: "body" };
   var catOf = (p) => p.bundle ? "sets" : CAT[p.id] || "face";
@@ -428,15 +428,34 @@
     const gift = ctx.byId[ctx.campaign.giftId];
     const giftName = gift ? gift.name : "CBD Lip Balm";
     const giftImg = gift && gift.img ? ctx.asset(gift.img) : "";
+    const lipSvg = `<svg class="deals-lb" viewBox="0 0 28 100" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="deals-lb-cyl" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" style="stop-color:var(--sage-900);stop-opacity:.28"/><stop offset=".16" style="stop-color:var(--sage-900);stop-opacity:.06"/>
+          <stop offset=".34" style="stop-color:var(--cloud);stop-opacity:.7"/><stop offset=".46" style="stop-color:var(--cloud);stop-opacity:0"/>
+          <stop offset=".78" style="stop-color:var(--sage-900);stop-opacity:.08"/><stop offset="1" style="stop-color:var(--sage-900);stop-opacity:.34"/>
+        </linearGradient>
+        <clipPath id="deals-lb-body"><rect x="1" y="31.5" width="26" height="67.5" rx="2.2"/></clipPath>
+      </defs>
+      <rect x="1.4" y="1" width="25.2" height="29.4" rx="3.2" style="fill:var(--cloud)"/>
+      <rect x="1.4" y="1" width="25.2" height="29.4" rx="3.2" fill="url(#deals-lb-cyl)"/>
+      <path d="M2.6 4.2h22.8" style="stroke:var(--cloud);stroke-opacity:.9" stroke-width=".7"/>
+      <g clip-path="url(#deals-lb-body)">
+        <rect x="1" y="31.5" width="26" height="67.5" style="fill:var(--cloud)"/>
+        <rect x="1" y="43" width="26" height="44" style="fill:var(--sage-500)"/>
+        <path d="M1 83.5 27 66" style="stroke:var(--cloud)" stroke-width=".55" stroke-opacity=".85"/>
+        <image href="${ctx.asset("logo-mark-white.svg")}" x="7.5" y="47.5" width="13" height="13"/>
+        <rect x="1" y="31.5" width="26" height="67.5" fill="url(#deals-lb-cyl)"/>
+      </g>
+      <path d="M1.2 31h25.6" style="stroke:var(--sage-900);stroke-opacity:.22" stroke-width=".8"/>
+    </svg>`;
     const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
-        <div class="deals-gift__art${giftImg ? " has-pack" : ""}" aria-hidden="true">
-          <!-- the real Lip Balm packshot when data.js has one (on a small sand plinth, its tag tied to it); until then an honest
-               gift tag (value + size) hangs on a sand thread instead of a stand-in product -->
-          <span class="deals-drop deals-drop--bg"><span class="deals-drop__spec"></span></span>
-          ${giftImg ? `<span class="deals-gift__pack"><img src="${giftImg}" alt="" draggable="false"><span class="deals-gift__plinth"></span></span>` : ""}
+        <div class="deals-gift__art has-pack${giftImg ? " has-photo" : ""}" aria-hidden="true">
+          <!-- the gift stands on a small sand plinth in a warm pool of light; its value tag hangs beside it on a sand thread -->
+          <span class="deals-gift__pack">${giftImg ? `<img src="${giftImg}" alt="" draggable="false">` : lipSvg}<span class="deals-gift__plinth"></span></span>
           <span class="deals-tag">
             <svg class="deals-tag__string" viewBox="0 0 40 60" preserveAspectRatio="none"><path d="M20 0 C 21 18, 26 30, 20 60"/></svg>
             <span class="deals-tag__card">
@@ -459,12 +478,12 @@
             <span class="deals-gift__tick deals-gift__tick--end" style="--at:100%"></span>
           </div>
           <div class="deals-gift__labels" aria-hidden="true">
-            <span style="--at:${(shipAt / giftAt * 100).toFixed(2)}%"><span class="deals-gift__lx">Fri </span>fragt</span>
-            <span class="deals-gift__lend">Gave</span>
+            <span style="--at:${(shipAt / giftAt * 100).toFixed(2)}%"><span class="deals-gift__lw">Fri fragt</span><span class="deals-gift__ln">${kr(shipAt)}</span></span>
+            <span class="deals-gift__lend"><span class="deals-gift__lw">Gave</span><span class="deals-gift__ln">${kr(giftAt)}</span></span>
           </div>
         </div>
         <p class="deals-gift__status" data-gift-status></p>
-        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span>Se Komplet Pakken</span>${ICON.pil}</button>
+        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span class="deals-gift__cta-l">Se Komplet Pakken</span><span class="deals-gift__cta-s">Komplet Pakken</span>${ICON.pil}</button>
       </div>
     </aside>
   </li>`;
@@ -568,6 +587,7 @@
       gTile.classList.toggle("is-ship", sub >= shipAt);
       if (sub >= giftAt && !gTile.classList.contains("is-done")) swing(1.4);
       gTile.classList.toggle("is-done", sub >= giftAt);
+      gTile.classList.toggle("is-empty", sub <= 0);
       let t;
       if (sub <= 0) t = kp && kp.price >= giftAt ? `<b>${esc(kp.name)}</b> (${kr(kp.price)}) udl\xF8ser gaven alene.` : `Fri fragt allerede fra ${kr(shipAt)}.`;
       else if (sub < shipAt) t = `Du mangler <b>${kr(shipAt - sub)}</b> til fri fragt og <b>${kr(giftAt - sub)}</b> til din gave.`;
@@ -775,8 +795,8 @@
         s.mx = ease(s.mx, s.tmx, fl);
         s.sx = ease(s.sx, s.tsx, fl);
         const d = Math.sin((ts - s.t0) * Math.PI * 2 * DRIFT_HZ) * DRIFT * s.dk * s.h;
-        const still = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) < 0.01;
-        card.style.transform = still ? `perspective(1100px) rotateX(${s.rx.toFixed(1)}deg) rotateY(${s.ry.toFixed(1)}deg) translateY(${Math.round(-s.h * 4)}px)` : `perspective(1100px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 4).toFixed(2)}px)`;
+        card.style.transform = `translateY(${Math.round(-s.h * 4)}px)`;
+        card.classList.add("is-tilt");
         card.style.setProperty("--h", s.h.toFixed(4));
         card.style.setProperty("--deals-lx", `${((s.mx + d) * 100).toFixed(2)}%`);
         card.style.setProperty("--deals-sx", `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
@@ -787,6 +807,7 @@
         const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) + Math.abs(s.tmx - s.mx) < 2e-3;
         if (settled && s.th === 0) {
           card.style.transform = "";
+          card.classList.remove("is-tilt");
           ["--h", "--deals-lx", "--deals-sx", "--ry", "--rx", "--pl", "--pl-ang"].forEach((k) => card.style.removeProperty(k));
           tilt.delete(card);
         }
@@ -819,8 +840,8 @@
         }
         const k = card.classList.contains("deals-card--set") ? 0.5 : 1;
         s.dk = k * k;
-        s.try = (nx - 0.5) * 10 * k;
-        s.trx = -(ny - 0.5) * 7 * k;
+        s.try = (nx - 0.5) * 12 * k;
+        s.trx = -(ny - 0.5) * 8 * k;
         s.th = 1;
         s.tmx = lx;
         s.tsx = sx;
@@ -840,39 +861,44 @@
       });
     }
     if (TOUCH && !RM) {
-      let sRaf = 0, inView = false, last = 0, dirty = true;
-      const stages = () => lis().filter((li) => !li.hidden && li !== giftLi).map((li) => [$(".deals-card", li), $("[data-stage]", li)]);
-      const step = (now) => {
+      let geo = null, sRaf = 0, inView = false;
+      const measure = () => {
+        const y = scrollY;
+        geo = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => {
+          const st = $("[data-stage]", li), r = st.getBoundingClientRect();
+          return { c: $(".deals-card", li), top: r.top + y, h: r.height };
+        });
+      };
+      const paint = () => {
         sRaf = 0;
         if (!inView) return;
-        if (dirty || now - last > 66) {
-          last = now;
-          dirty = false;
-          const vh = innerHeight, t = now / 1e3;
-          stages().forEach(([c, st]) => {
-            const r = st.getBoundingClientRect();
-            if (r.bottom < -40 || r.top > vh + 40) return;
-            const p = clamp((vh - r.top) / (vh + r.height), 0, 1);
-            const d = Math.sin(t * Math.PI * 2 * 0.07 + r.left * 0.013) * 0.07;
-            c.style.setProperty("--deals-lx", `${((0.02 + p * 0.96 + d) * 100).toFixed(2)}%`);
-            c.style.setProperty("--deals-sx", `${((0.18 + p * 0.64 + d) * 100).toFixed(2)}%`);
-            c.style.setProperty("--deals-g", (0.3 + Math.sin(p * Math.PI) * 0.45).toFixed(3));
-            c.style.setProperty("--pl", (0.12 + Math.sin(p * Math.PI) * 0.16).toFixed(3));
-          });
-        }
-        sRaf = requestAnimationFrame(step);
+        if (!geo) measure();
+        const vh = innerHeight, y = scrollY;
+        geo.forEach(({ c, top, h }) => {
+          const t = top - y;
+          if (t + h < -40 || t > vh + 40) return;
+          const p = clamp((vh - t) / (vh + h), 0, 1);
+          const arc = Math.sin(p * Math.PI);
+          c.style.setProperty("--deals-lx", `${((0.02 + p * 0.96) * 100).toFixed(2)}%`);
+          c.style.setProperty("--deals-sx", `${((0.18 + p * 0.64) * 100).toFixed(2)}%`);
+          c.style.setProperty("--deals-g", (0.34 + arc * 0.5).toFixed(3));
+          c.style.setProperty("--pl", (0.12 + arc * 0.16).toFixed(3));
+        });
       };
       const go = () => {
-        if (inView && !sRaf) sRaf = requestAnimationFrame(step);
+        if (inView && !sRaf) sRaf = requestAnimationFrame(paint);
       };
-      addEventListener("scroll", () => {
-        dirty = true;
+      const remeasure = () => {
+        geo = null;
         go();
-      }, { passive: true });
+      };
+      addEventListener("scroll", go, { passive: true });
+      addEventListener("resize", remeasure, { passive: true });
+      new ResizeObserver(remeasure).observe(grid);
+      chips.forEach((ch) => ch.addEventListener("click", () => setTimeout(remeasure, 800)));
       new IntersectionObserver((es) => {
         inView = es.some((e) => e.isIntersecting);
-        dirty = true;
-        go();
+        if (inView) remeasure();
       }).observe(grid);
     }
     const timers = /* @__PURE__ */ new WeakMap();

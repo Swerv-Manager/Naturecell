@@ -1044,6 +1044,7 @@ body.nc-ytbox-open { overflow: hidden; }
 }
 [data-section="hero"] .hero-trust__item { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
 [data-section="hero"] .hero-trust svg { width: 18px; height: 18px; }
+[data-section="hero"] .hero-trust__more { color: color-mix(in srgb, var(--paper) 62%, transparent); }
 
 /* ---------- overlays tracked to the 3D product ---------- */
 [data-section="hero"] .hero-overlays { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
@@ -1127,6 +1128,8 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="hero"] .hero-offer__title { font-size: 25px; }
   [data-section="hero"] .hero-offer__sub { font-size: 14px; }
   [data-section="hero"] .hero-trust { justify-content: flex-start; gap: 8px 22px; padding-right: 300px; font-size: 12.5px; }
+  [data-section="hero"] .hero-trust__more { display: none; }
+  [data-section="hero"] .hero-trust__item:nth-child(3) { display: none; }   /* three proof points fit one row beside the pill */
   /* the compact shoppable pill, pinned bottom-right on the trust row (no room beside the label here) */
   [data-section="hero"] .hero-tag { left: auto; top: auto; right: var(--gutter, 24px); bottom: 14px; transform: none !important; }
   [data-section="hero"] .hero-tag__lead { display: none; }
@@ -1142,16 +1145,16 @@ body.nc-ytbox-open { overflow: hidden; }
 
 /* ---------- phones + portrait tablets: headline → the 3D product → offer → CTAs ---------- */
 @media (max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1) {
-  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(262px, min(85vw, calc(100svh - 462px)), 344px); height: auto; min-height: 0; }
+  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(262px, min(90vw, calc(100svh - 446px)), 364px); height: auto; min-height: 0; }
   [data-section="hero"] .hero-scrim { background: none; }
-  [data-section="hero"] .hero-inner { display: block; height: auto; padding-block: 22px 0; }
+  [data-section="hero"] .hero-inner { display: block; height: auto; padding-block: 20px 0; }
   [data-section="hero"] .hero-copy { max-width: none; }
   [data-section="hero"] .hero-spot { display: block; height: var(--spot-h); margin-top: 6px; pointer-events: none; }
   [data-section="hero"] .hero-eyebrow { margin-bottom: 16px; height: 30px; padding: 0 13px 0 11px; font-size: 11px; gap: 9px; letter-spacing: .1em; }
   [data-section="hero"] .hero-title { font-size: clamp(2.5rem, 1.2rem + 6.2vw, 3.2rem); line-height: 1; }
   [data-section="hero"] .hero-offer { margin-top: 2px; padding-top: 0; border-top: 0; column-gap: 14px; max-width: none; }
-  [data-section="hero"] .hero-offer__fig { font-size: 68px; }
-  [data-section="hero"] .hero-offer__title { font-size: 21px; }
+  [data-section="hero"] .hero-offer__fig { font-size: 76px; }
+  [data-section="hero"] .hero-offer__title { font-size: 21.5px; }
   [data-section="hero"] .hero-offer__sub { margin-top: 4px; font-size: 13px; line-height: 1.45; }
   [data-section="hero"] .hero-ctas { margin-top: 20px; gap: 10px; flex-wrap: nowrap; }
   [data-section="hero"] .hero-cta { flex: 1 1 0; min-width: 0; min-height: 52px; padding: 0 14px; font-size: 15px; }
@@ -1165,6 +1168,7 @@ body.nc-ytbox-open { overflow: hidden; }
   /* trust: a calm 2 × 2 grid under a hairline */
   [data-section="hero"] .hero-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; margin-top: 22px; padding: 18px 0 22px; font-size: 12px; line-height: 1.35; }
   [data-section="hero"] .hero-trust__item { white-space: normal; align-items: flex-start; gap: 8px; }
+  [data-section="hero"] .hero-trust__more { display: none; }
   [data-section="hero"] .hero-trust svg { width: 16px; height: 16px; margin-top: -1px; }
   /* compact price tag: hangs under the bottle on a short dotted lead from the label */
   [data-section="hero"] .hero-tag { display: block; width: 0; height: 0; }

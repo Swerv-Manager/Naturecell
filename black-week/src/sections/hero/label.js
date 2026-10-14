@@ -29,7 +29,7 @@ async function loadSvg(url, w, h, edit = (t) => t) {
 // deterministic PRNG so the paper fibres look the same on every load
 function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
 
-export async function drawLabel(asset, W = 3072, H = 1500) {
+export async function drawLabel(asset, W = 4096, H = 2000) {
   const c = document.createElement('canvas');
   c.width = W; c.height = H;
   const g = c.getContext('2d');
@@ -60,7 +60,8 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   g.beginPath(); g.moveTo(...V); g.lineTo(...along(V, uR, FAR)); g.lineTo(W + 10, H + 10); g.lineTo(...cutB); g.closePath(); g.fill();
 
   // clip everything left of the cut line and below the left arm
-  const BW = 150, TH = 13;                            // band width, violet thread width (canvas px, perpendicular)
+  const SC = W / 3072;
+  const BW = 150 * SC, TH = 13 * SC;                            // band width, violet thread width (canvas px, perpendicular)
   g.save();
   g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.lineTo(...cutB); g.lineTo(X(-125), H + 10); g.lineTo(X(-125), -10); g.closePath();
   g.clip();
@@ -71,14 +72,14 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   g.fillStyle = THREAD;
   g.beginPath(); g.moveTo(...off(along(V, uL, FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW)); g.lineTo(...off(along(V, uL, FAR), BW)); g.closePath(); g.fill();
   // fine parallel hatching below the thread
-  g.strokeStyle = HATCH; g.lineWidth = 5; g.lineCap = 'butt';
+  g.strokeStyle = HATCH; g.lineWidth = 5 * SC; g.lineCap = 'butt';
   for (let k = 0; k < 26; k++) {
-    const o = BW + 24 + k * 27;
+    const o = BW + (24 + k * 27) * SC;
     g.beginPath(); g.moveTo(...off(along(V, uL, FAR), o)); g.lineTo(...off(along(V, uL, -FAR), o)); g.stroke();
   }
   g.restore();
   // a whisper of paper edge along the band's top (print registration)
-  g.strokeStyle = 'rgba(255,255,255,0.10)'; g.lineWidth = 2;
+  g.strokeStyle = 'rgba(255,255,255,0.10)'; g.lineWidth = 2 * SC;
   g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.stroke();
 
   // ---- logo + typography (white print)
@@ -97,8 +98,8 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
     gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
     gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
   };
-  // the mark + wordmark are silver foil on the pack: a mask for the metalness/roughness map, and a cool silver
-  // print (a soft grey gradient, like foil seen off-axis) instead of flat white ink
+  // the mark + wordmark: the brightest print on the pack (a near-white ink with the faintest pearl sheen), kept as
+  // a mask too – it drives the satin roughness and a small lift so the brand mark stays the most legible thing
   const foil = document.createElement('canvas'); foil.width = W; foil.height = H;
   placeLogo(foil.getContext('2d'));
   c.foil = foil;
@@ -106,8 +107,8 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   const sg = silver.getContext('2d');
   sg.drawImage(foil, 0, 0);
   sg.globalCompositeOperation = 'source-in';
-  const fg = sg.createLinearGradient(cx - 40 * PXD, 0, cx + 40 * PXD, H * 0.42);
-  fg.addColorStop(0, '#f4f7f7'); fg.addColorStop(0.45, '#d5dfe0'); fg.addColorStop(0.7, '#eef3f3'); fg.addColorStop(1, '#c4cfd0');
+  const fg = sg.createLinearGradient(0, H * 0.07, 0, H * 0.4);
+  fg.addColorStop(0, '#f2f8f8'); fg.addColorStop(1, '#dfe8e8');
   sg.fillStyle = fg; sg.fillRect(0, 0, W, H);
   g.drawImage(silver, 0, 0);
 
@@ -145,17 +146,37 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   // paper: soft print variation + fibres, multiplied very lightly so the print reads as ink on matte stock
   const rr = rng(11);
   g.globalCompositeOperation = 'soft-light';
-  for (let i = 0; i < 9000; i++) {
+  for (let i = 0; i < 12000; i++) {
     const x = rr() * W, y = rr() * H, a = rr() * 0.08;
     g.fillStyle = rr() > 0.5 ? `rgba(255,255,255,${a})` : `rgba(0,0,0,${a})`;
-    g.fillRect(x, y, 1 + rr() * 3, 1 + rr() * 1.5);
+    g.fillRect(x, y, (1 + rr() * 3) * SC, (1 + rr() * 1.5) * SC);
   }
   g.globalCompositeOperation = 'source-over';
+  sharpen(g, Math.round(cx - F * 0.62), Math.round(H * 0.04), Math.round(F * 1.24), Math.round(H * 0.94), 0.55);
   return c;
 }
 
-// Roughness (G) + metalness (B) map: matte paper, slightly glossier white print, and the silver-foil logo
-// (metalness ≈ 0.3, roughness ≈ 0.32) that catches the key light as the bottle turns
+// light unsharp mask (3×3 box blur, amount k) over the readable front of the label, so the small print survives the
+// minification at 1440 px (the texture is mip-mapped and the front face is drawn ≈ 1/7 of its canvas size)
+function sharpen(g, x, y, w, h, k) {
+  const d = g.getImageData(x, y, w, h), s = d.data, o = new Uint8ClampedArray(s);
+  const row = w * 4;
+  for (let j = 1; j < h - 1; j++) {
+    for (let i = 1; i < w - 1; i++) {
+      const p = j * row + i * 4;
+      for (let ch = 0; ch < 3; ch++) {
+        const q = p + ch;
+        const blur = (s[q - row - 4] + s[q - row] + s[q - row + 4] + s[q - 4] + s[q] + s[q + 4] + s[q + row - 4] + s[q + row] + s[q + row + 4]) / 9;
+        o[q] = s[q] + (s[q] - blur) * k;
+      }
+    }
+  }
+  d.data.set(o);
+  g.putImageData(d, x, y);
+}
+
+// Roughness (G) + metalness (B) map: matte paper, slightly glossier white print, and the satin logo
+// print (roughness ≈ 0.32) that catches the key light as the bottle turns
 export function labelRoughness(labelCanvas) {
   const W = 2048, H = Math.round(2048 * labelCanvas.height / labelCanvas.width);
   const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -172,9 +193,20 @@ export function labelRoughness(labelCanvas) {
     const lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
     const ink = Math.max(0, (lum - 200) / 55);           // near-white print
     const fo = f ? f[i + 3] / 255 : 0;                   // foil coverage
-    const rough = (205 - ink * 95) * (1 - fo) + 88 * fo; // paper ≈ 0.8, ink ≈ 0.43, foil ≈ 0.35
-    p[i] = 0; p[i + 1] = rough; p[i + 2] = 64 * fo;      // G = roughness, B = metalness (foil ≈ 0.25: a sheen, the print carries the silver)
+    const rough = (205 - ink * 95) * (1 - fo) + 82 * fo; // paper ≈ 0.8, ink ≈ 0.43, logo print ≈ 0.32 (satin)
+    p[i] = 0; p[i + 1] = rough; p[i + 2] = 0;            // G = roughness, B = metalness (none: a dielectric print)
   }
   g.putImageData(d, 0, 0);
+  return c;
+}
+
+// Emissive mask for the logo print: black paper, the mark + wordmark in white (a small lift in the shader keeps the
+// brand mark the brightest element on the label in the warm, low-key room, as on the real bottle)
+export function labelGlow(labelCanvas) {
+  const W = 2048, H = Math.round(2048 * labelCanvas.height / labelCanvas.width);
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+  if (labelCanvas.foil) g.drawImage(labelCanvas.foil, 0, 0, W, H);
   return c;
 }

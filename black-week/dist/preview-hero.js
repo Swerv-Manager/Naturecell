@@ -21564,7 +21564,7 @@ void main() {
     let s = seed >>> 0;
     return () => (s = s * 1664525 + 1013904223 >>> 0) / 4294967296;
   }
-  async function drawLabel(asset2, W = 3072, H = 1500) {
+  async function drawLabel(asset2, W = 4096, H = 2e3) {
     const c = document.createElement("canvas");
     c.width = W;
     c.height = H;
@@ -21596,7 +21596,8 @@ void main() {
     g.lineTo(...cutB);
     g.closePath();
     g.fill();
-    const BW = 150, TH = 13;
+    const SC = W / 3072;
+    const BW = 150 * SC, TH = 13 * SC;
     g.save();
     g.beginPath();
     g.moveTo(...along(V, uL, FAR));
@@ -21623,10 +21624,10 @@ void main() {
     g.closePath();
     g.fill();
     g.strokeStyle = HATCH;
-    g.lineWidth = 5;
+    g.lineWidth = 5 * SC;
     g.lineCap = "butt";
     for (let k = 0; k < 26; k++) {
-      const o = BW + 24 + k * 27;
+      const o = BW + (24 + k * 27) * SC;
       g.beginPath();
       g.moveTo(...off(along(V, uL, FAR), o));
       g.lineTo(...off(along(V, uL, -FAR), o));
@@ -21634,7 +21635,7 @@ void main() {
     }
     g.restore();
     g.strokeStyle = "rgba(255,255,255,0.10)";
-    g.lineWidth = 2;
+    g.lineWidth = 2 * SC;
     g.beginPath();
     g.moveTo(...along(V, uL, FAR));
     g.lineTo(...V);
@@ -21665,11 +21666,9 @@ void main() {
     const sg = silver.getContext("2d");
     sg.drawImage(foil, 0, 0);
     sg.globalCompositeOperation = "source-in";
-    const fg = sg.createLinearGradient(cx - 40 * PXD, 0, cx + 40 * PXD, H * 0.42);
-    fg.addColorStop(0, "#f4f7f7");
-    fg.addColorStop(0.45, "#d5dfe0");
-    fg.addColorStop(0.7, "#eef3f3");
-    fg.addColorStop(1, "#c4cfd0");
+    const fg = sg.createLinearGradient(0, H * 0.07, 0, H * 0.4);
+    fg.addColorStop(0, "#f2f8f8");
+    fg.addColorStop(1, "#dfe8e8");
     sg.fillStyle = fg;
     sg.fillRect(0, 0, W, H);
     g.drawImage(silver, 0, 0);
@@ -21707,13 +21706,30 @@ void main() {
     }
     const rr = rng(11);
     g.globalCompositeOperation = "soft-light";
-    for (let i = 0; i < 9e3; i++) {
+    for (let i = 0; i < 12e3; i++) {
       const x = rr() * W, y = rr() * H, a = rr() * 0.08;
       g.fillStyle = rr() > 0.5 ? `rgba(255,255,255,${a})` : `rgba(0,0,0,${a})`;
-      g.fillRect(x, y, 1 + rr() * 3, 1 + rr() * 1.5);
+      g.fillRect(x, y, (1 + rr() * 3) * SC, (1 + rr() * 1.5) * SC);
     }
     g.globalCompositeOperation = "source-over";
+    sharpen(g, Math.round(cx - F * 0.62), Math.round(H * 0.04), Math.round(F * 1.24), Math.round(H * 0.94), 0.55);
     return c;
+  }
+  function sharpen(g, x, y, w, h, k) {
+    const d = g.getImageData(x, y, w, h), s = d.data, o = new Uint8ClampedArray(s);
+    const row = w * 4;
+    for (let j = 1; j < h - 1; j++) {
+      for (let i = 1; i < w - 1; i++) {
+        const p = j * row + i * 4;
+        for (let ch = 0; ch < 3; ch++) {
+          const q = p + ch;
+          const blur = (s[q - row - 4] + s[q - row] + s[q - row + 4] + s[q - 4] + s[q] + s[q + 4] + s[q + row - 4] + s[q + row] + s[q + row + 4]) / 9;
+          o[q] = s[q] + (s[q] - blur) * k;
+        }
+      }
+    }
+    d.data.set(o);
+    g.putImageData(d, x, y);
   }
   function labelRoughness(labelCanvas) {
     const W = 2048, H = Math.round(2048 * labelCanvas.height / labelCanvas.width);
@@ -21737,12 +21753,23 @@ void main() {
       const lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
       const ink = Math.max(0, (lum - 200) / 55);
       const fo = f ? f[i + 3] / 255 : 0;
-      const rough = (205 - ink * 95) * (1 - fo) + 88 * fo;
+      const rough = (205 - ink * 95) * (1 - fo) + 82 * fo;
       p[i] = 0;
       p[i + 1] = rough;
-      p[i + 2] = 64 * fo;
+      p[i + 2] = 0;
     }
     g.putImageData(d, 0, 0);
+    return c;
+  }
+  function labelGlow(labelCanvas) {
+    const W = 2048, H = Math.round(2048 * labelCanvas.height / labelCanvas.width);
+    const c = document.createElement("canvas");
+    c.width = W;
+    c.height = H;
+    const g = c.getContext("2d");
+    g.fillStyle = "#000";
+    g.fillRect(0, 0, W, H);
+    if (labelCanvas.foil) g.drawImage(labelCanvas.foil, 0, 0, W, H);
     return c;
   }
 
@@ -21918,15 +21945,15 @@ void main() {
   var BUBBLE_VERT = (
     /* glsl */
     `
-  attribute vec3 iColor; attribute float iSoft; attribute float iAlpha; attribute vec3 iHi;
-  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi;
+  attribute vec3 iColor; attribute float iSoft; attribute float iAlpha; attribute vec3 iHi; attribute float iOil;
+  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi; varying float vOil;
   void main(){
     mat4 m = modelMatrix * instanceMatrix;
     vec4 wp = m * vec4(position, 1.0);
     vN = normalize(mat3(m) * normal);
     vV = normalize(cameraPosition - wp.xyz);
     vVN = normalize(normalMatrix * mat3(instanceMatrix) * normal);
-    vColor = iColor; vSoft = iSoft; vAlpha = iAlpha; vHi = iHi;
+    vColor = iColor; vSoft = iSoft; vAlpha = iAlpha; vHi = iHi; vOil = iOil;
     gl_Position = projectionMatrix * viewMatrix * wp;
   }`
   );
@@ -21935,7 +21962,7 @@ void main() {
     `
   precision highp float;
   uniform vec3 uKey; uniform vec3 uRim; uniform float uFade;
-  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi;
+  varying vec3 vN; varying vec3 vV; varying vec3 vColor; varying float vSoft; varying float vAlpha; varying vec3 vVN; varying vec3 vHi; varying float vOil;
   void main(){
     vec3 n = normalize(vN), v = normalize(vV), nv = normalize(vVN);
     float ndv = clamp(dot(n, v), 0.0, 1.0);
@@ -21958,6 +21985,20 @@ void main() {
     vec3 rimCol = mix(vColor, irid, 0.38) * 0.75 + uRim * 0.12;
     vec3 col = vColor * (0.05 + caust * 0.6) + rimCol * fres * 0.75;
     float a = 0.05 + band * 0.32 + fres * 0.42 + caust * 0.12;
+    // a sphere of the oil itself: amber body (absorbs the stage, deepens toward the rim), a golden caustic at the
+    // bottom where the back light is focused, no iridescence \u2013 it belongs to the drop, not to a soap film
+    if (vOil > 0.0) {
+      vec3 honey = vec3(0.62, 0.36, 0.1), deep = vec3(0.16, 0.06, 0.01);
+      float rimO = smoothstep(0.15, 0.85, rimT);
+      vec3 oc = mix(honey * 0.2, deep * 0.5, rimO);
+      oc *= mix(1.2, 0.55, smoothstep(-0.5, 0.7, nv.y));                       // ball lens: the warm floor glow below, dark room above
+      float cO = smoothstep(0.25, 0.95, dot(nv.xy, normalize(vec2(0.2, -1.0)))) * smoothstep(0.02, 0.4, ndv);
+      oc += vec3(0.95, 0.62, 0.24) * cO * 0.7;
+      oc += vec3(1.0, 0.85, 0.6) * pow(rimT, 4.0) * 0.12;
+      float ao = mix(0.3, 0.94, rimO);
+      ao = mix(ao, 0.8, smoothstep(0.84, 0.98, rimT));
+      col = mix(col, oc, vOil); a = mix(a, ao, vOil);
+    }
     col *= edge; a *= edge;
     float hi = (sp * 1.5 + sp2) * (1.0 - vSoft * 0.7);
     col += uKey * hi; a += hi * 0.55;
@@ -21987,18 +22028,14 @@ void main() {
   varying float vT; varying vec3 vWN; varying vec3 vWV; varying vec2 vXZ;
   void main(){
     float ndv = max(abs(dot(normalize(vWN), normalize(vWV))), 0.16);
-    float thick = 1.0 - 0.75 * smoothstep(0.35, 1.0, vT);                // deepest where it pooled, thinning toward the rim
+    float thick = 1.0 - 0.5 * smoothstep(0.45, 1.0, vT);                 // deepest where it pooled, thinning toward the rim
     float fw = max(fwidth(vT), 1e-4);
     float film = 1.0 - smoothstep(1.0 - 1.4 * fw, 1.0, vT);              // crisp, anti-aliased film edge
     vec3 T = exp(-uSigma * (0.18 + thick) / ndv * 0.1);
     float F = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);                          // light reflected away is not transmitted
     // the film's own surface reflection replaces part of the floor's diffuse light: oil on a matte floor reads
     // darker and richer than the floor around it
-    vec3 tint = T * (1.0 - F * 0.85) * 0.84;
-    // near rim: the meniscus edge seen from above reads as one dark hairline
-    float near = smoothstep(-0.1, 0.45, vXZ.y / uFeather);
-    float dl = 1.0 - smoothstep(0.0, 1.3 * fw, abs(vT - (1.0 - 1.6 * fw)));
-    tint *= 1.0 - 0.5 * dl * near;
+    vec3 tint = T * (1.0 - F * 0.85) * 0.55;
     gl_FragColor = vec4(mix(vec3(1.0), tint, film), 1.0);
   }`
   );
@@ -22179,20 +22216,22 @@ void main() {
         // thinner toward the nozzle \u2192 paler
         float thin = 1.0 - smoothstep(-${(PIPETTE_LEN - 0.15).toFixed(2)}, -${(PIPETTE_LEN - 2.2).toFixed(2)}, vL.y);
         vec3 gold  = lin(vec3(0.95, 0.72, 0.33));                              // luminous core, where the back light is focused
+        gold = mix(gold, lin(vec3(0.157, 0.251, 0.231)) * 1.6, 0.18);          // \u2026 carrying the night-green stage seen through it
         // a cylinder of oil: clear golden middle, the path through the oil lengthens toward the walls \u2192 deep amber
-        vec3 col = mix(straw * (0.46 + 0.2 * thin), deep * 0.34, pow(1.0 - ndv, 0.95));
-        float a = mix(0.46 - 0.14 * thin, 0.96, edge);
+        vec3 col = mix(straw * (0.35 + 0.2 * thin), deep * 0.34, pow(1.0 - ndv, 0.95));
+        float a = mix(0.38 - 0.12 * thin, 0.94, edge);
         // focused back light: a soft luminous core a touch toward the shadow side
         col += gold * 0.2 * exp(-pow((lat - 0.12) / 0.26, 2.0));
         // refracted back-light line inside the shadow-side edge (~70% of the radius)
         // modulated along the axis (focused light, not a glass-rod stripe): builds up from the nozzle, breathes,
         // and fades out before the tip and just below the meniscus
-        float line = exp(-pow((lat - 0.7) / 0.045, 2.0));
+        float line = exp(-pow((lat - 0.7) / 0.035, 2.0));
         line *= (0.55 + 0.45 * smoothstep(-${PIPETTE_LEN.toFixed(2)} + 0.4, -${PIPETTE_LEN.toFixed(2)} + 2.4, vL.y)) * (0.85 + 0.15 * sin(vL.y * 3.1));
         line *= smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${PIPETTE_LEN.toFixed(2)} + 0.25, vL.y) * (1.0 - smoothstep(uTop - 0.08 - 0.06, uTop - 0.08, vL.y));
-        col += vec3(1.0, 0.86, 0.58) * line * 0.4;
+        col += vec3(1.0, 0.86, 0.58) * line * 0.32;
         // total internal reflection just inside each silhouette: a dark refraction edge that separates oil from wall
-        col *= 1.0 - 0.35 * exp(-pow((abs(lat) - 0.9) / 0.05, 2.0));
+        float tir = exp(-pow((abs(lat) - 0.9) / 0.05, 2.0));
+        col = mix(col, deep * 0.2, tir * 0.6); a = max(a, tir * 0.9);
         // meniscus: concave (spherical cap, wets the glass). Seen from the side, above the U-curve the ray only
         // grazes oil near the walls \u2192 a thinner, paler crescent, bounded below by one bright meniscus line.
         float x = clamp(abs(lat), 0.0, 1.0) * uR;
@@ -22240,13 +22279,17 @@ void main() {
         vec3 deep  = lin(vec3(0.478, 0.259, 0.063));                // #7a4210
         vec3 honey = lin(vec3(0.86, 0.63, 0.31));                  // the body colour where the drop is thickest
         float rimT = smoothstep(0.1, 0.7, 1.0 - ndv);
-        vec3 col = mix(honey * 0.95, deep * 0.32, rimT);
+        vec3 col = mix(honey * 0.42, deep * 0.3, rimT);
         // a ball lens inverts the stage: the warm glow behind shows up at the bottom, the dark top of the room at the top
         col *= mix(1.15, 0.7, smoothstep(-0.4, 0.6, nv.y));
         // the lens focuses the back light into a bright crescent at the bottom
         float caust = smoothstep(0.2, 0.95, dot(nv.xy, normalize(vec2(0.15, -1.0)))) * smoothstep(0.02, 0.35, ndv);
-        col += straw * caust * 0.9;
-        float a = mix(0.5, 0.97, rimT);
+        col += straw * caust * 1.05;
+        float a = mix(0.3, 0.95, rimT);
+        // transmission rim: the last pixel of the silhouette is thin oil seen edge-on \u2192 deep amber, a touch see-through,
+        // so the outline feathers into the stage instead of cutting
+        float tr = smoothstep(0.82, 0.97, 1.0 - ndv);
+        col = mix(col, deep * 0.45, tr); a = mix(a, 0.85, tr);
         // a whisper of the softbox along the upper-left silhouette (fresnel)
         float fr = pow(1.0 - ndv, 4.0) * smoothstep(-0.2, 0.6, dot(nv.xy, normalize(vec2(-0.62, 0.7))));
         col += vec3(1.0, 0.93, 0.8) * fr * 0.22;
@@ -22262,7 +22305,7 @@ void main() {
     });
     const oilDropFall = oilDrop.clone();
     const poolTintMat = new ShaderMaterial({
-      uniforms: { uSigma: { value: new Vector3(0.22, 1.55, 4.8) }, uFeather: { value: 1.1 } },
+      uniforms: { uSigma: { value: new Vector3(0.3, 2.6, 6.5) }, uFeather: { value: 1.1 } },
       // uFeather = pool radius (near-rim mask)
       vertexShader: POOL_TINT_VERT,
       fragmentShader: POOL_TINT_FRAG,
@@ -22329,6 +22372,9 @@ void main() {
     const glass = new Mesh(lathe(glassProfile, 128), amberGlass);
     bottle.add(glass);
     const labelMat = new MeshPhysicalMaterial({ color: C("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.42 });
+    labelMat.onBeforeCompile = (sh) => {
+      sh.fragmentShader = sh.fragmentShader.replace("#include <map_fragment>", "#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.65 ).rgb;\n#endif").replace("#include <emissivemap_fragment>", "#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.65 ).rgb;\n#endif");
+    };
     const labelGeo = new CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
     const label = new Mesh(labelGeo, labelMat);
     label.position.y = 0.48 + 4.75 / 2;
@@ -22347,12 +22393,18 @@ void main() {
       tex.wrapS = RepeatWrapping;
       const rough = new CanvasTexture(labelRoughness(cv));
       rough.colorSpace = NoColorSpace;
+      const glow = new CanvasTexture(labelGlow(cv));
+      glow.colorSpace = SRGBColorSpace;
+      glow.anisotropy = tex.anisotropy;
+      glow.wrapS = RepeatWrapping;
       labelMat.map = tex;
       labelMat.roughnessMap = rough;
       labelMat.metalnessMap = rough;
       labelMat.roughness = 1;
       labelMat.metalness = 1;
       labelMat.color.set(16777215);
+      labelMat.emissiveMap = glow;
+      labelMat.emissive.setRGB(0.135, 0.165, 0.215);
       labelMat.needsUpdate = true;
       dirty = true;
       if (reduced && firstFrameDone) renderOnce();
@@ -22520,26 +22572,31 @@ void main() {
           float rn = vPoolXZ.y / ${POOL_R.toFixed(2)};
           // key light scattered back up through the film: quiet \u2013 the pool absorbs (amber), it does not glow
           float back = smoothstep(0.5, -0.7, rn);
-          totalEmissiveRadiance *= (0.006 + 0.05 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
+          totalEmissiveRadiance *= (0.002 + 0.018 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
           // the key softbox as one curved highlight following the far rim (\u2264 35% of the width, Gaussian ends),
           // its thickness breathing with the ripple normal
           float far = smoothstep(0.05, -0.45, rn);
-          // the backlit amber bottle mirrored in the film, on the side that faces it
-          totalEmissiveRadiance += vec3(0.9, 0.55, 0.2) * 0.5 * smoothstep(-0.2, 0.8, vPoolXZ.x / ${POOL_R.toFixed(2)}) * far * thick;
+          // the backlit amber bottle mirrored in the film, on the side that faces it: a soft vertical amber streak
+          float xs = (vPoolXZ.x - 0.55 * ${POOL_R.toFixed(2)}) / (0.12 * ${POOL_R.toFixed(2)});
+          float filmIn = 1.0 - smoothstep(0.78, 0.96, vPoolT);
+          totalEmissiveRadiance += vec3(0.75, 0.42, 0.12) * 0.55 * exp(-xs * xs) * (0.35 + 0.65 * far) * filmIn;
           float across = 1.0 - smoothstep(${POOL_R.toFixed(2)} * 0.14, ${POOL_R.toFixed(2)} * 0.36, abs(vPoolXZ.x + ${POOL_R.toFixed(2)} * 0.05));
-          float w = 0.05 * (1.0 + 1.6 * vRipF);
-          float gl = exp(-pow((vPoolT - 0.62) / w, 4.0)) * across * far;          // flat-topped: a softbox, not a sheen
-          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 1.4 * gl;
+          float w = 0.08 * (1.0 + 1.6 * vRipF);
+          float gl = exp(-pow((vPoolT - 0.6) / w, 4.0)) * across * far;           // flat-topped, feathered: a softbox glint
+          totalEmissiveRadiance += vec3(0.92, 0.86, 0.74) * 0.7 * gl;
           // light refracted through the meniscus on the near side: a soft golden caustic just inside the rim
           float nearS = smoothstep(0.05, 0.75, rn);
-          totalEmissiveRadiance += vec3(1.0, 0.68, 0.28) * 0.12 * exp(-pow((vPoolT - 0.88) / 0.06, 2.0)) * nearS;
+          totalEmissiveRadiance += vec3(1.0, 0.68, 0.28) * 0.045 * exp(-pow((vPoolT - 0.86) / 0.07, 2.0)) * nearS;
+          // the dark room mirrored in the film: a faint cool sheen that grows toward the far (more grazing) side,
+          // so the surface has depth instead of an even fill
+          totalEmissiveRadiance += vec3(0.022, 0.03, 0.028) * smoothstep(0.1, -0.9, rn) * filmIn;
           // ripple rings catch the light
           totalEmissiveRadiance += vec3(1.0, 0.88, 0.66) * 0.2 * vRipF * thick;
-          // meniscus: one crisp 1px bright line on the far rim
+          // meniscus: a 1\u20132px bright line on the far rim only (light caught where the film curls up), never a contour
           float fw = max(fwidth(vPoolT), 1e-4);
-          float ml = 1.0 - smoothstep(0.0, 1.2 * fw, abs(vPoolT - (1.0 - 1.4 * fw)));
-          float mid = exp(-pow(vPoolXZ.x / (${POOL_R.toFixed(2)} * 0.55), 2.0));   // middle ~40% of the far arc only
-          totalEmissiveRadiance += vec3(1.0, 0.86, 0.62) * 0.55 * ml * far * mid;
+          float ml = 1.0 - smoothstep(0.0, 1.8 * fw, abs(vPoolT - (1.0 - 1.8 * fw)));
+          float mid = exp(-pow(vPoolXZ.x / (${POOL_R.toFixed(2)} * 0.8), 2.0));
+          totalEmissiveRadiance += vec3(0.9, 0.7, 0.4) * 0.35 * ml * far * mid;
         }`).replace("#include <dithering_fragment>", `#include <dithering_fragment>
         { float fw = max(fwidth(vPoolT), 1e-4); gl_FragColor.rgb *= 1.0 - smoothstep(1.0 - 1.6 * fw, 1.0 - 0.1 * fw, vPoolT); }   // fades with (not after) the absorption layer \u2192 no light halo at the edge`);
     };
@@ -22554,8 +22611,10 @@ void main() {
     pool.position.set(tipW.x + 0.1, 3e-3, tipW.z - 0.05);
     poolTint.position.copy(pool.position);
     scene.add(poolTint, pool);
-    decal(softDisk, shadowCol, 0.1, POOL_R * 2.3, POOL_R * 1.9, pool.position.x, pool.position.z + 0.05);
+    const poolDecals = [decal(softDisk, shadowCol, 0.04, POOL_R * 2.3, POOL_R * 1.9, pool.position.x, pool.position.z + 0.05)];
     const poolCaustic = decal(radialTex([[0, 1], [0.3, 0.5], [0.65, 0.12], [1, 0]]), "#e9a443", 0.12, 1.9, 0.9, pool.position.x + 0.6, pool.position.z - 0.55, -0.42, true);
+    poolDecals.push(poolCaustic);
+    for (const d of poolDecals) d.userData.s0 = [d.scale.x, d.scale.y];
     poolU.uImpact.value.set(tipW.x - pool.position.x, tipW.z - pool.position.z);
     const PEND_SEGS = 40, PEND_PTS = 34;
     const pendGeo = new LatheGeometry(Array.from({ length: PEND_PTS }, (_, j) => new Vector2(0.01, -j * 0.01)), PEND_SEGS);
@@ -22569,14 +22628,18 @@ void main() {
       return a * (1 - h) + b * h + k * h * (1 - h);
     };
     function setPendant(rt2, r, sag, neckLen, pinch) {
-      const yc = -(neckLen + r * 0.92);
-      const rvT = r * 0.95, rvB = r * sag;
+      const yc = -(neckLen + r * 0.9);
+      const rvT = r * 0.96, rvB = r * sag;
       const NU = 18;
+      const k = Math.max(0.012, 0.62 * r * (1 - 0.55 * pinch));
+      const waist = rt2 * (1 - 0.72 * pinch);
       for (let j = 0; j < NU; j++) {
-        const s = j / NU, y = yc * Math.pow(s, 0.85);
+        const s = j / NU, y = yc * Math.pow(s, 0.8);
+        const u = -y / Math.max(-yc, 1e-3);
         const bulb2 = Math.abs(y - yc) < rvT ? r * Math.sqrt(1 - Math.pow((y - yc) / rvT, 2)) : 0;
-        const neckR = (rt2 + (rt2 * 0.55 - rt2) * smooth(0, 1, -y / Math.max(-yc, 1e-3))) * (1 - pinch * smooth(0.2, 0.9, -y / Math.max(-yc, 1e-3)));
-        prof[j][0] = Math.max(5e-4, smax(neckR, bulb2, 0.035 * (1 - pinch * 0.8) + 4e-3));
+        const w = smooth(0, 0.75, u);
+        const neckR = rt2 + (waist - rt2) * w;
+        prof[j][0] = Math.max(5e-4, smax(neckR, bulb2, Math.max(4e-3, k * smooth(0, 0.45, u))));
         prof[j][1] = y;
       }
       for (let j = NU; j < PEND_PTS; j++) {
@@ -22598,13 +22661,13 @@ void main() {
           ny = -1;
         }
         for (let i = 0; i <= PEND_SEGS; i++) {
-          const phi = i / PEND_SEGS * TAU, sn = Math.sin(phi), cs = Math.cos(phi), k = (i * PEND_PTS + (PEND_PTS - 1 - j)) * 3;
-          p[k] = prof[j][0] * sn;
-          p[k + 1] = prof[j][1];
-          p[k + 2] = prof[j][0] * cs;
-          nrm[k] = nx * sn;
-          nrm[k + 1] = ny;
-          nrm[k + 2] = nx * cs;
+          const phi = i / PEND_SEGS * TAU, sn = Math.sin(phi), cs = Math.cos(phi), k2 = (i * PEND_PTS + (PEND_PTS - 1 - j)) * 3;
+          p[k2] = prof[j][0] * sn;
+          p[k2 + 1] = prof[j][1];
+          p[k2 + 2] = prof[j][0] * cs;
+          nrm[k2] = nx * sn;
+          nrm[k2 + 1] = ny;
+          nrm[k2 + 2] = nx * cs;
         }
       }
       pendGeo.attributes.position.needsUpdate = true;
@@ -22614,16 +22677,17 @@ void main() {
     const drop = new Mesh(new SphereGeometry(1, 48, 32), oilDropFall);
     drop.renderOrder = 3;
     scene.add(drop);
-    let mobileNow = false;
+    let mobileNow = false, dropK = 1, poolK = 1;
     const isMobile = () => mobileNow;
-    const NB = 6;
-    const tints = [C("#9ab4ac"), C("#f9b5c4"), C("#ddbfa3"), C("#b6c9c2"), C("#e8d6c3"), C("#c49b9f")];
-    const bubbleGeo = new SphereGeometry(1, 40, 28);
-    const iColor = new Float32Array(NB * 3), iSoft = new Float32Array(NB), iAlpha = new Float32Array(NB), iHi = new Float32Array(NB * 3);
+    const NB = 3;
+    const tints = [C("#c98a3a"), C("#e8d6c3"), C("#b6c9c2")];
+    const bubbleGeo = new SphereGeometry(1, 48, 32);
+    const iColor = new Float32Array(NB * 3), iSoft = new Float32Array(NB), iAlpha = new Float32Array(NB), iHi = new Float32Array(NB * 3), iOil = new Float32Array(NB);
     bubbleGeo.setAttribute("iColor", new InstancedBufferAttribute(iColor, 3));
     bubbleGeo.setAttribute("iSoft", new InstancedBufferAttribute(iSoft, 1));
     bubbleGeo.setAttribute("iAlpha", new InstancedBufferAttribute(iAlpha, 1));
     bubbleGeo.setAttribute("iHi", new InstancedBufferAttribute(iHi, 3));
+    bubbleGeo.setAttribute("iOil", new InstancedBufferAttribute(iOil, 1));
     const bubbleMat = new ShaderMaterial({
       uniforms: { uKey: { value: C("#fff6ea").multiplyScalar(1.6) }, uRim: { value: C("#f6f4ee") }, uFade: { value: 1 } },
       vertexShader: BUBBLE_VERT,
@@ -22642,24 +22706,26 @@ void main() {
     const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
     const B = [];
     const START = [
-      [-3.3, 9.9, -1.5, 0.2, 0, 0.06],
-      [5.2, 10.6, -0.5, 0.26, 5, 0.32],
-      [-1.7, 3.2, 1.6, 0.1, 1, 0.02],
-      [2.4, 11.8, -5, 0.34, 2, 0.5],
-      [6.2, 5.2, -1, 0.16, 3, 0.1],
-      [-5.2, 6.2, -4.5, 0.28, 4, 0.42]
+      [4.3, 9.6, -0.6, 0.25, 0, 0.04, 1],
+      [-1.9, 2.6, 1.4, 0.075, 1, 0.02, 0],
+      [6.4, 5, -1.2, 0.1, 2, 0.12, 0]
     ];
+    if (matchMedia("(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)").matches) {
+      START[0] = [-3.5, 8, 0.4, 0.25, 0, 0.04, 1];
+      START[1] = [-1.6, 2.2, 1.4, 0.075, 1, 0.02, 0];
+    }
     const setHi = (i) => {
       iHi[i * 3] = (rnd() - 0.5) * 0.26;
       iHi[i * 3 + 1] = (rnd() - 0.5) * 0.2;
       iHi[i * 3 + 2] = rnd();
     };
     for (let i = 0; i < NB; i++) {
-      const [x, y, z, r, t, s] = START[i];
-      B.push({ p: new Vector3(x, y, z), v: new Vector3(), r, tint: t, soft: s, phase: rnd() * 100, born: -10, a: 0 });
+      const [x, y, z, r, t, s, o] = START[i];
+      B.push({ p: new Vector3(x, y, z), v: new Vector3(), r, r0: r, tint: t, soft: s, phase: rnd() * 100, born: -10, a: 0 });
       tints[t].toArray(iColor, i * 3);
       iSoft[i] = s;
       iAlpha[i] = 0;
+      iOil[i] = o;
       setHi(i);
     }
     const BOUNDS = { x0: -7, x1: 7.5, y0: -1, y1: 13.2, z0: -6, z1: 2.5 };
@@ -22669,13 +22735,9 @@ void main() {
       b.v.set(0, 0, 0);
       b.born = t;
       b.a = 0;
-      b.r = 0.1 + Math.pow(rnd(), 1.8) * 0.24;
-      b.soft = clamp2((b.p.z > 1.6 ? 0.5 : 0) + (b.p.z < -4 ? 0.35 : 0) + rnd() * 0.15, 0, 0.85);
-      b.tint = Math.floor(rnd() * tints.length);
-      tints[b.tint].toArray(iColor, i * 3);
+      b.soft = clamp2((b.p.z > 1.6 ? 0.3 : 0) + (b.p.z < -4 ? 0.25 : 0) + rnd() * 0.08, 0, 0.6) * (iOil[i] ? 0.3 : 1);
       iSoft[i] = b.soft;
       setHi(i);
-      bubbleGeo.attributes.iColor.needsUpdate = true;
       bubbleGeo.attributes.iSoft.needsUpdate = true;
       bubbleGeo.attributes.iHi.needsUpdate = true;
     }
@@ -22697,6 +22759,11 @@ void main() {
       H = Math.max(1, host.clientHeight);
       const mobile = stackMQ.matches;
       mobileNow = mobile;
+      dropK = mobile ? 1.3 : 1;
+      poolK = mobile ? 1.2 : 1;
+      pool.scale.set(poolK, 1, poolK);
+      poolTint.scale.copy(pool.scale);
+      for (const d of poolDecals) d.scale.set(d.userData.s0[0] * poolK, d.userData.s0[1] * poolK, 1);
       renderer.setPixelRatio(pr);
       renderer.setSize(W, H, false);
       composer.setPixelRatio(pr);
@@ -22705,8 +22772,8 @@ void main() {
       if (mobile) {
         const sp = OV.spot || [150, Math.min(318, W * 0.78)];
         const tagRoom = W > 760 ? 104 : 92;
-        const hs = Math.min(sp[1] - tagRoom, W * 0.8);
-        frame = { fx: 0.5, fy: (sp[0] + 4 + hs / 2) / H, hs, D: 0 };
+        const hs = Math.min(sp[1] - tagRoom, W * 0.84) * 1.04;
+        frame = { fx: 0.5, fy: (sp[0] + sp[1] - tagRoom - hs / 2) / H, hs, D: 0 };
       } else {
         const wide = W / H;
         const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 34;
@@ -22760,7 +22827,7 @@ void main() {
     const qp = new URLSearchParams(location.search);
     const DBG_PH = qp.has("herophase") ? +qp.get("herophase") : null, DBG_AGE = qp.has("heroage") ? +qp.get("heroage") : null;
     const tagLocal = new Vector3(Math.sin(0.95) * 1.62, 2.7, Math.cos(0.95) * 1.62);
-    const tagLocalM = new Vector3(Math.sin(-0.34) * 1.625, 1, Math.cos(-0.34) * 1.625);
+    const tagLocalM = new Vector3(Math.sin(-0.5) * 1.625, 1.12, Math.cos(-0.5) * 1.625);
     const anchors = {
       bubble: new Vector3(BOTTLE_X + 2.35, 8.05, 0.2),
       tag: new Vector3(),
@@ -22834,7 +22901,8 @@ void main() {
       }
       const ph = reduced ? 2.3 : DBG_PH !== null ? DBG_PH : (t + st.phase) % DROP.period;
       const cyc = Math.floor((t + st.phase) / DROP.period);
-      const R1 = 0.19, RT = 0.046;
+      const R1 = 0.19 * dropK, RT = 0.046;
+      const NECK0 = 4e-3, NECKG = 0.015, NECKH = 0.09;
       pendant.position.copy(tip);
       if (ph < DROP.grow + DROP.hang) {
         st.falling = false;
@@ -22844,11 +22912,11 @@ void main() {
         const hp = ph > DROP.grow ? smooth(DROP.grow, DROP.grow + DROP.hang, ph) : 0;
         const r = RT + (R1 - RT) * g2;
         const sag = 1.02 + 0.3 * g2 + 0.1 * hp;
-        const neckLen = 8e-3 + 0.05 * g2 + 0.12 * hp;
+        const neckLen = NECK0 + NECKG * g2 + NECKH * hp;
         setPendant(RT, r, sag, neckLen, smooth(0.35, 1, hp));
         pendant.visible = true;
         drop.visible = false;
-        st.dropY = tip.y - (neckLen + r * 0.92);
+        st.dropY = tip.y - (neckLen + r * 0.9);
       } else {
         const since = ph - (DROP.grow + DROP.hang);
         setPendant(RT, RT + 0.034 * Math.exp(-since * 5), 1.04, 4e-3, 0);
@@ -22858,13 +22926,13 @@ void main() {
           st.cyc = cyc;
           st.x0 = tip.x;
           st.z0 = tip.z;
-          st.y0 = tip.y - (8e-3 + 0.05 + 0.12 + R1 * 0.92);
+          st.y0 = tip.y - (NECK0 + NECKG + NECKH + R1 * 0.9);
         }
         if (st.falling) {
           const gc = DROP.fallG / DROP.drag, ec = Math.exp(-DROP.drag * since);
           st.dropV = gc * (1 - ec);
           st.dropY = st.y0 - gc * (since - (1 - ec) / DROP.drag);
-          const stretch = 1 + clamp2(st.dropV / 3.2, 0, 1) * 0.16;
+          const stretch = 1 + clamp2(st.dropV / 2.4, 0, 1) * 0.18;
           const settle = 1 + 0.42 * Math.exp(-since * 7);
           drop.scale.set(R1 / Math.sqrt(stretch * settle), R1 * stretch * settle, R1 / Math.sqrt(stretch * settle));
           drop.position.set(st.x0, st.dropY, st.z0);
@@ -22879,7 +22947,7 @@ void main() {
             if (st.impactT < 0 || st.impactCyc !== st.cyc) {
               st.impactT = t;
               st.impactCyc = st.cyc;
-              poolU.uImpact.value.set(st.x0 - pool.position.x, st.z0 - pool.position.z);
+              poolU.uImpact.value.set((st.x0 - pool.position.x) / poolK, (st.z0 - pool.position.z) / poolK);
             }
             if (m >= 1) {
               st.falling = false;
@@ -22893,8 +22961,10 @@ void main() {
       {
         ray.setFromCamera(pointer.ndc, camera);
         const mobile = isMobile();
+        const thA = toPx(mobile ? anchors.tAm : anchors.tA), thB = toPx(mobile ? anchors.tBm : anchors.tB);
         for (let i = 0; i < NB; i++) {
           const b = B[i];
+          b.r = b.r0 * (mobile ? 1.45 : 1);
           const drag = 1.25;
           const vt = 0.16 + 0.22 * b.r;
           const ax = Math.sin(t * 0.21 + b.phase) * 0.06 + Math.sin(t * 0.47 + b.phase * 1.7) * 0.03;
@@ -22990,6 +23060,15 @@ void main() {
               if (gap < PAD) pushPx(dx / d, dy / d, (PAD - gap) * 0.5);
               vis = Math.min(vis, smooth(2, PAD, gap));
             }
+            {
+              const ex = thB[0] - thA[0], ey = thB[1] - thA[1], el2 = ex * ex + ey * ey || 1;
+              const h = clamp2(((sx - thA[0]) * ex + (sy - thA[1]) * ey) / el2, 0, 1);
+              let dx = sx - (thA[0] + ex * h), dy = sy - (thA[1] + ey * h);
+              const d = Math.hypot(dx, dy) || 1e-3;
+              if (d < sr + 12) pushPx(dx / d, dy / d, sr + 12 - d);
+              vis = Math.min(vis, smooth(sr, sr + 20, d));
+            }
+            if (mobile && i === 2) vis = 0;
             if (!mobile) {
               const gap = sx - sr - (exclNdc * 0.5 + 0.5) * W;
               if (gap < 0) pushPx(1, 0, -gap);

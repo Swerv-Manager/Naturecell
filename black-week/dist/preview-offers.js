@@ -225,6 +225,7 @@
     initAdd(root, ctx);
     off.push(initGift(root, ctx, q, reduced));
     off.push(initRail(root, reduced));
+    off.push(initSettle(root, reduced));
     off.push(initNight(root, reduced));
     return () => off.forEach((f) => f && f());
   }
@@ -242,6 +243,8 @@
     const label = el.querySelector("[data-clock-label]");
     const done = el.querySelector("[data-clock-done]");
     const sr = el.querySelector("[data-clock-sr]");
+    const title = root.querySelector(".offers-title");
+    const titleHTML = title ? title.innerHTML : "";
     const units = ["d", "h", "m"].map((u) => {
       const unit = el.querySelector(`[data-unit="${u}"]`);
       const dgs = [...unit.querySelectorAll(".offers-dg")].map((d) => {
@@ -287,6 +290,7 @@
         label.textContent = state2 === "pre" ? "Black Week begynder om" : state2 === "ended" ? "Black Week er slut" : state2 === "last" ? "Sidste dag \u2013 slutter om" : "Black Week slutter om";
         if (done) done.hidden = state2 !== "ended";
         root.dataset.campaign = state2;
+        if (title) title.innerHTML = state2 === "ended" ? "Tak for denne gang." : titleHTML;
       }
       if (state2 === "ended") {
         if (sr) sr.textContent = "Black Week er slut.";
@@ -464,17 +468,29 @@
     }));
     return () => io.disconnect();
   }
+  function initSettle(root, reduced) {
+    if (reduced || !("IntersectionObserver" in window)) return null;
+    const tiles = [...root.querySelectorAll(".offers-tile")];
+    const settle = (t) => requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add("is-settled")));
+    tiles.forEach((t) => t.classList.add("is-settling"));
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      settle(e.target);
+    }), { threshold: 0 });
+    tiles.forEach((t) => io.observe(t));
+    const safety = setTimeout(() => tiles.forEach((t) => t.classList.add("is-settled")), 6e3);
+    return () => {
+      io.disconnect();
+      clearTimeout(safety);
+      tiles.forEach((t) => t.classList.remove("is-settling", "is-settled"));
+    };
+  }
   function initNight(root, reduced) {
     const tile = root.querySelector(".offers-tile--hero");
-    const air = root.querySelector(".offers-air");
     const glow = root.querySelector(".offers-glow");
     if (!tile) return null;
-    let io = null;
-    if (air && !reduced) {
-      io = new IntersectionObserver((es) => air.classList.toggle("is-on", es[es.length - 1].isIntersecting));
-      io.observe(tile);
-    }
-    if (!glow || reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return () => io && io.disconnect();
+    if (!glow || reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return null;
     const rest = { x: 50, y: 26 };
     let x = rest.x, y = rest.y, tx = x, ty = y, raf = 0, last = 0;
     const step = (t) => {
@@ -509,7 +525,6 @@
     tile.addEventListener("pointerleave", leave);
     return () => {
       cancelAnimationFrame(raf);
-      io && io.disconnect();
       tile.removeEventListener("pointermove", move);
       tile.removeEventListener("pointerleave", leave);
     };

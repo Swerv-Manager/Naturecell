@@ -21,6 +21,6 @@ const r = await (await pg.$(card)).boundingBox();
 for (const x of xs) {
   await pg.mouse.move(r.x + r.width * x, r.y + r.height * 0.3, { steps: 6 });
   await pg.waitForTimeout(900);
-  await pg.screenshot({ path: path.join(out, `${id}-${x}.png`), clip: { x: r.x - 20, y: r.y - 20, width: r.width + 40, height: r.height * 0.62 } });
+  await pg.screenshot({ path: path.join(out, `${id}-${x}.png`), clip: { x: r.x - 20, y: r.y - 20, width: r.width + 40, height: (process.env.FULL ? r.height + 30 : r.height * 0.62) } });
 }
 await b.close(); srv.close();
