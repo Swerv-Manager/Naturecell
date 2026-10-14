@@ -97,11 +97,19 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
     gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
     gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
   };
-  placeLogo(g);
-  // the mark + wordmark are silver foil on the pack: a mask for the metalness/roughness map
+  // the mark + wordmark are silver foil on the pack: a mask for the metalness/roughness map, and a cool silver
+  // print (a soft grey gradient, like foil seen off-axis) instead of flat white ink
   const foil = document.createElement('canvas'); foil.width = W; foil.height = H;
   placeLogo(foil.getContext('2d'));
   c.foil = foil;
+  const silver = document.createElement('canvas'); silver.width = W; silver.height = H;
+  const sg = silver.getContext('2d');
+  sg.drawImage(foil, 0, 0);
+  sg.globalCompositeOperation = 'source-in';
+  const fg = sg.createLinearGradient(cx - 40 * PXD, 0, cx + 40 * PXD, H * 0.42);
+  fg.addColorStop(0, '#f4f7f7'); fg.addColorStop(0.45, '#d5dfe0'); fg.addColorStop(0.7, '#eef3f3'); fg.addColorStop(1, '#c4cfd0');
+  sg.fillStyle = fg; sg.fillRect(0, 0, W, H);
+  g.drawImage(silver, 0, 0);
 
   g.fillStyle = INK; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
   const fit = (txt, font, width) => { g.font = font(100); const w = g.measureText(txt).width; return font(Math.round(100 * width / w)); };
@@ -164,8 +172,8 @@ export function labelRoughness(labelCanvas) {
     const lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
     const ink = Math.max(0, (lum - 200) / 55);           // near-white print
     const fo = f ? f[i + 3] / 255 : 0;                   // foil coverage
-    const rough = (205 - ink * 95) * (1 - fo) + 82 * fo; // paper ≈ 0.8, ink ≈ 0.43, foil ≈ 0.32
-    p[i] = 0; p[i + 1] = rough; p[i + 2] = 80 * fo;      // G = roughness, B = metalness (foil ≈ 0.31)
+    const rough = (205 - ink * 95) * (1 - fo) + 88 * fo; // paper ≈ 0.8, ink ≈ 0.43, foil ≈ 0.35
+    p[i] = 0; p[i + 1] = rough; p[i + 2] = 64 * fo;      // G = roughness, B = metalness (foil ≈ 0.25: a sheen, the print carries the silver)
   }
   g.putImageData(d, 0, 0);
   return c;

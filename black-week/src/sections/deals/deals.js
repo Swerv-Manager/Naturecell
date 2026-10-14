@@ -9,21 +9,26 @@ import SKIN_OIL_DUO from './skin-oil-duo.js';
 import SET_BOTTLES from './set-bottles.js';
 
 // Packshot geometry: box = [imgW, imgH, x0, y0, x1, y1] = opaque alpha bbox (product only, no built-in glow).
+// cyl = the x-range (% of the image) of the round bottle/tube in a composite shot: only there does the window's light
+// show as a crisp vertical glint – the flat cartons catch it as a broad plane wash instead.
 // h = truthful relative height in "units" (shampoo = 1). Heights are derived from the real photos:
 // the group shots fix dropper : rensegel : dagcreme = .66 : .89 : 1, the singles fix bottle : carton.
 const SHOT = {
-  'skin-oil':      { url: SKIN_OIL_DUO,                         box: [1000, 1000, 232, 100, 769, 960],  h: 0.635 },
-  'serum':         { src: 'products/hyaluron-serum.webp',    box: [800, 1200, 108, 225, 700, 1107],  h: 0.635 },
-  'day-cream':     { src: 'products/day-cream.webp',         box: [1200, 1200, 345, 97, 864, 1152],  h: 0.86 },
-  'night-cream':   { src: 'products/night-cream.webp',       box: [1200, 1200, 345, 96, 862, 1153],  h: 0.86 },
-  'cleansing-gel': { src: 'products/cleansing-gel-box.webp', box: [1200, 1200, 223, 64, 933, 1113],  h: 0.825 },
-  'body-lotion':   { src: 'products/body-lotion.webp',       box: [800, 1200, 186, 163, 601, 1138],  h: 0.92 },
-  'shampoo':       { src: 'products/shampoo.webp',           box: [1200, 1200, 455, 65, 764, 1148],  h: 1.00 },
+  'skin-oil':      { url: SKIN_OIL_DUO,                         box: [1000, 1000, 232, 100, 769, 960],  h: 0.635 , cyl: [23, 47.5] },
+  'serum':         { src: 'products/hyaluron-serum.webp',    box: [800, 1200, 108, 225, 700, 1107],  h: 0.635 , cyl: [13, 43.5] },
+  'day-cream':     { src: 'products/day-cream.webp',         box: [1200, 1200, 345, 97, 864, 1152],  h: 0.86 , cyl: [28.5, 47.5] },
+  'night-cream':   { src: 'products/night-cream.webp',       box: [1200, 1200, 345, 96, 862, 1153],  h: 0.86 , cyl: [28.5, 47.5] },
+  'cleansing-gel': { src: 'products/cleansing-gel-box.webp', box: [1200, 1200, 223, 64, 933, 1113],  h: 0.825 , cyl: [18.5, 45.5] },
+  'body-lotion':   { src: 'products/body-lotion.webp',       box: [800, 1200, 186, 163, 601, 1138],  h: 0.92 , cyl: [22, 76] },
+  'shampoo':       { src: 'products/shampoo.webp',           box: [1200, 1200, 455, 65, 764, 1148],  h: 1.00 , cyl: [36, 65] },
 };
 // single bottles (no carton) for the Sampakke line-ups – same unit scale as SHOT
 const BOTTLE_H = { 'cleansing-gel': 0.748, 'day-cream': 0.841, 'night-cream': 0.841, 'skin-oil': 0.553 };
-const BOTTLE = Object.fromEntries(Object.entries(SET_BOTTLES).map(([id, b]) => [id, { url: b.url, box: [b.w, b.h, 0, 0, b.w, b.h], h: BOTTLE_H[id] }]));
-const LINE_GAP = 0.22; // gap between bottles in a line-up, in units (mirrors --lgap in CSS)
+const BOTTLE = Object.fromEntries(Object.entries(SET_BOTTLES).map(([id, b]) => [id, { url: b.url, box: [b.w, b.h, 0, 0, b.w, b.h], h: BOTTLE_H[id], cyl: [0, 100] }]));
+const LINE_GAP = 0.12; // gap between bottles in a line-up, in units (mirrors --lgap in CSS) – grouped like a set on a shelf
+// one truthful scale for the whole grid: a unit (the 300 ml shampoo) is K × one column's width. Every ROW of the grid
+// is then exactly as tall as its tallest pack needs (+ head-room), so no card carries a wall of empty sky.
+const K_UNIT = 0.86;
 
 const ORDER = ['komplet-pakken', 'skin-oil', 'serum', 'day-cream', 'night-cream', 'all-day-facial', 'cleansing-gel', 'body-lotion', 'shampoo'];
 const CAT = { 'skin-oil': 'face', serum: 'face', 'day-cream': 'face', 'night-cream': 'face', 'cleansing-gel': 'face', 'body-lotion': 'body', shampoo: 'body' };
@@ -43,7 +48,7 @@ const EYEBROW = { 'body-lotion': 'Krop', shampoo: 'Hår' };
 const eyebrowOf = (p) => p.nickname || EYEBROW[p.id] || 'Ansigt';
 // one-line claims for the 2-up phone grid (never clamped mid-word) – same cosmetic wording as the long claims
 const CLAIM_S = {
-  'skin-oil': 'Blød og velplejet hud – alle hudtyper.', serum: 'Fugtboost med hyaluronsyre og CBD.',
+  'skin-oil': '1000 mg CBD. Blød, velplejet hud – til alle hudtyper.', serum: 'Fugtboost med hyaluronsyre og CBD.',
   'day-cream': 'Let dagcreme med aloe vera og shea.', 'night-cream': 'Nærende natcreme med mandelolie.',
   'cleansing-gel': 'Mild rens, der bevarer fugtbalancen.', 'body-lotion': 'Intensiv fugtighed til tør hud.',
   shampoo: 'Mild shampoo til hele familien.',
@@ -60,6 +65,7 @@ const ICON = {
   back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.25 4.5v3.25H7.5"/></svg>',
   // the brand's own directional arrow (assets/icons/pil.svg), cropped to its ink and drawn in currentColor
   pil: '<svg class="deals-pil" viewBox="14.5 17 31 31" aria-hidden="true"><path d="M31.63,46.75l12.34-7.13-12.55-6.76.05,3.58c-3.88-.64-12.57-3.63-15.45-17.47,0,0,0,19.64,15.54,23.44l.06,4.33Z"/></svg>',
+  gift: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.75 9.25h14.5v3.5H4.75z"/><path d="M6 12.75v7h12v-7M12 9.25v10.5"/><path d="M12 9.25c-1.4-3.3-5.2-3.9-5.2-1.6 0 1.2 1.6 1.6 5.2 1.6zM12 9.25c1.4-3.3 5.2-3.9 5.2-1.6 0 1.2-1.6 1.6-5.2 1.6z"/></svg>',
   shield: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.75 5.25 6.5v5c0 4.2 2.9 7.4 6.75 8.75 3.85-1.35 6.75-4.55 6.75-8.75v-5z"/><path d="m9.25 12 1.95 1.95 3.75-3.9"/></svg>',
 };
 
@@ -94,9 +100,9 @@ export default function init(root, ctx) {
     const [W, H, x0, y0, x1, y1] = s.box; const bw = x1 - x0, bh = y1 - y0;
     const geo = `width:${(W / bw * 100).toFixed(3)}%;left:${(-x0 / bw * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
     const gw = bw / W, wu = packW(s);
-    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)}">
+    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)};--cy0:${(s.cyl || [0, 100])[0]}%;--cy1:${(s.cyl || [0, 100])[1]}%;--cyw:${(((s.cyl || [0, 100])[1] - (s.cyl || [0, 100])[0]) / 100).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span></span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span></span>
       ${lbl}
     </div>`;
   }
@@ -114,15 +120,17 @@ export default function init(root, ctx) {
     const s = SHOT[p.id] || { src: p.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.8 };
     return `<div class="deals-line" style="--lw:${lineW([s]).toFixed(4)}">${prodHtml(s, srcOf(s, p), `${p.name}${p.size ? ', ' + p.size : ''}`)}</div>`;
   }
+  // price: Black Week price with the struck førpris inline (§ 9 a wording), the saving on its own berry line
   const priceHtml = (p, big = false) => `
     <div class="deals-price${big ? ' deals-price--big' : ''}">
-      <span class="deals-price__now"><span class="nc-sr">Black Week-pris </span>${kr(p.price)}</span>
-      <span class="deals-price__save">Spar ${kr(p.save)}</span>
-      <span class="deals-price__was">Førpris ${kr(p.price0)}</span>
+      <p class="deals-price__line"><span class="deals-price__now"><span class="nc-sr">Black Week-pris </span>${kr(p.price)}</span>
+        <span class="deals-price__was">Førpris <s>${kr(p.price0)}</s></span></p>
+      <p class="deals-price__save">Spar ${kr(p.save)}</p>
     </div>`;
-  // Label in Name (WCAG 2.5.3): the accessible name STARTS with the visible "Læg i kurv"
+  // Label in Name (WCAG 2.5.3): the accessible name STARTS with the visible "Læg i kurv".
+  // Singles get the quiet outline button, Sampakker the one solid CTA – the hierarchy steers toward the sets.
   const addHtml = (p, extra = '') => `
-    <button class="nc-btn deals-add${extra}" type="button" data-add="${p.id}">
+    <button class="nc-btn deals-add${p.bundle ? '' : ' deals-add--ghost'}${extra}" type="button" data-add="${p.id}">
       <span class="deals-add__ink" aria-hidden="true"></span>
       <span class="deals-add__a">${ICON.bag}<span>Læg i kurv</span><span class="nc-sr"> – ${esc(p.name)}</span></span>
       <span class="deals-add__b" aria-hidden="true">${ICON.check}<span>Lagt i kurv</span></span>
@@ -133,6 +141,8 @@ export default function init(root, ctx) {
   const setRows = (p) => (p.contains || []).map((id) => ctx.byId[id]).filter(Boolean);
   const setNow = (p) => setRows(p).reduce((a, r) => a + r.price, 0);        // the items bought one by one in Black Week
   const setLess = (p) => setNow(p) - p.price;                               // how much cheaper the Sampakke is than that
+  const num = (n) => fmt.kr(n).replace(/\s*kr\.$/, '');
+  // full ledger (quick view): every item by name with its førpris
   const contentsHtml = (p) => {
     const rows = setRows(p);
     if (!rows.length) return '';
@@ -145,26 +155,41 @@ export default function init(root, ctx) {
       </dl>
     </div>`;
   };
-  // shown only when it tells the shopper something the Spar line doesn't (All Day Facial: førpris = today's single sum)
-  const lessHtml = (p) => (setLess(p) > 0 && setLess(p) !== p.save ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>Pakken er ${kr(setLess(p))} billigere end enkeltvis</p>` : '');
+  // card ledger: the same proof as one readable sum – each numbered førpris maps to the numbered bottle above it
+  const sumHtml = (p) => {
+    const rows = setRows(p);
+    if (!rows.length) return '';
+    const sum0 = rows.reduce((a, r) => a + r.price0, 0);
+    return `<div class="deals-set__sum">
+      <p class="deals-set__cap">Førpris pr. produkt</p>
+      <p class="deals-set__eq"><span class="nc-sr">${rows.map((r) => `${esc(r.name)} ${kr(r.price0)}`).join(', ')}</span><span class="deals-set__eqv" aria-hidden="true">${rows.map((r, i) => `<span class="deals-set__term"><span class="deals-no">${i + 1}</span>${num(r.price0)}</span>`).join('<span class="deals-set__op">+</span>')}</span></p>
+      <p class="deals-set__tot deals-set__tot--was"><span>Samlet førpris enkeltvis</span><b>${kr(sum0)}</b></p>
+      <p class="deals-set__tot"><span>Enkeltvis i Black Week</span><b>${kr(setNow(p))}</b></p>
+    </div>`;
+  };
+  // the honest comparison, in berry, right above the price it explains
+  const lessHtml = (p) => (setLess(p) > 0 ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>${kr(setLess(p))} billigere end købt enkeltvis</p>` : '');
   const giftAt = ctx.campaign.giftThreshold, shipAt = ctx.campaign.freeShipping;
   const perksHtml = (p) => {
     const perks = [];
-    if (p.price >= giftAt) perks.push([ICON.tick, `Udløser gratis CBD Lip Balm`]);
-    if (p.price >= shipAt) perks.push([ICON.tick, `Fri fragt`]);
-    perks.push([ICON.tick, 'Ingen kode – rabatten trækkes i kurven']);
+    if (p.price >= giftAt) perks.push([ICON.gift, `Udløser gratis CBD Lip Balm`, ' class="is-gift"']);
     // below the gift threshold: say exactly how close it gets you (computed – a nudge, not a promise)
-    if (p.price < giftAt) perks.push([ICON.plus, `<b>${kr(giftAt - p.price)}</b> fra gratis CBD Lip Balm`, ' class="is-nudge"']);
+    else perks.push([ICON.gift, `<b>${kr(giftAt - p.price)}</b> fra gratis CBD Lip Balm`, ' class="is-gift is-nudge"']);
+    if (p.price >= shipAt) perks.push([ICON.tick, `Fri fragt`]);
+    perks.push([ICON.tick, 'Ingen kode – trækkes i kurven']);
     return `<ul class="deals-set__perks">${perks.map(([ic, t, c = '']) => `<li${c}>${ic}<span>${t}</span></li>`).join('')}</ul>`;
   };
-  const sale = (p) => `<span class="nc-bubble nc-bubble--sale deals-bubble" aria-hidden="true">−${p.pct}%</span>`;
+  const sale = (p) => `<span class="deals-flag" aria-hidden="true">−${p.pct}%</span>`;
   const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
+  // the truthful height (units) of the tallest pack on a card – the grid sizes each row from it
+  const tallOf = (p) => (p.bundle ? Math.max(...(p.contains || []).map((id) => BOTTLE_H[id] || 0)) : (SHOT[p.id] || { h: 0.8 }).h);
+  const TONE = { 'komplet-pakken': 'sand', 'all-day-facial': 'mint' };
 
   function cardHtml(p, i) {
     const cat = catOf(p);
     if (p.bundle) {
       const n = (p.contains || []).length;
-      return `<li class="deals-item deals-item--set" data-id="${p.id}" data-cat="${cat}" style="--ri:${i}">
+      return `<li class="deals-item deals-item--set" data-id="${p.id}" data-cat="${cat}" data-h="${tallOf(p).toFixed(4)}" data-tone="${TONE[p.id] || 'sand'}" style="--ri:${i}">
         <article class="deals-card deals-card--set" aria-labelledby="deals-n-${p.id}">
           <div class="deals-card__stage" data-stage>
             <span class="deals-ground" aria-hidden="true"></span>
@@ -176,7 +201,7 @@ export default function init(root, ctx) {
               <p class="deals-card__eyebrow">Sampakke · ${n} produkter</p>
               <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
               <p class="deals-card__claim deals-card__claim--set">${esc(p.claim)}</p>
-              ${contentsHtml(p)}
+              ${sumHtml(p)}
             </div>
             <div class="deals-set__side">
               ${perksHtml(p)}
@@ -186,18 +211,17 @@ export default function init(root, ctx) {
         </article>
       </li>`;
     }
-    return `<li class="deals-item" data-id="${p.id}" data-cat="${cat}" style="--ri:${i}">
+    const eyebrow = [eyebrowOf(p), p.size].filter(Boolean).join(' · ');
+    return `<li class="deals-item" data-id="${p.id}" data-cat="${cat}" data-h="${tallOf(p).toFixed(4)}" style="--ri:${i}">
       <article class="deals-card" aria-labelledby="deals-n-${p.id}">
         <div class="deals-card__stage" data-stage>
           <span class="deals-ground" aria-hidden="true"></span>
           ${lineHtml(p)}${sale(p)}${quick(p)}
         </div>
         <div class="deals-card__body">
-          <p class="deals-card__eyebrow">${esc(eyebrowOf(p))}</p>
+          <p class="deals-card__eyebrow">${esc(eyebrow)}</p>
           <h3 class="deals-card__name" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
-          <p class="deals-card__size">${esc(metaLine(p))}</p>
-          <p class="deals-card__claim">${esc(p.claim)}</p>
-          ${CLAIM_S[p.id] ? `<p class="deals-card__claim deals-card__claim--s">${esc(CLAIM_S[p.id])}</p>` : ''}
+          <p class="deals-card__claim">${esc(CLAIM_S[p.id] || p.claim)}</p>
           <div class="deals-card__buy">${priceHtml(p)}${addHtml(p)}</div>
         </div>
       </article>
@@ -205,13 +229,16 @@ export default function init(root, ctx) {
   }
   const gift = ctx.byId[ctx.campaign.giftId];
   const giftName = gift ? gift.name : 'CBD Lip Balm';
+  const giftImg = gift && gift.img ? ctx.asset(gift.img) : '';
   const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
-        <div class="deals-gift__art" aria-hidden="true">
-          <!-- no Lip Balm packshot exists yet: an honest gift tag (value + size) hangs on a sand thread instead of a stand-in product -->
+        <div class="deals-gift__art${giftImg ? ' has-pack' : ''}" aria-hidden="true">
+          <!-- the real Lip Balm packshot when data.js has one (on a small sand plinth, its tag tied to it); until then an honest
+               gift tag (value + size) hangs on a sand thread instead of a stand-in product -->
           <span class="deals-drop deals-drop--bg"><span class="deals-drop__spec"></span></span>
+          ${giftImg ? `<span class="deals-gift__pack"><img src="${giftImg}" alt="" draggable="false"><span class="deals-gift__plinth"></span></span>` : ''}
           <span class="deals-tag">
             <svg class="deals-tag__string" viewBox="0 0 40 60" preserveAspectRatio="none"><path d="M20 0 C 21 18, 26 30, 20 60"/></svg>
             <span class="deals-tag__card">
@@ -226,7 +253,7 @@ export default function init(root, ctx) {
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i købet</h3>
         </div>
-        <p class="deals-gift__copy">Gratis <span class="deals-gift__copy-x">(værdi ${kr(ctx.campaign.giftValue)}), når du handler for</span><span class="deals-gift__copy-s">ved køb</span> over ${kr(giftAt)}</p>
+        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, når du handler for</span><span class="deals-gift__copy-s"> ved køb</span> over ${kr(giftAt)}</p>
         <div class="deals-gift__meter">
           <div class="deals-gift__track" role="progressbar" aria-label="Fremskridt mod gratis ${esc(giftName)}" aria-valuemin="0" aria-valuemax="${giftAt}" aria-valuenow="0" aria-valuetext="0 kr. af ${giftAt} kr.">
             <span class="deals-gift__fill"></span>
@@ -250,7 +277,8 @@ export default function init(root, ctx) {
   const heads = $$('.deals-head [data-reveal]');
   heads.forEach((el) => { el.removeAttribute('data-reveal'); el.classList.add('deals-hd'); });
   const revealHead = () => heads.forEach((el) => el.classList.add('is-in'));
-  const revealAll = () => { revealHead(); grid.classList.add('is-in'); if (!RM) setTimeout(() => shelfLight(0), 650); };
+  let revealAt = 0;
+  const revealAll = () => { revealHead(); grid.classList.add('is-in'); revealAt = performance.now(); };
   if (RM) { revealHead(); grid.classList.add('is-in'); }
   else {
     const ioH = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { revealHead(); ioH.disconnect(); } }, { rootMargin: '0px 0px -4% 0px' });
@@ -266,23 +294,36 @@ export default function init(root, ctx) {
   $$('[data-count]').forEach((el) => { el.textContent = counts[el.dataset.count]; });
 
   // ------------------------------------------------------------------ shelf light: a slow specular band passes along the packs
-  // (once when the grid arrives, then every ~12 s while the section is on screen and nobody is hovering a card)
-  let onScreen = false, hovering = false;
-  new IntersectionObserver((es) => { onScreen = es.some((e) => e.isIntersecting); }, { threshold: 0.15 }).observe(grid);
+  // ONCE, when the grid arrives (row by row, left to right). After that the light only moves when the shopper does:
+  // it follows the cursor on a hovered card, and on touch it is tied to the scroll. Nothing repeats on its own.
   function shelfLight(delay = 0) {
-    if (RM) return;
+    if (RM || TOUCH) return;
     const cards = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => $('.deals-card', li)).filter((c) => c && !(tilt.get(c) || {}).th);
-    const rows = cards.map((c) => c.getBoundingClientRect()).map((r) => r.top);
-    const top0 = Math.min(...rows);
-    cards.forEach((c, i) => {
+    if (!cards.length) return;
+    const tops = cards.map((c) => c.getBoundingClientRect().top);
+    const top0 = Math.min(...tops);
+    cards.forEach((c) => {
       const r = c.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return; // only what can be seen
       const order = (r.top - top0) / 260 + r.left / 360; // left-to-right, row by row
       setTimeout(() => {
+        if ((tilt.get(c) || {}).th) return;
         c.classList.remove('is-sweep'); void c.offsetWidth; c.classList.add('is-sweep');
       }, delay + order * 140);
     });
   }
-  if (!RM) setInterval(() => { if (onScreen && !hovering && !document.hidden && grid.classList.contains('is-in')) shelfLight(0); }, 12000);
+  // each card's light passes once, the first time its stage is well in view (after the grid's own fade-in)
+  if (!RM && !TOUCH) {
+    const swept = new WeakSet();
+    const ioS = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const c = e.target.closest('.deals-card'); ioS.unobserve(e.target);
+      if (!c || swept.has(c)) return; swept.add(c);
+      const wait = Math.max(0, 760 - (performance.now() - (revealAt || performance.now()))) + (e.boundingClientRect.left / innerWidth) * 480;
+      setTimeout(() => { if ((tilt.get(c) || {}).th) return; c.classList.remove('is-sweep'); void c.offsetWidth; c.classList.add('is-sweep'); }, wait);
+    }), { threshold: 0.6 });
+    $$('[data-stage]', grid).forEach((st) => ioS.observe(st));
+  }
   grid.addEventListener('animationend', (e) => { if (e.animationName === 'deals-sweep') e.target.closest('.deals-card')?.classList.remove('is-sweep'); });
 
   // ------------------------------------------------------------------ gift progress (follows the cart)
@@ -365,9 +406,34 @@ export default function init(root, ctx) {
     giftLi.classList.toggle('is-wide', span >= 2);
     return span;
   }
-  layoutGift();
-  let lastCols = cols();
-  new ResizeObserver(() => { const c = cols(); if (c !== lastCols) { lastCols = c; layoutGift(); } }).observe(grid);
+  // one truthful scale, rows sized to their content: --dl-u (px per unit) comes from the column width; each row's stage
+  // height = its tallest pack + head-room (+ a label floor when a Sampakke line-up is in the row). Every pack in a row
+  // stands on the same floor line, and no single pack is enlarged to fill its tile.
+  function fitRows() {
+    const c = cols();
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    const colW = (grid.clientWidth - gap * (c - 1)) / c;
+    grid.style.setProperty('--dl-u', `${(K_UNIT * colW).toFixed(2)}px`);
+    const rows = new Map();
+    lis().filter((li) => !li.hidden && !li.dataset.leaving).forEach((li) => {
+      const t = Math.round(li.offsetTop);
+      if (!rows.has(t)) rows.set(t, []);
+      rows.get(t).push(li);
+    });
+    rows.forEach((row) => {
+      const h = Math.max(0, ...row.map((li) => +li.dataset.h || 0));
+      const set = row.some((li) => li.classList.contains('deals-item--set'));
+      row.forEach((li) => { li.style.setProperty('--row-h', h.toFixed(4)); li.classList.toggle('is-setrow', set); });
+    });
+  }
+  layoutGift(); fitRows();
+  let lastCols = cols(), lastW = grid.clientWidth;
+  new ResizeObserver(() => {
+    const c = cols(), w = grid.clientWidth;
+    if (c !== lastCols) { lastCols = c; layoutGift(); }
+    if (c !== lastCols || Math.abs(w - lastW) > 0.5) { lastW = w; fitRows(); }
+  }).observe(grid);
+  document.fonts && document.fonts.ready.then(fitRows);
 
   let running = [];
   function applyFilter(key) {
@@ -391,6 +457,7 @@ export default function init(root, ctx) {
     });
     entering.forEach((li) => { li.hidden = false; });
     const giftSpan = String(layoutGift(key));
+    fitRows();
     const newH = grid.getBoundingClientRect().height;
     if (RM) { leaving.forEach((li) => { li.hidden = true; li.style.position = ''; li.classList.remove('is-leaving'); delete li.dataset.leaving; }); return; }
     leaving.forEach((li) => {
@@ -457,8 +524,11 @@ export default function init(root, ctx) {
       card.style.setProperty('--deals-sx', `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
       card.style.setProperty('--ry', s.ry.toFixed(3));
       card.style.setProperty('--rx', s.rx.toFixed(3));
-      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) < 0.002;
-      if (settled && s.th === 0) { card.style.transform = ''; ['--h', '--deals-lx', '--deals-sx', '--ry', '--rx'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
+      // the flat faces (cartons, label panels) catch the window as a broad plane of light that grows with the lean
+      card.style.setProperty('--pl', (s.h * (0.16 + Math.min(1, Math.abs(s.ry) / 5) * 0.3)).toFixed(3));
+      card.style.setProperty('--pl-ang', s.ry >= 0 ? '90deg' : '270deg');
+      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) + Math.abs(s.tmx - s.mx) < 0.002;
+      if (settled && s.th === 0) { card.style.transform = ''; ['--h', '--deals-lx', '--deals-sx', '--ry', '--rx', '--pl', '--pl-ang'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
     });
     tRaf = tilt.size ? requestAnimationFrame(tStep) : 0;
   }
@@ -466,7 +536,6 @@ export default function init(root, ctx) {
   if (FINE && !TOUCH && !RM) {
     grid.addEventListener('pointermove', (e) => {
       const card = e.target.closest('.deals-card'); if (!card || e.pointerType !== 'mouse') return;
-      hovering = true;
       const r = card.getBoundingClientRect();
       const nx = clamp((e.clientX - r.left) / r.width, 0, 1), ny = clamp((e.clientY - r.top) / r.height, 0, 1);
       // the highlight lives in line coordinates (0 = left edge of the first pack, 1 = right edge of the last); the card's
@@ -484,15 +553,45 @@ export default function init(root, ctx) {
       }
       const k = card.classList.contains('deals-card--set') ? 0.5 : 1; // wide cards tilt less
       s.dk = k * k; // …and the light wanders less along a long shelf
-      s.try = (nx - 0.5) * 6 * k; s.trx = -(ny - 0.5) * 4 * k; s.th = 1; s.tmx = lx; s.tsx = sx;
+      // ±5° / ±3.5° on a single card (half on a Sampakke): enough to read as a pane resting in oil, never a flip
+      s.try = (nx - 0.5) * 10 * k; s.trx = -(ny - 0.5) * 7 * k; s.th = 1; s.tmx = lx; s.tsx = sx;
       tKick();
     });
     grid.addEventListener('pointerout', (e) => {
       const card = e.target.closest('.deals-card'); if (!card || card.contains(e.relatedTarget)) return;
-      hovering = false;
       const s = tilt.get(card); if (!s) return;
-      s.trx = 0; s.try = 0; s.th = 0; s.tsx = 0.3; tKick(); // the window light drifts home
+      s.trx = 0; s.try = 0; s.th = 0; s.tsx = 0.3; s.tmx = 0.32; tKick(); // the window light drifts home to its resting spot
     });
+  }
+
+  // ------------------------------------------------------------------ touch: the light is tied to the scroll
+  // No cursor on a phone, so the window reflection glides across each pack as the card travels up the screen (enters on
+  // the left, leaves on the right) and breathes very slowly while the page rests. Updated only while the grid is in view.
+  if (TOUCH && !RM) {
+    let sRaf = 0, inView = false, last = 0, dirty = true;
+    const stages = () => lis().filter((li) => !li.hidden && li !== giftLi).map((li) => [$('.deals-card', li), $('[data-stage]', li)]);
+    const step = (now) => {
+      sRaf = 0;
+      if (!inView) return;
+      if (dirty || now - last > 66) {          // ~15 fps is plenty for a drift this slow; every frame while scrolling
+        last = now; dirty = false;
+        const vh = innerHeight, t = now / 1000;
+        stages().forEach(([c, st]) => {
+          const r = st.getBoundingClientRect();
+          if (r.bottom < -40 || r.top > vh + 40) return;
+          const p = clamp((vh - r.top) / (vh + r.height), 0, 1);           // 0 = just entering at the bottom, 1 = leaving at the top
+          const d = Math.sin(t * Math.PI * 2 * 0.07 + r.left * 0.013) * 0.07; // slow breathing, out of phase card to card
+          c.style.setProperty('--deals-lx', `${((0.02 + p * 0.96 + d) * 100).toFixed(2)}%`);
+          c.style.setProperty('--deals-sx', `${((0.18 + p * 0.64 + d) * 100).toFixed(2)}%`);
+          c.style.setProperty('--deals-g', (0.3 + Math.sin(p * Math.PI) * 0.45).toFixed(3));
+          c.style.setProperty('--pl', (0.12 + Math.sin(p * Math.PI) * 0.16).toFixed(3));
+        });
+      }
+      sRaf = requestAnimationFrame(step);
+    };
+    const go = () => { if (inView && !sRaf) sRaf = requestAnimationFrame(step); };
+    addEventListener('scroll', () => { dirty = true; go(); }, { passive: true });
+    new IntersectionObserver((es) => { inView = es.some((e) => e.isIntersecting); dirty = true; go(); }).observe(grid);
   }
 
   // ------------------------------------------------------------------ add to cart: button morph + fly + trail
@@ -644,11 +743,11 @@ export default function init(root, ctx) {
     </ul>`;
     return `<div class="deals-qv__sheet">
       <button class="deals-qv__close" type="button" aria-label="Luk hurtig visning" data-qv-close>${ICON.close}</button>
-      <div class="deals-qv__stage${p.bundle ? ' deals-qv__stage--set' : ''}" data-stage style="--dl-ufrac:${qvFrac(p).toFixed(4)}">
+      <div class="deals-qv__stage${p.bundle ? ' deals-qv__stage--set' : ''}"${TONE[p.id] ? ` data-tone="${TONE[p.id]}"` : ''} data-stage style="--dl-ufrac:${qvFrac(p).toFixed(4)}">
         <span class="deals-ground" aria-hidden="true"></span>
         ${lineHtml(p)}
-        <span class="nc-bubble nc-bubble--sale deals-bubble deals-bubble--qv" aria-hidden="true">−${p.pct}%</span>
-        ${p.badge && p.bundle ? `<img class="deals-qv__badge" src="${ctx.asset(p.badge)}" alt="" width="64" height="64">` : ''}
+        <span class="deals-flag deals-flag--qv" aria-hidden="true">−${p.pct}%</span>
+        ${p.badge && p.bundle ? `<img class="deals-qv__badge" src="${ctx.asset(p.badge)}" alt="" width="44" height="44">` : ''}
       </div>
       <div class="deals-qv__body">
         <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke · ${(p.contains || []).length} produkter` : (p.nickname ? `${p.nickname} · ${EYEBROW[p.id] || 'Ansigt'}` : eyebrowOf(p)))}</p>

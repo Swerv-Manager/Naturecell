@@ -21654,12 +21654,25 @@ void main() {
       gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
       gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
     };
-    placeLogo(g);
     const foil = document.createElement("canvas");
     foil.width = W;
     foil.height = H;
     placeLogo(foil.getContext("2d"));
     c.foil = foil;
+    const silver = document.createElement("canvas");
+    silver.width = W;
+    silver.height = H;
+    const sg = silver.getContext("2d");
+    sg.drawImage(foil, 0, 0);
+    sg.globalCompositeOperation = "source-in";
+    const fg = sg.createLinearGradient(cx - 40 * PXD, 0, cx + 40 * PXD, H * 0.42);
+    fg.addColorStop(0, "#f4f7f7");
+    fg.addColorStop(0.45, "#d5dfe0");
+    fg.addColorStop(0.7, "#eef3f3");
+    fg.addColorStop(1, "#c4cfd0");
+    sg.fillStyle = fg;
+    sg.fillRect(0, 0, W, H);
+    g.drawImage(silver, 0, 0);
     g.fillStyle = INK;
     g.textAlign = "center";
     g.textBaseline = "alphabetic";
@@ -21724,10 +21737,10 @@ void main() {
       const lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
       const ink = Math.max(0, (lum - 200) / 55);
       const fo = f ? f[i + 3] / 255 : 0;
-      const rough = (205 - ink * 95) * (1 - fo) + 82 * fo;
+      const rough = (205 - ink * 95) * (1 - fo) + 88 * fo;
       p[i] = 0;
       p[i + 1] = rough;
-      p[i + 2] = 80 * fo;
+      p[i + 2] = 64 * fo;
     }
     g.putImageData(d, 0, 0);
     return c;
@@ -21772,7 +21785,8 @@ void main() {
   }
   function poolGeometry(R, H, rings = 44, segs = 128, seed = 3) {
     const pos = [], idx = [], ts = [];
-    const rimR = (a) => R * (1 + 0.075 * Math.sin(2 * a + seed) + 0.05 * Math.sin(3 * a + 1.7 * seed) + 0.022 * Math.sin(5 * a + 0.3) + 0.012 * Math.sin(9 * a + 2.1));
+    const wrap = (x) => Math.atan2(Math.sin(x), Math.cos(x));
+    const rimR = (a) => R * (1 + 0.085 * Math.sin(2 * a + seed) + 0.06 * Math.sin(3 * a + 1.7 * seed) + 0.03 * Math.sin(5 * a + 0.3) + 0.014 * Math.sin(9 * a + 2.1) + 0.16 * Math.exp(-Math.pow(wrap(a + 0.85) / 0.55, 2)) - 0.08 * smooth(-0.25, -0.95, Math.cos(a)));
     pos.push(0, H, 0);
     ts.push(0);
     for (let i = 1; i <= rings; i++) {
@@ -21834,6 +21848,7 @@ void main() {
     panel(14, 5, [6, 3, 18], "#ddbfa3", 0.55);
     panel(6, 4.5, [-7, 4.4, -22], "#f6e2c4", 1.9);
     panel(2.5, 4.5, [5, 4.4, -22], "#f3ece2", 1.5);
+    panel(1.4, 9, [10, 6, -1.5], "#dfe8e4", 4);
     const pm = new PMREMGenerator(renderer);
     const env = pm.fromScene(s, 0.03).texture;
     pm.dispose();
@@ -21972,12 +21987,14 @@ void main() {
   varying float vT; varying vec3 vWN; varying vec3 vWV; varying vec2 vXZ;
   void main(){
     float ndv = max(abs(dot(normalize(vWN), normalize(vWV))), 0.16);
-    float thick = 1.0 - 0.55 * smoothstep(0.5, 1.0, vT);                 // an even film that thins a little at the rim
+    float thick = 1.0 - 0.75 * smoothstep(0.35, 1.0, vT);                // deepest where it pooled, thinning toward the rim
     float fw = max(fwidth(vT), 1e-4);
     float film = 1.0 - smoothstep(1.0 - 1.4 * fw, 1.0, vT);              // crisp, anti-aliased film edge
     vec3 T = exp(-uSigma * (0.18 + thick) / ndv * 0.1);
     float F = 0.04 + 0.96 * pow(1.0 - ndv, 5.0);                          // light reflected away is not transmitted
-    vec3 tint = T * (1.0 - F * 0.85);
+    // the film's own surface reflection replaces part of the floor's diffuse light: oil on a matte floor reads
+    // darker and richer than the floor around it
+    vec3 tint = T * (1.0 - F * 0.85) * 0.84;
     // near rim: the meniscus edge seen from above reads as one dark hairline
     float near = smoothstep(-0.1, 0.45, vXZ.y / uFeather);
     float dl = 1.0 - smoothstep(0.0, 1.3 * fw, abs(vT - (1.0 - 1.6 * fw)));
@@ -22065,6 +22082,9 @@ void main() {
     const rim = new DirectionalLight(C("#ffe6c4"), 1.6);
     rim.position.set(3, 6, -10);
     scene.add(rim);
+    const kicker = new DirectionalLight(C("#dfe8e4"), 1.5);
+    kicker.position.set(9, 4.5, -2.5);
+    scene.add(kicker);
     const amberGlass = new MeshPhysicalMaterial({
       color: 16777215,
       metalness: 0,
@@ -22113,9 +22133,14 @@ void main() {
         float rim = pow(1.0 - ndv, 3.5) * 0.22;
         // the key softbox seen in the glass: one soft vertical band ~30% in from the lit edge, and a faint
         // narrow return from the right strip on the shadow side
-        float band = exp(-pow((lat + 0.42) / 0.085, 2.0)) * 0.62 + exp(-pow((lat - 0.8) / 0.05, 2.0)) * 0.2;
+        // over the oil the softbox is refracted away (the oil index nearly matches the glass): full strength only
+        // on the empty glass above the meniscus
+        float emptyG = smoothstep(${(-2.5 - 0.05).toFixed(2)}, ${(-2.5 + 0.3).toFixed(2)}, vY);
+        float band = exp(-pow((lat + 0.42) / 0.06, 2.0)) * 0.62 * mix(0.18, 1.0, emptyG) + exp(-pow((lat - 0.8) / 0.05, 2.0)) * 0.2 * mix(0.45, 1.0, emptyG);
         float lenFade = smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${(PIPETTE_LEN - 0.3).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
-        vec3 c = vec3(1.0, 0.97, 0.92) * (rim + band) * lenFade;
+        // the wall itself: a cool-grey body that thickens toward the silhouette (the tube is glass, not wire)
+        vec3 body = vec3(0.78, 0.84, 0.82) * 0.06 * pow(1.0 - ndv, 2.0) * mix(0.5, 1.0, emptyG);
+        vec3 c = (vec3(1.0, 0.97, 0.92) * (rim + band) + body) * lenFade;
         gl_FragColor = vec4(c, 1.0);
       }`
       )
@@ -22153,17 +22178,21 @@ void main() {
         vec3 deep  = lin(vec3(0.478, 0.259, 0.063));                           // #7a4210
         // thinner toward the nozzle \u2192 paler
         float thin = 1.0 - smoothstep(-${(PIPETTE_LEN - 0.15).toFixed(2)}, -${(PIPETTE_LEN - 2.2).toFixed(2)}, vL.y);
-        vec3 col = mix(straw * (0.72 + 0.24 * thin), deep * 0.5, pow(1.0 - ndv, 1.3));
-        float a = mix(0.7 - 0.18 * thin, 0.96, edge);
-        // focused back light: a soft brighter core a touch toward the shadow side
-        col += straw * 0.18 * exp(-pow((lat - 0.18) / 0.32, 2.0));
+        vec3 gold  = lin(vec3(0.95, 0.72, 0.33));                              // luminous core, where the back light is focused
+        // a cylinder of oil: clear golden middle, the path through the oil lengthens toward the walls \u2192 deep amber
+        vec3 col = mix(straw * (0.46 + 0.2 * thin), deep * 0.34, pow(1.0 - ndv, 0.95));
+        float a = mix(0.46 - 0.14 * thin, 0.96, edge);
+        // focused back light: a soft luminous core a touch toward the shadow side
+        col += gold * 0.2 * exp(-pow((lat - 0.12) / 0.26, 2.0));
         // refracted back-light line inside the shadow-side edge (~70% of the radius)
         // modulated along the axis (focused light, not a glass-rod stripe): builds up from the nozzle, breathes,
         // and fades out before the tip and just below the meniscus
-        float line = exp(-pow((lat - 0.7) / 0.07, 2.0));
+        float line = exp(-pow((lat - 0.7) / 0.045, 2.0));
         line *= (0.55 + 0.45 * smoothstep(-${PIPETTE_LEN.toFixed(2)} + 0.4, -${PIPETTE_LEN.toFixed(2)} + 2.4, vL.y)) * (0.85 + 0.15 * sin(vL.y * 3.1));
         line *= smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${PIPETTE_LEN.toFixed(2)} + 0.25, vL.y) * (1.0 - smoothstep(uTop - 0.08 - 0.06, uTop - 0.08, vL.y));
-        col += vec3(1.0, 0.86, 0.58) * line * 0.75;
+        col += vec3(1.0, 0.86, 0.58) * line * 0.4;
+        // total internal reflection just inside each silhouette: a dark refraction edge that separates oil from wall
+        col *= 1.0 - 0.35 * exp(-pow((abs(lat) - 0.9) / 0.05, 2.0));
         // meniscus: concave (spherical cap, wets the glass). Seen from the side, above the U-curve the ray only
         // grazes oil near the walls \u2192 a thinner, paler crescent, bounded below by one bright meniscus line.
         float x = clamp(abs(lat), 0.0, 1.0) * uR;
@@ -22209,12 +22238,15 @@ void main() {
         float ndv = clamp(dot(n, v), 0.0, 1.0);
         vec3 straw = lin(vec3(0.906, 0.753, 0.439));                // #e7c070
         vec3 deep  = lin(vec3(0.478, 0.259, 0.063));                // #7a4210
-        float rimT = pow(1.0 - ndv, 1.4);
-        vec3 col = mix(straw * 0.74, deep * 0.5, rimT);
-        // the lens focuses the back light into a crescent on the side away from the key (lower-right)
-        float caust = smoothstep(0.2, 0.95, dot(nv.xy, normalize(vec2(0.45, -0.6)))) * smoothstep(0.02, 0.35, ndv);
-        col += straw * caust * 0.45;
-        float a = mix(0.6, 0.95, rimT);
+        vec3 honey = lin(vec3(0.86, 0.63, 0.31));                  // the body colour where the drop is thickest
+        float rimT = smoothstep(0.1, 0.7, 1.0 - ndv);
+        vec3 col = mix(honey * 0.95, deep * 0.32, rimT);
+        // a ball lens inverts the stage: the warm glow behind shows up at the bottom, the dark top of the room at the top
+        col *= mix(1.15, 0.7, smoothstep(-0.4, 0.6, nv.y));
+        // the lens focuses the back light into a bright crescent at the bottom
+        float caust = smoothstep(0.2, 0.95, dot(nv.xy, normalize(vec2(0.15, -1.0)))) * smoothstep(0.02, 0.35, ndv);
+        col += straw * caust * 0.9;
+        float a = mix(0.5, 0.97, rimT);
         // a whisper of the softbox along the upper-left silhouette (fresnel)
         float fr = pow(1.0 - ndv, 4.0) * smoothstep(-0.2, 0.6, dot(nv.xy, normalize(vec2(-0.62, 0.7))));
         col += vec3(1.0, 0.93, 0.8) * fr * 0.22;
@@ -22230,7 +22262,7 @@ void main() {
     });
     const oilDropFall = oilDrop.clone();
     const poolTintMat = new ShaderMaterial({
-      uniforms: { uSigma: { value: new Vector3(0.3, 1.7, 4.4) }, uFeather: { value: 1.1 } },
+      uniforms: { uSigma: { value: new Vector3(0.22, 1.55, 4.8) }, uFeather: { value: 1.1 } },
       // uFeather = pool radius (near-rim mask)
       vertexShader: POOL_TINT_VERT,
       fragmentShader: POOL_TINT_FRAG,
@@ -22247,7 +22279,7 @@ void main() {
       metalness: 0,
       ior: 1.47,
       specularIntensity: 1,
-      envMapIntensity: 2,
+      envMapIntensity: 3,
       emissive: C("#e6a850"),
       emissiveIntensity: 1,
       transparent: true,
@@ -22296,7 +22328,7 @@ void main() {
     ];
     const glass = new Mesh(lathe(glassProfile, 128), amberGlass);
     bottle.add(glass);
-    const labelMat = new MeshPhysicalMaterial({ color: C("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.1, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.42 });
+    const labelMat = new MeshPhysicalMaterial({ color: C("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.42 });
     const labelGeo = new CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
     const label = new Mesh(labelGeo, labelMat);
     label.position.y = 0.48 + 4.75 / 2;
@@ -22484,18 +22516,23 @@ void main() {
           vRipF = clamp(-dw * 3.0, 0.0, 1.0);          // only the crest's lit flank \u2192 one fine line per ring
         }`).replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
         {
-          float thick = 1.0 - 0.55 * smoothstep(0.5, 1.0, vPoolT);
+          float thick = 1.0 - 0.75 * smoothstep(0.35, 1.0, vPoolT);
           float rn = vPoolXZ.y / ${POOL_R.toFixed(2)};
           // key light scattered back up through the film: quiet \u2013 the pool absorbs (amber), it does not glow
           float back = smoothstep(0.5, -0.7, rn);
-          totalEmissiveRadiance *= (0.02 + 0.21 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
+          totalEmissiveRadiance *= (0.006 + 0.05 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
           // the key softbox as one curved highlight following the far rim (\u2264 35% of the width, Gaussian ends),
           // its thickness breathing with the ripple normal
           float far = smoothstep(0.05, -0.45, rn);
+          // the backlit amber bottle mirrored in the film, on the side that faces it
+          totalEmissiveRadiance += vec3(0.9, 0.55, 0.2) * 0.5 * smoothstep(-0.2, 0.8, vPoolXZ.x / ${POOL_R.toFixed(2)}) * far * thick;
           float across = 1.0 - smoothstep(${POOL_R.toFixed(2)} * 0.14, ${POOL_R.toFixed(2)} * 0.36, abs(vPoolXZ.x + ${POOL_R.toFixed(2)} * 0.05));
           float w = 0.05 * (1.0 + 1.6 * vRipF);
           float gl = exp(-pow((vPoolT - 0.62) / w, 4.0)) * across * far;          // flat-topped: a softbox, not a sheen
           totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 1.4 * gl;
+          // light refracted through the meniscus on the near side: a soft golden caustic just inside the rim
+          float nearS = smoothstep(0.05, 0.75, rn);
+          totalEmissiveRadiance += vec3(1.0, 0.68, 0.28) * 0.12 * exp(-pow((vPoolT - 0.88) / 0.06, 2.0)) * nearS;
           // ripple rings catch the light
           totalEmissiveRadiance += vec3(1.0, 0.88, 0.66) * 0.2 * vRipF * thick;
           // meniscus: one crisp 1px bright line on the far rim
@@ -22579,7 +22616,7 @@ void main() {
     scene.add(drop);
     let mobileNow = false;
     const isMobile = () => mobileNow;
-    const NB = 10;
+    const NB = 6;
     const tints = [C("#9ab4ac"), C("#f9b5c4"), C("#ddbfa3"), C("#b6c9c2"), C("#e8d6c3"), C("#c49b9f")];
     const bubbleGeo = new SphereGeometry(1, 40, 28);
     const iColor = new Float32Array(NB * 3), iSoft = new Float32Array(NB), iAlpha = new Float32Array(NB), iHi = new Float32Array(NB * 3);
@@ -22605,16 +22642,12 @@ void main() {
     const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
     const B = [];
     const START = [
-      [3.9, 8.9, -2.5, 0.3, 0, 0.12],
-      [-3.1, 10.2, -1.5, 0.22, 1, 0.08],
-      [4.6, 2.6, 1.2, 0.17, 2, 0.04],
-      [-6, 7.4, -4.5, 0.34, 3, 0.42],
-      [2.6, 11.6, -5, 0.4, 2, 0.5],
-      [-1.9, 3.3, 1.6, 0.12, 1, 0.02],
-      [5.9, 5.6, -1.5, 0.26, 5, 0.12],
-      [-4.4, 11.6, 0.8, 0.18, 4, 0.06],
-      [6.6, 10.4, -0.5, 0.32, 1, 0.45],
-      [-2.6, 7, -4.8, 0.28, 0, 0.3]
+      [-3.3, 9.9, -1.5, 0.2, 0, 0.06],
+      [5.2, 10.6, -0.5, 0.26, 5, 0.32],
+      [-1.7, 3.2, 1.6, 0.1, 1, 0.02],
+      [2.4, 11.8, -5, 0.34, 2, 0.5],
+      [6.2, 5.2, -1, 0.16, 3, 0.1],
+      [-5.2, 6.2, -4.5, 0.28, 4, 0.42]
     ];
     const setHi = (i) => {
       iHi[i * 3] = (rnd() - 0.5) * 0.26;
@@ -22636,7 +22669,7 @@ void main() {
       b.v.set(0, 0, 0);
       b.born = t;
       b.a = 0;
-      b.r = 0.12 + Math.pow(rnd(), 1.8) * 0.3;
+      b.r = 0.1 + Math.pow(rnd(), 1.8) * 0.24;
       b.soft = clamp2((b.p.z > 1.6 ? 0.5 : 0) + (b.p.z < -4 ? 0.35 : 0) + rnd() * 0.15, 0, 0.85);
       b.tint = Math.floor(rnd() * tints.length);
       tints[b.tint].toArray(iColor, i * 3);
@@ -22646,7 +22679,7 @@ void main() {
       bubbleGeo.attributes.iSoft.needsUpdate = true;
       bubbleGeo.attributes.iHi.needsUpdate = true;
     }
-    const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9, pin: null };
+    const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0 };
     const ovDisc = [0, 0], ovTag = [0, 0, 0, 0], tagRect = [0, 0, 0, 0];
     const pointer = { ndc: new Vector2(0.3, 0), target: new Vector2(0.3, 0), active: false, vel: new Vector2() };
     const ray = new Raycaster();
@@ -22670,12 +22703,15 @@ void main() {
       composer.setSize(W, H);
       camera.aspect = W / H;
       if (mobile) {
-        const hs = Math.min(W > 760 ? 440 : 284, W * 0.73);
-        frame = { fx: 0.5, fy: (30 + hs / 2) / H, hs, D: 0 };
+        const sp = OV.spot || [150, Math.min(318, W * 0.78)];
+        const tagRoom = W > 760 ? 104 : 92;
+        const hs = Math.min(sp[1] - tagRoom, W * 0.8);
+        frame = { fx: 0.5, fy: (sp[0] + 4 + hs / 2) / H, hs, D: 0 };
       } else {
         const wide = W / H;
-        const hs = Math.min(H * 0.8, W * 0.44 * (11 / 7.6));
-        frame = { fx: wide > 1.9 ? 0.62 : 0.6, fy: 0.5, hs, D: 0 };
+        const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 34;
+        const hs = Math.min(H * 0.8, bottom - H * 0.05, W * 0.44 * (11 / 7.6));
+        frame = { fx: wide > 1.9 ? 0.62 : 0.6, fy: (bottom - hs * 0.5) / H, hs, D: 0 };
       }
       if (DBG_FRAME.length) {
         const [fx, fy, hs] = DBG_FRAME;
@@ -22724,7 +22760,7 @@ void main() {
     const qp = new URLSearchParams(location.search);
     const DBG_PH = qp.has("herophase") ? +qp.get("herophase") : null, DBG_AGE = qp.has("heroage") ? +qp.get("heroage") : null;
     const tagLocal = new Vector3(Math.sin(0.95) * 1.62, 2.7, Math.cos(0.95) * 1.62);
-    const tagLocalM = new Vector3(Math.sin(-0.12) * 1.625, 0.64, Math.cos(-0.12) * 1.625);
+    const tagLocalM = new Vector3(Math.sin(-0.34) * 1.625, 1, Math.cos(-0.34) * 1.625);
     const anchors = {
       bubble: new Vector3(BOTTLE_X + 2.35, 8.05, 0.2),
       tag: new Vector3(),
@@ -22732,8 +22768,10 @@ void main() {
       glow: new Vector3(BOTTLE_X - 0.6, 4.6, -1.5),
       spot: new Vector3(BOTTLE_X, 5.6, -1.5),
       pool: new Vector3(BOTTLE_X - 1.6, 0, 0.4),
-      tA: new Vector3(BOTTLE_X + 9.5, 12.8, -4),
-      tB: new Vector3(BOTTLE_X - 2.6, -1.55, -4)
+      tA: new Vector3(BOTTLE_X + 10.5, 8.4, -4),
+      tB: new Vector3(BOTTLE_X + 0.5, 4.7, -4),
+      tAm: new Vector3(BOTTLE_X + 10.5, 5, -4),
+      tBm: new Vector3(BOTTLE_X + 0.5, 3.9, -4)
     };
     function step(dt, t) {
       st.intro = reduced ? 0 : Math.max(0, st.intro - dt / 2.6);
@@ -22779,8 +22817,8 @@ void main() {
         }
       } else {
         const d = toPx(anchors.bubble), m = OV.discR + 16;
-        ovDisc[0] = clamp2(d[0] + 14, m, W - m);
-        ovDisc[1] = d[1] + 10;
+        ovDisc[0] = clamp2(d[0] + 24, m, W - m);
+        ovDisc[1] = d[1] - 6;
         const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
         const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
         const top = base[1] + 16;
@@ -22901,7 +22939,6 @@ void main() {
               }
             }
           };
-          const front = b.p.z > -1.5;
           let vis = 1;
           {
             tmp3.copy(b.p).applyMatrix4(camera.matrixWorldInverse);
@@ -22939,20 +22976,37 @@ void main() {
               if (gap < PAD) pushPx(dx / d, dy / d, PAD - gap);
               vis = Math.min(vis, smooth(2, PAD, gap));
             }
+            for (const r of OV.blocks) {
+              const BP = 18;
+              const qx = clamp2(sx, r[0] - BP, r[2] + BP), qy = clamp2(sy, r[1] - BP, r[3] + BP);
+              let dx = sx - qx, dy = sy - qy, d = Math.hypot(dx, dy), gap = d - sr;
+              if (d < 1e-3) {
+                const up = sy - r[1] + BP, dn = r[3] + BP - sy;
+                dx = 0;
+                dy = up < dn ? -1 : 1;
+                d = 1;
+                gap = -Math.min(up, dn) - sr;
+              }
+              if (gap < PAD) pushPx(dx / d, dy / d, (PAD - gap) * 0.5);
+              vis = Math.min(vis, smooth(2, PAD, gap));
+            }
             if (!mobile) {
               const gap = sx - sr - (exclNdc * 0.5 + 0.5) * W;
               if (gap < 0) pushPx(1, 0, -gap);
               vis = Math.min(vis, smooth(0, 48, gap));
-            } else {
-              vis = Math.min(vis, smooth(6, 40, OV.copyTop - (sy + sr)));
+            } else if (OV.spot) {
+              vis = Math.min(vis, smooth(0, 24, sy - sr - OV.spot[0] + 6), smooth(0, 24, OV.spot[0] + OV.spot[1] - (sy + sr)));
             }
-            vis = Math.min(vis, smooth(0, 80, sy - sr), smooth(0, 36, W - sx - sr), smooth(0, 36, sx - sr));
+            const gr = W - sx - sr, gl = sx - sr;
+            if (gr < 24) pushPx(-1, 0, 24 - gr);
+            if (gl < 24) pushPx(1, 0, 24 - gl);
+            vis = Math.min(vis, smooth(0, 80, sy - sr), smooth(sr * 0.5, sr + 48, gr), smooth(sr * 0.5, sr + 48, gl));
             if (sy + sr < 0) b.p.y = BOUNDS.y1 + 1;
           }
-          const zb = front ? b.p.z : BOTTLE_Z;
+          const zb = b.p.z;
           avoid(BOTTLE_X, -0.5, zb, BOTTLE_X, 7.3, zb, 1.85);
           const cb = DROPPER_BASE, s = Math.sin(DROPPER_TILT), c = Math.cos(DROPPER_TILT);
-          const zd = front ? b.p.z : cb.z;
+          const zd = b.p.z;
           avoid(cb.x, cb.y, zd, cb.x + 4.1 * s, cb.y + 4.1 * c, zd, 1.35);
           avoid(cb.x, cb.y, zd, cb.x - PIPETTE_LEN * s, cb.y - PIPETTE_LEN * c, zd, 0.5);
           avoid(cb.x - PIPETTE_LEN * s, -0.5, zd, cb.x - PIPETTE_LEN * s, cb.y - PIPETTE_LEN * c, zd, 0.6);
@@ -22993,12 +23047,7 @@ void main() {
       const pl = toPx(anchors.pool);
       bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr);
       bgU.uPoolR.value.set(ppu * 7.5 * pr, ppu * 1.9 * pr);
-      let a = toPx(anchors.tA), b2 = toPx(anchors.tB);
-      if (isMobile()) {
-        const fl = toPx(tmp2.set(BOTTLE_X, 0, 0));
-        a = [-24, H * 0.05];
-        b2 = [W + 24, Math.max(fl[1] - 34, ovDisc[1] + OV.discR + 90)];
-      }
+      const a = toPx(isMobile() ? anchors.tAm : anchors.tA), b2 = toPx(isMobile() ? anchors.tBm : anchors.tB);
       bgU.uTA.value.set(a[0] * pr, (H - a[1]) * pr);
       bgU.uTB.value.set(b2[0] * pr, (H - b2[1]) * pr);
       finalPass.uniforms.uTime.value = t;
@@ -23067,7 +23116,12 @@ void main() {
         pointer.active = active;
       },
       setOverlays(o) {
+        const k0 = JSON.stringify([OV.spot, Math.round(OV.trustTop)]);
         Object.assign(OV, o);
+        if (JSON.stringify([OV.spot, Math.round(OV.trustTop)]) !== k0) {
+          layout();
+          if (!running) renderOnce();
+        }
       },
       get dirty() {
         return dirty;
@@ -23102,7 +23156,13 @@ void main() {
       const was = root.querySelector("[data-hero-was]");
       if (was) was.textContent = ctx.fmt.kr(p.price0);
       const pct = root.querySelector(".hero-bubble__pct");
-      if (pct) pct.textContent = `\u2212${ctx.campaign.headlinePct}%`;
+      if (pct) pct.textContent = `\u2212${p.pct}%`;
+      const save = root.querySelector("[data-hero-save]");
+      if (save) save.textContent = `Spar ${ctx.fmt.kr(p.save)}`;
+    }
+    {
+      const big = root.querySelector("[data-hero-pct]");
+      if (big && ctx.campaign) big.textContent = String(ctx.campaign.headlinePct);
     }
     let addT = 0;
     addBtn && addBtn.addEventListener("click", () => {
@@ -23116,8 +23176,14 @@ void main() {
       }, 2200);
     });
     requestAnimationFrame(() => root.classList.add("is-ready"));
+    const spotEl = root.querySelector(".hero-spot");
     const goStatic = () => {
       root.classList.add("is-static");
+      const placeStill = () => {
+        root.style.setProperty("--spot-top", `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`);
+      };
+      placeStill();
+      new ResizeObserver(placeStill).observe(root);
       const img = root.querySelector(".hero-fallback");
       if (img && img.dataset.src && !img.src) img.src = img.dataset.src;
     };
@@ -23130,10 +23196,26 @@ void main() {
     const copyEl = root.querySelector(".hero-copy");
     const pinnedMQ = matchMedia("(min-width: 761px) and (max-width: 1100px) and (min-aspect-ratio: 10001/10000)");
     const stackMQ = matchMedia("(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)");
+    const trustEl = root.querySelector(".hero-trust");
+    const blockEls = [".hero-eyebrow", ".hero-title", ".hero-offer", ".hero-ctas", ".hero-facts", ".hero-trust"].map((q) => root.querySelector(q));
     const measure = () => {
       if (!scene) return;
       const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
       const mob = stackMQ.matches;
+      const rel = (r) => [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top];
+      const blocks = blockEls.filter(Boolean).map((el) => {
+        const r = el.getBoundingClientRect();
+        if (el === trustEl) return rel(r);
+        let x1 = r.left;
+        for (const c of el.children) x1 = Math.max(x1, c.getBoundingClientRect().right);
+        if (!el.children.length || el.classList.contains("hero-title")) {
+          const rg = document.createRange();
+          rg.selectNodeContents(el);
+          x1 = Math.max(x1, rg.getBoundingClientRect().right);
+        }
+        return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
+      });
+      const sp = spotEl.getBoundingClientRect();
       const box = mob ? cardEl : tagEl;
       let pin = null;
       if (pinnedMQ.matches) {
@@ -23145,7 +23227,10 @@ void main() {
         tagW: box.offsetWidth,
         tagH: box.offsetHeight,
         pin,
-        copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0)
+        copyTop: cp.top - st.top,
+        blocks,
+        spot: mob ? [sp.top - st.top, sp.height] : null,
+        trustTop: trustEl.getBoundingClientRect().top - st.top
       });
     };
     const onFrame = ({ bubble, tag, mobile }) => {

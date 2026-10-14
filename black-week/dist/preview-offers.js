@@ -225,6 +225,7 @@
     initAdd(root, ctx);
     off.push(initGift(root, ctx, q, reduced));
     off.push(initRail(root, reduced));
+    off.push(initNight(root, reduced));
     return () => off.forEach((f) => f && f());
   }
   function initClock(root, ctx, q, reduced) {
@@ -462,6 +463,56 @@
       setCurrent(d);
     }));
     return () => io.disconnect();
+  }
+  function initNight(root, reduced) {
+    const tile = root.querySelector(".offers-tile--hero");
+    const air = root.querySelector(".offers-air");
+    const glow = root.querySelector(".offers-glow");
+    if (!tile) return null;
+    let io = null;
+    if (air && !reduced) {
+      io = new IntersectionObserver((es) => air.classList.toggle("is-on", es[es.length - 1].isIntersecting));
+      io.observe(tile);
+    }
+    if (!glow || reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return () => io && io.disconnect();
+    const rest = { x: 50, y: 26 };
+    let x = rest.x, y = rest.y, tx = x, ty = y, raf = 0, last = 0;
+    const step = (t) => {
+      const dt = Math.min(0.05, (t - (last || t)) / 1e3);
+      last = t;
+      const k = 1 - Math.exp(-dt * 2.4);
+      x += (tx - x) * k;
+      y += (ty - y) * k;
+      glow.style.setProperty("--lx", x.toFixed(2) + "%");
+      glow.style.setProperty("--ly", y.toFixed(2) + "%");
+      if (Math.abs(tx - x) + Math.abs(ty - y) > 0.05) raf = requestAnimationFrame(step);
+      else {
+        raf = 0;
+        last = 0;
+      }
+    };
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(step);
+    };
+    const move = (e) => {
+      const r = glow.getBoundingClientRect();
+      tx = Math.max(10, Math.min(90, (e.clientX - r.left) / r.width * 100));
+      ty = Math.max(8, Math.min(70, (e.clientY - r.top) / r.height * 100));
+      kick();
+    };
+    const leave = () => {
+      tx = rest.x;
+      ty = rest.y;
+      kick();
+    };
+    tile.addEventListener("pointermove", move);
+    tile.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(raf);
+      io && io.disconnect();
+      tile.removeEventListener("pointermove", move);
+      tile.removeEventListener("pointerleave", leave);
+    };
   }
 
   // .build/entry-preview-offers.js

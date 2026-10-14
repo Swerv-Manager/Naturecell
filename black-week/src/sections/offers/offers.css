@@ -6,7 +6,7 @@
 [data-section="offers"] {
   --viscous: cubic-bezier(.22, .61, .36, 1);
   --viscous-long: cubic-bezier(.16, 1, .3, 1);
-  --tile-r: 22px;
+  --tile-r: var(--radius-lg);          /* 18px – the theme card radius */
   --bleed: 16px;                       /* how far the hero tile rises above/below its neighbours */
   --pad: 10px;                         /* stage inset inside a tile */
   --copy-x: 22px;                      /* copy inset inside a tile */
@@ -16,7 +16,7 @@
   position: relative;
   background: var(--paper);
   color: var(--text-body);
-  padding-block: var(--section-y);
+  padding-block: var(--section-y) clamp(40px, 4vw, 56px);
 }
 
 /* ---------------------------------------------------------------- head */
@@ -106,7 +106,7 @@
   --hz-a: min(84.6%, calc(100% - 48px)); /* horizon line in the stage's own background (cq units do not resolve there) */
   --hz-b: min(85.2%, calc(100% - 46px));
   position: relative; aspect-ratio: 6 / 5; container-type: size;
-  border-radius: 14px; overflow: hidden;
+  border-radius: calc(var(--tile-r) - var(--pad)); overflow: hidden;
 }
 [data-section="offers"] .offers-row {
   position: absolute; left: 0; right: 0; bottom: var(--floor);
@@ -143,33 +143,32 @@
 
 /* 2 · hero offer: no inner box – the products stand in the night-green tile itself, lit by a warm evening glow */
 [data-section="offers"] .offers-stage--hero {
+  --u: 72cqh;                          /* the whole set a step closer to the camera – one scale, so sizes stay truthful */
+  /* the stage rises into the tile's bleed: taller than its neighbours without moving the shared rows below */
+  aspect-ratio: auto; align-self: stretch; margin-top: calc(var(--bleed) * -1);
   overflow: visible;
   background:
     radial-gradient(46% 11% at 50% 89%, color-mix(in srgb, var(--sand-500) 15%, transparent) 0%, transparent 100%),
     radial-gradient(42% 40% at 50% 54%, color-mix(in srgb, var(--sand-500) 12%, transparent) 0%, transparent 100%),
-    linear-gradient(180deg, transparent 0 var(--hz-a), color-mix(in srgb, var(--sage-800) 75%, var(--sage-900)) var(--hz-a), transparent 100%);
+    radial-gradient(64% 18% at 50% calc(var(--hz-a) + 4%), color-mix(in srgb, var(--sage-800) 80%, transparent) 0%, transparent 100%);
+  /* the tabletop is a pool of light, not a band – no edge may show against the night panel */
 }
 /* the set: dag + nat stand on the shared shelf line, rens + olie a step forward on the table (same scale, no fake perspective) */
 [data-section="offers"] .offers-row--set { gap: 0; }
 [data-section="offers"] .offers-row--set .offers-p--front { --fwd: 4.6cqh; margin-bottom: calc(var(--fwd) * -1); z-index: 2; }
 [data-section="offers"] .offers-row--set .offers-p--back { z-index: 1; }
-[data-section="offers"] .offers-row--set .offers-p:nth-child(1) { margin-right: -1.4cqw; }
+/* rens and olie stand a little out from the pair, so the set reads as four products, not one block */
+[data-section="offers"] .offers-row--set .offers-p:nth-child(1) { margin-right: 1.6cqw; }
 [data-section="offers"] .offers-row--set .offers-p:nth-child(2) { margin-right: 1.6cqw; }
-[data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: -.6cqw; }
+[data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: 2.2cqw; }
 /* the back pair sits a touch further from the evening light */
 [data-section="offers"] .offers-row--set .offers-p--back img { filter: brightness(.9) saturate(.96); }
 [data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--night-shade), .92), rgba(var(--night-shade), 0)); }
 [data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--night-shade), .45), rgba(var(--night-shade), 0)); }
 
-[data-section="offers"] .offers-flag {
-  position: absolute; left: 5cqw; top: 5cqw; margin: 0; z-index: 3;
-  display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--paper) 7%, transparent); border: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
-  font: 600 11px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--paper);
-}
 [data-section="offers"] .offers-save {
-  position: absolute; right: 5cqw; top: 5cqw; z-index: 3; margin: 0;
-  width: clamp(80px, 25cqw, 96px); padding: 0; gap: 3px; align-content: center; grid-auto-flow: row;
+  position: absolute; right: var(--copy-x); top: var(--copy-x); z-index: 3; margin: 0;
+  width: clamp(76px, 23cqw, 86px); padding: 0; gap: 3px; align-content: center; grid-auto-flow: row;
   font-family: var(--font-body);
 }
 [data-section="offers"] .offers-save__k { font: 600 11px/1 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; }
@@ -178,21 +177,20 @@
 /* 3 · gift: warm sand room, a true example basket and the gift bubble */
 [data-section="offers"] .offers-stage--gift {
   background:
-    radial-gradient(48% 46% at 80% 30%, color-mix(in srgb, var(--accent-pink) 22%, transparent) 0%, transparent 100%),
+    radial-gradient(44% 46% at 22% 40%, color-mix(in srgb, var(--accent-pink) 20%, transparent) 0%, transparent 100%),
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
 [data-section="offers"] .offers-stage--gift .offers-row { gap: 2cqw; }
-/* the gift is a flat brand bubble standing in the line-up – same floor, same shadows, never rotated */
-[data-section="offers"] .offers-p--gift { --h: .6; aspect-ratio: 1; margin-left: 3cqw; }
+/* the gift is a flat brand bubble, floating at the basket's shoulder – never on the floor, never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
-  position: relative; z-index: 1; display: grid; place-content: center; justify-items: center;
-  width: 100%; height: 100%; border-radius: 50%;
-  background: var(--accent-pink); color: var(--accent-berry);
-  font-family: var(--font-display); line-height: 1;
-  transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long);
+  position: relative; z-index: 1; flex: none; align-self: flex-end;
+  width: 30cqh; height: 30cqh; margin: 0 3cqw 22cqh 0;     /* floats at the basket's shoulder, clear of the floor */
+  display: grid; grid-auto-flow: column; place-content: center; align-items: baseline; column-gap: .16em;
+  border-radius: 50%; background: var(--accent-pink); color: var(--accent-berry);
+  font-family: var(--font-display); font-size: 5.6cqh; line-height: 1; white-space: nowrap;
+  transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long), scale 700ms var(--viscous);
 }
-[data-section="offers"] .offers-gift { grid-auto-flow: column; align-items: baseline; column-gap: .16em; font-size: 6.4cqh; white-space: nowrap; }
 [data-section="offers"] .offers-gift__plus { font-size: 1em; }
 [data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: -.005em; }
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
@@ -216,6 +214,10 @@
 [data-section="offers"] .offers-note__set--live .offers-note__v { text-align: right; }
 [data-section="offers"] [data-gift].has-cart .offers-note__set--ex { opacity: 0; transform: translateY(-4px); }
 [data-section="offers"] [data-gift].has-cart .offers-note__set--live { opacity: 1; transform: none; }
+/* with a live cart the example basket steps back – only what the customer actually gets stays in focus */
+[data-section="offers"] [data-gift] .offers-p { transition: opacity 700ms var(--viscous), filter 700ms var(--viscous); }
+[data-section="offers"] [data-gift].has-cart .offers-p { opacity: .28; filter: saturate(.4); }
+[data-section="offers"] [data-gift][data-level="2"] .offers-gift { scale: 1.06; }
 [data-section="offers"] .offers-meter {
   position: relative; display: block; height: 3px; border-radius: 3px;
   background: color-mix(in srgb, var(--clay-500) 24%, transparent);
@@ -231,13 +233,14 @@
 [data-section="offers"] .offers-tile__title {
   margin: 8px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; letter-spacing: -.005em; color: var(--sage-700);
 }
-[data-section="offers"] .offers-fig { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 14px 0 0; }
+[data-section="offers"] .offers-fig { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 14px 0 0; align-self: last baseline; }
 [data-section="offers"] .offers-fig__big {
-  font-family: var(--font-display); font-weight: 400; font-size: clamp(44px, 3.9vw, 56px); line-height: .92; letter-spacing: -.02em; color: var(--sage-700); white-space: nowrap;
+  font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 3.4vw, 48px); line-height: .92; letter-spacing: -.02em; color: var(--sage-700); white-space: nowrap;
 }
 [data-section="offers"] .offers-tile--range .offers-fig__big { color: var(--accent-berry); }
 [data-section="offers"] .offers-fig__unit { font-size: .5em; letter-spacing: 0; margin-left: .06em; }
-[data-section="offers"] .offers-tile--range .offers-fig__unit { font-size: .72em; margin-left: .02em; }
+[data-section="offers"] .offers-tile--range .offers-fig__unit { margin-left: .03em; }
+[data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: clamp(52px, 4.7vw, 68px); }
 [data-section="offers"] .offers-fig__aside { font: 500 14px/1.2 var(--font-body); color: var(--text-body); white-space: nowrap; }
 [data-section="offers"] .offers-fig__aside s { text-decoration-thickness: 1px; }
 [data-section="offers"] .offers-tile__text { margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: var(--text-body); max-width: 36ch; text-wrap: pretty; }
@@ -259,6 +262,35 @@
   z-index: -2;
 }
 [data-section="offers"] .offers-tile--hero.nc-grain::after { inset: calc(var(--bleed) * -1) 0; border-radius: calc(var(--tile-r) + 4px); z-index: -1; opacity: .09; }
+/* evening light that follows the pointer with a viscous lag (js sets --lx/--ly; rests over the set) */
+[data-section="offers"] .offers-glow {
+  position: absolute; inset: calc(var(--bleed) * -1) 0; border-radius: calc(var(--tile-r) + 4px); z-index: -1; pointer-events: none;
+  margin: 0 !important;
+  background: radial-gradient(38% 30% at var(--lx, 50%) var(--ly, 26%), color-mix(in srgb, var(--sand-500) 13%, transparent) 0%, transparent 100%);
+}
+/* oil-light bubbles: tiny glass spheres rising through the night, slower than anything else on the page */
+[data-section="offers"] .offers-air { position: absolute; inset: 0 30% var(--floor) 2%; pointer-events: none; z-index: 0;
+  -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 30%, #000 70%, transparent 96%);
+          mask-image: linear-gradient(0deg, transparent 0%, #000 30%, #000 70%, transparent 96%); }
+/* they start behind the set and only show once they have risen clear of it */
+[data-section="offers"] .offers-air i {
+  position: absolute; left: var(--x); bottom: 10%; width: var(--s); height: var(--s); border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--paper) 80%, transparent) 0 10%, color-mix(in srgb, var(--sand-300) 34%, transparent) 26%, color-mix(in srgb, var(--sage-300) 16%, transparent) 62%, color-mix(in srgb, var(--paper) 30%, transparent) 70%, transparent 74%);
+  opacity: 0; transform: translate3d(0, 0, 0);
+  animation: offers-rise var(--d) linear var(--t) infinite;
+  animation-play-state: paused;
+}
+[data-section="offers"] .offers-air.is-on i { animation-play-state: running; }
+/* buoyant and viscous: slow constant climb, a lazy sway, a soft fade at both ends */
+@keyframes offers-rise {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: .9; }
+  35%  { transform: translate3d(5px, -26cqh, 0); }
+  65%  { transform: translate3d(-3px, -50cqh, 0); }
+  88%  { opacity: .9; }
+  100% { transform: translate3d(2px, -74cqh, 0); opacity: 0; }
+}
+
 [data-section="offers"] .offers-tile--hero .offers-tile__eyebrow { color: var(--sand-500); }
 [data-section="offers"] .offers-tile--hero .offers-tile__title,
 [data-section="offers"] .offers-tile--hero .offers-fig__big { color: var(--paper); }
@@ -287,8 +319,8 @@
 
 /* ---------------------------------------------------------------- hover physics (pointer devices) */
 @media (hover: hover) and (pointer: fine) {
-  [data-section="offers"] .offers-tile:hover .offers-p img,
-  [data-section="offers"] .offers-tile:hover .offers-gift { transform: translateY(-1.6cqh); }
+  [data-section="offers"] .offers-tile:hover .offers-p img { transform: translateY(-1.6cqh); }
+  [data-section="offers"] .offers-tile:hover .offers-gift { transform: translateY(-1cqh); }
   [data-section="offers"] .offers-tile:hover .offers-p::after { transform: scaleX(.9); opacity: .7; }
   [data-section="offers"] .offers-tile:hover .offers-p::before { transform: scaleX(1.06); opacity: .8; }
   [data-section="offers"] .offers-tile:not(.offers-tile--hero):hover { box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 26px 50px -30px rgba(var(--shade), .34); }
@@ -309,12 +341,11 @@
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
   [data-section="offers"] .offers-num,
   [data-section="offers"] .offers-unit + .offers-unit::before { font-size: 34px; }
-  [data-section="offers"] .offers-flag { height: 24px; padding: 0 9px; }
 }
 
 /* ---------------------------------------------------------------- tablet + mobile: snap carousel led by the hero offer */
 @media (max-width: 980px) {
-  [data-section="offers"] { --bleed: 12px; --pad: 8px; --copy-x: 18px; --tile-r: 20px; }
+  [data-section="offers"] { --bleed: 12px; --pad: 8px; --copy-x: 18px; }
   [data-section="offers"] .offers-head { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 12px; }
   [data-section="offers"] .offers-title { font-size: 34px; }
   [data-section="offers"] .offers-clock { justify-items: start; }
@@ -338,10 +369,13 @@
   [data-section="offers"] .offers-tile--hero,
   [data-section="offers"] .offers-tile--gift { grid-column: auto; }
   [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: var(--pad) var(--pad) 20px; }
-  [data-section="offers"] .offers-flag { height: 26px; padding: 0 10px; }
+  /* one tile per view: a squarer stage gives the products the room the column layout cannot */
+  [data-section="offers"] .offers-stage { aspect-ratio: 1; }
+  [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; }
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
-  [data-section="offers"] .offers-fig__big { font-size: 46px; }
+  [data-section="offers"] .offers-fig__big { font-size: 40px; }
+  [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: 54px; }
   [data-section="offers"] .offers-tile__text { font-size: 14.5px; }
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }
   [data-section="offers"] .offers-btn { min-height: 48px; }
@@ -362,4 +396,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-section="offers"] .offers-clock__label::before { animation: none; }
+  [data-section="offers"] .offers-air i { animation: none; opacity: .8; transform: translate3d(0, calc(-30cqh - var(--s) * 4), 0); }
 }

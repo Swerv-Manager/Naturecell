@@ -22,7 +22,11 @@ export default function init(root, ctx) {
   if (p) {
     const now = root.querySelector('[data-hero-price]'); if (now) now.textContent = ctx.fmt.kr(p.price);
     const was = root.querySelector('[data-hero-was]'); if (was) was.textContent = ctx.fmt.kr(p.price0);
-    const pct = root.querySelector('.hero-bubble__pct'); if (pct) pct.textContent = `−${ctx.campaign.headlinePct}%`;
+    const pct = root.querySelector('.hero-bubble__pct'); if (pct) pct.textContent = `−${p.pct}%`;
+    const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = `Spar ${ctx.fmt.kr(p.save)}`;
+  }
+  {
+    const big = root.querySelector('[data-hero-pct]'); if (big && ctx.campaign) big.textContent = String(ctx.campaign.headlinePct);
   }
 
   // ---- quick add (calm confirmation, then settle back)
@@ -38,8 +42,12 @@ export default function init(root, ctx) {
   // ---- entrance
   requestAnimationFrame(() => root.classList.add('is-ready'));
 
+  const spotEl = root.querySelector('.hero-spot');
   const goStatic = () => {
     root.classList.add('is-static');
+    // phones: the still sits in the spot between the headline and the offer
+    const placeStill = () => { root.style.setProperty('--spot-top', `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`); };
+    placeStill(); new ResizeObserver(placeStill).observe(root);
     const img = root.querySelector('.hero-fallback');
     if (img && img.dataset.src && !img.src) img.src = img.dataset.src;
   };
@@ -51,10 +59,23 @@ export default function init(root, ctx) {
   const pinnedMQ = matchMedia('(min-width: 761px) and (max-width: 1100px) and (min-aspect-ratio: 10001/10000)');
   const stackMQ = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
   // sizes of the flat DOM overlays, so the 3D spheres flow around them (and the disc stays inside the stage)
+  const trustEl = root.querySelector('.hero-trust');
+  const blockEls = ['.hero-eyebrow', '.hero-title', '.hero-offer', '.hero-ctas', '.hero-facts', '.hero-trust'].map((q) => root.querySelector(q));
   const measure = () => {
     if (!scene) return;
     const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
     const mob = stackMQ.matches;
+    const rel = (r) => [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top];
+    // every text block is an obstacle the spheres flow around and fade before (no 3D bubble behind DOM text)
+    const blocks = blockEls.filter(Boolean).map((el) => {
+      const r = el.getBoundingClientRect();
+      if (el === trustEl) return rel(r);
+      // inline content: use the text's own extent, not the full column width
+      let x1 = r.left; for (const c of el.children) x1 = Math.max(x1, c.getBoundingClientRect().right);
+      if (!el.children.length || el.classList.contains('hero-title')) { const rg = document.createRange(); rg.selectNodeContents(el); x1 = Math.max(x1, rg.getBoundingClientRect().right); }
+      return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
+    });
+    const sp = spotEl.getBoundingClientRect();
     const box = mob ? cardEl : tagEl;               // mobile: the compact card hangs under the bottle on its own lead
     // tablet: the compact pill is pinned by CSS (bottom-right); the spheres just keep clear of its box
     let pin = null;
@@ -62,7 +83,10 @@ export default function init(root, ctx) {
     scene.setOverlays({
       discR: bubbleEl.firstElementChild.offsetWidth / 2,
       tagW: box.offsetWidth, tagH: box.offsetHeight, pin,
-      copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0),
+      copyTop: cp.top - st.top,
+      blocks,
+      spot: mob ? [sp.top - st.top, sp.height] : null,
+      trustTop: trustEl.getBoundingClientRect().top - st.top,
     });
   };
   const onFrame = ({ bubble, tag, mobile }) => {
