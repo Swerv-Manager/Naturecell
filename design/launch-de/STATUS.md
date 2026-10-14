@@ -43,6 +43,8 @@
 - Fragt Tyskland: 8 EUR under 65 EUR, gratis fra 65 EUR. Tema EUR: 65, AGB/Versand og 7 tyske
   FAQ-svar rettet.
 - Impressum: "Vertretungsberechtigter Geschaeftsfuehrer: Allan Falk Gamborg" (bekraeft stavning).
+- Tysk USt-IdNr. DE347601796 (+ DK42256013) i Impressum, AGB og Kontakt. Mangler: momsregistrering
+  i Shopify admin (Indstillinger > Skatter og afgifter > Tyskland), kan ikke saettes via API.
 - Kundecase-videoer skjult paa alle andre sprog end dansk (temaindstilling nc_case_videos_da_only).
 - Hero slaaet til igen; skjult kun paa dansk til 2026-10-15T23:59 (hide_da_until).
 - Kunden oplyser: VerpackG via Avask, CPNP anmeldt, Flatpay (PayPal, Klarna, kort) aktiveres af Allan.
