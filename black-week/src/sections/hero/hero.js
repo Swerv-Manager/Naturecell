@@ -1,4 +1,4 @@
-// NatureCell® Black Week – hero. DOM wiring + the Three.js still life (scene.js).
+// NatureCell® Black Week – hero. DOM wiring + the Three.js still life of the facial routine (scene.js, range.js).
 import { visibilityGate } from '../../core/three-utils.js';
 import { createHeroScene } from './scene.js';
 
@@ -23,7 +23,7 @@ export default function init(root, ctx) {
   if (p) {
     const now = root.querySelector('[data-hero-price]'); if (now) now.textContent = ctx.fmt.kr(p.price);
     const was = root.querySelector('[data-hero-was]'); if (was) was.textContent = ctx.fmt.kr(p.price0);
-    // the disc carries the one fact nothing else in the hero says: the saving in kroner on the named product
+    // the disc carries the one fact nothing else in the hero says: the saving in kroner on the hero product
     const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = ctx.fmt.kr(p.save);
   }
   {
@@ -61,7 +61,7 @@ export default function init(root, ctx) {
   const copyEl = root.querySelector('.hero-copy');
   const pinnedMQ = matchMedia('(min-width: 761px) and (max-width: 1100px) and (min-aspect-ratio: 10001/10000)');
   const stackMQ = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
-  // sizes of the flat DOM overlays, so the 3D spheres flow around them (and the disc stays inside the stage)
+  // sizes + rest positions of the flat DOM overlays and text blocks: the scene frames the still life clear of them
   const trustEl = root.querySelector('.hero-trust');
   const blockEls = ['.hero-eyebrow', '.hero-title', '.hero-offer', '.hero-ctas', '.hero-facts', '.hero-trust'].map((q) => root.querySelector(q));
   const measure = () => {
@@ -69,9 +69,12 @@ export default function init(root, ctx) {
     const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
     const mob = stackMQ.matches;
     const rel = (r) => [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top];
-    // every text block is an obstacle the spheres flow around and fade before (no 3D bubble behind DOM text)
+    // every text block is an obstacle the framing keeps clear of (no 3D product behind DOM text)
+    // (measured at rest: the entrance animation's translateY is taken out, so a measure mid-animation is still exact)
+    const restY = (el) => { const m = getComputedStyle(el).transform; if (!m || m === 'none') return 0; const v = m.match(/-?[\d.]+/g); return v ? +v[v.length - 1] : 0; };
     const blocks = blockEls.filter(Boolean).map((el) => {
-      const r = el.getBoundingClientRect();
+      const r0 = el.getBoundingClientRect(), dy = restY(el);
+      const r = { left: r0.left, right: r0.right, top: r0.top - dy, bottom: r0.bottom - dy };
       if (el === trustEl) return rel(r);
       // inline content: use the text's own extent, not the full column width
       // (list items may be stretched to the full row by flex-basis: use their text, not their box)
@@ -86,7 +89,7 @@ export default function init(root, ctx) {
     });
     const sp = spotEl.getBoundingClientRect();
     const box = mob ? cardEl : tagEl;               // mobile: the compact card hangs under the bottle on its own lead
-    // tablet: the compact pill is pinned by CSS (bottom-right); the spheres just keep clear of its box
+    // tablet: the compact pill is pinned by CSS (bottom-right)
     let pin = null;
     if (pinnedMQ.matches) { const r = cardEl.getBoundingClientRect(); pin = [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top]; }
     scene.setOverlays({
@@ -95,11 +98,11 @@ export default function init(root, ctx) {
       copyTop: cp.top - st.top,
       blocks,
       spot: mob ? [sp.top - st.top, sp.height] : null,
-      trustTop: trustEl.getBoundingClientRect().top - st.top,
+      trustTop: trustEl.getBoundingClientRect().top - restY(trustEl) - st.top,
     });
   };
   const onFrame = ({ bubble, tag, mobile }) => {
-    // the flat −25% bubble is never rotated, only translated (the scene keeps it inside the stage)
+    // the flat saving disc is never rotated, only translated (the scene keeps it inside the stage)
     bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
     if (pinnedMQ.matches) {
       tagEl.style.transform = '';
@@ -132,7 +135,7 @@ export default function init(root, ctx) {
     let rq = 0;
     new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(() => { measure(); s.resize(); }); }).observe(stage);
 
-    // pointer → parallax + bubble push (fine pointers only)
+    // pointer → camera parallax (fine pointers only)
     if (matchMedia('(pointer: fine)').matches) {
       // hold the parallax still while the pointer is on the product tag, so the target never drifts away
       let hold = false;

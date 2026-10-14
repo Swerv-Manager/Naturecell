@@ -158,8 +158,8 @@
 
 /* static plate (no WebGL): the disc and the tag are pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-bubble, [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .4046); top: calc(var(--hero-h) * .3232); }
-[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .4936); top: calc(var(--hero-h) * .6967); transform: translateY(-50%); }
+[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .2688); top: calc(var(--hero-h) * .4537); }
+[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .4698); top: calc(var(--hero-h) * .7631); transform: translateY(-50%); }
 
 /* ---------- entrance: calm, staggered, viscous ---------- */
 [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: hero-rise 1100ms var(--viscous-long) both; }
@@ -210,7 +210,7 @@
 
 /* ---------- phones + portrait tablets: headline → the 3D product → offer → CTAs ---------- */
 @media (max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1) {
-  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(262px, min(90vw, calc(100svh - 446px)), 364px); height: auto; min-height: 0; }
+  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(270px, min(94vw, calc(100svh - 432px)), 380px); height: auto; min-height: 0; }
   [data-section="hero"] .hero-scrim { background: none; }
   [data-section="hero"] .hero-inner { display: block; height: auto; padding-block: 20px 0; }
   [data-section="hero"] .hero-copy { max-width: none; }
@@ -255,11 +255,11 @@
   [data-section="hero"] .hero-bubble__amt { font-size: 19px; }
   [data-section="hero"] .hero-bubble__sub { font-size: 11.5px; margin-top: 3px; }
   /* static plate: the still sits in the spot; the disc and the pill are pinned to it */
-  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: var(--spot-top, 150px); transform: translateX(-50%); height: calc(var(--spot-h) - 66px); -webkit-mask-image: radial-gradient(closest-side, black 75%, transparent); mask-image: radial-gradient(closest-side, black 75%, transparent); }
+  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 36px); transform: translateX(-50%); height: calc(var(--spot-h) - 20px); -webkit-mask-image: radial-gradient(closest-side, black 82%, transparent); mask-image: radial-gradient(closest-side, black 82%, transparent); }
   [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; width: auto; height: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
   [data-section="hero"].is-static .hero-tag__lead { display: none; }
   [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
-  [data-section="hero"].is-static .hero-bubble { left: calc(50% + 112px); right: auto; top: calc(var(--spot-top, 150px) + 52px); }
+  [data-section="hero"].is-static .hero-bubble { left: auto; right: 62px; top: calc(var(--spot-top, 150px) - 50px); }
 }
 /* portrait tablets: the same story, scaled up */
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {

@@ -1,0 +1,70 @@
+CRITIC (score 91/100, wowed=False): Round 9 fixes most of r8 for real. I checked each point against the r9 screenshots, a pixel sampler and the source.
+
+**r8 points**
+- **#1, moving light:** fixed. The --g2 hairline is gone. On the Komplet Rens bottle (desktop y=610) the soft bloom peaks at luma 170 against about 70 on the amber beside it in f1. In f2 it peaks at 205, about 20px further right. On the hovered Olie dropper it peaks at 250. On mobile it reads as one soft column, not a scratch.
+- **#2, Dagcreme wordmark:** fixed. Dagcreme is now a composed duo that mirrors Natcreme, and the wordmark shows in full.
+- **#3, gift tile:** fixed. The Lip Balm's contact point is at y=1872, the same as Shampoo's. The 'illustration' caption sits in the tag footer, and the tag overlaps the stick by about 10%.
+- **#5, mobile Olie gap:** fixed. The two-line true claim fills it, and the price rows line up at y=1120@2x.
+- **#7, meter label:** fixed on desktop (centred on its knob). Not fixed on mobile.
+- **#8, mobile Komplet description:** fixed. It now fills the measure.
+- **#6, row-1 headroom:** the problem has moved. The singles are lifted to the optical centre, which leaves an 87px empty floor under them and breaks the row's horizon by about 45px against Komplet.
+- **#4, Lip Balm render:** still a render. It is honestly captioned, but it still needs the client's sign-off.
+
+**Still holding up**
+- Truthful scale.
+- Komplet shows its 4 real products.
+- The bundle maths are correct (1.646/1.234/335 and 1.147/860/215).
+- Label-in-Name is correct.
+- Tokens only, no em-dashes, nothing below 11px, cosmetic language throughout.
+- FLIP filters, fly-to-cart and store.add are intact.
+
+**New defect**
+- The pack layer's `overflow:hidden` cuts the baked photo shadows of Bodylotion and Shampoo at the product box. Both show hard-edged grey rectangles at the bottle base, on desktop and mobile. An art director spots that at 1x.
+
+Side by side with Rhode or Aesop it now wins on clarity, honesty and light. The clipped shadows and the two horizons in row 1 still make it read as a very good catalogue rather than a luxury shelf. It is one tight round from AAA.
+MUST FIX:
+1. There are hard-edged shadow cut-offs on two packshots, on both breakpoints. The baked photo shadow ends in a vertical line at the right edge of the product box.
+- Shampoo, desktop-el: x≈913, y 1850–1872. Luma steps from 209 to 235 across 1px.
+- Bodylotion, desktop-el: x≈625, y≈1855–1872.
+- Shampoo, mobile-el: x≈262@2x, y≈6050–6125.
+The cause is the alpha extent. shampoo.webp has alpha out to x=1112 but its box ends at 764. body-lotion.webp has alpha out to 699 but its box ends at 601. serum, night-cream and cleansing-gel-box also have alpha of 107–128 just outside their boxes. [deals.css:216 `.deals-prod__pack { overflow:hidden }` + SHOT boxes in deals.js:20-28] -> Remove `overflow:hidden` from .deals-prod__pack and clip only the gloss layers. They are already alpha-masked by --m/--gm, so they do not need the container to clip them. To keep the img in bounds, use `clip-path: inset(-4% -40% -8% -40%)` on the img so the baked shadow can fade out naturally.
+
+Alternative: pre-process shampoo.webp and body-lotion.webp. Set alpha to 0 for every pixel below 48 outside the product silhouette, and let .deals-prod__shadow be the only contact shadow.
+
+Acceptance: in a 1x crop under each of the 7 singles there is no vertical luminance step larger than 4 within 40px of the pack's right edge.
+2. Row 1 now has two horizons and an empty floor.
+- Komplet's bottles stand at y≈626 (desktop-el, 1x).
+- The Serum pack stands at y≈583. Olie stands at about 575 when hovered and about 579 at rest.
+- So the singles float about 45px above the set's floor, with an 87px empty pool between their base and the stage bottom (y≈670).
+The r8 'optical centre' lift swapped empty ceiling for empty floor, and the shelf logic that makes the grid feel art-directed breaks in its most visible row. [deals.css:144-146 (.is-setrow:not(.deals-item--set) --dl-fl … * .5)] -> 1. Cut the lift factor from .5 to .15. The singles' floor then sits at most 14px above Komplet's, which reads as the same shelf.
+2. Absorb the remaining headroom with a halo behind the singles in that row: `radial-gradient(70% 52% at 50% 40%, color-mix(in srgb, var(--cloud) 70%, transparent), transparent 72%)` on .deals-ground, in .is-setrow:not(.deals-item--set) only.
+3. Pull --fy for the warm floor pool down with the new floor so the pool sits under the pack, not 40px below it.
+
+Acceptance:
+- The difference in pack base y between Komplet and Serum is 14px or less.
+- The empty floor under the singles is 40px or less.
+3. The free CBD Lip Balm is still a Three.js render, the only non-photograph in the grid. It is honestly captioned 'illustration' in the tag, but the gift is the second-strongest lever in the section and its product truth is unverified: cap colour, label layout and stick proportions. [lip-balm.js, src/core/data.js (lip-balm img:null)] -> Hand-off item 1, blocking for launch:
+1. Save the real 6 ml packshot from naturecell.dk/products/lip-balm as assets/products/lip-balm.webp (transparent, product-only alpha).
+2. Set img in data.js. The giftImg branch then drops the 'illustration' caption.
+3. Add a SHOT box with h:0.32 so it keeps the shared floor at y≈1872.
+
+Until the real packshot is in, the client must sign off the render in writing.
+4. On mobile the gift meter's 'FRI FRAGT / 399 kr.' label is still right-aligned instead of centred on its knob. Its centre is at x≈550@2x while the knob is at x≈593@2x, about 21 CSS px apart (the right edge sits about 7 CSS px past the knob). So the label belongs to neither knob, which is exactly the r8 #7 defect. Desktop was fixed, mobile was not. [deals.css ≤760px block, line ~860 .deals-gift__labels] -> On ≤760px apply the desktop rule too: `left: var(--at); transform: translateX(-50%); text-align: center`. Bring the knobs closer by tightening the label tracking to .02em and drop the 'kr.' line-height to 1.25.
+
+If the 'FRI FRAGT' and 'GAVE' labels would come closer than 8px, clamp the label with `max(left, calc(var(--at) - 100% + 6px))`.
+
+Acceptance: the label centre is within 2 CSS px of the knob centre at 390px.
+5. The quick-view affordance is inconsistent on touch. The Komplet and All Day Facial stages show the eye button (mobile-el y≈715 and ≈3580 @2x). The seven singles have only an invisible full-stage tap target (.deals-stagebtn), so the same tap on an image opens a dialog with no cue on 7 of 9 cards. [deals.css:381 (.deals-touch .deals-card:not(.deals-card--set) .deals-quick { display:none })] -> Show the eye on touch singles as well: a 24px visual disc inside a 44px hit area at top:6px; right:6px, the same as the sets. On the 2-up cards it sits on the empty top-right of the stage, beside the carton but not on it, which you can confirm in mobile-el row 1 (x 690–740, y 1580–1630 @2x, clear of the Serum carton).
+
+Alternatively remove it from the sets too and rely on the stage tap. Either way, one rule for all cards.
+6. The moving light's travel between frames is about 20px (Komplet Rens: f1 peak x≈280, f2 peak x≈300). r8 asked for at least 25px so the motion reads in a scroll-past glance, not only to a reviewer sampling pixels. [deals.css gloss --deals-lx ambient path] -> Widen the ambient --deals-lx traverse to 15%→85% over 9s, with the same viscous easing.
+
+Acceptance: the peak shift between desktop-f1 and desktop-f2 on the Komplet Rens bottle is at least 28px. The peak contrast stays at least 90 luma above the amber beside it.
+7. The two Sampakker are lit as different worlds: Komplet has a warm sand sweep and All Day Facial a cool mint one. The cool well under All Day Facial is the weaker of the two. Last round's blind judge picked out warm cream wells as the competitor's best asset. [deals.js data-tone for all-day-facial, deals.css [data-tone="mint"]] -> Give All Day Facial a sand tone at about 60% of Komplet's warmth (--t1 color-mix(var(--sand-300) 40%, var(--sand-100))). The two sets then read as one family under one evening window, and the singles keep the sage sweep.
+BRAND/COPY VIOLATIONS: Product truth: the free CBD Lip Balm is still a generated render. It is captioned 'illustration', but it must be replaced with the real 6 ml packshot or signed off by the client before launch. | Legal wording (low risk, needs confirmation): 'Samlet førpris enkeltvis 1.646 kr.' puts a second 'førpris' on a card whose § 9 a Førpris is 1.198 kr. Consider 'Købt enkeltvis (førpris) 1.646 kr.' so the word Førpris only ever names the bundle's own 30-day lowest price, and have NatureCell confirm that every single is actually sold at those førpriser.
+BUGS: Bodylotion and Shampoo packshots show hard vertical shadow cut-offs at the right edge of the product box. The cause is .deals-prod__pack overflow:hidden clipping the baked alpha shadow, on desktop and mobile. | Row 1, desktop: the single packs stand about 45px above Komplet's floor line (y≈583 vs ≈626), with an 87px empty floor band under them. | Mobile gift meter: the 'FRI FRAGT 399 kr.' label is right-aligned, about 21 CSS px off its knob centre (the r8 #7 defect persists at ≤760px). | Touch: the quick-view eye shows on the two Sampakker only. The singles' stage tap opens quick view with no visible affordance.
+CONSOLE ERRORS: none
+BLIND JUDGE: preferred YOUR section (confidence 7/10; desktop winner yours, mobile winner yours).
+What the judge liked about yours: Clearer offer mechanics: an end date in the eyebrow ('til og med 30. november'), 'Gælder al hudpleje – også Sampakker', and 'ingen kode – trækkes i kurven' answer the three questions that stall Black Week checkouts. A only says 'Prisen er allerede trukket fra'. | Bundle value is proven, not just asserted: the per-product førpris breakdown (299+399+449+499), 'Samlet førpris enkeltvis 1.646 / Enkeltvis i Black Week 1.234' and '335 kr. billigere end købt enkeltvis' give a strong reason to trade up to the 899 kr. pack, and the same treatment is mirrored on All Day Facial. | The numbered RENS / DAG / NAT / OLIE labels under the bottles in the bundle images teach the routine visually, which is a more premium storytelling device than A's text bullet list. | The gift card is a real merchandising moment: a 79 kr. value tag, a lip-balm render, and a progress rail showing Fri fragt at 399 kr. and Gave at 699 kr. A's flat pink 'Gave' circle on a text block reads cheap and generic. | Trust layer that A lacks entirely: a free shipping / e-mærket / 14-day returns strip, a legal førpris footnote with exact date and time, and 'Vegansk · uden syntetisk parfume' microcopy on every card. | Imagery is more consistent: every single-product tile shows bottle plus carton. A has two tiles (Hudpleje Olie, Rensegel) that show only a lone box, which kills desire for the hero 'Vidunder olien'. | Grid composition is tighter. A has a large dead gap between the image and copy on the All Day Facial card at the bottom right, and its three rows have different rhythms. B's 3-row bento with the gift card closing the grid feels deliberate. | Mobile: all four filter chips fit without being cut off, the bundle CTA sits above the price breakdown so the purchase action stays high, the cart icons on the buttons add affordance, and the page ends on trust plus a 'Se hele hudplejeserien' exit. A's mobile ends abruptly after All Day Facial with no trust or footer. | Motion is on-brand and premium: a soft light sheen sweeping across the glass bottles. It reads like product lighting rather than A's UI pill sliding in.
+What the judge liked about the competitor: Calmer, more editorial first read: one-line serif headline, generous whitespace and fewer competing elements make the grid feel airy and boutique. | Warmer, larger product photography in the 4-up row (Natcreme, Serum, Bodylotion) gives the products more presence and tactility than B's cooler, smaller packshots. | The Komplet Pakken hero card is simple and legible: numbered 1-4 routine list, one price, one gift line, one solid CTA. Little cognitive load. | The solid dark CTA appears only on the two bundle cards and the outline buttons sit on the singles, so the eye goes to the high-AOV items. | Hover 'Hurtig visning' pill is a useful shopping affordance.
+What the losing side must do to win (if you lost on any device, do it): Add the offer mechanics to the header: an explicit end date (til og med 30. november), 'gælder også Sampakker', and 'ingen kode – rabatten trækkes automatisk i kurven'. | Prove the bundle value on Komplet Pakken and All Day Facial: show the per-product førpris sum, the Black Week single-item total, and a single clear 'X kr. billigere end købt enkeltvis' line next to the price. | Replace the lone-carton images for CBD Hudpleje Olie and CBD Rensegel with bottle-plus-box packshots. The hero oil especially must show the amber dropper bottle. | Rebuild the gift card: drop the pink 'Gave' circle and show the actual lip balm with its value (79 kr.), plus a threshold rail for fri fragt at 399 kr. and gave at 699 kr., and a CTA straight to Komplet Pakken rather than a generic 'Se Sampakker'. | Fix the All Day Facial card's dead vertical gap by pulling the copy up against the image, or switch to a side-by-side layout so the bottom row has the same density as the rest of the grid. | Add a trust strip and legal footer under the grid (fri fragt over 399 kr., e-mærket, 14 dages fortrydelsesret, førpris definition with date), especially on mobile where A currently ends abruptly. | Label the routine visually on the bundle imagery (1 RENS / 2 DAG / 3 NAT / 4 OLIE under each bottle) instead of a separate bullet list. | Add a short benefit line under each product (for example 'Vegansk · uden syntetisk parfume') and cart icons on the buttons. On mobile, make the filter chips fit the viewport, or visibly signal horizontal scroll, so 'Sampakker' is not cut off. | Swap the hover-pill motion for, or add, a subtle light sheen across the bottles so the motion adds product desire rather than just UI chrome.
