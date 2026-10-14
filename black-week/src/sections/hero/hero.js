@@ -22,8 +22,8 @@ export default function init(root, ctx) {
   if (p) {
     const now = root.querySelector('[data-hero-price]'); if (now) now.textContent = ctx.fmt.kr(p.price);
     const was = root.querySelector('[data-hero-was]'); if (was) was.textContent = ctx.fmt.kr(p.price0);
-    const pct = root.querySelector('.hero-bubble__pct'); if (pct) pct.textContent = `−${p.pct}%`;
-    const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = `Spar ${ctx.fmt.kr(p.save)}`;
+    // the disc carries the one fact nothing else in the hero says: the saving in kroner on the named product
+    const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = ctx.fmt.kr(p.save);
   }
   {
     const big = root.querySelector('[data-hero-pct]'); if (big && ctx.campaign) big.textContent = String(ctx.campaign.headlinePct);
@@ -71,7 +71,13 @@ export default function init(root, ctx) {
       const r = el.getBoundingClientRect();
       if (el === trustEl) return rel(r);
       // inline content: use the text's own extent, not the full column width
-      let x1 = r.left; for (const c of el.children) x1 = Math.max(x1, c.getBoundingClientRect().right);
+      // (list items may be stretched to the full row by flex-basis: use their text, not their box)
+      let x1 = r.left;
+      for (const c of el.children) {
+        let cr = c.getBoundingClientRect().right;
+        if (c.tagName === 'LI') { const rg = document.createRange(); rg.selectNodeContents(c); cr = rg.getBoundingClientRect().right; }
+        x1 = Math.max(x1, cr);
+      }
       if (!el.children.length || el.classList.contains('hero-title')) { const rg = document.createRange(); rg.selectNodeContents(el); x1 = Math.max(x1, rg.getBoundingClientRect().right); }
       return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
     });

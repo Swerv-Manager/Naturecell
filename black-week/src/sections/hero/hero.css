@@ -26,7 +26,7 @@
 [data-section="hero"] .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1600ms var(--viscous); }
 [data-section="hero"].is-live .hero-canvas { opacity: 1; }
 [data-section="hero"] .hero-fallback { display: none; position: absolute; top: 0; right: max(0px, calc((100% - 1440px) / 2)); height: 100%; width: auto; max-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 22%, black 92%, transparent); mask-image: linear-gradient(90deg, transparent 0, black 22%, black 92%, transparent); }
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 14%, black 95%, transparent); mask-image: linear-gradient(90deg, transparent 0, black 14%, black 95%, transparent); }
 [data-section="hero"].is-static .hero-fallback { display: block; }
 [data-section="hero"].is-static .hero-canvas { display: none; }
 /* mobile-only scrim; on desktop a whisper of shade behind the copy column */
@@ -117,12 +117,13 @@
 [data-section="hero"].is-tracked .hero-tag { transition-delay: 1250ms; }
 
 [data-section="hero"] .hero-bubble__disc {
-  position: absolute; left: 0; top: 0; width: 116px; margin: -58px 0 0 -58px; padding: 0;
-  display: grid; place-content: center; gap: 3px; font-family: var(--font-body);
+  position: absolute; left: 0; top: 0; width: 120px; margin: -60px 0 0 -60px; padding: 0;
+  display: grid; place-content: center; justify-items: center; gap: 2px; font-family: var(--font-body); text-align: center;
   box-shadow: 0 18px 40px -18px color-mix(in srgb, color-mix(in srgb, var(--accent-berry) 40%, black) 60%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--cloud) 6%, transparent);
 }
-[data-section="hero"] .hero-bubble__pct { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
-[data-section="hero"] .hero-bubble__sub { font-size: 12px; font-weight: 600; letter-spacing: .01em; opacity: .9; line-height: 1; white-space: nowrap; }
+[data-section="hero"] .hero-bubble__k { font-size: 13px; font-weight: 600; letter-spacing: .02em; line-height: 1; opacity: .92; }
+[data-section="hero"] .hero-bubble__amt { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
+[data-section="hero"] .hero-bubble__sub { font-size: 10.5px; font-weight: 500; letter-spacing: .01em; opacity: .86; line-height: 1.15; white-space: nowrap; margin-top: 3px; }
 
 [data-section="hero"] .hero-tag { display: flex; align-items: center; pointer-events: auto; }
 [data-section="hero"] .hero-tag__lead { position: relative; width: 46px; height: 2px; flex: none; }
@@ -156,8 +157,8 @@
 
 /* static plate (no WebGL): the disc and the tag are pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-bubble, [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .343); top: calc(var(--hero-h) * .299); }
-[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .438); top: calc(var(--hero-h) * .695); transform: translateY(-50%); }
+[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .4046); top: calc(var(--hero-h) * .3232); }
+[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .4936); top: calc(var(--hero-h) * .6967); transform: translateY(-50%); }
 
 /* ---------- entrance: calm, staggered, viscous ---------- */
 [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: hero-rise 1100ms var(--viscous-long) both; }
@@ -246,14 +247,15 @@
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
   [data-section="hero"] .hero-tag__add { grid-row: 1 / span 2; }
-  [data-section="hero"] .hero-bubble__disc { width: 80px; margin: -40px 0 0 -40px; gap: 3px; }
-  [data-section="hero"] .hero-bubble__pct { font-size: 23px; }
-  [data-section="hero"] .hero-bubble__sub { font-size: 10.5px; letter-spacing: 0; }
+  [data-section="hero"] .hero-bubble__disc { width: 84px; margin: -42px 0 0 -42px; gap: 1px; }
+  [data-section="hero"] .hero-bubble__k { font-size: 11.5px; }
+  [data-section="hero"] .hero-bubble__amt { font-size: 19px; }
+  [data-section="hero"] .hero-bubble__sub { display: none; }
   /* static plate: the still sits in the spot; the disc and the pill are pinned to it */
   [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: var(--spot-top, 150px); transform: translateX(-50%); height: calc(var(--spot-h) - 66px); -webkit-mask-image: radial-gradient(closest-side, black 75%, transparent); mask-image: radial-gradient(closest-side, black 75%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: calc(50% + 24px); top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
+  [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; width: auto; height: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
   [data-section="hero"].is-static .hero-tag__lead { display: none; }
-  [data-section="hero"].is-static .hero-tag__card { position: relative; left: -110px; top: 0; }
+  [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
   [data-section="hero"].is-static .hero-bubble { left: calc(50% + 112px); right: auto; top: calc(var(--spot-top, 150px) + 52px); }
 }
 /* portrait tablets: the same story, scaled up */
@@ -274,9 +276,10 @@
   [data-section="hero"] .hero-short { display: none; }
   [data-section="hero"] .hero-trust { display: flex; font-size: 13px; }
   [data-section="hero"] .hero-trust__item { white-space: nowrap; align-items: center; }
-  [data-section="hero"] .hero-bubble__disc { width: 104px; margin: -52px 0 0 -52px; }
-  [data-section="hero"] .hero-bubble__pct { font-size: 30px; }
-  [data-section="hero"] .hero-bubble__sub { font-size: 11.5px; }
+  [data-section="hero"] .hero-bubble__disc { width: 108px; margin: -54px 0 0 -54px; }
+  [data-section="hero"] .hero-bubble__k { font-size: 12.5px; }
+  [data-section="hero"] .hero-bubble__amt { font-size: 24px; }
+  [data-section="hero"] .hero-bubble__sub { display: block; font-size: 10.5px; }
 }
 @media (max-width: 359px) {
   [data-section="hero"] .hero-cta { font-size: 14px; padding: 0 10px; }
@@ -286,5 +289,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-section="hero"] .hero-eyebrow__dot::after { animation: none; }
-  [data-section="hero"].is-ready .hero-copy > *, [data-section="hero"].is-ready .hero-trust { animation: none; }
+  [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: none; }
 }

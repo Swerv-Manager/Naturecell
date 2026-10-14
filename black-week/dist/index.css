@@ -1161,7 +1161,7 @@ html.nc-lock { overflow: hidden; }
 [data-section="hero"] .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1600ms var(--viscous); }
 [data-section="hero"].is-live .hero-canvas { opacity: 1; }
 [data-section="hero"] .hero-fallback { display: none; position: absolute; top: 0; right: max(0px, calc((100% - 1440px) / 2)); height: 100%; width: auto; max-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 22%, black 92%, transparent); mask-image: linear-gradient(90deg, transparent 0, black 22%, black 92%, transparent); }
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 14%, black 95%, transparent); mask-image: linear-gradient(90deg, transparent 0, black 14%, black 95%, transparent); }
 [data-section="hero"].is-static .hero-fallback { display: block; }
 [data-section="hero"].is-static .hero-canvas { display: none; }
 /* mobile-only scrim; on desktop a whisper of shade behind the copy column */
@@ -1252,12 +1252,13 @@ html.nc-lock { overflow: hidden; }
 [data-section="hero"].is-tracked .hero-tag { transition-delay: 1250ms; }
 
 [data-section="hero"] .hero-bubble__disc {
-  position: absolute; left: 0; top: 0; width: 116px; margin: -58px 0 0 -58px; padding: 0;
-  display: grid; place-content: center; gap: 3px; font-family: var(--font-body);
+  position: absolute; left: 0; top: 0; width: 120px; margin: -60px 0 0 -60px; padding: 0;
+  display: grid; place-content: center; justify-items: center; gap: 2px; font-family: var(--font-body); text-align: center;
   box-shadow: 0 18px 40px -18px color-mix(in srgb, color-mix(in srgb, var(--accent-berry) 40%, black) 60%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--cloud) 6%, transparent);
 }
-[data-section="hero"] .hero-bubble__pct { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
-[data-section="hero"] .hero-bubble__sub { font-size: 12px; font-weight: 600; letter-spacing: .01em; opacity: .9; line-height: 1; white-space: nowrap; }
+[data-section="hero"] .hero-bubble__k { font-size: 13px; font-weight: 600; letter-spacing: .02em; line-height: 1; opacity: .92; }
+[data-section="hero"] .hero-bubble__amt { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
+[data-section="hero"] .hero-bubble__sub { font-size: 10.5px; font-weight: 500; letter-spacing: .01em; opacity: .86; line-height: 1.15; white-space: nowrap; margin-top: 3px; }
 
 [data-section="hero"] .hero-tag { display: flex; align-items: center; pointer-events: auto; }
 [data-section="hero"] .hero-tag__lead { position: relative; width: 46px; height: 2px; flex: none; }
@@ -1291,8 +1292,8 @@ html.nc-lock { overflow: hidden; }
 
 /* static plate (no WebGL): the disc and the tag are pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-bubble, [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .343); top: calc(var(--hero-h) * .299); }
-[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .438); top: calc(var(--hero-h) * .695); transform: translateY(-50%); }
+[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .4046); top: calc(var(--hero-h) * .3232); }
+[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .4936); top: calc(var(--hero-h) * .6967); transform: translateY(-50%); }
 
 /* ---------- entrance: calm, staggered, viscous ---------- */
 [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: hero-rise 1100ms var(--viscous-long) both; }
@@ -1381,14 +1382,15 @@ html.nc-lock { overflow: hidden; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
   [data-section="hero"] .hero-tag__add { grid-row: 1 / span 2; }
-  [data-section="hero"] .hero-bubble__disc { width: 80px; margin: -40px 0 0 -40px; gap: 3px; }
-  [data-section="hero"] .hero-bubble__pct { font-size: 23px; }
-  [data-section="hero"] .hero-bubble__sub { font-size: 10.5px; letter-spacing: 0; }
+  [data-section="hero"] .hero-bubble__disc { width: 84px; margin: -42px 0 0 -42px; gap: 1px; }
+  [data-section="hero"] .hero-bubble__k { font-size: 11.5px; }
+  [data-section="hero"] .hero-bubble__amt { font-size: 19px; }
+  [data-section="hero"] .hero-bubble__sub { display: none; }
   /* static plate: the still sits in the spot; the disc and the pill are pinned to it */
   [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: var(--spot-top, 150px); transform: translateX(-50%); height: calc(var(--spot-h) - 66px); -webkit-mask-image: radial-gradient(closest-side, black 75%, transparent); mask-image: radial-gradient(closest-side, black 75%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: calc(50% + 24px); top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
+  [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; width: auto; height: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
   [data-section="hero"].is-static .hero-tag__lead { display: none; }
-  [data-section="hero"].is-static .hero-tag__card { position: relative; left: -110px; top: 0; }
+  [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
   [data-section="hero"].is-static .hero-bubble { left: calc(50% + 112px); right: auto; top: calc(var(--spot-top, 150px) + 52px); }
 }
 /* portrait tablets: the same story, scaled up */
@@ -1409,9 +1411,10 @@ html.nc-lock { overflow: hidden; }
   [data-section="hero"] .hero-short { display: none; }
   [data-section="hero"] .hero-trust { display: flex; font-size: 13px; }
   [data-section="hero"] .hero-trust__item { white-space: nowrap; align-items: center; }
-  [data-section="hero"] .hero-bubble__disc { width: 104px; margin: -52px 0 0 -52px; }
-  [data-section="hero"] .hero-bubble__pct { font-size: 30px; }
-  [data-section="hero"] .hero-bubble__sub { font-size: 11.5px; }
+  [data-section="hero"] .hero-bubble__disc { width: 108px; margin: -54px 0 0 -54px; }
+  [data-section="hero"] .hero-bubble__k { font-size: 12.5px; }
+  [data-section="hero"] .hero-bubble__amt { font-size: 24px; }
+  [data-section="hero"] .hero-bubble__sub { display: block; font-size: 10.5px; }
 }
 @media (max-width: 359px) {
   [data-section="hero"] .hero-cta { font-size: 14px; padding: 0 10px; }
@@ -1421,7 +1424,7 @@ html.nc-lock { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   [data-section="hero"] .hero-eyebrow__dot::after { animation: none; }
-  [data-section="hero"].is-ready .hero-copy > *, [data-section="hero"].is-ready .hero-trust { animation: none; }
+  [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: none; }
 }
 
 /* section offers */
@@ -1476,7 +1479,8 @@ html.nc-lock { overflow: hidden; }
 [data-section="offers"] .offers-unit { position: relative; display: inline-flex; align-items: baseline; gap: 6px; }
 /* separator: a real middle dot in the display face, so it sits on the digits' optical centre */
 [data-section="offers"] .offers-unit + .offers-unit::before {
-  content: "\00B7"; margin-right: 6px; margin-left: 0; font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--sand-500);
+  content: "\00B7"; margin-right: 6px; margin-left: 0; font-family: var(--font-display); font-size: 40px; line-height: 1;
+  color: color-mix(in srgb, var(--sage-600) 55%, transparent);
 }
 [data-section="offers"] .offers-unit[hidden] { display: none; }
 [data-section="offers"] .offers-unit[hidden] + .offers-unit::before { content: none; }
@@ -1575,7 +1579,10 @@ html.nc-lock { overflow: hidden; }
 }
 
 /* two planes: serum and olie a step forward on the table (same scale – sizes stay truthful) */
-[data-section="offers"] .offers-row--range .offers-p--front { margin-bottom: -3cqh; margin-inline: -1.4cqw; z-index: 2; }
+/* the heavy tube on the left: optically centre the visual mass, equal air at both stage edges */
+[data-section="offers"] .offers-row--range { padding-right: 2.8cqw; }
+/* a clear overlap (never a tangent): the front plane visibly passes in front of the airless feet */
+[data-section="offers"] .offers-row--range .offers-p--front { margin-bottom: -3cqh; margin-inline: -2.8cqw; z-index: 2; }
 
 /* 2 · hero offer: no inner box – the products stand in the night-green tile itself, lit by a warm evening glow */
 [data-section="offers"] .offers-stage--hero {
@@ -1613,22 +1620,29 @@ html.nc-lock { overflow: hidden; }
 /* 3 · gift: warm sand room, a true example basket and the gift bubble */
 [data-section="offers"] .offers-stage--gift {
   background:
-    radial-gradient(44% 46% at 22% 40%, color-mix(in srgb, var(--accent-pink) 20%, transparent) 0%, transparent 100%),
+    radial-gradient(40% 44% at 34% 40%, color-mix(in srgb, var(--accent-pink) 22%, transparent) 0%, transparent 100%),
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-[data-section="offers"] .offers-stage--gift .offers-row { gap: 2cqw; }
-/* the gift is a flat brand bubble, floating at the basket's shoulder – never on the floor, never shadowed, never rotated */
+/* two products, just over the line – the camera a step closer than the six-up range (one scale inside the stage) */
+[data-section="offers"] .offers-stage--gift { --u: 70cqh; }
+[data-section="offers"] .offers-stage--gift .offers-row { gap: 0; padding-right: 2cqw; }
+/* olie a step forward, passing clearly in front of the natcreme's foot */
+[data-section="offers"] .offers-stage--gift .offers-p:last-child { margin: 0 0 -3cqh -1.8cqw; z-index: 2; }
+/* the gift is a flat brand bubble – the same disc as the Spar bubble next door – floating with its centre on the
+   natcreme's cap line (cap = top 34% of the jar); never on the floor, never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
+  --d: clamp(76px, 23cqw, 86px);
   position: relative; z-index: 1; flex: none; align-self: flex-end;
-  width: 30cqh; height: 30cqh; margin: 0 3cqw 22cqh 0;     /* floats at the basket's shoulder, clear of the floor */
+  width: var(--d); height: var(--d);
+  margin: 0 max(18px, 5cqw) calc(var(--u) * .66 - var(--d) / 2) 0;
   display: grid; grid-auto-flow: column; place-content: center; align-items: baseline; column-gap: .16em;
   border-radius: 50%; background: var(--accent-pink); color: var(--accent-berry);
-  font-family: var(--font-display); font-size: 5.6cqh; line-height: 1; white-space: nowrap;
+  font-family: var(--font-display); font-size: 17px; line-height: 1; white-space: nowrap;
   transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long), scale 700ms var(--viscous);
 }
 [data-section="offers"] .offers-gift__plus { font-size: 1em; }
-[data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: -.005em; }
+[data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: .005em; }
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
 
 /* the shelf-edge label: centred in the tabletop band under the line-up */
@@ -1750,9 +1764,13 @@ html.nc-lock { overflow: hidden; }
    (observer/scroll-linked reveals leave it blank in full-page captures and on slow first frames) */
 
 /* ---------------------------------------------------------------- after 30 Nov 23.59: no Black Week price claims survive a cached page */
+/* and before 23 Nov 00.00 no price claim is shown that is not yet true – only the clock counts down to the start */
 [data-section="offers"][data-campaign="ended"] .offers-rail,
 [data-section="offers"][data-campaign="ended"] .offers-dots,
-[data-section="offers"][data-campaign="ended"] .offers-foot { display: none; }
+[data-section="offers"][data-campaign="ended"] .offers-foot,
+[data-section="offers"][data-campaign="pre"] .offers-rail,
+[data-section="offers"][data-campaign="pre"] .offers-dots,
+[data-section="offers"][data-campaign="pre"] .offers-foot { display: none; }
 
 /* ---------------------------------------------------------------- tablet */
 @media (max-width: 1100px) {
@@ -1796,8 +1814,13 @@ html.nc-lock { overflow: hidden; }
   [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
   /* the square stage is narrower relative to its height: the six-up tablescape steps back to keep air at both edges */
   [data-section="offers"] .offers-stage--range { --u: 50cqh; }
-  /* the set steps left, so the Spar bubble owns the top-right corner with clear air around the caps */
-  [data-section="offers"] .offers-row--set { padding-right: 14cqw; }
+  /* mirrored against the hero one screen above (whose disc sits top-right): the Spar bubble owns the top-left corner,
+     the shortest product (olie) stands under it with clear air, and the set steps right */
+  [data-section="offers"] .offers-save { right: auto; left: var(--copy-x); }
+  [data-section="offers"] .offers-row--set { flex-direction: row-reverse; padding: 0 0 0 14cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(1) { margin-right: 0; margin-left: 1.6cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(2) { margin-right: 0; margin-left: 1.6cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: 0; margin-right: 2.2cqw; }
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
   [data-section="offers"] .offers-fig__big { font-size: 40px; }
@@ -1905,12 +1928,11 @@ html.nc-lock { overflow: hidden; }
 }
 
 /* one thin diagonal thread per composition (packaging reference) */
+/* one thin diagonal thread per composition (packaging reference): it enters at the section's top-right edge and runs in
+   behind the filter pill, ending exactly at the pill's right shoulder (geometry set by deals.js) */
 [data-section="deals"] .deals-thread {
-  position: absolute; pointer-events: none; z-index: 0;
-  right: 0; top: 0; width: 42%; height: clamp(190px, 19vw, 280px);
-  background: linear-gradient(to bottom left, transparent calc(50% - .6px), color-mix(in srgb, var(--accent-mauve) 58%, transparent) 50%, transparent calc(50% + .6px));
-  -webkit-mask-image: linear-gradient(to bottom, var(--sage-900) 0, var(--sage-900) 62%, transparent 100%);
-  mask-image: linear-gradient(to bottom, var(--sage-900) 0, var(--sage-900) 62%, transparent 100%);
+  position: absolute; pointer-events: none; z-index: 0; left: 0; top: 0; width: 100%; height: 0; overflow: hidden;
+  fill: none; stroke: color-mix(in srgb, var(--accent-mauve) 62%, transparent); stroke-width: .75; stroke-linecap: round;
 }
 [data-section="deals"] .deals-wrap { position: relative; z-index: 1; }
 
@@ -2088,6 +2110,8 @@ html.nc-lock { overflow: hidden; }
   content: ""; position: absolute; left: 14%; right: 14%; top: 50%; height: 6px; margin-top: -3px;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--dl-sh) 40%, transparent), transparent);
   opacity: calc(1 - var(--h, 0) * .6);
+  /* the occlusion core leans away from the window light (≈ ±6px on a single pack), so the shadow answers the light */
+  transform: translateX(calc((50% - var(--deals-lx, 50%)) * .17));
 }
 /* the light: one distant window reflected in glass and carton. Three layers, all masked to the packshot's own alpha and
    faded at the shoulders/base (a reflection lives on the body of a bottle, never on its silhouette):
@@ -2105,15 +2129,16 @@ html.nc-lock { overflow: hidden; }
   -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
-/* 1. sheen – a broad, soft bloom of window light that walks along the shelf (screen, low) */
+/* 1. sheen – the window on the paper faces: a broad moving brightening (soft-light lifts the label colours instead of
+   greying them), ~18 % of a pack wide */
 [data-section="deals"] .deals-gloss--sheen {
   background: linear-gradient(90deg,
-    transparent calc(var(--c) - var(--bk, .5) * 11%),
-    color-mix(in srgb, var(--cloud) 11%, transparent) calc(var(--c) - var(--bk, .5) * 2%),
-    color-mix(in srgb, var(--cloud) 14%, transparent) var(--c),
-    color-mix(in srgb, var(--cloud) 11%, transparent) calc(var(--c) + var(--bk, .5) * 3%),
-    transparent calc(var(--c) + var(--bk, .5) * 13%));
-  mix-blend-mode: screen;
+    transparent calc(var(--c) - var(--bk, .5) * 7%),
+    color-mix(in srgb, var(--cloud) 40%, transparent) calc(var(--c) - var(--bk, .5) * 3%),
+    color-mix(in srgb, var(--cloud) 62%, transparent) var(--c),
+    color-mix(in srgb, var(--cloud) 40%, transparent) calc(var(--c) + var(--bk, .5) * 3%),
+    transparent calc(var(--c) + var(--bk, .5) * 7%));
+  mix-blend-mode: soft-light;
   opacity: max(var(--h, 0), var(--deals-g));
 }
 /* 2. plane – the same light lifting the label colours (overlay, never greying), plus a broad wash across the flat
@@ -2129,42 +2154,43 @@ html.nc-lock { overflow: hidden; }
   mix-blend-mode: overlay;
   opacity: max(calc(var(--h, 0) * .7), calc(var(--deals-g) * .7), var(--pl, 0));
 }
-/* 3. glint – the window's edge as a crisp strip (pixel floor: never thinner than 4 px) and a thin secondary line.
-   It lives only on the round bottle of a composite shot, inset from its edges so it never rides a silhouette, and
-   sits at the same relative spot on every bottle – the way one window reflects in a row of real bottles. */
+/* 3. glint – the window's edge reflected in the GLASS: a crisp strip (core ≈ 1.2 % of a unit, ~3px on desktop) with a
+   soft falloff, a thin secondary line and a wide halo. It is masked to each packshot's own glass map (glass-masks.js:
+   amber glass, dropper/pump heads, chrome collars, clear caps – never the paper label or the carton), so it shows where
+   the glass is dark and reads like a real reflection, travelling the inner 72 % of the round body. */
 [data-section="deals"] .deals-gloss--glint {
-  /* the glint only travels the inner 72 % of the round body – it never parks on a silhouette where the mask eats it */
+  --gc: 2px;                                                   /* half core (1.5px on a phone) */
+  --gf: calc(var(--gc) * 5);                                    /* falloff */
   --g: calc(var(--cy0, 0%) + (var(--cy1, 100%) - var(--cy0, 0%)) * .14 + clamp(0%, var(--deals-lx), 100%) * var(--cyw, 1) * .72);
-  --g2: calc(var(--g) + (var(--cy1) - var(--cy0)) * .38);
-  -webkit-mask-image: var(--m), var(--vfade), linear-gradient(90deg, transparent calc(var(--cy0) + 1.5%), var(--sage-900) calc(var(--cy0) + 3.5%), var(--sage-900) calc(var(--cy1) - 3.5%), transparent calc(var(--cy1) - 1.5%));
-  mask-image: var(--m), var(--vfade), linear-gradient(90deg, transparent calc(var(--cy0) + 1.5%), var(--sage-900) calc(var(--cy0) + 3.5%), var(--sage-900) calc(var(--cy1) - 3.5%), transparent calc(var(--cy1) - 1.5%));
+  --g2: calc(var(--g) + (var(--cy1) - var(--cy0)) * .3);
+  -webkit-mask-image: var(--gm); mask-image: var(--gm);
   background:
     linear-gradient(90deg,
-      transparent calc(var(--g) - 7px),
-      color-mix(in srgb, var(--cloud) 16%, transparent) calc(var(--g) - 3.5px),
-      color-mix(in srgb, var(--cloud) 68%, transparent) calc(var(--g) - 1.25px),
-      color-mix(in srgb, var(--cloud) 68%, transparent) calc(var(--g) + 1.25px),
-      color-mix(in srgb, var(--cloud) 16%, transparent) calc(var(--g) + 3.5px),
-      transparent calc(var(--g) + 7px)),
+      transparent calc(var(--g) - var(--gf)),
+      color-mix(in srgb, var(--cloud) 34%, transparent) calc(var(--g) - var(--gc) * 2.4),
+      color-mix(in srgb, var(--cloud) 90%, transparent) calc(var(--g) - var(--gc)),
+      color-mix(in srgb, var(--cloud) 90%, transparent) calc(var(--g) + var(--gc)),
+      color-mix(in srgb, var(--cloud) 34%, transparent) calc(var(--g) + var(--gc) * 2.4),
+      transparent calc(var(--g) + var(--gf))),
     linear-gradient(90deg,
       transparent calc(var(--g2) - 1px),
-      color-mix(in srgb, var(--cloud) 32%, transparent) calc(var(--g2) - .5px),
-      color-mix(in srgb, var(--cloud) 32%, transparent) calc(var(--g2) + .5px),
+      color-mix(in srgb, var(--cloud) 50%, transparent) calc(var(--g2) - .4px),
+      color-mix(in srgb, var(--cloud) 50%, transparent) calc(var(--g2) + .4px),
       transparent calc(var(--g2) + 1px)),
-    linear-gradient(90deg, transparent calc(var(--g) - 22px), color-mix(in srgb, var(--cloud) 16%, transparent) var(--g), transparent calc(var(--g) + 26px));
+    linear-gradient(90deg, transparent calc(var(--g) - var(--gf) * 2), color-mix(in srgb, var(--cloud) 12%, transparent) var(--g), transparent calc(var(--g) + var(--gf) * 2.2));
   mix-blend-mode: screen;
   opacity: max(var(--h, 0), var(--deals-g));
 }
 /* at rest the window sits a third of the way across every pack – a still, photographic highlight. On arrival it glides
    in from the left and settles there (once); under the cursor it follows the hand. */
-[data-section="deals"] .deals-card { --deals-lx: 32%; --deals-g: .4; }
-[data-section="deals"] .is-sweep { animation: deals-sweep 2600ms cubic-bezier(.16, 1, .3, 1) both; }
-@keyframes deals-sweep {
-  0%   { --deals-lx: -40%; --deals-g: 0; }
-  18%  { --deals-g: 1; }
-  55%  { --deals-g: .85; }
-  100% { --deals-lx: 32%; --deals-g: .4; }
-}
+[data-section="deals"] .deals-card, [data-section="deals"] .deals-gift { --deals-lx: 32%; --deals-g: .55; }
+/* on arrival (and when the gift tile points at a card) the window light blooms once on the pack – its position stays on
+   the window's slow ambient path (deals.js), so nothing jumps */
+[data-section="deals"] .deals-card.is-sweep { animation: deals-sweep 2400ms cubic-bezier(.16, 1, .3, 1) both; }
+@keyframes deals-sweep { 0% { --deals-g: .2; } 22% { --deals-g: 1; } 100% { --deals-g: .55; } }
+/* the quick view's stage keeps its own glide in */
+[data-section="deals"] .deals-qv__stage.is-sweep { animation: deals-sweep-qv 2600ms cubic-bezier(.16, 1, .3, 1) both; }
+@keyframes deals-sweep-qv { 0% { --deals-lx: -40%; --deals-g: 0; } 18% { --deals-g: 1; } 100% { --deals-lx: 30%; --deals-g: .6; } }
 
 /* sale flag – a small berry pill: everything is −25 %, so it whispers instead of shouting */
 [data-section="deals"] .deals-flag {
@@ -2196,9 +2222,18 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-card:focus-within .deals-quick,
 [data-section="deals"] .deals-quick:focus-visible { opacity: 1; transform: none; }
 [data-section="deals"] .deals-quick:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -1px; border-radius: 50%; }
+/* touch: no eye on the single tiles – the packshot itself is the quick-view button. The two Sampakke cards keep a small
+   eye (24px visible, 44px hit area), because their full ledger is what quick view is worth opening for. */
+[data-section="deals"].deals-touch .deals-card:not(.deals-card--set) .deals-quick { display: none; }
 [data-section="deals"].deals-touch .deals-quick { opacity: 1; transform: none; top: 6px; right: 6px; }
-[data-section="deals"].deals-touch .deals-quick::before { inset: 8px; box-shadow: none; background: color-mix(in srgb, var(--cloud) 72%, transparent); border-color: transparent; }
-[data-section="deals"].deals-touch .deals-quick svg { width: 16px; height: 16px; }
+[data-section="deals"].deals-touch .deals-quick::before { inset: 10px; box-shadow: none; background: color-mix(in srgb, var(--cloud) 80%, transparent); border-color: color-mix(in srgb, var(--sage-700) 10%, transparent); }
+[data-section="deals"].deals-touch .deals-quick svg { width: 14px; height: 14px; }
+[data-section="deals"] .deals-stagebtn { display: none; }
+[data-section="deals"].deals-touch .deals-stagebtn {
+  display: block; position: absolute; inset: 0; z-index: 2; pointer-events: auto; padding: 0; border: 0; background: transparent;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: inherit;
+}
+[data-section="deals"].deals-touch .deals-stagebtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
 
 /* body */
 [data-section="deals"] .deals-card__body { position: static; flex: 1; display: flex; flex-direction: column; padding: 16px 20px 20px; }
@@ -2210,7 +2245,11 @@ html.nc-lock { overflow: hidden; }
 }
 [data-section="deals"] .deals-card__size { margin: 4px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--dl-muted); font-variant-numeric: tabular-nums; }
 /* one short claim, whole words, two lines reserved so every price row in a grid row shares one line */
-[data-section="deals"] .deals-card__claim { margin: 7px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-body); min-height: 3em; text-wrap: pretty; }
+[data-section="deals"] .deals-card__claim { margin: 7px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-body); text-wrap: pretty; }
+/* a quiet, true fact line under the claim (brief: vegansk, uden syntetisk parfume) – information, not filler */
+[data-section="deals"] .deals-card__meta { margin: 6px 0 0; font-size: 12px; line-height: 1.4; color: var(--dl-muted); letter-spacing: .005em; }
+/* one shared name block per row (deals.js sets data-name2 when a neighbour's name wraps) */
+[data-section="deals"] .deals-item[data-name2] .deals-card__name { min-height: 2.32em; }
 [data-section="deals"] .deals-card__buy { margin-top: auto; padding-top: 14px; }
 
 /* price: Black Week price + struck førpris on one line (§ 9 a wording), the saving on the line below in berry */
@@ -2276,7 +2315,7 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-set__body { position: static; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); column-gap: clamp(22px, 2.6vw, 36px); padding: 16px 22px 20px; }
 [data-section="deals"] .deals-set__intro, [data-section="deals"] .deals-set__side { display: flex; flex-direction: column; min-width: 0; }
 [data-section="deals"] .deals-card__name--set { font-size: clamp(1.625rem, 1.2rem + .8vw, 2rem); line-height: 1.06; }
-[data-section="deals"] .deals-card__claim--set { margin-top: 7px; min-height: 0; font-size: 13.5px; }
+[data-section="deals"] .deals-card__claim--set { margin-top: 7px; min-height: 0; font-size: 13.5px; text-wrap: balance; }
 [data-section="deals"] .deals-set__perks { list-style: none; margin: 2px 0 0; padding: 0; display: grid; gap: 7px; font-size: 13px; line-height: 1.35; color: var(--sage-800); }
 [data-section="deals"] .deals-set__perks li { display: flex; align-items: flex-start; gap: 8px; }
 [data-section="deals"] .deals-set__perks li.is-gift { font-weight: 600; color: var(--sage-900); }
@@ -2386,28 +2425,27 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-drop__spec { position: absolute; left: 21%; top: 11%; width: 36%; height: 20%; border-radius: 50%; transform: rotate(-26deg); background: radial-gradient(closest-side, color-mix(in srgb, var(--paper) 80%, transparent), color-mix(in srgb, var(--paper) 18%, transparent) 60%, transparent); }
 @keyframes deals-buoy { from { transform: translateY(4px); } to { transform: translateY(-7px); } }
 
-/* the gift itself: the stick (illustration until data.js has a packshot – then the photo takes the same slot) stands on a
-   small sand plinth in a warm pool of light, at the grid's truthful scale (6 ml stick ≈ .32 of the 300 ml shampoo).
-   Its value tag hangs beside it on a sand thread from the tile's top edge, 24px down. */
+/* the gift itself: the 6 ml stick at the grid's truthful scale (≈ .32 of the 300 ml shampoo), standing on the SAME floor
+   as every pack in the grid – the shared contact shadow and the same window light – in a warm pool of light. Its value
+   tag hangs beside it on a sand thread from the tile's top edge. */
 [data-section="deals"] .deals-gift__art.has-pack { display: block; flex: 1 1 auto; min-height: 178px; margin-bottom: 6px; }
 [data-section="deals"] .deals-gift__pack {
-  position: absolute; z-index: 1; left: calc(50% - 44px); bottom: 14px; transform: translateX(-50%);
+  position: absolute; z-index: 1; left: calc(50% - 44px); bottom: 22px; transform: translateX(-50%);
   display: grid; justify-items: center;
 }
 [data-section="deals"] .deals-gift__pack::before {
-  content: ""; position: absolute; z-index: -1; left: 50%; bottom: -14px; width: 200px; height: 150px; transform: translateX(-50%);
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 26%, transparent), color-mix(in srgb, var(--sand-500) 8%, transparent) 55%, transparent);
+  content: ""; position: absolute; z-index: -1; left: 50%; bottom: -26px; width: 220px; height: 150px; transform: translateX(-50%);
+  background:
+    /* the lit patch of floor the stick stands on – its contact shadow reads against it */
+    radial-gradient(64px 11px at 50% calc(100% - 26px), color-mix(in srgb, var(--sand-300) 30%, transparent), transparent),
+    radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 7%, transparent) 55%, transparent);
 }
-[data-section="deals"] .deals-gift__pack .deals-lb,
-[data-section="deals"] .deals-gift__pack img {
-  display: block; height: calc(var(--dl-u, 220px) * .32); width: auto; max-width: none; margin-bottom: -1px;
-  filter: drop-shadow(0 8px 10px color-mix(in srgb, var(--sage-900) 55%, transparent)) drop-shadow(-6px 2px 10px color-mix(in srgb, var(--sand-500) 18%, transparent));
-}
-[data-section="deals"] .deals-gift__plinth {
-  width: 64px; height: 11px; border-radius: 3px;
-  background: linear-gradient(180deg, var(--sand-300), color-mix(in srgb, var(--sand-500) 78%, var(--sage-900)));
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 55%, transparent), 0 12px 18px -8px color-mix(in srgb, var(--sage-900) 85%, transparent);
-}
+[data-section="deals"] .deals-line--gift { position: relative; left: auto; right: auto; bottom: auto; --u: var(--dl-u, 230px); }
+/* on the night-green tile the shared shadow recipe is re-weighted so it still reads as contact, not as a hole */
+[data-section="deals"] .deals-gift .deals-prod__shadow { left: -45%; right: -45%; bottom: -9px; height: 18px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--sage-900) 85%, transparent), color-mix(in srgb, var(--sage-900) 30%, transparent) 60%, transparent); }
+[data-section="deals"] .deals-gift .deals-prod__shadow::after { left: 24%; right: 24%; background: radial-gradient(closest-side, var(--sage-900), transparent); }
+[data-section="deals"] .deals-gift .deals-prod__pack { filter: drop-shadow(-5px 0 10px color-mix(in srgb, var(--sand-500) 16%, transparent)); }
 [data-section="deals"] .has-pack .deals-tag { position: absolute; z-index: 2; top: 24px; left: calc(50% - 14px); margin: 0; --tw: 86px; transform-origin: 50% -220px; }
 [data-section="deals"] .has-pack .deals-drop { display: none; }
 
@@ -2415,7 +2453,7 @@ html.nc-lock { overflow: hidden; }
 /* the brand's hand-drawn pil arrow, turned so its head points along the reading direction */
 [data-section="deals"] .deals-pil { width: 18px; height: 18px; flex: none; fill: currentColor; stroke: none; transform: rotate(-30deg); transition: transform 420ms var(--dl-visc); }
 [data-section="deals"] .deals-gift__cta:hover .deals-pil, [data-section="deals"] .deals-qv__more:hover .deals-pil { transform: translateX(3px) rotate(-30deg); }
-[data-section="deals"] .deals-gift__copy { margin: 0; font-size: 14px; line-height: 1.5; color: var(--bw-muted-on-night); }
+[data-section="deals"] .deals-gift__copy { margin: 0; font-size: 14px; line-height: 1.5; color: var(--bw-muted-on-night); text-wrap: balance; }
 [data-section="deals"] .deals-gift__copy-s, [data-section="deals"] .deals-gift__ln, [data-section="deals"] .deals-gift__cta-s { display: none; }
 [data-section="deals"] .deals-gift__meter { padding-top: 4px; }
 [data-section="deals"] .deals-gift__track {
@@ -2438,7 +2476,7 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-gift.is-done .deals-gift__tick--end { background: var(--sand-500); border-color: var(--sand-500); transform: scale(1.15); }
 /* each label is centred exactly under its 12px node */
 [data-section="deals"] .deals-gift__labels { position: relative; height: 14px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
-[data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); transform: translateX(-50%); white-space: nowrap; text-align: center; }
+[data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); white-space: nowrap; text-align: center; }
 [data-section="deals"] .deals-gift__labels > .deals-gift__lend { left: calc(100% - 6px); }
 [data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); }
 [data-section="deals"] .deals-gift__status b { color: var(--paper); font-weight: 600; }
@@ -2453,19 +2491,15 @@ html.nc-lock { overflow: hidden; }
   [data-section="deals"] .deals-drop--bg { --d: 60px; top: calc(50% - 50px); }
   [data-section="deals"] .deals-gift__art.has-pack { min-height: 128px; margin-bottom: 0; }
   [data-section="deals"] .has-pack .deals-tag { --tw: 70px; top: 14px; left: calc(50% - 10px); }
-  /* narrow tile, empty cart: the button already names the pack that unlocks the gift – the status line returns as soon
-     as there is something in the cart to count */
-  [data-section="deals"] .deals-gift.is-empty .deals-gift__status { display: none; }
-  [data-section="deals"] .deals-gift__pack { left: calc(50% - 34px); bottom: 12px; }
-  [data-section="deals"] .deals-gift__plinth { width: 50px; height: 9px; }
+  [data-section="deals"] .deals-gift__pack { left: calc(50% - 34px); bottom: 16px; }
   [data-section="deals"] .deals-gift__copy-x { display: none; }
   [data-section="deals"] .deals-gift__copy-s { display: inline; }
-  /* the nodes are labelled with their thresholds – shorter than the words and more useful */
-  [data-section="deals"] .deals-gift__labels { letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; }
-  [data-section="deals"] .deals-gift__lw { display: none; }
-  [data-section="deals"] .deals-gift__ln { display: inline; }
-  [data-section="deals"] .deals-gift__labels > .deals-gift__lend { left: auto; right: 0; transform: none; }
-  [data-section="deals"] .deals-gift__cta { padding: 0 6px; font-size: 13px; }
+  /* each node: what it gives over what it costs, two short lines centred under the knob (deals.js keeps them inside) */
+  [data-section="deals"] .deals-gift__labels { height: 30px; letter-spacing: .04em; }
+  [data-section="deals"] .deals-gift__labels > span { display: grid; justify-items: center; row-gap: 4px; transform: none; }
+  [data-section="deals"] .deals-gift__ln { display: block; letter-spacing: 0; text-transform: none; font-weight: 500; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--paper) 86%, transparent); }
+  [data-section="deals"] .deals-gift__cta { padding: 0 8px; font-size: 13px; }
+  [data-section="deals"] .deals-gift__cta .deals-pil { width: 13px; height: 13px; }
   [data-section="deals"] .deals-gift__cta-l { display: none; }
   [data-section="deals"] .deals-gift__cta-s { display: inline; }
 }
@@ -2480,7 +2514,7 @@ html.nc-lock { overflow: hidden; }
   [data-section="deals"] .deals-gift__cta { justify-self: start; width: auto; padding: 0 22px; }
   [data-section="deals"] .deals-gift__title { font-size: 1.875rem; }
   [data-section="deals"] .deals-gift__meter { padding-top: 10px; max-width: 420px; }
-  [data-section="deals"] .deals-gift__art { grid-column: 2; grid-row: 1 / -1; min-height: 220px; margin: -34px 0; align-self: stretch; }
+  [data-section="deals"] .deals-gift__art { grid-column: 2; grid-row: 1 / -1; min-height: 220px; margin: -34px 0; align-self: stretch; overflow: visible; }
 }
 /* full-row gift tile: a calm banner */
 @container (min-width: 900px) {
@@ -2580,7 +2614,6 @@ html.nc-lock { overflow: hidden; }
 /* ---------------------------------------------------------------- mobile: 2-col grid (more products per scroll, thumb-reachable add) */
 @media (max-width: 760px) {
   [data-section="deals"] { --dl-gap: 10px; --dl-radius: 16px; --dl-floor: .12; --dl-top: .1; --dl-ufrac: .78; --dl-flpx: 22px; --dl-flpx-set: 58px; --dl-top-u: .1; }
-  [data-section="deals"] .deals-thread { width: 34%; right: -4%; height: 92px; }
   [data-section="deals"] .deals-head { gap: 20px; }
   [data-section="deals"] .deals-head__text { gap: 10px; }
   [data-section="deals"] .deals-eyebrow__x { display: none; } /* one line on a phone */
@@ -2599,19 +2632,19 @@ html.nc-lock { overflow: hidden; }
   [data-section="deals"] .deals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 10px; }
   [data-section="deals"] .deals-card__stage { --wfit: .84; }
   [data-section="deals"] .deals-flag { top: 9px; left: 9px; height: 22px; padding: 0 8px; font-size: 11.5px; }
-  [data-section="deals"] .deals-card__body { padding: 11px 12px 12px; flex: none; }
-  /* surplus row height (a taller neighbour, a 2-line name) goes to the stage, not into a gap in the text column: the
-     floor line is measured from the stage's TOP, so neighbours keep one shared floor and the surplus becomes a little more
-     studio floor in front of the packs. Price and button still meet the card's bottom edge. */
-  [data-section="deals"] .deals-card__stage {
-    --fy: calc(var(--dl-u, 230px) * (var(--row-h, 1) + var(--dl-top-u)));
-    height: auto; flex: 1 0 auto; min-height: calc(var(--fy) + var(--dl-flpx));
-  }
-  [data-section="deals"] .deals-card .deals-line { top: 0; bottom: auto; height: var(--fy); }
+  [data-section="deals"] .deals-card__body { padding: 11px 12px 12px; }
+  /* every stage in a row is exactly the same height (one floor, one image/body seam across the row); a 2-line name is
+     absorbed by the shared name block (data-name2), and the price + button meet the card's bottom edge */
+  [data-section="deals"] .deals-card__stage { flex: none; }
+  [data-section="deals"] .deals-gloss--glint { --gc: 1.5px; }
+  [data-section="deals"] .deals-card__body { flex: 1 1 auto; }
   [data-section="deals"] .deals-card__eyebrow { font-size: 11px; letter-spacing: .06em; margin-bottom: 4px; }
   [data-section="deals"] .deals-card__name { font-size: 1.125rem; line-height: 1.15; }
   /* phone: no claim on the single cards – the pack, its name and the price do the work */
-  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-card__claim { display: none; }
+  [data-section="deals"] .deals-card:not(.deals-card--set) .deals-card__claim,
+  [data-section="deals"] .deals-card__meta { display: none; }
+  /* …except next to the (taller) gift tile, where the claim fills what would otherwise be an empty band */
+  [data-section="deals"] .is-giftrow .deals-card:not(.deals-card--set) .deals-card__claim { display: block; font-size: 13px; line-height: 1.45; margin-top: 6px; }
   [data-section="deals"] .deals-card__buy { padding-top: 9px; }
   [data-section="deals"] .deals-price__line { column-gap: 6px; }
   [data-section="deals"] .deals-price__now { font-size: 1.1875rem; line-height: 26px; }
@@ -2627,10 +2660,13 @@ html.nc-lock { overflow: hidden; }
   [data-section="deals"] .deals-card--set .deals-prod__lbl { flex-direction: column; gap: 5px; top: calc(100% + 9px); font-size: 11px; letter-spacing: .06em; }
   [data-section="deals"] .deals-card--set .deals-prod__lbl .deals-no { margin-right: 0; width: 19px; height: 19px; font-size: 11px; }
   [data-section="deals"] .deals-card--set .deals-flag { top: 12px; left: 12px; height: 26px; padding: 0 10px; font-size: 12.5px; }
-  [data-section="deals"] .deals-set__body { grid-template-columns: 1fr; padding: 14px 16px 16px; row-gap: 14px; }
+  /* phone: what it is → why (gift, the saving) → price + button → the proof ledger last, so the buy block sits high */
+  [data-section="deals"] .deals-set__body { grid-template-columns: 1fr; padding: 14px 16px 16px; row-gap: 0; }
+  [data-section="deals"] .deals-set__intro { display: contents; }
+  [data-section="deals"] .deals-set__side { order: 1; margin-top: 14px; }
+  [data-section="deals"] .deals-set__sum { order: 2; margin-top: 16px; }
   [data-section="deals"] .deals-card__name--set { font-size: 1.5rem; }
   [data-section="deals"] .deals-card__claim--set { font-size: 13.5px; margin-top: 6px; }
-  [data-section="deals"] .deals-set__sum { margin-top: 12px; }
   [data-section="deals"] .deals-set__perks { margin-top: 0; font-size: 13px; gap: 6px; }
   [data-section="deals"] .deals-set__perks li:not(.is-gift) { display: none; } /* phone: the one perk that changes the basket */
   [data-section="deals"] .deals-card--set .deals-card__buy { padding-top: 0; }

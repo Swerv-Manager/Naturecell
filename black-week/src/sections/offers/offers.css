@@ -49,7 +49,8 @@
 [data-section="offers"] .offers-unit { position: relative; display: inline-flex; align-items: baseline; gap: 6px; }
 /* separator: a real middle dot in the display face, so it sits on the digits' optical centre */
 [data-section="offers"] .offers-unit + .offers-unit::before {
-  content: "\00B7"; margin-right: 6px; margin-left: 0; font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--sand-500);
+  content: "\00B7"; margin-right: 6px; margin-left: 0; font-family: var(--font-display); font-size: 40px; line-height: 1;
+  color: color-mix(in srgb, var(--sage-600) 55%, transparent);
 }
 [data-section="offers"] .offers-unit[hidden] { display: none; }
 [data-section="offers"] .offers-unit[hidden] + .offers-unit::before { content: none; }
@@ -148,7 +149,10 @@
 }
 
 /* two planes: serum and olie a step forward on the table (same scale – sizes stay truthful) */
-[data-section="offers"] .offers-row--range .offers-p--front { margin-bottom: -3cqh; margin-inline: -1.4cqw; z-index: 2; }
+/* the heavy tube on the left: optically centre the visual mass, equal air at both stage edges */
+[data-section="offers"] .offers-row--range { padding-right: 2.8cqw; }
+/* a clear overlap (never a tangent): the front plane visibly passes in front of the airless feet */
+[data-section="offers"] .offers-row--range .offers-p--front { margin-bottom: -3cqh; margin-inline: -2.8cqw; z-index: 2; }
 
 /* 2 · hero offer: no inner box – the products stand in the night-green tile itself, lit by a warm evening glow */
 [data-section="offers"] .offers-stage--hero {
@@ -186,22 +190,29 @@
 /* 3 · gift: warm sand room, a true example basket and the gift bubble */
 [data-section="offers"] .offers-stage--gift {
   background:
-    radial-gradient(44% 46% at 22% 40%, color-mix(in srgb, var(--accent-pink) 20%, transparent) 0%, transparent 100%),
+    radial-gradient(40% 44% at 34% 40%, color-mix(in srgb, var(--accent-pink) 22%, transparent) 0%, transparent 100%),
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-[data-section="offers"] .offers-stage--gift .offers-row { gap: 2cqw; }
-/* the gift is a flat brand bubble, floating at the basket's shoulder – never on the floor, never shadowed, never rotated */
+/* two products, just over the line – the camera a step closer than the six-up range (one scale inside the stage) */
+[data-section="offers"] .offers-stage--gift { --u: 70cqh; }
+[data-section="offers"] .offers-stage--gift .offers-row { gap: 0; padding-right: 2cqw; }
+/* olie a step forward, passing clearly in front of the natcreme's foot */
+[data-section="offers"] .offers-stage--gift .offers-p:last-child { margin: 0 0 -3cqh -1.8cqw; z-index: 2; }
+/* the gift is a flat brand bubble – the same disc as the Spar bubble next door – floating with its centre on the
+   natcreme's cap line (cap = top 34% of the jar); never on the floor, never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
+  --d: clamp(76px, 23cqw, 86px);
   position: relative; z-index: 1; flex: none; align-self: flex-end;
-  width: 30cqh; height: 30cqh; margin: 0 3cqw 22cqh 0;     /* floats at the basket's shoulder, clear of the floor */
+  width: var(--d); height: var(--d);
+  margin: 0 max(18px, 5cqw) calc(var(--u) * .66 - var(--d) / 2) 0;
   display: grid; grid-auto-flow: column; place-content: center; align-items: baseline; column-gap: .16em;
   border-radius: 50%; background: var(--accent-pink); color: var(--accent-berry);
-  font-family: var(--font-display); font-size: 5.6cqh; line-height: 1; white-space: nowrap;
+  font-family: var(--font-display); font-size: 17px; line-height: 1; white-space: nowrap;
   transition: background 800ms var(--viscous), color 800ms var(--viscous), transform 1100ms var(--viscous-long), scale 700ms var(--viscous);
 }
 [data-section="offers"] .offers-gift__plus { font-size: 1em; }
-[data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: -.005em; }
+[data-section="offers"] .offers-gift__w { font-style: italic; letter-spacing: .005em; }
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
 
 /* the shelf-edge label: centred in the tabletop band under the line-up */
@@ -323,9 +334,13 @@
    (observer/scroll-linked reveals leave it blank in full-page captures and on slow first frames) */
 
 /* ---------------------------------------------------------------- after 30 Nov 23.59: no Black Week price claims survive a cached page */
+/* and before 23 Nov 00.00 no price claim is shown that is not yet true – only the clock counts down to the start */
 [data-section="offers"][data-campaign="ended"] .offers-rail,
 [data-section="offers"][data-campaign="ended"] .offers-dots,
-[data-section="offers"][data-campaign="ended"] .offers-foot { display: none; }
+[data-section="offers"][data-campaign="ended"] .offers-foot,
+[data-section="offers"][data-campaign="pre"] .offers-rail,
+[data-section="offers"][data-campaign="pre"] .offers-dots,
+[data-section="offers"][data-campaign="pre"] .offers-foot { display: none; }
 
 /* ---------------------------------------------------------------- tablet */
 @media (max-width: 1100px) {
@@ -369,8 +384,13 @@
   [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
   /* the square stage is narrower relative to its height: the six-up tablescape steps back to keep air at both edges */
   [data-section="offers"] .offers-stage--range { --u: 50cqh; }
-  /* the set steps left, so the Spar bubble owns the top-right corner with clear air around the caps */
-  [data-section="offers"] .offers-row--set { padding-right: 14cqw; }
+  /* mirrored against the hero one screen above (whose disc sits top-right): the Spar bubble owns the top-left corner,
+     the shortest product (olie) stands under it with clear air, and the set steps right */
+  [data-section="offers"] .offers-save { right: auto; left: var(--copy-x); }
+  [data-section="offers"] .offers-row--set { flex-direction: row-reverse; padding: 0 0 0 14cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(1) { margin-right: 0; margin-left: 1.6cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(2) { margin-right: 0; margin-left: 1.6cqw; }
+  [data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: 0; margin-right: 2.2cqw; }
   [data-section="offers"] .offers-tile__eyebrow { margin-top: 20px; }
   [data-section="offers"] .offers-tile__title { font-size: 23px; }
   [data-section="offers"] .offers-fig__big { font-size: 40px; }

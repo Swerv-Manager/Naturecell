@@ -8,8 +8,8 @@
 // (pre-compensated cooler – measured per-channel gain of the warm key/softbox on the label – so the rendered front
 // face lands on the printed teal-sage (129,167,155) and the cool pale band (177,195,189) instead of olive/cream)
 const FIELD = '#7bb1b0';      // main field (upper + the heart of the V)
-const FIELD_LOW = '#6b9893';  // lower-right field, a clear step deeper (as printed)
-const PALE = '#b2cfd9';       // pale chevron band (cool pale sage, not cream)
+const FIELD_LOW = '#94b6b4';  // lower-right field: a step lighter and greyer than the heart (as printed)
+const PALE = '#cad8e6';       // pale chevron band: a near-neutral pale grey (printed ≈ #e6e4e9 → #d9d8de)
 const HATCH = 'rgba(226,238,233,0.34)';
 const THREAD = '#7a478a';     // Vidunder Olien's violet product thread (true to pack)
 const INK = '#ffffff';
@@ -40,10 +40,12 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
   // y as a fraction of the label height. Straight lines in print → they curve naturally as the label wraps.
   const PXD = W / (360 * 0.97);                       // canvas px per degree (the label wraps 97% of the bottle)
   const X = (deg) => cx + deg * PXD;
-  // the type block clears the band by about a cap height and the V point sits low (≈ 84% of the label height)
-  const V = [X(4), H * 0.84];                         // V point, just right of centre
-  const L = [X(-60), H * 0.50];                       // left arm: a straight diagonal from the left edge of the face
-  const R = [X(62), H * 0.50];
+  // measured on the real 30 ml label (packshot, unwrapped to degrees): the V point sits just right of centre under
+  // '1000 mg' at ≈ 79.5% of the label height; the left arm (the band's top edge) rises at ≈ 50° and leaves the
+  // visible face at ≈ 22–26% of the height, the right arm rises a touch flatter (≈ 47°) to ≈ 45% at 57°
+  const V = [X(1.5), H * 0.795];
+  const L = [X(-58.5), H * 0.795 - 60 * PXD * 1.2];
+  const R = [X(57), H * 0.45];
   const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy); return [dx / l, dy / l]; };
   const uL = unit(V, L), uR = unit(V, R);             // from the V point outward along each arm
   const along = (p, u, k) => [p[0] + u[0] * k, p[1] + u[1] * k];
@@ -61,7 +63,7 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
 
   // clip everything left of the cut line and below the left arm
   const SC = W / 3072;
-  const BW = 150 * SC, TH = 13 * SC;                            // band width, violet thread width (canvas px, perpendicular)
+  const BW = 268, TH = 13 * SC;                            // band width, violet thread width (canvas px, perpendicular)
   g.save();
   g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.lineTo(...cutB); g.lineTo(X(-125), H + 10); g.lineTo(X(-125), -10); g.closePath();
   g.clip();
@@ -73,8 +75,8 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
   g.beginPath(); g.moveTo(...off(along(V, uL, FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW - TH)); g.lineTo(...off(along(V, uL, -FAR), BW)); g.lineTo(...off(along(V, uL, FAR), BW)); g.closePath(); g.fill();
   // fine parallel hatching below the thread
   g.strokeStyle = HATCH; g.lineWidth = 5 * SC; g.lineCap = 'butt';
-  for (let k = 0; k < 26; k++) {
-    const o = BW + (24 + k * 27) * SC;
+  for (let k = 0; k < 17; k++) {
+    const o = BW + (22 + k * 30) * SC;
     g.beginPath(); g.moveTo(...off(along(V, uL, FAR), o)); g.lineTo(...off(along(V, uL, -FAR), o)); g.stroke();
   }
   g.restore();

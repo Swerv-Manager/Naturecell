@@ -74,8 +74,8 @@ function initClock(root, ctx, q, reduced) {
       label.textContent = state === 'pre' ? 'Black Week begynder om' : state === 'ended' ? 'Black Week er slut' : state === 'last' ? 'Sidste dag – slutter om' : 'Black Week slutter om';
       if (done) done.hidden = state !== 'ended';
       root.dataset.campaign = state;
-      // once it is over the head must not promise three offers that are gone
-      if (title) title.innerHTML = state === 'ended' ? 'Tak for denne gang.' : titleHTML;
+      // before it starts and once it is over, the head must not promise three offers that are not (or no longer) live
+      if (title) title.innerHTML = state === 'ended' ? 'Tak for denne gang.' : state === 'pre' ? 'Tre tilbud <em>på vej.</em>' : titleHTML;
     }
     if (state === 'ended') { if (sr) sr.textContent = 'Black Week er slut.'; return; }
     const target = state === 'pre' ? start : end;

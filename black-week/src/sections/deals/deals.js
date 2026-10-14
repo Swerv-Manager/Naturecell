@@ -7,6 +7,8 @@
 
 import SKIN_OIL_DUO from './skin-oil-duo.js';
 import SET_BOTTLES from './set-bottles.js';
+import LIP from './lip-balm.js';
+import GLASS from './glass-masks.js';
 
 // Packshot geometry: box = [imgW, imgH, x0, y0, x1, y1] = opaque alpha bbox (product only, no built-in glow).
 // cyl = the x-range (% of the image) of the round bottle/tube in a composite shot: only there does the window's light
@@ -24,7 +26,10 @@ const SHOT = {
 };
 // single bottles (no carton) for the Sampakke line-ups – same unit scale as SHOT
 const BOTTLE_H = { 'cleansing-gel': 0.748, 'day-cream': 0.841, 'night-cream': 0.841, 'skin-oil': 0.553 };
-const BOTTLE = Object.fromEntries(Object.entries(SET_BOTTLES).map(([id, b]) => [id, { url: b.url, box: [b.w, b.h, 0, 0, b.w, b.h], h: BOTTLE_H[id], cyl: [0, 100] }]));
+const BOTTLE = Object.fromEntries(Object.entries(SET_BOTTLES).map(([id, b]) => [id, { url: b.url, box: [b.w, b.h, 0, 0, b.w, b.h], h: BOTTLE_H[id], cyl: [0, 100], gm: GLASS[`set:${id}`] }]));
+Object.entries(SHOT).forEach(([id, s]) => { s.gm = GLASS[id]; });
+// the free 6 ml Lip Balm stick at the same truthful scale (≈ .32 of the 300 ml shampoo)
+const LIP_SHOT = { url: LIP.url, box: [LIP.w, LIP.h, 0, 0, LIP.w, LIP.h], h: 0.32, cyl: [0, 100] };
 const LINE_GAP = 0.12; // gap between bottles in a line-up, in units (mirrors --lgap in CSS) – grouped like a set on a shelf
 // one truthful scale for the whole grid: a unit (the 300 ml shampoo) is K × one column's width. Every ROW of the grid
 // is then exactly as tall as its tallest pack needs (+ head-room), so no card carries a wall of empty sky.
@@ -48,7 +53,7 @@ const EYEBROW = { 'body-lotion': 'Krop', shampoo: 'Hår' };
 const eyebrowOf = (p) => p.nickname || EYEBROW[p.id] || 'Ansigt';
 // one-line claims for the 2-up phone grid (never clamped mid-word) – same cosmetic wording as the long claims
 const CLAIM_S = {
-  'skin-oil': '1000 mg CBD. Blød, velplejet hud – til alle hudtyper.', serum: 'Fugtboost med hyaluronsyre og CBD.',
+  'skin-oil': '1000 mg CBD. Til alle hudtyper.', serum: 'Fugtboost med hyaluronsyre og CBD.',
   'day-cream': 'Let dagcreme med aloe vera og shea.', 'night-cream': 'Nærende natcreme med mandelolie.',
   'cleansing-gel': 'Mild rens, der bevarer fugtbalancen.', 'body-lotion': 'Intensiv fugtighed til tør hud.',
   shampoo: 'Mild shampoo til hele familien.',
@@ -71,6 +76,8 @@ const ICON = {
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// Danish typesetting: a one- or two-letter word never ends a line ("i én pakke" stays together – no orphans)
+const nb = (s) => String(s).replace(/(^|\s)(\p{L}{1,2}) (?=\S)/gu, '$1$2\u00a0').replace(/ – /g, '\u00a0– ');
 
 export default function init(root, ctx) {
   const { fmt, store } = ctx;
@@ -102,7 +109,7 @@ export default function init(root, ctx) {
     const gw = bw / W, wu = packW(s);
     return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)};--cy0:${(s.cyl || [0, 100])[0]}%;--cy1:${(s.cyl || [0, 100])[1]}%;--cyw:${(((s.cyl || [0, 100])[1] - (s.cyl || [0, 100])[0]) / 100).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span></span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"></span>` : ''}</span>
       ${lbl}
     </div>`;
   }
@@ -181,6 +188,9 @@ export default function init(root, ctx) {
   };
   const sale = (p) => `<span class="deals-flag" aria-hidden="true">−${p.pct}%</span>`;
   const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
+  // touch: the packshot itself is the quick-view button (no eye bubble on every single tile); hidden on a fine pointer,
+  // where the image belongs to the card's product link and the eye appears on hover
+  const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}"><span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
   // the truthful height (units) of the tallest pack on a card – the grid sizes each row from it
   const tallOf = (p) => (p.bundle ? Math.max(...(p.contains || []).map((id) => BOTTLE_H[id] || 0)) : (SHOT[p.id] || { h: 0.8 }).h);
   const TONE = { 'komplet-pakken': 'sand', 'all-day-facial': 'mint' };
@@ -200,7 +210,7 @@ export default function init(root, ctx) {
             <div class="deals-set__intro">
               <p class="deals-card__eyebrow">Sampakke · ${n} produkter</p>
               <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
-              <p class="deals-card__claim deals-card__claim--set">${esc(p.claim)}</p>
+              <p class="deals-card__claim deals-card__claim--set">${nb(esc(p.claim))}</p>
               ${sumHtml(p)}
             </div>
             <div class="deals-set__side">
@@ -216,12 +226,13 @@ export default function init(root, ctx) {
       <article class="deals-card" aria-labelledby="deals-n-${p.id}">
         <div class="deals-card__stage" data-stage>
           <span class="deals-ground" aria-hidden="true"></span>
-          ${lineHtml(p)}${sale(p)}${quick(p)}
+          ${lineHtml(p)}${sale(p)}${quick(p)}${stageBtn(p)}
         </div>
         <div class="deals-card__body">
           <p class="deals-card__eyebrow">${esc(eyebrow)}</p>
           <h3 class="deals-card__name" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
-          <p class="deals-card__claim">${esc(CLAIM_S[p.id] || p.claim)}</p>
+          <p class="deals-card__claim">${nb(esc(CLAIM_S[p.id] || p.claim))}</p>
+          <p class="deals-card__meta">Vegansk · uden syntetisk parfume</p>
           <div class="deals-card__buy">${priceHtml(p)}${addHtml(p)}</div>
         </div>
       </article>
@@ -230,37 +241,18 @@ export default function init(root, ctx) {
   const gift = ctx.byId[ctx.campaign.giftId];
   const giftName = gift ? gift.name : 'CBD Lip Balm';
   const giftImg = gift && gift.img ? ctx.asset(gift.img) : '';
-  // No Lip Balm packshot exists in the asset set yet. Until it does, the gift is drawn in the SAME flat language the live
-  // theme already uses for this product in its mega menu (white twist-up stick, sage label band, white bindrune mark,
-  // one diagonal thread) – honest about being an illustration, but the free product is visible, at its truthful 6 ml scale.
-  const lipSvg = `<svg class="deals-lb" viewBox="0 0 28 100" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="deals-lb-cyl" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" style="stop-color:var(--sage-900);stop-opacity:.28"/><stop offset=".16" style="stop-color:var(--sage-900);stop-opacity:.06"/>
-          <stop offset=".34" style="stop-color:var(--cloud);stop-opacity:.7"/><stop offset=".46" style="stop-color:var(--cloud);stop-opacity:0"/>
-          <stop offset=".78" style="stop-color:var(--sage-900);stop-opacity:.08"/><stop offset="1" style="stop-color:var(--sage-900);stop-opacity:.34"/>
-        </linearGradient>
-        <clipPath id="deals-lb-body"><rect x="1" y="31.5" width="26" height="67.5" rx="2.2"/></clipPath>
-      </defs>
-      <rect x="1.4" y="1" width="25.2" height="29.4" rx="3.2" style="fill:var(--cloud)"/>
-      <rect x="1.4" y="1" width="25.2" height="29.4" rx="3.2" fill="url(#deals-lb-cyl)"/>
-      <path d="M2.6 4.2h22.8" style="stroke:var(--cloud);stroke-opacity:.9" stroke-width=".7"/>
-      <g clip-path="url(#deals-lb-body)">
-        <rect x="1" y="31.5" width="26" height="67.5" style="fill:var(--cloud)"/>
-        <rect x="1" y="43" width="26" height="44" style="fill:var(--sage-500)"/>
-        <path d="M1 83.5 27 66" style="stroke:var(--cloud)" stroke-width=".55" stroke-opacity=".85"/>
-        <image href="${ctx.asset('logo-mark-white.svg')}" x="7.5" y="47.5" width="13" height="13"/>
-        <rect x="1" y="31.5" width="26" height="67.5" fill="url(#deals-lb-cyl)"/>
-      </g>
-      <path d="M1.2 31h25.6" style="stroke:var(--sage-900);stroke-opacity:.22" stroke-width=".8"/>
-    </svg>`;
+  // The gift stands on the same floor as every pack in the grid – same contact shadow, same window light, same scale.
+  // A real Lip Balm packshot in data.js (img) takes over automatically; until then a studio render of the 6 ml stick in
+  // the family's label language (lip-balm.js) stands in.
+  const lipShot = giftImg ? { src: gift.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.32 } : LIP_SHOT;
+  const lipHtml = `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, '')}</div>`;
   const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
-        <div class="deals-gift__art has-pack${giftImg ? ' has-photo' : ''}" aria-hidden="true">
-          <!-- the gift stands on a small sand plinth in a warm pool of light; its value tag hangs beside it on a sand thread -->
-          <span class="deals-gift__pack">${giftImg ? `<img src="${giftImg}" alt="" draggable="false">` : lipSvg}<span class="deals-gift__plinth"></span></span>
+        <div class="deals-gift__art has-pack" aria-hidden="true">
+          <!-- the gift stands in a warm pool of light on the shared floor; its value tag hangs beside it on a sand thread -->
+          <span class="deals-gift__pack">${lipHtml}</span>
           <span class="deals-tag">
             <svg class="deals-tag__string" viewBox="0 0 40 60" preserveAspectRatio="none"><path d="M20 0 C 21 18, 26 30, 20 60"/></svg>
             <span class="deals-tag__card">
@@ -275,7 +267,7 @@ export default function init(root, ctx) {
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i købet</h3>
         </div>
-        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, når du handler for</span><span class="deals-gift__copy-s"> ved køb</span> over ${kr(giftAt)}</p>
+        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, når du handler for</span><span class="deals-gift__copy-s"> ved køb</span> over\u00a0${kr(giftAt)}</p>
         <div class="deals-gift__meter">
           <div class="deals-gift__track" role="progressbar" aria-label="Fremskridt mod gratis ${esc(giftName)}" aria-valuemin="0" aria-valuemax="${giftAt}" aria-valuenow="0" aria-valuetext="0 kr. af ${giftAt} kr.">
             <span class="deals-gift__fill"></span>
@@ -288,7 +280,7 @@ export default function init(root, ctx) {
           </div>
         </div>
         <p class="deals-gift__status" data-gift-status></p>
-        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span class="deals-gift__cta-l">Se Komplet Pakken</span><span class="deals-gift__cta-s">Komplet Pakken</span>${ICON.pil}</button>
+        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span class="deals-gift__cta-l">Se Komplet Pakken</span><span class="deals-gift__cta-s">Se pakken<span class="nc-sr"> – Komplet Pakken</span></span>${ICON.pil}</button>
       </div>
     </aside>
   </li>`;
@@ -419,6 +411,34 @@ export default function init(root, ctx) {
   const giftLi = $('.deals-item--gift', grid);
   const cols = () => getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
   const spanOf = (li) => (li.classList.contains('deals-item--set') ? Math.min(2, cols()) : 1);
+  // meter labels: each centred under its knob, nudged in only as far as needed to stay inside the tile's padding
+  function placeGiftLabels() {
+    const lab = $('.deals-gift__labels'); if (!lab || !gTrack) return;
+    const tw = gTrack.clientWidth; if (!tw) return;
+    const pad = Math.max(0, (gTile.clientWidth - tw) / 2 - 4);
+    [...lab.children].forEach((sp) => {
+      const at = sp.classList.contains('deals-gift__lend') ? tw - 6 : (shipAt / giftAt) * tw;
+      const w = sp.offsetWidth;
+      sp.style.left = `${clamp(at - w / 2, -pad, tw + pad - w).toFixed(1)}px`;
+    });
+  }
+  // the packaging thread: one hairline diagonal that comes in from the section's top-right edge and runs in behind the
+  // filter pill (it ends exactly where the pill's right shoulder starts) – tied to the composition, never floating
+  const thread = $('.deals-thread');
+  function placeThread() {
+    if (!thread) return;
+    if (!bar.offsetWidth || innerWidth <= 760) { thread.style.display = 'none'; return; }
+    thread.style.display = '';
+    // layout offsets (not client rects): the pill may still be mid-reveal (translated) when this runs
+    let x = 0, y = 0;
+    for (let el = bar; el && el !== root; el = el.offsetParent) { x += el.offsetLeft; y += el.offsetTop; }
+    const W = root.clientWidth, h = bar.offsetHeight;
+    const x1 = x + bar.offsetWidth - h * 0.5, y1 = y + 0.5; // the pill's top edge, where its right shoulder begins
+    const ang = 33 * Math.PI / 180, x0 = W + 2, y0 = y1 - (x0 - x1) * Math.tan(ang);
+    thread.setAttribute('viewBox', `0 0 ${W} ${(y1 + 2).toFixed(0)}`);
+    thread.style.height = `${(y1 + 2).toFixed(0)}px`;
+    thread.innerHTML = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+  }
   function layoutGift(key = current) {
     const c = cols();
     const shown = lis().filter((li) => li !== giftLi && (key === 'all' || li.dataset.cat === key));
@@ -446,8 +466,16 @@ export default function init(root, ctx) {
     rows.forEach((row) => {
       const h = Math.max(0, ...row.map((li) => +li.dataset.h || 0));
       const set = row.some((li) => li.classList.contains('deals-item--set'));
-      row.forEach((li) => { li.style.setProperty('--row-h', h.toFixed(4)); li.classList.toggle('is-setrow', set); });
+      const gr = row.includes(giftLi);
+      row.forEach((li) => { li.style.setProperty('--row-h', h.toFixed(4)); li.classList.toggle('is-setrow', set); li.classList.toggle('is-giftrow', gr); });
+      // one shared name block per row: if any single's name wraps to two lines, every single in the row reserves two, so
+      // stages, names and price rows all line up across the row (the stage never absorbs the difference)
+      const singles = row.filter((li) => !li.classList.contains('deals-item--set') && li !== giftLi);
+      singles.forEach((li) => li.removeAttribute('data-name2'));
+      const two = singles.some((li) => { const n = $('.deals-card__name', li); return n && n.getBoundingClientRect().height > parseFloat(getComputedStyle(n).lineHeight) * 1.5; });
+      singles.forEach((li) => li.toggleAttribute('data-name2', two));
     });
+    placeGiftLabels(); placeThread();
   }
   layoutGift(); fitRows();
   let lastCols = cols(), lastW = grid.clientWidth;
@@ -543,15 +571,19 @@ export default function init(root, ctx) {
       card.style.transform = `translateY(${Math.round(-s.h * 4)}px)`;
       card.classList.add('is-tilt');
       card.style.setProperty('--h', s.h.toFixed(4));
-      card.style.setProperty('--deals-lx', `${((s.mx + d) * 100).toFixed(2)}%`);
-      card.style.setProperty('--deals-sx', `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
+      // the cursor's light and the window's ambient light are blended by the lift: entering, the reflection glides from
+      // the window's path to the hand; leaving, it glides back onto the path – never a jump
+      const a = RM ? 0.32 : ambLx(card, now), w = s.h;
+      const lxd = a * (1 - w) + (s.mx + d) * w, sxd = (0.18 + a * 0.64) * (1 - w) + (s.sx + d * 0.55) * w;
+      card.style.setProperty('--deals-lx', `${(lxd * 100).toFixed(2)}%`);
+      card.style.setProperty('--deals-sx', `${(sxd * 100).toFixed(2)}%`);
       card.style.setProperty('--ry', s.ry.toFixed(3));
       card.style.setProperty('--rx', s.rx.toFixed(3));
       // the flat faces (cartons, label panels) catch the window as a broad plane of light that grows with the lean
       card.style.setProperty('--pl', (s.h * (0.16 + Math.min(1, Math.abs(s.ry) / 5) * 0.3)).toFixed(3));
       card.style.setProperty('--pl-ang', s.ry >= 0 ? '90deg' : '270deg');
-      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) + Math.abs(s.tsx - s.sx) + Math.abs(s.tmx - s.mx) < 0.002;
-      if (settled && s.th === 0) { card.style.transform = ''; card.classList.remove('is-tilt'); ['--h', '--deals-lx', '--deals-sx', '--ry', '--rx', '--pl', '--pl-ang'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
+      const settled = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) < 0.002;
+      if (settled && s.th === 0) { card.style.transform = ''; card.classList.remove('is-tilt'); ['--h', '--ry', '--rx', '--pl', '--pl-ang'].forEach((k) => card.style.removeProperty(k)); tilt.delete(card); }
     });
     tRaf = tilt.size ? requestAnimationFrame(tStep) : 0;
   }
@@ -583,46 +615,54 @@ export default function init(root, ctx) {
     grid.addEventListener('pointerout', (e) => {
       const card = e.target.closest('.deals-card'); if (!card || card.contains(e.relatedTarget)) return;
       const s = tilt.get(card); if (!s) return;
-      s.trx = 0; s.try = 0; s.th = 0; s.tsx = 0.3; s.tmx = 0.32; tKick(); // the window light drifts home to its resting spot
+      s.trx = 0; s.try = 0; s.th = 0; tKick(); // the light glides home onto the window's ambient path
     });
   }
 
-  // ------------------------------------------------------------------ touch: the light is tied to the scroll
-  // No cursor on a phone, so the window reflection glides across each pack as the card travels up the screen (enters on
-  // the left, leaves on the right). Work happens ONLY in a scroll-coalesced frame – an idle page runs no loop at all – and
-  // stage geometry is cached in page coordinates (re-measured on resize / filter), never read per frame.
-  if (TOUCH && !RM) {
-    let geo = null, sRaf = 0, inView = false;
-    const measure = () => {
-      const y = scrollY;
-      geo = lis().filter((li) => !li.hidden && li !== giftLi).map((li) => {
-        const st = $('[data-stage]', li), r = st.getBoundingClientRect();
-        return { c: $('.deals-card', li), top: r.top + y, h: r.height };
-      });
+  // ------------------------------------------------------------------ the window light, always alive
+  // One slow evening window drifts along the shelf: its reflection glides across every pack (glint on the glass, a soft
+  // brightening on the labels, the contact shadow leaning away from it), card after card with a small phase lag, like
+  // light moving along a row of real bottles. ~13 s per pass, sine-eased – calm, never a loop you notice. A hovered card
+  // hands the light to the cursor; on touch the scroll adds to the drift, so the light also travels as the shopper scrolls.
+  // Runs only while the grid is on screen and the tab is visible; writes only to the cards in view.
+  const AMB_T = 13, AMB_A = 0.36;
+  const ambOrder = new Map();
+  const ambLx = (el, now) => {
+    const k = ambOrder.get(el) || 0;
+    const sc = TOUCH ? scrollY / 520 : 0;
+    return 0.5 + AMB_A * Math.sin(((now / 1000) / AMB_T) * Math.PI * 2 - k * 0.62 + sc);
+  };
+  if (!RM) {
+    let aRaf = 0, gridIn = false;
+    const vis = new Set();
+    const ioA = new IntersectionObserver((es) => es.forEach((e) => { const el = e.target; e.isIntersecting ? vis.add(el) : vis.delete(el); }), { rootMargin: '60px 0px' });
+    const watch = () => {
+      ambOrder.clear();
+      [...lis().filter((li) => !li.hidden).map((li) => $('.deals-card, .deals-gift', li))].filter(Boolean).forEach((el, i) => { ambOrder.set(el, i); ioA.observe(el); });
     };
-    const paint = () => {
-      sRaf = 0;
-      if (!inView) return;
-      if (!geo) measure();
-      const vh = innerHeight, y = scrollY;
-      geo.forEach(({ c, top, h }) => {
-        const t = top - y;
-        if (t + h < -40 || t > vh + 40) return;
-        const p = clamp((vh - t) / (vh + h), 0, 1);           // 0 = just entering at the bottom, 1 = leaving at the top
-        const arc = Math.sin(p * Math.PI);
-        c.style.setProperty('--deals-lx', `${((0.02 + p * 0.96) * 100).toFixed(2)}%`);
-        c.style.setProperty('--deals-sx', `${((0.18 + p * 0.64) * 100).toFixed(2)}%`);
-        c.style.setProperty('--deals-g', (0.34 + arc * 0.5).toFixed(3));
-        c.style.setProperty('--pl', (0.12 + arc * 0.16).toFixed(3));
+    watch();
+    chips.forEach((ch) => ch.addEventListener('click', () => setTimeout(watch, 40)));
+    const frame = (now) => {
+      aRaf = 0;
+      if (!gridIn || document.hidden) return;
+      const vh = innerHeight;
+      const els = [...vis].filter((el) => !tilt.has(el)); // a hovered card's light is blended with the cursor by the tilt loop
+      const rects = TOUCH ? els.map((el) => el.getBoundingClientRect()) : null; // all reads before any write
+      els.forEach((el, i) => {
+        const lx = ambLx(el, now);
+        el.style.setProperty('--deals-lx', `${(lx * 100).toFixed(2)}%`);
+        el.style.setProperty('--deals-sx', `${((0.18 + lx * 0.64) * 100).toFixed(2)}%`);
+        if (rects) {
+          // on a phone the light is brightest as a card passes the middle of the screen
+          const r = rects[i], p = clamp((vh - r.top) / (vh + r.height), 0, 1);
+          el.style.setProperty('--deals-g', (0.45 + Math.sin(p * Math.PI) * 0.4).toFixed(3));
+        }
       });
+      aRaf = requestAnimationFrame(frame);
     };
-    const go = () => { if (inView && !sRaf) sRaf = requestAnimationFrame(paint); };
-    const remeasure = () => { geo = null; go(); };
-    addEventListener('scroll', go, { passive: true });
-    addEventListener('resize', remeasure, { passive: true });
-    new ResizeObserver(remeasure).observe(grid);           // filter re-layouts and font swaps change the grid's size
-    chips.forEach((ch) => ch.addEventListener('click', () => setTimeout(remeasure, 800)));
-    new IntersectionObserver((es) => { inView = es.some((e) => e.isIntersecting); if (inView) remeasure(); }).observe(grid);
+    const go = () => { if (!aRaf && gridIn && !document.hidden) aRaf = requestAnimationFrame(frame); };
+    new IntersectionObserver((es) => { gridIn = es.some((e) => e.isIntersecting); go(); }, { rootMargin: '80px 0px' }).observe(grid);
+    document.addEventListener('visibilitychange', go);
   }
 
   // ------------------------------------------------------------------ add to cart: button morph + fly + trail

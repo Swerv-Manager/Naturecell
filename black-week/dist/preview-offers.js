@@ -290,7 +290,7 @@
         label.textContent = state2 === "pre" ? "Black Week begynder om" : state2 === "ended" ? "Black Week er slut" : state2 === "last" ? "Sidste dag \u2013 slutter om" : "Black Week slutter om";
         if (done) done.hidden = state2 !== "ended";
         root.dataset.campaign = state2;
-        if (title) title.innerHTML = state2 === "ended" ? "Tak for denne gang." : titleHTML;
+        if (title) title.innerHTML = state2 === "ended" ? "Tak for denne gang." : state2 === "pre" ? "Tre tilbud <em>p\xE5 vej.</em>" : titleHTML;
       }
       if (state2 === "ended") {
         if (sr) sr.textContent = "Black Week er slut.";
