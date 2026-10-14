@@ -5,6 +5,19 @@
   billede side om side, fx Loevens Hule).
 {% endcomment %}
 
+{%- liquid
+  # Skjul paa dansk indtil (fx mens aabningstilbuddet staar oeverst): andre sprog ser altid heroen.
+  assign nc_hero_show = true
+  assign nc_hero_until = section.settings.hide_da_until | strip
+  if nc_hero_until != blank and request.locale.iso_code == 'da'
+    assign nc_hero_now = 'now' | date: '%s' | plus: 0
+    assign nc_hero_end = nc_hero_until | date: '%s' | plus: 0
+    if nc_hero_now <= nc_hero_end
+      assign nc_hero_show = false
+    endif
+  endif
+-%}
+{%- if nc_hero_show -%}
 {%- style -%}
   .nc-hero { position: relative; background: var(--nc-hero-bg); color: var(--paper); overflow: hidden; }
   .nc-hero__track { display: flex; transform: translateX(0); transition: transform 700ms var(--ease-out); }
@@ -281,6 +294,7 @@
   {%- endif -%}
   {%- endunless -%}
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -288,6 +302,12 @@
   "tag": "section",
   "class": "nc-sec-hero",
   "settings": [
+    {
+      "type": "text",
+      "id": "hide_da_until",
+      "label": "Skjul på dansk indtil",
+      "info": "Valgfrit. Dato og tid, fx 2026-10-15T23:59:00+02:00. Indtil da vises heroen ikke på dansk (fx mens et kampagnebanner står øverst). Alle andre sprog ser den altid. Tomt: vises altid."
+    },
     {
       "type": "range",
       "id": "autoplay",

@@ -43,7 +43,6 @@
         "slide1",
         "slide2"
       ],
-      "disabled": true,
       "settings": {
         "autoplay": 7,
         "m_welcome": true,
@@ -57,7 +56,8 @@
         "m_heading": "Hudpleje med omtanke",
         "m_body": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
         "m_cta_text": "Se produkterne",
-        "m_cta_url": "/collections/cbd-hudpleje"
+        "m_cta_url": "/collections/cbd-hudpleje",
+        "hide_da_until": "2026-10-15T23:59:00+02:00"
       }
     },
     "trust2": {
