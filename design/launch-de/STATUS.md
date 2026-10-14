@@ -1,4 +1,4 @@
-# Tysk version (naturecell.de): status 12-10-2026 (opdateret aften)
+# Tysk version (naturecell.de): status 14-10-2026
 
 ## Temaer (vigtigt, opdateret 13-10)
 
@@ -13,8 +13,8 @@
 
 ## Gjort 12-10 (aften)
 
-- Fragt: ny zone "Tyskland" (DE taget ud af EU-zonen). Standardversand 7 € under 55 €,
-  Kostenloser Versand fra 55 €, "2 bis 4 Werktage". Satserne er gemt i EUR.
+- Fragt: ny zone "Tyskland" (DE taget ud af EU-zonen). Fra 14-10: Standardversand 8 € under 65 €,
+  Kostenloser Versand fra 65 €, "2 bis 4 Werktage". Satserne er gemt i EUR.
   Temaet: nc_free_shipping = "DKK: 399 / EUR: 55" (kurvens fragtbar, PDP, FAQ).
 - Priser: katalog "Tyskland (EUR, hele euro)" (MarketCatalog/208453992786) med prisliste
   PriceList/40816378194: 61 faste priser i hele euro (54,95 -> 55, 68,95 -> 69 osv.),
@@ -35,6 +35,19 @@
 - Rettelse 71: artikler kan nu have en Shopify-hostet video (metafelt ncell.video) i stedet for
   YouTube. Valgfrie undertekster pr. sprog i ncell.video_captions (WebVTT, oversaettes i
   Translate & Adapt). Testet i Chromium: sporet indlaeses med tyske tegn.
+
+## Gjort 14-10
+
+- Live-aendringer fra 13-10 kl. 15:26-15:32 (PDP-galleri med video, Artikler-dropdown, start-guide-
+  videoer, FAQ-link) flettet ind i 209532977490. Alle filer verificeret (md5/semantisk).
+- Fragt Tyskland: 8 EUR under 65 EUR, gratis fra 65 EUR. Tema EUR: 65, AGB/Versand og 7 tyske
+  FAQ-svar rettet.
+- Impressum: "Vertretungsberechtigter Geschaeftsfuehrer: Allan Falk Gamborg" (bekraeft stavning).
+- Kundecase-videoer skjult paa alle andre sprog end dansk (temaindstilling nc_case_videos_da_only).
+- Hero slaaet til igen; skjult kun paa dansk til 2026-10-15T23:59 (hide_da_until).
+- Kunden oplyser: VerpackG via Avask, CPNP anmeldt, Flatpay (PayPal, Klarna, kort) aktiveres af Allan.
+- Korrektur-link: https://naturecell.dk/de?preview_theme_id=209532977490
+- Tjekliste: https://claude.ai/artifact/S7KzfoNXAPKFHa38Ehe96n
 
 ## Ved lanceringen (i denne raekkefoelge)
 
