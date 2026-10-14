@@ -958,9 +958,9 @@ body.nc-ytbox-open { overflow: hidden; }
   --dl-card-shadow-hi: 0 1px 2px color-mix(in srgb, var(--dl-sh) 5%, transparent), 0 30px 60px -28px color-mix(in srgb, var(--dl-sh) 36%, transparent);
   /* stage geometry – shared by every card so packs share one floor line and one scale */
   --dl-stage-ar: .82;     /* stage height / width of a single card */
-  --dl-floor: .13;        /* floor line, fraction of stage height from the bottom */
-  --dl-top: .035;         /* head-room above the tallest pack (the 300 ml shampoo) */
-  --dl-ufrac: .835;       /* = 1 - floor - top: one "unit" (shampoo height) as a fraction of the single stage height */
+  --dl-floor: .115;       /* floor line, fraction of stage height from the bottom */
+  --dl-top: .09;          /* head-room above the tallest pack (the 300 ml shampoo) – no pack ever kisses the frame */
+  --dl-ufrac: .795;       /* = 1 - floor - top: one "unit" (shampoo height) as a fraction of the single stage height */
   /* text colours re-stated for this section: the theme's runtime --text-muted (#788E8A) is only 3.5:1 on white */
   --dl-muted: var(--ink-700);
   --dl-eyebrow: var(--sage-700);
@@ -1047,7 +1047,7 @@ body.nc-ytbox-open { overflow: hidden; }
   transform-origin: 50% 60%;
 }
 @media (hover: hover) and (pointer: fine) {
-  [data-section="deals"] .deals-card:hover { box-shadow: var(--dl-card-shadow-hi); border-color: var(--ink-200); will-change: transform; }
+  [data-section="deals"] .deals-card:hover { box-shadow: var(--dl-card-shadow-hi); border-color: var(--ink-200); }
 }
 /* the whole card links to the product page (like the theme's nc-product-card): the name's link is stretched over the card;
    quick view and "Læg i kurv" sit above it and stay independently clickable */
@@ -1114,8 +1114,9 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-prod {
   position: relative; flex: none;
   height: calc(var(--ph) * var(--u)); aspect-ratio: var(--ar);
-  /* depth: the pack parallaxes a few px against the tilting card and lifts like a bubble in serum */
-  transform: translate(calc(var(--ry, 0) * 1px), calc(var(--rx, 0) * -.8px - var(--h, 0) * 4px)) scale(calc(1 + var(--h, 0) * .02));
+  /* depth: the pack parallaxes a few px against the tilting card and lifts like a bubble in serum
+     (translate only – a scale here would re-rasterise the packshot soft inside the tilted card) */
+  transform: translate(calc(var(--ry, 0) * 1px), calc(var(--rx, 0) * -.8px - var(--h, 0) * 4px));
   transform-origin: 50% 100%;
 }
 [data-section="deals"] .deals-prod__pack { position: absolute; inset: 0; overflow: hidden; }
@@ -1132,26 +1133,41 @@ body.nc-ytbox-open { overflow: hidden; }
   background: radial-gradient(closest-side, color-mix(in srgb, var(--dl-sh) 38%, transparent), transparent);
   opacity: calc(1 - var(--h, 0) * .6);
 }
-/* specular band, masked to the packshot itself – reads as light gliding over glass, carton and label */
+/* the light: a distant window reflected in glass and carton. Two layers, both masked to the packshot's own alpha:
+   a crisp vertical glint (screen) – the reflection of the window's edge, like on a real cylinder – and a broad, low
+   soft-light sheen that warms the label without greying it. Positions are in LINE coordinates (--deals-lx: 0 = left edge
+   of the line-up, 100% = right edge) mapped into each pack's image box; widths are in product units (--bk), so the glint
+   is physically the same width on a 30 ml dropper and a 300 ml pump. */
 [data-section="deals"] .deals-gloss {
   position: absolute; pointer-events: none;
-  --lxl: calc(var(--gx0, 0%) + var(--deals-lx) * var(--gw, 1));
+  --c: calc(var(--gx0, 0%) + (var(--deals-lx) - var(--px0, 0) * 100%) / var(--pw, 1) * var(--gw, 1));
+  -webkit-mask-image: var(--m); mask-image: var(--m);
   -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-  /* constant width in px on every pack (stops ÷ pack width): a crisp core, soft shoulders and one thin secondary glint */
+  /* a studio strip-light: a crisp primary band (~1.8 % of a unit, hard edges) and a thin secondary glint beside it */
   background:
-    linear-gradient(104deg,
-      transparent calc(var(--lxl) - 2.6% / var(--wu, .45)),
-      color-mix(in srgb, var(--cloud) 20%, transparent) calc(var(--lxl) - 1.5% / var(--wu, .45)),
-      color-mix(in srgb, var(--cloud) 90%, transparent) calc(var(--lxl) - .6% / var(--wu, .45)),
-      color-mix(in srgb, var(--cloud) 90%, transparent) calc(var(--lxl) + .6% / var(--wu, .45)),
-      color-mix(in srgb, var(--cloud) 18%, transparent) calc(var(--lxl) + 1.4% / var(--wu, .45)),
-      transparent calc(var(--lxl) + 2.2% / var(--wu, .45)),
-      color-mix(in srgb, var(--cloud) 45%, transparent) calc(var(--lxl) + 3% / var(--wu, .45)),
-      transparent calc(var(--lxl) + 3.6% / var(--wu, .45))),
-    linear-gradient(104deg, transparent calc(var(--lxl) - 8% / var(--wu, .45)), color-mix(in srgb, var(--cloud) 7%, transparent) var(--lxl), transparent calc(var(--lxl) + 8% / var(--wu, .45)));
-  mix-blend-mode: plus-lighter;
-  filter: blur(.5px);
-  opacity: max(calc(var(--h, 0) * .9), var(--deals-g));
+    linear-gradient(90deg,
+      transparent calc(var(--c) - var(--bk, .5) * 1.8%),
+      color-mix(in srgb, var(--cloud) 80%, transparent) calc(var(--c) - var(--bk, .5) * 1.1%),
+      color-mix(in srgb, var(--cloud) 92%, transparent) var(--c),
+      color-mix(in srgb, var(--cloud) 80%, transparent) calc(var(--c) + var(--bk, .5) * 1.1%),
+      transparent calc(var(--c) + var(--bk, .5) * 1.8%),
+      transparent calc(var(--c) + var(--bk, .5) * 2.9%),
+      color-mix(in srgb, var(--cloud) 62%, transparent) calc(var(--c) + var(--bk, .5) * 3.35%),
+      transparent calc(var(--c) + var(--bk, .5) * 3.8%)),
+    linear-gradient(90deg,
+      transparent calc(var(--c) - var(--bk, .5) * 4.5%),
+      color-mix(in srgb, var(--cloud) 16%, transparent) var(--c),
+      transparent calc(var(--c) + var(--bk, .5) * 5.5%));
+  mix-blend-mode: screen;
+  opacity: max(calc(var(--h, 0) * .92), var(--deals-g));
+}
+[data-section="deals"] .deals-gloss--sheen {
+  background: linear-gradient(90deg,
+    transparent calc(var(--c) - var(--bk, .5) * 9%),
+    color-mix(in srgb, var(--cloud) 55%, transparent) calc(var(--c) - var(--bk, .5) * 2%),
+    color-mix(in srgb, var(--cloud) 55%, transparent) calc(var(--c) + var(--bk, .5) * 3%),
+    transparent calc(var(--c) + var(--bk, .5) * 10%));
+  mix-blend-mode: soft-light;
 }
 [data-section="deals"] .is-sweep { animation: deals-sweep 2100ms cubic-bezier(.45, .05, .3, 1) both; }
 @keyframes deals-sweep {
@@ -1167,7 +1183,8 @@ body.nc-ytbox-open { overflow: hidden; }
   font: 700 14px/1 var(--font-body); letter-spacing: -.01em; font-variant-numeric: tabular-nums;
 }
 
-/* quick view: a quiet round eye top-right (mirrors the bubble) – it never covers a pack; the whole stage also opens it */
+/* quick view: a quiet round eye top-right (mirrors the bubble) – it never covers a pack. The stage itself is
+   pointer-transparent, so a click on the packshot goes to the card's product link; only the eye opens quick view. */
 [data-section="deals"] .deals-quick {
   position: absolute; z-index: 3; top: 10px; right: 10px; width: 44px; height: 44px; padding: 0; border: 0; background: transparent;
   display: grid; place-items: center; color: var(--sage-800); cursor: pointer; isolation: isolate; pointer-events: auto;
@@ -1205,7 +1222,14 @@ body.nc-ytbox-open { overflow: hidden; }
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; text-wrap: pretty;
 }
 [data-section="deals"] .deals-card__claim--s { display: none; }
+/* every claim reserves three lines, so short claims don't leave a hole and the price rows still share one line */
+@media (min-width: 761px) { [data-section="deals"] .deals-card__claim:not(.deals-card__claim--set) { min-height: calc(1.5em * 3); } }
+/* the buy block sits on a dotted seam (dotted, never solid): whatever slack a row has becomes designed air above it */
 [data-section="deals"] .deals-card__buy { margin-top: auto; padding-top: 16px; }
+[data-section="deals"] .deals-card__buy::before {
+  content: ""; display: block; height: 0; margin-bottom: 14px;
+  border-top: 1.5px dotted color-mix(in srgb, var(--sage-300) 80%, transparent);
+}
 
 /* price: Black Week price · Spar · Førpris (§ 9 a). Fixed line boxes so every price/button row shares one line. */
 [data-section="deals"] .deals-price { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 0; }
@@ -1266,24 +1290,32 @@ body.nc-ytbox-open { overflow: hidden; }
   font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--sage-700);
 }
 [data-section="deals"] .deals-prod__lbl .deals-no { margin-right: 6px; width: 17px; height: 17px; font-size: 11px; letter-spacing: 0; }
-[data-section="deals"] .deals-set__badge { width: 56px; height: 56px; margin: 0 0 14px -2px; }
 [data-section="deals"] .deals-card--set .deals-bubble { width: 58px; font-size: 15px; }
 
-[data-section="deals"] .deals-set__body { position: static; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(20px, 2.4vw, 32px); padding: 18px 22px 20px; }
+/* body: left = what it is and what it is worth (ledger); right = what you get and the buy block, on the shared seam */
+[data-section="deals"] .deals-set__body { position: static; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(22px, 2.6vw, 36px); padding: 18px 22px 20px; }
 [data-section="deals"] .deals-set__intro, [data-section="deals"] .deals-set__side { display: flex; flex-direction: column; min-width: 0; }
 [data-section="deals"] .deals-card__name--set { font-size: clamp(1.625rem, 1.2rem + .8vw, 2rem); line-height: 1.06; }
-[data-section="deals"] .deals-card__claim--set { -webkit-line-clamp: 3; line-clamp: 3; margin-top: 10px; font-size: 14px; }
-[data-section="deals"] .deals-set__perks { list-style: none; margin: auto 0 0; padding: 16px 0 2px; display: grid; gap: 7px; font-size: 13px; line-height: 1.35; color: var(--sage-800); }
+[data-section="deals"] .deals-card__claim--set { -webkit-line-clamp: 3; line-clamp: 3; margin-top: 8px; font-size: 14px; }
+[data-section="deals"] .deals-set__perks { list-style: none; margin: 25px 0 0; padding: 0; display: grid; gap: 8px; font-size: 13px; line-height: 1.35; color: var(--sage-800); }
 [data-section="deals"] .deals-set__perks li { display: flex; align-items: flex-start; gap: 8px; }
+[data-section="deals"] .deals-set__perks li.is-nudge { margin-top: 4px; padding-top: 10px; border-top: 1.5px dotted color-mix(in srgb, var(--sage-300) 80%, transparent); color: var(--text-strong); }
+[data-section="deals"] .deals-set__perks li.is-nudge b { font-weight: 600; color: var(--accent-berry); }
 [data-section="deals"] .deals-set__perks svg { width: 17px; height: 17px; flex: none; margin-top: -1px; fill: none; stroke: var(--sage-600); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-/* contents with dotted leader lines (dotted, never solid); prices are labelled as single-item førpriser (§ 9 a) */
-[data-section="deals"] .deals-set__cap { display: flex; justify-content: space-between; gap: 12px; margin: 2px 0 8px; font: 600 11px/1.3 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--dl-muted); }
-[data-section="deals"] .deals-set__list { margin: 0; display: grid; gap: 6px; font-size: 13px; line-height: 1.35; }
+/* the honest comparison, in berry, right above the price it explains */
+[data-section="deals"] .deals-set__less { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .005em; }
+[data-section="deals"] .deals-set__less-dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
+/* contents ledger with dotted leaders (dotted, never solid). § 9 a: each item's førpris, their labelled sum, and what the
+   same items cost bought separately in Black Week – the only reference a shopper can actually get today */
+[data-section="deals"] .deals-set__contents { margin-top: auto; padding-top: 16px; }
+[data-section="deals"] .deals-set__cap { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 7px; font: 600 11px/1.3 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--dl-muted); }
+[data-section="deals"] .deals-set__list { margin: 0; display: grid; gap: 5px; font-size: 13px; line-height: 1.35; }
 [data-section="deals"] .deals-set__row { display: flex; align-items: center; gap: 8px; color: var(--text-body); }
 [data-section="deals"] .deals-set__row dt { flex: none; display: inline-flex; align-items: center; }
 [data-section="deals"] .deals-set__row::after { content: ""; order: 1; flex: 1; min-width: 12px; border-bottom: 1.5px dotted var(--sage-300); transform: translateY(3px); }
-[data-section="deals"] .deals-set__row dd { order: 2; margin: 0; color: var(--dl-muted); font-variant-numeric: tabular-nums; }
-[data-section="deals"] .deals-set__row--sum { margin-top: 3px; padding-top: 8px; border-top: 1px solid var(--border-soft); color: var(--text-strong); font-weight: 600; }
+[data-section="deals"] .deals-set__row dd { order: 2; margin: 0; color: var(--dl-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+[data-section="deals"] .deals-set__row--sum0 { margin-top: 3px; padding-top: 7px; border-top: 1px solid var(--border-soft); color: var(--dl-muted); }
+[data-section="deals"] .deals-set__row--sum { color: var(--text-strong); font-weight: 600; }
 [data-section="deals"] .deals-set__row--sum dd { color: var(--text-strong); }
 [data-section="deals"] .deals-set__row--sum::after { border-bottom-color: var(--sage-400); }
 
@@ -1298,61 +1330,74 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-gift__glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(70% 30% at 50% 22%, color-mix(in srgb, var(--sand-500) 15%, transparent), transparent 72%),
+    radial-gradient(60% 26% at 50% 24%, color-mix(in srgb, var(--sand-500) 14%, transparent), transparent 72%),
     radial-gradient(80% 60% at 0% 100%, color-mix(in srgb, var(--sage-800) 95%, transparent), transparent 70%);
 }
 [data-section="deals"] .deals-gift__in { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; gap: 12px; padding: 0 22px 22px; }
 [data-section="deals"] .deals-gift__eyebrow { margin: 0 0 8px; font: 600 11px/1.3 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sand-500); }
 [data-section="deals"] .deals-gift__title { margin: 0; font: 400 1.625rem/1.1 var(--font-display); color: var(--paper); text-wrap: balance; }
-/* art: decorative glass/oil bubbles drifting with buoyancy (no product is pictured – the Lip Balm packshot is pending);
-   the gift's value sits on its own sand bubble in the corner with clear air around it */
-/* the art occupies exactly a product stage (same height, same floor line), so the tile's text starts where the cards' do */
-[data-section="deals"] .deals-gift__art { position: relative; flex: none; aspect-ratio: 1 / var(--dl-stage-ar); margin: 0 -22px 4px; }
-[data-section="deals"] .deals-gift__art::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(42% 10% at 50% calc(100% - var(--dl-floor) * 100%), color-mix(in srgb, var(--sand-500) 16%, transparent), transparent);
+
+/* art: no Lip Balm packshot exists yet, so nothing pretends to be the product. A paper gift tag (value + size, both
+   true) hangs on a sand thread from the tile's top edge; one faint oil sphere drifts behind it. The art takes the
+   tile's spare height (min 112px) so the text block always sits on the same baseline grid as the cards' bodies. */
+[data-section="deals"] .deals-gift__art { position: relative; flex: 1 1 auto; min-height: 112px; margin: 0 -22px 2px; overflow: hidden; display: grid; place-items: center; }
+[data-section="deals"] .deals-tag {
+  --tw: 96px;
+  position: relative; width: var(--tw); margin-top: 6%;
+  transform-origin: 50% -260px; /* a long pendulum: the thread is tied far above the tile */
+  filter: drop-shadow(0 14px 16px color-mix(in srgb, var(--sage-900) 55%, transparent)) drop-shadow(0 2px 3px color-mix(in srgb, var(--sage-900) 35%, transparent));
 }
-[data-section="deals"] .deals-gift__stage {
-  --d: min(100px, 36cqw);
-  position: absolute; z-index: 1; left: 50%; bottom: calc(var(--dl-floor) * 100% - 6px);
-  width: calc(var(--d) * 1.9); height: calc(var(--d) + 30px); margin-left: calc(var(--d) * -.95);
+[data-section="deals"] .deals-tag__string {
+  position: absolute; left: 50%; bottom: calc(100% - 15px); width: 14px; height: 400px; margin-left: -7px; overflow: visible;
+  fill: none; stroke: color-mix(in srgb, var(--sand-500) 80%, transparent); stroke-width: 1.2; vector-effect: non-scaling-stroke;
 }
+[data-section="deals"] .deals-tag__card {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  aspect-ratio: 96 / 124; padding: 0 8px 14px; text-align: center; color: var(--sage-900);
+  background:
+    radial-gradient(120% 70% at 30% 10%, color-mix(in srgb, var(--cloud) 70%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--sand-100));
+  clip-path: polygon(24% 0, 76% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
+  border-radius: 0 0 6px 6px;
+}
+[data-section="deals"] .deals-tag__hole {
+  position: absolute; left: 50%; top: 9px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%;
+  background: var(--bw-night); box-shadow: 0 0 0 2px var(--sand-300), inset 0 1px 2px color-mix(in srgb, var(--sage-900) 60%, transparent);
+}
+[data-section="deals"] .deals-tag__k { font: 600 11px/1.2 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--sage-700); }
+[data-section="deals"] .deals-tag__v { margin-top: 2px; font: 400 27px/1.05 var(--font-display); letter-spacing: -.01em; white-space: nowrap; }
+[data-section="deals"] .deals-tag__n {
+  margin-top: 9px; padding-top: 8px; width: 100%; border-top: 1.5px dotted var(--sand-500);
+  font: 500 11px/1.2 var(--font-body); color: var(--ink-700); white-space: nowrap;
+}
+/* one damped swing when the tile arrives, when it's hovered, and when the gift is unlocked – then it hangs still */
+[data-section="deals"] .deals-rv.is-in .deals-tag,
+[data-section="deals"] .deals-gift.is-swing .deals-tag { animation: deals-swing 4200ms cubic-bezier(.33, 0, .3, 1) both; }
+[data-section="deals"] .deals-rv.is-in .deals-tag { animation-delay: 700ms; }
+@keyframes deals-swing {
+  0% { transform: rotate(1.6deg); } 18% { transform: rotate(-1.1deg); } 38% { transform: rotate(.62deg); }
+  58% { transform: rotate(-.3deg); } 78% { transform: rotate(.1deg); } 100% { transform: rotate(0); }
+}
+/* the one decorative oil sphere, behind the tag (30 %) */
 [data-section="deals"] .deals-drop {
-  position: absolute; left: 50%; top: 0; width: var(--d); aspect-ratio: 1; margin-left: calc(var(--d) / -2);
-  border-radius: 50%;
-  /* a glass/oil sphere: almost clear body, warm caustic pooled at the bottom, cool rim, one soft window highlight */
+  position: absolute; width: var(--d); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
   background:
     radial-gradient(70% 46% at 50% 92%, color-mix(in srgb, var(--sand-500) 62%, transparent), transparent 70%),
     radial-gradient(60% 60% at 50% 50%, transparent 58%, color-mix(in srgb, var(--sage-500) 22%, transparent) 100%),
     color-mix(in srgb, var(--sand-500) 9%, transparent);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--paper) 26%, transparent),
-    inset 0 calc(var(--d) * -.17) calc(var(--d) * .27) calc(var(--d) * -.12) color-mix(in srgb, var(--sand-300) 70%, transparent),
-    inset 0 calc(var(--d) * .12) calc(var(--d) * .22) calc(var(--d) * -.14) color-mix(in srgb, var(--paper) 40%, transparent),
-    0 26px 46px -22px color-mix(in srgb, var(--sand-500) 30%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper) 26%, transparent), inset 0 calc(var(--d) * -.17) calc(var(--d) * .27) calc(var(--d) * -.12) color-mix(in srgb, var(--sand-300) 70%, transparent);
   animation: deals-buoy 7.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
 }
-[data-section="deals"] .deals-drop--s1 { --d: 30px; left: 9%; top: 14%; animation-duration: 6.1s; animation-delay: -2.4s; }
-[data-section="deals"] .deals-drop--s2 { --d: 16px; left: 19%; top: 68%; animation-duration: 5.3s; animation-delay: -4s; }
-[data-section="deals"] .deals-drop--s1, [data-section="deals"] .deals-drop--s2 { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper) 26%, transparent), inset 0 -4px 7px -3px color-mix(in srgb, var(--sand-300) 60%, transparent); }
-[data-section="deals"] .deals-drop__core { position: absolute; inset: 52% 22% 6% 22%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-100) 70%, transparent), transparent); filter: blur(3px); }
+[data-section="deals"] .deals-drop--bg { --d: 84px; left: calc(50% + 6px); top: calc(50% - 64px); opacity: .3; }
 [data-section="deals"] .deals-drop__spec { position: absolute; left: 21%; top: 11%; width: 36%; height: 20%; border-radius: 50%; transform: rotate(-26deg); background: radial-gradient(closest-side, color-mix(in srgb, var(--paper) 80%, transparent), color-mix(in srgb, var(--paper) 18%, transparent) 60%, transparent); }
-[data-section="deals"] .deals-drop__floor {
-  position: absolute; left: 50%; bottom: 0; width: calc(var(--d) * .8); height: 12px; margin-left: calc(var(--d) * -.4);
-  border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 30%, transparent), transparent);
-  animation: deals-buoy-sh 7.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
-}
 @keyframes deals-buoy { from { transform: translateY(4px); } to { transform: translateY(-7px); } }
-@keyframes deals-buoy-sh { from { transform: scaleX(1); opacity: .9; } to { transform: scaleX(.8); opacity: .55; } }
-[data-section="deals"] .deals-gift__bubble {
-  position: absolute; z-index: 2; left: 14px; top: 14px; width: 64px; padding: 0;
-  font: 700 12.5px/1.2 var(--font-body); letter-spacing: .01em; text-align: center;
-}
-[data-section="deals"] .deals-gift__cta { position: relative; width: 100%; min-height: 46px; margin-top: auto; padding: 0 14px; gap: 8px; font-size: 14px; line-height: 1.25; text-align: center; }
-[data-section="deals"] .deals-gift__cta svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: transform 420ms var(--dl-visc); }
-[data-section="deals"] .deals-gift__cta:hover svg { transform: translateX(3px); }
-@container (max-width: 340px) { [data-section="deals"] .deals-gift__cta-x { display: none; } }
+
+[data-section="deals"] .deals-gift__cta { position: relative; width: 100%; min-height: 46px; margin-top: 2px; padding: 0 14px; gap: 8px; font-size: 14px; line-height: 1.25; text-align: center; }
+/* the brand's hand-drawn pil arrow, turned so its head points along the reading direction */
+[data-section="deals"] .deals-pil { width: 18px; height: 18px; flex: none; fill: currentColor; stroke: none; transform: rotate(-30deg); transition: transform 420ms var(--dl-visc); }
+[data-section="deals"] .deals-gift__cta:hover .deals-pil, [data-section="deals"] .deals-qv__more:hover .deals-pil { transform: translateX(3px) rotate(-30deg); }
 [data-section="deals"] .deals-gift__copy { margin: 0; font-size: 14px; line-height: 1.5; color: var(--bw-muted-on-night); }
+[data-section="deals"] .deals-gift__copy-s { display: none; }
 [data-section="deals"] .deals-gift__meter { padding-top: 4px; }
 [data-section="deals"] .deals-gift__track {
   position: relative; height: 6px; border-radius: var(--radius-pill);
@@ -1372,23 +1417,28 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-gift__tick--end { margin-left: -12px; }
 [data-section="deals"] .deals-gift.is-ship .deals-gift__tick:not(.deals-gift__tick--end),
 [data-section="deals"] .deals-gift.is-done .deals-gift__tick--end { background: var(--sand-500); border-color: var(--sand-500); transform: scale(1.15); }
+/* each label is centred exactly under its 12px node */
 [data-section="deals"] .deals-gift__labels { position: relative; height: 14px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
-[data-section="deals"] .deals-gift__labels span { position: absolute; top: 0; left: var(--at); transform: translateX(-50%); white-space: nowrap; }
-[data-section="deals"] .deals-gift__labels span:last-child { left: auto; right: 0; transform: none; }
-[data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); min-height: 3em; }
+[data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); transform: translateX(-50%); white-space: nowrap; text-align: center; }
+[data-section="deals"] .deals-gift__labels > .deals-gift__lend { left: calc(100% - 6px); }
+[data-section="deals"] .deals-gift__status { margin: 0; font-size: 13px; line-height: 1.5; color: var(--bw-muted-on-night); }
 [data-section="deals"] .deals-gift__status b { color: var(--paper); font-weight: 600; }
-/* narrow gift tile (phone): bubble top-right, the drop low-left – never touching; labels never collide */
+/* narrow gift tile (phone) */
 @container (max-width: 240px) {
-  [data-section="deals"] .deals-gift__art { margin-inline: -14px; }
-  [data-section="deals"] .deals-gift__stage { --d: 34cqw; }
-  [data-section="deals"] .deals-drop--s1 { --d: 18px; left: auto; right: 0; top: 10%; }
-  [data-section="deals"] .deals-drop--s2 { --d: 10px; left: auto; right: 12%; top: 64%; }
-  [data-section="deals"] .deals-gift__bubble { width: 50px; left: 8px; top: 8px; font-size: 11px; }
-  [data-section="deals"] .deals-gift__labels span:first-child { transform: translateX(calc(-100% + 7px)); }
-  [data-section="deals"] .deals-gift__copy-x, [data-section="deals"] .deals-gift__status.is-idle, [data-section="deals"] .deals-gift__cta svg { display: none; }
-  [data-section="deals"] .deals-gift__cta { padding: 0 8px; font-size: 12.5px; }
+  [data-section="deals"] .deals-gift__art { margin-inline: -14px; min-height: 104px; }
+  [data-section="deals"] .deals-tag { --tw: 74px; }
+  [data-section="deals"] .deals-tag__card { padding-bottom: 10px; }
+  [data-section="deals"] .deals-tag__hole { top: 7px; width: 8px; height: 8px; margin-left: -4px; }
+  [data-section="deals"] .deals-tag__v { font-size: 21px; }
+  [data-section="deals"] .deals-tag__n { margin-top: 6px; padding-top: 6px; }
+  [data-section="deals"] .deals-drop--bg { --d: 60px; top: calc(50% - 50px); }
+  [data-section="deals"] .deals-gift__meter { margin-right: 10px; } /* the centred "Gave" label keeps clear of the tile edge */
+  [data-section="deals"] .deals-gift__lx, [data-section="deals"] .deals-gift__copy-x { display: none; }
+  [data-section="deals"] .deals-gift__copy-s { display: inline; }
+  [data-section="deals"] .deals-gift__cta { padding: 0 8px; font-size: 13px; }
+  [data-section="deals"] .deals-gift__cta .deals-pil { display: none; } /* a ~175px button needs the air more than the arrow */
 }
-/* wide gift tile (span ≥ 2, e.g. a filtered view): text left, drop right */
+/* wide gift tile (span ≥ 2, e.g. a filtered view): text left, tag right */
 @container (min-width: 480px) {
   [data-section="deals"] .deals-gift__in {
     display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); grid-template-rows: auto auto auto auto auto;
@@ -1399,22 +1449,17 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="deals"] .deals-gift__cta { justify-self: start; width: auto; padding: 0 22px; }
   [data-section="deals"] .deals-gift__title { font-size: 1.875rem; }
   [data-section="deals"] .deals-gift__meter { padding-top: 10px; max-width: 420px; }
-  [data-section="deals"] .deals-gift__status { min-height: 0; }
-  [data-section="deals"] .deals-gift__art { grid-column: 2; grid-row: 1 / -1; min-height: 200px; aspect-ratio: auto; margin: 0; }
-  [data-section="deals"] .deals-gift__art::after { display: none; }
-  [data-section="deals"] .deals-gift__stage { --d: 112px; bottom: 14%; }
-  [data-section="deals"] .deals-gift__bubble { width: 76px; left: auto; right: 0; top: 4%; }
+  [data-section="deals"] .deals-gift__art { grid-column: 2; grid-row: 1 / -1; min-height: 220px; margin: -34px 0; align-self: stretch; }
 }
 /* full-row gift tile: a calm banner */
 @container (min-width: 900px) {
-  [data-section="deals"] .deals-gift__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 280px; grid-template-rows: auto auto auto; padding-block: 28px; }
+  [data-section="deals"] .deals-gift__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 260px; grid-template-rows: auto auto auto; padding-block: 28px; }
   [data-section="deals"] .deals-gift__head { grid-column: 1; grid-row: 1; }
   [data-section="deals"] .deals-gift__copy { grid-column: 1; grid-row: 2; }
   [data-section="deals"] .deals-gift__cta { grid-column: 1; grid-row: 3; }
   [data-section="deals"] .deals-gift__meter { grid-column: 2; grid-row: 1; align-self: end; max-width: none; }
   [data-section="deals"] .deals-gift__status { grid-column: 2; grid-row: 2 / 4; align-self: start; }
-  [data-section="deals"] .deals-gift__art { grid-column: 3; grid-row: 1 / -1; min-height: 150px; }
-  [data-section="deals"] .deals-gift__stage { --d: 100px; }
+  [data-section="deals"] .deals-gift__art { grid-column: 3; grid-row: 1 / -1; min-height: 190px; margin: -28px 0; }
 }
 
 /* ---------------------------------------------------------------- foot */
@@ -1465,7 +1510,7 @@ body.nc-ytbox-open { overflow: hidden; }
   --wfit: .7; --dl-floor: .16; --h: .22; --deals-lx: 30%; --dl-fl: 16%;
   position: relative; container-type: size; overflow: hidden; isolation: isolate;
 }
-[data-section="deals"] .deals-qv__stage--set { --wfit: .84; }
+[data-section="deals"] .deals-qv__stage--set { --wfit: .84; --dl-floor: .27; --dl-fl: 27%; } /* a width-bound line-up sits at the optical centre, not on the bottom edge */
 [data-section="deals"] .deals-qv__stage .deals-prod { transform: none; }
 [data-section="deals"] .deals-bubble--qv { top: 22px; left: 22px; width: 64px; font-size: 17px; }
 [data-section="deals"] .deals-qv__badge { position: absolute; z-index: 2; top: 22px; left: 96px; width: 64px; height: 64px; }
@@ -1476,9 +1521,7 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-qv__notes { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--dl-muted); }
 [data-section="deals"] .deals-qv__more { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px; font-size: 14px; font-weight: 500; color: var(--sage-700); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--sage-700) 35%, transparent); }
 [data-section="deals"] .deals-qv__more:hover { color: var(--sage-900); text-decoration-color: currentColor; }
-[data-section="deals"] .deals-qv__more svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: transform 420ms var(--dl-visc); }
-[data-section="deals"] .deals-qv__more:hover svg { transform: translateX(3px); }
-[data-section="deals"] .deals-qv__body .deals-set__contents { margin-top: 20px; }
+[data-section="deals"] .deals-qv__body .deals-set__contents { margin-top: 6px; }
 [data-section="deals"] .deals-qv__rule { margin: 24px 0 20px; width: 100%; color: var(--sage-300); opacity: 1; }
 [data-section="deals"] .deals-qv__buy .deals-add { margin-top: 18px; }
 [data-section="deals"] .deals-qv__usp { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 9px; font-size: 13px; color: var(--text-body); }
@@ -1493,7 +1536,7 @@ body.nc-ytbox-open { overflow: hidden; }
 
 /* ---------------------------------------------------------------- mobile: 2-col grid (more products per scroll, thumb-reachable add) */
 @media (max-width: 760px) {
-  [data-section="deals"] { --dl-gap: 10px; --dl-radius: 16px; --dl-stage-ar: .92; --dl-floor: .12; --dl-top: .045; --dl-ufrac: .835; }
+  [data-section="deals"] { --dl-gap: 10px; --dl-radius: 16px; --dl-stage-ar: .92; --dl-floor: .12; --dl-top: .1; --dl-ufrac: .78; }
   [data-section="deals"] .deals-thread { width: 34%; right: -4%; height: 92px; }
   [data-section="deals"] .deals-head { gap: 20px; }
   [data-section="deals"] .deals-head__text { gap: 10px; }
@@ -1531,14 +1574,16 @@ body.nc-ytbox-open { overflow: hidden; }
   /* the Sampakke card goes full-width; its stage is a touch taller so the line-up reads on a phone */
   [data-section="deals"] .deals-card--set .deals-card__stage { height: calc(((100cqw - var(--dl-gap)) / 2 - 2px) * var(--dl-stage-ar) * 1.16); --wfit: .92; --dl-fl: max(calc(var(--dl-floor) * 100%), 46px); }
   [data-section="deals"] .deals-card--set .deals-line--set { bottom: max(calc(var(--dl-floor) * 100cqh), 46px); }
+  /* phone: the line-up is labelled with its numbers only – the ledger right below maps 1–4 to the names */
+  [data-section="deals"] .deals-card--set .deals-prod__lbl { font-size: 0; letter-spacing: 0; top: calc(100% + 12px); }
+  [data-section="deals"] .deals-card--set .deals-prod__lbl .deals-no { margin-right: 0; width: 20px; height: 20px; font-size: 11px; }
   [data-section="deals"] .deals-card--set .deals-card__claim { display: block; }
   [data-section="deals"] .deals-card--set .deals-bubble { width: 50px; font-size: 14px; top: 12px; left: 12px; }
-  [data-section="deals"] .deals-set__intro { position: relative; }
-  [data-section="deals"] .deals-set__badge { position: absolute; top: -2px; right: 0; width: 50px; height: 50px; margin: 0; }
   [data-section="deals"] .deals-set__body { grid-template-columns: 1fr; padding: 16px 16px 16px; row-gap: 16px; }
   [data-section="deals"] .deals-card__name--set { font-size: 1.5rem; }
   [data-section="deals"] .deals-card__claim--set { font-size: 13.5px; margin-top: 8px; -webkit-line-clamp: 3; line-clamp: 3; }
-  [data-section="deals"] .deals-set__perks { margin-top: 0; padding-top: 12px; font-size: 13px; }
+  [data-section="deals"] .deals-set__perks { margin-top: 0; font-size: 13px; }
+  [data-section="deals"] .deals-set__contents { padding-top: 14px; }
   [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.5rem; line-height: 30px; }
   [data-section="deals"] .deals-price--big .deals-price__save { margin-left: auto; font-size: 12.5px; }
   [data-section="deals"] .deals-card--set .deals-add { min-height: 48px; font-size: 14px; }
@@ -1546,7 +1591,6 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="deals"] .deals-gift__in { padding: 0 14px 14px; gap: 10px; }
   [data-section="deals"] .deals-gift__eyebrow { font-size: 11px; letter-spacing: .08em; margin-bottom: 6px; }
   [data-section="deals"] .deals-gift__title { font-size: 1.1875rem; }
-  [data-section="deals"] .deals-gift__bubble { font-size: 11px; }
   [data-section="deals"] .deals-gift__cta { min-height: 44px; font-size: 13px; padding: 0 10px; }
   [data-section="deals"] .deals-chip__n { margin-left: .25em; }
   [data-section="deals"] .deals-gift__copy { font-size: 13px; line-height: 1.45; }
@@ -1560,6 +1604,7 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="deals"] .deals-qv { width: 100vw; max-height: 94dvh; margin: auto 0 0; inset: auto 0 0 0; }
   [data-section="deals"] .deals-qv__sheet { grid-template-columns: 1fr; grid-template-rows: 300px auto; border-radius: 22px 22px 0 0; max-height: 94dvh; overflow-y: auto; }
   [data-section="deals"] .deals-qv__stage { --dl-top: .14; }
+  [data-section="deals"] .deals-qv__stage--set { --dl-floor: .16; --dl-fl: 16%; }
   [data-section="deals"] .deals-qv__body { padding: 6px 20px calc(24px + env(safe-area-inset-bottom)); overflow: visible; }
   [data-section="deals"] .deals-qv__close { top: 12px; right: 12px; }
   [data-section="deals"] .deals-bubble--qv { width: 54px; font-size: 15px; top: 16px; left: 16px; }
@@ -1569,5 +1614,5 @@ body.nc-ytbox-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   [data-section="deals"] .deals-card { transform: none !important; }
   [data-section="deals"] .deals-add.is-added .deals-add__ink { animation: none; transform: scale(40); opacity: 1; }
-  [data-section="deals"] .deals-drop, [data-section="deals"] .deals-drop__floor, [data-section="deals"] .is-sweep { animation: none; }
+  [data-section="deals"] .deals-drop, [data-section="deals"] .deals-tag, [data-section="deals"] .is-sweep { animation: none !important; }
 }

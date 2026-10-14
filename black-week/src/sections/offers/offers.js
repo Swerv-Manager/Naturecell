@@ -2,7 +2,7 @@
 // · one calm countdown (days · hours · minutes – the minute drum turns once a minute)
 // · Komplet Pakken "Læg i kurv" with a quiet morph + polite live announcement
 // · the gift tile: a true example basket, swapped for the live cart and a damped meter once the cart has value
-// · mobile: snap carousel led by the hero offer, with dots
+// · mobile: snap carousel led by the hero offer (first in the DOM), with dots
 export default function init(root, ctx) {
   const q = new URLSearchParams(location.search);
   const reduced = ctx.prefersReducedMotion;
@@ -37,7 +37,7 @@ function initClock(root, ctx, q, reduced) {
       d.append(ghost, s);
       return { el: d, v, cur: s };
     });
-    return { dgs, lbl: unit.querySelector('[data-lbl]') };
+    return { el: unit, dgs, lbl: unit.querySelector('[data-lbl]') };
   });
 
   // a drum turning downward: the old digit leaves through the bottom edge as the new one arrives from the top –
@@ -78,8 +78,13 @@ function initClock(root, ctx, q, reduced) {
       const s = String(Math.min(n, 99)).padStart(2, '0');
       units[i].dgs.forEach((d, k) => roll(d, s[k], animate));
     });
+    // days are a count, not a clock: "3 dage", never "03 dage"
+    units[0].dgs[0].el.toggleAttribute('data-off', vals[0] < 10);
+    // on the last day the day unit leaves instead of reading "0 dage"
+    units[0].el.hidden = vals[0] === 0;
     if (units[0].lbl) units[0].lbl.textContent = vals[0] === 1 ? 'dag' : 'dage';
     if (units[1].lbl) units[1].lbl.textContent = vals[1] === 1 ? 'time' : 'timer';
+    if (units[2].lbl) units[2].lbl.textContent = vals[2] === 1 ? 'minut' : 'minutter';
     if (sr && left !== lastMinute) {
       lastMinute = left;
       const [d, h, m] = vals;
@@ -115,6 +120,14 @@ function initAdd(root, ctx) {
   const status = root.querySelector('[data-add-status]');
   const p = ctx.byId[btn.dataset.add];
   if (!p) { btn.disabled = true; return; }
+  // every figure on the tile comes from the catalogue, so it can never drift from the real prices
+  const nb = (s) => s.replace(' kr.', '\u00a0kr.');
+  const set = (sel, txt) => { const n = root.querySelector(sel); if (n) n.textContent = txt; };
+  const price = root.querySelector('[data-kp-price]');
+  if (price && price.firstChild) price.firstChild.textContent = ctx.fmt.kr(p.price).replace(' kr.', '');
+  set('[data-kp-before]', nb(ctx.fmt.kr(p.price0)));
+  const loose = (p.contains || []).reduce((sum, id) => sum + (ctx.byId[id]?.price || 0), 0);
+  if (loose) set('[data-kp-loose]', nb(ctx.fmt.kr(loose)));
   let timer = 0;
   btn.addEventListener('click', () => {
     ctx.store.add(p.id, 1);
@@ -135,9 +148,10 @@ function initGift(root, ctx, q, reduced) {
 
   // the example prices come from the catalogue, so the stage can never drift from the real prices
   let exSum = 0;
-  st.querySelectorAll('[data-ex]').forEach((n) => { const p = ctx.byId[n.dataset.ex]; if (p) { n.textContent = kr(p.price); exSum += p.price; } });
+  const nb = (s) => s.replace(' kr.', '\u00a0kr.');
+  st.querySelectorAll('[data-ex]').forEach((n) => { const p = ctx.byId[n.dataset.ex]; if (p) { n.textContent = String(p.price); exSum += p.price; } });
   const exOut = st.querySelector('[data-ex-sum]');
-  if (exOut && exSum) exOut.textContent = kr(exSum);
+  if (exOut && exSum) exOut.textContent = nb(kr(exSum));
 
   const sumEl = st.querySelector('[data-live-sum]');
   const nextEl = st.querySelector('[data-live-next]');
@@ -162,8 +176,8 @@ function initGift(root, ctx, q, reduced) {
     st.classList.toggle('has-cart', sum > 0);
     st.dataset.level = level;
     if (sum > 0) {
-      sumEl.textContent = `Din kurv · ${kr(sum)}`;
-      nextEl.textContent = level === 2 ? 'Fri fragt og gaven er med' : level === 1 ? `Fri fragt er med · ${kr(G - sum)} til gaven` : `${kr(S - sum)} til fri fragt`;
+      sumEl.textContent = `Din kurv ${kr(sum)}`;
+      nextEl.textContent = level === 2 ? 'Fri fragt og Lip Balm er med' : level === 1 ? `Fri fragt · ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
     }
     target = Math.min(1, sum / G);
     if (reduced) { shown = target; draw(shown); }
@@ -190,7 +204,7 @@ function initRail(root, reduced) {
   const tiles = [...root.querySelectorAll('.offers-tile')];
   const dots = [...root.querySelectorAll('[data-dot]')];
   if (!rail || !dots.length) return null;
-  // each dot names a tile (data-dot = tile index), listed in the mobile visual order
+  // data-dot = tile index in DOM order (= mobile visual and focus order)
   const dotFor = (tile) => dots.find((d) => +d.dataset.dot === tiles.indexOf(tile));
   const setCurrent = (dot) => dots.forEach((d) => d.setAttribute('aria-current', d === dot ? 'true' : 'false'));
   const io = new IntersectionObserver((es) => {

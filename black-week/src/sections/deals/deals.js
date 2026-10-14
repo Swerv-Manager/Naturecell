@@ -34,9 +34,10 @@ const SHOP = 'https://naturecell.dk';
 const URL_OF = {
   'skin-oil': '/products/cbd-olie-1000mg', serum: '/products/naturecell-cbd-hyaluronic-serum', 'day-cream': '/products/dagcreme',
   'night-cream': '/products/natcreme', 'cleansing-gel': '/products/rensegel', 'body-lotion': '/products/bodylotion',
-  shampoo: '/collections/cbd-haarpleje', 'komplet-pakken': '/products/hudpleje-startpakke-plus-1', 'all-day-facial': '/collections/sampakker',
+  shampoo: '/products/shampoo-300ml', 'komplet-pakken': '/products/hudpleje-startpakke-plus-1', 'all-day-facial': '/products/ansigtpleje-serie',
 };
 const hrefOf = (p) => SHOP + (URL_OF[p.id] || (p.handle ? `/products/${p.handle}` : '/collections/cbd-hudpleje'));
+// handles verified against theme-src (index/page.start settings + the DA handle registry used for the DE launch)
 // Danish category eyebrows (match the filter chips); a product nickname wins where it exists
 const EYEBROW = { 'body-lotion': 'Krop', shampoo: 'Hår' };
 const eyebrowOf = (p) => p.nickname || EYEBROW[p.id] || 'Ansigt';
@@ -51,11 +52,14 @@ const CLAIM_S = {
 const ICON = {
   bag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 8.25h12.8l-1.05 10.6a2 2 0 0 1-1.99 1.8H8.64a2 2 0 0 1-1.99-1.8z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>',
   check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="deals-check" d="m5.5 12.6 4.1 4.1 8.9-9.4"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5v11M6.5 12h11"/></svg>',
   tick: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12.4 3.9 3.9L18 8"/></svg>',
   eye: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.75 12S6.1 5.75 12 5.75 21.25 12 21.25 12 17.9 18.25 12 18.25 2.75 12 2.75 12z"/><circle cx="12" cy="12" r="2.75"/></svg>',
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
   truck: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5h10.5v8.5H3.5z"/><path d="M14 10.5h3.6l2.9 3v2.5H14"/><circle cx="7.25" cy="17.25" r="1.75"/><circle cx="16.75" cy="17.25" r="1.75"/></svg>',
   back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.25 4.5v3.25H7.5"/></svg>',
+  // the brand's own directional arrow (assets/icons/pil.svg), cropped to its ink and drawn in currentColor
+  pil: '<svg class="deals-pil" viewBox="14.5 17 31 31" aria-hidden="true"><path d="M31.63,46.75l12.34-7.13-12.55-6.76.05,3.58c-3.88-.64-12.57-3.63-15.45-17.47,0,0,0,19.64,15.54,23.44l.06,4.33Z"/></svg>',
   shield: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.75 5.25 6.5v5c0 4.2 2.9 7.4 6.75 8.75 3.85-1.35 6.75-4.55 6.75-8.75v-5z"/><path d="m9.25 12 1.95 1.95 3.75-3.9"/></svg>',
 };
 
@@ -81,26 +85,30 @@ export default function init(root, ctx) {
 
   // ------------------------------------------------------------------ markup
   const srcOf = (s, p) => (s && s.url ? s.url : ctx.asset(s ? s.src : p.img));
-  // one pack on the floor: contact shadow + packshot + a specular band masked to the packshot's own alpha
-  // one distant light: every pack in a line-up catches its highlight at the same relative spot (like real bottles on a shelf)
-  function prodHtml(s, src, alt, lbl = '') {
+  // one pack on the floor: contact shadow + packshot + light masked to the packshot's own alpha.
+  // The light lives in LINE coordinates (0 = left edge of the line-up, 1 = right edge): one distant window light passes
+  // along a whole shelf, bottle by bottle. Each pack knows where it sits in its line (--px0/--pw) and how many box-%
+  // one "unit" is (--bk), so the glint has the same physical width on every pack.
+  const packW = (s) => (s.box[4] - s.box[2]) / (s.box[5] - s.box[3]) * s.h; // product width in units
+  function prodHtml(s, src, alt, lbl = '', px0 = 0, pw = 1) {
     const [W, H, x0, y0, x1, y1] = s.box; const bw = x1 - x0, bh = y1 - y0;
     const geo = `width:${(W / bw * 100).toFixed(3)}%;left:${(-x0 / bw * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
-    // --gx0/--gw: where the product itself sits inside its (padded) image box, so the light is placed on the product
-    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${(bw / W).toFixed(4)};--wu:${(bw / bh * s.h).toFixed(4)}">
+    const gw = bw / W, wu = packW(s);
+    return `<div class="deals-prod" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};-webkit-mask-image:url('${src}');mask-image:url('${src}')"></span></span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span></span>
       ${lbl}
     </div>`;
   }
-  const lineW = (specs) => specs.reduce((a, s) => a + (s.box[4] - s.box[2]) / (s.box[5] - s.box[3]) * s.h, 0) + LINE_GAP * (specs.length - 1);
+  const lineW = (specs) => specs.reduce((a, s) => a + packW(s), 0) + LINE_GAP * (specs.length - 1);
   function lineHtml(p) {
     if (p.bundle) {
       const ids = (p.contains || []).filter((id) => BOTTLE[id]);
       const specs = ids.map((id) => BOTTLE[id]);
       const lw = lineW(specs);
+      let x = 0;
       return `<div class="deals-line deals-line--set" style="--lw:${lw.toFixed(4)};--n:${ids.length}" role="img" aria-label="${esc(p.name)}: ${ids.map((id) => esc(ctx.byId[id]?.name || id)).join(', ')}">
-        ${ids.map((id, i) => prodHtml(BOTTLE[id], BOTTLE[id].url, '', `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ''}</span>`)).join('')}
+        ${ids.map((id, i) => { const w = packW(BOTTLE[id]); const h = prodHtml(BOTTLE[id], BOTTLE[id].url, '', `<span class="deals-prod__lbl" aria-hidden="true"><span class="deals-no">${i + 1}</span>${SHORT[id] || ''}</span>`, x / lw, w / lw); x += w + LINE_GAP; return h; }).join('')}
       </div>`;
     }
     const s = SHOT[p.id] || { src: p.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.8 };
@@ -120,24 +128,34 @@ export default function init(root, ctx) {
       <span class="deals-add__b" aria-hidden="true">${ICON.check}<span>Lagt i kurv</span></span>
     </button>`;
   const metaLine = (p) => [p.size, p.strength].filter(Boolean).join(' · ');
+  // § 9 a / mfl. § 5: the ledger only shows prices a shopper can actually compare against – each item's own førpris,
+  // their sum (labelled as such), and what the same items cost bought separately TODAY. All computed from ctx.byId.
+  const setRows = (p) => (p.contains || []).map((id) => ctx.byId[id]).filter(Boolean);
+  const setNow = (p) => setRows(p).reduce((a, r) => a + r.price, 0);        // the items bought one by one in Black Week
+  const setLess = (p) => setNow(p) - p.price;                               // how much cheaper the Sampakke is than that
   const contentsHtml = (p) => {
-    const rows = (p.contains || []).map((id) => ctx.byId[id]).filter(Boolean);
+    const rows = setRows(p);
     if (!rows.length) return '';
     return `<div class="deals-set__contents">
-      <p class="deals-set__cap"><span>Indhold</span><span>Førpris enkeltvis</span></p>
+      <p class="deals-set__cap"><span>Indhold</span><span>Førpris</span></p>
       <dl class="deals-set__list">
         ${rows.map((r, i) => `<div class="deals-set__row"><dt><span class="deals-no" aria-hidden="true">${i + 1}</span>${esc(r.name)}</dt><dd>${kr(r.price0)}</dd></div>`).join('')}
-        <div class="deals-set__row deals-set__row--sum"><dt>Værdi ved løskøb</dt><dd>${kr(p.valueLoose)}</dd></div>
+        <div class="deals-set__row deals-set__row--sum0"><dt>Samlet førpris enkeltvis</dt><dd>${kr(rows.reduce((a, r) => a + r.price0, 0))}</dd></div>
+        <div class="deals-set__row deals-set__row--sum"><dt>Enkeltvis i Black Week</dt><dd>${kr(setNow(p))}</dd></div>
       </dl>
     </div>`;
   };
+  // shown only when it tells the shopper something the Spar line doesn't (All Day Facial: førpris = today's single sum)
+  const lessHtml = (p) => (setLess(p) > 0 && setLess(p) !== p.save ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>Pakken er ${kr(setLess(p))} billigere end enkeltvis</p>` : '');
   const giftAt = ctx.campaign.giftThreshold, shipAt = ctx.campaign.freeShipping;
   const perksHtml = (p) => {
     const perks = [];
-    if (p.price >= giftAt) perks.push(`Udløser gratis CBD Lip Balm`);
-    if (p.price >= shipAt) perks.push(`Fri fragt`);
-    perks.push('Ingen kode – rabatten trækkes i kurven');
-    return `<ul class="deals-set__perks">${perks.map((t) => `<li>${ICON.tick}${t}</li>`).join('')}</ul>`;
+    if (p.price >= giftAt) perks.push([ICON.tick, `Udløser gratis CBD Lip Balm`]);
+    if (p.price >= shipAt) perks.push([ICON.tick, `Fri fragt`]);
+    perks.push([ICON.tick, 'Ingen kode – rabatten trækkes i kurven']);
+    // below the gift threshold: say exactly how close it gets you (computed – a nudge, not a promise)
+    if (p.price < giftAt) perks.push([ICON.plus, `<b>${kr(giftAt - p.price)}</b> fra gratis CBD Lip Balm`, ' class="is-nudge"']);
+    return `<ul class="deals-set__perks">${perks.map(([ic, t, c = '']) => `<li${c}>${ic}<span>${t}</span></li>`).join('')}</ul>`;
   };
   const sale = (p) => `<span class="nc-bubble nc-bubble--sale deals-bubble" aria-hidden="true">−${p.pct}%</span>`;
   const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
@@ -155,15 +173,14 @@ export default function init(root, ctx) {
           </div>
           <div class="deals-card__body deals-set__body">
             <div class="deals-set__intro">
-              ${p.badge ? `<img class="deals-set__badge" src="${ctx.asset(p.badge)}" alt="" width="56" height="56">` : ''}
               <p class="deals-card__eyebrow">Sampakke · ${n} produkter</p>
               <h3 class="deals-card__name deals-card__name--set" id="deals-n-${p.id}"><a class="deals-card__link" href="${hrefOf(p)}">${esc(p.name)}</a></h3>
               <p class="deals-card__claim deals-card__claim--set">${esc(p.claim)}</p>
-              ${perksHtml(p)}
+              ${contentsHtml(p)}
             </div>
             <div class="deals-set__side">
-              ${contentsHtml(p)}
-              <div class="deals-card__buy">${priceHtml(p, true)}${addHtml(p)}</div>
+              ${perksHtml(p)}
+              <div class="deals-card__buy">${lessHtml(p)}${priceHtml(p, true)}${addHtml(p)}</div>
             </div>
           </div>
         </article>
@@ -193,19 +210,23 @@ export default function init(root, ctx) {
       <span class="deals-gift__glow" aria-hidden="true"></span>
       <div class="deals-gift__in">
         <div class="deals-gift__art" aria-hidden="true">
-          <span class="deals-gift__stage">
-            <span class="deals-drop__floor"></span>
-            <span class="deals-drop"><span class="deals-drop__core"></span><span class="deals-drop__spec"></span></span>
-            <span class="deals-drop deals-drop--s1"><span class="deals-drop__spec"></span></span>
-            <span class="deals-drop deals-drop--s2"><span class="deals-drop__spec"></span></span>
+          <!-- no Lip Balm packshot exists yet: an honest gift tag (value + size) hangs on a sand thread instead of a stand-in product -->
+          <span class="deals-drop deals-drop--bg"><span class="deals-drop__spec"></span></span>
+          <span class="deals-tag">
+            <svg class="deals-tag__string" viewBox="0 0 40 60" preserveAspectRatio="none"><path d="M20 0 C 21 18, 26 30, 20 60"/></svg>
+            <span class="deals-tag__card">
+              <span class="deals-tag__hole"></span>
+              <span class="deals-tag__k">Værdi</span>
+              <span class="deals-tag__v">${kr(ctx.campaign.giftValue)}</span>
+              <span class="deals-tag__n">Gave · 6 ml</span>
+            </span>
           </span>
-          <span class="nc-bubble nc-bubble--sand deals-gift__bubble"><span>Værdi<br>${kr(ctx.campaign.giftValue)}</span></span>
         </div>
         <div class="deals-gift__head">
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i købet</h3>
         </div>
-        <p class="deals-gift__copy">Gratis<span class="deals-gift__copy-x">, når du handler for</span> over ${kr(giftAt)}</p>
+        <p class="deals-gift__copy">Gratis <span class="deals-gift__copy-x">(værdi ${kr(ctx.campaign.giftValue)}), når du handler for</span><span class="deals-gift__copy-s">ved køb</span> over ${kr(giftAt)}</p>
         <div class="deals-gift__meter">
           <div class="deals-gift__track" role="progressbar" aria-label="Fremskridt mod gratis ${esc(giftName)}" aria-valuemin="0" aria-valuemax="${giftAt}" aria-valuenow="0" aria-valuetext="0 kr. af ${giftAt} kr.">
             <span class="deals-gift__fill"></span>
@@ -213,12 +234,12 @@ export default function init(root, ctx) {
             <span class="deals-gift__tick deals-gift__tick--end" style="--at:100%"></span>
           </div>
           <div class="deals-gift__labels" aria-hidden="true">
-            <span style="--at:${(shipAt / giftAt * 100).toFixed(2)}%">Fri fragt</span>
-            <span style="--at:100%">Gave</span>
+            <span style="--at:${(shipAt / giftAt * 100).toFixed(2)}%"><span class="deals-gift__lx">Fri </span>fragt</span>
+            <span class="deals-gift__lend">Gave</span>
           </div>
         </div>
         <p class="deals-gift__status" data-gift-status></p>
-        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span>Se Komplet Pakken<span class="deals-gift__cta-x"> – udløser gaven</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></button>
+        <button class="nc-btn nc-btn--outline-light deals-gift__cta" type="button" data-gift-cta><span>Se Komplet Pakken</span>${ICON.pil}</button>
       </div>
     </aside>
   </li>`;
@@ -266,20 +287,32 @@ export default function init(root, ctx) {
 
   // ------------------------------------------------------------------ gift progress (follows the cart)
   const gFill = $('.deals-gift__fill'), gTrack = $('.deals-gift__track'), gStatus = $('[data-gift-status]'), gTile = $('.deals-gift');
+  const kp = ctx.byId['komplet-pakken'];
+  // the gift tag: one damped pendulum swing (amplitude decays ~45 % per half-period), then it hangs still
+  const tag = $('.deals-tag');
+  let swingA = null;
+  function swing(amp = 1) {
+    if (RM || !tag) return;
+    if (swingA && swingA.playState === 'running') return;
+    const k = [1.6, -1.1, 0.62, -0.3, 0.1, 0];
+    swingA = tag.animate(k.map((d, i) => ({ transform: `rotate(${(d * amp).toFixed(3)}deg)`, offset: [0, .18, .38, .58, .78, 1][i] })), { duration: 4200, easing: 'cubic-bezier(.33, 0, .3, 1)' });
+  }
+  if (FINE) gTile.addEventListener('pointerenter', () => swing(0.8));
   function giftRender() {
     const sub = store.subtotal();
     gFill.style.setProperty('--p', clamp(sub / giftAt, 0, 1).toFixed(4));
     gTrack.setAttribute('aria-valuenow', String(Math.min(sub, giftAt)));
     gTrack.setAttribute('aria-valuetext', `${Math.min(sub, giftAt)} kr. af ${giftAt} kr.`);
     gTile.classList.toggle('is-ship', sub >= shipAt);
+    if (sub >= giftAt && !gTile.classList.contains('is-done')) swing(1.4);
     gTile.classList.toggle('is-done', sub >= giftAt);
     let t;
-    if (sub <= 0) t = `Fri fragt allerede fra ${kr(shipAt)}`;
+    // empty cart: the reason behind the tile's one action (the Komplet Pakken alone unlocks the gift)
+    if (sub <= 0) t = kp && kp.price >= giftAt ? `<b>${esc(kp.name)}</b> (${kr(kp.price)}) udløser gaven alene.` : `Fri fragt allerede fra ${kr(shipAt)}.`;
     else if (sub < shipAt) t = `Du mangler <b>${kr(shipAt - sub)}</b> til fri fragt og <b>${kr(giftAt - sub)}</b> til din gave.`;
     else if (sub < giftAt) t = `Fri fragt er din. Du mangler <b>${kr(giftAt - sub)}</b> til din gave.`;
     else t = `<b>Din ${esc(giftName)} følger med.</b> Fri fragt er også din.`;
     gStatus.innerHTML = t;
-    gStatus.classList.toggle('is-idle', sub <= 0); // the idle hint repeats the meter – a narrow tile drops it
   }
   giftRender();
   store.on((type) => { if (type === 'cart:add' || type === 'cart:change') giftRender(); });
@@ -412,8 +445,13 @@ export default function init(root, ctx) {
       const ease = (v, t, k) => (Math.abs(t - v) < 0.0015 ? t : v + (t - v) * k);
       s.rx = ease(s.rx, s.trx, f); s.ry = ease(s.ry, s.try, f); s.h = ease(s.h, s.th, fh);
       s.mx = ease(s.mx, s.tmx, fl); s.sx = ease(s.sx, s.tsx, fl);
-      const d = Math.sin((ts - s.t0) * Math.PI * 2 * DRIFT_HZ) * DRIFT * s.h; // slow, oil-like drift around the cursor
-      card.style.transform = `perspective(1100px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 4).toFixed(2)}px)`;
+      const d = Math.sin((ts - s.t0) * Math.PI * 2 * DRIFT_HZ) * DRIFT * s.dk * s.h; // slow, oil-like drift around the cursor
+      // while moving: full precision; once the lean has settled the angles snap to 0.1° and the lift to whole px,
+      // so Chrome re-rasterises the resting card crisp (no soft, sub-pixel packshot under a still cursor)
+      const still = Math.abs(s.trx - s.rx) + Math.abs(s.try - s.ry) + Math.abs(s.th - s.h) < 0.01;
+      card.style.transform = still
+        ? `perspective(1100px) rotateX(${s.rx.toFixed(1)}deg) rotateY(${s.ry.toFixed(1)}deg) translateY(${Math.round(-s.h * 4)}px)`
+        : `perspective(1100px) rotateX(${s.rx.toFixed(3)}deg) rotateY(${s.ry.toFixed(3)}deg) translateY(${(-s.h * 4).toFixed(2)}px)`;
       card.style.setProperty('--h', s.h.toFixed(4));
       card.style.setProperty('--deals-lx', `${((s.mx + d) * 100).toFixed(2)}%`);
       card.style.setProperty('--deals-sx', `${((s.sx + d * 0.55) * 100).toFixed(2)}%`);
@@ -431,8 +469,9 @@ export default function init(root, ctx) {
       hovering = true;
       const r = card.getBoundingClientRect();
       const nx = clamp((e.clientX - r.left) / r.width, 0, 1), ny = clamp((e.clientY - r.top) / r.height, 0, 1);
-      // the highlight lives in each pack's own width (0 = its left edge, 1 = its right edge); the card's width maps onto it,
-      // so wherever the pointer is the light is on the glass. The window light on the ground follows in stage coordinates.
+      // the highlight lives in line coordinates (0 = left edge of the first pack, 1 = right edge of the last); the card's
+      // width maps onto the line, so wherever the pointer is the light is on a pack – on a Sampakke it walks the shelf
+      // bottle by bottle. The window light on the ground follows in stage coordinates.
       const lx = -0.08 + nx * 1.16;
       const st = card.querySelector('[data-stage]').getBoundingClientRect();
       const sx = clamp((e.clientX - st.left) / st.width, 0, 1);
@@ -440,10 +479,11 @@ export default function init(root, ctx) {
       if (!s || s.th === 0) {
         // entering: seed the light where the pointer is (no slide in from a stale spot) and stop a running shelf pass
         card.classList.remove('is-sweep');
-        if (!s) { s = { rx: 0, ry: 0, h: 0 }; tilt.set(card, s); }
+        if (!s) { s = { rx: 0, ry: 0, h: 0, dk: 1 }; tilt.set(card, s); }
         Object.assign(s, { mx: lx, sx, t0: performance.now() / 1000 });
       }
       const k = card.classList.contains('deals-card--set') ? 0.5 : 1; // wide cards tilt less
+      s.dk = k * k; // …and the light wanders less along a long shelf
       s.try = (nx - 0.5) * 6 * k; s.trx = -(ny - 0.5) * 4 * k; s.th = 1; s.tmx = lx; s.tsx = sx;
       tKick();
     });
@@ -525,7 +565,7 @@ export default function init(root, ctx) {
       clone.className = 'deals-fly';
       Object.assign(clone.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
       const im = clone.querySelector('img'); if (im) im.loading = 'eager';
-      clone.querySelector('.deals-gloss')?.remove();
+      clone.querySelectorAll('.deals-gloss').forEach((g) => g.remove());
       root.appendChild(clone);
       const lead = idx === 0;
       const blob = lead ? Object.assign(document.createElement('span'), { className: 'deals-fly__drop' }) : null;
@@ -618,8 +658,8 @@ export default function init(root, ctx) {
         ${p.notes ? `<p class="deals-qv__notes">${esc(p.notes)}</p>` : ''}
         ${p.bundle ? contentsHtml(p) : ''}
         <hr class="nc-dotline deals-qv__rule">
-        <div class="deals-qv__buy">${priceHtml(p, true)}${addHtml(p, ' nc-btn--lg')}</div>
-        <a class="deals-qv__more" href="${hrefOf(p)}">Se alt om ${esc(p.name)}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13.5M13.5 7l5 5-5 5"/></svg></a>
+        <div class="deals-qv__buy">${p.bundle ? lessHtml(p) : ''}${priceHtml(p, true)}${addHtml(p, ' nc-btn--lg')}</div>
+        <a class="deals-qv__more" href="${hrefOf(p)}">Se alt om ${esc(p.name)}${ICON.pil}</a>
         ${usp}
       </div>
     </div>`;

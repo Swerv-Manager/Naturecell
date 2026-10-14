@@ -255,7 +255,7 @@
         d.append(ghost, s);
         return { el: d, v, cur: s };
       });
-      return { dgs, lbl: unit.querySelector("[data-lbl]") };
+      return { el: unit, dgs, lbl: unit.querySelector("[data-lbl]") };
     });
     const EASE = "cubic-bezier(.65,0,.3,1)", DUR = 620;
     function roll(d, v, animate) {
@@ -298,8 +298,11 @@
         const s = String(Math.min(n, 99)).padStart(2, "0");
         units[i].dgs.forEach((d, k) => roll(d, s[k], animate));
       });
+      units[0].dgs[0].el.toggleAttribute("data-off", vals[0] < 10);
+      units[0].el.hidden = vals[0] === 0;
       if (units[0].lbl) units[0].lbl.textContent = vals[0] === 1 ? "dag" : "dage";
       if (units[1].lbl) units[1].lbl.textContent = vals[1] === 1 ? "time" : "timer";
+      if (units[2].lbl) units[2].lbl.textContent = vals[2] === 1 ? "minut" : "minutter";
       if (sr && left !== lastMinute) {
         lastMinute = left;
         const [d, h, m] = vals;
@@ -345,6 +348,16 @@
       btn.disabled = true;
       return;
     }
+    const nb = (s) => s.replace(" kr.", "\xA0kr.");
+    const set = (sel, txt) => {
+      const n = root.querySelector(sel);
+      if (n) n.textContent = txt;
+    };
+    const price = root.querySelector("[data-kp-price]");
+    if (price && price.firstChild) price.firstChild.textContent = ctx.fmt.kr(p.price).replace(" kr.", "");
+    set("[data-kp-before]", nb(ctx.fmt.kr(p.price0)));
+    const loose = (p.contains || []).reduce((sum, id) => sum + (ctx.byId[id]?.price || 0), 0);
+    if (loose) set("[data-kp-loose]", nb(ctx.fmt.kr(loose)));
     let timer = 0;
     btn.addEventListener("click", () => {
       ctx.store.add(p.id, 1);
@@ -365,15 +378,16 @@
     const { giftThreshold: G, freeShipping: S } = ctx.campaign;
     const kr = ctx.fmt.kr;
     let exSum = 0;
+    const nb = (s) => s.replace(" kr.", "\xA0kr.");
     st.querySelectorAll("[data-ex]").forEach((n) => {
       const p = ctx.byId[n.dataset.ex];
       if (p) {
-        n.textContent = kr(p.price);
+        n.textContent = String(p.price);
         exSum += p.price;
       }
     });
     const exOut = st.querySelector("[data-ex-sum]");
-    if (exOut && exSum) exOut.textContent = kr(exSum);
+    if (exOut && exSum) exOut.textContent = nb(kr(exSum));
     const sumEl = st.querySelector("[data-live-sum]");
     const nextEl = st.querySelector("[data-live-next]");
     const meter = st.querySelector("[data-meter]");
@@ -402,8 +416,8 @@
       st.classList.toggle("has-cart", sum > 0);
       st.dataset.level = level;
       if (sum > 0) {
-        sumEl.textContent = `Din kurv \xB7 ${kr(sum)}`;
-        nextEl.textContent = level === 2 ? "Fri fragt og gaven er med" : level === 1 ? `Fri fragt er med \xB7 ${kr(G - sum)} til gaven` : `${kr(S - sum)} til fri fragt`;
+        sumEl.textContent = `Din kurv ${kr(sum)}`;
+        nextEl.textContent = level === 2 ? "Fri fragt og Lip Balm er med" : level === 1 ? `Fri fragt \xB7 ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
       }
       target = Math.min(1, sum / G);
       if (reduced) {

@@ -14,8 +14,8 @@ const HATCH = 'rgba(226,238,233,0.34)';
 const THREAD = '#7a478a';     // Vidunder Olien's violet product thread (true to pack)
 const INK = '#ffffff';
 
-async function loadSvg(url, w, h) {
-  const txt = await (await fetch(url)).text();
+async function loadSvg(url, w, h, edit = (t) => t) {
+  const txt = edit(await (await fetch(url)).text());
   const sized = txt.replace('<svg ', `<svg width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" `);
   const blob = new Blob([sized], { type: 'image/svg+xml' });
   const src = URL.createObjectURL(blob);
@@ -40,9 +40,10 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   // y as a fraction of the label height. Straight lines in print → they curve naturally as the label wraps.
   const PXD = W / (360 * 0.97);                       // canvas px per degree (the label wraps 97% of the bottle)
   const X = (deg) => cx + deg * PXD;
-  const V = [X(6), H * 0.79];                         // V point, just right of centre
-  const L = [X(-58), H * 0.44];                       // left arm: a straight diagonal from the left edge of the face
-  const R = [X(62), H * 0.46];
+  // the type block clears the band by about a cap height and the V point sits low (≈ 84% of the label height)
+  const V = [X(4), H * 0.84];                         // V point, just right of centre
+  const L = [X(-60), H * 0.50];                       // left arm: a straight diagonal from the left edge of the face
+  const R = [X(62), H * 0.50];
   const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy); return [dx / l, dy / l]; };
   const uL = unit(V, L), uR = unit(V, R);             // from the V point outward along each arm
   const along = (p, u, k) => [p[0] + u[0] * k, p[1] + u[1] * k];
@@ -81,26 +82,36 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   g.beginPath(); g.moveTo(...along(V, uL, FAR)); g.lineTo(...V); g.stroke();
 
   // ---- logo + typography (white print)
+  // the printed wordmark on the pack carries no ® – drop that glyph (the first path) and crop the viewBox to the
+  // letters (bbox 194.8 92.6 438.9×112.5), so the word centres optically on the bottle
+  const WB = [194.5, 92.2, 439.6, 113.2];
   const [mark, word] = await Promise.all([
     loadSvg(asset('logo-mark-white.svg'), 600, 600),
-    loadSvg(asset('logo-wordmark-white.svg'), 1071, 302),
+    loadSvg(asset('logo-wordmark-white.svg'), 1319, 340, (t) => t.replace(/<path[^>]*>(<\/path>)?/, '').replace(/viewBox="[^"]*"/, `viewBox="${WB.join(' ')}"`)),
   ]);
   try { await Promise.all([document.fonts.load('700 60px Philosopher'), document.fonts.load('400 60px Philosopher'), document.fonts.load('500 40px "Roboto Flex"')]); } catch (e) { /* fonts optional */ }
 
   const markS = 30 * PXD;
-  g.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
-  const wordW = 79 * PXD, wordH = wordW * 302 / 1071;
-  g.drawImage(word, cx - wordW / 2 + wordW * 0.025, H * 0.285, wordW, wordH);
+  const wordW = 69 * PXD, wordH = wordW * WB[3] / WB[2];
+  const placeLogo = (gg) => {
+    gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
+    gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
+  };
+  placeLogo(g);
+  // the mark + wordmark are silver foil on the pack: a mask for the metalness/roughness map
+  const foil = document.createElement('canvas'); foil.width = W; foil.height = H;
+  placeLogo(foil.getContext('2d'));
+  c.foil = foil;
 
   g.fillStyle = INK; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
   const fit = (txt, font, width) => { g.font = font(100); const w = g.measureText(txt).width; return font(Math.round(100 * width / w)); };
   if ('letterSpacing' in g) g.letterSpacing = '0px';
-  g.font = fit('CBD SKIN CARE', (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * 0.42);
-  g.fillText('CBD SKIN CARE', cx, H * 0.525);
-  g.font = fit('CBD SKIN OIL', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.5);
-  g.fillText('CBD SKIN OIL', cx, H * 0.605);
-  g.font = fit('1000 mg', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.19);
-  g.fillText('1000 mg', cx, H * 0.66);
+  g.font = fit('CBD SKIN CARE', (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * 0.36);
+  g.fillText('CBD SKIN CARE', cx, H * 0.52);
+  g.font = fit('CBD SKIN OIL', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.44);
+  g.fillText('CBD SKIN OIL', cx, H * 0.595);
+  g.font = fit('1000 mg', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.17);
+  g.fillText('1000 mg', cx, H * 0.65);
 
   // small print, bottom-right of the front face
   g.textAlign = 'right';
@@ -135,18 +146,26 @@ export async function drawLabel(asset, W = 3072, H = 1500) {
   return c;
 }
 
-// Roughness map: matte paper, slightly glossier white print (the logo picks up a soft sheen as it turns)
+// Roughness (G) + metalness (B) map: matte paper, slightly glossier white print, and the silver-foil logo
+// (metalness ≈ 0.3, roughness ≈ 0.32) that catches the key light as the bottle turns
 export function labelRoughness(labelCanvas) {
-  const W = 1024, H = Math.round(1024 * labelCanvas.height / labelCanvas.width);
+  const W = 2048, H = Math.round(2048 * labelCanvas.height / labelCanvas.width);
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const g = c.getContext('2d');
   g.drawImage(labelCanvas, 0, 0, W, H);
   const d = g.getImageData(0, 0, W, H); const p = d.data;
+  let f = null;
+  if (labelCanvas.foil) {
+    const fc = document.createElement('canvas'); fc.width = W; fc.height = H;
+    const fg = fc.getContext('2d'); fg.drawImage(labelCanvas.foil, 0, 0, W, H);
+    f = fg.getImageData(0, 0, W, H).data;
+  }
   for (let i = 0; i < p.length; i += 4) {
     const lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
     const ink = Math.max(0, (lum - 200) / 55);           // near-white print
-    const v = 205 - ink * 95;                            // paper ≈ 0.8, ink ≈ 0.43 (green channel = roughness)
-    p[i] = p[i + 1] = p[i + 2] = v;
+    const fo = f ? f[i + 3] / 255 : 0;                   // foil coverage
+    const rough = (205 - ink * 95) * (1 - fo) + 82 * fo; // paper ≈ 0.8, ink ≈ 0.43, foil ≈ 0.32
+    p[i] = 0; p[i + 1] = rough; p[i + 2] = 80 * fo;      // G = roughness, B = metalness (foil ≈ 0.31)
   }
   g.putImageData(d, 0, 0);
   return c;

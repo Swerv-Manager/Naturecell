@@ -44,7 +44,11 @@
   if (reduced || !('IntersectionObserver' in window)) rev.forEach(e => e.classList.add('is-in'));
   else {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
-    rev.forEach((e, i) => { if (e.closest('.grid')) e.style.setProperty('--d', (i % 4) * 0.06 + 's'); else if (e.closest('.hero__copy')) e.style.setProperty('--d', (i * 0.07) + 's'); io.observe(e); });
+    rev.forEach((e, i) => { if (e.closest('.grid')) e.style.setProperty('--d', (i % 4) * 0.06 + 's'); io.observe(e); });
+    // fail-safe: never leave content at opacity 0 (tall sections on mobile, element/full-page captures, print, fast anchor jumps)
+    const showAll = () => { rev.forEach(e => e.classList.add('is-in')); io.disconnect(); };
+    addEventListener('load', () => setTimeout(showAll, 1200), { once: true });
+    addEventListener('beforeprint', showAll);
   }
 
   /* ---------- announcement marquee (mobile): duplicate for a seamless loop ---------- */

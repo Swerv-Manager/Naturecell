@@ -9,53 +9,34 @@
         <p class="offers-clock__digits" aria-hidden="true">
           <span class="offers-unit" data-unit="d"><span class="offers-num"><span class="offers-dg">0</span><span class="offers-dg">3</span></span><span class="offers-unit__lbl" data-lbl>dage</span></span>
           <span class="offers-unit" data-unit="h"><span class="offers-num"><span class="offers-dg">1</span><span class="offers-dg">3</span></span><span class="offers-unit__lbl" data-lbl>timer</span></span>
-          <span class="offers-unit" data-unit="m"><span class="offers-num"><span class="offers-dg">5</span><span class="offers-dg">9</span></span><span class="offers-unit__lbl" data-lbl>min.</span></span>
+          <span class="offers-unit" data-unit="m"><span class="offers-num"><span class="offers-dg">5</span><span class="offers-dg">9</span></span><span class="offers-unit__lbl" data-lbl>minutter</span></span>
         </p>
-        <p class="offers-clock__done" data-clock-done hidden>Tak for denne gang. Fri fragt over 399 kr. gælder som altid.</p>
+        <p class="offers-clock__done" data-clock-done hidden>Tak for denne gang. Fri fragt over 399&nbsp;kr. gælder som altid.</p>
         <p class="nc-sr" role="timer" aria-live="off" aria-atomic="true" data-clock-sr>Black Week slutter mandag 30. november kl. 23.59.</p>
       </div>
     </header>
 
     <div class="offers-rail" data-rail>
+      <!-- DOM order = mobile reading/focus order (hero first); desktop places the tiles in columns explicitly -->
       <ul class="offers-grid" role="list" data-grid>
 
-        <!-- 1 · 25% on the whole range -->
-        <li class="offers-tile offers-tile--range" data-tile="0">
-          <div class="offers-stage offers-stage--range" aria-hidden="true">
-            <div class="offers-row">
-              <span class="offers-p" style="--h:1.155"><img src="../src/sections/offers/img/lotion.webp" alt="" width="273" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:.70"><img src="../src/sections/offers/img/serum.webp" alt="" width="202" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
-            </div>
-          </div>
-          <p class="offers-tile__eyebrow">Enkeltprodukter og Sampakker</p>
-          <h3 class="offers-tile__title">Hele hudplejeserien</h3>
-          <p class="offers-fig"><span class="offers-fig__big"><span aria-hidden="true">&minus;</span><span class="nc-sr">minus </span>25<span class="offers-fig__unit">%</span></span></p>
-          <p class="offers-tile__text">Prisen, du ser, er prisen, du betaler – fra Rensegel til Vidunder Olien.</p>
-          <div class="offers-tile__cta">
-            <a class="nc-btn nc-btn--outline offers-btn" href="https://naturecell.dk/collections/cbd-hudpleje">Shop hele serien</a>
-          </div>
-        </li>
-
-        <!-- 2 · the Black Week hero offer -->
-        <li class="offers-tile offers-tile--hero nc-grain" data-tile="1">
+        <!-- the Black Week hero offer (desktop: centre column) -->
+        <li class="offers-tile offers-tile--hero nc-grain" data-tile="0">
           <div class="offers-stage offers-stage--hero">
-            <div class="offers-row" aria-hidden="true">
-              <span class="offers-p" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
+            <!-- the set as a set: rens and olie stand forward on the table, dag and nat just behind -->
+            <div class="offers-row offers-row--set" aria-hidden="true">
+              <span class="offers-p offers-p--front" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--front" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
             </div>
             <p class="offers-flag">Ugens tilbud</p>
-            <p class="offers-save nc-bubble nc-bubble--sale"><span class="offers-save__k">Spar</span><span class="offers-save__v">299 kr.</span></p>
+            <p class="offers-save nc-bubble nc-bubble--sale"><span class="offers-save__k">Spar</span><span class="offers-save__v">299&nbsp;kr.</span></p>
           </div>
           <p class="offers-tile__eyebrow">4 produkter · morgen og aften</p>
           <h3 class="offers-tile__title">Komplet Pakken</h3>
-          <p class="offers-fig"><span class="offers-fig__big">899<span class="offers-fig__unit"> kr.</span></span><span class="offers-fig__aside">Førpris <s>1.198 kr.</s></span></p>
-          <p class="offers-tile__text">Rensegel, Dagcreme, Natcreme og Vidunder Olien. Værdi ved løskøb 1.646 kr.</p>
+          <p class="offers-fig"><span class="offers-fig__big" data-kp-price>899<span class="offers-fig__unit">&nbsp;kr.</span></span><span class="offers-fig__aside">Førpris <s data-kp-before>1.198&nbsp;kr.</s></span></p>
+          <p class="offers-tile__text">Rensegel, Dagcreme, Natcreme og Vidunder&nbsp;Olien. <span class="offers-tile__sub">Købt enkeltvis i <span class="offers-nw">Black Week: <span data-kp-loose>1.234&nbsp;kr.</span></span></span></p>
           <div class="offers-tile__cta">
             <button class="nc-btn nc-btn--light offers-btn offers-add" type="button" data-add="komplet-pakken" aria-label="Læg Komplet Pakken i kurv">
               <span class="offers-add__ico" aria-hidden="true">
@@ -71,30 +52,53 @@
           </div>
         </li>
 
-        <!-- 3 · gift over 699 kr. (+ free shipping over 399 kr.), with a true example basket -->
+        <!-- 25% on the whole range (desktop: left column) -->
+        <li class="offers-tile offers-tile--range" data-tile="1">
+          <div class="offers-stage offers-stage--range" aria-hidden="true">
+            <div class="offers-row">
+              <span class="offers-p" style="--h:1.155"><img src="../src/sections/offers/img/lotion.webp" alt="" width="273" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:.70"><img src="../src/sections/offers/img/serum.webp" alt="" width="202" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
+            </div>
+          </div>
+          <p class="offers-tile__eyebrow">Enkeltprodukter og Sampakker</p>
+          <h3 class="offers-tile__title">Hele hudplejeserien</h3>
+          <p class="offers-fig"><span class="offers-fig__big"><span aria-hidden="true">&minus;</span><span class="nc-sr">minus </span>25<span class="offers-fig__unit">%</span></span></p>
+          <p class="offers-tile__text">Ingen kode – rabatten står allerede i prisen, fra Rensegel til Bodylotion.</p>
+          <div class="offers-tile__cta">
+            <a class="nc-btn nc-btn--outline offers-btn" href="https://naturecell.dk/collections/cbd-hudpleje">Shop hele serien</a>
+          </div>
+        </li>
+
+        <!-- gift over 699 kr. (+ fri fragt over 399 kr.), with a true example basket of products outside Komplet Pakken -->
         <li class="offers-tile offers-tile--gift" data-tile="2">
           <div class="offers-stage offers-stage--gift" data-gift>
             <div class="offers-row" aria-hidden="true">
-              <span class="offers-p" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p offers-p--gift"><span class="offers-gift"><span class="offers-gift__plus">+</span><span class="offers-gift__w">gave</span></span></span>
+              <span class="offers-p" style="--h:1.155"><img src="../src/sections/offers/img/lotion.webp" alt="" width="273" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:.70"><img src="../src/sections/offers/img/serum.webp" alt="" width="202" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--gift"><span class="offers-gift"><span class="offers-gift__plus">+</span><span class="offers-gift__w">Lip Balm</span></span></span>
             </div>
+            <!-- the shelf edge carries the label: an example basket, or the live cart once there is one -->
             <div class="offers-note" aria-hidden="true">
               <p class="offers-note__set offers-note__set--ex">
-                <span class="offers-note__v"><span class="offers-note__fx">Fx</span><span><span class="offers-nw">Vidunder Olien <span data-ex="skin-oil">374 kr.</span></span><br><span class="offers-nw">+ CBD Natcreme <span data-ex="night-cream">337 kr.</span></span> <span class="offers-nw">= <span data-ex-sum>711 kr.</span></span></span></span>
+                <span class="offers-note__head"><span class="offers-note__fx">For eksempel</span> <b data-ex-sum>710&nbsp;kr.</b></span>
+                <span class="offers-note__v"><span class="offers-nw">Bodylotion <span data-ex="body-lotion">187</span></span> + <span class="offers-nw">Serum <span data-ex="serum">224</span></span> + <span class="offers-nw">Dagcreme <span data-ex="day-cream">299</span></span></span>
               </p>
               <p class="offers-note__set offers-note__set--live">
-                <span class="offers-note__k" data-live-sum>Din kurv</span>
-                <span class="offers-note__v" data-live-next></span>
+                <span class="offers-note__line"><span class="offers-note__k" data-live-sum>Din kurv</span><span class="offers-note__v" data-live-next></span></span>
                 <span class="offers-meter"><span class="offers-meter__fill" data-meter></span><span class="offers-meter__tick" data-tick></span></span>
               </p>
             </div>
             <p class="nc-sr" aria-live="polite" data-gift-status></p>
           </div>
-          <p class="offers-tile__eyebrow">Ved køb over 699 kr.</p>
+          <p class="offers-tile__eyebrow">Ved køb over 699&nbsp;kr.</p>
           <h3 class="offers-tile__title">CBD Lip Balm</h3>
-          <p class="offers-fig"><span class="offers-fig__big">Gratis</span><span class="offers-fig__aside">værdi 79 kr.</span></p>
-          <p class="offers-tile__text">Vi lægger den selv i pakken. Og som altid: fri fragt over 399 kr.</p>
+          <p class="offers-fig"><span class="offers-fig__big">Gratis</span><span class="offers-fig__aside">værdi 79&nbsp;kr.</span></p>
+          <p class="offers-tile__text">Vi lægger den selv i pakken, én&nbsp;pr.&nbsp;ordre. Og&nbsp;som altid: <span class="offers-nw">fri fragt over 399&nbsp;kr.</span></p>
           <div class="offers-tile__cta">
             <a class="nc-btn nc-btn--outline offers-btn" href="#deals">Find dine favoritter</a>
           </div>
@@ -102,10 +106,9 @@
       </ul>
     </div>
 
-    <!-- mobile: the carousel leads with the hero offer, so the dots follow the visual order -->
     <div class="offers-dots" role="group" aria-label="Vælg tilbud" data-dots>
-      <button type="button" class="offers-dot" aria-label="Tilbud 1 af 3: Komplet Pakken" aria-current="true" data-dot="1"></button>
-      <button type="button" class="offers-dot" aria-label="Tilbud 2 af 3: Hele hudplejeserien" data-dot="0"></button>
+      <button type="button" class="offers-dot" aria-label="Tilbud 1 af 3: Komplet Pakken" aria-current="true" data-dot="0"></button>
+      <button type="button" class="offers-dot" aria-label="Tilbud 2 af 3: Hele hudplejeserien" data-dot="1"></button>
       <button type="button" class="offers-dot" aria-label="Tilbud 3 af 3: Gratis CBD Lip Balm" data-dot="2"></button>
     </div>
 

@@ -48,22 +48,29 @@ export default function init(root, ctx) {
   let scene = null;
   let tracked = false;
   const copyEl = root.querySelector('.hero-copy');
+  const pinnedMQ = matchMedia('(min-width: 761px) and (max-width: 1100px) and (min-aspect-ratio: 10001/10000)');
+  const stackMQ = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
   // sizes of the flat DOM overlays, so the 3D spheres flow around them (and the disc stays inside the stage)
   const measure = () => {
     if (!scene) return;
     const st = stage.getBoundingClientRect(), cp = copyEl.getBoundingClientRect();
-    const mob = matchMedia('(max-width: 760px)').matches;
+    const mob = stackMQ.matches;
     const box = mob ? cardEl : tagEl;               // mobile: the compact card hangs under the bottle on its own lead
+    // tablet: the compact pill is pinned by CSS (bottom-right); the spheres just keep clear of its box
+    let pin = null;
+    if (pinnedMQ.matches) { const r = cardEl.getBoundingClientRect(); pin = [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top]; }
     scene.setOverlays({
       discR: bubbleEl.firstElementChild.offsetWidth / 2,
-      tagW: box.offsetWidth, tagH: box.offsetHeight,
+      tagW: box.offsetWidth, tagH: box.offsetHeight, pin,
       copyTop: cp.top - st.top + parseFloat(getComputedStyle(copyEl).paddingTop || 0),
     });
   };
   const onFrame = ({ bubble, tag, mobile }) => {
     // the flat −25% bubble is never rotated, only translated (the scene keeps it inside the stage)
     bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
-    if (mobile) {
+    if (pinnedMQ.matches) {
+      tagEl.style.transform = '';
+    } else if (mobile) {
       // anchor = the dot on the label; the dotted lead drops to the compact card under the bottle
       tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0)`;
       tagEl.style.setProperty('--lead-h', `${tag[2].toFixed(1)}px`);

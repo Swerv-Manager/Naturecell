@@ -61,7 +61,7 @@ function poolGeometry(R, H, rings = 44, segs = 128, seed = 3) {
     const t = Math.pow(i / rings, 0.8);
     for (let j = 0; j < segs; j++) {
       const a = (j / segs) * TAU, rr = rimR(a) * t;
-      const h = H * Math.pow(Math.max(0, 1 - t * t), 0.55);
+      const h = H * Math.pow(Math.max(0, 1 - t * t), 0.35);
       pos.push(Math.sin(a) * rr, h, Math.cos(a) * rr); ts.push(t);
     }
   }
@@ -129,6 +129,7 @@ const BG_FRAG = /* glsl */`
   uniform vec2 uRes; uniform float uDpr;
   uniform vec3 uNight, uDeep, uWarm, uAmber, uSage, uThread;
   uniform vec2 uGlow; uniform float uGlowR;
+  uniform vec2 uSpot; uniform vec2 uSpotR; uniform vec3 uSpotCol;
   uniform vec2 uPool; uniform vec2 uPoolR;
   uniform vec2 uTA, uTB; uniform float uThreadAlpha;
   varying vec2 vUv;
@@ -153,6 +154,10 @@ const BG_FRAG = /* glsl */`
     col += uSage * 0.05 * exp(-d*d*1.1);
     col += uWarm * 0.042 * exp(-d*d*2.6);
     col += uAmber * 0.03 * exp(-d*d*6.0);
+    // warm spot right behind the bottle's shoulder: only ever seen THROUGH the amber glass (transmission picks it
+    // up and the attenuation turns it into the backlit amber glow of the shoulder and the heel)
+    vec2 sq = (p - uSpot) / uSpotR;
+    col += uSpotCol * exp(-dot(sq, sq) * 1.6);
     // light pooling on the (invisible) floor
     vec2 q = (p - uPool) / uPoolR;
     col += mix(uSage, uWarm, 0.5) * 0.035 * exp(-dot(q,q) * 1.6);
@@ -231,7 +236,7 @@ const POOL_TINT_FRAG = /* glsl */`
   varying float vT; varying vec3 vWN; varying vec3 vWV; varying vec2 vXZ;
   void main(){
     float ndv = max(abs(dot(normalize(vWN), normalize(vWV))), 0.16);
-    float thick = 1.0 - smoothstep(0.35, 1.0, vT);                       // film thins toward the rim
+    float thick = 1.0 - 0.55 * smoothstep(0.5, 1.0, vT);                 // an even film that thins a little at the rim
     float fw = max(fwidth(vT), 1e-4);
     float film = 1.0 - smoothstep(1.0 - 1.4 * fw, 1.0, vT);              // crisp, anti-aliased film edge
     vec3 T = exp(-uSigma * (0.18 + thick) / ndv * 0.1);
@@ -298,6 +303,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     uNight: { value: C('#28403b') }, uDeep: { value: C('#213631') },
     uWarm: { value: C('#ddbfa3') }, uAmber: { value: C('#c7ae92') }, uSage: { value: C('#9ab4ac') }, uThread: { value: C('#b07a7f') },
     uGlow: { value: new THREE.Vector2() }, uGlowR: { value: 400 },
+    uSpot: { value: new THREE.Vector2(-1e4, -1e4) }, uSpotR: { value: new THREE.Vector2(100, 100) }, uSpotCol: { value: C('#f0a650').multiplyScalar(0.4) },
     uPool: { value: new THREE.Vector2() }, uPoolR: { value: new THREE.Vector2(300, 60) },
     uTA: { value: new THREE.Vector2() }, uTB: { value: new THREE.Vector2() }, uThreadAlpha: { value: 0.36 },
   };
@@ -318,9 +324,17 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
 
   // ---------- materials
   const amberGlass = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff, metalness: 0, roughness: 0.035, transmission: 1, ior: 1.52, thickness: 1.25,
-    attenuationColor: C('#a24a12'), attenuationDistance: 0.85, specularIntensity: 1, envMapIntensity: 1.35,
+    color: 0xffffff, metalness: 0, roughness: 0.035, transmission: 1, ior: 1.52, thickness: 0.8,
+    attenuationColor: C('#a24a12'), attenuationDistance: 1.6, specularIntensity: 1, envMapIntensity: 1.35,
   });
+  // the thick glass base glows where the key passes through it (the warm "heel" of a backlit amber bottle)
+  amberGlass.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      { float hy = vWorldPosition.y;
+        float heel = smoothstep(0.62, 0.12, hy) * smoothstep(-0.02, 0.1, hy);
+        float ndvH = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
+        totalEmissiveRadiance += vec3(0.085, 0.016, 0.0015) * heel * (0.35 + 0.65 * ndvH); }`);
+  };
   // glass edge light: fresnel rim lines + the long specular streaks a glass tube gets from vertical softboxes
   const glassRimU = { uAxis: { value: new THREE.Vector3(0, 1, 0) }, uK1: { value: new THREE.Vector3(-17, 7, -9).normalize() }, uK2: { value: new THREE.Vector3(-7, 9, 8).normalize() }, uK3: { value: new THREE.Vector3(16, 7, -5).normalize() } };
   const glassRim = new THREE.ShaderMaterial({
@@ -382,7 +396,11 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         // focused back light: a soft brighter core a touch toward the shadow side
         col += straw * 0.18 * exp(-pow((lat - 0.18) / 0.32, 2.0));
         // refracted back-light line inside the shadow-side edge (~70% of the radius)
+        // modulated along the axis (focused light, not a glass-rod stripe): builds up from the nozzle, breathes,
+        // and fades out before the tip and just below the meniscus
         float line = exp(-pow((lat - 0.7) / 0.07, 2.0));
+        line *= (0.55 + 0.45 * smoothstep(-${PIPETTE_LEN.toFixed(2)} + 0.4, -${PIPETTE_LEN.toFixed(2)} + 2.4, vL.y)) * (0.85 + 0.15 * sin(vL.y * 3.1));
+        line *= smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${PIPETTE_LEN.toFixed(2)} + 0.25, vL.y) * (1.0 - smoothstep(uTop - 0.08 - 0.06, uTop - 0.08, vL.y));
         col += vec3(1.0, 0.86, 0.58) * line * 0.75;
         // meniscus: concave (spherical cap, wets the glass). Seen from the side, above the U-curve the ray only
         // grazes oil near the walls → a thinner, paler crescent, bounded below by one bright meniscus line.
@@ -401,31 +419,57 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         gl_FragColor = vec4(col * cut, a * cut);
       }`,
   });
-  // the drop: clear golden oil – refracts the room (dark rim), a focused caustic core opposite the key light
-  const oilDrop = new THREE.MeshPhysicalMaterial({
-    color: C('#fff3d6'), roughness: 0.0, transmission: 1, ior: 1.47, thickness: 0.35,
-    attenuationColor: C('#e3a23a'), attenuationDistance: 0.3, emissive: C('#f2b04a'), emissiveIntensity: 0.15,
-    envMapIntensity: 1.6, specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.0,
+  // the drop (pendant, falling drop, the bead left on the nozzle): the SAME liquid as the column – premultiplied
+  // straw-gold body that deepens to amber at the silhouette, a caustic crescent opposite the key, one pin-sharp key
+  // specular (the only thing bloom catches) and a faint secondary window. uFade dissolves it into the pool.
+  const oilDrop = new THREE.ShaderMaterial({
+    uniforms: { uFade: { value: 1 } }, transparent: true, depthWrite: false,
+    blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+    vertexShader: /* glsl */`
+      varying vec3 vN; varying vec3 vVN; varying vec3 vV;
+      void main(){ vec4 wp = modelMatrix * vec4(position, 1.0);
+        vN = normalize(mat3(modelMatrix) * normal); vVN = normalize(normalMatrix * normal); vV = normalize(cameraPosition - wp.xyz);
+        gl_Position = projectionMatrix * viewMatrix * wp; }`,
+    fragmentShader: /* glsl */`
+      precision highp float;
+      uniform float uFade;
+      varying vec3 vN; varying vec3 vVN; varying vec3 vV;
+      vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+      void main(){
+        vec3 n = normalize(vN), v = normalize(vV), nv = normalize(vVN);
+        float ndv = clamp(dot(n, v), 0.0, 1.0);
+        vec3 straw = lin(vec3(0.906, 0.753, 0.439));                // #e7c070
+        vec3 deep  = lin(vec3(0.478, 0.259, 0.063));                // #7a4210
+        float rimT = pow(1.0 - ndv, 1.4);
+        vec3 col = mix(straw * 0.74, deep * 0.5, rimT);
+        // the lens focuses the back light into a crescent on the side away from the key (lower-right)
+        float caust = smoothstep(0.2, 0.95, dot(nv.xy, normalize(vec2(0.45, -0.6)))) * smoothstep(0.02, 0.35, ndv);
+        col += straw * caust * 0.45;
+        float a = mix(0.6, 0.95, rimT);
+        // a whisper of the softbox along the upper-left silhouette (fresnel)
+        float fr = pow(1.0 - ndv, 4.0) * smoothstep(-0.2, 0.6, dot(nv.xy, normalize(vec2(-0.62, 0.7))));
+        col += vec3(1.0, 0.93, 0.8) * fr * 0.22;
+        // speculars in view space: key upper-left (pin-sharp) + faint window lower-right
+        vec3 vd = vec3(0.0, 0.0, 1.0);
+        vec3 Lk = normalize(vec3(-0.55, 0.62, 0.56)), L2 = normalize(vec3(0.5, -0.3, 0.6));
+        float sk = pow(max(dot(nv, normalize(Lk + vd)), 0.0), 180.0) * 2.0;
+        float s2 = pow(max(dot(nv, normalize(L2 + vd)), 0.0), 60.0) * 0.15;
+        vec3 spec = vec3(1.0, 0.97, 0.9) * (sk + s2);
+        gl_FragColor = vec4((col + spec) * uFade, clamp(a + sk * 0.3, 0.0, 1.0) * uFade);
+      }`,
   });
-  oilDrop.onBeforeCompile = (sh) => {
-    sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-      { vec3 nn = normalize(vNormal); float ndv = clamp(dot(nn, normalize(vViewPosition)), 0.0, 1.0);
-        vec2 c = nn.xy - vec2(0.26, -0.38);
-        float core = exp(-dot(c, c) / 0.12);
-        float e = (0.12 + 0.2 * ndv + 0.6 * core) * smoothstep(0.04, 0.5, ndv);
-        totalEmissiveRadiance *= e; }`);
-  };
+  const oilDropFall = oilDrop.clone();               // own uFade for the falling drop (the pendant never fades)
   // the oil pool: a thin film in two layers – absorption (multiplies the floor by the oil's transmittance) and
   // surface light (env reflections with fresnel, the key glint, warm light scattered back up through the oil)
   const poolTintMat = new THREE.ShaderMaterial({
-    uniforms: { uSigma: { value: new THREE.Vector3(0.45, 1.6, 4.2) }, uFeather: { value: 1.1 } },   // uFeather = pool radius (near-rim mask)
+    uniforms: { uSigma: { value: new THREE.Vector3(0.3, 1.7, 4.4) }, uFeather: { value: 1.1 } },   // uFeather = pool radius (near-rim mask)
     vertexShader: POOL_TINT_VERT, fragmentShader: POOL_TINT_FRAG,
     transparent: true, depthWrite: false, blending: THREE.CustomBlending,
     blendEquation: THREE.AddEquation, blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor,
   });
   const oilPool = new THREE.MeshPhysicalMaterial({
     color: 0x000000, roughness: 0.03, metalness: 0, ior: 1.47, specularIntensity: 1, envMapIntensity: 2.0,
-    emissive: C('#c27b22'), emissiveIntensity: 1.0, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    emissive: C('#e6a850'), emissiveIntensity: 1.0, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   });
   const blackPP = new THREE.MeshPhysicalMaterial({ color: C('#151817'), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1.0 });
   const rubber = new THREE.MeshPhysicalMaterial({ color: C('#1a1c1b'), roughness: 0.58, sheen: 0.6, sheenRoughness: 0.5, sheenColor: C('#5a6662'), envMapIntensity: 0.9 });
@@ -465,8 +509,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     tex.wrapS = THREE.RepeatWrapping;
     const rough = new THREE.CanvasTexture(labelRoughness(cv));
     rough.colorSpace = THREE.NoColorSpace;
-    labelMat.map = tex; labelMat.roughnessMap = rough;
-    labelMat.roughness = 1; labelMat.color.set(0xffffff);
+    labelMat.map = tex; labelMat.roughnessMap = rough; labelMat.metalnessMap = rough;
+    labelMat.roughness = 1; labelMat.metalness = 1; labelMat.color.set(0xffffff);
     labelMat.needsUpdate = true;
     dirty = true;
     if (reduced && firstFrameDone) renderOnce();
@@ -548,7 +592,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // ---------- oil pool + ripple
   dropperPivot.updateMatrixWorld(true);
   const tipW = dropper.localToWorld(tipLocal.clone());
-  const POOL_H = 0.016, POOL_R = 1.1;
+  const POOL_H = 0.008, POOL_R = 1.1;
   const poolU = { uAge: { value: 99 }, uImpact: { value: new THREE.Vector2(0, 0) }, uAmp: { value: 0.012 } };
   const WAVE_GLSL = `
         uniform float uAge; uniform vec2 uImpact; uniform float uAmp;
@@ -596,32 +640,36 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
           vec2 xz = vPoolXZ - uImpact; float r = max(length(xz), 1e-4);
           float e = 0.006; float dw = (wave(r + e) - wave(max(r - e, 0.0))) / (2.0 * e);
           vec3 dn = vec3(-dw * xz.x / r, 0.0, -dw * xz.y / r) * 1.6;
-          normal = normalize(normal + (viewMatrix * vec4(dn, 0.0)).xyz);
+          // a film, not a lens: the shading normal stays close to the floor normal right out to the rim, so the
+          // edge does not pick up a bright fresnel outline (the meniscus line is drawn explicitly below)
+          vec3 upV = normalize((viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
+          normal = normalize(upV + (viewMatrix * vec4(dn, 0.0)).xyz);
           vRipF = clamp(-dw * 3.0, 0.0, 1.0);          // only the crest's lit flank → one fine line per ring
         }`)
       .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
         {
-          float thick = 1.0 - smoothstep(0.3, 1.0, vPoolT);
+          float thick = 1.0 - 0.55 * smoothstep(0.5, 1.0, vPoolT);
           float rn = vPoolXZ.y / ${POOL_R.toFixed(2)};
           // key light scattered back up through the film: quiet – the pool absorbs (amber), it does not glow
           float back = smoothstep(0.5, -0.7, rn);
-          totalEmissiveRadiance *= (0.025 + 0.1 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
+          totalEmissiveRadiance *= (0.02 + 0.21 * thick * (0.55 + 0.45 * back)) + 0.12 * vRipF * thick;
           // the key softbox as one curved highlight following the far rim (≤ 35% of the width, Gaussian ends),
           // its thickness breathing with the ripple normal
           float far = smoothstep(0.05, -0.45, rn);
-          float across = exp(-pow(vPoolXZ.x / (${POOL_R.toFixed(2)} * 0.27), 2.0));
-          float w = 0.045 * (1.0 + 1.6 * vRipF);
-          float gl = exp(-pow((vPoolT - 0.8) / w, 2.0)) * across * far;
-          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 0.85 * gl;
+          float across = 1.0 - smoothstep(${POOL_R.toFixed(2)} * 0.14, ${POOL_R.toFixed(2)} * 0.36, abs(vPoolXZ.x + ${POOL_R.toFixed(2)} * 0.05));
+          float w = 0.05 * (1.0 + 1.6 * vRipF);
+          float gl = exp(-pow((vPoolT - 0.62) / w, 4.0)) * across * far;          // flat-topped: a softbox, not a sheen
+          totalEmissiveRadiance += vec3(1.0, 0.93, 0.8) * 1.4 * gl;
           // ripple rings catch the light
           totalEmissiveRadiance += vec3(1.0, 0.88, 0.66) * 0.2 * vRipF * thick;
           // meniscus: one crisp 1px bright line on the far rim
           float fw = max(fwidth(vPoolT), 1e-4);
           float ml = 1.0 - smoothstep(0.0, 1.2 * fw, abs(vPoolT - (1.0 - 1.4 * fw)));
-          totalEmissiveRadiance += vec3(1.0, 0.86, 0.62) * 0.55 * ml * far;
+          float mid = exp(-pow(vPoolXZ.x / (${POOL_R.toFixed(2)} * 0.55), 2.0));   // middle ~40% of the far arc only
+          totalEmissiveRadiance += vec3(1.0, 0.86, 0.62) * 0.55 * ml * far * mid;
         }`)
       .replace('#include <dithering_fragment>', `#include <dithering_fragment>
-        { float fw = max(fwidth(vPoolT), 1e-4); gl_FragColor.rgb *= 1.0 - smoothstep(1.0 - 0.6 * fw, 1.0 + 0.4 * fw, vPoolT); }`);
+        { float fw = max(fwidth(vPoolT), 1e-4); gl_FragColor.rgb *= 1.0 - smoothstep(1.0 - 1.6 * fw, 1.0 - 0.1 * fw, vPoolT); }   // fades with (not after) the absorption layer → no light halo at the edge`);
   };
   poolTintMat.onBeforeCompile = (sh) => { Object.assign(sh.uniforms, poolU); };
   const poolGeo = poolGeometry(POOL_R, POOL_H);
@@ -676,7 +724,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     pendGeo.attributes.position.needsUpdate = true; pendGeo.attributes.normal.needsUpdate = true;
     return yc - rvB;                                                      // lowest point (local)
   }
-  const drop = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 32), oilDrop);
+  const drop = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 32), oilDropFall);
   drop.renderOrder = 3;
   scene.add(drop);
 
@@ -725,7 +773,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     bubbleGeo.attributes.iColor.needsUpdate = true; bubbleGeo.attributes.iSoft.needsUpdate = true; bubbleGeo.attributes.iHi.needsUpdate = true;
   }
   // DOM overlays the spheres must never pass behind (screen px, set from hero.js): the −25% disc, the price tag, the copy
-  const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9 };
+  const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9, pin: null };
   const ovDisc = [0, 0], ovTag = [0, 0, 0, 0], tagRect = [0, 0, 0, 0];   // ovTag: x, y (+ mobile: lead length, card left)
 
   // ---------- pointer (ray in world space, damped)
@@ -739,11 +787,12 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const DBG_FRAME = (new URLSearchParams(location.search).get('heroframe') || '').split(',').map(Number).filter((v) => v > 0);
   if (DBG_FRAME.length !== 3) DBG_FRAME.length = 0;
   let exclNdc = -2, ppuNdc = 0.01;
+  const stackMQ = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
   let W = 1, H = 1, frame = { fx: 0.66, fy: 0.5, hs: 0.8, D: 30 };
   const target = new THREE.Vector3();
   function layout() {
     W = Math.max(1, host.clientWidth); H = Math.max(1, host.clientHeight);
-    const mobile = W < 761; mobileNow = mobile;
+    const mobile = stackMQ.matches; mobileNow = mobile;   // phones + portrait tablets: scene above, copy below
     renderer.setPixelRatio(pr);
     renderer.setSize(W, H, false);
     composer.setPixelRatio(pr);
@@ -751,7 +800,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     camera.aspect = W / H;
     // how big the subject should be on screen, and where
     if (mobile) {
-      const hs = Math.min(284, W * 0.73);
+      const hs = Math.min(W > 760 ? 440 : 284, W * 0.73);
       frame = { fx: 0.5, fy: (30 + hs / 2) / H, hs, D: 0 };
     } else {
       const wide = W / H;
@@ -807,6 +856,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     bubble: new THREE.Vector3(BOTTLE_X + 2.35, 8.05, 0.2),
     tag: new THREE.Vector3(),                       // on the label surface (set from the bottle each frame)
     glow: new THREE.Vector3(BOTTLE_X - 0.6, 4.6, -1.5),
+    spot: new THREE.Vector3(BOTTLE_X, 5.6, -1.5),
     pool: new THREE.Vector3(BOTTLE_X - 1.6, 0, 0.4),
     tA: new THREE.Vector3(BOTTLE_X + 9.5, 12.8, -4), tB: new THREE.Vector3(BOTTLE_X - 2.6, -1.55, -4),
   };
@@ -842,7 +892,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     if (!mobileNow) {
       const d = toPx(anchors.bubble), m = OV.discR + 14; ovDisc[0] = clamp(d[0], m, W - m); ovDisc[1] = d[1];
       const tg = toPx(anchors.tag); ovTag[0] = tg[0]; ovTag[1] = tg[1]; ovTag[2] = 0; ovTag[3] = 0;
-      tagRect[0] = tg[0] - 8; tagRect[2] = tg[0] + OV.tagW; tagRect[1] = tg[1] - OV.tagH / 2; tagRect[3] = tg[1] + OV.tagH / 2;
+      if (OV.pin) { tagRect[0] = OV.pin[0]; tagRect[1] = OV.pin[1]; tagRect[2] = OV.pin[2]; tagRect[3] = OV.pin[3]; }   // tablet: pinned by CSS
+      else { tagRect[0] = tg[0] - 8; tagRect[2] = tg[0] + OV.tagW; tagRect[1] = tg[1] - OV.tagH / 2; tagRect[3] = tg[1] + OV.tagH / 2; }
     } else {
       // the disc clears the cap and the shoulder; the compact tag hangs under the bottle on a short dotted lead
       const d = toPx(anchors.bubble), m = OV.discR + 16; ovDisc[0] = clamp(d[0] + 14, m, W - m); ovDisc[1] = d[1] + 10;
@@ -889,13 +940,15 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         const settle = 1 + 0.42 * Math.exp(-since * 7);
         drop.scale.set(R1 / Math.sqrt(stretch * settle), R1 * stretch * settle, R1 / Math.sqrt(stretch * settle));
         drop.position.set(st.x0, st.dropY, st.z0);
-        drop.visible = true;
+        drop.visible = true; oilDropFall.uniforms.uFade.value = 1;
         const surface = POOL_H + 0.01;
         if (st.dropY - R1 * stretch < surface + 0.02) {
           // merge: sink and spread into the pool
+          // it flattens and spreads as it joins the film, and dissolves (alpha → 0) instead of shrinking to a bead
           const m = clamp((surface + 0.02 - (st.dropY - R1 * stretch)) / (R1 * 2.2), 0, 1);
-          drop.scale.set(R1 * (1 + 0.5 * m), R1 * stretch * (1 - m * 0.92), R1 * (1 + 0.5 * m));
+          drop.scale.set(R1 * (1 + 0.9 * m), R1 * stretch * (1 - m * 0.75), R1 * (1 + 0.9 * m));
           drop.position.y = Math.max(st.dropY, surface + R1 * stretch * (1 - m) * 0.5);
+          oilDropFall.uniforms.uFade.value = 1 - smooth(0.25, 0.95, m);
           if (st.impactT < 0 || st.impactCyc !== st.cyc) { st.impactT = t; st.impactCyc = st.cyc; poolU.uImpact.value.set(st.x0 - pool.position.x, st.z0 - pool.position.z); }
           if (m >= 1) { st.falling = false; st.landed = true; drop.visible = false; }
         }
@@ -1015,6 +1068,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     const unit = toPx(tmp2.set(anchors.glow.x, anchors.glow.y + 1, anchors.glow.z));
     const ppu = Math.abs(unit[1] - g[1]);          // pixels per world unit at the glow depth
     bgU.uGlowR.value = ppu * 6.2 * pr;
+    const sp = toPx(anchors.spot); bgU.uSpot.value.set(sp[0] * pr, (H - sp[1]) * pr);
+    bgU.uSpotR.value.set(ppu * 1.35 * pr, ppu * 1.0 * pr);
     const pl = toPx(anchors.pool); bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr); bgU.uPoolR.value.set(ppu * 7.5 * pr, ppu * 1.9 * pr);
     let a = toPx(anchors.tA), b2 = toPx(anchors.tB);
     if (isMobile()) {   // the disc sits top-right on mobile: one long diagonal from the top-left, behind the product, out under the disc
