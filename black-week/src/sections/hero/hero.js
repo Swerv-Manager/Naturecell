@@ -50,8 +50,11 @@ export default function init(root, ctx) {
     // phones: the still sits in the spot between the headline and the offer
     const placeStill = () => { root.style.setProperty('--spot-top', `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`); };
     placeStill(); new ResizeObserver(placeStill).observe(root);
+    // the still: the desktop plate, or on phones a plate of the product group framed for the spot (as the live scene)
     const img = root.querySelector('.hero-fallback');
-    if (img && img.dataset.src && !img.src) img.src = img.dataset.src;
+    const mq = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
+    const pick = () => { if (!img) return; const src = (mq.matches && img.dataset.srcM) || img.dataset.src; if (src && img.getAttribute('src') !== src) img.src = src; };
+    pick(); mq.addEventListener('change', pick);
   };
   if (!webglOK() || /[?&]hero=static\b/.test(location.search)) { goStatic(); return; }
 

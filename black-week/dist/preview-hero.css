@@ -937,7 +937,7 @@ body.nc-ytbox-open { overflow: hidden; }
 /* section hero */
 /* ==========================================================================
    NatureCell® Black Week – hero ("i ro og mag")
-   Night-green stage with a live Three.js still life (Vidunder Olien), calm copy on the left.
+   Night-green stage with a live Three.js still life of the facial range (Vidunder Olien as the hero), calm copy on the left.
    Every selector is scoped under [data-section="hero"].
    ========================================================================== */
 [data-section="hero"] {
@@ -1052,10 +1052,6 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="hero"].is-tracked .hero-tag { opacity: 1; }
 [data-section="hero"].is-tracked .hero-tag { transition-delay: 1250ms; }
 
-  position: absolute; left: 0; top: 0; width: 128px; margin: -64px 0 0 -64px; padding: 0;
-  display: grid; place-content: center; justify-items: center; gap: 2px; font-family: var(--font-body); text-align: center;
-  box-shadow: 0 18px 40px -18px color-mix(in srgb, color-mix(in srgb, var(--accent-berry) 40%, black) 60%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--cloud) 6%, transparent);
-}
 [data-section="hero"] .hero-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* the shoppable pill hangs under the oil on a dotted lead from its label – an L: out of the silhouette to the right
@@ -1082,7 +1078,7 @@ body.nc-ytbox-open { overflow: hidden; }
 /* the saving on the hero product: a small berry chip on the price row (the sale-flag colour, as on the deal cards) */
 [data-section="hero"] .hero-tag__save {
   align-self: center; display: inline-flex; align-items: center; height: 20px; padding: 0 8px 0 8px; border-radius: var(--radius-pill);
-  background: var(--accent-berry); color: #fff; font: 700 11px/1 var(--font-body); letter-spacing: .01em; white-space: nowrap; font-variant-numeric: tabular-nums;
+  background: var(--accent-berry); color: var(--cloud); font: 700 11px/1 var(--font-body); letter-spacing: .01em; white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 [data-section="hero"] .hero-tag__add {
   grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 50%; border: 0; padding: 0;
@@ -1100,7 +1096,7 @@ body.nc-ytbox-open { overflow: hidden; }
 
 /* static plate (no WebGL): the tag is pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .6832); top: calc(var(--hero-h) * .8117); }
+[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .6616); top: calc(var(--hero-h) * .8117); }
 [data-section="hero"].is-static .hero-tag__lead { display: none; }
 [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
 
@@ -1182,9 +1178,13 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
   [data-section="hero"] .hero-tag__save { height: 19px; padding: 0 7px; font-size: 10.5px; }
+  /* the lead's dot: smaller on phones, where the bottle is small (it marks the label, never covers its print) */
+  [data-section="hero"] .hero-tag__lead i { left: -3px; top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--paper) 18%, transparent); }
   /* static plate: the still sits in the spot; the pill is pinned to it */
-  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 6px); transform: translateX(-50%); height: var(--spot-h); -webkit-mask-image: radial-gradient(closest-side, black 82%, transparent); mask-image: radial-gradient(closest-side, black 82%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); }
+  /* (the phone plate is the live spot itself, edge to edge: same framing, same pill position) */
+  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 6px); transform: translateX(-50%); height: var(--spot-h); width: auto;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); }
+  [data-section="hero"].is-static .hero-tag { left: 26px; right: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 82px); }
 }
 /* portrait tablets: the same story, scaled up */
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {

@@ -121,12 +121,18 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
   g.fillStyle = INK; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
   const fit = (txt, font, width) => { g.font = font(100); const w = g.measureText(txt).width; return font(Math.round(100 * width / w)); };
   if ('letterSpacing' in g) g.letterSpacing = '0px';
-  g.font = fit('CBD SKIN CARE', (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * 0.36);
-  g.fillText('CBD SKIN CARE', cx, H * 0.52);
-  g.font = fit('CBD SKIN OIL', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.44);
-  g.fillText('CBD SKIN OIL', cx, H * 0.595);
-  g.font = fit('1000 mg', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.17);
-  g.fillText('1000 mg', cx, H * 0.65);
+  // the product name set to the real pack's proportions (carton + bottle): 'CBD SKIN OIL' runs ≈ 0.92× the wordmark's
+  // width, 'CBD SKIN CARE' ≈ 0.75×, '1000 mg' ≈ 0.39× – the name is the largest type after the wordmark. The block sits
+  // high enough that the left end of the name clears the pale band's rising edge.
+  const WW = wordW / F;
+  g.font = fit('CBD SKIN CARE', (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * WW * 0.74);
+  g.fillText('CBD SKIN CARE', cx, H * 0.484);
+  if ('letterSpacing' in g) g.letterSpacing = '2px';
+  g.font = fit('CBD SKIN OIL', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.9);
+  g.fillText('CBD SKIN OIL', cx, H * 0.548);
+  if ('letterSpacing' in g) g.letterSpacing = '0px';
+  g.font = fit('1000 mg', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.38);
+  g.fillText('1000 mg', cx, H * 0.606);
 
   // small print, bottom-right of the front face
   g.textAlign = 'right';

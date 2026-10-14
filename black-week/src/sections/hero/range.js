@@ -135,10 +135,15 @@ function airless(mats, labelMat) {
   nozzle.rotation.z = Math.PI / 2; nozzle.position.set(-0.72, 14.47, 0);
   g.add(nozzle);
   // the clear over-cap: a reflection shell over an edge tint (see scene.js) – the actuator and the chrome stay crisp
-  const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128);
+  // (the top edge is a filleted round-over, ≈ 0.1 cm: the key's glint spreads into a short soft arc, never a point)
+  const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.9], [1.561, 15.02], [1.54, 15.12], [1.495, 15.195], [1.42, 15.238], [1.3, 15.256], [0, 15.262]], 128);
   const capTint = new THREE.Mesh(capGeo, mats.capTint); capTint.renderOrder = 6;
   const cap = new THREE.Mesh(capGeo, clear); cap.renderOrder = 7;
   g.add(capTint, cap);
+  // the cap's top rim: a fine light line (the edge of the moulding seen in perspective), so the top reads as an ellipse
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.47, 0.02, 6, 128), mats.capRim);
+  rim.rotation.x = Math.PI / 2; rim.position.y = 15.22; rim.renderOrder = 8;
+  g.add(rim);
   g.userData.label = lab;
   return g;
 }

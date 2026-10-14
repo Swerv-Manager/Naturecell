@@ -250,6 +250,9 @@
   var LINE_GAP = 0.12;
   var K_UNIT = 1.06;
   var K_UNIT_PHONE = 1.12;
+  var Q_PAD = 12;
+  var Q_ICON = 18;
+  var Q_GAP = 6;
   var ORDER = ["komplet-pakken", "skin-oil", "serum", "day-cream", "night-cream", "all-day-facial", "cleansing-gel", "body-lotion", "shampoo"];
   var CAT = { "skin-oil": "face", serum: "face", "day-cream": "face", "night-cream": "face", "cleansing-gel": "face", "body-lotion": "body", shampoo: "body" };
   var catOf = (p) => p.bundle ? "sets" : CAT[p.id] || "face";
@@ -305,6 +308,40 @@
   var clamp = (x, a, b) => Math.max(a, Math.min(b, x));
   var nb = (s) => String(s).replace(/(^|\s)(\p{L}{1,2}) (?=\S)/gu, "$1$2\xA0").replace(/ – /g, "\xA0\u2013 ");
   var keep = (s) => String(s).split(/(?<=\.) /).map((t) => t.length <= 22 ? `<span class="deals-keep">${nb(esc(t))}</span>` : nb(esc(t))).join(" ");
+  function alphaBox(url) {
+    return new Promise((res, rej) => {
+      const im = new Image();
+      im.onload = () => {
+        try {
+          const W = im.naturalWidth, H = im.naturalHeight, k = Math.min(1, 480 / Math.max(W, H));
+          const w = Math.max(1, Math.round(W * k)), h = Math.max(1, Math.round(H * k));
+          const c = document.createElement("canvas");
+          c.width = w;
+          c.height = h;
+          const g = c.getContext("2d", { willReadFrequently: true });
+          g.drawImage(im, 0, 0, w, h);
+          const d = g.getImageData(0, 0, w, h).data;
+          let x0 = w, y0 = h, x1 = -1, y1 = -1;
+          for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+            if (d[(y * w + x) * 4 + 3] < 128) continue;
+            if (x < x0) x0 = x;
+            if (x > x1) x1 = x;
+            if (y < y0) y0 = y;
+            if (y > y1) y1 = y;
+          }
+          if (x1 < 0) {
+            rej(new Error("empty alpha"));
+            return;
+          }
+          res([W, H, Math.floor(x0 / k), Math.floor(y0 / k), Math.min(W, Math.ceil((x1 + 1) / k)), Math.min(H, Math.ceil((y1 + 1) / k))]);
+        } catch (e) {
+          rej(e);
+        }
+      };
+      im.onerror = rej;
+      im.src = url;
+    });
+  }
   function init(root, ctx) {
     const { fmt: fmt2, store: store2 } = ctx;
     const kr = (n) => fmt2.kr(n).replace(/ (?=kr\.)/, "\xA0");
@@ -410,7 +447,7 @@
       return `<ul class="deals-set__perks">${perks.map(([ic, t, c = ""]) => `<li${c}>${ic}<span>${t}</span></li>`).join("")}</ul>`;
     };
     const sale = (p) => `<span class="deals-flag" aria-hidden="true">\u2212${p.pct}%</span>`;
-    const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning \u2013 ${esc(p.name)}</span></button>`;
+    const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="deals-quick__l">Hurtig visning</span><span class="nc-sr"> \u2013 ${esc(p.name)}</span></button>`;
     const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}" tabindex="-1" aria-hidden="true"></button>`;
     const tallOf = (p) => p.bundle ? Math.max(...(p.contains || []).map((id) => BOTTLE_H[id] || 0)) : (SHOT[p.id] || { h: 0.8 }).h;
     const TONE = { "komplet-pakken": "sand", "all-day-facial": "dune" };
@@ -460,8 +497,10 @@
     const gift = ctx.byId[ctx.campaign.giftId];
     const giftName = gift ? gift.name : "CBD Lip Balm";
     const giftImg = gift && gift.img ? ctx.asset(gift.img) : "";
-    const lipShot = giftImg ? { src: gift.img, box: [1e3, 1e3, 0, 0, 1e3, 1e3], h: 0.32 } : LIP_SHOT;
-    const lipHtml = `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, "")}</div>`;
+    const lipShot = giftImg ? { src: gift.img, box: [1e3, 1e3, 0, 0, 1e3, 1e3], h: 0.32, cyl: [0, 100] } : LIP_SHOT;
+    const lipAr = () => ((lipShot.box[4] - lipShot.box[2]) / (lipShot.box[5] - lipShot.box[3])).toFixed(4);
+    const lipLine = () => `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, "")}</div>`;
+    const lipHtml = lipLine();
     const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
@@ -470,7 +509,7 @@
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i k\xF8bet</h3>
         </div>
-        <div class="deals-gift__art has-pack" aria-hidden="true">
+        <div class="deals-gift__art has-pack${giftImg ? " is-measuring" : ""}" aria-hidden="true" style="--lip-ar:${lipAr()}">
           <!-- the gift stands on the row's floor line in a warm pool of light; its value tag hangs in front of it on a sand
                thread that fades up into the night -->
           <span class="deals-gift__pack">${lipHtml}</span>
@@ -502,6 +541,17 @@
     </aside>
   </li>`;
     grid.innerHTML = items.map(cardHtml).join("") + giftHtml;
+    if (giftImg) {
+      const art = $(".deals-gift__art", grid), slot = $(".deals-gift__pack", grid);
+      alphaBox(giftImg).then((box) => {
+        lipShot.box = box;
+        slot.innerHTML = lipLine();
+        art.style.setProperty("--lip-ar", lipAr());
+        lightGeo.delete($(".deals-gift", grid));
+        fitRows();
+      }).catch(() => {
+      }).finally(() => art.classList.remove("is-measuring"));
+    }
     grid.classList.add("deals-rv");
     const heads = $$(".deals-head [data-reveal]");
     heads.forEach((el) => {
@@ -603,7 +653,7 @@
     function swing(amp = 1) {
       if (RM || !tag) return;
       if (swingA && swingA.playState === "running") return;
-      const k = [1.6, -1.1, 0.62, -0.3, 0.1, 0];
+      const k = [-1.2, 0.75, -0.42, 0.2, -0.07, 0];
       swingA = tag.animate(k.map((d, i) => ({ transform: `rotate(${(d * amp).toFixed(3)}deg)`, offset: [0, 0.18, 0.38, 0.58, 0.78, 1][i] })), { duration: 4200, easing: "cubic-bezier(.33, 0, .3, 1)" });
     }
     if (FINE) gTile.addEventListener("pointerenter", () => swing(0.8));
@@ -772,13 +822,27 @@
         row.forEach((li) => li.style.removeProperty("--dl-eye"));
         let eye = 0;
         row.forEach((li) => {
-          const q = $(".deals-quick", li), st = $("[data-stage]", li);
-          if (!q || !st) return;
-          const sr = st.getBoundingClientRect(), d = TOUCH ? 10 : 4;
-          const L = sr.left + q.offsetLeft + d - 4, R = sr.left + q.offsetLeft + q.offsetWidth - d + 4, B = q.offsetTop + q.offsetHeight - d + 4;
+          const st = $("[data-stage]", li);
+          if (!st) return;
+          const sr = st.getBoundingClientRect();
+          const obs = [];
+          const f = $(".deals-flag", li);
+          if (f) obs.push({ l: f.offsetLeft, r: f.offsetLeft + f.offsetWidth, b: f.offsetTop + f.offsetHeight + 8 + (TOUCH ? 0 : 7) });
+          const q = $(".deals-quick", li);
+          if (q) {
+            const qr = q.offsetLeft + q.offsetWidth;
+            if (TOUCH) obs.push({ l: q.offsetLeft + 10, r: qr - 10, b: q.offsetTop + q.offsetHeight - 10 + 6 });
+            else {
+              const lb = $(".deals-quick__l", q);
+              const qw = Q_PAD * 2 + Q_ICON + Q_GAP + (lb ? lb.scrollWidth : 0);
+              obs.push({ l: qr - qw, r: qr, b: q.offsetTop + q.offsetHeight + 6 + 7 });
+            }
+          }
           $$(".deals-prod", li).forEach((pk) => {
-            const r = pk.getBoundingClientRect();
-            if (r.right > L && r.left < R) eye = Math.max(eye, B - (r.top - sr.top));
+            const r = pk.getBoundingClientRect(), pl = r.left - sr.left, pr = r.right - sr.left, pt = r.top - sr.top;
+            obs.forEach((o) => {
+              if (pr > o.l - 4 && pl < o.r + 4) eye = Math.max(eye, o.b - pt);
+            });
           });
         });
         if (eye > 0.5) row.forEach((li) => li.style.setProperty("--dl-eye", `${Math.ceil(eye)}px`));

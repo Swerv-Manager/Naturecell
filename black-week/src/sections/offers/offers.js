@@ -147,12 +147,19 @@ function initAdd(root, ctx) {
   set('[data-kp-before]', nb(ctx.fmt.kr(p.price0)));
   const loose = (p.contains || []).reduce((sum, id) => sum + (ctx.byId[id]?.price || 0), 0);
   if (loose) set('[data-kp-loose]', nb(ctx.fmt.kr(loose)));
+  const save = p.price0 - p.price;
+  set('[data-kp-savev]', nb(ctx.fmt.kr(save)));
+  set('[data-kp-save]', ` – du sparer ${ctx.fmt.kr(save)}`);
+  // the pack earns the gift by itself only while its price clears the gift line – never claim it otherwise
+  const earnsGift = p.price >= ctx.campaign.giftThreshold;
+  const giftNote = root.querySelector('[data-kp-gift]');
+  if (giftNote) giftNote.hidden = !earnsGift;
   let timer = 0;
   btn.addEventListener('click', () => {
     ctx.store.add(p.id, 1);
     btn.classList.add('is-added');
     // the label stays static; the confirmation goes through a polite live region
-    if (status) { status.textContent = ''; requestAnimationFrame(() => { status.textContent = `${p.name} er lagt i kurven.`; }); }
+    if (status) { status.textContent = ''; requestAnimationFrame(() => { status.textContent = `${p.name} er lagt i kurven${earnsGift ? ', og en gratis CBD Lip Balm følger med' : ''}.`; }); }
     clearTimeout(timer);
     timer = setTimeout(() => btn.classList.remove('is-added'), 2600);
   });
@@ -183,7 +190,9 @@ function initGift(root, ctx, q, reduced) {
   let shown = 0, target = 0, raf = 0, last = 0;
   const draw = (v) => { if (meter) meter.style.transform = `scaleX(${v})`; };
   function frame(t) {
-    const dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+    // the exponential approach is unconditionally stable, so dt is not clamped: a janky or throttled frame
+    // never slows the fill below real time
+    const dt = (t - (last || t)) / 1000; last = t;
     shown += (target - shown) * (1 - Math.exp(-dt * 3));
     if (Math.abs(target - shown) < 0.001) shown = target;
     draw(shown);
@@ -195,7 +204,7 @@ function initGift(root, ctx, q, reduced) {
     st.classList.toggle('has-cart', sum > 0);
     st.dataset.level = level;
     if (sum > 0) {
-      sumEl.textContent = `Din kurv ${kr(sum)}`;
+      sumEl.innerHTML = `Din kurv <b class="offers-note__sum">${nb(kr(sum))}</b>`;
       nextEl.textContent = level === 2 ? 'Gave og fri fragt er med' : level === 1 ? `Fri fragt · ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
     }
     target = Math.min(1, sum / G);

@@ -36,6 +36,8 @@ const LINE_GAP = 0.12; // gap between bottles in a line-up, in units (mirrors --
 // is then exactly as tall as its tallest pack needs (+ head-room), so no card carries a wall of empty sky.
 // Phones get a slightly larger unit (two columns, so the packs would otherwise read as thumbnails).
 const K_UNIT = 1.06, K_UNIT_PHONE = 1.12;
+// the expanded quick-view pill (fine pointer): 12px padding a side, an 18px eye, 6px to the label (mirrors deals.css)
+const Q_PAD = 12, Q_ICON = 18, Q_GAP = 6;
 
 const ORDER = ['komplet-pakken', 'skin-oil', 'serum', 'day-cream', 'night-cream', 'all-day-facial', 'cleansing-gel', 'body-lotion', 'shampoo'];
 const CAT = { 'skin-oil': 'face', serum: 'face', 'day-cream': 'face', 'night-cream': 'face', 'cleansing-gel': 'face', 'body-lotion': 'body', shampoo: 'body' };
@@ -88,6 +90,32 @@ const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const nb = (s) => String(s).replace(/(^|\s)(\p{L}{1,2}) (?=\S)/gu, '$1$2\u00a0').replace(/ – /g, '\u00a0– ');
 // a short sentence is never split ("1000 mg CBD. | Til alle hudtyper.", not "… Til alle | hudtyper.")
 const keep = (s) => String(s).split(/(?<=\.) /).map((t) => (t.length <= 22 ? `<span class="deals-keep">${nb(esc(t))}</span>` : nb(esc(t)))).join(' ');
+
+// the opaque product box of a transparent packshot: [imgW, imgH, x0, y0, x1, y1], read from its alpha at ≤ 480px
+// (alpha ≥ 50 %, so a soft baked shadow or glow does not count as product)
+function alphaBox(url) {
+  return new Promise((res, rej) => {
+    const im = new Image();
+    im.onload = () => {
+      try {
+        const W = im.naturalWidth, H = im.naturalHeight, k = Math.min(1, 480 / Math.max(W, H));
+        const w = Math.max(1, Math.round(W * k)), h = Math.max(1, Math.round(H * k));
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0, w, h);
+        const d = g.getImageData(0, 0, w, h).data;
+        let x0 = w, y0 = h, x1 = -1, y1 = -1;
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          if (d[(y * w + x) * 4 + 3] < 128) continue;
+          if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+        }
+        if (x1 < 0) { rej(new Error('empty alpha')); return; }
+        res([W, H, Math.floor(x0 / k), Math.floor(y0 / k), Math.min(W, Math.ceil((x1 + 1) / k)), Math.min(H, Math.ceil((y1 + 1) / k))]);
+      } catch (e) { rej(e); }
+    };
+    im.onerror = rej;
+    im.src = url;
+  });
+}
 
 export default function init(root, ctx) {
   const { fmt, store } = ctx;
@@ -206,7 +234,9 @@ export default function init(root, ctx) {
     return `<ul class="deals-set__perks">${perks.map(([ic, t, c = '']) => `<li${c}>${ic}<span>${t}</span></li>`).join('')}</ul>`;
   };
   const sale = (p) => `<span class="deals-flag" aria-hidden="true">−${p.pct}%</span>`;
-  const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
+  // Label in Name: the visible "Hurtig visning" (a pill on a fine pointer; visually hidden on touch, where the eye disc
+  // stands alone) + " – {name}" for screen readers, so the accessible name starts with the visible label
+  const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="deals-quick__l">Hurtig visning</span><span class="nc-sr"> – ${esc(p.name)}</span></button>`;
   // touch: the whole packshot is also a (silent) tap target for quick view – the visible, named control is the eye;
   // hidden on a fine pointer, where the image belongs to the card's product link and the eye appears on hover
   const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}" tabindex="-1" aria-hidden="true"></button>`;
@@ -263,8 +293,12 @@ export default function init(root, ctx) {
   // The gift stands on the same floor as every pack in the grid – same contact shadow, same window light, same scale.
   // A real Lip Balm packshot in data.js (img) takes over automatically; until then a studio render of the 6 ml stick
   // (lip-balm.js) stands in – openly captioned "illustration" in the tag's footer, never passed off as a photo.
-  const lipShot = giftImg ? { src: gift.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.32 } : LIP_SHOT;
-  const lipHtml = `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, '')}</div>`;
+  // A real packshot gets its product box MEASURED from its own alpha (deals.js alphaBox) before it is shown, so it stands
+  // on the shared floor at the truthful .32 height whatever its canvas and padding – no hand-typed box to forget.
+  const lipShot = giftImg ? { src: gift.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.32, cyl: [0, 100] } : LIP_SHOT;
+  const lipAr = () => ((lipShot.box[4] - lipShot.box[2]) / (lipShot.box[5] - lipShot.box[3])).toFixed(4);
+  const lipLine = () => `<div class="deals-line deals-line--gift" style="--lw:${lineW([lipShot]).toFixed(4)}">${prodHtml(lipShot, giftImg || LIP_SHOT.url, '')}</div>`;
+  const lipHtml = lipLine();
   const giftHtml = `<li class="deals-item deals-item--gift" data-cat="gift" style="--ri:${items.length}">
     <aside class="deals-gift nc-grain" aria-labelledby="deals-gift-t">
       <span class="deals-gift__glow" aria-hidden="true"></span>
@@ -273,7 +307,7 @@ export default function init(root, ctx) {
           <p class="deals-gift__eyebrow">Black Week-gave</p>
           <h3 class="deals-gift__title" id="deals-gift-t">${esc(giftName)} med i købet</h3>
         </div>
-        <div class="deals-gift__art has-pack" aria-hidden="true">
+        <div class="deals-gift__art has-pack${giftImg ? ' is-measuring' : ''}" aria-hidden="true" style="--lip-ar:${lipAr()}">
           <!-- the gift stands on the row's floor line in a warm pool of light; its value tag hangs in front of it on a sand
                thread that fades up into the night -->
           <span class="deals-gift__pack">${lipHtml}</span>
@@ -305,6 +339,16 @@ export default function init(root, ctx) {
     </aside>
   </li>`;
   grid.innerHTML = items.map(cardHtml).join('') + giftHtml;
+  if (giftImg) {
+    const art = $('.deals-gift__art', grid), slot = $('.deals-gift__pack', grid);
+    alphaBox(giftImg).then((box) => {
+      lipShot.box = box;
+      slot.innerHTML = lipLine();
+      art.style.setProperty('--lip-ar', lipAr());
+      lightGeo.delete($('.deals-gift', grid));
+      fitRows();
+    }).catch(() => {}).finally(() => art.classList.remove('is-measuring'));
+  }
   // reveal the grid as ONE composition (staggered), as soon as its top edge enters the viewport
   grid.classList.add('deals-rv');
   // the head reveals with the section (own observer – not the page-wide one – so the head and grid arrive as one piece)
@@ -377,7 +421,7 @@ export default function init(root, ctx) {
   function swing(amp = 1) {
     if (RM || !tag) return;
     if (swingA && swingA.playState === 'running') return;
-    const k = [1.6, -1.1, 0.62, -0.3, 0.1, 0];
+    const k = [-1.2, 0.75, -0.42, 0.2, -0.07, 0]; // first swing away from the stick; small enough that the tag never reaches it
     swingA = tag.animate(k.map((d, i) => ({ transform: `rotate(${(d * amp).toFixed(3)}deg)`, offset: [0, .18, .38, .58, .78, 1][i] })), { duration: 4200, easing: 'cubic-bezier(.33, 0, .3, 1)' });
   }
   if (FINE) gTile.addEventListener('pointerenter', () => swing(0.8));
@@ -490,8 +534,8 @@ export default function init(root, ctx) {
     giftLi.style.setProperty('--gfl', `${Math.max(14, Math.round(offY(art, giftLi) + art.offsetHeight - floorY))}px`);
     fitTag();
   }
-  // the tag hangs over the stick's shoulder – unless that would push it out of the art (a short row): then it hangs as
-  // low as the art allows and simply covers a little more of the stick
+  // the tag hangs beside the stick at a third of its height – unless that would push it out of the art (a short row):
+  // then it hangs as low as the art allows (it sits beside the stick, so it can never cover it)
   function fitTag() {
     const tg = $('.deals-tag', giftLi), art = $('.deals-gift__art', giftLi); if (!tg || !art) return;
     tg.style.bottom = '';
@@ -526,15 +570,33 @@ export default function init(root, ctx) {
       const set = row.some((li) => li.classList.contains('deals-item--set'));
       const gr = row.includes(giftLi);
       row.forEach((li) => { li.style.setProperty('--row-h', h.toFixed(4)); li.classList.toggle('is-setrow', set); li.classList.toggle('is-giftrow', gr); });
-      // the quick-view eye never sits on a pack: where a pack would reach into the eye's corner (its 24/36px disc + 4px air),
-      // the whole row gets just that much more head-room (packs stand on the floor, so the sky grows, the shelf stays)
+      // UI chrome never sits on a pack: the sale flag (top-left) and the quick-view control (top-right – the eye disc on
+      // touch, the expanded "Hurtig visning" pill on a fine pointer) each get a lane. Where a pack would reach into a lane
+      // (+ air: 8px under the flag, 6px under the quick view – and on a fine pointer the hover lift on top), the whole row gets just that much more head-room – packs
+      // stand on the floor, so the sky grows and the shelf, prices and buttons stay aligned across the row.
       row.forEach((li) => li.style.removeProperty('--dl-eye'));
       let eye = 0;
       row.forEach((li) => {
-        const q = $('.deals-quick', li), st = $('[data-stage]', li); if (!q || !st) return;
-        const sr = st.getBoundingClientRect(), d = TOUCH ? 10 : 4;
-        const L = sr.left + q.offsetLeft + d - 4, R = sr.left + q.offsetLeft + q.offsetWidth - d + 4, B = q.offsetTop + q.offsetHeight - d + 4;
-        $$('.deals-prod', li).forEach((pk) => { const r = pk.getBoundingClientRect(); if (r.right > L && r.left < R) eye = Math.max(eye, B - (r.top - sr.top)); });
+        const st = $('[data-stage]', li); if (!st) return;
+        const sr = st.getBoundingClientRect();
+        const obs = [];
+        const f = $('.deals-flag', li);
+        if (f) obs.push({ l: f.offsetLeft, r: f.offsetLeft + f.offsetWidth, b: f.offsetTop + f.offsetHeight + 8 + (TOUCH ? 0 : 7) });
+        const q = $('.deals-quick', li);
+        if (q) {
+          const qr = q.offsetLeft + q.offsetWidth;
+          if (TOUCH) obs.push({ l: q.offsetLeft + 10, r: qr - 10, b: q.offsetTop + q.offsetHeight - 10 + 6 });
+          else {
+            const lb = $('.deals-quick__l', q);
+            const qw = Q_PAD * 2 + Q_ICON + Q_GAP + (lb ? lb.scrollWidth : 0); // the pill's expanded width
+            // + the hover lift: under the hand the pack rises up to 5px (+ ~2px parallax) toward the pill
+            obs.push({ l: qr - qw, r: qr, b: q.offsetTop + q.offsetHeight + 6 + 7 });
+          }
+        }
+        $$('.deals-prod', li).forEach((pk) => {
+          const r = pk.getBoundingClientRect(), pl = r.left - sr.left, pr = r.right - sr.left, pt = r.top - sr.top;
+          obs.forEach((o) => { if (pr > o.l - 4 && pl < o.r + 4) eye = Math.max(eye, o.b - pt); });
+        });
       });
       if (eye > 0.5) row.forEach((li) => li.style.setProperty('--dl-eye', `${Math.ceil(eye)}px`));
       // one shared name block per row: if any single's name wraps to two lines, every single in the row reserves two, so

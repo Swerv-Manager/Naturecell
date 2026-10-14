@@ -375,6 +375,12 @@
     set("[data-kp-before]", nb(ctx.fmt.kr(p.price0)));
     const loose = (p.contains || []).reduce((sum, id) => sum + (ctx.byId[id]?.price || 0), 0);
     if (loose) set("[data-kp-loose]", nb(ctx.fmt.kr(loose)));
+    const save = p.price0 - p.price;
+    set("[data-kp-savev]", nb(ctx.fmt.kr(save)));
+    set("[data-kp-save]", ` \u2013 du sparer ${ctx.fmt.kr(save)}`);
+    const earnsGift = p.price >= ctx.campaign.giftThreshold;
+    const giftNote = root.querySelector("[data-kp-gift]");
+    if (giftNote) giftNote.hidden = !earnsGift;
     let timer = 0;
     btn.addEventListener("click", () => {
       ctx.store.add(p.id, 1);
@@ -382,7 +388,7 @@
       if (status) {
         status.textContent = "";
         requestAnimationFrame(() => {
-          status.textContent = `${p.name} er lagt i kurven.`;
+          status.textContent = `${p.name} er lagt i kurven${earnsGift ? ", og en gratis CBD Lip Balm f\xF8lger med" : ""}.`;
         });
       }
       clearTimeout(timer);
@@ -416,7 +422,7 @@
       if (meter) meter.style.transform = `scaleX(${v})`;
     };
     function frame(t) {
-      const dt = Math.min(0.05, (t - (last || t)) / 1e3);
+      const dt = (t - (last || t)) / 1e3;
       last = t;
       shown += (target - shown) * (1 - Math.exp(-dt * 3));
       if (Math.abs(target - shown) < 1e-3) shown = target;
@@ -433,7 +439,7 @@
       st.classList.toggle("has-cart", sum > 0);
       st.dataset.level = level;
       if (sum > 0) {
-        sumEl.textContent = `Din kurv ${kr(sum)}`;
+        sumEl.innerHTML = `Din kurv <b class="offers-note__sum">${nb(kr(sum))}</b>`;
         nextEl.textContent = level === 2 ? "Gave og fri fragt er med" : level === 1 ? `Fri fragt \xB7 ${kr(G - sum)} til Lip Balm` : `${kr(S - sum)} til fri fragt`;
       }
       target = Math.min(1, sum / G);

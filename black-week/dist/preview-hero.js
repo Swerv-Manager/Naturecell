@@ -17122,7 +17122,7 @@ void main() {
       let _clippingEnabled = false;
       let _localClippingEnabled = false;
       const _currentProjectionMatrix = new Matrix4();
-      const _projScreenMatrix = new Matrix4();
+      const _projScreenMatrix2 = new Matrix4();
       const _vector3 = new Vector3();
       const _vector4 = new Vector4();
       const _emptyScene = { background: null, fog: null, environment: null, overrideMaterial: null, isScene: true };
@@ -17630,8 +17630,8 @@ void main() {
         currentRenderState = renderStates.get(scene, renderStateStack.length);
         currentRenderState.init(camera);
         renderStateStack.push(currentRenderState);
-        _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-        _frustum.setFromProjectionMatrix(_projScreenMatrix);
+        _projScreenMatrix2.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+        _frustum.setFromProjectionMatrix(_projScreenMatrix2);
         _localClippingEnabled = this.localClippingEnabled;
         _clippingEnabled = clipping.init(this.clippingPlanes, _localClippingEnabled);
         currentRenderList = renderLists.get(scene, renderListStack.length);
@@ -17717,7 +17717,7 @@ void main() {
           } else if (object.isSprite) {
             if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
               if (sortObjects) {
-                _vector4.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
+                _vector4.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix2);
               }
               const geometry = objects.update(object);
               const material = object.material;
@@ -17737,7 +17737,7 @@ void main() {
                   if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
                   _vector4.copy(geometry.boundingSphere.center);
                 }
-                _vector4.applyMatrix4(object.matrixWorld).applyMatrix4(_projScreenMatrix);
+                _vector4.applyMatrix4(object.matrixWorld).applyMatrix4(_projScreenMatrix2);
               }
               if (Array.isArray(material)) {
                 const groups = geometry.groups;
@@ -20178,6 +20178,104 @@ void main() {
       return this;
     }
   };
+  var _projScreenMatrix = /* @__PURE__ */ new Matrix4();
+  var _lightPositionWorld = /* @__PURE__ */ new Vector3();
+  var _lookTarget = /* @__PURE__ */ new Vector3();
+  var PointLightShadow = class extends LightShadow {
+    constructor() {
+      super(new PerspectiveCamera(90, 1, 0.5, 500));
+      this.isPointLightShadow = true;
+      this._frameExtents = new Vector2(4, 2);
+      this._viewportCount = 6;
+      this._viewports = [
+        // These viewports map a cube-map onto a 2D texture with the
+        // following orientation:
+        //
+        //  xzXZ
+        //   y Y
+        //
+        // X - Positive x direction
+        // x - Negative x direction
+        // Y - Positive y direction
+        // y - Negative y direction
+        // Z - Positive z direction
+        // z - Negative z direction
+        // positive X
+        new Vector4(2, 1, 1, 1),
+        // negative X
+        new Vector4(0, 1, 1, 1),
+        // positive Z
+        new Vector4(3, 1, 1, 1),
+        // negative Z
+        new Vector4(1, 1, 1, 1),
+        // positive Y
+        new Vector4(3, 0, 1, 1),
+        // negative Y
+        new Vector4(1, 0, 1, 1)
+      ];
+      this._cubeDirections = [
+        new Vector3(1, 0, 0),
+        new Vector3(-1, 0, 0),
+        new Vector3(0, 0, 1),
+        new Vector3(0, 0, -1),
+        new Vector3(0, 1, 0),
+        new Vector3(0, -1, 0)
+      ];
+      this._cubeUps = [
+        new Vector3(0, 1, 0),
+        new Vector3(0, 1, 0),
+        new Vector3(0, 1, 0),
+        new Vector3(0, 1, 0),
+        new Vector3(0, 0, 1),
+        new Vector3(0, 0, -1)
+      ];
+    }
+    updateMatrices(light, viewportIndex = 0) {
+      const camera = this.camera;
+      const shadowMatrix = this.matrix;
+      const far = light.distance || camera.far;
+      if (far !== camera.far) {
+        camera.far = far;
+        camera.updateProjectionMatrix();
+      }
+      _lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
+      camera.position.copy(_lightPositionWorld);
+      _lookTarget.copy(camera.position);
+      _lookTarget.add(this._cubeDirections[viewportIndex]);
+      camera.up.copy(this._cubeUps[viewportIndex]);
+      camera.lookAt(_lookTarget);
+      camera.updateMatrixWorld();
+      shadowMatrix.makeTranslation(-_lightPositionWorld.x, -_lightPositionWorld.y, -_lightPositionWorld.z);
+      _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+      this._frustum.setFromProjectionMatrix(_projScreenMatrix);
+    }
+  };
+  var PointLight = class extends Light {
+    constructor(color, intensity, distance = 0, decay = 2) {
+      super(color, intensity);
+      this.isPointLight = true;
+      this.type = "PointLight";
+      this.distance = distance;
+      this.decay = decay;
+      this.shadow = new PointLightShadow();
+    }
+    get power() {
+      return this.intensity * 4 * Math.PI;
+    }
+    set power(power) {
+      this.intensity = power / (4 * Math.PI);
+    }
+    dispose() {
+      this.shadow.dispose();
+    }
+    copy(source, recursive) {
+      super.copy(source, recursive);
+      this.distance = source.distance;
+      this.decay = source.decay;
+      this.shadow = source.shadow.clone();
+      return this;
+    }
+  };
   var DirectionalLightShadow = class extends LightShadow {
     constructor() {
       super(new OrthographicCamera(-5, 5, 5, -5, 0.5, 500));
@@ -21440,12 +21538,15 @@ void main() {
       return font(Math.round(100 * width / w));
     };
     if ("letterSpacing" in g) g.letterSpacing = "0px";
-    g.font = fit("CBD SKIN CARE", (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * 0.36);
-    g.fillText("CBD SKIN CARE", cx, H * 0.52);
-    g.font = fit("CBD SKIN OIL", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.44);
-    g.fillText("CBD SKIN OIL", cx, H * 0.595);
-    g.font = fit("1000 mg", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * 0.17);
-    g.fillText("1000 mg", cx, H * 0.65);
+    const WW = wordW / F;
+    g.font = fit("CBD SKIN CARE", (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * WW * 0.74);
+    g.fillText("CBD SKIN CARE", cx, H * 0.484);
+    if ("letterSpacing" in g) g.letterSpacing = "2px";
+    g.font = fit("CBD SKIN OIL", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.9);
+    g.fillText("CBD SKIN OIL", cx, H * 0.548);
+    if ("letterSpacing" in g) g.letterSpacing = "0px";
+    g.font = fit("1000 mg", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.38);
+    g.fillText("1000 mg", cx, H * 0.606);
     g.textAlign = "right";
     const rx = X(50);
     g.font = `400 ${Math.round(F * 0.04)}px "Roboto Flex", Arial, sans-serif`;
@@ -21666,12 +21767,17 @@ void main() {
     nozzle.rotation.z = Math.PI / 2;
     nozzle.position.set(-0.72, 14.47, 0);
     g.add(nozzle);
-    const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128);
+    const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.9], [1.561, 15.02], [1.54, 15.12], [1.495, 15.195], [1.42, 15.238], [1.3, 15.256], [0, 15.262]], 128);
     const capTint = new Mesh(capGeo, mats.capTint);
     capTint.renderOrder = 6;
     const cap = new Mesh(capGeo, clear);
     cap.renderOrder = 7;
     g.add(capTint, cap);
+    const rim = new Mesh(new TorusGeometry(1.47, 0.02, 6, 128), mats.capRim);
+    rim.rotation.x = Math.PI / 2;
+    rim.position.y = 15.22;
+    rim.renderOrder = 8;
+    g.add(rim);
     g.userData.label = lab;
     return g;
   }
@@ -21778,9 +21884,9 @@ void main() {
   var BOTTLE_X = 0.95;
   var BOTTLE_Z = 6;
   var NECK_Y = 7.02;
-  var POS = { day: [-9.07, -6.8, 0.03], night: [-6.16, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
+  var POS = { day: [-9.07, -6.8, 0.03], night: [-5.95, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
   var PIPETTE_LEN = 5.9;
-  var DROP_R = 0.118;
+  var DROP_R = 0.16;
   function lathe2(points, segs = 96, smoothN = 0) {
     let pts = points.map(([x, y]) => new Vector2(x, y));
     if (smoothN) pts = new SplineCurve(pts).getSpacedPoints(smoothN);
@@ -21862,8 +21968,12 @@ void main() {
       m.position.y = (y0 + y1) / 2;
       s.add(m);
     };
-    band(20, -125, 125, -13, 6, "#f1eee8", 0.3);
+    for (let i = 0; i < 12; i++) {
+      const y0 = -13 + 19 / 12 * i, y1 = y0 + 19 / 12, t = (i + 0.5) / 12;
+      band(20, -125, 125, y0, y1, "#f1eee8", 0.45 + (0.12 - 0.45) * t);
+    }
     band(18, -36, -16, -14, 7, "#000000", 1);
+    band(17.5, 20, 26, -14, 7, "#000000", 1);
     band(18, -15, -9, -14, 7, "#fffaf2", 1.7);
     band(18, 30, 36, -14, 7, "#f4f6f4", 0.75);
     band(20, -125, 125, 6, 14, "#f1eee8", 0.09);
@@ -21995,14 +22105,17 @@ void main() {
     bg.frustumCulled = false;
     bg.renderOrder = -100;
     scene.add(bg);
-    const key = new SpotLight(C2("#fff1e0"), 2.5, 0, 0.8, 0.8, 0);
+    const key = new SpotLight(C2("#fff1e0"), 2.5, 0, 0.55, 1, 0);
     key.position.set(BOTTLE_X - 7 * 3, 4 + 9 * 3, BOTTLE_Z + 8 * 3);
-    key.target.position.set(BOTTLE_X - 0.6, 4, BOTTLE_Z - 1.2);
+    key.target.position.set(BOTTLE_X, 4, BOTTLE_Z);
     scene.add(key, key.target);
-    const heroLight = new SpotLight(C2("#fff0dc"), 1.15, 0, 0.14, 0.85, 0);
+    const heroLight = new SpotLight(C2("#fff0dc"), 1.6, 0, 0.14, 0.85, 0);
     heroLight.position.set(BOTTLE_X - 14, 26, BOTTLE_Z + 18);
     heroLight.target.position.set(BOTTLE_X, 4.2, BOTTLE_Z);
     scene.add(heroLight, heroLight.target);
+    const backWarm = new PointLight(C2("#ffb866"), 6, 6, 2);
+    backWarm.position.set(BOTTLE_X + 2.2, 6, BOTTLE_Z - 3.2);
+    scene.add(backWarm);
     const fill = new DirectionalLight(C2("#b6c9c2"), 0.25);
     fill.position.set(6, 2, 6);
     scene.add(fill);
@@ -22029,6 +22142,28 @@ void main() {
       { float hy = vWorldPosition.y;
         float heel = smoothstep(0.62, 0.12, hy) * smoothstep(-0.02, 0.1, hy);
         float ndvH = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
+        totalEmissiveRadiance += vec3(0.085, 0.016, 0.0015) * heel * (0.35 + 0.65 * ndvH);
+        // (the Rensegel, the only other amber pack: its shoulder and heel carry a quieter share of the evening glow)
+        float fG = pow(ndvH, 1.3);
+        float shG = smoothstep(7.22, 7.5, hy) * (1.0 - smoothstep(8.35, 8.75, hy));
+        float hlG = smoothstep(0.08, 0.3, hy) * (1.0 - smoothstep(0.95, 1.12, hy));
+        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * fG * (shG * 0.2 + hlG * 0.22); }`);
+    };
+    const heroAmber = amberGlass.clone();
+    heroAmber.customProgramCacheKey = () => "hero-amber";
+    heroAmber.onBeforeCompile = (sh) => {
+      sh.uniforms.uGlow = { value: 1 };
+      sh.fragmentShader = "uniform float uGlow;\n" + sh.fragmentShader.replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
+      { float hy = vWorldPosition.y;
+        float ndvH = clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0);
+        float face = pow(ndvH, 1.3);
+        vec3 nW = inverseTransformDirection(normalize(vNormal), viewMatrix);
+        float side = 0.75 + 0.35 * clamp(nW.x, -1.0, 1.0);
+        float shoulder = smoothstep(5.2, 5.42, hy) * (1.0 - smoothstep(5.86, 6.02, hy));
+        float heel = smoothstep(0.03, 0.12, hy) * (1.0 - smoothstep(0.42, 0.5, hy));
+        float meniscus = exp(-pow((hy - 6.0) / 0.018, 2.0)) * smoothstep(0.2, 0.7, ndvH);
+        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * uGlow * face * side * (shoulder * 0.8 + heel * 0.95);
+        totalEmissiveRadiance += vec3(0.9, 0.55, 0.2) * meniscus * 0.35;
         totalEmissiveRadiance += vec3(0.085, 0.016, 0.0015) * heel * (0.35 + 0.65 * ndvH); }`);
     };
     const glassRimU = { uAxis: { value: new Vector3(0, 1, 0) }, uK1: { value: new Vector3(-17, 7, -9).normalize() }, uK2: { value: new Vector3(-7, 9, 8).normalize() }, uK3: { value: new Vector3(16, 7, -5).normalize() } };
@@ -22140,7 +22275,7 @@ void main() {
       )
     });
     const oilDrop = new ShaderMaterial({
-      uniforms: { uFade: { value: 1 }, uLen: { value: 0 }, uBgTop: { value: C2("#24392f") }, uBgBot: { value: C2("#a07a38") } },
+      uniforms: { uFade: { value: 1 }, uLen: { value: 0 } },
       transparent: true,
       depthWrite: false,
       blending: CustomBlending,
@@ -22160,39 +22295,46 @@ void main() {
         /* glsl */
         `
       precision highp float;
-      uniform float uFade; uniform vec3 uBgTop, uBgBot;
+      uniform float uFade;
       varying vec3 vN; varying vec3 vVN; varying vec3 vV; varying float vU;
       vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
       void main(){
         vec3 n = normalize(vN), v = normalize(vV), nv = normalize(vVN);
         float ndv = clamp(dot(n, v), 0.0, 1.0);
         float r = clamp(length(nv.xy), 0.0, 1.0);
-        float bulb = smoothstep(0.2, 0.6, vU);
-        // the room inverted: dark green across the top fifth, gold through the equator (the lit floor, upside down)
-        vec3 inv = mix(uBgBot, uBgTop, smoothstep(0.38, 0.72, nv.y));
-        vec3 amberT = vec3(1.0, 0.72, 0.34);
-        float a = 0.6;
-        vec3 col = inv * amberT * 1.45 * a;
-        // the longer path through the oil toward the rim: a soft deepening, never a drawn outline
-        float band = smoothstep(0.62, 0.9, r) * (1.0 - smoothstep(0.92, 1.0, r));
-        col = mix(col, lin(vec3(0.45, 0.27, 0.1)), band * 0.5); a = mix(a, 0.78, band * 0.5);
-        // caustic crescent: the back light focused into the bottom of the drop
-        float cr = smoothstep(0.4, 0.8, -nv.y) * smoothstep(0.98, 0.76, r) * smoothstep(0.2, 0.55, r);
-        col += lin(vec3(0.93, 0.74, 0.44)) * cr * 0.62 * bulb; a = max(a, cr * 0.6 * bulb);
-        col = min(col, vec3(0.5));
-        float sil = smoothstep(0.86, 0.98, 1.0 - ndv);
-        col = mix(col, uBgTop * 0.7, sil); a = mix(a, 0.8, sil);
-        // one soft key highlight, upper-left: a small 2:1 ellipse in the cream token, never pure white
-        vec2 sq = (nv.xy - vec2(-0.38, 0.4)) / vec2(0.2, 0.11);
-        float sk = exp(-dot(sq, sq) * 1.6) * bulb;
-        col = mix(col, lin(vec3(0.965, 0.955, 0.93)) * 0.95, sk * 0.85); a = max(a, sk * 0.85);
-        gl_FragColor = vec4(col * uFade, clamp(a, 0.0, 1.0) * uFade);
+        float bulb = smoothstep(0.15, 0.55, vU);
+        // honey body, a little brighter low in the bead (the caustic), the wetted neck a deeper amber
+        vec3 honey = lin(vec3(0.82, 0.55, 0.22));
+        vec3 caust = lin(vec3(0.94, 0.68, 0.30));
+        vec3 neck = lin(vec3(0.55, 0.32, 0.11));
+        float low = smoothstep(0.1, -0.7, nv.y) * smoothstep(0.95, 0.35, r);
+        vec3 col = mix(neck, mix(honey, caust, low * 0.85), bulb);
+        // darker amber rim, heaviest at the bottom and on the key side (left): the longer path through the oil
+        float rim = smoothstep(0.55, 0.97, r);
+        float rimW = mix(0.55, 1.0, smoothstep(0.3, -0.8, nv.y)) * mix(1.0, 0.45, smoothstep(0.0, 0.8, nv.x));
+        col = mix(col, lin(vec3(0.42, 0.24, 0.085)), rim * rimW);
+        // the warm back light: a fine rim on the right edge
+        float wr = smoothstep(0.72, 0.98, r) * smoothstep(0.15, 0.85, nv.x) * smoothstep(-0.9, 0.2, nv.y);
+        col += lin(vec3(1.0, 0.72, 0.36)) * wr * 0.55;
+        float a = mix(0.9, 0.97, rim);
+        // the key's catchlight: one hard pinpoint upper-left (\u2265 245), a soft cream skirt around it
+        vec2 sq = (nv.xy - vec2(-0.36, 0.36)) / vec2(0.42, 0.36);
+        float d2 = dot(sq, sq);
+        float pin = smoothstep(0.55, 0.2, d2) * bulb, skirt = exp(-d2 * 0.6) * bulb;
+        col = mix(col, vec3(0.93, 0.88, 0.8), skirt * 0.3);
+        col = mix(col, vec3(2.6, 2.45, 2.25), pin);
+        a = max(a, pin);
+        gl_FragColor = vec4(col * a * uFade, a * uFade);
       }`
       )
     });
     const whitePP = new MeshPhysicalMaterial({ color: C2("#e8eef5"), roughness: 0.5, metalness: 0, clearcoat: 0.1, clearcoatRoughness: 0.4, envMapIntensity: 0.55 });
     const chrome = new MeshStandardMaterial({ color: C2("#eef0ef"), roughness: 0.06, metalness: 1, envMapIntensity: 1.8, envMap: makeChromeEnvironment(renderer) });
-    const clearCap = new MeshPhysicalMaterial({ color: 0, metalness: 0, roughness: 0.04, specularIntensity: 1, envMapIntensity: 1.5, transparent: true, depthWrite: false, blending: AdditiveBlending });
+    chrome.onBeforeCompile = (sh) => {
+      sh.vertexShader = "varying float vWY;\n" + sh.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\n  vWY = (modelMatrix * vec4(transformed, 1.0)).y;");
+      sh.fragmentShader = "varying float vWY;\n" + sh.fragmentShader.replace("#include <opaque_fragment>", "outgoingLight *= mix(1.22, 0.5, smoothstep(10.95, 12.9, vWY));\n#include <opaque_fragment>");
+    };
+    const clearCap = new MeshPhysicalMaterial({ color: 0, metalness: 0, roughness: 0.08, specularIntensity: 0.6, envMapIntensity: 1.5, transparent: true, depthWrite: false, blending: AdditiveBlending });
     const capTint = new ShaderMaterial({
       transparent: true,
       depthWrite: false,
@@ -22205,6 +22347,7 @@ void main() {
       vec3 c = mix(vec3(0.97), vec3(0.62, 0.66, 0.65), pow(1.0 - ndv, 3.0)); gl_FragColor = vec4(c, 1.0); }`
     });
     const labelEdge = new MeshStandardMaterial({ color: C2("#9dbab0"), roughness: 0.8 });
+    const capRim = new MeshBasicMaterial({ color: C2("#f4f1ea"), transparent: true, opacity: 0.4, depthWrite: false, blending: AdditiveBlending, toneMapped: false });
     const blackPP = new MeshPhysicalMaterial({ color: C2("#151817"), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1 });
     const rubber = new MeshPhysicalMaterial({ color: C2("#1a1c1b"), roughness: 0.58, sheen: 0.6, sheenRoughness: 0.5, sheenColor: C2("#5a6662"), envMapIntensity: 0.9 });
     const bottle = new Group();
@@ -22245,11 +22388,11 @@ void main() {
       [0.6, 6.7],
       [0.6, 6.1]
     ];
-    const glass = new Mesh(lathe2(glassProfile, 128), amberGlass);
+    const glass = new Mesh(lathe2(glassProfile, 128), heroAmber);
     bottle.add(glass);
     const labelMat = new MeshPhysicalMaterial({ color: C2("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C2("#ffffff"), envMapIntensity: 0.42 });
     labelMat.onBeforeCompile = (sh) => {
-      sh.fragmentShader = sh.fragmentShader.replace("#include <map_fragment>", "#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.65 ).rgb;\n#endif").replace("#include <emissivemap_fragment>", "#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.65 ).rgb;\n#endif");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <map_fragment>", "#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.95 ).rgb;\n#endif").replace("#include <emissivemap_fragment>", "#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.95 ).rgb;\n#endif");
     };
     const labelGeo = new CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
     const label = new Mesh(labelGeo, labelMat);
@@ -22394,7 +22537,7 @@ void main() {
       const im = g.createImageData(256, 128);
       for (let y = 0; y < 128; y++) for (let x = 0; x < 256; x++) {
         const u = x / 255, v = (y - 63.5) / 64;
-        const along = smooth(0, 0.1, u) * Math.pow(1 - smooth(0.04, 0.6, u), 1.4);
+        const along = smooth(0, 0.1, u) * Math.pow(1 - smooth(0.04, 0.78, u), 1.25);
         const across = Math.exp(-Math.pow(v / (0.42 + 0.25 * u), 2));
         const k = (y * 256 + x) * 4;
         im.data[k] = im.data[k + 1] = im.data[k + 2] = 255 * along * across;
@@ -22405,12 +22548,12 @@ void main() {
       t.colorSpace = NoColorSpace;
       return t;
     })();
-    const SH_A = 1.24;
+    const SH_A = 0.74;
     const shDir = [Math.cos(SH_A), -Math.sin(SH_A)];
     const range = buildRange({
       asset: asset2,
       renderer,
-      mats: { white: whitePP, chrome, clear: clearCap, capTint, amber: amberGlass, black: blackPP, labelEdge },
+      mats: { white: whitePP, chrome, clear: clearCap, capTint, capRim, amber: amberGlass, black: blackPP, labelEdge },
       onReady: () => {
         dirty = true;
         if (reduced && firstFrameDone) renderOnce();
@@ -22430,21 +22573,21 @@ void main() {
         it.obj.rotation.y = Math.atan2(camera.position.x - it.x, camera.position.z - it.z) + it.turn;
       }
     };
-    const contactTex = radialTex([[0, 1], [0.6, 0.92], [0.69, 0.7], [0.75, 0.36], [0.82, 0.15], [0.91, 0.04], [1, 0]]);
-    const creaseTex = radialTex([[0, 1], [0.8, 1], [0.9, 0.85], [0.95, 0.3], [1, 0]], 512);
+    const contactTex = radialTex([[0, 1], [0.5, 0.75], [0.62, 0.45], [0.72, 0.22], [0.84, 0.07], [1, 0]]);
+    const creaseTex = radialTex([[0, 1], [0.7, 0.95], [0.84, 0.62], [0.93, 0.2], [1, 0]], 512);
     const groundShadows = (x, z, R, H2, amber) => {
-      decal(contactTex, shadowCol, 0.55, R * 2.9, R * 2.9, x + 0.06 * R, z + 0.3 * R);
-      decal(creaseTex, shadowCol, 0.7, R * 2.16, R * 2.16, x + 0.02, z + 0.06 * R);
-      const L = Math.max(4.2, H2 * 0.58), w = 2.5 * R / 1.6;
-      decal(castTex, shadowCol, 0.42, L, w, x + shDir[0] * L / 2, z + shDir[1] * L / 2, SH_A);
-      if (amber) return decal(radialTex([[0, 1], [0.25, 0.55], [0.6, 0.12], [1, 0]]), "#d9902f", 0.3, 2 * R / 1.6, 1 * R / 1.6, x + 1.05 * R / 1.6, z - 1.25 * R / 1.6, SH_A, true);
+      decal(contactTex, shadowCol, 0.46, R * 2.4, R * 2.4, x + 0.14 * R, z + 0.1 * R);
+      decal(creaseTex, shadowCol, 0.62, R * 2.2, R * 2.2, x + 0.08 * R, z - 0.08 * R);
+      const L = Math.max(4.6, H2 * 0.78), w = 2.9 * R / 1.6;
+      decal(castTex, shadowCol, 0.56, L, w, x + shDir[0] * L / 2, z + shDir[1] * L / 2, SH_A);
+      if (amber) return decal(radialTex([[0, 1], [0.25, 0.55], [0.6, 0.12], [1, 0]]), "#d9902f", 0.3, 2 * R / 1.6, 1 * R / 1.6, x + shDir[0] * 1.7 * R / 1.6, z + shDir[1] * 1.7 * R / 1.6, SH_A, true);
       return null;
     };
     const caustic = groundShadows(BOTTLE_X, BOTTLE_Z, 1.6, NECK_Y, true);
-    groundShadows(POS.gel[0], POS.gel[1], 2.27, 9.3, false);
+    groundShadows(POS.gel[0], POS.gel[1], 2.27, 13.5, false);
     groundShadows(POS.day[0], POS.day[1], 1.643, 15.26, false);
     groundShadows(POS.night[0], POS.night[1], 1.643, 15.26, false);
-    const dropShadow = decal(featherDisk, shadowCol, 0.08, 4.4, 1.6, BOTTLE_X + 2.2, BOTTLE_Z - 0.6, -0.62);
+    const dropShadow = decal(featherDisk, shadowCol, 0.07, 3.2, 1.3, BOTTLE_X + 2.2, BOTTLE_Z - 2.4, -0.85);
     const PEND_SEGS = 40, PEND_PTS = 34;
     const pendGeo = new LatheGeometry(Array.from({ length: PEND_PTS }, (_, j) => new Vector2(0.01, -j * 0.01)), PEND_SEGS);
     const pendant = new Mesh(pendGeo, oilDrop);
@@ -22503,15 +22646,15 @@ void main() {
       return yc - rvB;
     }
     const RT = 0.052 * 0.95;
-    setPendant(RT, DROP_R, 1.1, 0.014);
+    setPendant(RT, DROP_R, 1.1, 0.04);
     const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0 };
     const ovTag = [0, 0, 0, 0, 0];
     const pointer = { ndc: new Vector2(0.3, 0), target: new Vector2(0.3, 0), active: false };
     const tmp = new Vector3(), tmp2 = new Vector3(), tmp3 = new Vector3();
     const camBase = { az: 0, el: 0 };
-    const TIP = new Vector3(BOTTLE_X - 0.1, NECK_Y + 1.25, BOTTLE_Z + 0.05);
+    const TIP = new Vector3(BOTTLE_X + 0.02, NECK_Y + 0.72, BOTTLE_Z + 0.05);
     const DROPPER_BASE = new Vector3();
-    let tilt = 0.5;
+    let tilt = 0.24;
     const setTilt = (t) => {
       tilt = t;
       DROPPER_BASE.set(TIP.x + PIPETTE_LEN * Math.sin(t), TIP.y + PIPETTE_LEN * Math.cos(t), TIP.z);
@@ -22569,7 +22712,7 @@ void main() {
       H = Math.max(1, host.clientHeight);
       const mobile = stackMQ.matches;
       mobileNow = mobile;
-      setTilt(mobile ? 0.82 : 0.5);
+      setTilt(mobile ? 0.3 : 0.24);
       renderer.setPixelRatio(pr);
       renderer.setSize(W, H, false);
       composer.setPixelRatio(pr);
@@ -22596,7 +22739,7 @@ void main() {
         for (let i = 0; i < 5; i++) if (OV.blocks[i]) copyR = Math.max(copyR, OV.blocks[i][2]);
         const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 26 - tagRoom();
         const right = OV.gridR > 0 ? OV.gridR : Math.min(W - 24, (W + 1240) / 2 - 24);
-        rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(28, H * 0.05), y1: bottom };
+        rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(64, H * 0.1), y1: bottom };
       }
       layoutRect = rect;
       frame = { fx: (rect.x0 + rect.x1) / 2 / W, fy: (rect.y0 + rect.y1) / 2 / H, hs: (rect.y1 - rect.y0) * 0.9, D: 0 };
@@ -22675,7 +22818,7 @@ void main() {
     const rt = new WebGLRenderTarget(2, 2, { type: HalfFloatType, samples: 4 });
     const composer = new EffectComposer(renderer, rt);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new Vector2(256, 256), 0.38, 0.62, 0.92);
+    const bloom = new UnrealBloomPass(new Vector2(256, 256), 0.3, 0.45, 1.05);
     composer.addPass(bloom);
     const finalPass = new ShaderPass(FINAL_SHADER);
     composer.addPass(finalPass);
@@ -22683,8 +22826,8 @@ void main() {
     let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
     const tagLocalM = new Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625);
     const anchors = {
-      glow: new Vector3(BOTTLE_X - 1.2, 6.5, -6),
-      // the evening light on the backdrop sits behind the hero
+      glow: new Vector3(BOTTLE_X + 0.4, 5, BOTTLE_Z - 5),
+      // the evening light on the backdrop: behind the oil's neck and the drop
       spot: new Vector3(BOTTLE_X, 5.6, BOTTLE_Z - 3),
       spot2: new Vector3(POS.gel[0], 8.2, POS.gel[1] - 3.2),
       pool: new Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 1.5)
@@ -22712,7 +22855,7 @@ void main() {
       dropperPivot.updateMatrixWorld(true);
       const tip = dropper.localToWorld(tmp.copy(tipLocal));
       pendant.position.copy(tip);
-      dropShadow.position.x = DROPPER_BASE.x + 0.6 + bob * 0.4;
+      dropShadow.position.x = BOTTLE_X + 2.2 + bob * 0.4;
       glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
       {
         const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
@@ -22876,7 +23019,14 @@ void main() {
       placeStill();
       new ResizeObserver(placeStill).observe(root);
       const img = root.querySelector(".hero-fallback");
-      if (img && img.dataset.src && !img.src) img.src = img.dataset.src;
+      const mq = matchMedia("(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)");
+      const pick = () => {
+        if (!img) return;
+        const src = mq.matches && img.dataset.srcM || img.dataset.src;
+        if (src && img.getAttribute("src") !== src) img.src = src;
+      };
+      pick();
+      mq.addEventListener("change", pick);
     };
     if (!webglOK() || /[?&]hero=static\b/.test(location.search)) {
       goStatic();
