@@ -12,7 +12,6 @@ function webglOK() {
 export default function init(root, ctx) {
   const canvas = root.querySelector('.hero-canvas');
   const stage = root.querySelector('.hero-stage');
-  const bubbleEl = root.querySelector('.hero-bubble');
   const tagEl = root.querySelector('.hero-tag');
   const cardEl = root.querySelector('.hero-tag__card');
   const addBtn = root.querySelector('[data-hero-add]');
@@ -23,8 +22,8 @@ export default function init(root, ctx) {
   if (p) {
     const now = root.querySelector('[data-hero-price]'); if (now) now.textContent = ctx.fmt.kr(p.price);
     const was = root.querySelector('[data-hero-was]'); if (was) was.textContent = ctx.fmt.kr(p.price0);
-    // the disc carries the one fact nothing else in the hero says: the saving in kroner on the hero product
-    const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = ctx.fmt.kr(p.save);
+    // the saving in kroner (= Førpris − Black Week price), a small berry chip on the tag's price row
+    const save = root.querySelector('[data-hero-save]'); if (save) save.textContent = `Spar ${ctx.fmt.kr(p.save)}`;
   }
   {
     const big = root.querySelector('[data-hero-pct]'); if (big && ctx.campaign) big.textContent = String(ctx.campaign.headlinePct);
@@ -37,7 +36,7 @@ export default function init(root, ctx) {
     addBtn.classList.add('is-added');
     addBtn.setAttribute('aria-label', 'Vidunder Olien er lagt i kurven');
     // screen readers hear the confirmation (polite live region), not only a changed button label
-    if (liveEl) { liveEl.textContent = ''; requestAnimationFrame(() => { liveEl.textContent = 'Vidunder Olien er lagt i kurven.'; }); }
+    if (liveEl) { liveEl.textContent = ''; setTimeout(() => { liveEl.textContent = 'Vidunder Olien er lagt i kurven.'; }, 60); }
     clearTimeout(addT);
     addT = setTimeout(() => { addBtn.classList.remove('is-added'); addBtn.setAttribute('aria-label', 'Læg Vidunder Olien i kurv'); }, 2200);
   });
@@ -88,12 +87,13 @@ export default function init(root, ctx) {
       return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
     });
     const sp = spotEl.getBoundingClientRect();
-    const box = mob ? cardEl : tagEl;               // mobile: the compact card hangs under the bottle on its own lead
+    const box = cardEl;                             // the pill hangs under the oil on its own dotted lead
     // tablet: the compact pill is pinned by CSS (bottom-right)
     let pin = null;
     if (pinnedMQ.matches) { const r = cardEl.getBoundingClientRect(); pin = [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top]; }
+    const tr = trustEl.getBoundingClientRect();
     scene.setOverlays({
-      discR: bubbleEl.firstElementChild.offsetWidth / 2,
+      gridR: tr.right - st.left,
       tagW: box.offsetWidth, tagH: box.offsetHeight, pin,
       copyTop: cp.top - st.top,
       blocks,
@@ -101,19 +101,18 @@ export default function init(root, ctx) {
       trustTop: trustEl.getBoundingClientRect().top - restY(trustEl) - st.top,
     });
   };
-  const onFrame = ({ bubble, tag, mobile }) => {
-    // the flat saving disc is never rotated, only translated (the scene keeps it inside the stage)
-    bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
+  let tagPos = '';
+  const onFrame = ({ tag }) => {
     if (pinnedMQ.matches) {
-      tagEl.style.transform = '';
-    } else if (mobile) {
-      // anchor = the dot on the label; the dotted lead drops to the compact card under the bottle
-      tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0)`;
-      tagEl.style.setProperty('--lead-h', `${tag[2].toFixed(1)}px`);
-      tagEl.style.setProperty('--card-x', `${tag[3].toFixed(1)}px`);
-      tagEl.style.setProperty('--lead-w', `${tag[4].toFixed(1)}px`);
+      if (tagPos) { tagEl.style.transform = ''; tagPos = ''; }
     } else {
-      tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
+      // the pill sits at its rest pose (whole px, written only when a layout moves it); the dotted lead runs from the
+      // dot on the label, out of the silhouette, and drops onto the pill's button – only the lead follows the camera
+      const pos = `translate3d(${tag[0]}px, ${tag[1]}px, 0)`;
+      if (pos !== tagPos) { tagEl.style.transform = pos; tagPos = pos; }
+      tagEl.style.setProperty('--lead-x', `${tag[2].toFixed(2)}px`);
+      tagEl.style.setProperty('--lead-y', `${tag[3].toFixed(2)}px`);
+      tagEl.style.setProperty('--lead-w', `${tag[4].toFixed(2)}px`);
     }
     if (!tracked) { tracked = true; root.classList.add('is-tracked'); }
   };

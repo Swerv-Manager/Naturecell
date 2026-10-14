@@ -38,56 +38,64 @@ async function loadImage(url) {
   return img;
 }
 
-// Label band from a packshot: crop → divide out the photo's horizontal shading (per-column median of the label,
-// relative to the centre) → pre-compensate for the scene's warm key exactly like the oil label (label.js), so the
-// rendered print lands on the photographed teal-sage. Upscaled ×2 (smooth) so mip level 0 is never undersampled.
+// Label band from a hi-res packshot: per-row unwrap → divide out the photo's horizontal shading (per-column median of
+// the label, relative to the centre) → pre-compensate for the scene's warm key exactly like the oil label (label.js),
+// so the rendered print lands on the photographed teal-sage.
+// The search window [x0, y0, x1, y1] holds the printed band; in every row the silhouette's own extent (alpha) is
+// resampled to the full texture width, which straightens the photo's slight lean and leaves no transparent seam at
+// the grazing edges. Sources are ≥ 1000 px tall, so the texture is used 1:1 (mip-mapped, max anisotropy).
 function bakeLabel(img, [x0, y0, x1, y1]) {
-  const w = x1 - x0, h = y1 - y0;
+  const sw = x1 - x0, h = y1 - y0;
+  const src = document.createElement('canvas'); src.width = sw; src.height = h;
+  const sg = src.getContext('2d', { willReadFrequently: true });
+  sg.drawImage(img, x0, y0, sw, h, 0, 0, sw, h);
+  const sp = sg.getImageData(0, 0, sw, h).data;
+  // the silhouette's extent per row (2 px inside the anti-aliased edge)
+  const L = new Float32Array(h), R = new Float32Array(h);
+  for (let y = 0; y < h; y++) {
+    let l = 0, r = sw - 1;
+    while (l < sw - 1 && sp[(y * sw + l) * 4 + 3] < 250) l++;
+    while (r > 0 && sp[(y * sw + r) * 4 + 3] < 250) r--;
+    L[y] = l + 2; R[y] = Math.max(l + 3, r - 2);
+  }
+  const widths = Array.from(R, (r, i) => r - L[i]).sort((a, b) => a - b);
+  const w = Math.round(widths[h >> 1]);
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const g = c.getContext('2d', { willReadFrequently: true });
-  g.drawImage(img, x0, y0, w, h, 0, 0, w, h);
-  const d = g.getImageData(0, 0, w, h), p = d.data;
-  // the crop runs to the silhouette: columns the cut-out leaves (partly) transparent take the nearest solid pixel of
-  // their row, so the wrap never shows a dark seam at the grazing edge
+  const d = g.createImageData(w, h), p = d.data;
   for (let y = 0; y < h; y++) {
-    let l = 0, r = w - 1;
-    while (l < w - 1 && p[(y * w + l) * 4 + 3] < 250) l++;
-    while (r > 0 && p[(y * w + r) * 4 + 3] < 250) r--;
-    if (r <= l) continue;
-    l = Math.min(l + 1, r); r = Math.max(r - 1, l);
+    const l = L[y], k = (R[y] - l) / Math.max(1, w - 1);
     for (let x = 0; x < w; x++) {
-      if (x >= l && x <= r) continue;
-      const src = (y * w + (x < l ? l : r)) * 4, dst = (y * w + x) * 4;
-      p[dst] = p[src]; p[dst + 1] = p[src + 1]; p[dst + 2] = p[src + 2]; p[dst + 3] = 255;
+      const fx = l + x * k, i0 = Math.floor(fx), t = fx - i0, i1 = Math.min(sw - 1, i0 + 1);
+      const a = (y * sw + i0) * 4, b = (y * sw + i1) * 4, o = (y * w + x) * 4;
+      p[o] = sp[a] + (sp[b] - sp[a]) * t; p[o + 1] = sp[a + 1] + (sp[b + 1] - sp[a + 1]) * t; p[o + 2] = sp[a + 2] + (sp[b + 2] - sp[a + 2]) * t; p[o + 3] = 255;
     }
   }
   const prof = new Float32Array(w);
   const col = [];
   for (let x = 0; x < w; x++) {
     col.length = 0;
-    for (let y = 2; y < h - 2; y += 2) { const k = (y * w + x) * 4; col.push(p[k] * 0.3 + p[k + 1] * 0.59 + p[k + 2] * 0.11); }
+    for (let y = 2; y < h - 2; y += 3) { const k = (y * w + x) * 4; col.push(p[k] * 0.3 + p[k + 1] * 0.59 + p[k + 2] * 0.11); }
     col.sort((a, b) => a - b);
     prof[x] = col[col.length >> 1] || 1;
   }
+  // smooth the profile a little (the shading is a broad fall-off; print must not leak into it)
+  const sm = new Float32Array(w), rad = Math.max(2, Math.round(w / 80));
+  for (let x = 0; x < w; x++) { let s = 0, n = 0; for (let j = -rad; j <= rad; j++) { const q = x + j; if (q >= 0 && q < w) { s += prof[q]; n++; } } sm[x] = s / n; }
   let ref = 0, n = 0;
-  for (let x = Math.round(w * 0.35); x < w * 0.65; x++) { ref += prof[x]; n++; }
+  for (let x = Math.round(w * 0.35); x < w * 0.65; x++) { ref += sm[x]; n++; }
   ref /= n;
   const comp = [1 / 1.05, 1 / 0.94, 1 / 0.88];
   for (let x = 0; x < w; x++) {
     // gain capped: the outermost columns are seen edge-on and carry little but compressed print
-    const gain = Math.min(1.75, Math.max(0.9, ref / Math.max(prof[x], 1)));
+    const gain = Math.min(1.75, Math.max(0.9, ref / Math.max(sm[x], 1)));
     for (let y = 0; y < h; y++) {
       const k = (y * w + x) * 4;
       for (let ch = 0; ch < 3; ch++) p[k + ch] = Math.min(255, p[k + ch] * gain * comp[ch]);
-      p[k + 3] = 255;
     }
   }
   g.putImageData(d, 0, 0);
-  const out = document.createElement('canvas'); out.width = w * 2; out.height = h * 2;
-  const og = out.getContext('2d');
-  og.imageSmoothingQuality = 'high';
-  og.drawImage(c, 0, 0, w * 2, h * 2);
-  return out;
+  return c;
 }
 
 function labelMaterial() {
@@ -126,9 +134,11 @@ function airless(mats, labelMat) {
   const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.42, 32), white);
   nozzle.rotation.z = Math.PI / 2; nozzle.position.set(-0.72, 14.47, 0);
   g.add(nozzle);
-  // the clear over-cap: one thin transmissive shell (the actuator and the chrome show through it)
-  const cap = new THREE.Mesh(lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128), clear);
-  g.add(cap);
+  // the clear over-cap: a reflection shell over an edge tint (see scene.js) – the actuator and the chrome stay crisp
+  const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128);
+  const capTint = new THREE.Mesh(capGeo, mats.capTint); capTint.renderOrder = 6;
+  const cap = new THREE.Mesh(capGeo, clear); cap.renderOrder = 7;
+  g.add(capTint, cap);
   g.userData.label = lab;
   return g;
 }
@@ -167,12 +177,14 @@ export function buildRange({ asset, renderer, mats, onReady }) {
     day: { obj: airless(mats, labelMats.day), R: AIRLESS.R, H: AIRLESS.H },
     night: { obj: airless(mats, labelMats.night), R: AIRLESS.R, H: AIRLESS.H },
   };
-  for (const k in items) items[k].obj.traverse((o) => { if (o.isMesh) o.renderOrder = 1; });
+  for (const k in items) items[k].obj.traverse((o) => { if (o.isMesh && !o.material.transparent) o.renderOrder = 1; });
   const jobs = [
-    // [packshot, label crop in source px (x0, y0, x1, y1) – the full silhouette width × the printed band]
-    ['products/cleansing-gel-bottle.webp', [435, 595, 762, 1025], 'gel'],
-    ['products/day-cream.webp', [346, 467, 568, 1112], 'day'],
-    ['products/night-cream-bottle.webp', [482, 446, 712, 1119], 'night'],
+    // [packshot, search window in source px (x0, y0, x1, y1): the printed band, wider than the silhouette]
+    // (measured on the hi-res sources: the sage band between the glass/white parts; day-cream-hires also shows the
+    // carton – the window stops before it)
+    ['products/cleansing-gel-bottle-hires.webp', [0, 1117, 840, 2181], 'gel'],
+    ['products/day-cream-hires.webp', [0, 843, 545, 2290], 'day'],
+    ['products/night-cream-bottle-hires.webp', [0, 774, 560, 2295], 'night'],
   ];
   Promise.all(jobs.map(async ([url, crop, k]) => {
     const img = await loadImage(asset(url));

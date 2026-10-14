@@ -30,6 +30,7 @@ if (!a.includes('--desktop-only')) targets.push(['mobile', { width: 390, height:
 for (const [tag, vp, dpr] of targets) {
   const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: dpr, isMobile: tag === 'mobile', hasTouch: tag === 'mobile' });
   const pg = await ctx.newPage();
+  pg.setDefaultTimeout(120000);
   pg.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.log(`[${tag} ${m.type()}]`, m.text()); });
   pg.on('pageerror', e => console.log(`[${tag} pageerror]`, e.message));
   await pg.goto(`http://localhost:${port}/${page.includes('/') ? page : 'dist/' + page}${query ? '?' + query : ''}`, { waitUntil: 'load' });
@@ -37,8 +38,8 @@ for (const [tag, vp, dpr] of targets) {
   if (scroll) await pg.evaluate(y => window.scrollTo(0, y), scroll);
   await pg.mouse.move(vp.width * 0.62, vp.height * 0.45);
   await pg.waitForTimeout(wait);
-  if (hover) { try { await pg.hover(hover, { timeout: 2000 }); await pg.waitForTimeout(700); } catch (e) { console.log('hover failed', e.message); } }
-  if (clickSel) { try { await pg.click(clickSel, { timeout: 2000 }); await pg.waitForTimeout(900); } catch (e) { console.log('click failed', e.message); } }
+  if (hover) { try { await pg.hover(hover, { timeout: 10000 }); await pg.waitForTimeout(700); } catch (e) { console.log('hover failed', e.message); } }
+  if (clickSel) { try { await pg.click(clickSel, { timeout: 10000 }); await pg.waitForTimeout(900); } catch (e) { console.log('click failed', e.message); } }
   if (el) { const h = await pg.$(el); if (!h) console.log('element not found', el); else { await h.scrollIntoViewIfNeeded(); await pg.waitForTimeout(wait); await h.screenshot({ path: path.join(out, `${tag}-el.png`) }); } }
   await pg.screenshot({ path: path.join(out, `${tag}.png`) });
   for (let i = 1; i <= frames; i++) { await pg.mouse.move(vp.width * (0.3 + 0.1 * i), vp.height * (0.3 + 0.05 * i), { steps: 8 }); await pg.waitForTimeout(600); await pg.screenshot({ path: path.join(out, `${tag}-f${i}.png`) }); }
@@ -47,7 +48,7 @@ for (const [tag, vp, dpr] of targets) {
     const h = await pg.evaluate(() => document.documentElement.scrollHeight);
     for (let y = 0; y < h; y += vp.height * 0.7) { await pg.evaluate(yy => window.scrollTo(0, yy), y); await pg.waitForTimeout(250); }
     await pg.evaluate(() => window.scrollTo(0, 0)); await pg.waitForTimeout(800);
-    await pg.screenshot({ path: path.join(out, `${tag}-full.png`), fullPage: true });
+    await pg.screenshot({ path: path.join(out, `${tag}-full.png`), fullPage: true, timeout: 300000 });
   }
   await ctx.close();
 }

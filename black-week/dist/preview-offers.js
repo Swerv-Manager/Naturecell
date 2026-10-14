@@ -242,6 +242,7 @@
     const end = ctx.clock.end, start = ctx.clock.start;
     const label = el.querySelector("[data-clock-label]");
     const done = el.querySelector("[data-clock-done]");
+    const when = el.querySelector("[data-clock-when]");
     const sr = el.querySelector("[data-clock-sr]");
     const title = root.querySelector(".offers-title");
     const titleHTML = title ? title.innerHTML : "";
@@ -289,6 +290,10 @@
         lastState = state2;
         label.textContent = state2 === "pre" ? "Black Week begynder om" : state2 === "ended" ? "Black Week er slut" : state2 === "last" ? "Sidste dag \u2013 slutter om" : "Black Week slutter om";
         if (done) done.hidden = state2 !== "ended";
+        if (when) {
+          when.hidden = state2 === "ended";
+          when.textContent = state2 === "pre" ? "Mandag 23. november kl.\xA000.00" : "Mandag 30. november kl.\xA023.59";
+        }
         root.dataset.campaign = state2;
         if (title) title.innerHTML = state2 === "ended" ? "Tak for denne gang." : state2 === "pre" ? "Tre tilbud <em>p\xE5 vej.</em>" : titleHTML;
       }
@@ -317,8 +322,8 @@
         if (lead <= 1) parts.push(`${h} ${h === 1 ? "time" : "timer"}`);
         parts.push(`${m} ${m === 1 ? "minut" : "minutter"}`);
         const spoken = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} og ${parts[parts.length - 1]}` : parts[0];
-        const when = state2 === "pre" ? "mandag 23. november kl. 00.00" : "mandag 30. november kl. 23.59";
-        sr.textContent = `${state2 === "pre" ? "Black Week begynder om" : "Black Week slutter om"} ${spoken} \u2013 ${when}.`;
+        const when2 = state2 === "pre" ? "mandag 23. november kl. 00.00" : "mandag 30. november kl. 23.59";
+        sr.textContent = `${state2 === "pre" ? "Black Week begynder om" : "Black Week slutter om"} ${spoken} \u2013 ${when2}.`;
       }
     }
     render(false);

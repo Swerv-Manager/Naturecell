@@ -1,10 +1,13 @@
 // NatureCell® Black Week – hero scene (Three.js).
-// One art-directed still life of the facial routine on a night-green sweep: CBD Dagcreme and CBD Natcreme (white
-// airless pumps) and CBD Rensegel (100 ml amber) stand back in the room; Vidunder Olien – the hero – stands in front,
-// open, its dropper lifted out above the neck with one small drop held at the nozzle. Everything is real geometry
-// in one light: the same warm key, environment, contact + cast shadows, and the amber glass refracts what stands
-// behind it. Truthful sizes (cm): oil 3.2 × 7.0 (+ dropper), airless 3.3 × 15.25, Rensegel 4.6 × 13.5.
-// Light: procedural studio environment (warm softbox + rim strips in a night-green room) + warm key.
+// One art-directed still life of the facial routine on a night-green sweep, staged as one diagonal that descends to the
+// hero: CBD Dagcreme and CBD Natcreme (white airless pumps, chrome collars, clear over-caps), CBD Rensegel (100 ml
+// amber), and in front Vidunder Olien – open, its dropper lifted out above the neck with one small drop held at the
+// nozzle. Every pack's logo, wordmark and product name is unoccluded. Everything is real geometry in one light: the
+// same warm key (+ a tight hero light on the oil), environment, contact creases, occlusion and cast shadows on one lit
+// floor pool, and the amber glass refracts what stands behind it. Truthful sizes (cm): oil 3.2 × 7.0 (+ dropper),
+// airless 3.3 × 15.25, Rensegel 4.6 × 13.5.
+// Light: procedural studio environment (warm softbox + rim strips in a night-green room) + warm key; the chrome has
+// its own packshot-style environment (white card, black flag, hot strip).
 // Post: MSAA HDR target → soft bloom on the amber → custom grade (hue-preserving shoulder, vignette, dither).
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -24,9 +27,12 @@ const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t
 // Layout (world units = 1 cm, floor at y = 0, camera looks down −z)
 const BOTTLE_X = 0.95, BOTTLE_Z = 6.0;                   // Vidunder Olien, in front (nearest the camera)
 const NECK_Y = 7.02;                                    // the oil bottle's lip
-// the routine behind it [x, z, turn]: tall – medium – tall – short gives the silhouette its rhythm, and each pack
-// overlaps its neighbour a little in depth (never side by side like a shelf)
-const POS = { day: [-7.45, -5.6, 0.1], gel: [-4.6, -2.0, -0.14], night: [-1.6, -6.0, 0.06] };
+// the routine behind it [x, z, turn]: one diagonal that descends toward the hero – Dagcreme (tall, nearest the
+// light), Natcreme (tall, a step further back), Rensegel (medium), then Vidunder Olien (short + the dropper). Each
+// pack overlaps its neighbour only on the outer edge of its label, so every logo, wordmark and product name reads.
+// (solved in perspective: each front pack covers at most the outer ~6 % of its neighbour – the wordmarks span ±53°
+// of the airless labels, so anything more would crop a 'N' or an 'l'; all print is centred, so no turn is needed)
+const POS = { day: [-9.07, -6.8, 0.03], night: [-6.16, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
 const PIPETTE_LEN = 5.9;
 const DROP_R = 0.118;                                   // the held drop (cm): ≈ 2.4× the nozzle's radius
 
@@ -73,10 +79,12 @@ function radialTex(stops, size = 256) {
 // Studio environment: night-green room, warm key softbox, two vertical rim strips, soft ceiling
 function makeEnvironment(renderer) {
   const s = new THREE.Scene();
-  const room = new THREE.Mesh(new THREE.BoxGeometry(60, 30, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.55), side: THREE.BackSide }));
-  room.position.y = 10; s.add(room);
+  // the room reaches well below the horizon: a vertical mirror (the chrome) seen from 9° above reflects the room
+  // ~9° BELOW the horizon, so the strip lights must reach down there and the floor must not cut them off
+  const room = new THREE.Mesh(new THREE.BoxGeometry(60, 44, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.55), side: THREE.BackSide }));
+  room.position.y = 8; s.add(room);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.35) }));
-  floor.rotation.x = -Math.PI / 2; floor.position.y = -2; s.add(floor);
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -12; s.add(floor);
   const panel = (w, h, pos, col, k) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: C(col).multiplyScalar(k), side: THREE.DoubleSide }));
     m.position.set(...pos); m.lookAt(0, 4, 0); s.add(m); return m;
@@ -99,6 +107,30 @@ function makeEnvironment(renderer) {
   s.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
   return env;
 }
+// A second, chrome-only environment: the metallised pump sleeves are lit like the real packshot – a broad soft white
+// card wrapped around the front (the sleeve's silver body), one black flag and one hot strip beside it (the black
+// band and the near-white streak that make chrome read as chrome), the night-green room behind (the dark edges).
+// Directions only: a vertical mirror seen from ~9° above reflects ~9° below the horizon, so the cards sit there.
+function makeChromeEnvironment(renderer) {
+  const s = new THREE.Scene();
+  s.add(new THREE.Mesh(new THREE.BoxGeometry(60, 60, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.3), side: THREE.BackSide })));
+  const band = (r, a0, a1, y0, y1, col, k) => {
+    const g = new THREE.CylinderGeometry(r, r, y1 - y0, 48, 1, true, THREE.MathUtils.degToRad(a0), THREE.MathUtils.degToRad(a1 - a0));
+    const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: C(col).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.y = (y0 + y1) / 2; s.add(m);
+  };
+  band(20, -125, 125, -13, 6, '#f1eee8', 0.3);    // the wrap-around white card (→ the silver body, ≈ 160–190)
+  band(18, -36, -16, -14, 7, '#000000', 1);       // black flag (→ the dark band, left of centre)
+  band(18, -15, -9, -14, 7, '#fffaf2', 1.7);      // hot strip right beside it (→ the near-white streak)
+  band(18, 30, 36, -14, 7, '#f4f6f4', 0.75);      // a softer return on the right
+  band(20, -125, 125, 6, 14, '#f1eee8', 0.09);    // the card's upper edge falls off softly
+  const pm = new THREE.PMREMGenerator(renderer);
+  const env = pm.fromScene(s, 0.01).texture;
+  pm.dispose();
+  s.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+  return env;
+}
+
 // ---------------------------------------------------------------------------------------------------------
 // Shaders
 const BG_VERT = /* glsl */`
@@ -137,7 +169,7 @@ const BG_FRAG = /* glsl */`
     vec2 sq = (p - uSpot) / uSpotR;
     col += uSpotCol * exp(-dot(sq, sq) * 1.6);
     vec2 sq2 = (p - uSpot2) / uSpot2R;
-    col += uSpotCol * 0.8 * exp(-dot(sq2, sq2) * 1.6);
+    col += uSpotCol * 0.45 * exp(-dot(sq2, sq2) * 1.6);
     // light pooling on the (invisible) floor
     vec2 q = (p - uPool) / uPoolR;
     col += mix(uSage, uWarm, 0.5) * 0.035 * exp(-dot(q,q) * 1.6);
@@ -198,7 +230,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     uNight: { value: C('#28403b') }, uDeep: { value: C('#213631') },
     uWarm: { value: C('#ddbfa3') }, uAmber: { value: C('#c7ae92') }, uSage: { value: C('#9ab4ac') },
     uGlow: { value: new THREE.Vector2() }, uGlowR: { value: 400 },
-    uSpot: { value: new THREE.Vector2(-1e4, -1e4) }, uSpotR: { value: new THREE.Vector2(100, 100) }, uSpotCol: { value: C('#f0a650').multiplyScalar(0.4) },
+    uSpot: { value: new THREE.Vector2(-1e4, -1e4) }, uSpotR: { value: new THREE.Vector2(100, 100) }, uSpotCol: { value: C('#f0a650').multiplyScalar(0.55) },
     uSpot2: { value: new THREE.Vector2(-1e4, -1e4) }, uSpot2R: { value: new THREE.Vector2(100, 100) },
     uPool: { value: new THREE.Vector2() }, uPoolR: { value: new THREE.Vector2(300, 60) },
   };
@@ -209,10 +241,17 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // ---------- lights (env does most of the work; key gives the label its gradient)
   // the key is a soft spot aimed at Vidunder Olien from front-left-high (same direction as before): the hero gets the
   // full light, the routine behind it ≈ 80–90 % – the way a still life is lit, not a shelf
-  const key = new THREE.SpotLight(C('#fff1e0'), 2.5, 0, 0.34, 1, 0);
+  // (wide soft cone: the oil sits in its full hot spot, the routine behind it in the penumbra at ≈ 75–95 %)
+  const key = new THREE.SpotLight(C('#fff1e0'), 2.5, 0, 0.8, 0.8, 0);
   key.position.set(BOTTLE_X - 7 * 3, 4 + 9 * 3, BOTTLE_Z + 8 * 3);
-  key.target.position.set(BOTTLE_X, 4, BOTTLE_Z);
+  key.target.position.set(BOTTLE_X - 0.6, 4, BOTTLE_Z - 1.2);
   scene.add(key, key.target);
+  // the hero light: a tight soft spot from the key's direction that lands on Vidunder Olien alone (the oldest
+  // still-life device – the subject stands in its own pool of light, the routine around it a step quieter)
+  const heroLight = new THREE.SpotLight(C('#fff0dc'), 1.15, 0, 0.14, 0.85, 0);
+  heroLight.position.set(BOTTLE_X - 14, 26, BOTTLE_Z + 18);
+  heroLight.target.position.set(BOTTLE_X, 4.2, BOTTLE_Z);
+  scene.add(heroLight, heroLight.target);
   const fill = new THREE.DirectionalLight(C('#b6c9c2'), 0.25);
   fill.position.set(6, 2, 6);
   scene.add(fill);
@@ -379,9 +418,23 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       }`,
   });
   // the routine's materials (shared): white PP plastic, the chrome pump sleeve, the clear over-cap
-  const whitePP = new THREE.MeshPhysicalMaterial({ color: C('#e4e6e2'), roughness: 0.32, metalness: 0, clearcoat: 0.35, clearcoatRoughness: 0.3, envMapIntensity: 0.9 });
-  const chrome = new THREE.MeshStandardMaterial({ color: C('#e2e4e3'), roughness: 0.24, metalness: 1, envMapIntensity: 2.4 });
-  const clearCap = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.05, transmission: 1, ior: 1.49, thickness: 0.18, specularIntensity: 1, envMapIntensity: 1.2 });
+  // white PP: diffuse-dominated (a satin moulded white, never a grey mirror), so it falls off monotonically from the key;
+  // a hair cool, pre-compensated for the warm key, so it renders as the packshot's neutral white (≈ 222,218,210)
+  const whitePP = new THREE.MeshPhysicalMaterial({ color: C('#e8eef5'), roughness: 0.5, metalness: 0, clearcoat: 0.1, clearcoatRoughness: 0.4, envMapIntensity: 0.55 });
+  // mirror chrome: near-perfect reflector; the flanking strip lights draw its bright vertical streaks, the dark room
+  // the black bands between them (the high-contrast read of the real metallised sleeve)
+  const chrome = new THREE.MeshStandardMaterial({ color: C('#eef0ef'), roughness: 0.06, metalness: 1, envMapIntensity: 1.8, envMap: makeChromeEnvironment(renderer) });
+  // the clear over-cap: thin clear PET. No screen-space transmission (it would blur the actuator and the chrome behind
+  // it); instead two shells – an additive one that carries only the reflections (diffuse black: the env + the key's
+  // speculars, rising with fresnel toward the silhouette) and a multiplicative tint that greys the plastic where it is
+  // seen edge-on – so everything behind it stays pin-sharp, as through the real cap
+  const clearCap = new THREE.MeshPhysicalMaterial({ color: 0x000000, metalness: 0, roughness: 0.04, specularIntensity: 1, envMapIntensity: 1.5, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const capTint = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor,
+    vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
+    fragmentShader: `precision highp float; varying vec3 vN; varying vec3 vV; void main(){ float ndv = clamp(abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0);
+      vec3 c = mix(vec3(0.97), vec3(0.62, 0.66, 0.65), pow(1.0 - ndv, 3.0)); gl_FragColor = vec4(c, 1.0); }`,
+  });
   const labelEdge = new THREE.MeshStandardMaterial({ color: C('#9dbab0'), roughness: 0.8 });
   const blackPP = new THREE.MeshPhysicalMaterial({ color: C('#151817'), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1.0 });
   const rubber = new THREE.MeshPhysicalMaterial({ color: C('#1a1c1b'), roughness: 0.58, sheen: 0.6, sheenRoughness: 0.5, sheenColor: C('#5a6662'), envMapIntensity: 0.9 });
@@ -502,7 +555,9 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     scene.add(m); return m;
   };
   const shadowCol = '#0f1d1a';
-  decal(featherDisk, '#ddbfa3', 0.06, 24, 9, (BOTTLE_X + POS.day[0]) / 2, -0.4, 0, true);           // warm light pool under the group
+  // warm light pool under the whole group, centred forward so the hero's footprint sits inside it (as bright as the
+  // back row's floor): one shared lit floor, not a lit back row and a hero standing in the dark
+  decal(featherDisk, '#ddbfa3', 0.075, 26, 12, (BOTTLE_X + POS.day[0]) / 2, 1.5, 0, true);
   // cast shadow as a gradient along its length: darkest at the base, gone by 60% of its length (≈ 1.3× the bottle's
   // diameter), with a soft penumbra across – the same softness as the packshot shadows on the rest of the page
   const castTex = (() => {
@@ -522,7 +577,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
 
   // ---------- the routine (Dagcreme, Rensegel, Natcreme)
   const range = buildRange({
-    asset, renderer, mats: { white: whitePP, chrome, clear: clearCap, amber: amberGlass, black: blackPP, labelEdge },
+    asset, renderer, mats: { white: whitePP, chrome, clear: clearCap, capTint, amber: amberGlass, black: blackPP, labelEdge },
     onReady: () => { dirty = true; if (reduced && firstFrameDone) renderOnce(); },
   });
   for (const k of ['day', 'gel', 'night']) {
@@ -540,20 +595,24 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   };
 
   // ---------- shadows: one key (front-left, high) → every pack gets the same contact occlusion, crease and cast
-  const contactTex = radialTex([[0, 1], [0.6, 0.8], [0.8, 0.3], [1, 0]]);
-  const creaseTex = radialTex([[0, 0], [0.86, 0], [0.93, 1], [0.97, 0.35], [1, 0]], 512);
-  const groundShadows = (x, z, R, H, foot, amber) => {
-    decal(contactTex, shadowCol, 0.5, R * 2.08, R * 2.08, x + 0.04, z + 0.02);
-    decal(creaseTex, shadowCol, 0.62, foot * 2.1, foot * 2.1, x, z);
+  // contact occlusion: a broad soft disc (≈ 1.45 R) pushed toward the camera so it shows in front of the base, plus
+  // a tight crease ring at the base's own radius – every pack sits ON the floor, in the same light
+  // (gradient in units of the disc's radius 1.45 R: the base edge sits at 0.69 – dark right at the edge, then a quick
+  // exponential recovery, so the packs sit on the floor without standing on dark coasters)
+  const contactTex = radialTex([[0, 1], [0.6, 0.92], [0.69, 0.7], [0.75, 0.36], [0.82, 0.15], [0.91, 0.04], [1, 0]]);
+  const creaseTex = radialTex([[0, 1], [0.8, 1], [0.9, 0.85], [0.95, 0.3], [1, 0]], 512);
+  const groundShadows = (x, z, R, H, amber) => {
+    decal(contactTex, shadowCol, 0.55, R * 2.9, R * 2.9, x + 0.06 * R, z + 0.3 * R);
+    decal(creaseTex, shadowCol, 0.7, R * 2.16, R * 2.16, x + 0.02, z + 0.06 * R);
     const L = Math.max(4.2, H * 0.58), w = 2.5 * R / 1.6;
     decal(castTex, shadowCol, 0.42, L, w, x + shDir[0] * L / 2, z + shDir[1] * L / 2, SH_A);
     if (amber) return decal(radialTex([[0, 1], [0.25, 0.55], [0.6, 0.12], [1, 0]]), '#d9902f', 0.3, 2.0 * R / 1.6, 1.0 * R / 1.6, x + 1.05 * R / 1.6, z - 1.25 * R / 1.6, SH_A, true);
     return null;
   };
-  const caustic = groundShadows(BOTTLE_X, BOTTLE_Z, 1.6, NECK_Y, 1.52, true);
-  const causticGel = groundShadows(POS.gel[0], POS.gel[1], 2.27, 9.3, 1.5, true);
-  groundShadows(POS.day[0], POS.day[1], 1.643, 15.26, 1.5, false);
-  groundShadows(POS.night[0], POS.night[1], 1.643, 15.26, 1.5, false);
+  const caustic = groundShadows(BOTTLE_X, BOTTLE_Z, 1.6, NECK_Y, true);
+  groundShadows(POS.gel[0], POS.gel[1], 2.27, 9.3, false);
+  groundShadows(POS.day[0], POS.day[1], 1.643, 15.26, false);
+  groundShadows(POS.night[0], POS.night[1], 1.643, 15.26, false);
   const dropShadow = decal(featherDisk, shadowCol, 0.08, 4.4, 1.6, BOTTLE_X + 2.2, BOTTLE_Z - 0.6, -0.62);   // the lifted dropper (very soft)
 
   // ---------- the held drop: one still pendant at the nozzle (a single lathe surface: wetted neck → drop)
@@ -604,9 +663,9 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const RT = 0.052 * 0.95;                             // the nozzle's outer radius at the orifice (pipette lathe)
   setPendant(RT, DROP_R, 1.1, 0.014);
 
-  // ---------- DOM overlays (screen px, set from hero.js): the saving disc, the price tag, the copy blocks
-  const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0 };
-  const ovDisc = [0, 0], ovTag = [0, 0, 0, 0, 0];      // ovTag: x, y (+ mobile: lead drop, card left, lead run)
+  // ---------- DOM overlays (screen px, set from hero.js): the price tag, the copy blocks
+  const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0 };
+  const ovTag = [0, 0, 0, 0, 0];                       // ovTag: pill left, top (rest pose) · the lead's dot x, y (relative) · lead run
 
   // ---------- pointer (damped)
   const pointer = { ndc: new THREE.Vector2(0.3, 0), target: new THREE.Vector2(0.3, 0), active: false };
@@ -629,6 +688,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const DBG_FRAME = (new URLSearchParams(location.search).get('heroframe') || '').split(',').map(Number).filter((v) => v > 0);
   if (DBG_FRAME.length !== 3) DBG_FRAME.length = 0;
   const stackMQ = matchMedia('(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)');
+  let layoutRect = { x0: 0, x1: 1, y0: 0, y1: 1 };
   let W = 1, H = 1, mobileNow = false, frame = { fx: 0.66, fy: 0.5, hs: 0.8, D: 30 };
   const SUBJECT = { cx: -3, cy: 8, h: 17 };
   const target = new THREE.Vector3();
@@ -646,14 +706,27 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       [b.x + 1.22 * c, b.y - 1.22 * s, b.z], [b.x - 1.22 * c, b.y + 1.22 * s, b.z]);
     return pts;
   };
-  // desktop: the tag (right of the oil's label) and the saving disc (right of the dropper) reach past the products
-  const extraRight = (bx1, mobile) => {
-    if (mobile) return 0;
-    let r = bx1;
-    if (!OV.pin) r = Math.max(r, toPx(bottle.localToWorld(tmp.copy(tagLocal)))[0] + OV.tagW + 6);
-    if (OV.discR) r = Math.max(r, toPx(anchors.disc)[0] + OV.discR + 18);
-    return r - bx1;
-  };
+  // the shoppable pill hangs UNDER the still life (never beside it): the products get the stage's full width, and the
+  // pill reads as the caption of the hero object. Vertical room it needs below the oil's front base:
+  const tagDrop = () => (mobileNow ? 12 : 16);         // oil base → the pill's top edge
+  const tagRoom = () => (OV.pin ? 0 : tagDrop() + OV.tagH);
+  // the pill hangs under the oil on a dotted lead – an L: out of the silhouette to the right, then down onto the pill's
+  // quick-add button. It runs leftward under the routine (the floor in front of it is empty). Rest pose = the camera
+  // without parallax or intro dolly; computed once per layout.
+  const tagRest = { left: 0, top: 0, vx: 0 };
+  function restTag() {
+    const az = camBase.az, el = camBase.el;
+    camBase.az = 0; camBase.el = 0; placeCamera(0);
+    const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
+    const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
+    const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
+    const vx = Math.round(edge + 16);                   // the lead's vertical run, 16 px clear of the glass
+    const lo = mobileNow ? 16 : layoutRect.x0 - 12, hi = Math.max(lo, (mobileNow ? W - 16 : layoutRect.x1) - OV.tagW);
+    tagRest.left = Math.round(clamp(vx + 27 - OV.tagW, lo, hi));   // 27 = the button's centre, from the pill's right edge
+    tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
+    tagRest.vx = Math.min(vx, tagRest.left + OV.tagW - 20);
+    camBase.az = az; camBase.el = el; placeCamera(0);
+  }
   function layout() {
     W = Math.max(1, host.clientWidth); H = Math.max(1, host.clientHeight);
     const mobile = stackMQ.matches; mobileNow = mobile;   // phones + portrait tablets: scene above, copy below
@@ -672,15 +745,18 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     if (mobile) {
       const sp = OV.spot || [150, Math.min(318, W * 0.78)];
       const title = OV.blocks[1];
-      const top = Math.max(sp[0] - 6, title ? title[3] + 40 : 0);
-      rect = { x0: 14, x1: W - 14, y0: top, y1: sp[0] + sp[1] - (W > 760 ? 96 : 74) };
+      const top = Math.max(sp[0] - 6, title ? title[3] + 22 : 0);
+      // the pill's bottom keeps ≥ 28 px from the offer's first line (the offer sits right under the spot)
+      rect = { x0: 14, x1: W - 14, y0: top, y1: sp[0] + sp[1] - 26 - tagRoom() };
     } else {
       let copyR = 0;
       for (let i = 0; i < 5; i++) if (OV.blocks[i]) copyR = Math.max(copyR, OV.blocks[i][2]);
-      const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 30;
-      const right = Math.min(W - 36, (W + 1240) / 2 + 36);
+      const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 26 - tagRoom();
+      // the theme grid's content edge (where the trust band ends): nothing in the hero crosses it
+      const right = OV.gridR > 0 ? OV.gridR : Math.min(W - 24, (W + 1240) / 2 - 24);
       rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(28, H * 0.05), y1: bottom };
     }
+    layoutRect = rect;
     frame = { fx: (rect.x0 + rect.x1) / 2 / W, fy: (rect.y0 + rect.y1) / 2 / H, hs: (rect.y1 - rect.y0) * 0.9, D: 0 };
     const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const setD = () => { frame.D = (H * SUBJECT.h) / (frame.hs * 2 * tanH); };
@@ -692,20 +768,20 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
         for (const p of pts) { const q = toPx(tmp.set(p[0], p[1], p[2])); bx0 = Math.min(bx0, q[0]); bx1 = Math.max(bx1, q[0]); by0 = Math.min(by0, q[1]); by1 = Math.max(by1, q[1]); }
         // fixed-size DOM extents beyond the products: desktop – the tag to the right of the oil's label
-        let exR = extraRight(bx1, mobile);
+        let exR = 0;
         const s = Math.min((rect.x1 - rect.x0 - exR) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
         frame.hs *= it === 0 ? s : Math.pow(s, 0.9);
         frame.hs = Math.min(frame.hs, H * 0.86);
         setD(); placeCamera(0);
         bx0 = 1e9; bx1 = -1e9; by0 = 1e9; by1 = -1e9;
         for (const p of pts) { const q = toPx(tmp.set(p[0], p[1], p[2])); bx0 = Math.min(bx0, q[0]); bx1 = Math.max(bx1, q[0]); by0 = Math.min(by0, q[1]); by1 = Math.max(by1, q[1]); }
-        exR = extraRight(bx1, mobile);
         const dx = (rect.x0 + rect.x1 - exR) / 2 - (bx0 + bx1) / 2;
         const dy = mobile ? (rect.y0 + rect.y1) / 2 - (by0 + by1) / 2 : rect.y1 - by1;
         frame.fx += dx / W; frame.fy += dy / H;
       }
     }
     setD(); placeCamera(0); faceCamera();
+    restTag();
     bgU.uRes.value.set(W * pr, H * pr); bgU.uDpr.value = pr;
     finalPass.uniforms.uRes.value.set(W * pr, H * pr);
     finalPass.uniforms.uVigCenter.value.set(frame.fx, 1 - frame.fy);
@@ -740,15 +816,12 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // ---------- simulation
   const st = { intro: 1 };
   let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
-  const tagLocal = new THREE.Vector3(Math.sin(0.95) * 1.62, 2.7, Math.cos(0.95) * 1.62);      // label, front-right
-  const tagLocalM = new THREE.Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625); // mobile: the label's lower-right sage field
+  const tagLocalM = new THREE.Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625); // the label's lower-right sage field
   const anchors = {
-    disc: new THREE.Vector3(BOTTLE_X + 6.0, 10.2, BOTTLE_Z),          // right of the lifted dropper, above the tag
-    tag: new THREE.Vector3(),
-    glow: new THREE.Vector3(POS.gel[0] + 1.5, 7.5, -4),
+    glow: new THREE.Vector3(BOTTLE_X - 1.2, 6.5, -6),                 // the evening light on the backdrop sits behind the hero
     spot: new THREE.Vector3(BOTTLE_X, 5.6, BOTTLE_Z - 3.0),
     spot2: new THREE.Vector3(POS.gel[0], 8.2, POS.gel[1] - 3.2),
-    pool: new THREE.Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 0),
+    pool: new THREE.Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 1.5),
   };
 
   function step(dt, t) {
@@ -784,24 +857,13 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     dropShadow.position.x = DROPPER_BASE.x + 0.6 + bob * 0.4;
     glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
 
-    // DOM overlay anchors (screen px): the saving disc and the price tag on the label
-    bottle.localToWorld(anchors.tag.copy(tagLocal));
-    if (!mobileNow) {
-      const d = toPx(anchors.disc), m = OV.discR + 14; ovDisc[0] = clamp(d[0], m, W - m); ovDisc[1] = d[1];
-      const tg = toPx(anchors.tag); ovTag[0] = tg[0]; ovTag[1] = tg[1]; ovTag[2] = 0; ovTag[3] = 0; ovTag[4] = 0;
-    } else {
-      // the compact tag hangs under the oil on a short dotted lead (an L: out of the silhouette, then down)
-      // phones: the disc is a sticker in the open corner beside the headline (the dropper stays below it)
-      const tr = OV.blocks[1];
-      ovDisc[0] = W - 16 - OV.discR; ovDisc[1] = tr ? (tr[1] + tr[3]) / 2 + 4 : OV.discR + 60;
+    // DOM overlay anchors (screen px): the price tag on the label
+    {
+      // the pill is pinned at its rest pose (whole pixels: crisp text, a target that never drifts under the finger);
+      // only the dotted lead follows the label as the camera breathes
       const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
-      const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
-      const top = base[1] + 14;
-      const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
-      // the card sits under the lead (its left third), as far right as the container grid allows
-      const left = clamp(edge + 14 - OV.tagW * 0.3, 16, Math.max(16, W - 16 - OV.tagW));
-      const run = clamp(edge + 14 - dot[0], 10, left + OV.tagW - 60 - dot[0]);
-      ovTag[0] = dot[0]; ovTag[1] = dot[1]; ovTag[2] = Math.max(8, top - dot[1]); ovTag[3] = left - dot[0]; ovTag[4] = run;
+      ovTag[0] = tagRest.left; ovTag[1] = tagRest.top;
+      ovTag[2] = dot[0] - tagRest.left; ovTag[3] = dot[1] - tagRest.top; ovTag[4] = Math.max(10, tagRest.vx - dot[0]);
     }
 
     // screen-space anchors for the backdrop
@@ -816,8 +878,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     const pl = toPx(anchors.pool); bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr); bgU.uPoolR.value.set(ppu * 11 * pr, ppu * 2.2 * pr);
     finalPass.uniforms.uTime.value = t;
     caustic.material.opacity = 0.26 + 0.04 * Math.sin(t * 0.7);
-    causticGel.material.opacity = 0.2 + 0.03 * Math.sin(t * 0.6 + 1.3);
-    onFrame && onFrame({ bubble: ovDisc, tag: ovTag, mobile: mobileNow, ppu, W, H });
+    onFrame && onFrame({ tag: ovTag, mobile: mobileNow, ppu, W, H });
   }
 
   // ---------- loop + adaptive resolution
@@ -853,7 +914,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     resize() { layout(); if (!running) renderOnce(); },
     pointer(nx, ny, active) { pointer.target.set(nx, ny); pointer.active = active; },
     setOverlays(o) {
-      const key = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ':' + Math.round(r[3]))]);
+      const key = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ':' + Math.round(r[3]))]);
       const k0 = key();
       Object.assign(OV, o);
       if (key() !== k0) { layout(); if (!running) renderOnce(); }

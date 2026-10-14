@@ -9,6 +9,15 @@
 </head>
 <body>
 <section data-section="offers" data-bw id="offers" class="offers" aria-labelledby="offers-title">
+  <!-- Shopify port notes (offers):
+       · wrap this section as {%- section 'nc-bw-offers' -%} with the wrapper class "nc-sec-bw-offers", and add to nc-theme.css:
+         .template-index #nc-main > .nc-sec-bw-offers { order: 1; }  inside the existing @media (max-width: 749px) block.
+         The theme's mobile rule `.template-index #nc-main > .shopify-section { order: 5 }` would otherwise drop offers
+         below trust/shop-tabs/press on phones. Order 1 = the hero's (.nc-sec-hero, which the Black Week hero wrapper must
+         keep), so DOM order puts offers directly under the hero and ahead of .nc-sec-trust (2).
+       · prices, førpris and the loose-buy sum are read from the catalogue at runtime (data-kp-*), never typed by hand.
+       · lip.webp is a captioned stand-in; replace with the Shopify media LIP_BALM.webp (product "lip-balm", SKU 1513,
+         6 ml) exported as transparent WebP and remove .offers-illu. -->
   <div class="nc-container offers-wrap">
 
     <header class="offers-head">
@@ -21,6 +30,7 @@
           <span class="offers-unit" data-unit="h"><span class="offers-num"><span class="offers-dg">1</span><span class="offers-dg">3</span></span><span class="offers-unit__lbl" data-lbl>timer</span></span>
           <span class="offers-unit" data-unit="m"><span class="offers-num"><span class="offers-dg">5</span><span class="offers-dg">9</span></span><span class="offers-unit__lbl" data-lbl>minutter</span></span>
         </p>
+        <p class="offers-clock__when" data-clock-when>Mandag 30. november kl.&nbsp;23.59</p>
         <p class="offers-clock__done" data-clock-done hidden>Fri fragt over 399&nbsp;kr. gælder som altid.</p>
         <p class="nc-sr" role="timer" aria-live="off" aria-atomic="true" data-clock-sr>Black Week slutter mandag 30. november kl. 23.59.</p>
       </div>
@@ -87,9 +97,11 @@
         <!-- gift over 699 kr. (+ fri fragt over 399 kr.), with a true two-product example basket just over the line -->
         <li class="offers-tile offers-tile--gift" data-tile="2">
           <div class="offers-stage offers-stage--gift" data-gift>
-            <!-- a macro close-up, one scale: the 6 ml stick (68 mm) stands front-centre, the 150 mm Natcreme airless behind
-                 it, cropped by the frame – the crop is the camera stepping closer, not a bigger product. The value disc
-                 is tied to the stick's cap by a short dotted feature line. -->
+            <!-- a macro close-up, one scale: the 6 ml stick (Shopify: "Lip Balm | med CBD 6ml", SKU 1513; 68 mm) stands
+                 front-centre, the 150 mm Natcreme airless a step behind it, cropped through its collar – the crop is the
+                 camera stepping closer, not a bigger product. The value disc is tied to the stick's cap by a short dotted
+                 feature line. lip.webp is a labelled stand-in until the real packshot (Shopify media LIP_BALM.webp) is
+                 exported as transparent WebP; then drop .offers-illu. -->
             <div class="offers-row offers-row--gift" aria-hidden="true">
               <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/night-macro.webp" alt="" width="245" height="1100" loading="lazy" decoding="async"></span>
               <span class="offers-p offers-p--gift" style="--h:.45"><img src="../src/sections/offers/img/lip.webp" alt="" width="188" height="800" loading="lazy" decoding="async"><span class="offers-gift nc-bubble nc-bubble--pink"><span class="offers-save__k">Værdi</span><span class="offers-save__v">79&nbsp;kr.</span></span><span class="offers-lead"></span><span class="offers-illu">Illustration</span></span>
@@ -110,7 +122,7 @@
           <p class="offers-tile__eyebrow">Ved køb over 699&nbsp;kr.</p>
           <h3 class="offers-tile__title">CBD Lip Balm</h3>
           <p class="offers-fig"><span class="offers-fig__big">Gratis</span><span class="nc-sr"> – værdi 79 kr.</span></p>
-          <p class="offers-tile__text">Vi lægger den selv i pakken, én&nbsp;pr.&nbsp;ordre. Og&nbsp;som altid: <span class="offers-nw">fri fragt over 399&nbsp;kr.</span></p>
+          <p class="offers-tile__text">Den kommer automatisk med&nbsp;i&nbsp;pakken – én&nbsp;pr.&nbsp;ordre. Og&nbsp;som altid: <span class="offers-nw">fri fragt over 399&nbsp;kr.</span></p>
           <div class="offers-tile__cta">
             <a class="nc-btn nc-btn--outline offers-btn" href="#deals">Find dine favoritter</a>
           </div>

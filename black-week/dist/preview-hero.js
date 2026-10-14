@@ -21302,7 +21302,7 @@ void main() {
   // src/sections/hero/label.js
   var FIELD = "#7bb1b0";
   var FIELD_LOW = "#94b6b4";
-  var PALE = "#cad8e6";
+  var PALE = "#a9c3c6";
   var HATCH = "rgba(226,238,233,0.34)";
   var THREAD = "#7a478a";
   var INK = "#ffffff";
@@ -21410,7 +21410,9 @@ void main() {
     const wordW = 69 * PXD, wordH = wordW * WB[3] / WB[2];
     const placeLogo = (gg) => {
       gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
-      gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
+      const wx = cx - wordW / 2, wy = H * 0.302, dl = 2.6 * W / 4096;
+      for (let a = 0; a < 8; a++) gg.drawImage(word, wx + Math.cos(a * Math.PI / 4) * dl, wy + Math.sin(a * Math.PI / 4) * dl, wordW, wordH);
+      gg.drawImage(word, wx, wy, wordW, wordH);
     };
     const foil = document.createElement("canvas");
     foil.width = W;
@@ -21555,63 +21557,78 @@ void main() {
     return img;
   }
   function bakeLabel(img, [x0, y0, x1, y1]) {
-    const w = x1 - x0, h = y1 - y0;
+    const sw = x1 - x0, h = y1 - y0;
+    const src = document.createElement("canvas");
+    src.width = sw;
+    src.height = h;
+    const sg = src.getContext("2d", { willReadFrequently: true });
+    sg.drawImage(img, x0, y0, sw, h, 0, 0, sw, h);
+    const sp = sg.getImageData(0, 0, sw, h).data;
+    const L = new Float32Array(h), R = new Float32Array(h);
+    for (let y = 0; y < h; y++) {
+      let l = 0, r = sw - 1;
+      while (l < sw - 1 && sp[(y * sw + l) * 4 + 3] < 250) l++;
+      while (r > 0 && sp[(y * sw + r) * 4 + 3] < 250) r--;
+      L[y] = l + 2;
+      R[y] = Math.max(l + 3, r - 2);
+    }
+    const widths = Array.from(R, (r, i) => r - L[i]).sort((a, b) => a - b);
+    const w = Math.round(widths[h >> 1]);
     const c = document.createElement("canvas");
     c.width = w;
     c.height = h;
     const g = c.getContext("2d", { willReadFrequently: true });
-    g.drawImage(img, x0, y0, w, h, 0, 0, w, h);
-    const d = g.getImageData(0, 0, w, h), p = d.data;
+    const d = g.createImageData(w, h), p = d.data;
     for (let y = 0; y < h; y++) {
-      let l = 0, r = w - 1;
-      while (l < w - 1 && p[(y * w + l) * 4 + 3] < 250) l++;
-      while (r > 0 && p[(y * w + r) * 4 + 3] < 250) r--;
-      if (r <= l) continue;
-      l = Math.min(l + 1, r);
-      r = Math.max(r - 1, l);
+      const l = L[y], k = (R[y] - l) / Math.max(1, w - 1);
       for (let x = 0; x < w; x++) {
-        if (x >= l && x <= r) continue;
-        const src = (y * w + (x < l ? l : r)) * 4, dst = (y * w + x) * 4;
-        p[dst] = p[src];
-        p[dst + 1] = p[src + 1];
-        p[dst + 2] = p[src + 2];
-        p[dst + 3] = 255;
+        const fx = l + x * k, i0 = Math.floor(fx), t = fx - i0, i1 = Math.min(sw - 1, i0 + 1);
+        const a = (y * sw + i0) * 4, b = (y * sw + i1) * 4, o = (y * w + x) * 4;
+        p[o] = sp[a] + (sp[b] - sp[a]) * t;
+        p[o + 1] = sp[a + 1] + (sp[b + 1] - sp[a + 1]) * t;
+        p[o + 2] = sp[a + 2] + (sp[b + 2] - sp[a + 2]) * t;
+        p[o + 3] = 255;
       }
     }
     const prof = new Float32Array(w);
     const col = [];
     for (let x = 0; x < w; x++) {
       col.length = 0;
-      for (let y = 2; y < h - 2; y += 2) {
+      for (let y = 2; y < h - 2; y += 3) {
         const k = (y * w + x) * 4;
         col.push(p[k] * 0.3 + p[k + 1] * 0.59 + p[k + 2] * 0.11);
       }
       col.sort((a, b) => a - b);
       prof[x] = col[col.length >> 1] || 1;
     }
+    const sm = new Float32Array(w), rad = Math.max(2, Math.round(w / 80));
+    for (let x = 0; x < w; x++) {
+      let s = 0, n2 = 0;
+      for (let j = -rad; j <= rad; j++) {
+        const q = x + j;
+        if (q >= 0 && q < w) {
+          s += prof[q];
+          n2++;
+        }
+      }
+      sm[x] = s / n2;
+    }
     let ref = 0, n = 0;
     for (let x = Math.round(w * 0.35); x < w * 0.65; x++) {
-      ref += prof[x];
+      ref += sm[x];
       n++;
     }
     ref /= n;
     const comp = [1 / 1.05, 1 / 0.94, 1 / 0.88];
     for (let x = 0; x < w; x++) {
-      const gain = Math.min(1.75, Math.max(0.9, ref / Math.max(prof[x], 1)));
+      const gain = Math.min(1.75, Math.max(0.9, ref / Math.max(sm[x], 1)));
       for (let y = 0; y < h; y++) {
         const k = (y * w + x) * 4;
         for (let ch = 0; ch < 3; ch++) p[k + ch] = Math.min(255, p[k + ch] * gain * comp[ch]);
-        p[k + 3] = 255;
       }
     }
     g.putImageData(d, 0, 0);
-    const out = document.createElement("canvas");
-    out.width = w * 2;
-    out.height = h * 2;
-    const og = out.getContext("2d");
-    og.imageSmoothingQuality = "high";
-    og.drawImage(c, 0, 0, w * 2, h * 2);
-    return out;
+    return c;
   }
   function labelMaterial() {
     const m = new MeshPhysicalMaterial({ color: C("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C("#ffffff"), envMapIntensity: 0.42 });
@@ -21649,8 +21666,12 @@ void main() {
     nozzle.rotation.z = Math.PI / 2;
     nozzle.position.set(-0.72, 14.47, 0);
     g.add(nozzle);
-    const cap = new Mesh(lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128), clear);
-    g.add(cap);
+    const capGeo = lathe([[1.612, 10.875], [1.614, 10.95], [1.566, 14.98], [1.552, 15.12], [1.5, 15.21], [1.3, 15.25], [0, 15.26]], 128);
+    const capTint = new Mesh(capGeo, mats.capTint);
+    capTint.renderOrder = 6;
+    const cap = new Mesh(capGeo, clear);
+    cap.renderOrder = 7;
+    g.add(capTint, cap);
     g.userData.label = lab;
     return g;
   }
@@ -21729,13 +21750,15 @@ void main() {
       night: { obj: airless(mats, labelMats.night), R: AIRLESS.R, H: AIRLESS.H }
     };
     for (const k in items) items[k].obj.traverse((o) => {
-      if (o.isMesh) o.renderOrder = 1;
+      if (o.isMesh && !o.material.transparent) o.renderOrder = 1;
     });
     const jobs = [
-      // [packshot, label crop in source px (x0, y0, x1, y1) – the full silhouette width × the printed band]
-      ["products/cleansing-gel-bottle.webp", [435, 595, 762, 1025], "gel"],
-      ["products/day-cream.webp", [346, 467, 568, 1112], "day"],
-      ["products/night-cream-bottle.webp", [482, 446, 712, 1119], "night"]
+      // [packshot, search window in source px (x0, y0, x1, y1): the printed band, wider than the silhouette]
+      // (measured on the hi-res sources: the sage band between the glass/white parts; day-cream-hires also shows the
+      // carton – the window stops before it)
+      ["products/cleansing-gel-bottle-hires.webp", [0, 1117, 840, 2181], "gel"],
+      ["products/day-cream-hires.webp", [0, 843, 545, 2290], "day"],
+      ["products/night-cream-bottle-hires.webp", [0, 774, 560, 2295], "night"]
     ];
     Promise.all(jobs.map(async ([url, crop, k]) => {
       const img = await loadImage(asset2(url));
@@ -21755,7 +21778,7 @@ void main() {
   var BOTTLE_X = 0.95;
   var BOTTLE_Z = 6;
   var NECK_Y = 7.02;
-  var POS = { day: [-7.45, -5.6, 0.1], gel: [-4.6, -2, -0.14], night: [-1.6, -6, 0.06] };
+  var POS = { day: [-9.07, -6.8, 0.03], night: [-6.16, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
   var PIPETTE_LEN = 5.9;
   var DROP_R = 0.118;
   function lathe2(points, segs = 96, smoothN = 0) {
@@ -21795,12 +21818,12 @@ void main() {
   }
   function makeEnvironment(renderer) {
     const s = new Scene();
-    const room = new Mesh(new BoxGeometry(60, 30, 60), new MeshBasicMaterial({ color: C2("#28403b").multiplyScalar(0.55), side: BackSide }));
-    room.position.y = 10;
+    const room = new Mesh(new BoxGeometry(60, 44, 60), new MeshBasicMaterial({ color: C2("#28403b").multiplyScalar(0.55), side: BackSide }));
+    room.position.y = 8;
     s.add(room);
     const floor = new Mesh(new PlaneGeometry(60, 60), new MeshBasicMaterial({ color: C2("#28403b").multiplyScalar(0.35) }));
     floor.rotation.x = -Math.PI / 2;
-    floor.position.y = -2;
+    floor.position.y = -12;
     s.add(floor);
     const panel = (w, h, pos, col, k) => {
       const m = new Mesh(new PlaneGeometry(w, h), new MeshBasicMaterial({ color: C2(col).multiplyScalar(k), side: DoubleSide }));
@@ -21821,6 +21844,31 @@ void main() {
     panel(1.4, 9, [10, 6, -1.5], "#dfe8e4", 4);
     const pm = new PMREMGenerator(renderer);
     const env = pm.fromScene(s, 0.03).texture;
+    pm.dispose();
+    s.traverse((o) => {
+      if (o.isMesh) {
+        o.geometry.dispose();
+        o.material.dispose();
+      }
+    });
+    return env;
+  }
+  function makeChromeEnvironment(renderer) {
+    const s = new Scene();
+    s.add(new Mesh(new BoxGeometry(60, 60, 60), new MeshBasicMaterial({ color: C2("#28403b").multiplyScalar(0.3), side: BackSide })));
+    const band = (r, a0, a1, y0, y1, col, k) => {
+      const g = new CylinderGeometry(r, r, y1 - y0, 48, 1, true, MathUtils.degToRad(a0), MathUtils.degToRad(a1 - a0));
+      const m = new Mesh(g, new MeshBasicMaterial({ color: C2(col).multiplyScalar(k), side: DoubleSide }));
+      m.position.y = (y0 + y1) / 2;
+      s.add(m);
+    };
+    band(20, -125, 125, -13, 6, "#f1eee8", 0.3);
+    band(18, -36, -16, -14, 7, "#000000", 1);
+    band(18, -15, -9, -14, 7, "#fffaf2", 1.7);
+    band(18, 30, 36, -14, 7, "#f4f6f4", 0.75);
+    band(20, -125, 125, 6, 14, "#f1eee8", 0.09);
+    const pm = new PMREMGenerator(renderer);
+    const env = pm.fromScene(s, 0.01).texture;
     pm.dispose();
     s.traverse((o) => {
       if (o.isMesh) {
@@ -21871,7 +21919,7 @@ void main() {
     vec2 sq = (p - uSpot) / uSpotR;
     col += uSpotCol * exp(-dot(sq, sq) * 1.6);
     vec2 sq2 = (p - uSpot2) / uSpot2R;
-    col += uSpotCol * 0.8 * exp(-dot(sq2, sq2) * 1.6);
+    col += uSpotCol * 0.45 * exp(-dot(sq2, sq2) * 1.6);
     // light pooling on the (invisible) floor
     vec2 q = (p - uPool) / uPoolR;
     col += mix(uSage, uWarm, 0.5) * 0.035 * exp(-dot(q,q) * 1.6);
@@ -21937,7 +21985,7 @@ void main() {
       uGlowR: { value: 400 },
       uSpot: { value: new Vector2(-1e4, -1e4) },
       uSpotR: { value: new Vector2(100, 100) },
-      uSpotCol: { value: C2("#f0a650").multiplyScalar(0.4) },
+      uSpotCol: { value: C2("#f0a650").multiplyScalar(0.55) },
       uSpot2: { value: new Vector2(-1e4, -1e4) },
       uSpot2R: { value: new Vector2(100, 100) },
       uPool: { value: new Vector2() },
@@ -21947,10 +21995,14 @@ void main() {
     bg.frustumCulled = false;
     bg.renderOrder = -100;
     scene.add(bg);
-    const key = new SpotLight(C2("#fff1e0"), 2.5, 0, 0.34, 1, 0);
+    const key = new SpotLight(C2("#fff1e0"), 2.5, 0, 0.8, 0.8, 0);
     key.position.set(BOTTLE_X - 7 * 3, 4 + 9 * 3, BOTTLE_Z + 8 * 3);
-    key.target.position.set(BOTTLE_X, 4, BOTTLE_Z);
+    key.target.position.set(BOTTLE_X - 0.6, 4, BOTTLE_Z - 1.2);
     scene.add(key, key.target);
+    const heroLight = new SpotLight(C2("#fff0dc"), 1.15, 0, 0.14, 0.85, 0);
+    heroLight.position.set(BOTTLE_X - 14, 26, BOTTLE_Z + 18);
+    heroLight.target.position.set(BOTTLE_X, 4.2, BOTTLE_Z);
+    scene.add(heroLight, heroLight.target);
     const fill = new DirectionalLight(C2("#b6c9c2"), 0.25);
     fill.position.set(6, 2, 6);
     scene.add(fill);
@@ -22138,9 +22190,20 @@ void main() {
       }`
       )
     });
-    const whitePP = new MeshPhysicalMaterial({ color: C2("#e4e6e2"), roughness: 0.32, metalness: 0, clearcoat: 0.35, clearcoatRoughness: 0.3, envMapIntensity: 0.9 });
-    const chrome = new MeshStandardMaterial({ color: C2("#e2e4e3"), roughness: 0.24, metalness: 1, envMapIntensity: 2.4 });
-    const clearCap = new MeshPhysicalMaterial({ color: 16777215, metalness: 0, roughness: 0.05, transmission: 1, ior: 1.49, thickness: 0.18, specularIntensity: 1, envMapIntensity: 1.2 });
+    const whitePP = new MeshPhysicalMaterial({ color: C2("#e8eef5"), roughness: 0.5, metalness: 0, clearcoat: 0.1, clearcoatRoughness: 0.4, envMapIntensity: 0.55 });
+    const chrome = new MeshStandardMaterial({ color: C2("#eef0ef"), roughness: 0.06, metalness: 1, envMapIntensity: 1.8, envMap: makeChromeEnvironment(renderer) });
+    const clearCap = new MeshPhysicalMaterial({ color: 0, metalness: 0, roughness: 0.04, specularIntensity: 1, envMapIntensity: 1.5, transparent: true, depthWrite: false, blending: AdditiveBlending });
+    const capTint = new ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: CustomBlending,
+      blendEquation: AddEquation,
+      blendSrc: ZeroFactor,
+      blendDst: SrcColorFactor,
+      vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 wp = modelMatrix * vec4(position, 1.0); vN = normalize(mat3(modelMatrix) * normal); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
+      fragmentShader: `precision highp float; varying vec3 vN; varying vec3 vV; void main(){ float ndv = clamp(abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0);
+      vec3 c = mix(vec3(0.97), vec3(0.62, 0.66, 0.65), pow(1.0 - ndv, 3.0)); gl_FragColor = vec4(c, 1.0); }`
+    });
     const labelEdge = new MeshStandardMaterial({ color: C2("#9dbab0"), roughness: 0.8 });
     const blackPP = new MeshPhysicalMaterial({ color: C2("#151817"), roughness: 0.38, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 1 });
     const rubber = new MeshPhysicalMaterial({ color: C2("#1a1c1b"), roughness: 0.58, sheen: 0.6, sheenRoughness: 0.5, sheenColor: C2("#5a6662"), envMapIntensity: 0.9 });
@@ -22322,7 +22385,7 @@ void main() {
       return m;
     };
     const shadowCol = "#0f1d1a";
-    decal(featherDisk, "#ddbfa3", 0.06, 24, 9, (BOTTLE_X + POS.day[0]) / 2, -0.4, 0, true);
+    decal(featherDisk, "#ddbfa3", 0.075, 26, 12, (BOTTLE_X + POS.day[0]) / 2, 1.5, 0, true);
     const castTex = (() => {
       const c = document.createElement("canvas");
       c.width = 256;
@@ -22347,7 +22410,7 @@ void main() {
     const range = buildRange({
       asset: asset2,
       renderer,
-      mats: { white: whitePP, chrome, clear: clearCap, amber: amberGlass, black: blackPP, labelEdge },
+      mats: { white: whitePP, chrome, clear: clearCap, capTint, amber: amberGlass, black: blackPP, labelEdge },
       onReady: () => {
         dirty = true;
         if (reduced && firstFrameDone) renderOnce();
@@ -22367,20 +22430,20 @@ void main() {
         it.obj.rotation.y = Math.atan2(camera.position.x - it.x, camera.position.z - it.z) + it.turn;
       }
     };
-    const contactTex = radialTex([[0, 1], [0.6, 0.8], [0.8, 0.3], [1, 0]]);
-    const creaseTex = radialTex([[0, 0], [0.86, 0], [0.93, 1], [0.97, 0.35], [1, 0]], 512);
-    const groundShadows = (x, z, R, H2, foot, amber) => {
-      decal(contactTex, shadowCol, 0.5, R * 2.08, R * 2.08, x + 0.04, z + 0.02);
-      decal(creaseTex, shadowCol, 0.62, foot * 2.1, foot * 2.1, x, z);
+    const contactTex = radialTex([[0, 1], [0.6, 0.92], [0.69, 0.7], [0.75, 0.36], [0.82, 0.15], [0.91, 0.04], [1, 0]]);
+    const creaseTex = radialTex([[0, 1], [0.8, 1], [0.9, 0.85], [0.95, 0.3], [1, 0]], 512);
+    const groundShadows = (x, z, R, H2, amber) => {
+      decal(contactTex, shadowCol, 0.55, R * 2.9, R * 2.9, x + 0.06 * R, z + 0.3 * R);
+      decal(creaseTex, shadowCol, 0.7, R * 2.16, R * 2.16, x + 0.02, z + 0.06 * R);
       const L = Math.max(4.2, H2 * 0.58), w = 2.5 * R / 1.6;
       decal(castTex, shadowCol, 0.42, L, w, x + shDir[0] * L / 2, z + shDir[1] * L / 2, SH_A);
       if (amber) return decal(radialTex([[0, 1], [0.25, 0.55], [0.6, 0.12], [1, 0]]), "#d9902f", 0.3, 2 * R / 1.6, 1 * R / 1.6, x + 1.05 * R / 1.6, z - 1.25 * R / 1.6, SH_A, true);
       return null;
     };
-    const caustic = groundShadows(BOTTLE_X, BOTTLE_Z, 1.6, NECK_Y, 1.52, true);
-    const causticGel = groundShadows(POS.gel[0], POS.gel[1], 2.27, 9.3, 1.5, true);
-    groundShadows(POS.day[0], POS.day[1], 1.643, 15.26, 1.5, false);
-    groundShadows(POS.night[0], POS.night[1], 1.643, 15.26, 1.5, false);
+    const caustic = groundShadows(BOTTLE_X, BOTTLE_Z, 1.6, NECK_Y, true);
+    groundShadows(POS.gel[0], POS.gel[1], 2.27, 9.3, false);
+    groundShadows(POS.day[0], POS.day[1], 1.643, 15.26, false);
+    groundShadows(POS.night[0], POS.night[1], 1.643, 15.26, false);
     const dropShadow = decal(featherDisk, shadowCol, 0.08, 4.4, 1.6, BOTTLE_X + 2.2, BOTTLE_Z - 0.6, -0.62);
     const PEND_SEGS = 40, PEND_PTS = 34;
     const pendGeo = new LatheGeometry(Array.from({ length: PEND_PTS }, (_, j) => new Vector2(0.01, -j * 0.01)), PEND_SEGS);
@@ -22441,8 +22504,8 @@ void main() {
     }
     const RT = 0.052 * 0.95;
     setPendant(RT, DROP_R, 1.1, 0.014);
-    const OV = { discR: 0, tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0 };
-    const ovDisc = [0, 0], ovTag = [0, 0, 0, 0, 0];
+    const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0 };
+    const ovTag = [0, 0, 0, 0, 0];
     const pointer = { ndc: new Vector2(0.3, 0), target: new Vector2(0.3, 0), active: false };
     const tmp = new Vector3(), tmp2 = new Vector3(), tmp3 = new Vector3();
     const camBase = { az: 0, el: 0 };
@@ -22460,6 +22523,7 @@ void main() {
     const DBG_FRAME = (new URLSearchParams(location.search).get("heroframe") || "").split(",").map(Number).filter((v) => v > 0);
     if (DBG_FRAME.length !== 3) DBG_FRAME.length = 0;
     const stackMQ = matchMedia("(max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1)");
+    let layoutRect = { x0: 0, x1: 1, y0: 0, y1: 1 };
     let W = 1, H = 1, mobileNow = false, frame = { fx: 0.66, fy: 0.5, hs: 0.8, D: 30 };
     const SUBJECT = { cx: -3, cy: 8, h: 17 };
     const target = new Vector3();
@@ -22480,13 +22544,26 @@ void main() {
       );
       return pts;
     };
-    const extraRight = (bx1, mobile) => {
-      if (mobile) return 0;
-      let r = bx1;
-      if (!OV.pin) r = Math.max(r, toPx(bottle.localToWorld(tmp.copy(tagLocal)))[0] + OV.tagW + 6);
-      if (OV.discR) r = Math.max(r, toPx(anchors.disc)[0] + OV.discR + 18);
-      return r - bx1;
-    };
+    const tagDrop = () => mobileNow ? 12 : 16;
+    const tagRoom = () => OV.pin ? 0 : tagDrop() + OV.tagH;
+    const tagRest = { left: 0, top: 0, vx: 0 };
+    function restTag() {
+      const az = camBase.az, el = camBase.el;
+      camBase.az = 0;
+      camBase.el = 0;
+      placeCamera(0);
+      const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
+      const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
+      const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
+      const vx = Math.round(edge + 16);
+      const lo = mobileNow ? 16 : layoutRect.x0 - 12, hi = Math.max(lo, (mobileNow ? W - 16 : layoutRect.x1) - OV.tagW);
+      tagRest.left = Math.round(clamp2(vx + 27 - OV.tagW, lo, hi));
+      tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
+      tagRest.vx = Math.min(vx, tagRest.left + OV.tagW - 20);
+      camBase.az = az;
+      camBase.el = el;
+      placeCamera(0);
+    }
     function layout() {
       W = Math.max(1, host.clientWidth);
       H = Math.max(1, host.clientHeight);
@@ -22512,15 +22589,16 @@ void main() {
       if (mobile) {
         const sp = OV.spot || [150, Math.min(318, W * 0.78)];
         const title = OV.blocks[1];
-        const top = Math.max(sp[0] - 6, title ? title[3] + 40 : 0);
-        rect = { x0: 14, x1: W - 14, y0: top, y1: sp[0] + sp[1] - (W > 760 ? 96 : 74) };
+        const top = Math.max(sp[0] - 6, title ? title[3] + 22 : 0);
+        rect = { x0: 14, x1: W - 14, y0: top, y1: sp[0] + sp[1] - 26 - tagRoom() };
       } else {
         let copyR = 0;
         for (let i = 0; i < 5; i++) if (OV.blocks[i]) copyR = Math.max(copyR, OV.blocks[i][2]);
-        const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 30;
-        const right = Math.min(W - 36, (W + 1240) / 2 + 36);
+        const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 26 - tagRoom();
+        const right = OV.gridR > 0 ? OV.gridR : Math.min(W - 24, (W + 1240) / 2 - 24);
         rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(28, H * 0.05), y1: bottom };
       }
+      layoutRect = rect;
       frame = { fx: (rect.x0 + rect.x1) / 2 / W, fy: (rect.y0 + rect.y1) / 2 / H, hs: (rect.y1 - rect.y0) * 0.9, D: 0 };
       const tanH = Math.tan(MathUtils.degToRad(camera.fov / 2));
       const setD = () => {
@@ -22542,7 +22620,7 @@ void main() {
             by0 = Math.min(by0, q[1]);
             by1 = Math.max(by1, q[1]);
           }
-          let exR = extraRight(bx1, mobile);
+          let exR = 0;
           const s = Math.min((rect.x1 - rect.x0 - exR) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
           frame.hs *= it === 0 ? s : Math.pow(s, 0.9);
           frame.hs = Math.min(frame.hs, H * 0.86);
@@ -22559,7 +22637,6 @@ void main() {
             by0 = Math.min(by0, q[1]);
             by1 = Math.max(by1, q[1]);
           }
-          exR = extraRight(bx1, mobile);
           const dx = (rect.x0 + rect.x1 - exR) / 2 - (bx0 + bx1) / 2;
           const dy = mobile ? (rect.y0 + rect.y1) / 2 - (by0 + by1) / 2 : rect.y1 - by1;
           frame.fx += dx / W;
@@ -22569,6 +22646,7 @@ void main() {
       setD();
       placeCamera(0);
       faceCamera();
+      restTag();
       bgU.uRes.value.set(W * pr, H * pr);
       bgU.uDpr.value = pr;
       finalPass.uniforms.uRes.value.set(W * pr, H * pr);
@@ -22603,16 +22681,13 @@ void main() {
     composer.addPass(finalPass);
     const st = { intro: 1 };
     let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
-    const tagLocal = new Vector3(Math.sin(0.95) * 1.62, 2.7, Math.cos(0.95) * 1.62);
     const tagLocalM = new Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625);
     const anchors = {
-      disc: new Vector3(BOTTLE_X + 6, 10.2, BOTTLE_Z),
-      // right of the lifted dropper, above the tag
-      tag: new Vector3(),
-      glow: new Vector3(POS.gel[0] + 1.5, 7.5, -4),
+      glow: new Vector3(BOTTLE_X - 1.2, 6.5, -6),
+      // the evening light on the backdrop sits behind the hero
       spot: new Vector3(BOTTLE_X, 5.6, BOTTLE_Z - 3),
       spot2: new Vector3(POS.gel[0], 8.2, POS.gel[1] - 3.2),
-      pool: new Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 0)
+      pool: new Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 1.5)
     };
     function step(dt, t) {
       st.intro = reduced ? 0 : Math.max(0, st.intro - dt / 2.6);
@@ -22639,32 +22714,13 @@ void main() {
       pendant.position.copy(tip);
       dropShadow.position.x = DROPPER_BASE.x + 0.6 + bob * 0.4;
       glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
-      bottle.localToWorld(anchors.tag.copy(tagLocal));
-      if (!mobileNow) {
-        const d = toPx(anchors.disc), m = OV.discR + 14;
-        ovDisc[0] = clamp2(d[0], m, W - m);
-        ovDisc[1] = d[1];
-        const tg = toPx(anchors.tag);
-        ovTag[0] = tg[0];
-        ovTag[1] = tg[1];
-        ovTag[2] = 0;
-        ovTag[3] = 0;
-        ovTag[4] = 0;
-      } else {
-        const tr = OV.blocks[1];
-        ovDisc[0] = W - 16 - OV.discR;
-        ovDisc[1] = tr ? (tr[1] + tr[3]) / 2 + 4 : OV.discR + 60;
+      {
         const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
-        const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
-        const top = base[1] + 14;
-        const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
-        const left = clamp2(edge + 14 - OV.tagW * 0.3, 16, Math.max(16, W - 16 - OV.tagW));
-        const run = clamp2(edge + 14 - dot[0], 10, left + OV.tagW - 60 - dot[0]);
-        ovTag[0] = dot[0];
-        ovTag[1] = dot[1];
-        ovTag[2] = Math.max(8, top - dot[1]);
-        ovTag[3] = left - dot[0];
-        ovTag[4] = run;
+        ovTag[0] = tagRest.left;
+        ovTag[1] = tagRest.top;
+        ovTag[2] = dot[0] - tagRest.left;
+        ovTag[3] = dot[1] - tagRest.top;
+        ovTag[4] = Math.max(10, tagRest.vx - dot[0]);
       }
       const g = toPx(anchors.glow);
       bgU.uGlow.value.set(g[0] * pr, (H - g[1]) * pr);
@@ -22682,8 +22738,7 @@ void main() {
       bgU.uPoolR.value.set(ppu * 11 * pr, ppu * 2.2 * pr);
       finalPass.uniforms.uTime.value = t;
       caustic.material.opacity = 0.26 + 0.04 * Math.sin(t * 0.7);
-      causticGel.material.opacity = 0.2 + 0.03 * Math.sin(t * 0.6 + 1.3);
-      onFrame && onFrame({ bubble: ovDisc, tag: ovTag, mobile: mobileNow, ppu, W, H });
+      onFrame && onFrame({ tag: ovTag, mobile: mobileNow, ppu, W, H });
     }
     let acc = 0, n = 0, warm = 0;
     function render(now2) {
@@ -22747,7 +22802,7 @@ void main() {
         pointer.active = active;
       },
       setOverlays(o) {
-        const key2 = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ":" + Math.round(r[3]))]);
+        const key2 = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ":" + Math.round(r[3]))]);
         const k0 = key2();
         Object.assign(OV, o);
         if (key2() !== k0) {
@@ -22777,7 +22832,6 @@ void main() {
   function init(root, ctx) {
     const canvas = root.querySelector(".hero-canvas");
     const stage = root.querySelector(".hero-stage");
-    const bubbleEl = root.querySelector(".hero-bubble");
     const tagEl = root.querySelector(".hero-tag");
     const cardEl = root.querySelector(".hero-tag__card");
     const addBtn = root.querySelector("[data-hero-add]");
@@ -22789,7 +22843,7 @@ void main() {
       const was = root.querySelector("[data-hero-was]");
       if (was) was.textContent = ctx.fmt.kr(p.price0);
       const save = root.querySelector("[data-hero-save]");
-      if (save) save.textContent = ctx.fmt.kr(p.save);
+      if (save) save.textContent = `Spar ${ctx.fmt.kr(p.save)}`;
     }
     {
       const big = root.querySelector("[data-hero-pct]");
@@ -22802,9 +22856,9 @@ void main() {
       addBtn.setAttribute("aria-label", "Vidunder Olien er lagt i kurven");
       if (liveEl) {
         liveEl.textContent = "";
-        requestAnimationFrame(() => {
+        setTimeout(() => {
           liveEl.textContent = "Vidunder Olien er lagt i kurven.";
-        });
+        }, 60);
       }
       clearTimeout(addT);
       addT = setTimeout(() => {
@@ -22868,14 +22922,15 @@ void main() {
         return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
       });
       const sp = spotEl.getBoundingClientRect();
-      const box = mob ? cardEl : tagEl;
+      const box = cardEl;
       let pin = null;
       if (pinnedMQ.matches) {
         const r = cardEl.getBoundingClientRect();
         pin = [r.left - st.left, r.top - st.top, r.right - st.left, r.bottom - st.top];
       }
+      const tr = trustEl.getBoundingClientRect();
       scene.setOverlays({
-        discR: bubbleEl.firstElementChild.offsetWidth / 2,
+        gridR: tr.right - st.left,
         tagW: box.offsetWidth,
         tagH: box.offsetHeight,
         pin,
@@ -22885,17 +22940,22 @@ void main() {
         trustTop: trustEl.getBoundingClientRect().top - restY(trustEl) - st.top
       });
     };
-    const onFrame = ({ bubble, tag, mobile }) => {
-      bubbleEl.style.transform = `translate3d(${bubble[0].toFixed(1)}px, ${bubble[1].toFixed(1)}px, 0)`;
+    let tagPos = "";
+    const onFrame = ({ tag }) => {
       if (pinnedMQ.matches) {
-        tagEl.style.transform = "";
-      } else if (mobile) {
-        tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0)`;
-        tagEl.style.setProperty("--lead-h", `${tag[2].toFixed(1)}px`);
-        tagEl.style.setProperty("--card-x", `${tag[3].toFixed(1)}px`);
-        tagEl.style.setProperty("--lead-w", `${tag[4].toFixed(1)}px`);
+        if (tagPos) {
+          tagEl.style.transform = "";
+          tagPos = "";
+        }
       } else {
-        tagEl.style.transform = `translate3d(${tag[0].toFixed(1)}px, ${tag[1].toFixed(1)}px, 0) translateY(-50%)`;
+        const pos = `translate3d(${tag[0]}px, ${tag[1]}px, 0)`;
+        if (pos !== tagPos) {
+          tagEl.style.transform = pos;
+          tagPos = pos;
+        }
+        tagEl.style.setProperty("--lead-x", `${tag[2].toFixed(2)}px`);
+        tagEl.style.setProperty("--lead-y", `${tag[3].toFixed(2)}px`);
+        tagEl.style.setProperty("--lead-w", `${tag[4].toFixed(2)}px`);
       }
       if (!tracked) {
         tracked = true;

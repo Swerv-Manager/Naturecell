@@ -73,6 +73,9 @@
 [data-section="offers"] .offers-dg__ghost { visibility: hidden; }
 [data-section="offers"] .offers-dg__v { position: absolute; inset: 0; display: block; will-change: transform; }
 [data-section="offers"] .offers-unit__lbl { font: 500 13px/1 var(--font-body); color: var(--text-body); letter-spacing: .01em; }
+/* the honest deadline, spelled out once, under the drum */
+[data-section="offers"] .offers-clock__when { margin: 2px 0 0; font: 500 13px/1.3 var(--font-body); color: var(--text-body); font-variant-numeric: tabular-nums; }
+[data-section="offers"] .offers-clock__when[hidden] { display: none; }
 [data-section="offers"] .offers-clock__done { margin: 0; max-width: 34ch; text-align: right; font-size: var(--text-sm); color: var(--text-body); }
 [data-section="offers"] .offers-clock[data-state="ended"] .offers-clock__digits { display: none; }
 [data-section="offers"] .offers-clock[data-state="ended"] .offers-clock__label::before { animation: none; background: var(--stone-500); }
@@ -100,7 +103,9 @@
   content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(var(--shade), .07); pointer-events: none; z-index: 2;
 }
 
-/* stage: identical geometry in every tile → one floor line, one scale (--u = a 50 ml airless bottle), one light (top-left) */
+/* stage: identical geometry in every tile → one floor line, one light (top-left). --u = the height of a 50 ml airless
+   bottle; each tile has its own camera distance (range 58cqh, hero 72cqh, gift macro – see below), but inside a tile
+   every product shares that one scale, so relative sizes stay truthful */
 [data-section="offers"] .offers-stage {
   --u: 58cqh;
   --floor: max(15cqh, 52px);          /* the tabletop band never gets thinner than the shelf label needs */
@@ -194,19 +199,27 @@
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-/* a macro close-up at the same floor line: the camera steps in (--u x2.6), so the Natcreme airless behind is cropped
-   by the frame's top edge while the 6 ml stick – .45 of the airless, true to size – stands front-centre as the subject.
-   Shadows scale with the camera (they are sized from --u here, not from the stage). */
-[data-section="offers"] .offers-stage--gift { --u: 150cqh; --d: clamp(76px, 23cqw, 86px); --gap: 26px; }
+/* a macro close-up at the same floor line: the camera steps in, so the Natcreme airless behind is cropped by the
+   frame's top edge while the 6 ml stick stands front-centre as the subject. The camera distance is solved, not guessed:
+   --u is sized so the top edge always cuts through the airless's silver collar (--crop = 26% of the bottle from the
+   top), which keeps the bindrune (its top arc at 38%) and the wordmark whole at every width.
+   Depth: the airless stands --step further back on the table than the stick (never less than 13px foot to foot).
+   Sizes: 6 ml per the live Shopify product "Lip Balm | med CBD 6ml" (SKU 1513); a 6 ml twist stick is 68 mm tall,
+   the Natcreme airless 150 mm → .45. Shadows scale with the camera (sized from --u here, not from the stage). */
+[data-section="offers"] .offers-stage--gift {
+  --crop: .26; --fwd: 1.4cqh; --step: max(4cqh, 13px);
+  --u: calc((100cqh - var(--floor) - (var(--step) - var(--fwd))) / (1 - var(--crop)));
+  --d: clamp(76px, 23cqw, 86px); --gap: 26px;
+}
 /* optical centring: the row is the airless + stick; the disc and its leader hang off the stick to the right */
 [data-section="offers"] .offers-row--gift { gap: 0; padding-right: calc(var(--d) + var(--gap)); }
-[data-section="offers"] .offers-row--gift .offers-p--back { margin-right: -6cqw; z-index: 1; }
-/* out of the focal plane: a touch darker and a whisper soft, the way a macro lens renders the background */
-[data-section="offers"] .offers-row--gift .offers-p--back img { filter: brightness(.94) saturate(.95) blur(.6px); }
+[data-section="offers"] .offers-row--gift .offers-p--back { margin: 0 -6cqw calc(var(--step) - var(--fwd)) 0; z-index: 1; }
+/* further from the window light: a touch darker and quieter (no fake blur – the packshot stays crisp) */
+[data-section="offers"] .offers-row--gift .offers-p--back img { filter: brightness(.92) saturate(.94); }
 [data-section="offers"] .offers-row--gift .offers-p--back::after { left: -4%; right: -10%; bottom: calc(var(--u) * -.02); height: calc(var(--u) * .05); }
 [data-section="offers"] .offers-row--gift .offers-p--back::before { left: 16%; right: -40%; bottom: calc(var(--u) * -.035); height: calc(var(--u) * .09); }
 /* the gift stands a step forward on the table, its foot clear of the shelf label below */
-[data-section="offers"] .offers-p--gift { margin: 0 0 -1.4cqh 0; z-index: 3; }
+[data-section="offers"] .offers-p--gift { margin: 0 0 calc(var(--fwd) * -1) 0; z-index: 3; }
 [data-section="offers"] .offers-p--gift::after { left: -10%; right: -26%; bottom: -1.4cqh; height: 3.4cqh; }
 [data-section="offers"] .offers-p--gift::before { left: 14%; right: -80%; bottom: -2.4cqh; height: 6cqh; }
 /* the value disc: the Spar bubble's grammar (uppercase key over a bold value) in the gift's pink, beside the cap and
@@ -217,7 +230,6 @@
   gap: 3px; align-content: center; grid-auto-flow: row; font-family: var(--font-body); white-space: nowrap;
   transition: background 800ms var(--viscous), color 800ms var(--viscous), translate 1100ms var(--viscous-long) 90ms, scale 700ms var(--viscous);
 }
-[data-section="offers"] .offers-gift .offers-save__v { font-size: 18px; }
 /* leader: from the cap's edge to the disc's edge at the disc's centre height */
 [data-section="offers"] .offers-lead {
   position: absolute; z-index: 1; left: calc(100% + 4px); top: calc(var(--d) * .2 - 1px);
@@ -229,7 +241,7 @@
 /* the render is a stand-in, so it says so: a quiet caption beside the stick's foot, just above the shelf line
    (which becomes the cart meter on mobile) */
 [data-section="offers"] .offers-illu {
-  position: absolute; left: calc(100% + 8px); bottom: calc(1.4cqh + 7px); z-index: 3;
+  position: absolute; left: calc(100% + 8px); bottom: calc(var(--fwd) + 7px); z-index: 3;
   font: 500 10px/1 var(--font-body); letter-spacing: .04em; color: var(--sage-700); white-space: nowrap;
 }
 
@@ -372,7 +384,6 @@
   /* narrow columns: the set steps back so the Spar bubble keeps its air */
   [data-section="offers"] .offers-stage--hero { --u: 62cqh; }
   [data-section="offers"] .offers-row--set { padding-right: 10cqw; }
-  [data-section="offers"] .offers-stage--gift { --u: 136cqh; }
   [data-section="offers"] .offers-num,
   [data-section="offers"] .offers-unit + .offers-unit::before { font-size: 34px; }
 }
@@ -408,8 +419,6 @@
   [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
   /* the square stage is narrower relative to its height: the six-up tablescape steps back to keep air at both edges */
   [data-section="offers"] .offers-stage--range { --u: 50cqh; }
-  /* the square stage has the height the tablet column lacks: the close-up camera returns */
-  [data-section="offers"] .offers-stage--gift { --u: 150cqh; }
   /* mirrored against the hero one screen above (whose disc sits top-right): the Spar bubble owns the top-left corner,
      the shortest product (olie) stands under it with clear air, and the set steps right */
   [data-section="offers"] .offers-save { right: auto; left: var(--copy-x); }
@@ -431,6 +440,11 @@
   [data-section="offers"] .offers-note__set--live { padding-top: 4px; transform: none; }
   [data-section="offers"] .offers-meter { position: absolute; left: -4cqw; right: -4cqw; top: 0; height: 2px; border-radius: 0; }
   [data-section="offers"] .offers-meter__tick { width: 6px; height: 6px; margin: -3px 0 0 -3px; }
+  /* the shelf edge passes behind the products' feet (a table edge, not a bar they stand on), and the caption keeps
+     clear air above the 399 tick */
+  [data-section="offers"] .offers-note { z-index: 0; }
+  [data-section="offers"] .offers-stage--gift .offers-row { z-index: 1; }
+  [data-section="offers"] .offers-illu { bottom: calc(var(--fwd) + 15px); }
   [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: 54px; }
   [data-section="offers"] .offers-tile__text { font-size: 14.5px; }
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }
@@ -454,8 +468,9 @@
    Spar disc keeps 20px of air from the Natcreme's cap */
 @media (max-width: 374px) {
   [data-section="offers"] .offers-row--set { padding-left: 20cqw; }
+  /* the twin discs shrink together */
   [data-section="offers"] .offers-save { width: 70px; }
-  [data-section="offers"] .offers-stage--gift { --u: 140cqh; }
+  [data-section="offers"] .offers-stage--gift { --d: 70px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -118,9 +118,17 @@ export default function init(root, ctx) {
     const geo = `width:${(W / bw * 100).toFixed(3)}%;left:${(-x0 / bw * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
     const gw = bw / W, wu = packW(s);
     const cy = s.cyl || [0, 100];
+    // the photo's own baked shadow is never cut at the product box (a hard vertical step at 1x): the packshot is masked
+    // with soft ramps that hold the product fully and let the baked shadow fade out over ~22 % of the pack's width beside
+    // it and ~4 % of its height below it. The light layers, in contrast, are clipped to the product box exactly.
+    const pc = (v) => (v * 100).toFixed(3);
+    // each ramp ends inside the image (a shadow that runs off the photo's own edge would otherwise end in a hard line)
+    const fl = Math.min(bw * 0.22, x0) / W, fr = Math.min(bw * 0.22, W - x1) / W, fy = Math.min(bh * 0.04, H - y1) / H;
+    const imgMask = `linear-gradient(90deg,transparent ${pc(x0 / W - fl)}%,var(--dl-mk) ${pc(x0 / W - fl * .45)}%,var(--sage-900) ${pc(x0 / W)}%,var(--sage-900) ${pc(x1 / W)}%,var(--dl-mk) ${pc(x1 / W + fr * .45)}%,transparent ${pc(x1 / W + fr)}%),linear-gradient(180deg,var(--sage-900) ${pc(y1 / H)}%,var(--dl-mk) ${pc(y1 / H + fy * .45)}%,transparent ${pc(y1 / H + fy)}%)`;
+    const clip = `clip-path:inset(${pc(y0 / H)}% ${pc(1 - x1 / W)}% ${pc(1 - y1 / H)}% ${pc(x0 / W)}%)`;
     return `<div class="deals-prod" data-lg="${(x0 / W * 100).toFixed(3)},${gw.toFixed(4)},${px0.toFixed(4)},${pw.toFixed(4)},${cy[0]},${cy[1]}" style="--ar:${(bw / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)};--cy0:${(s.cyl || [0, 100])[0]}%;--cy1:${(s.cyl || [0, 100])[1]}%;--cyw:${(((s.cyl || [0, 100])[1] - (s.cyl || [0, 100])[0]) / 100).toFixed(4)};--by0:${(y0 / H * 100).toFixed(2)}%;--bh:${(bh / H).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"><i class="deals-beam"></i></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"><i class="deals-beam"></i></span><span class="deals-gloss deals-gloss--amber" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"><i class="deals-beam"></i></span>` : ''}</span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo};-webkit-mask-image:${imgMask};mask-image:${imgMask}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip}"><i class="deals-beam"></i></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip};--gm:url('${s.gm}')"><i class="deals-beam"></i></span><span class="deals-gloss deals-gloss--amber" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip};--gm:url('${s.gm}')"><i class="deals-beam"></i></span>` : ''}</span>
       ${lbl}
     </div>`;
   }
@@ -168,7 +176,7 @@ export default function init(root, ctx) {
       <p class="deals-set__cap"><span>Indhold</span><span>Førpris</span></p>
       <dl class="deals-set__list">
         ${rows.map((r, i) => `<div class="deals-set__row"><dt><span class="deals-no" aria-hidden="true">${i + 1}</span>${esc(r.name)}</dt><dd>${kr(r.price0)}</dd></div>`).join('')}
-        <div class="deals-set__row deals-set__row--sum0"><dt>Samlet førpris enkeltvis</dt><dd>${kr(rows.reduce((a, r) => a + r.price0, 0))}</dd></div>
+        <div class="deals-set__row deals-set__row--sum0"><dt>Enkeltvis til førpriser</dt><dd>${kr(rows.reduce((a, r) => a + r.price0, 0))}</dd></div>
         <div class="deals-set__row deals-set__row--sum"><dt>Enkeltvis i Black Week</dt><dd>${kr(setNow(p))}</dd></div>
       </dl>
     </div>`;
@@ -181,7 +189,7 @@ export default function init(root, ctx) {
     return `<div class="deals-set__sum">
       <p class="deals-set__cap">Førpris pr. produkt</p>
       <p class="deals-set__eq"><span class="nc-sr">${rows.map((r) => `${esc(r.name)} ${kr(r.price0)}`).join(', ')}</span><span class="deals-set__eqv" aria-hidden="true">${rows.map((r, i) => `<span class="deals-set__term"><span class="deals-no">${i + 1}</span>${num(r.price0)}</span>`).join('<span class="deals-set__op">+</span>')}</span></p>
-      <p class="deals-set__tot deals-set__tot--was"><span>Samlet førpris enkeltvis</span><b>${kr(sum0)}</b></p>
+      <p class="deals-set__tot deals-set__tot--was"><span>Enkeltvis til førpriser</span><b>${kr(sum0)}</b></p>
       <p class="deals-set__tot"><span>Enkeltvis i Black Week</span><b>${kr(setNow(p))}</b></p>
     </div>`;
   };
@@ -199,12 +207,12 @@ export default function init(root, ctx) {
   };
   const sale = (p) => `<span class="deals-flag" aria-hidden="true">−${p.pct}%</span>`;
   const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
-  // touch: the packshot itself is the quick-view button (no eye bubble on every single tile); hidden on a fine pointer,
-  // where the image belongs to the card's product link and the eye appears on hover
-  const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}"><span class="nc-sr">Hurtig visning – ${esc(p.name)}</span></button>`;
+  // touch: the whole packshot is also a (silent) tap target for quick view – the visible, named control is the eye;
+  // hidden on a fine pointer, where the image belongs to the card's product link and the eye appears on hover
+  const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}" tabindex="-1" aria-hidden="true"></button>`;
   // the truthful height (units) of the tallest pack on a card – the grid sizes each row from it
   const tallOf = (p) => (p.bundle ? Math.max(...(p.contains || []).map((id) => BOTTLE_H[id] || 0)) : (SHOT[p.id] || { h: 0.8 }).h);
-  const TONE = { 'komplet-pakken': 'sand', 'all-day-facial': 'mint' };
+  const TONE = { 'komplet-pakken': 'sand', 'all-day-facial': 'dune' }; // one evening window: warm sand, and a lighter sand
 
   function cardHtml(p, i) {
     const cat = catOf(p);
@@ -431,19 +439,25 @@ export default function init(root, ctx) {
   const giftLi = $('.deals-item--gift', grid);
   const cols = () => getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
   const spanOf = (li) => (li.classList.contains('deals-item--set') ? Math.min(2, cols()) : 1);
-  // meter labels: the end label is flush right with the track's end (its knob sits there); the start label is centred
-  // on its own knob. Only where a narrow tile cannot hold both centred does the start label fall back to ending flush
-  // with its knob's outer edge (a ruler mark), so the two never run together and nothing leaves the content box.
+  // meter labels: BOTH labels are centred on their own knobs, on every breakpoint. The track ends half an end-label short
+  // of the content edge (its end knob sits there), so the centred "Gave / 699 kr." still ends flush with the tile's
+  // content box. The start label is centred on the fri-fragt knob; only if a line of it would come closer than 6px to
+  // the same line of the end label is it eased left just enough (never the case at 390px or wider).
   function placeGiftLabels() {
     const lab = $('.deals-gift__labels'); if (!lab || !gTrack) return;
-    const tw = gTrack.clientWidth; if (!tw) return;
     const st = lab.children[0], en = $('.deals-gift__lend', lab);
-    const ew = en.offsetWidth, sw = st.offsetWidth, k = (shipAt / giftAt) * tw;
-    en.style.left = `${(tw - ew).toFixed(1)}px`;
-    const centred = k - sw / 2;
-    const fits = centred >= 0 && centred + sw <= tw - ew - 10;
-    st.classList.toggle('is-c', fits);
-    st.style.left = `${(fits ? centred : clamp(k + 6 - sw, 0, tw - ew - 10 - sw)).toFixed(1)}px`;
+    const ew = en.offsetWidth, sw = st.offsetWidth, KR = 6; // knob radius – the end knob sits inside the track's end
+    gTrack.style.marginRight = `${Math.max(0, ew / 2 - KR).toFixed(1)}px`;
+    const tw = gTrack.clientWidth; if (!tw) return;
+    const k = (shipAt / giftAt) * tw, ke = tw - KR;
+    st.classList.add('is-c'); en.classList.add('is-c');
+    en.style.left = `${(ke - ew / 2).toFixed(1)}px`;
+    // per line (word over amount): the narrowest gap between the start label's line and the end label's line
+    const lines = (el) => [...el.children].map((c) => c.getBoundingClientRect().width);
+    const sl = lines(st), el = lines(en);
+    const gap = Math.min(...sl.map((w, i) => (ke - (el[i] || 0) / 2) - (k + w / 2)));
+    const shift = Math.max(0, 6 - gap);
+    st.style.left = `${clamp(k - sw / 2 - shift, 0, tw).toFixed(1)}px`;
   }
   // the packaging thread: one hairline diagonal that comes in from the section's top-right edge and runs in behind the
   // filter pill (it ends exactly where the pill's right shoulder starts) – tied to the composition, never floating
@@ -512,6 +526,17 @@ export default function init(root, ctx) {
       const set = row.some((li) => li.classList.contains('deals-item--set'));
       const gr = row.includes(giftLi);
       row.forEach((li) => { li.style.setProperty('--row-h', h.toFixed(4)); li.classList.toggle('is-setrow', set); li.classList.toggle('is-giftrow', gr); });
+      // the quick-view eye never sits on a pack: where a pack would reach into the eye's corner (its 24/36px disc + 4px air),
+      // the whole row gets just that much more head-room (packs stand on the floor, so the sky grows, the shelf stays)
+      row.forEach((li) => li.style.removeProperty('--dl-eye'));
+      let eye = 0;
+      row.forEach((li) => {
+        const q = $('.deals-quick', li), st = $('[data-stage]', li); if (!q || !st) return;
+        const sr = st.getBoundingClientRect(), d = TOUCH ? 10 : 4;
+        const L = sr.left + q.offsetLeft + d - 4, R = sr.left + q.offsetLeft + q.offsetWidth - d + 4, B = q.offsetTop + q.offsetHeight - d + 4;
+        $$('.deals-prod', li).forEach((pk) => { const r = pk.getBoundingClientRect(); if (r.right > L && r.left < R) eye = Math.max(eye, B - (r.top - sr.top)); });
+      });
+      if (eye > 0.5) row.forEach((li) => li.style.setProperty('--dl-eye', `${Math.ceil(eye)}px`));
       // one shared name block per row: if any single's name wraps to two lines, every single in the row reserves two, so
       // stages, names and price rows all line up across the row (the stage never absorbs the difference)
       const singles = row.filter((li) => !li.classList.contains('deals-item--set') && li !== giftLi);
@@ -709,16 +734,18 @@ export default function init(root, ctx) {
   // ------------------------------------------------------------------ the window light, always alive
   // One slow evening window drifts along the shelf: its reflection glides across every pack (glint on the glass, a soft
   // brightening on the labels, the contact shadow leaning away from it), card after card with a small phase lag, like
-  // light moving along a row of real bottles. It travels 20 % → 80 % of each body and back in 10 s, sine-eased – calm,
-  // but always visibly on its way (≈ 5 s per crossing). A hovered card
-  // hands the light to the cursor; on touch the scroll adds to the drift, so the light also travels as the shopper scrolls.
-  // Runs only while the grid is on screen and the tab is visible; writes only to the cards in view.
-  const AMB_T = 10, AMB_A = 0.3;
+  // light moving along a row of real bottles. It travels 13 % → 87 % of each body and back in 7 s at an almost steady
+  // pace (≈ 3.5 s per crossing, ≈ 12 px/s on a desktop bottle) with softly rounded turns – a sine would stall at both ends for seconds, so a passing
+  // glance could catch the light standing still; this one is always visibly on its way, yet never hurried.
+  // A hovered card hands the light to the cursor; on touch the scroll adds to the drift, so the light also travels as the
+  // shopper scrolls. Runs only while the grid is on screen and the tab is visible; writes only to the cards in view.
+  const AMB_T = 7, AMB_A = 0.37, AMB_R = 0.985, AMB_N = Math.asin(AMB_R); // AMB_R < 1 rounds the turns (1 = sharp triangle)
   const ambOrder = new Map();
   const ambLx = (el, now) => {
     const k = ambOrder.get(el) || 0;
     const sc = TOUCH ? scrollY / 520 : 0;
-    return 0.5 + AMB_A * Math.sin(((now / 1000) / AMB_T) * Math.PI * 2 - k * 0.62 + sc);
+    const th = ((now / 1000) / AMB_T) * Math.PI * 2 - k * 0.62 + sc;
+    return 0.5 + AMB_A * Math.asin(AMB_R * Math.sin(th)) / AMB_N;
   };
   if (!RM) {
     let aRaf = 0, gridIn = false;
@@ -918,7 +945,7 @@ export default function init(root, ctx) {
         <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke · ${(p.contains || []).length} produkter` : (p.nickname ? `${p.nickname} · ${EYEBROW[p.id] || 'Ansigt'}` : eyebrowOf(p)))}</p>
         <h2 class="deals-qv__title" id="deals-qv-title">${esc(p.name)}</h2>
         <p class="deals-card__size">${esc(p.bundle ? (p.contains || []).map((id) => SHORT[id] || ctx.byId[id]?.name).join(' · ') : metaLine(p))}</p>
-        <p class="deals-qv__claim">${esc(p.claim)}</p>
+        <p class="deals-qv__claim">${nb(esc(p.claim))}</p>
         ${p.notes ? `<p class="deals-qv__notes">${esc(p.notes)}</p>` : ''}
         ${p.bundle ? contentsHtml(p) : ''}
         <hr class="nc-dotline deals-qv__rule">

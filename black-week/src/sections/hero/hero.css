@@ -111,39 +111,44 @@
 
 /* ---------- overlays tracked to the 3D product ---------- */
 [data-section="hero"] .hero-overlays { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-[data-section="hero"] .hero-bubble, [data-section="hero"] .hero-tag { position: absolute; left: 0; top: 0; will-change: transform; opacity: 0; transition: opacity 900ms var(--viscous); }
-[data-section="hero"].is-tracked .hero-bubble, [data-section="hero"].is-tracked .hero-tag { opacity: 1; }
-[data-section="hero"].is-tracked .hero-bubble { transition-delay: 900ms; }
+[data-section="hero"] .hero-tag { position: absolute; left: 0; top: 0; will-change: transform; opacity: 0; transition: opacity 900ms var(--viscous); }
+[data-section="hero"].is-tracked .hero-tag { opacity: 1; }
 [data-section="hero"].is-tracked .hero-tag { transition-delay: 1250ms; }
 
-[data-section="hero"] .hero-bubble__disc {
   position: absolute; left: 0; top: 0; width: 128px; margin: -64px 0 0 -64px; padding: 0;
   display: grid; place-content: center; justify-items: center; gap: 2px; font-family: var(--font-body); text-align: center;
   box-shadow: 0 18px 40px -18px color-mix(in srgb, color-mix(in srgb, var(--accent-berry) 40%, black) 60%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--cloud) 6%, transparent);
 }
-[data-section="hero"] .hero-bubble__k { font-size: 13px; font-weight: 600; letter-spacing: .02em; line-height: 1; opacity: .92; }
-[data-section="hero"] .hero-bubble__amt { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; margin-top: 1px; }
-[data-section="hero"] .hero-bubble__sub { font-size: 12px; font-weight: 500; letter-spacing: .005em; opacity: .9; line-height: 1.15; white-space: nowrap; margin-top: 4px; }
 [data-section="hero"] .hero-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
-[data-section="hero"] .hero-tag { display: flex; align-items: center; pointer-events: auto; }
-[data-section="hero"] .hero-tag__lead { position: relative; width: 46px; height: 2px; flex: none; }
-[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: 6px; right: 2px; top: 0; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-[data-section="hero"] .hero-tag__lead i { position: absolute; left: -4px; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 18%, transparent); }
+/* the shoppable pill hangs under the oil on a dotted lead from its label – an L: out of the silhouette to the right
+   first, then down onto the pill's quick-add button (never across the bottle) */
+[data-section="hero"] .hero-tag { display: block; width: 0; height: 0; pointer-events: auto; }
+/* (the pill sits at the tag's origin; the lead starts at the label's dot, above-left of it: --lead-x/-y < 0) */
+[data-section="hero"] .hero-tag__lead { position: absolute; left: var(--lead-x, -30px); top: var(--lead-y, -40px); width: var(--lead-w, 30px); height: calc(0px - var(--lead-y, -40px)); }
+[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: calc(var(--lead-w, 30px) - .75px); top: 0; bottom: 2px; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: 7px; width: calc(var(--lead-w, 30px) - 7px); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead i { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
 [data-section="hero"] .hero-tag__card {
-  position: relative; display: grid; grid-template-columns: auto 44px; column-gap: 16px; align-items: center;
-  padding: 13px 13px 13px 17px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
+  position: absolute; left: 0; top: 0; width: max-content;
+  display: grid; grid-template-columns: auto 44px; column-gap: 16px; align-items: center;
+  padding: 6px 6px 6px 22px; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
   background: color-mix(in srgb, var(--sage-900) 62%, transparent); -webkit-backdrop-filter: blur(14px) saturate(1.15); backdrop-filter: blur(14px) saturate(1.15);
   box-shadow: 0 24px 50px -28px color-mix(in srgb, var(--shade) 92%, transparent);
 }
 [data-section="hero"] .hero-tag__card > p { grid-column: 1; margin: 0; }
-[data-section="hero"] .hero-tag__name { font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 1.15; color: var(--paper); }
-[data-section="hero"] .hero-tag__meta { font-size: 12px; line-height: 1.4; color: var(--faint); margin-top: 3px !important; letter-spacing: .01em; }
-[data-section="hero"] .hero-tag__price { margin-top: 8px !important; gap: .55em; }
-[data-section="hero"] .hero-tag__price .nc-price__now { color: var(--paper); font-size: 17px; }
+[data-section="hero"] .hero-tag__name { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.1; color: var(--paper); }
+[data-section="hero"] .hero-tag__meta { display: none; }
+[data-section="hero"] .hero-tag__price { margin-top: 4px !important; gap: .5em; flex-wrap: nowrap; }
+[data-section="hero"] .hero-tag__price .nc-price__now { color: var(--paper); font-size: 16px; }
 [data-section="hero"] .hero-tag__price .nc-price__was { color: var(--faint); font-size: 12px; }
+/* the saving on the hero product: a small berry chip on the price row (the sale-flag colour, as on the deal cards) */
+[data-section="hero"] .hero-tag__save {
+  align-self: center; display: inline-flex; align-items: center; height: 20px; padding: 0 8px 0 8px; border-radius: var(--radius-pill);
+  background: var(--accent-berry); color: #fff; font: 700 11px/1 var(--font-body); letter-spacing: .01em; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
 [data-section="hero"] .hero-tag__add {
-  grid-column: 2; grid-row: 1 / span 3; width: 44px; height: 44px; border-radius: 50%; border: 0; padding: 0;
+  grid-column: 2; grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 50%; border: 0; padding: 0;
   display: grid; place-items: center; background: var(--paper); color: var(--sage-800);
   transition: background var(--dur-fast) var(--ease-soft), transform 260ms var(--viscous), box-shadow 420ms var(--viscous), color var(--dur-fast);
 }
@@ -156,10 +161,11 @@
 [data-section="hero"] .hero-tag__add.is-added .hero-tag__ico--plus { opacity: 0; transform: rotate(90deg) scale(.7); }
 [data-section="hero"] .hero-tag__add.is-added .hero-tag__ico--check { opacity: 1; transform: none; }
 
-/* static plate (no WebGL): the disc and the tag are pinned to where the plate shows the bottle */
-[data-section="hero"].is-static .hero-bubble, [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-bubble { left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .2688); top: calc(var(--hero-h) * .4537); }
-[data-section="hero"].is-static .hero-tag { left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .4698); top: calc(var(--hero-h) * .7631); transform: translateY(-50%); }
+/* static plate (no WebGL): the tag is pinned to where the plate shows the bottle */
+[data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
+[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .6832); top: calc(var(--hero-h) * .8117); }
+[data-section="hero"].is-static .hero-tag__lead { display: none; }
+[data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
 
 /* ---------- entrance: calm, staggered, viscous ---------- */
 [data-section="hero"].is-ready .hero-copy > *:not(.hero-spot), [data-section="hero"].is-ready .hero-trust { animation: hero-rise 1100ms var(--viscous-long) both; }
@@ -196,21 +202,18 @@
   [data-section="hero"] .hero-trust__more { display: none; }
   [data-section="hero"] .hero-trust__item:nth-child(3) { display: none; }   /* three proof points fit one row beside the pill */
   /* the compact shoppable pill, pinned bottom-right on the trust row (no room beside the label here) */
-  [data-section="hero"] .hero-tag { left: auto; top: auto; right: var(--gutter, 24px); bottom: 14px; transform: none !important; }
+  [data-section="hero"] .hero-tag { left: auto; top: auto; right: var(--gutter, 24px); bottom: 14px; width: auto; height: auto; transform: none !important; }
   [data-section="hero"] .hero-tag__lead { display: none; }
-  [data-section="hero"] .hero-tag__card { column-gap: 14px; padding: 6px 6px 6px 20px; border-radius: var(--radius-pill); }
-  [data-section="hero"] .hero-tag__name { font-size: 15px; line-height: 1.1; }
-  [data-section="hero"] .hero-tag__meta { display: none; }
-  [data-section="hero"] .hero-tag__price { margin-top: 3px !important; gap: .5em; }
+  [data-section="hero"] .hero-tag__card { position: relative; left: 0; top: 0; column-gap: 14px; padding: 6px 6px 6px 20px; }
+  [data-section="hero"] .hero-tag__name { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
-  [data-section="hero"] .hero-tag__add { grid-row: 1 / span 2; }
   [data-section="hero"].is-static .hero-tag { left: auto; top: auto; }
 }
 
 /* ---------- phones + portrait tablets: headline → the 3D product → offer → CTAs ---------- */
 @media (max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1) {
-  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(270px, min(94vw, calc(100svh - 432px)), 380px); height: auto; min-height: 0; }
+  [data-section="hero"] { --hero-h: auto; --spot-h: clamp(270px, min(94vw, calc(100svh - 452px)), 380px); height: auto; min-height: 0; }
   [data-section="hero"] .hero-scrim { background: none; }
   [data-section="hero"] .hero-inner { display: block; height: auto; padding-block: 20px 0; }
   [data-section="hero"] .hero-copy { max-width: none; }
@@ -235,31 +238,16 @@
   [data-section="hero"] .hero-trust__item { white-space: normal; align-items: flex-start; gap: 8px; }
   [data-section="hero"] .hero-trust__more { display: none; }
   [data-section="hero"] .hero-trust svg { width: 16px; height: 16px; margin-top: -1px; }
-  /* compact price tag: hangs under the bottle on a short dotted lead from the label */
-  [data-section="hero"] .hero-tag { display: block; width: 0; height: 0; }
-  /* an L: out of the silhouette to the right first, then down to the card's top edge (never across the bottle) */
-  [data-section="hero"] .hero-tag__lead { position: absolute; left: 0; top: 0; width: var(--lead-w, 30px); height: var(--lead-h, 40px); }
-  [data-section="hero"] .hero-tag__lead::before { left: calc(var(--lead-w, 30px) - .75px); right: auto; top: 0; bottom: 3px; border-top: 0; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-  [data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: 7px; width: calc(var(--lead-w, 30px) - 7px); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-  [data-section="hero"] .hero-tag__lead i { width: 8px; height: 8px; left: -4px; top: -4px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
-  [data-section="hero"] .hero-tag__card { position: absolute; left: var(--card-x, -110px); top: var(--lead-h, 40px); width: max-content;
-    grid-template-columns: auto 44px; column-gap: 14px; padding: 5px 5px 5px 18px; border-radius: var(--radius-pill); }
-  [data-section="hero"] .hero-tag__name { font-size: 15px; line-height: 1.1; }
-  [data-section="hero"] .hero-tag__meta { display: none; }
-  [data-section="hero"] .hero-tag__price { margin-top: 3px !important; gap: .5em; }
+  /* the pill: a touch more compact on phones */
+  [data-section="hero"] .hero-tag__card { column-gap: 14px; padding: 5px 5px 5px 18px; }
+  [data-section="hero"] .hero-tag__name { font-size: 15px; }
+  [data-section="hero"] .hero-tag__price { margin-top: 3px !important; gap: .45em; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
-  [data-section="hero"] .hero-tag__add { grid-row: 1 / span 2; }
-  [data-section="hero"] .hero-bubble__disc { width: 92px; margin: -46px 0 0 -46px; gap: 1px; }
-  [data-section="hero"] .hero-bubble__k { font-size: 11.5px; }
-  [data-section="hero"] .hero-bubble__amt { font-size: 19px; }
-  [data-section="hero"] .hero-bubble__sub { font-size: 11.5px; margin-top: 3px; }
-  /* static plate: the still sits in the spot; the disc and the pill are pinned to it */
-  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 36px); transform: translateX(-50%); height: calc(var(--spot-h) - 20px); -webkit-mask-image: radial-gradient(closest-side, black 82%, transparent); mask-image: radial-gradient(closest-side, black 82%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; width: auto; height: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); transform: none; }
-  [data-section="hero"].is-static .hero-tag__lead { display: none; }
-  [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
-  [data-section="hero"].is-static .hero-bubble { left: auto; right: 62px; top: calc(var(--spot-top, 150px) - 50px); }
+  [data-section="hero"] .hero-tag__save { height: 19px; padding: 0 7px; font-size: 10.5px; }
+  /* static plate: the still sits in the spot; the pill is pinned to it */
+  [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 6px); transform: translateX(-50%); height: var(--spot-h); -webkit-mask-image: radial-gradient(closest-side, black 82%, transparent); mask-image: radial-gradient(closest-side, black 82%, transparent); }
+  [data-section="hero"].is-static .hero-tag { left: auto; right: 16px; top: calc(var(--spot-top, 150px) + var(--spot-h) - 76px); }
 }
 /* portrait tablets: the same story, scaled up */
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {
@@ -279,10 +267,6 @@
   [data-section="hero"] .hero-short { display: none; }
   [data-section="hero"] .hero-trust { display: flex; font-size: 13px; }
   [data-section="hero"] .hero-trust__item { white-space: nowrap; align-items: center; }
-  [data-section="hero"] .hero-bubble__disc { width: 108px; margin: -54px 0 0 -54px; }
-  [data-section="hero"] .hero-bubble__k { font-size: 12.5px; }
-  [data-section="hero"] .hero-bubble__amt { font-size: 24px; }
-  [data-section="hero"] .hero-bubble__sub { display: block; font-size: 12px; }
 }
 @media (max-width: 359px) {
   [data-section="hero"] .hero-cta { font-size: 14px; padding: 0 10px; }

@@ -330,9 +330,13 @@
       const geo = `width:${(W / bw2 * 100).toFixed(3)}%;left:${(-x0 / bw2 * 100).toFixed(3)}%;top:${(-y0 / bh * 100).toFixed(3)}%`;
       const gw = bw2 / W, wu = packW(s);
       const cy = s.cyl || [0, 100];
+      const pc = (v) => (v * 100).toFixed(3);
+      const fl = Math.min(bw2 * 0.22, x0) / W, fr = Math.min(bw2 * 0.22, W - x1) / W, fy = Math.min(bh * 0.04, H - y1) / H;
+      const imgMask = `linear-gradient(90deg,transparent ${pc(x0 / W - fl)}%,var(--dl-mk) ${pc(x0 / W - fl * 0.45)}%,var(--sage-900) ${pc(x0 / W)}%,var(--sage-900) ${pc(x1 / W)}%,var(--dl-mk) ${pc(x1 / W + fr * 0.45)}%,transparent ${pc(x1 / W + fr)}%),linear-gradient(180deg,var(--sage-900) ${pc(y1 / H)}%,var(--dl-mk) ${pc(y1 / H + fy * 0.45)}%,transparent ${pc(y1 / H + fy)}%)`;
+      const clip = `clip-path:inset(${pc(y0 / H)}% ${pc(1 - x1 / W)}% ${pc(1 - y1 / H)}% ${pc(x0 / W)}%)`;
       return `<div class="deals-prod" data-lg="${(x0 / W * 100).toFixed(3)},${gw.toFixed(4)},${px0.toFixed(4)},${pw.toFixed(4)},${cy[0]},${cy[1]}" style="--ar:${(bw2 / bh).toFixed(4)};--ph:${s.h.toFixed(4)};--gx0:${(x0 / W * 100).toFixed(3)}%;--gw:${gw.toFixed(4)};--bk:${(gw / wu).toFixed(4)};--px0:${px0.toFixed(4)};--pw:${pw.toFixed(4)};--cy0:${(s.cyl || [0, 100])[0]}%;--cy1:${(s.cyl || [0, 100])[1]}%;--cyw:${(((s.cyl || [0, 100])[1] - (s.cyl || [0, 100])[0]) / 100).toFixed(4)};--by0:${(y0 / H * 100).toFixed(2)}%;--bh:${(bh / H).toFixed(4)}">
       <span class="deals-prod__shadow" aria-hidden="true"></span>
-      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H}"><i class="deals-beam"></i></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"><i class="deals-beam"></i></span><span class="deals-gloss deals-gloss--amber" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};--gm:url('${s.gm}')"><i class="deals-beam"></i></span>` : ""}</span>
+      <span class="deals-prod__pack" style="--m:url('${src}')"><img src="${src}" alt="${esc(alt)}" width="${W}" height="${H}" draggable="false" style="${geo};-webkit-mask-image:${imgMask};mask-image:${imgMask}"><span class="deals-gloss deals-gloss--plane" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip}"></span><span class="deals-gloss deals-gloss--sheen" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip}"><i class="deals-beam"></i></span>${s.gm ? `<span class="deals-gloss deals-gloss--glint" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip};--gm:url('${s.gm}')"><i class="deals-beam"></i></span><span class="deals-gloss deals-gloss--amber" aria-hidden="true" style="${geo};aspect-ratio:${W}/${H};${clip};--gm:url('${s.gm}')"><i class="deals-beam"></i></span>` : ""}</span>
       ${lbl}
     </div>`;
     }
@@ -379,7 +383,7 @@
       <p class="deals-set__cap"><span>Indhold</span><span>F\xF8rpris</span></p>
       <dl class="deals-set__list">
         ${rows.map((r, i) => `<div class="deals-set__row"><dt><span class="deals-no" aria-hidden="true">${i + 1}</span>${esc(r.name)}</dt><dd>${kr(r.price0)}</dd></div>`).join("")}
-        <div class="deals-set__row deals-set__row--sum0"><dt>Samlet f\xF8rpris enkeltvis</dt><dd>${kr(rows.reduce((a, r) => a + r.price0, 0))}</dd></div>
+        <div class="deals-set__row deals-set__row--sum0"><dt>Enkeltvis til f\xF8rpriser</dt><dd>${kr(rows.reduce((a, r) => a + r.price0, 0))}</dd></div>
         <div class="deals-set__row deals-set__row--sum"><dt>Enkeltvis i Black Week</dt><dd>${kr(setNow(p))}</dd></div>
       </dl>
     </div>`;
@@ -391,7 +395,7 @@
       return `<div class="deals-set__sum">
       <p class="deals-set__cap">F\xF8rpris pr. produkt</p>
       <p class="deals-set__eq"><span class="nc-sr">${rows.map((r) => `${esc(r.name)} ${kr(r.price0)}`).join(", ")}</span><span class="deals-set__eqv" aria-hidden="true">${rows.map((r, i) => `<span class="deals-set__term"><span class="deals-no">${i + 1}</span>${num(r.price0)}</span>`).join('<span class="deals-set__op">+</span>')}</span></p>
-      <p class="deals-set__tot deals-set__tot--was"><span>Samlet f\xF8rpris enkeltvis</span><b>${kr(sum0)}</b></p>
+      <p class="deals-set__tot deals-set__tot--was"><span>Enkeltvis til f\xF8rpriser</span><b>${kr(sum0)}</b></p>
       <p class="deals-set__tot"><span>Enkeltvis i Black Week</span><b>${kr(setNow(p))}</b></p>
     </div>`;
     };
@@ -407,9 +411,9 @@
     };
     const sale = (p) => `<span class="deals-flag" aria-hidden="true">\u2212${p.pct}%</span>`;
     const quick = (p) => `<button class="deals-quick" type="button" data-qv="${p.id}">${ICON.eye}<span class="nc-sr">Hurtig visning \u2013 ${esc(p.name)}</span></button>`;
-    const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}"><span class="nc-sr">Hurtig visning \u2013 ${esc(p.name)}</span></button>`;
+    const stageBtn = (p) => `<button class="deals-stagebtn" type="button" data-qv="${p.id}" tabindex="-1" aria-hidden="true"></button>`;
     const tallOf = (p) => p.bundle ? Math.max(...(p.contains || []).map((id) => BOTTLE_H[id] || 0)) : (SHOT[p.id] || { h: 0.8 }).h;
-    const TONE = { "komplet-pakken": "sand", "all-day-facial": "mint" };
+    const TONE = { "komplet-pakken": "sand", "all-day-facial": "dune" };
     function cardHtml(p, i) {
       const cat = catOf(p);
       if (p.bundle) {
@@ -675,15 +679,20 @@
     function placeGiftLabels() {
       const lab = $(".deals-gift__labels");
       if (!lab || !gTrack) return;
+      const st = lab.children[0], en = $(".deals-gift__lend", lab);
+      const ew = en.offsetWidth, sw = st.offsetWidth, KR = 6;
+      gTrack.style.marginRight = `${Math.max(0, ew / 2 - KR).toFixed(1)}px`;
       const tw = gTrack.clientWidth;
       if (!tw) return;
-      const st = lab.children[0], en = $(".deals-gift__lend", lab);
-      const ew = en.offsetWidth, sw = st.offsetWidth, k = shipAt / giftAt * tw;
-      en.style.left = `${(tw - ew).toFixed(1)}px`;
-      const centred = k - sw / 2;
-      const fits = centred >= 0 && centred + sw <= tw - ew - 10;
-      st.classList.toggle("is-c", fits);
-      st.style.left = `${(fits ? centred : clamp(k + 6 - sw, 0, tw - ew - 10 - sw)).toFixed(1)}px`;
+      const k = shipAt / giftAt * tw, ke = tw - KR;
+      st.classList.add("is-c");
+      en.classList.add("is-c");
+      en.style.left = `${(ke - ew / 2).toFixed(1)}px`;
+      const lines = (el2) => [...el2.children].map((c) => c.getBoundingClientRect().width);
+      const sl = lines(st), el = lines(en);
+      const gap = Math.min(...sl.map((w, i) => ke - (el[i] || 0) / 2 - (k + w / 2)));
+      const shift = Math.max(0, 6 - gap);
+      st.style.left = `${clamp(k - sw / 2 - shift, 0, tw).toFixed(1)}px`;
     }
     const thread = $(".deals-thread");
     function placeThread() {
@@ -760,6 +769,19 @@
           li.classList.toggle("is-setrow", set);
           li.classList.toggle("is-giftrow", gr);
         });
+        row.forEach((li) => li.style.removeProperty("--dl-eye"));
+        let eye = 0;
+        row.forEach((li) => {
+          const q = $(".deals-quick", li), st = $("[data-stage]", li);
+          if (!q || !st) return;
+          const sr = st.getBoundingClientRect(), d = TOUCH ? 10 : 4;
+          const L = sr.left + q.offsetLeft + d - 4, R = sr.left + q.offsetLeft + q.offsetWidth - d + 4, B = q.offsetTop + q.offsetHeight - d + 4;
+          $$(".deals-prod", li).forEach((pk) => {
+            const r = pk.getBoundingClientRect();
+            if (r.right > L && r.left < R) eye = Math.max(eye, B - (r.top - sr.top));
+          });
+        });
+        if (eye > 0.5) row.forEach((li) => li.style.setProperty("--dl-eye", `${Math.ceil(eye)}px`));
         const singles = row.filter((li) => !li.classList.contains("deals-item--set") && li !== giftLi);
         singles.forEach((li) => li.removeAttribute("data-name2"));
         singles.forEach((li) => li.removeAttribute("data-claim2"));
@@ -992,12 +1014,13 @@
         tKick();
       });
     }
-    const AMB_T = 10, AMB_A = 0.3;
+    const AMB_T = 7, AMB_A = 0.37, AMB_R = 0.985, AMB_N = Math.asin(AMB_R);
     const ambOrder = /* @__PURE__ */ new Map();
     const ambLx = (el, now) => {
       const k = ambOrder.get(el) || 0;
       const sc = TOUCH ? scrollY / 520 : 0;
-      return 0.5 + AMB_A * Math.sin(now / 1e3 / AMB_T * Math.PI * 2 - k * 0.62 + sc);
+      const th = now / 1e3 / AMB_T * Math.PI * 2 - k * 0.62 + sc;
+      return 0.5 + AMB_A * Math.asin(AMB_R * Math.sin(th)) / AMB_N;
     };
     if (!RM) {
       let aRaf = 0, gridIn = false;
@@ -1263,7 +1286,7 @@
         <p class="deals-card__eyebrow">${esc(p.bundle ? `Sampakke \xB7 ${(p.contains || []).length} produkter` : p.nickname ? `${p.nickname} \xB7 ${EYEBROW[p.id] || "Ansigt"}` : eyebrowOf(p))}</p>
         <h2 class="deals-qv__title" id="deals-qv-title">${esc(p.name)}</h2>
         <p class="deals-card__size">${esc(p.bundle ? (p.contains || []).map((id) => SHORT[id] || ctx.byId[id]?.name).join(" \xB7 ") : metaLine(p))}</p>
-        <p class="deals-qv__claim">${esc(p.claim)}</p>
+        <p class="deals-qv__claim">${nb(esc(p.claim))}</p>
         ${p.notes ? `<p class="deals-qv__notes">${esc(p.notes)}</p>` : ""}
         ${p.bundle ? contentsHtml(p) : ""}
         <hr class="nc-dotline deals-qv__rule">

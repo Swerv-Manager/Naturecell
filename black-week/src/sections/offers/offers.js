@@ -30,6 +30,7 @@ function initClock(root, ctx, q, reduced) {
   const end = ctx.clock.end, start = ctx.clock.start;
   const label = el.querySelector('[data-clock-label]');
   const done = el.querySelector('[data-clock-done]');
+  const when = el.querySelector('[data-clock-when]');
   const sr = el.querySelector('[data-clock-sr]');
   const title = root.querySelector('.offers-title');
   const titleHTML = title ? title.innerHTML : '';
@@ -73,6 +74,7 @@ function initClock(root, ctx, q, reduced) {
       el.dataset.state = state; lastState = state;
       label.textContent = state === 'pre' ? 'Black Week begynder om' : state === 'ended' ? 'Black Week er slut' : state === 'last' ? 'Sidste dag – slutter om' : 'Black Week slutter om';
       if (done) done.hidden = state !== 'ended';
+      if (when) { when.hidden = state === 'ended'; when.textContent = state === 'pre' ? 'Mandag 23. november kl.\u00a000.00' : 'Mandag 30. november kl.\u00a023.59'; }
       root.dataset.campaign = state;
       // before it starts and once it is over, the head must not promise three offers that are not (or no longer) live
       if (title) title.innerHTML = state === 'ended' ? 'Tak for denne gang.' : state === 'pre' ? 'Tre tilbud <em>på vej.</em>' : titleHTML;

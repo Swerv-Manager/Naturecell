@@ -9,7 +9,7 @@
 // face lands on the printed teal-sage (129,167,155) and the cool pale band (177,195,189) instead of olive/cream)
 const FIELD = '#7bb1b0';      // main field (upper + the heart of the V)
 const FIELD_LOW = '#94b6b4';  // lower-right field: a step lighter and greyer than the heart (as printed)
-const PALE = '#cad8e6';       // pale chevron band: a near-neutral pale grey (printed ≈ #e6e4e9 → #d9d8de)
+const PALE = '#a9c3c6';       // pale chevron band: a pale sage-grey, pre-compensated so it renders like the siblings' baked chevrons (≈ 160,175,166)
 const HATCH = 'rgba(226,238,233,0.34)';
 const THREAD = '#7a478a';     // Vidunder Olien's violet product thread (true to pack)
 const INK = '#ffffff';
@@ -98,7 +98,11 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
   const wordW = 69 * PXD, wordH = wordW * WB[3] / WB[2];
   const placeLogo = (gg) => {
     gg.drawImage(mark, cx - markS / 2, H * 0.072, markS, markS);
-    gg.drawImage(word, cx - wordW / 2, H * 0.302, wordW, wordH);
+    // the wordmark is drawn with a hair of dilation (≈ 0.25 screen px a side at the 1440 framing), so the thin stems
+    // of the 'N' and the 'C' survive the minification instead of breaking up
+    const wx = cx - wordW / 2, wy = H * 0.302, dl = 2.6 * W / 4096;
+    for (let a = 0; a < 8; a++) gg.drawImage(word, wx + Math.cos(a * Math.PI / 4) * dl, wy + Math.sin(a * Math.PI / 4) * dl, wordW, wordH);
+    gg.drawImage(word, wx, wy, wordW, wordH);
   };
   // the mark + wordmark: the brightest print on the pack (a near-white ink with the faintest pearl sheen), kept as
   // a mask too – it drives the satin roughness and a small lift so the brand mark stays the most legible thing

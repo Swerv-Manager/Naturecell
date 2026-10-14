@@ -954,6 +954,7 @@ body.nc-ytbox-open { overflow: hidden; }
   --dl-radius: var(--radius-lg);
   --dl-ink: var(--sage-900);
   --dl-sh: var(--sage-900);
+  --dl-mk: color-mix(in srgb, var(--sage-900) 38%, transparent);   /* mid-stop of the packshots' soft shadow ramps (deals.js) */
   --dl-card-shadow: 0 1px 2px color-mix(in srgb, var(--dl-sh) 4%, transparent), 0 12px 32px -20px color-mix(in srgb, var(--dl-sh) 22%, transparent);
   --dl-card-shadow-hi: 0 1px 2px color-mix(in srgb, var(--dl-sh) 5%, transparent), 0 30px 60px -28px color-mix(in srgb, var(--dl-sh) 36%, transparent);
   /* stage geometry – ONE truthful scale for the whole grid. --dl-u (px per unit, shampoo = 1) is set by deals.js from
@@ -1068,20 +1069,28 @@ body.nc-ytbox-open { overflow: hidden; }
    grid's one scale + head-room + a floor band, so packs fill their stage instead of standing in empty sky. */
 [data-section="deals"] .deals-card__stage {
   position: relative; z-index: 2; overflow: clip; isolation: isolate; pointer-events: none;
-  height: calc(var(--dl-u, 230px) * (var(--row-h, 1) + var(--dl-top-u)) + var(--dl-flpx));
+  height: calc(var(--dl-u, 230px) * (var(--row-h, 1) + var(--dl-top-u)) + var(--dl-flpx) + var(--dl-eye, 0px));
   border-radius: calc(var(--dl-radius) - 1px) calc(var(--dl-radius) - 1px) 0 0;
   container-type: size;
   --wfit: .8;
   --dl-fl: var(--dl-flpx);   /* floor line from the bottom */
 }
 [data-section="deals"] .is-setrow .deals-card__stage { --dl-flpx: var(--dl-flpx-set); }
-/* a single beside a Sampakke: the row is as tall as the set's pumps, so the shorter single would stand under a tall
-   empty ceiling. It stands on its own floor instead, lifted by half that head-room – the pack sits at the stage's
-   optical centre, its warm floor pool rises with it, and the scale stays exactly the grid's one truthful scale. */
+/* a single beside a Sampakke: the row is as tall as the set's pumps. The single stands on the same shelf as the set –
+   its base 6px below the set's floor line (the set's floor band carries the 1–4 labels; a single's needs none), so the
+   row keeps ONE horizon and no single has an empty floor under it. Its warm floor pool follows it (--fy reads --dl-fl), and the spare sky above it is filled by a soft key
+   halo, so the pack stands in light instead of under an empty ceiling. */
 [data-section="deals"] .is-setrow:not(.deals-item--set) .deals-card__stage {
-  --dl-fl: calc(var(--dl-flpx) + var(--dl-u, 230px) * (var(--row-h, 1) + var(--dl-top-u) - var(--own-h, 1)) * .5);
+  --dl-fl: min(var(--dl-flpx) - 6px, 40px);
 }
-/* tones: singles sit on the theme's sage; the two Sampakker get their own light – warm sand (Komplet) and mint (All Day) */
+[data-section="deals"] .is-setrow:not(.deals-item--set) .deals-ground {
+  background:
+    radial-gradient(62% 22% at 50% var(--fy, calc(100% - var(--dl-fl))), color-mix(in srgb, var(--tf) 88%, transparent), transparent 74%),
+    radial-gradient(70% 52% at 50% 40%, color-mix(in srgb, var(--cloud) 70%, transparent), transparent 72%),
+    radial-gradient(80% 62% at 46% 24%, color-mix(in srgb, var(--cloud) 50%, transparent), transparent 72%),
+    linear-gradient(180deg, var(--t0) 0%, var(--t1) 66%, color-mix(in srgb, var(--t1) 55%, var(--tf)) 100%);
+}
+/* tones: singles sit on the theme's sage; the two Sampakker share one warm evening light – sand (Komplet) and a lighter sand (All Day) */
 [data-section="deals"] .deals-card {
   --t0: var(--sage-50); --t1: var(--sage-100); --tf: var(--sand-100);
   /* the window's light differs a little on every stage (it is one window, seen from different spots along the shelf) */
@@ -1090,7 +1099,8 @@ body.nc-ytbox-open { overflow: hidden; }
   --wk: calc(.72 + sin(var(--ri, 0) * 3.1 + .4) * .28);
 }
 [data-section="deals"] [data-tone="sand"] .deals-card, [data-section="deals"] .deals-qv__stage[data-tone="sand"] { --t0: color-mix(in srgb, var(--sand-100) 55%, var(--paper-2)); --t1: color-mix(in srgb, var(--sand-300) 62%, var(--sand-100)); --tf: var(--sand-300); }
-[data-section="deals"] [data-tone="mint"] .deals-card, [data-section="deals"] .deals-qv__stage[data-tone="mint"] { --t0: color-mix(in srgb, var(--sage-50) 70%, var(--cloud)); --t1: color-mix(in srgb, var(--sage-100) 85%, var(--sage-200)); --tf: color-mix(in srgb, var(--sand-100) 70%, var(--sage-100)); }
+/* All Day Facial: the same evening window as Komplet, at ~60 % of its warmth – the two Sampakker read as one family */
+[data-section="deals"] [data-tone="dune"] .deals-card, [data-section="deals"] .deals-qv__stage[data-tone="dune"] { --t0: color-mix(in srgb, var(--sand-100) 38%, var(--paper-2)); --t1: color-mix(in srgb, var(--sand-300) 40%, var(--sand-100)); --tf: color-mix(in srgb, var(--sand-300) 70%, var(--sand-100)); }
 [data-section="deals"] .deals-ground {
   position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
@@ -1150,8 +1160,12 @@ body.nc-ytbox-open { overflow: hidden; }
   transform: translate(round(calc(var(--ry, 0) * .7px), 1px), round(calc(var(--rx, 0) * -.5px - var(--h, 0) * 5px), 1px));
   transform-origin: 50% 100%;
 }
-[data-section="deals"] .deals-prod__pack { position: absolute; inset: 0; overflow: hidden; }
-[data-section="deals"] .deals-prod__pack img { position: absolute; max-width: none; height: auto; user-select: none; -webkit-user-drag: none; }
+/* no clipping box: the packshot's own baked shadow fades out through its mask ramps (deals.js), the light layers are
+   clipped to the product box with clip-path – so no pack ever ends in a hard vertical shadow edge */
+[data-section="deals"] .deals-prod__pack { position: absolute; inset: 0; }
+[data-section="deals"] .deals-prod__pack img { position: absolute; max-width: none; height: auto; user-select: none; -webkit-user-drag: none;
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
 /* the ONE contact shadow – soft ambient pool + tight occlusion core, sage-tinted; it counter-moves against the tilt */
 [data-section="deals"] .deals-prod__shadow {
   position: absolute; left: -18%; right: -18%; bottom: -12px; height: 24px; pointer-events: none;
@@ -1313,9 +1327,9 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-card:focus-within .deals-quick,
 [data-section="deals"] .deals-quick:focus-visible { opacity: 1; transform: none; }
 [data-section="deals"] .deals-quick:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -1px; border-radius: 50%; }
-/* touch: no eye on the single tiles – the packshot itself is the quick-view button. The two Sampakke cards keep a small
-   eye (24px visible, 44px hit area), because their full ledger is what quick view is worth opening for. */
-[data-section="deals"].deals-touch .deals-card:not(.deals-card--set) .deals-quick { display: none; }
+/* touch: ONE rule for every card – a small eye top-right (24px visible, 44px hit area) says the stage opens quick view;
+   the whole stage stays a (silent, duplicate-free) tap target behind it. deals.js gives a row extra head-room where a
+   pack would reach into the eye's corner, so the eye never sits on a product. */
 [data-section="deals"].deals-touch .deals-quick { opacity: 1; transform: none; top: 6px; right: 6px; }
 [data-section="deals"].deals-touch .deals-quick::before { inset: 10px; box-shadow: none; background: color-mix(in srgb, var(--cloud) 80%, transparent); border-color: color-mix(in srgb, var(--sage-700) 10%, transparent); }
 [data-section="deals"].deals-touch .deals-quick svg { width: 14px; height: 14px; }
@@ -1580,8 +1594,8 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-gift__tick--end { margin-left: -12px; }
 [data-section="deals"] .deals-gift.is-ship .deals-gift__tick:not(.deals-gift__tick--end),
 [data-section="deals"] .deals-gift.is-done .deals-gift__tick--end { background: var(--sand-500); border-color: var(--sand-500); transform: scale(1.15); }
-/* each node: what it gives over what it costs – the same two short lines on every breakpoint. deals.js centres the
-   start label on its knob and sets the end label flush with the track's end, so nothing leaves the content box */
+/* each node: what it gives over what it costs – the same two short lines on every breakpoint, both centred on their own
+   knob (deals.js; the track stops short so the end label still ends flush with the content box) */
 [data-section="deals"] .deals-gift__labels { position: relative; height: 30px; margin-top: 10px; font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 72%, transparent); }
 [data-section="deals"] .deals-gift__labels > span { position: absolute; top: 0; left: var(--at); white-space: nowrap; display: grid; justify-items: end; row-gap: 4px; text-align: right; }
 [data-section="deals"] .deals-gift__labels > .is-c { justify-items: center; text-align: center; }
@@ -1701,7 +1715,7 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-qv__body { padding: 48px 44px 36px 32px; overflow-y: auto; display: flex; flex-direction: column; }
 [data-section="deals"] .deals-qv__title { margin: 0; font: 400 clamp(1.75rem, 1.3rem + 1vw, 2.25rem)/1.08 var(--font-display); color: var(--text-strong); padding-right: 44px; }
 [data-section="deals"] .deals-qv__body .deals-card__size { font-size: 13.5px; margin-top: 8px; }
-[data-section="deals"] .deals-qv__claim { margin: 18px 0 0; font-size: var(--text-md); line-height: 1.65; color: var(--text-body); }
+[data-section="deals"] .deals-qv__claim { margin: 18px 0 0; font-size: var(--text-md); line-height: 1.65; color: var(--text-body); text-wrap: pretty; }
 [data-section="deals"] .deals-qv__notes { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--dl-muted); }
 [data-section="deals"] .deals-qv__more { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px; font-size: 14px; font-weight: 500; color: var(--sage-700); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--sage-700) 35%, transparent); }
 [data-section="deals"] .deals-qv__more:hover { color: var(--sage-900); text-decoration-color: currentColor; }
@@ -1794,7 +1808,7 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="deals"] .deals-chip__n { margin-left: .25em; }
   [data-section="deals"] .deals-gift__copy { font-size: 13px; line-height: 1.45; }
   [data-section="deals"] .deals-gift__status { font-size: 12px; min-height: 0; }
-  [data-section="deals"] .deals-gift__labels { font-size: 11px; letter-spacing: .04em; }
+  [data-section="deals"] .deals-gift__labels { font-size: 11px; letter-spacing: .02em; }
 
   [data-section="deals"] .deals-foot { flex-direction: column; align-items: flex-start; gap: 14px; }
   [data-section="deals"] .deals-foot__legal { flex-basis: auto; }
