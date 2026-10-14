@@ -25,7 +25,7 @@ const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t
 
 // ---------------------------------------------------------------------------------------------------------
 // Layout (world units = 1 cm, floor at y = 0, camera looks down −z)
-const BOTTLE_X = 0.95, BOTTLE_Z = 6.0;                   // Vidunder Olien, in front (nearest the camera)
+const BOTTLE_X = 0.95, BOTTLE_Z = 8.5;                   // Vidunder Olien, in front (nearest the camera): a hand's width ahead of the routine
 const NECK_Y = 7.02;                                    // the oil bottle's lip
 // the routine behind it [x, z, turn]: one diagonal that descends toward the hero – Dagcreme (tall, nearest the
 // light), Natcreme (tall, a step further back), Rensegel (medium), then Vidunder Olien (short + the dropper). Each
@@ -33,7 +33,9 @@ const NECK_Y = 7.02;                                    // the oil bottle's lip
 // (solved in perspective: each front pack covers at most the outer ~6 % of its neighbour – the wordmarks span ±53°
 // of the airless labels, so anything more would crop a 'N' or an 'l'; all print is centred, so no turn is needed)
 const POS = { day: [-9.07, -6.8, 0.03], night: [-5.95, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
-const PIPETTE_LEN = 5.9;
+const PIPETTE_LEN = 5.4;                               // the 30 ml dropper's pipette, collar → nozzle
+const CAM_EL = 12;                                      // camera elevation (°): the classic still-life eye line – the routine's caps and the
+                                                        // dropper's bulb share one calm top line, the floor reads as depth
 const DROP_R = 0.16;                                    // the held drop (cm): ≈ 3.2× the nozzle's radius
 
 // ---------------------------------------------------------------------------------------------------------
@@ -79,8 +81,8 @@ function radialTex(stops, size = 256) {
 // Studio environment: night-green room, warm key softbox, two vertical rim strips, soft ceiling
 function makeEnvironment(renderer) {
   const s = new THREE.Scene();
-  // the room reaches well below the horizon: a vertical mirror (the chrome) seen from 9° above reflects the room
-  // ~9° BELOW the horizon, so the strip lights must reach down there and the floor must not cut them off
+  // the room reaches well below the horizon: a vertical mirror (the chrome) seen from 12° above reflects the room
+  // ~12° BELOW the horizon, so the strip lights must reach down there and the floor must not cut them off
   const room = new THREE.Mesh(new THREE.BoxGeometry(60, 44, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.55), side: THREE.BackSide }));
   room.position.y = 8; s.add(room);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.35) }));
@@ -110,7 +112,7 @@ function makeEnvironment(renderer) {
 // A second, chrome-only environment: the metallised pump sleeves are lit like the real packshot – a broad soft white
 // card wrapped around the front (the sleeve's silver body), one black flag and one hot strip beside it (the black
 // band and the near-white streak that make chrome read as chrome), the night-green room behind (the dark edges).
-// Directions only: a vertical mirror seen from ~9° above reflects ~9° below the horizon, so the cards sit there.
+// Directions only: a vertical mirror seen from ~12° above reflects ~12° below the horizon, so the cards sit there.
 function makeChromeEnvironment(renderer) {
   const s = new THREE.Scene();
   s.add(new THREE.Mesh(new THREE.BoxGeometry(60, 60, 60), new THREE.MeshBasicMaterial({ color: C('#28403b').multiplyScalar(0.3), side: THREE.BackSide })));
@@ -127,7 +129,7 @@ function makeChromeEnvironment(renderer) {
   }
   band(18, -36, -16, -14, 7, '#000000', 1);       // black flag (→ the dark band, left of centre)
   band(17.5, 20, 26, -14, 7, '#000000', 1);       // a second, thinner flag right of centre (→ the second dark band)
-  band(18, -15, -9, -14, 7, '#fffaf2', 1.7);      // hot strip right beside it (→ the near-white streak)
+  band(18, -14, -10, -14, 7, '#fffaf2', 3.2);     // hot strip right beside it (→ the near-white streak, ≥ 245, 1–2 px)
   band(18, 30, 36, -14, 7, '#f4f6f4', 0.75);      // a softer return on the right
   band(20, -125, 125, 6, 14, '#f1eee8', 0.09);    // the card's upper edge falls off softly
   const pm = new THREE.PMREMGenerator(renderer);
@@ -147,8 +149,8 @@ const BG_FRAG = /* glsl */`
   uniform vec2 uRes; uniform float uDpr;
   uniform vec3 uNight, uDeep, uWarm, uAmber, uSage;
   uniform vec2 uGlow; uniform float uGlowR;
-  uniform vec2 uSpot; uniform vec2 uSpotR; uniform vec3 uSpotCol; uniform vec2 uSpot2; uniform vec2 uSpot2R;
-  uniform vec2 uPool; uniform vec2 uPoolR;
+  uniform vec2 uSpot; uniform vec2 uSpotR; uniform vec3 uSpotCol;
+  uniform vec2 uPool; uniform vec2 uPoolR; uniform vec3 uPoolCol;
   varying vec2 vUv;
   float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
@@ -167,18 +169,18 @@ const BG_FRAG = /* glsl */`
     col *= 0.975 + 0.05 * m;
     // warm evening light behind the bottle
     float d = length((p - uGlow) / uGlowR);
-    col += uSage * 0.05 * exp(-d*d*1.1);
-    col += uWarm * 0.042 * exp(-d*d*2.6);
+    col += uSage * 0.055 * exp(-d*d*1.1);
+    col += uWarm * 0.036 * exp(-d*d*2.6);
     col += uAmber * 0.03 * exp(-d*d*6.0);
     // warm spot right behind the bottle's shoulder: only ever seen THROUGH the amber glass (transmission picks it
     // up and the attenuation turns it into the backlit amber glow of the shoulder and the heel)
     vec2 sq = (p - uSpot) / uSpotR;
     col += uSpotCol * exp(-dot(sq, sq) * 1.6);
-    vec2 sq2 = (p - uSpot2) / uSpot2R;
-    col += uSpotCol * 0.45 * exp(-dot(sq2, sq2) * 1.6);
-    // light pooling on the (invisible) floor
+    // light pooling on the (invisible) floor: night-green light (sage-600 with a quarter of sand-300), never a grey
+    // haze; the far edge (above the pool's centre on screen) falls off ≈ 30 % softer, so it never draws a horizon
     vec2 q = (p - uPool) / uPoolR;
-    col += mix(uSage, uWarm, 0.5) * 0.035 * exp(-dot(q,q) * 1.6);
+    q.y *= q.y > 0.0 ? 0.77 : 1.0;
+    col += uPoolCol * 0.03 * exp(-dot(q,q) * 1.6);
     gl_FragColor = vec4(col, 1.0);
   }`;
 
@@ -222,7 +224,9 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance', stencil: false });
   renderer.toneMapping = THREE.NoToneMapping;
   renderer.setClearColor(C('#28403b'), 1);
-  let pr = capDpr();
+  // DPR-1 screens render supersampled (×1.5, downsampled by the compositor): the small print on the packs stays crisp;
+  // the adaptive step below brings it back toward 1 if the frame time suffers
+  let pr = Math.min(2, Math.max(capDpr(), 1.5));
   renderer.setPixelRatio(pr);
 
   const scene = new THREE.Scene();
@@ -237,8 +241,9 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     uWarm: { value: C('#ddbfa3') }, uAmber: { value: C('#c7ae92') }, uSage: { value: C('#9ab4ac') },
     uGlow: { value: new THREE.Vector2() }, uGlowR: { value: 400 },
     uSpot: { value: new THREE.Vector2(-1e4, -1e4) }, uSpotR: { value: new THREE.Vector2(100, 100) }, uSpotCol: { value: C('#f0a650').multiplyScalar(0.55) },
-    uSpot2: { value: new THREE.Vector2(-1e4, -1e4) }, uSpot2R: { value: new THREE.Vector2(100, 100) },
     uPool: { value: new THREE.Vector2() }, uPoolR: { value: new THREE.Vector2(300, 60) },
+    // sage-600 · sand-300 (3 : 1), its blue held back a hair so the lit floor stays green-gold (B ≤ G − 8), never grey-blue
+    uPoolCol: { value: C('#5a7a72').multiplyScalar(0.75).add(C('#e8d6c3').multiplyScalar(0.25)).multiply(new THREE.Color(1, 1.03, 0.8)) },
   };
   const bg = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({ uniforms: bgU, vertexShader: BG_VERT, fragmentShader: BG_FRAG, depthWrite: false, depthTest: false }));
   bg.frustumCulled = false; bg.renderOrder = -100;
@@ -290,7 +295,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         float fG = pow(ndvH, 1.3);
         float shG = smoothstep(7.22, 7.5, hy) * (1.0 - smoothstep(8.35, 8.75, hy));
         float hlG = smoothstep(0.08, 0.3, hy) * (1.0 - smoothstep(0.95, 1.12, hy));
-        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * fG * (shG * 0.2 + hlG * 0.22); }`);
+        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * fG * (shG * 0.06 + hlG * 0.2); }`);
   };
   // Vidunder Olien's own glass: the same amber, but filled with golden oil and backlit by the evening light behind it –
   // the shoulder (oil up to ≈ 6.0 cm) and the heel under the label transmit a warm glow: strongest where the path
@@ -298,6 +303,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // grazing silhouette, and no glow in the empty neck above the oil line
   const heroAmber = amberGlass.clone();
   heroAmber.customProgramCacheKey = () => 'hero-amber';
+  amberGlass.specularIntensity = 0.7;                 // the Rensegel: a quieter shoulder glint (the oil keeps the warm accent)
   heroAmber.onBeforeCompile = (sh) => {
     sh.uniforms.uGlow = { value: 1 };
     sh.fragmentShader = 'uniform float uGlow;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
@@ -342,7 +348,10 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         float lenFade = smoothstep(-${(PIPETTE_LEN).toFixed(2)}, -${(PIPETTE_LEN - 0.3).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
         // the wall itself: a cool-grey body that thickens toward the silhouette (the tube is glass, not wire)
         vec3 body = vec3(0.78, 0.84, 0.82) * 0.06 * pow(1.0 - ndv, 2.0) * mix(0.5, 1.0, emptyG);
-        vec3 c = (vec3(1.0, 0.97, 0.92) * (rim + band) + body) * lenFade;
+        // one fine cool streak just inside the key-side wall, the full length of the tube (oil or not): the glass
+        // reads as glass over the oil too
+        float streak = exp(-pow((lat + 0.8) / 0.035, 2.0)) * 0.55;
+        vec3 c = (vec3(1.0, 0.97, 0.92) * (rim + band) + vec3(0.86, 0.93, 1.0) * streak + body) * lenFade;
         gl_FragColor = vec4(c, 1.0);
       }`,
   });
@@ -352,7 +361,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // bright refracted back-light line inside the shadow-side edge, and a concave meniscus that climbs the glass.
   const OT = -2.5;                                   // oil level at the wall (pipette local y)
   const OIL_K = 0.72;                                 // oil radius / glass inner radius: a clear glass wall on both sides
-  const oilU = { uAxis: glassRimU.uAxis, uKey: glassRimU.uK2, uR: { value: 0.302 * OIL_K }, uTop: { value: OT }, uDepth: { value: 0.19 } };
+  const oilU = { uAxis: glassRimU.uAxis, uKey: glassRimU.uK2, uR: { value: 0.302 * OIL_K }, uTop: { value: OT }, uDepth: { value: 0.05 } };
   const oilColumn = new THREE.ShaderMaterial({
     uniforms: oilU, transparent: true, depthWrite: false,
     blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
@@ -370,39 +379,37 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         float ndv = clamp(abs(dot(n, v)), 0.0, 1.0);
         vec3 side = normalize(cross(uAxis, v));
         float lat = dot(n, side) * sign(dot(side, uKey) + 1e-4) * -1.0;      // −1 key side … +1 shadow side
-        float edge = pow(1.0 - ndv, 1.6);
-        // saturated backlit gold, not olive: the colour comes from the oil's own transmission (alpha ≈ 0.3 lets the
-        // stage through), with only 8% of the night green mixed in. Along the column: bright gold under the meniscus,
-        // deepening toward the nozzle (the refracted path through the narrowing glass gets longer)
-        vec3 night = lin(vec3(0.157, 0.251, 0.231));
+        // a backlit liquid lens, not a painted rod: the oil is darkest on its axis (the longest path through it,
+        // ≈ 120,70,25) and turns to bright honey toward both walls (≈ 200,135,55), where the cylinder bends the back
+        // light into the eye; a hair of darker amber exactly at the oil/glass boundary keeps the wall thickness legible.
+        // Along the column it deepens a touch toward the nozzle (the narrowing glass lengthens the refracted path).
         float along = smoothstep(uTop - 0.1, -${(PIPETTE_LEN - 0.2).toFixed(2)}, vL.y);
-        vec3 topC = vec3(0.30, 0.118, 0.0), tipC = vec3(0.19, 0.042, 0.0);
-        vec3 core = mix(mix(topC, tipC, along), night, 0.08);
-        vec3 deep = lin(vec3(0.42, 0.2, 0.05));
-        vec3 col = mix(core, deep * 0.32, pow(1.0 - ndv, 1.4));
-        float a = mix(0.34, 0.86, edge);
-        // the back light focused by the cylinder lens: one side of the column glows
-        col += lin(vec3(0.95, 0.72, 0.33)) * 0.18 * exp(-pow((lat - 0.25) / 0.32, 2.0)) * (1.0 - 0.35 * along);
-        // refracted back-light line inside the shadow-side edge: quiet, breathing along the axis
-        float line = exp(-pow((lat - 0.7) / 0.03, 2.0));
-        line *= (0.55 + 0.45 * smoothstep(-${PIPETTE_LEN.toFixed(2)} + 0.4, -${PIPETTE_LEN.toFixed(2)} + 2.4, vL.y)) * (0.85 + 0.15 * sin(vL.y * 3.1));
-        line *= smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${PIPETTE_LEN.toFixed(2)} + 0.25, vL.y) * (1.0 - smoothstep(uTop - 0.14, uTop - 0.06, vL.y));
-        col += vec3(1.0, 0.8, 0.45) * line * 0.12;
-        // a dark amber line one pixel inside each silhouette (the oil seen edge-on), separating oil from the clear wall
-        float sil = exp(-pow((abs(lat) - 0.93) / 0.045, 2.0));
-        col = mix(col, lin(vec3(0.376, 0.22, 0.078)), sil); a = mix(a, 0.96, sil);
-        // meniscus: concave (oil wets the glass) – seen from the side, one fine amber line, lowest on the axis and
-        // climbing to the wall. Above it: no oil, only a whisper of wetting film along the walls.
-        float x = clamp(abs(lat), 0.0, 1.0) * uR;
+        float al = abs(lat);
+        vec3 coreC = mix(vec3(0.185, 0.054, 0.0035), vec3(0.15, 0.04, 0.002), along);
+        vec3 edgeC = mix(vec3(0.58, 0.238, 0.034), vec3(0.47, 0.18, 0.024), along);
+        float lens = smoothstep(0.18, 0.82, al);
+        vec3 col = mix(coreC, edgeC, lens);
+        float a = mix(0.88, 0.93, lens);
+        // the back light focused by the lens: the shadow-side wall glows a little brighter than the key side
+        col += lin(vec3(0.95, 0.72, 0.33)) * 0.09 * exp(-pow((lat - 0.72) / 0.16, 2.0)) * (1.0 - 0.4 * along);
+        // the oil/glass boundary, edge-on
+        float sil = exp(-pow((al - 0.965) / 0.03, 2.0));
+        col = mix(col, lin(vec3(0.42, 0.25, 0.09)), sil * 0.85); a = mix(a, 0.96, sil);
+        // meniscus: concave (oil wets the glass) – a shallow dip (≈ 0.05 cm) lowest on the axis, climbing to the wall,
+        // drawn as one fine bright rim (≥ 215: the back light caught in the curved surface). Above it: clear glass with
+        // a whisper of wetting film along the walls.
+        float x = clamp(al, 0.0, 1.0) * uR;
         float Rs = (uR * uR + uDepth * uDepth) / (2.0 * uDepth);
         float u = uTop - uDepth + (Rs - sqrt(max(Rs * Rs - x * x, 0.0)));
         float above = smoothstep(u - 0.006, u + 0.006, vL.y);
+        float edge = pow(1.0 - ndv, 1.6);
         float wet = edge * (1.0 - smoothstep(uTop - 0.05, uTop + 0.03, vL.y));
+        vec3 deep = lin(vec3(0.42, 0.2, 0.05));
         col = mix(col, deep * 0.1 * wet, above);
         a = mix(a, 0.2 * wet, above);
-        float men = exp(-pow((vL.y - u) / 0.011, 2.0)) * (1.0 - 0.5 * sil);
-        col += lin(vec3(0.85, 0.6, 0.3)) * 0.5 * men;
-        a = max(a, men * 0.45);
+        float men = exp(-pow((vL.y - u) / 0.017, 2.0)) * (1.0 - 0.6 * sil);
+        col = mix(col, lin(vec3(1.0, 0.9, 0.7)), men * 0.9);
+        a = max(a, men * 0.9);
         float cut = 1.0 - smoothstep(uTop + 0.02, uTop + 0.06, vL.y);
         gl_FragColor = vec4(col * cut, a * cut);
       }`,
@@ -468,7 +475,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // floor bounce brightens its foot, the room above darkens its shoulder) gives the mirror its depth
   chrome.onBeforeCompile = (sh) => {
     sh.vertexShader = 'varying float vWY;\n' + sh.vertexShader.replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n  vWY = (modelMatrix * vec4(transformed, 1.0)).y;');
-    sh.fragmentShader = 'varying float vWY;\n' + sh.fragmentShader.replace('#include <opaque_fragment>', 'outgoingLight *= mix(1.22, 0.5, smoothstep(10.95, 12.9, vWY));\n#include <opaque_fragment>');
+    sh.fragmentShader = 'varying float vWY;\n' + sh.fragmentShader.replace('#include <opaque_fragment>', '{ float k = smoothstep(10.9, 12.95, vWY); outgoingLight *= mix(1.42, 0.34, k * (0.6 + 0.4 * k)); }\n#include <opaque_fragment>');
   };
   // the clear over-cap: thin clear PET. No screen-space transmission (it would blur the actuator and the chrome behind
   // it); instead two shells – an additive one that carries only the reflections (diffuse black: the env + the key's
@@ -505,8 +512,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const labelMat = new THREE.MeshPhysicalMaterial({ color: C('#7bb1b0'), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C('#ffffff'), envMapIntensity: 0.42 });
   labelMat.onBeforeCompile = (sh) => {
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <map_fragment>', '#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.95 ).rgb;\n#endif')
-      .replace('#include <emissivemap_fragment>', '#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.95 ).rgb;\n#endif');
+      .replace('#include <map_fragment>', '#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.5 ).rgb;\n#endif')
+      .replace('#include <emissivemap_fragment>', '#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.5 ).rgb;\n#endif');
   };
   const labelGeo = new THREE.CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
   // rotate so u = 0.5 faces +z (the front)
@@ -604,7 +611,22 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const shadowCol = '#0f1d1a';
   // warm light pool under the whole group, centred forward so the hero's footprint sits inside it (as bright as the
   // back row's floor): one shared lit floor, not a lit back row and a hero standing in the dark
-  decal(featherDisk, '#ddbfa3', 0.075, 26, 12, (BOTTLE_X + POS.day[0]) / 2, 1.5, 0, true);
+  // (tinted sage-600 75 % + sand-300 25 %: light on night green stays green – a neutral or sand light reads as grey dust;
+  // the far half of the pool is ≈ 30 % longer, so its back edge melts into the backdrop instead of drawing a horizon)
+  {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const g = c.getContext('2d'), im = g.createImageData(256, 256);
+    for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+      const u = (x - 127.5) / 128, v = (y - 127.5) / 128, vv = v < 0 ? v / 1.3 : v;   // canvas top = far (−z)
+      const d = Math.min(1, Math.hypot(u, vv * 1.3 / 1.15));
+      const k = (y * 256 + x) * 4, a = Math.pow(1 - d, 1.6) * (1 - d * d);
+      im.data[k] = im.data[k + 1] = im.data[k + 2] = 255 * a; im.data[k + 3] = 255;
+    }
+    g.putImageData(im, 0, 0);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace;
+    const pool = decal(t, '#ffffff', 0.068, 27, 15, (BOTTLE_X + POS.day[0]) / 2, 1.0, 0, true);
+    pool.material.color.copy(bgU.uPoolCol.value);
+  }
   // cast shadow as a gradient along its length: darkest at the base, gone by 60% of its length (≈ 1.3× the bottle's
   // diameter), with a soft penumbra across – the same softness as the packshot shadows on the rest of the page
   const castTex = (() => {
@@ -642,8 +664,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   };
 
   // ---------- shadows: one key (front-left, high) → every pack gets the same contact occlusion, crease and cast
-  // contact occlusion: an exponential falloff with no plateau (seen from 9° above the floor every ellipse is squashed
-  // ≈ 6×, so any plateau edge would read as a coaster rim), nudged a hair toward the camera; the crease ring at the
+  // contact occlusion: an exponential falloff with no plateau (seen from 12° above the floor every ellipse is squashed
+  // ≈ 5×, so any plateau edge would read as a coaster rim), nudged a hair toward the camera; the crease ring at the
   // base's own radius sits a touch back-right (away from the key); the cast shadow runs back-right, long enough that
   // its tail shows beside each pack – one light, one direction, the darker side of every footprint on the right
   const contactTex = radialTex([[0, 1], [0.5, 0.75], [0.62, 0.45], [0.72, 0.22], [0.84, 0.07], [1, 0]]);
@@ -711,8 +733,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   setPendant(RT, DROP_R, 1.1, 0.04);
 
   // ---------- DOM overlays (screen px, set from hero.js): the price tag, the copy blocks
-  const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0 };
-  const ovTag = [0, 0, 0, 0, 0];                       // ovTag: pill left, top (rest pose) · the lead's dot x, y (relative) · lead run
+  const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0, gutter: 16 };
+  const ovTag = [0, 0, 0, 0, 0];                       // ovTag: pill left, top (rest pose) · the lead's dot x, y · where it meets the pill x (relative)
 
   // ---------- pointer (damped)
   const pointer = { ndc: new THREE.Vector2(0.3, 0), target: new THREE.Vector2(0.3, 0), active: false };
@@ -722,7 +744,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   // ---------- layout / camera framing
   // The dropper is held over its bottle the way it is used: near-vertical (≈ 14°, leaning back-right), the nozzle
   // 0.7 cm above the lip on the neck's axis, so the held drop hangs plumb over the opening.
-  const TIP = new THREE.Vector3(BOTTLE_X + 0.02, NECK_Y + 0.72, BOTTLE_Z + 0.05);
+  const TIP = new THREE.Vector3(BOTTLE_X + 0.02, NECK_Y + 0.7, BOTTLE_Z + 0.05);   // the drop's foot ≥ 1 drop-diameter over the lip
   const DROPPER_BASE = new THREE.Vector3();
   let tilt = 0.24;
   const setTilt = (t) => {
@@ -753,25 +775,66 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       [b.x + 1.22 * c, b.y - 1.22 * s, b.z], [b.x - 1.22 * c, b.y + 1.22 * s, b.z]);
     return pts;
   };
-  // the shoppable pill hangs UNDER the still life (never beside it): the products get the stage's full width, and the
-  // pill reads as the caption of the hero object. Vertical room it needs below the oil's front base:
-  const tagDrop = () => (mobileNow ? 12 : 16);         // oil base → the pill's top edge
-  const tagRoom = () => (OV.pin ? 0 : tagDrop() + OV.tagH);
-  // the pill hangs under the oil on a dotted lead – an L: out of the silhouette to the right, then down onto the pill's
-  // quick-add button. It runs leftward under the routine (the floor in front of it is empty). Rest pose = the camera
-  // without parallax or intro dolly; computed once per layout.
-  const tagRest = { left: 0, top: 0, vx: 0 };
+  // The shoppable pill is the hero object's caption.
+  //  · desktop: it stands at the foot of the routine, on the floor in front of the Rensegel and the creams, its quick-add
+  //    button beside the oil – a straight dotted lead runs from a dot on the oil's label out of the silhouette into the
+  //    pill's rim (the pill needs no room under the group, so the still life gets the stage's full height)
+  //  · phones: it hangs under the oil on an L-shaped lead (out of the silhouette to the right, then down onto the
+  //    quick-add button), full width on the content column
+  const tagDrop = () => (mobileNow ? 12 : 16);         // phones: oil base → the pill's top edge
+  const tagRoom = () => (OV.pin || !mobileNow ? 0 : tagDrop() + OV.tagH);
+  const FOOT_GAP = 22;                                 // desktop: the oil's silhouette → the pill's right rim
+  // Rest pose = the camera without parallax or intro dolly; computed once per layout.
+  // left/top: the pill · dot: the label dot (stage px) · cx: where the lead meets the pill (its rim, or the turn of the L)
+  const tagRest = { left: 0, top: 0, cx: 0, foot: false };
+  const silAt = (y, side) => {                         // the oil's silhouette x at height y (side −1 left, +1 right)
+    let v = side < 0 ? 1e9 : -1e9;
+    for (let i = 0; i < 64; i++) {
+      const a = (i / 64) * TAU, q = toPx(tmp3.set(BOTTLE_X + Math.sin(a) * 1.615, y, BOTTLE_Z + Math.cos(a) * 1.615))[0];
+      v = side < 0 ? Math.min(v, q) : Math.max(v, q);
+    }
+    return v;
+  };
+  // the lowest point of the routine's feet (stage px) within [xa, xb] – the pill keeps clear of it
+  const feetIn = (xa, xb) => {
+    let y = -1e9;
+    for (const k of ['day', 'gel', 'night']) {
+      const it = range[k];
+      for (let i = 0; i <= 24; i++) {
+        const a = -Math.PI / 2 + (i / 24) * Math.PI, q = toPx(tmp3.set(it.x + Math.sin(a) * it.R * 1.25, 0, it.z + Math.cos(a) * it.R * 1.25));
+        if (q[0] >= xa && q[0] <= xb) y = Math.max(y, q[1]);
+      }
+    }
+    return y;
+  };
   function restTag() {
     const az = camBase.az, el = camBase.el;
     camBase.az = 0; camBase.el = 0; placeCamera(0);
-    const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
-    const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
-    const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
-    const vx = Math.round(edge + 16);                   // the lead's vertical run, 16 px clear of the glass
-    const lo = mobileNow ? 16 : layoutRect.x0 - 12, hi = Math.max(lo, (mobileNow ? W - 16 : layoutRect.x1) - OV.tagW);
-    tagRest.left = Math.round(clamp(vx + 27 - OV.tagW, lo, hi));   // 27 = the button's centre, from the pill's right edge
-    tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
-    tagRest.vx = Math.min(vx, tagRest.left + OV.tagW - 20);
+    if (!mobileNow) {
+      const dw = bottle.localToWorld(tmp2.copy(tagLocalL));
+      const dot = toPx(dw);
+      const right = Math.round(silAt(dw.y, -1) - FOOT_GAP);
+      const left = Math.round(Math.max(layoutRect.x0 - 12, right - OV.tagW));
+      let top = Math.round(dot[1] - OV.tagH / 2);
+      // never over a pack's foot (its contact shadow included): 14 px of floor between them
+      const feet = feetIn(left - 8, left + OV.tagW + 8);
+      if (top < feet + 14) top = Math.round(feet + 14);
+      tagRest.left = left; tagRest.top = top; tagRest.foot = true;
+      // the lead meets the pill's rounded right end at the dot's height, or (pill pushed down) turns down onto the button
+      const r = OV.tagH / 2, dy = dot[1] - (top + r);
+      tagRest.cx = Math.abs(dy) < r - 6 ? left + OV.tagW - r + Math.sqrt(r * r - dy * dy) : left + OV.tagW - 27;
+    } else {
+      const dw = bottle.localToWorld(tmp2.copy(tagLocalM));
+      const dot = toPx(dw);
+      const base = toPx(tmp3.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
+      const vx = Math.round(silAt(dw.y, 1) + 16);       // the lead's vertical run, ≥ 16 px clear of the glass
+      // the pill sits on the content column (the gutter), full width; its button's centre is 27 px in from the right
+      const lo = OV.gutter || 16;
+      tagRest.left = Math.round(OV.tagW + lo <= W - lo ? lo : clamp(vx + 27 - OV.tagW, lo, Math.max(lo, W - lo - OV.tagW)));
+      tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
+      tagRest.cx = Math.max(vx, tagRest.left + OV.tagW - 27);
+      tagRest.foot = false;
+    }
     camBase.az = az; camBase.el = el; placeCamera(0);
   }
   function layout() {
@@ -801,7 +864,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 26 - tagRoom();
       // the theme grid's content edge (where the trust band ends): nothing in the hero crosses it
       const right = OV.gridR > 0 ? OV.gridR : Math.min(W - 24, (W + 1240) / 2 - 24);
-      rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(64, H * 0.1), y1: bottom };   // a calm top line: the caps and the bulb ≥ 80 px under the header
+      rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(72, H * 0.125), y1: bottom };   // a calm top line: the caps and the bulb level, ≈ 100 px under the header
     }
     layoutRect = rect;
     frame = { fx: (rect.x0 + rect.x1) / 2 / W, fy: (rect.y0 + rect.y1) / 2 / H, hs: (rect.y1 - rect.y0) * 0.9, D: 0 };
@@ -814,15 +877,17 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
         setD(); placeCamera(0);
         let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
         for (const p of pts) { const q = toPx(tmp.set(p[0], p[1], p[2])); bx0 = Math.min(bx0, q[0]); bx1 = Math.max(bx1, q[0]); by0 = Math.min(by0, q[1]); by1 = Math.max(by1, q[1]); }
-        // fixed-size DOM extents beyond the products: desktop – the tag to the right of the oil's label
-        let exR = 0;
-        const s = Math.min((rect.x1 - rect.x0 - exR) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
+        // fixed-size DOM extents beyond the products: desktop – the pill at the foot, left of the oil
+        let exL = 0;
+        if (!mobile && !OV.pin) exL = Math.max(0, bx0 - (silAt(bottle.localToWorld(tmp2.copy(tagLocalL)).y, -1) - FOOT_GAP - OV.tagW));
+        const s = Math.min((rect.x1 - rect.x0 - exL) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
         frame.hs *= it === 0 ? s : Math.pow(s, 0.9);
         frame.hs = Math.min(frame.hs, H * 0.86);
         setD(); placeCamera(0);
         bx0 = 1e9; bx1 = -1e9; by0 = 1e9; by1 = -1e9;
         for (const p of pts) { const q = toPx(tmp.set(p[0], p[1], p[2])); bx0 = Math.min(bx0, q[0]); bx1 = Math.max(bx1, q[0]); by0 = Math.min(by0, q[1]); by1 = Math.max(by1, q[1]); }
-        const dx = (rect.x0 + rect.x1 - exR) / 2 - (bx0 + bx1) / 2;
+        // desktop: the group's right silhouette (the dropper's bulb) on the theme grid's content edge
+        const dx = mobile ? (rect.x0 + rect.x1) / 2 - (bx0 + bx1) / 2 : rect.x1 - bx1;
         const dy = mobile ? (rect.y0 + rect.y1) / 2 - (by0 + by1) / 2 : rect.y1 - by1;
         frame.fx += dx / W; frame.fy += dy / H;
       }
@@ -836,7 +901,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     dirty = true;
   }
   function placeCamera(intro) {
-    const az = camBase.az, el = THREE.MathUtils.degToRad(9) + camBase.el;
+    const az = camBase.az, el = THREE.MathUtils.degToRad(CAM_EL) + camBase.el;
     const D = frame.D * (1 + 0.045 * intro);
     target.set(SUBJECT.cx, SUBJECT.cy, 0);
     camera.position.set(target.x + Math.sin(az) * Math.cos(el) * D, target.y + Math.sin(el) * D, Math.cos(az) * Math.cos(el) * D);
@@ -855,6 +920,15 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const rt = new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: 4 });
   const composer = new EffectComposer(renderer, rt);
   composer.addPass(new RenderPass(scene, camera));
+  // sanitize: a point light on near-mirror glass (roughness 0.035) can push one GGX sample past the half-float range;
+  // an Inf/NaN texel would bloom into a hard square – clamp the HDR before the bloom (the hottest glints stay ≥ 1)
+  composer.addPass(new ShaderPass({
+    uniforms: { tDiffuse: { value: null } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `precision highp float; uniform sampler2D tDiffuse; varying vec2 vUv;
+      float s(float v){ return v < 6.0 ? max(v, 0.0) : (v >= 6.0 ? 6.0 : 0.0); }
+      void main(){ vec4 c = texture2D(tDiffuse, vUv); gl_FragColor = vec4(s(c.r), s(c.g), s(c.b), 1.0); }`,
+  }));
   const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.3, 0.45, 1.05);   // threshold above the glints: no halos, only the hottest specks bloom
   composer.addPass(bloom);
   const finalPass = new ShaderPass(FINAL_SHADER);
@@ -864,10 +938,10 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
   const st = { intro: 1 };
   let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
   const tagLocalM = new THREE.Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625); // the label's lower-right sage field
+  const tagLocalL = new THREE.Vector3(Math.sin(-0.36) * 1.625, 1.9, Math.cos(-0.36) * 1.625);               // desktop: the label's lower-left, beside the pill
   const anchors = {
     glow: new THREE.Vector3(BOTTLE_X + 0.4, 5.0, BOTTLE_Z - 5),        // the evening light on the backdrop: behind the oil's neck and the drop
     spot: new THREE.Vector3(BOTTLE_X, 5.6, BOTTLE_Z - 3.0),
-    spot2: new THREE.Vector3(POS.gel[0], 8.2, POS.gel[1] - 3.2),
     pool: new THREE.Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 1.5),
   };
 
@@ -883,7 +957,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     pointer.ndc.x += (px - pointer.ndc.x) * k;
     pointer.ndc.y += (py - pointer.ndc.y) * k;
     if (!reduced) {
-      camBase.az = -pointer.ndc.x * THREE.MathUtils.degToRad(2.2);
+      camBase.az = -pointer.ndc.x * THREE.MathUtils.degToRad(2.6);
       camBase.el = pointer.ndc.y * THREE.MathUtils.degToRad(1.2);
     }
     placeCamera(introE);
@@ -895,7 +969,8 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
       key.position.set(BOTTLE_X - 21 * c - 24 * sn, 4 + 27 + Math.sin(t * TAU / 23) * (reduced ? 0 : 1.2), BOTTLE_Z - 21 * sn + 24 * c);
     }
     // dropper: a slow, oil-damped float over the bottle; the drop hangs plumb from the nozzle
-    const bob = reduced ? 0 : Math.sin(t * TAU / 7.5) * 0.06 + Math.sin(t * TAU / 11.3) * 0.025;
+    // (it only ever rises from its rest height: the held drop never sinks below one drop-diameter over the lip)
+    const bob = reduced ? 0 : (1 + Math.sin(t * TAU / 7.5)) * 0.05 + (1 + Math.sin(t * TAU / 11.3)) * 0.015;
     dropperPivot.position.set(DROPPER_BASE.x, DROPPER_BASE.y + bob, DROPPER_BASE.z);
     dropperPivot.rotation.z = -tilt + (reduced ? 0 : Math.sin(t * TAU / 9.1) * 0.01);
     dropperPivot.updateMatrixWorld(true);
@@ -908,9 +983,9 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     {
       // the pill is pinned at its rest pose (whole pixels: crisp text, a target that never drifts under the finger);
       // only the dotted lead follows the label as the camera breathes
-      const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
+      const dot = toPx(bottle.localToWorld(tmp2.copy(tagRest.foot ? tagLocalL : tagLocalM)));
       ovTag[0] = tagRest.left; ovTag[1] = tagRest.top;
-      ovTag[2] = dot[0] - tagRest.left; ovTag[3] = dot[1] - tagRest.top; ovTag[4] = Math.max(10, tagRest.vx - dot[0]);
+      ovTag[2] = dot[0] - tagRest.left; ovTag[3] = dot[1] - tagRest.top; ovTag[4] = tagRest.cx - tagRest.left;
     }
 
     // screen-space anchors for the backdrop
@@ -920,8 +995,6 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     bgU.uGlowR.value = ppu * 9.5 * pr;
     const sp = toPx(anchors.spot); bgU.uSpot.value.set(sp[0] * pr, (H - sp[1]) * pr);
     bgU.uSpotR.value.set(ppu * 1.35 * pr, ppu * 1.0 * pr);
-    const sp2 = toPx(anchors.spot2); bgU.uSpot2.value.set(sp2[0] * pr, (H - sp2[1]) * pr);
-    bgU.uSpot2R.value.set(ppu * 1.9 * pr, ppu * 1.2 * pr);
     const pl = toPx(anchors.pool); bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr); bgU.uPoolR.value.set(ppu * 11 * pr, ppu * 2.2 * pr);
     finalPass.uniforms.uTime.value = t;
     caustic.material.opacity = 0.26 + 0.04 * Math.sin(t * 0.7);
@@ -961,7 +1034,7 @@ export async function createHeroScene({ canvas, host, asset, reduced, onFrame, o
     resize() { layout(); if (!running) renderOnce(); },
     pointer(nx, ny, active) { pointer.target.set(nx, ny); pointer.active = active; },
     setOverlays(o) {
-      const key = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ':' + Math.round(r[3]))]);
+      const key = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), Math.round(OV.tagH), OV.gutter, OV.blocks.map((r) => Math.round(r[2]) + ':' + Math.round(r[3]))]);
       const k0 = key();
       Object.assign(OV, o);
       if (key() !== k0) { layout(); if (!running) renderOnce(); }

@@ -8,7 +8,6 @@
   --viscous: cubic-bezier(.22, .61, .36, 1);
   --viscous-long: cubic-bezier(.16, 1, .3, 1);
   --muted: color-mix(in srgb, var(--paper) 74%, transparent);
-  --faint: color-mix(in srgb, var(--paper) 68%, transparent);
   --hair: color-mix(in srgb, var(--paper) 16%, transparent);
   --shade: color-mix(in srgb, var(--sage-900) 30%, black);          /* deep night-green shadow ink */
   position: relative;
@@ -117,14 +116,16 @@
 
 [data-section="hero"] .hero-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
-/* the shoppable pill hangs under the oil on a dotted lead from its label – an L: out of the silhouette to the right
-   first, then down onto the pill's quick-add button (never across the bottle) */
+/* the shoppable pill is the hero object's caption, on a dotted lead from a dot on the oil's label. Desktop: the pill
+   stands at the foot of the routine and the lead runs straight out of the silhouette into its rim. Phones: the pill
+   hangs under the oil and the lead is an L – out of the silhouette to the right, then down onto the quick-add button.
+   (the pill sits at the tag's origin; the lead's box spans the dot → where it meets the pill: --lead-s = 1 when the
+   dot is the box's right end; --lead-h = the drop of the L, 0 for a straight lead) */
 [data-section="hero"] .hero-tag { display: block; width: 0; height: 0; pointer-events: auto; }
-/* (the pill sits at the tag's origin; the lead starts at the label's dot, above-left of it: --lead-x/-y < 0) */
-[data-section="hero"] .hero-tag__lead { position: absolute; left: var(--lead-x, -30px); top: var(--lead-y, -40px); width: var(--lead-w, 30px); height: calc(0px - var(--lead-y, -40px)); }
-[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: calc(var(--lead-w, 30px) - .75px); top: 0; bottom: 2px; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-[data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: 7px; width: calc(var(--lead-w, 30px) - 7px); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-[data-section="hero"] .hero-tag__lead i { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
+[data-section="hero"] .hero-tag__lead { position: absolute; left: var(--lead-x, -30px); top: var(--lead-y, -40px); width: var(--lead-w, 30px); height: var(--lead-h, 40px); }
+[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: calc(var(--lead-w, 30px) * (1 - var(--lead-s, 0)) - .75px); top: 0; bottom: 2px; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: calc(7px * (1 - var(--lead-s, 0))); right: calc(7px * var(--lead-s, 0)); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead i { position: absolute; left: calc(var(--lead-w, 30px) * var(--lead-s, 0) - 4px); top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
 [data-section="hero"] .hero-tag__card {
   position: absolute; left: 0; top: 0; width: max-content;
   display: grid; grid-template-columns: auto 44px; column-gap: 16px; align-items: center;
@@ -137,7 +138,7 @@
 [data-section="hero"] .hero-tag__meta { display: none; }
 [data-section="hero"] .hero-tag__price { margin-top: 4px !important; gap: .5em; flex-wrap: nowrap; }
 [data-section="hero"] .hero-tag__price .nc-price__now { color: var(--paper); font-size: 16px; }
-[data-section="hero"] .hero-tag__price .nc-price__was { color: var(--faint); font-size: 12px; }
+[data-section="hero"] .hero-tag__price .nc-price__was { color: var(--muted); font-size: 13px; white-space: nowrap; }
 /* the saving on the hero product: a small berry chip on the price row (the sale-flag colour, as on the deal cards) */
 [data-section="hero"] .hero-tag__save {
   align-self: center; display: inline-flex; align-items: center; height: 20px; padding: 0 8px 0 8px; border-radius: var(--radius-pill);
@@ -159,7 +160,9 @@
 
 /* static plate (no WebGL): the tag is pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .6616); top: calc(var(--hero-h) * .8117); }
+/* (the plate scales with the stage height; the pill keeps its size, so its RIGHT rim is pinned beside the oil, its centre
+   on the label's dot height) */
+[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .4046); top: calc(var(--hero-h) * .8066 - 31px); }
 [data-section="hero"].is-static .hero-tag__lead { display: none; }
 [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
 
@@ -203,8 +206,8 @@
   [data-section="hero"] .hero-tag__card { position: relative; left: 0; top: 0; column-gap: 14px; padding: 6px 6px 6px 20px; }
   [data-section="hero"] .hero-tag__name { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
-  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
-  [data-section="hero"].is-static .hero-tag { left: auto; top: auto; }
+  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 12.5px; }
+  [data-section="hero"].is-static .hero-tag { left: auto; top: auto; right: var(--gutter, 24px); }
 }
 
 /* ---------- phones + portrait tablets: headline → the 3D product → offer → CTAs ---------- */
@@ -239,15 +242,29 @@
   [data-section="hero"] .hero-tag__name { font-size: 15px; }
   [data-section="hero"] .hero-tag__price { margin-top: 3px !important; gap: .45em; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
-  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
+  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 12.5px; }
   [data-section="hero"] .hero-tag__save { height: 19px; padding: 0 7px; font-size: 10.5px; }
   /* the lead's dot: smaller on phones, where the bottle is small (it marks the label, never covers its print) */
-  [data-section="hero"] .hero-tag__lead i { left: -3px; top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--paper) 18%, transparent); }
+  [data-section="hero"] .hero-tag__lead i { left: calc(var(--lead-w, 30px) * var(--lead-s, 0) - 3px); top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--paper) 18%, transparent); }
   /* static plate: the still sits in the spot; the pill is pinned to it */
   /* (the phone plate is the live spot itself, edge to edge: same framing, same pill position) */
   [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 6px); transform: translateX(-50%); height: var(--spot-h); width: auto;
     -webkit-mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: 26px; right: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 82px); }
+  [data-section="hero"].is-static .hero-tag { left: var(--gutter, 16px); right: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 83px); }
+}
+/* phones: the pill spans the content column (16 → 374 at 390): name and price on the left, the quick-add on the right,
+   its left edge on the same line as the eyebrow, the headline, the offer and the CTAs */
+@media (max-width: 760px) {
+  [data-section="hero"] .hero-tag__card { width: var(--tag-fw, calc(100% - 2 * var(--gutter, 16px))); grid-template-columns: 1fr 44px; }
+}
+/* short phones (toolbars up): a smaller spot and a two-line offer, so the end date stays in the first viewport */
+@media (max-width: 760px) and (max-height: 760px) {
+  [data-section="hero"] { --spot-h: clamp(236px, min(94vw, calc(100svh - 452px)), 380px); }
+  [data-section="hero"] .hero-offer__sub { font-size: 12.5px; }
+  [data-section="hero"] .hero-inner { padding-top: 14px; }
+  [data-section="hero"] .hero-eyebrow { margin-bottom: 12px; }
+  [data-section="hero"] .hero-ctas { margin-top: 14px; }
+  [data-section="hero"] .hero-facts { margin-top: 12px; }
 }
 /* portrait tablets: the same story, scaled up */
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {

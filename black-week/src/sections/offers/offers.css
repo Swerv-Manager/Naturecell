@@ -11,7 +11,6 @@
   --pad: 10px;                         /* stage inset inside a tile */
   --copy-x: 22px;                      /* copy inset inside a tile */
   --shade: 40, 64, 59;                 /* --sage-900 as rgb – every shadow on paper is built from it */
-  --night-shade: 35, 51, 48;           /* --ink-900 as rgb – contact shadows on the night tile */
   --hl: color-mix(in srgb, var(--paper-2) 92%, transparent);
   position: relative;
   background: var(--paper);
@@ -95,10 +94,6 @@
   box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 18px 40px -30px rgba(var(--shade), .28);
   transition: box-shadow 600ms var(--viscous);
 }
-/* DOM order is hero-first (mobile reading order); desktop sets the columns explicitly */
-[data-section="offers"] .offers-tile--range { grid-column: 1; }
-[data-section="offers"] .offers-tile--hero { grid-column: 2; }
-[data-section="offers"] .offers-tile--gift { grid-column: 3; }
 [data-section="offers"] .offers-tile::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(var(--shade), .07); pointer-events: none; z-index: 2;
 }
@@ -181,8 +176,9 @@
 [data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: 2.2cqw; }
 /* the back pair sits a touch further from the evening light */
 [data-section="offers"] .offers-row--set .offers-p--back img { filter: brightness(.9) saturate(.96); }
-[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--night-shade), .92), rgba(var(--night-shade), 0)); }
-[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--night-shade), .45), rgba(var(--night-shade), 0)); }
+/* on the night panel the same --shade (sage-900) shadows, only denser – the table is already dark */
+[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--shade), 1), rgba(var(--shade), 0)); }
+[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--shade), .6), rgba(var(--shade), 0)); }
 
 [data-section="offers"] .offers-save {
   position: absolute; right: var(--copy-x); top: var(--copy-x); z-index: 3; margin: 0;
@@ -199,42 +195,48 @@
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-/* a macro close-up at the same floor line: the camera steps in, so the Natcreme airless behind is cropped by the
-   frame's top edge while the 6 ml stick stands front-centre as the subject. The camera distance is solved, not guessed:
-   --u is sized so the top edge always cuts through the airless's silver collar (--crop = 26% of the bottle from the
-   top), which keeps the bindrune (its top arc at 38%) and the wordmark whole at every width.
-   Depth: the airless stands --step further back on the table than the stick (never less than 13px foot to foot).
-   Sizes: 6 ml per the live Shopify product "Lip Balm | med CBD 6ml" (SKU 1513); a 6 ml twist stick is 68 mm tall,
-   the Natcreme airless 150 mm → .45. Shadows scale with the camera (sized from --u here, not from the stage). */
+/* the example basket, close up, at the same floor line: the camera steps in, so the Natcreme airless behind is cropped
+   by the frame's top edge while the Vidunder Olien stands a step forward as the subject. The camera distance is solved,
+   not guessed: --u is sized so the top edge always cuts through the airless's silver collar (--crop = 26% of the bottle
+   from the top), which keeps the bindrune (its top arc at 38%) and the wordmark whole at every width.
+   Depth: the airless stands --step further back on the table than the oil (never less than 13px foot to foot).
+   Sizes: one scale – the 30 ml dropper is .657 of the 150 mm airless, exactly as in the hero set. Shadows scale with
+   the camera (sized from --u here, not from the stage). */
 [data-section="offers"] .offers-stage--gift {
-  --crop: .26; --fwd: 1.4cqh; --step: max(4cqh, 13px);
+  --crop: .26; --fwd: 1px; --step: max(4cqh, 13px);
   --u: calc((100cqh - var(--floor) - (var(--step) - var(--fwd))) / (1 - var(--crop)));
-  --d: clamp(76px, 23cqw, 86px); --gap: 34px;
+  --d: clamp(76px, 23cqw, 86px); --gap: 30px;
+  --cap-y: 27%; --cap-x: 78.5%;        /* the oil's collar band in oil.webp (y 155–186 of 637, right edge x 164 of 209) */
 }
-/* optical centring: the row is the airless + stick; the disc and its leader hang off the stick to the right */
+/* optical centring: the row is the airless + oil; the disc and its leader hang off the oil to the right */
 [data-section="offers"] .offers-row--gift { gap: 0; padding-right: calc(var(--d) + var(--gap)); }
-[data-section="offers"] .offers-row--gift .offers-p--back { margin: 0 -6cqw calc(var(--step) - var(--fwd)) 0; z-index: 1; }
+/* a clear, small overlap (no tangent): the oil passes in front of the airless's right margin only – the product name
+   on the label (NIGHT CREAM) stays whole */
+[data-section="offers"] .offers-row--gift .offers-p--back { margin: 0 -1.6cqw calc(var(--step) - var(--fwd)) 0; z-index: 1; }
 /* further from the window light: a touch darker and quieter (no fake blur – the packshot stays crisp) */
 [data-section="offers"] .offers-row--gift .offers-p--back img { filter: brightness(.92) saturate(.94); }
 [data-section="offers"] .offers-row--gift .offers-p--back::after { left: -4%; right: -10%; bottom: calc(var(--u) * -.02); height: calc(var(--u) * .05); }
 [data-section="offers"] .offers-row--gift .offers-p--back::before { left: 16%; right: -40%; bottom: calc(var(--u) * -.035); height: calc(var(--u) * .09); }
-/* the gift stands a step forward on the table, its foot clear of the shelf label below */
+/* the oil stands a step forward, just behind the shelf's front lip (3px of tabletop shows under its foot – no tangent
+   with the edge line; its contact shadow bridges the lip). oil-macro.webp = oil.webp without the baked rectangular
+   floor skirt, which shows as a grey box at this camera distance */
 [data-section="offers"] .offers-p--gift { margin: 0 0 calc(var(--fwd) * -1) 0; z-index: 3; }
-[data-section="offers"] .offers-p--gift::after { left: -10%; right: -26%; bottom: -1.4cqh; height: 3.4cqh; }
-[data-section="offers"] .offers-p--gift::before { left: 14%; right: -80%; bottom: -2.4cqh; height: 6cqh; }
-/* the value disc: the Spar bubble's grammar (uppercase key over a bold value) in the gift's pink, beside the cap and
-   tied to it by a short horizontal dotted feature line; never shadowed, never rotated */
+[data-section="offers"] .offers-p--gift::after { left: -6%; right: -14%; bottom: calc(var(--u) * -.02); height: calc(var(--u) * .05); }
+[data-section="offers"] .offers-p--gift::before { left: 16%; right: -46%; bottom: calc(var(--u) * -.035); height: calc(var(--u) * .09); }
+/* the gift disc: the Spar bubble's grammar (uppercase key over a bold value) in the gift's pink, level with the oil's
+   collar and tied to it by a short horizontal dotted feature line; never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
-  position: absolute; z-index: 1; left: calc(100% + var(--gap)); top: calc(var(--d) * -.3);
+  position: absolute; z-index: 1; left: calc(100% + var(--gap)); top: calc(var(--cap-y) - var(--d) / 2);
   width: var(--d); height: var(--d); padding: 0; margin: 0;
-  gap: 3px; align-content: center; grid-auto-flow: row; font-family: var(--font-body); white-space: nowrap;
+  gap: 4px; align-content: center; grid-auto-flow: row; font-family: var(--font-body); white-space: nowrap;
   transition: background 800ms var(--viscous), color 800ms var(--viscous), translate 1100ms var(--viscous-long) 90ms, scale 700ms var(--viscous);
 }
+[data-section="offers"] .offers-gift__v { font-size: 15px; letter-spacing: 0; }
 /* leader: the hero's feature-line grammar one screen up – a 1.5px dashed lead from an anchor dot (with a soft halo)
-   sitting on the cap's edge to the disc's edge, at the disc's centre height */
+   on the collar's edge to the disc's edge, at the disc's centre height */
 [data-section="offers"] .offers-lead {
-  position: absolute; z-index: 1; left: calc(100% - 4px); top: calc(var(--d) * .2 - .75px);
-  width: var(--gap); height: 0;
+  position: absolute; z-index: 1; left: calc(var(--cap-x) - 4px); top: calc(var(--cap-y) - .75px);
+  width: calc(100% - var(--cap-x) + var(--gap) + 4px); height: 0;
   border-top: 1.5px dashed color-mix(in srgb, var(--accent-berry) 70%, transparent);
   transition: translate 1100ms var(--viscous-long) 90ms;
 }
@@ -243,12 +245,6 @@
   background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 18%, transparent);
 }
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
-/* the render is a stand-in, so it says so: a quiet caption beside the stick's foot, just above the shelf line
-   (which becomes the cart meter on mobile) */
-[data-section="offers"] .offers-illu {
-  position: absolute; left: calc(100% + 8px); bottom: calc(var(--fwd) + 7px); z-index: 3;
-  font: 500 10px/1 var(--font-body); letter-spacing: .04em; color: var(--sage-700); white-space: nowrap;
-}
 
 /* the shelf-edge label: centred in the tabletop band under the line-up */
 [data-section="offers"] .offers-note {
@@ -286,6 +282,8 @@
 [data-section="offers"] .offers-tile__eyebrow {
   margin-block: 24px 0; font: 600 11px/1.4 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700);
 }
+/* amounts inside an uppercase eyebrow keep the page's "kr." convention (as .offers-note__sum) */
+[data-section="offers"] .offers-amt { text-transform: none; letter-spacing: .02em; }
 [data-section="offers"] .offers-tile__title {
   margin: 8px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; letter-spacing: -.005em; color: var(--sage-700);
 }
@@ -345,7 +343,7 @@
 [data-section="offers"] .offers-add.nc-btn,
 [data-section="offers"] .offers-add.nc-btn:hover,
 [data-section="offers"] .offers-add.nc-btn:focus-visible { background: var(--bg); color: var(--fg); border-color: var(--bg); transition: background-color 500ms var(--viscous), color 500ms var(--viscous), box-shadow 500ms var(--viscous), transform 300ms var(--viscous); }
-[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--night-shade), .9), 0 0 0 5px color-mix(in srgb, var(--paper) 7%, transparent); }
+[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--shade), .9), 0 0 0 5px color-mix(in srgb, var(--paper) 7%, transparent); }
 [data-section="offers"] .offers-add:focus-visible { outline-color: var(--sand-300); outline-offset: 4px; }
 [data-section="offers"] .offers-add__ico { display: grid; width: 18px; height: 18px; }
 [data-section="offers"] .offers-add__ico svg { grid-area: 1 / 1; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: opacity 300ms var(--viscous), transform 600ms var(--viscous-long); }
@@ -362,7 +360,7 @@
 /* ---------------------------------------------------------------- hover physics (pointer devices) */
 @media (hover: hover) and (pointer: fine) {
   [data-section="offers"] .offers-tile:hover .offers-p img { transform: translateY(-1.6cqh); }
-  /* the gift lifts as one piece: stick, leader and disc on the stick's own curve and delay */
+  /* the gift lifts as one piece: oil, leader and disc on the oil's own curve and delay */
   [data-section="offers"] .offers-tile:hover .offers-gift,
   [data-section="offers"] .offers-tile:hover .offers-lead { translate: 0 -1.6cqh; }
   [data-section="offers"] .offers-tile:hover .offers-p::after { transform: scaleX(.9); opacity: .7; }
@@ -421,10 +419,9 @@
     column-gap: 12px; width: max-content;
     padding: calc(var(--bleed) + 8px) var(--gutter) calc(var(--bleed) + 56px);
   }
-  [data-section="offers"] .offers-tile--range,
-  [data-section="offers"] .offers-tile--hero,
-  [data-section="offers"] .offers-tile--gift { grid-column: auto; }
-  [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: var(--pad) var(--pad) 20px; }
+  /* centre snapping: the rail opens on the hero offer with an equal peek of its neighbours on both sides
+     (the first and last tile rest against the gutter, where a centred snap cannot reach) */
+  [data-section="offers"] .offers-tile { scroll-snap-align: center; padding: var(--pad) var(--pad) 20px; }
   /* one tile per view: a squarer stage gives the products the room the column layout cannot */
   [data-section="offers"] .offers-stage { aspect-ratio: 1; }
   [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
@@ -458,7 +455,6 @@
      clear air above the 399 tick */
   [data-section="offers"] .offers-note { z-index: 0; }
   [data-section="offers"] .offers-stage--gift .offers-row { z-index: 1; }
-  [data-section="offers"] .offers-illu { bottom: calc(var(--fwd) + 15px); }
   [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: 54px; }
   [data-section="offers"] .offers-tile__text { font-size: 14.5px; }
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }
@@ -485,6 +481,7 @@
   /* the twin discs shrink together */
   [data-section="offers"] .offers-save { width: 70px; }
   [data-section="offers"] .offers-stage--gift { --d: 70px; }
+  [data-section="offers"] .offers-gift__v { font-size: 13.5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

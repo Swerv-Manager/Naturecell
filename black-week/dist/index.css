@@ -1143,7 +1143,6 @@ html.nc-lock { overflow: hidden; }
   --viscous: cubic-bezier(.22, .61, .36, 1);
   --viscous-long: cubic-bezier(.16, 1, .3, 1);
   --muted: color-mix(in srgb, var(--paper) 74%, transparent);
-  --faint: color-mix(in srgb, var(--paper) 68%, transparent);
   --hair: color-mix(in srgb, var(--paper) 16%, transparent);
   --shade: color-mix(in srgb, var(--sage-900) 30%, black);          /* deep night-green shadow ink */
   position: relative;
@@ -1252,14 +1251,16 @@ html.nc-lock { overflow: hidden; }
 
 [data-section="hero"] .hero-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
-/* the shoppable pill hangs under the oil on a dotted lead from its label – an L: out of the silhouette to the right
-   first, then down onto the pill's quick-add button (never across the bottle) */
+/* the shoppable pill is the hero object's caption, on a dotted lead from a dot on the oil's label. Desktop: the pill
+   stands at the foot of the routine and the lead runs straight out of the silhouette into its rim. Phones: the pill
+   hangs under the oil and the lead is an L – out of the silhouette to the right, then down onto the quick-add button.
+   (the pill sits at the tag's origin; the lead's box spans the dot → where it meets the pill: --lead-s = 1 when the
+   dot is the box's right end; --lead-h = the drop of the L, 0 for a straight lead) */
 [data-section="hero"] .hero-tag { display: block; width: 0; height: 0; pointer-events: auto; }
-/* (the pill sits at the tag's origin; the lead starts at the label's dot, above-left of it: --lead-x/-y < 0) */
-[data-section="hero"] .hero-tag__lead { position: absolute; left: var(--lead-x, -30px); top: var(--lead-y, -40px); width: var(--lead-w, 30px); height: calc(0px - var(--lead-y, -40px)); }
-[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: calc(var(--lead-w, 30px) - .75px); top: 0; bottom: 2px; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-[data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: 7px; width: calc(var(--lead-w, 30px) - 7px); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
-[data-section="hero"] .hero-tag__lead i { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
+[data-section="hero"] .hero-tag__lead { position: absolute; left: var(--lead-x, -30px); top: var(--lead-y, -40px); width: var(--lead-w, 30px); height: var(--lead-h, 40px); }
+[data-section="hero"] .hero-tag__lead::before { content: ""; position: absolute; left: calc(var(--lead-w, 30px) * (1 - var(--lead-s, 0)) - .75px); top: 0; bottom: 2px; border-left: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead::after { content: ""; position: absolute; left: calc(7px * (1 - var(--lead-s, 0))); right: calc(7px * var(--lead-s, 0)); top: -.75px; border-top: 1.5px dashed color-mix(in srgb, var(--paper) 55%, transparent); }
+[data-section="hero"] .hero-tag__lead i { position: absolute; left: calc(var(--lead-w, 30px) * var(--lead-s, 0) - 4px); top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 18%, transparent); }
 [data-section="hero"] .hero-tag__card {
   position: absolute; left: 0; top: 0; width: max-content;
   display: grid; grid-template-columns: auto 44px; column-gap: 16px; align-items: center;
@@ -1272,7 +1273,7 @@ html.nc-lock { overflow: hidden; }
 [data-section="hero"] .hero-tag__meta { display: none; }
 [data-section="hero"] .hero-tag__price { margin-top: 4px !important; gap: .5em; flex-wrap: nowrap; }
 [data-section="hero"] .hero-tag__price .nc-price__now { color: var(--paper); font-size: 16px; }
-[data-section="hero"] .hero-tag__price .nc-price__was { color: var(--faint); font-size: 12px; }
+[data-section="hero"] .hero-tag__price .nc-price__was { color: var(--muted); font-size: 13px; white-space: nowrap; }
 /* the saving on the hero product: a small berry chip on the price row (the sale-flag colour, as on the deal cards) */
 [data-section="hero"] .hero-tag__save {
   align-self: center; display: inline-flex; align-items: center; height: 20px; padding: 0 8px 0 8px; border-radius: var(--radius-pill);
@@ -1294,7 +1295,9 @@ html.nc-lock { overflow: hidden; }
 
 /* static plate (no WebGL): the tag is pinned to where the plate shows the bottle */
 [data-section="hero"].is-static .hero-tag { opacity: 1; transform: none; transition-delay: 600ms; }
-[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: calc(100% - max(0px, (100% - 1440px) / 2) - var(--hero-h) * .6616); top: calc(var(--hero-h) * .8117); }
+/* (the plate scales with the stage height; the pill keeps its size, so its RIGHT rim is pinned beside the oil, its centre
+   on the label's dot height) */
+[data-section="hero"].is-static .hero-tag { width: auto; height: auto; left: auto; right: calc(max(0px, (100% - 1440px) / 2) + var(--hero-h) * .4046); top: calc(var(--hero-h) * .8066 - 31px); }
 [data-section="hero"].is-static .hero-tag__lead { display: none; }
 [data-section="hero"].is-static .hero-tag__card { position: relative; left: 0; top: 0; }
 
@@ -1338,8 +1341,8 @@ html.nc-lock { overflow: hidden; }
   [data-section="hero"] .hero-tag__card { position: relative; left: 0; top: 0; column-gap: 14px; padding: 6px 6px 6px 20px; }
   [data-section="hero"] .hero-tag__name { font-size: 15px; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
-  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
-  [data-section="hero"].is-static .hero-tag { left: auto; top: auto; }
+  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 12.5px; }
+  [data-section="hero"].is-static .hero-tag { left: auto; top: auto; right: var(--gutter, 24px); }
 }
 
 /* ---------- phones + portrait tablets: headline → the 3D product → offer → CTAs ---------- */
@@ -1374,15 +1377,29 @@ html.nc-lock { overflow: hidden; }
   [data-section="hero"] .hero-tag__name { font-size: 15px; }
   [data-section="hero"] .hero-tag__price { margin-top: 3px !important; gap: .45em; }
   [data-section="hero"] .hero-tag__price .nc-price__now { font-size: 15px; }
-  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 11.5px; }
+  [data-section="hero"] .hero-tag__price .nc-price__was { font-size: 12.5px; }
   [data-section="hero"] .hero-tag__save { height: 19px; padding: 0 7px; font-size: 10.5px; }
   /* the lead's dot: smaller on phones, where the bottle is small (it marks the label, never covers its print) */
-  [data-section="hero"] .hero-tag__lead i { left: -3px; top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--paper) 18%, transparent); }
+  [data-section="hero"] .hero-tag__lead i { left: calc(var(--lead-w, 30px) * var(--lead-s, 0) - 3px); top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--paper) 18%, transparent); }
   /* static plate: the still sits in the spot; the pill is pinned to it */
   /* (the phone plate is the live spot itself, edge to edge: same framing, same pill position) */
   [data-section="hero"] .hero-fallback { left: 50%; right: auto; top: calc(var(--spot-top, 150px) - 6px); transform: translateX(-50%); height: var(--spot-h); width: auto;
     -webkit-mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); mask-image: linear-gradient(180deg, transparent 0, black 7%, black 93%, transparent); }
-  [data-section="hero"].is-static .hero-tag { left: 26px; right: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 82px); }
+  [data-section="hero"].is-static .hero-tag { left: var(--gutter, 16px); right: auto; top: calc(var(--spot-top, 150px) + var(--spot-h) - 83px); }
+}
+/* phones: the pill spans the content column (16 → 374 at 390): name and price on the left, the quick-add on the right,
+   its left edge on the same line as the eyebrow, the headline, the offer and the CTAs */
+@media (max-width: 760px) {
+  [data-section="hero"] .hero-tag__card { width: var(--tag-fw, calc(100% - 2 * var(--gutter, 16px))); grid-template-columns: 1fr 44px; }
+}
+/* short phones (toolbars up): a smaller spot and a two-line offer, so the end date stays in the first viewport */
+@media (max-width: 760px) and (max-height: 760px) {
+  [data-section="hero"] { --spot-h: clamp(236px, min(94vw, calc(100svh - 452px)), 380px); }
+  [data-section="hero"] .hero-offer__sub { font-size: 12.5px; }
+  [data-section="hero"] .hero-inner { padding-top: 14px; }
+  [data-section="hero"] .hero-eyebrow { margin-bottom: 12px; }
+  [data-section="hero"] .hero-ctas { margin-top: 14px; }
+  [data-section="hero"] .hero-facts { margin-top: 12px; }
 }
 /* portrait tablets: the same story, scaled up */
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {
@@ -1428,7 +1445,6 @@ html.nc-lock { overflow: hidden; }
   --pad: 10px;                         /* stage inset inside a tile */
   --copy-x: 22px;                      /* copy inset inside a tile */
   --shade: 40, 64, 59;                 /* --sage-900 as rgb – every shadow on paper is built from it */
-  --night-shade: 35, 51, 48;           /* --ink-900 as rgb – contact shadows on the night tile */
   --hl: color-mix(in srgb, var(--paper-2) 92%, transparent);
   position: relative;
   background: var(--paper);
@@ -1512,10 +1528,6 @@ html.nc-lock { overflow: hidden; }
   box-shadow: 0 1px 2px rgba(var(--shade), .05), 0 18px 40px -30px rgba(var(--shade), .28);
   transition: box-shadow 600ms var(--viscous);
 }
-/* DOM order is hero-first (mobile reading order); desktop sets the columns explicitly */
-[data-section="offers"] .offers-tile--range { grid-column: 1; }
-[data-section="offers"] .offers-tile--hero { grid-column: 2; }
-[data-section="offers"] .offers-tile--gift { grid-column: 3; }
 [data-section="offers"] .offers-tile::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(var(--shade), .07); pointer-events: none; z-index: 2;
 }
@@ -1598,8 +1610,9 @@ html.nc-lock { overflow: hidden; }
 [data-section="offers"] .offers-row--set .offers-p:nth-child(4) { margin-left: 2.2cqw; }
 /* the back pair sits a touch further from the evening light */
 [data-section="offers"] .offers-row--set .offers-p--back img { filter: brightness(.9) saturate(.96); }
-[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--night-shade), .92), rgba(var(--night-shade), 0)); }
-[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--night-shade), .45), rgba(var(--night-shade), 0)); }
+/* on the night panel the same --shade (sage-900) shadows, only denser – the table is already dark */
+[data-section="offers"] .offers-stage--hero .offers-p::after { background: radial-gradient(closest-side, rgba(var(--shade), 1), rgba(var(--shade), 0)); }
+[data-section="offers"] .offers-stage--hero .offers-p::before { background: radial-gradient(closest-side, rgba(var(--shade), .6), rgba(var(--shade), 0)); }
 
 [data-section="offers"] .offers-save {
   position: absolute; right: var(--copy-x); top: var(--copy-x); z-index: 3; margin: 0;
@@ -1616,42 +1629,48 @@ html.nc-lock { overflow: hidden; }
     radial-gradient(85% 70% at 18% 0%, color-mix(in srgb, var(--paper-2) 75%, transparent) 0%, transparent 62%),
     linear-gradient(180deg, var(--sand-100) 0%, color-mix(in srgb, var(--sand-100) 55%, var(--sand-300)) var(--hz-a), var(--sand-300) var(--hz-b), var(--sand-100) 100%);
 }
-/* a macro close-up at the same floor line: the camera steps in, so the Natcreme airless behind is cropped by the
-   frame's top edge while the 6 ml stick stands front-centre as the subject. The camera distance is solved, not guessed:
-   --u is sized so the top edge always cuts through the airless's silver collar (--crop = 26% of the bottle from the
-   top), which keeps the bindrune (its top arc at 38%) and the wordmark whole at every width.
-   Depth: the airless stands --step further back on the table than the stick (never less than 13px foot to foot).
-   Sizes: 6 ml per the live Shopify product "Lip Balm | med CBD 6ml" (SKU 1513); a 6 ml twist stick is 68 mm tall,
-   the Natcreme airless 150 mm → .45. Shadows scale with the camera (sized from --u here, not from the stage). */
+/* the example basket, close up, at the same floor line: the camera steps in, so the Natcreme airless behind is cropped
+   by the frame's top edge while the Vidunder Olien stands a step forward as the subject. The camera distance is solved,
+   not guessed: --u is sized so the top edge always cuts through the airless's silver collar (--crop = 26% of the bottle
+   from the top), which keeps the bindrune (its top arc at 38%) and the wordmark whole at every width.
+   Depth: the airless stands --step further back on the table than the oil (never less than 13px foot to foot).
+   Sizes: one scale – the 30 ml dropper is .657 of the 150 mm airless, exactly as in the hero set. Shadows scale with
+   the camera (sized from --u here, not from the stage). */
 [data-section="offers"] .offers-stage--gift {
-  --crop: .26; --fwd: 1.4cqh; --step: max(4cqh, 13px);
+  --crop: .26; --fwd: 1px; --step: max(4cqh, 13px);
   --u: calc((100cqh - var(--floor) - (var(--step) - var(--fwd))) / (1 - var(--crop)));
-  --d: clamp(76px, 23cqw, 86px); --gap: 34px;
+  --d: clamp(76px, 23cqw, 86px); --gap: 30px;
+  --cap-y: 27%; --cap-x: 78.5%;        /* the oil's collar band in oil.webp (y 155–186 of 637, right edge x 164 of 209) */
 }
-/* optical centring: the row is the airless + stick; the disc and its leader hang off the stick to the right */
+/* optical centring: the row is the airless + oil; the disc and its leader hang off the oil to the right */
 [data-section="offers"] .offers-row--gift { gap: 0; padding-right: calc(var(--d) + var(--gap)); }
-[data-section="offers"] .offers-row--gift .offers-p--back { margin: 0 -6cqw calc(var(--step) - var(--fwd)) 0; z-index: 1; }
+/* a clear, small overlap (no tangent): the oil passes in front of the airless's right margin only – the product name
+   on the label (NIGHT CREAM) stays whole */
+[data-section="offers"] .offers-row--gift .offers-p--back { margin: 0 -1.6cqw calc(var(--step) - var(--fwd)) 0; z-index: 1; }
 /* further from the window light: a touch darker and quieter (no fake blur – the packshot stays crisp) */
 [data-section="offers"] .offers-row--gift .offers-p--back img { filter: brightness(.92) saturate(.94); }
 [data-section="offers"] .offers-row--gift .offers-p--back::after { left: -4%; right: -10%; bottom: calc(var(--u) * -.02); height: calc(var(--u) * .05); }
 [data-section="offers"] .offers-row--gift .offers-p--back::before { left: 16%; right: -40%; bottom: calc(var(--u) * -.035); height: calc(var(--u) * .09); }
-/* the gift stands a step forward on the table, its foot clear of the shelf label below */
+/* the oil stands a step forward, just behind the shelf's front lip (3px of tabletop shows under its foot – no tangent
+   with the edge line; its contact shadow bridges the lip). oil-macro.webp = oil.webp without the baked rectangular
+   floor skirt, which shows as a grey box at this camera distance */
 [data-section="offers"] .offers-p--gift { margin: 0 0 calc(var(--fwd) * -1) 0; z-index: 3; }
-[data-section="offers"] .offers-p--gift::after { left: -10%; right: -26%; bottom: -1.4cqh; height: 3.4cqh; }
-[data-section="offers"] .offers-p--gift::before { left: 14%; right: -80%; bottom: -2.4cqh; height: 6cqh; }
-/* the value disc: the Spar bubble's grammar (uppercase key over a bold value) in the gift's pink, beside the cap and
-   tied to it by a short horizontal dotted feature line; never shadowed, never rotated */
+[data-section="offers"] .offers-p--gift::after { left: -6%; right: -14%; bottom: calc(var(--u) * -.02); height: calc(var(--u) * .05); }
+[data-section="offers"] .offers-p--gift::before { left: 16%; right: -46%; bottom: calc(var(--u) * -.035); height: calc(var(--u) * .09); }
+/* the gift disc: the Spar bubble's grammar (uppercase key over a bold value) in the gift's pink, level with the oil's
+   collar and tied to it by a short horizontal dotted feature line; never shadowed, never rotated */
 [data-section="offers"] .offers-gift {
-  position: absolute; z-index: 1; left: calc(100% + var(--gap)); top: calc(var(--d) * -.3);
+  position: absolute; z-index: 1; left: calc(100% + var(--gap)); top: calc(var(--cap-y) - var(--d) / 2);
   width: var(--d); height: var(--d); padding: 0; margin: 0;
-  gap: 3px; align-content: center; grid-auto-flow: row; font-family: var(--font-body); white-space: nowrap;
+  gap: 4px; align-content: center; grid-auto-flow: row; font-family: var(--font-body); white-space: nowrap;
   transition: background 800ms var(--viscous), color 800ms var(--viscous), translate 1100ms var(--viscous-long) 90ms, scale 700ms var(--viscous);
 }
+[data-section="offers"] .offers-gift__v { font-size: 15px; letter-spacing: 0; }
 /* leader: the hero's feature-line grammar one screen up – a 1.5px dashed lead from an anchor dot (with a soft halo)
-   sitting on the cap's edge to the disc's edge, at the disc's centre height */
+   on the collar's edge to the disc's edge, at the disc's centre height */
 [data-section="offers"] .offers-lead {
-  position: absolute; z-index: 1; left: calc(100% - 4px); top: calc(var(--d) * .2 - .75px);
-  width: var(--gap); height: 0;
+  position: absolute; z-index: 1; left: calc(var(--cap-x) - 4px); top: calc(var(--cap-y) - .75px);
+  width: calc(100% - var(--cap-x) + var(--gap) + 4px); height: 0;
   border-top: 1.5px dashed color-mix(in srgb, var(--accent-berry) 70%, transparent);
   transition: translate 1100ms var(--viscous-long) 90ms;
 }
@@ -1660,12 +1679,6 @@ html.nc-lock { overflow: hidden; }
   background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 18%, transparent);
 }
 [data-section="offers"] [data-gift][data-level="2"] .offers-gift { background: var(--accent-berry); color: var(--cloud); }
-/* the render is a stand-in, so it says so: a quiet caption beside the stick's foot, just above the shelf line
-   (which becomes the cart meter on mobile) */
-[data-section="offers"] .offers-illu {
-  position: absolute; left: calc(100% + 8px); bottom: calc(var(--fwd) + 7px); z-index: 3;
-  font: 500 10px/1 var(--font-body); letter-spacing: .04em; color: var(--sage-700); white-space: nowrap;
-}
 
 /* the shelf-edge label: centred in the tabletop band under the line-up */
 [data-section="offers"] .offers-note {
@@ -1703,6 +1716,8 @@ html.nc-lock { overflow: hidden; }
 [data-section="offers"] .offers-tile__eyebrow {
   margin-block: 24px 0; font: 600 11px/1.4 var(--font-body); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--sage-700);
 }
+/* amounts inside an uppercase eyebrow keep the page's "kr." convention (as .offers-note__sum) */
+[data-section="offers"] .offers-amt { text-transform: none; letter-spacing: .02em; }
 [data-section="offers"] .offers-tile__title {
   margin: 8px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; letter-spacing: -.005em; color: var(--sage-700);
 }
@@ -1762,7 +1777,7 @@ html.nc-lock { overflow: hidden; }
 [data-section="offers"] .offers-add.nc-btn,
 [data-section="offers"] .offers-add.nc-btn:hover,
 [data-section="offers"] .offers-add.nc-btn:focus-visible { background: var(--bg); color: var(--fg); border-color: var(--bg); transition: background-color 500ms var(--viscous), color 500ms var(--viscous), box-shadow 500ms var(--viscous), transform 300ms var(--viscous); }
-[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--night-shade), .9), 0 0 0 5px color-mix(in srgb, var(--paper) 7%, transparent); }
+[data-section="offers"] .offers-add:hover { --bg: var(--cloud); box-shadow: 0 12px 26px -14px rgba(var(--shade), .9), 0 0 0 5px color-mix(in srgb, var(--paper) 7%, transparent); }
 [data-section="offers"] .offers-add:focus-visible { outline-color: var(--sand-300); outline-offset: 4px; }
 [data-section="offers"] .offers-add__ico { display: grid; width: 18px; height: 18px; }
 [data-section="offers"] .offers-add__ico svg { grid-area: 1 / 1; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: opacity 300ms var(--viscous), transform 600ms var(--viscous-long); }
@@ -1779,7 +1794,7 @@ html.nc-lock { overflow: hidden; }
 /* ---------------------------------------------------------------- hover physics (pointer devices) */
 @media (hover: hover) and (pointer: fine) {
   [data-section="offers"] .offers-tile:hover .offers-p img { transform: translateY(-1.6cqh); }
-  /* the gift lifts as one piece: stick, leader and disc on the stick's own curve and delay */
+  /* the gift lifts as one piece: oil, leader and disc on the oil's own curve and delay */
   [data-section="offers"] .offers-tile:hover .offers-gift,
   [data-section="offers"] .offers-tile:hover .offers-lead { translate: 0 -1.6cqh; }
   [data-section="offers"] .offers-tile:hover .offers-p::after { transform: scaleX(.9); opacity: .7; }
@@ -1838,10 +1853,9 @@ html.nc-lock { overflow: hidden; }
     column-gap: 12px; width: max-content;
     padding: calc(var(--bleed) + 8px) var(--gutter) calc(var(--bleed) + 56px);
   }
-  [data-section="offers"] .offers-tile--range,
-  [data-section="offers"] .offers-tile--hero,
-  [data-section="offers"] .offers-tile--gift { grid-column: auto; }
-  [data-section="offers"] .offers-tile { scroll-snap-align: start; padding: var(--pad) var(--pad) 20px; }
+  /* centre snapping: the rail opens on the hero offer with an equal peek of its neighbours on both sides
+     (the first and last tile rest against the gutter, where a centred snap cannot reach) */
+  [data-section="offers"] .offers-tile { scroll-snap-align: center; padding: var(--pad) var(--pad) 20px; }
   /* one tile per view: a squarer stage gives the products the room the column layout cannot */
   [data-section="offers"] .offers-stage { aspect-ratio: 1; }
   [data-section="offers"] .offers-stage--hero { aspect-ratio: auto; --u: 63cqh; }
@@ -1875,7 +1889,6 @@ html.nc-lock { overflow: hidden; }
      clear air above the 399 tick */
   [data-section="offers"] .offers-note { z-index: 0; }
   [data-section="offers"] .offers-stage--gift .offers-row { z-index: 1; }
-  [data-section="offers"] .offers-illu { bottom: calc(var(--fwd) + 15px); }
   [data-section="offers"] .offers-tile--hero .offers-fig__big { font-size: 54px; }
   [data-section="offers"] .offers-tile__text { font-size: 14.5px; }
   [data-section="offers"] .offers-tile__cta { margin-top: 18px; }
@@ -1902,6 +1915,7 @@ html.nc-lock { overflow: hidden; }
   /* the twin discs shrink together */
   [data-section="offers"] .offers-save { width: 70px; }
   [data-section="offers"] .offers-stage--gift { --d: 70px; }
+  [data-section="offers"] .offers-gift__v { font-size: 13.5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2399,6 +2413,8 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-price__save { font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .01em; white-space: nowrap; }
 [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.875rem; line-height: 36px; letter-spacing: -.02em; }
 [data-section="deals"] .deals-price--big .deals-price__save { font-size: 13px; }
+/* a Sampakke whose førpris saving equals its saving against the singles in Black Week: one line, one dot */
+[data-section="deals"] .deals-price__save--dot { display: flex; align-items: flex-start; gap: 13.5px; padding-left: 5.5px; }
 
 /* add to cart – morphs to "Lagt i kurv" with an ink that spreads like a drop of oil. Sampakker get the solid button,
    singles the quiet outline (it fills with the same ink on hover and on add). */
@@ -2461,8 +2477,8 @@ html.nc-lock { overflow: hidden; }
 [data-section="deals"] .deals-set__perks svg { width: 17px; height: 17px; flex: none; margin-top: -1px; fill: none; stroke: var(--sage-600); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 [data-section="deals"] .deals-set__perks li.is-gift svg { stroke: var(--accent-berry); }
 /* the honest comparison, in berry, right above the price it explains */
-[data-section="deals"] .deals-set__less { display: flex; align-items: center; gap: 13.5px; padding-left: 5.5px; margin: 0 0 4px; font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .005em; }
-[data-section="deals"] .deals-set__less-dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
+[data-section="deals"] .deals-set__less { display: flex; align-items: flex-start; text-wrap: balance; gap: 13.5px; padding-left: 5.5px; margin: 0 0 4px; font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .005em; }
+[data-section="deals"] .deals-set__less-dot { width: 6px; height: 6px; margin-top: 6px; flex: none; border-radius: 50%; background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
 /* the card ledger: the four numbered førpriser as one sum (they map to the numbered bottles above), and what the same
    items cost one by one in Black Week. Dotted seam and leaders – dotted, never solid. */
 [data-section="deals"] .deals-set__sum { margin-top: auto; padding-top: 12px; border-top: 1.5px dotted color-mix(in srgb, var(--sage-300) 90%, transparent); }
@@ -2575,12 +2591,19 @@ html.nc-lock { overflow: hidden; }
   position: absolute; z-index: 1; left: var(--lip-x, calc(50% - 44px)); bottom: var(--gfl, 22px); transform: translateX(-50%);
   display: grid; justify-items: center;
 }
+/* the light: a warm key glow behind the stick (centred on its upper half, fading out well above the art's lower edge) and,
+   centred exactly on the floor line the stick stands on, a lit plinth of sand light – the stick's foot sits on its
+   centre line, its contact shadow reads against it */
+[data-section="deals"] .deals-gift__pack::before, [data-section="deals"] .deals-gift__pack::after {
+  content: ""; position: absolute; z-index: -1; left: 50%; transform: translateX(-50%); pointer-events: none;
+}
 [data-section="deals"] .deals-gift__pack::before {
-  content: ""; position: absolute; z-index: -1; left: 50%; bottom: -26px; width: 220px; height: 150px; transform: translateX(-50%);
-  background:
-    /* the lit patch of floor the stick stands on – its contact shadow reads against it */
-    radial-gradient(64px 11px at 50% calc(100% - 26px), color-mix(in srgb, var(--sand-300) 30%, transparent), transparent),
-    radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 7%, transparent) 55%, transparent);
+  width: 300px; height: calc(var(--lip-h, 74px) * 2.1); bottom: calc(var(--lip-h, 74px) * -.5);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 8%, transparent) 55%, transparent 88%);
+}
+[data-section="deals"] .deals-gift__pack::after {
+  width: 192px; height: 34px; bottom: -17px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 55%, var(--sage-800)), color-mix(in srgb, var(--sand-500) 26%, transparent) 48%, color-mix(in srgb, var(--sand-500) 7%, transparent) 76%, transparent);
 }
 [data-section="deals"] .deals-line--gift { position: relative; left: auto; right: auto; bottom: auto; --u: var(--dl-u, 230px); }
 /* on the night-green tile the shared shadow recipe is re-weighted so it still reads as contact, not as a hole */
@@ -2601,6 +2624,14 @@ html.nc-lock { overflow: hidden; }
   position: absolute; z-index: 2; margin: 0; --tw: var(--tagw); transform-origin: 50% -220px;
   left: calc(var(--lip-x) + var(--lip-w) / 2 + var(--tgap)); bottom: calc(var(--gfl, 22px) + var(--lip-h) * .36);
 }
+/* in a row with product cards (deals.js .is-fit): the art ends just under the shared floor line, so the rule and the rail
+   sit right under the plinth, and the tag hangs from a short thread just under the title – no empty run of night above
+   it. The tag still hangs to the right of the stick, never over it. */
+[data-section="deals"] .is-fit .deals-gift__art.has-pack { flex: 0 0 auto; }
+[data-section="deals"] .is-fit .has-pack .deals-tag { top: var(--tag-top, 22px); bottom: auto; }
+[data-section="deals"] .is-fit .deals-tag__string { height: calc(var(--tag-top, 22px) + 34px); }
+[data-section="deals"] .is-fit .deals-gift__meter, [data-section="deals"] .is-fit .deals-gift__status { margin-top: auto; }
+[data-section="deals"] .is-fit .deals-gift__cta { margin-top: auto; }
 /* a real packshot is measured before it is shown (deals.js) – no frame of it standing at a placeholder size */
 [data-section="deals"] .deals-gift__art.is-measuring .deals-gift__pack { opacity: 0; }
 [data-section="deals"] .deals-gift__pack { transition: opacity 400ms var(--dl-ease); }
@@ -2654,12 +2685,9 @@ html.nc-lock { overflow: hidden; }
   [data-section="deals"] .has-pack { --tagw: 64px; --tgap: 12px; }
   [data-section="deals"] .has-pack .deals-tag { bottom: calc(var(--gfl, 16px) + var(--lip-h) * .3); }
   [data-section="deals"] .deals-gift__pack { left: var(--lip-x); bottom: var(--gfl, 16px); }
-  /* the small stick stands in a wider, warmer pool of light (≈ 1.4×) with a soft key behind it, so it reads as a lit
-     object at its truthful 6 ml size */
-  [data-section="deals"] .deals-gift__pack::before { width: 300px; height: 200px; bottom: -36px;
-    background:
-      radial-gradient(84px 14px at 50% calc(100% - 36px), color-mix(in srgb, var(--sand-300) 42%, transparent), transparent),
-      radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 30%, transparent), color-mix(in srgb, var(--sand-500) 9%, transparent) 55%, transparent); }
+  /* the small stick stands on a wider, warmer plinth (≈ 1.5×), its foot on the plinth's centre line */
+  [data-section="deals"] .deals-gift__pack::before { width: 220px; }
+  [data-section="deals"] .deals-gift__pack::after { width: 150px; height: 26px; bottom: -13px; }
   [data-section="deals"] .deals-gift__copy-x { display: none; }
   /* each node: what it gives over what it costs, two short lines centred under the knob (deals.js keeps them inside) */
   [data-section="deals"] .deals-gift__labels { letter-spacing: .04em; margin-top: 8px; }
@@ -2855,7 +2883,8 @@ html.nc-lock { overflow: hidden; }
 
   [data-section="deals"] .deals-foot { flex-direction: column; align-items: flex-start; gap: 14px; }
   [data-section="deals"] .deals-foot__legal { flex-basis: auto; }
-  [data-section="deals"] .deals-foot__usp { gap: 10px 18px; font-size: 12.5px; }
+  /* one deliberate checklist (never a 2 + 1 wrap): icons in one column */
+  [data-section="deals"] .deals-foot__usp { display: grid; grid-template-columns: 1fr; gap: 10px; font-size: 13px; }
 
   /* quick view becomes a bottom sheet */
   [data-section="deals"] .deals-qv { width: 100vw; max-height: 94dvh; margin: auto 0 0; inset: auto 0 0 0; }

@@ -396,11 +396,12 @@
       const s = SHOT[p.id] || { src: p.img, box: [1e3, 1e3, 0, 0, 1e3, 1e3], h: 0.8 };
       return `<div class="deals-line" style="--lw:${lineW([s]).toFixed(4)}">${prodHtml(s, srcOf(s, p), `${p.name}${p.size ? ", " + p.size : ""}`)}</div>`;
     }
+    const saveHtml = (p) => lessSame(p) ? `<p class="deals-price__save deals-price__save--dot"><span class="deals-set__less-dot" aria-hidden="true"></span>Spar ${kr(p.save)}</p>` : `<p class="deals-price__save">Spar ${kr(p.save)}</p>`;
     const priceHtml = (p, big = false) => `
     <div class="deals-price${big ? " deals-price--big" : ""}">
       <p class="deals-price__line"><span class="deals-price__now"><span class="nc-sr">Black Week-pris </span>${kr(p.price)}</span>
         <span class="deals-price__was">F\xF8rpris <s>${kr(p.price0)}</s></span></p>
-      <p class="deals-price__save">Spar ${kr(p.save)}</p>
+      ${saveHtml(p)}
     </div>`;
     const addHtml = (p, extra = "") => `
     <button class="nc-btn deals-add${p.bundle ? "" : " deals-add--ghost"}${extra}" type="button" data-add="${p.id}">
@@ -436,7 +437,8 @@
       <p class="deals-set__tot"><span>Enkeltvis i Black Week</span><b>${kr(setNow(p))}</b></p>
     </div>`;
     };
-    const lessHtml = (p) => setLess(p) > 0 ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>${kr(setLess(p))} billigere end k\xF8bt enkeltvis</p>` : "";
+    const lessSame = (p) => p.bundle && setRows(p).length > 0 && setLess(p) === p.save;
+    const lessHtml = (p) => setLess(p) > 0 && !lessSame(p) ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>${kr(setLess(p))} billigere end enkeltvis i Black Week</p>` : "";
     const giftAt = ctx.campaign.giftThreshold, shipAt = ctx.campaign.freeShipping;
     const perksHtml = (p) => {
       const perks = [];
@@ -765,9 +767,11 @@
       thread.innerHTML = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
     }
     function placeGiftFloor(row) {
-      const pack = $(".deals-gift__pack", giftLi), art = $(".deals-gift__art", giftLi);
+      const pack = $(".deals-gift__pack", giftLi), art = $(".deals-gift__art", giftLi), gin = $(".deals-gift__in", giftLi);
       const mate = row.find((li) => li !== giftLi && !li.classList.contains("deals-item--set")) || row.find((li) => li !== giftLi);
       if (!pack || !art) return;
+      art.style.removeProperty("height");
+      giftLi.classList.remove("is-fit");
       if (!mate) {
         giftLi.style.removeProperty("--gfl");
         fitTag();
@@ -780,13 +784,30 @@
       };
       const line = $(".deals-card .deals-line", mate);
       const floorY = offY(line, mate) + line.offsetHeight;
-      giftLi.style.setProperty("--gfl", `${Math.max(14, Math.round(offY(art, giftLi) + art.offsetHeight - floorY))}px`);
+      const artTop = offY(art, giftLi);
+      if (gin && getComputedStyle(gin).display === "flex") {
+        const G = innerWidth <= 760 ? 22 : 28;
+        const h = Math.round(floorY + G - artTop);
+        if (h > 120) {
+          giftLi.classList.add("is-fit");
+          art.style.height = `${h}px`;
+          giftLi.style.setProperty("--gfl", `${G}px`);
+          fitTag();
+          return;
+        }
+      }
+      giftLi.style.setProperty("--gfl", `${Math.max(14, Math.round(artTop + art.offsetHeight - floorY))}px`);
       fitTag();
     }
     function fitTag() {
       const tg = $(".deals-tag", giftLi), art = $(".deals-gift__art", giftLi);
       if (!tg || !art) return;
       tg.style.bottom = "";
+      tg.style.top = "";
+      if (giftLi.classList.contains("is-fit")) {
+        if (tg.offsetTop + tg.offsetHeight > art.clientHeight - 6) tg.style.top = `${Math.max(0, art.clientHeight - tg.offsetHeight - 6)}px`;
+        return;
+      }
       if (tg.offsetTop < 6) tg.style.bottom = `${Math.max(0, art.clientHeight - tg.offsetHeight - 6)}px`;
     }
     function layoutGift(key = current) {

@@ -6,8 +6,8 @@
          below trust/shop-tabs/press on phones. Order 1 = the hero's (.nc-sec-hero, which the Black Week hero wrapper must
          keep), so DOM order puts offers directly under the hero and ahead of .nc-sec-trust (2).
        · prices, førpris and the loose-buy sum are read from the catalogue at runtime (data-kp-*), never typed by hand.
-       · lip.webp is a captioned stand-in; replace with the Shopify media LIP_BALM.webp (product "lip-balm", SKU 1513,
-         6 ml) exported as transparent WebP and remove .offers-illu. -->
+       · the gift stage uses real packshots only (the example basket). Once a transparent LIP_BALM.webp (product
+         "lip-balm", SKU 1513, 6 ml) exists in the Shopify media, it can stand front-centre at --h:.45. -->
   <div class="nc-container offers-wrap">
 
     <header class="offers-head">
@@ -27,45 +27,11 @@
     </header>
 
     <div class="offers-rail" data-rail>
-      <!-- DOM order = mobile reading/focus order (hero first); desktop places the tiles in columns explicitly -->
+      <!-- DOM order = visual order at every width (range, hero, gift); on the mobile rail JS opens centred on the hero -->
       <ul class="offers-grid" role="list" aria-label="Black Week-tilbud" data-grid>
 
-        <!-- the Black Week hero offer (desktop: centre column) -->
-        <li class="offers-tile offers-tile--hero nc-grain" data-tile="0">
-          <span class="offers-glow" aria-hidden="true"></span>
-          <div class="offers-stage offers-stage--hero">
-            <!-- the set as a set: rens and olie stand forward on the table, dag and nat just behind -->
-            <div class="offers-row offers-row--set" aria-hidden="true">
-              <span class="offers-p offers-p--front" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
-              <span class="offers-p offers-p--front" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
-            </div>
-            <p class="offers-save nc-bubble nc-bubble--sale" aria-hidden="true"><span class="offers-save__k">Spar</span><span class="offers-save__v" data-kp-savev>299&nbsp;kr.</span></p>
-          </div>
-          <p class="offers-tile__eyebrow">Sampakke · morgen og aften</p>
-          <h3 class="offers-tile__title"><span class="nc-sr">Hovedtilbud: </span>Komplet Pakken</h3>
-          <p class="offers-fig"><span class="offers-fig__big" data-kp-price>899<span class="offers-fig__unit">&nbsp;kr.</span></span><span class="offers-fig__aside">Førpris <s data-kp-before>1.198&nbsp;kr.</s><span class="nc-sr" data-kp-save> – du sparer 299 kr.</span></span></p>
-          <p class="offers-tile__text"><!-- the contents are named in the order the picture shows them (mobile mirrors the set) -->
-            <span class="offers-ltr">Rensegel, <span class="offers-nw">Dag- og Natcreme,</span> <span class="offers-nw">Vidunder Olien.</span></span><span class="offers-rtl">Vidunder Olien, <span class="offers-nw">Nat- og Dagcreme,</span> <span class="offers-nw">Rensegel.</span></span>
-            <span class="offers-nw">Enkeltvis <span data-kp-loose>1.234&nbsp;kr.</span></span><span data-kp-gift> <span class="offers-nw">Lip Balm følger med.</span></span></p>
-          <div class="offers-tile__cta">
-            <button class="nc-btn nc-btn--light offers-btn offers-add" type="button" data-add="komplet-pakken">
-              <span class="offers-add__ico" aria-hidden="true">
-                <svg class="offers-add__bag" viewBox="0 0 24 24"><path d="M6.2 8.5h11.6l-.9 11H7.1z"/><path d="M9.2 8.5V7a2.8 2.8 0 0 1 5.6 0v1.5"/></svg>
-                <svg class="offers-add__check" viewBox="0 0 24 24"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg>
-              </span>
-              <span class="offers-add__txt">
-                <span class="offers-add__t offers-add__t--idle">Læg i kurv<span class="nc-sr"> – Komplet Pakken</span></span>
-                <span class="offers-add__t offers-add__t--done" aria-hidden="true">Lagt i kurven</span>
-              </span>
-            </button>
-            <p class="nc-sr" aria-live="polite" data-add-status></p>
-          </div>
-        </li>
-
-        <!-- 25% on the whole range (desktop: left column) -->
-        <li class="offers-tile offers-tile--range" data-tile="1">
+        <!-- 25% on the whole range (left column) -->
+        <li class="offers-tile offers-tile--range" data-tile="0">
           <div class="offers-stage offers-stage--range" aria-hidden="true">
             <!-- a tablescape on two planes: serum and olie a step forward, the rest on the shelf line; tallest left, stepping down towards the hero -->
             <div class="offers-row offers-row--range">
@@ -86,23 +52,56 @@
           </div>
         </li>
 
+        <!-- the Black Week hero offer (centre column; mobile opens on it) -->
+        <li class="offers-tile offers-tile--hero nc-grain" data-tile="1">
+          <span class="offers-glow" aria-hidden="true"></span>
+          <div class="offers-stage offers-stage--hero">
+            <!-- the set as a set: rens and olie stand forward on the table, dag and nat just behind -->
+            <div class="offers-row offers-row--set" aria-hidden="true">
+              <span class="offers-p offers-p--front" style="--h:.889"><img src="../src/sections/offers/img/gel.webp" alt="" width="221" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/day.webp" alt="" width="147" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/night.webp" alt="" width="145" height="637" loading="lazy" decoding="async"></span>
+              <span class="offers-p offers-p--front" style="--h:.657"><img src="../src/sections/offers/img/oil.webp" alt="" width="209" height="637" loading="lazy" decoding="async"></span>
+            </div>
+            <p class="offers-save nc-bubble nc-bubble--sale" aria-hidden="true"><span class="offers-save__k">Spar</span><span class="offers-save__v" data-kp-savev>299&nbsp;kr.</span></p>
+          </div>
+          <p class="offers-tile__eyebrow">Sampakke · morgen og aften</p>
+          <h3 class="offers-tile__title"><span class="nc-sr">Hovedtilbud: </span>Komplet Pakken</h3>
+          <p class="offers-fig"><span class="offers-fig__big" data-kp-price>899<span class="offers-fig__unit">&nbsp;kr.</span></span><span class="offers-fig__aside">Førpris <s data-kp-before>1.198&nbsp;kr.</s><span class="nc-sr" data-kp-save> – du sparer 299 kr.</span></span></p>
+          <p class="offers-tile__text"><!-- the contents are named in the order the picture shows them (mobile mirrors the set) -->
+            <span class="offers-ltr">Rensegel, <span class="offers-nw">Dag- og Natcreme,</span> <span class="offers-nw">Vidunder Olien.</span></span><span class="offers-rtl">Vidunder Olien, <span class="offers-nw">Nat- og Dagcreme,</span> <span class="offers-nw">Rensegel.</span></span>
+            <span class="offers-nw">Enkeltvis <span data-kp-loose>1.234&nbsp;kr.</span></span><span data-kp-gift> <span class="offers-nw">Med gratis Lip Balm.</span></span></p>
+          <div class="offers-tile__cta">
+            <button class="nc-btn nc-btn--light offers-btn offers-add" type="button" data-add="komplet-pakken">
+              <span class="offers-add__ico" aria-hidden="true">
+                <svg class="offers-add__bag" viewBox="0 0 24 24"><path d="M6.2 8.5h11.6l-.9 11H7.1z"/><path d="M9.2 8.5V7a2.8 2.8 0 0 1 5.6 0v1.5"/></svg>
+                <svg class="offers-add__check" viewBox="0 0 24 24"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg>
+              </span>
+              <span class="offers-add__txt">
+                <span class="offers-add__t offers-add__t--idle">Læg i kurv<span class="nc-sr"> – Komplet Pakken</span></span>
+                <span class="offers-add__t offers-add__t--done" aria-hidden="true">Lagt i kurven</span>
+              </span>
+            </button>
+            <p class="nc-sr" aria-live="polite" data-add-status></p>
+          </div>
+        </li>
+
         <!-- gift over 699 kr. (+ fri fragt over 399 kr.), with a true two-product example basket just over the line -->
         <li class="offers-tile offers-tile--gift" data-tile="2">
           <div class="offers-stage offers-stage--gift" data-gift>
-            <!-- a macro close-up, one scale: the 6 ml stick (Shopify: "Lip Balm | med CBD 6ml", SKU 1513; 68 mm) stands
-                 front-centre, the 150 mm Natcreme airless a step behind it, cropped through its collar – the crop is the
-                 camera stepping closer, not a bigger product. The value disc is tied to the stick's cap by a short dotted
-                 feature line. lip.webp is a labelled stand-in until the real packshot (Shopify media LIP_BALM.webp) is
-                 exported as transparent WebP; then drop .offers-illu. -->
+            <!-- the example basket itself, one scale, real packshots only: the 30 ml Vidunder Olien stands front-right, the
+                 150 mm Natcreme airless a step behind it, cropped through its collar – the crop is the camera stepping closer,
+                 not a bigger product. Together they are the 711 kr. on the shelf label below, and the gift disc hangs off the
+                 basket by a short dotted feature line. -->
             <div class="offers-row offers-row--gift" aria-hidden="true">
               <span class="offers-p offers-p--back" style="--h:1"><img src="../src/sections/offers/img/night-macro.webp" alt="" width="245" height="1100" loading="lazy" decoding="async"></span>
-              <span class="offers-p offers-p--gift" style="--h:.45"><img src="../src/sections/offers/img/lip.webp" alt="" width="188" height="800" loading="lazy" decoding="async"><span class="offers-gift nc-bubble nc-bubble--pink"><span class="offers-save__k">Værdi</span><span class="offers-save__v">79&nbsp;kr.</span></span><span class="offers-lead"></span><span class="offers-illu">Illustration</span></span>
+              <span class="offers-p offers-p--gift" style="--h:.657"><img src="../src/sections/offers/img/oil-macro.webp" alt="" width="209" height="637" loading="lazy" decoding="async"><span class="offers-gift nc-bubble nc-bubble--pink"><span class="offers-save__k">Gave</span><span class="offers-save__v offers-gift__v">Lip Balm</span></span><span class="offers-lead"></span></span>
             </div>
             <!-- the shelf edge carries the label: an example basket, or the live cart once there is one -->
             <div class="offers-note" aria-hidden="true">
               <p class="offers-note__set offers-note__set--ex">
                 <span class="offers-note__head"><span class="offers-note__fx">For eksempel</span> <b data-ex-sum>711&nbsp;kr.</b></span>
-                <span class="offers-note__v"><span class="offers-nw">Vidunder Olien <span data-ex="skin-oil">374</span></span> + <span class="offers-nw">Natcreme <span data-ex="night-cream">337</span></span></span>
+                <span class="offers-note__v"><span class="offers-nw">Natcreme <span data-ex="night-cream">337</span></span> + <span class="offers-nw">Vidunder Olien <span data-ex="skin-oil">374</span></span></span>
               </p>
               <p class="offers-note__set offers-note__set--live">
                 <span class="offers-note__line"><span class="offers-note__k" data-live-sum>Din kurv</span><span class="offers-note__v" data-live-next></span></span>
@@ -111,10 +110,10 @@
             </div>
             <p class="nc-sr" aria-live="polite" data-gift-status></p>
           </div>
-          <p class="offers-tile__eyebrow">Ved køb over 699&nbsp;kr.</p>
+          <p class="offers-tile__eyebrow">Ved køb over <span class="offers-amt">699&nbsp;kr.</span></p>
           <h3 class="offers-tile__title">CBD Lip Balm</h3>
-          <p class="offers-fig"><span class="offers-fig__big">Gratis</span><span class="nc-sr"> – værdi 79 kr.</span></p>
-          <p class="offers-tile__text">Den kommer automatisk med&nbsp;i&nbsp;forsendelsen – én&nbsp;pr.&nbsp;ordre. Og&nbsp;som altid: <span class="offers-nw">fri fragt over 399&nbsp;kr.</span></p>
+          <p class="offers-fig"><span class="offers-fig__big">Gratis</span><span class="offers-fig__aside">Værdi 79&nbsp;kr.</span></p>
+          <p class="offers-tile__text">Den kommer automatisk med i forsendelsen – én&nbsp;pr.&nbsp;ordre. Og&nbsp;som altid: <span class="offers-nw">fri fragt over 399&nbsp;kr.</span></p>
           <div class="offers-tile__cta">
             <a class="nc-btn nc-btn--outline offers-btn" href="#deals">Find dine favoritter</a>
           </div>
@@ -123,8 +122,8 @@
     </div>
 
     <div class="offers-dots" role="group" aria-label="Vælg tilbud" data-dots>
-      <button type="button" class="offers-dot" aria-label="Tilbud 1 af 3: Komplet Pakken" aria-current="true" data-dot="0"></button>
-      <button type="button" class="offers-dot" aria-label="Tilbud 2 af 3: Hele hudplejeserien" data-dot="1"></button>
+      <button type="button" class="offers-dot" aria-label="Tilbud 1 af 3: Hele hudplejeserien" aria-current="false" data-dot="0"></button>
+      <button type="button" class="offers-dot" aria-label="Tilbud 2 af 3: Komplet Pakken" aria-current="true" data-dot="1"></button>
       <button type="button" class="offers-dot" aria-label="Tilbud 3 af 3: Gratis CBD Lip Balm" data-dot="2"></button>
     </div>
 

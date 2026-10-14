@@ -16,6 +16,7 @@ export default function init(root, ctx) {
   const cardEl = root.querySelector('.hero-tag__card');
   const addBtn = root.querySelector('[data-hero-add]');
   const liveEl = root.querySelector('[data-hero-live]');
+  const innerEl = root.querySelector('.hero-inner');
 
   // ---- prices from the catalogue (Black Week price + § 9 a Førpris)
   const p = ctx.byId['skin-oil'];
@@ -48,7 +49,11 @@ export default function init(root, ctx) {
   const goStatic = () => {
     root.classList.add('is-static');
     // phones: the still sits in the spot between the headline and the offer
-    const placeStill = () => { root.style.setProperty('--spot-top', `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`); };
+    const placeStill = () => {
+      root.style.setProperty('--spot-top', `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`);
+      const gut = parseFloat(getComputedStyle(innerEl).paddingLeft) || 16;
+      root.style.setProperty('--tag-fw', `${Math.round(Math.min(440, root.clientWidth - 2 * gut))}px`);
+    };
     placeStill(); new ResizeObserver(placeStill).observe(root);
     // the still: the desktop plate, or on phones a plate of the product group framed for the spot (as the live scene)
     const img = root.querySelector('.hero-fallback');
@@ -90,6 +95,10 @@ export default function init(root, ctx) {
       return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
     });
     const sp = spotEl.getBoundingClientRect();
+    // phones: the pill spans the content column (gutter to gutter, ≤ 440 px)
+    const gut = parseFloat(getComputedStyle(innerEl).paddingLeft) || 16;
+    const fw = `${Math.round(Math.min(440, st.width - 2 * gut))}px`;
+    if (root.style.getPropertyValue('--tag-fw') !== fw) root.style.setProperty('--tag-fw', fw);
     const box = cardEl;                             // the pill hangs under the oil on its own dotted lead
     // tablet: the compact pill is pinned by CSS (bottom-right)
     let pin = null;
@@ -97,6 +106,7 @@ export default function init(root, ctx) {
     const tr = trustEl.getBoundingClientRect();
     scene.setOverlays({
       gridR: tr.right - st.left,
+      gutter: gut,
       tagW: box.offsetWidth, tagH: box.offsetHeight, pin,
       copyTop: cp.top - st.top,
       blocks,
@@ -110,12 +120,17 @@ export default function init(root, ctx) {
       if (tagPos) { tagEl.style.transform = ''; tagPos = ''; }
     } else {
       // the pill sits at its rest pose (whole px, written only when a layout moves it); the dotted lead runs from the
-      // dot on the label, out of the silhouette, and drops onto the pill's button – only the lead follows the camera
+      // dot on the label out of the silhouette to the pill (straight into its rim, or an L down onto its button) – only
+      // the lead follows the camera. tag = [pill left, top, dot x, dot y, where the lead meets the pill x] (px)
       const pos = `translate3d(${tag[0]}px, ${tag[1]}px, 0)`;
       if (pos !== tagPos) { tagEl.style.transform = pos; tagPos = pos; }
-      tagEl.style.setProperty('--lead-x', `${tag[2].toFixed(2)}px`);
-      tagEl.style.setProperty('--lead-y', `${tag[3].toFixed(2)}px`);
-      tagEl.style.setProperty('--lead-w', `${tag[4].toFixed(2)}px`);
+      const dx = tag[2], dy = tag[3], cx = tag[4], side = dx > cx ? 1 : 0;
+      const st = tagEl.style;
+      st.setProperty('--lead-x', `${Math.min(dx, cx).toFixed(2)}px`);
+      st.setProperty('--lead-y', `${dy.toFixed(2)}px`);
+      st.setProperty('--lead-w', `${Math.abs(dx - cx).toFixed(2)}px`);
+      st.setProperty('--lead-h', `${Math.max(0, -dy).toFixed(2)}px`);
+      st.setProperty('--lead-s', side);
     }
     if (!tracked) { tracked = true; root.classList.add('is-tracked'); }
   };

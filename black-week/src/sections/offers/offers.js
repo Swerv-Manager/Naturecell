@@ -2,7 +2,7 @@
 // · one calm countdown (days · hours · minutes – the minute drum turns once a minute)
 // · Komplet Pakken "Læg i kurv" with a quiet morph + polite live announcement
 // · the gift tile: a true example basket, swapped for the live cart and a damped meter once the cart has value
-// · mobile: snap carousel led by the hero offer (first in the DOM), with dots
+// · mobile: snap carousel in visual order that opens centred on the hero offer, with dots
 // · the products settle onto the table once, the first time each tile is seen
 // · the night tile: a warm light that follows the pointer
 export default function init(root, ctx) {
@@ -232,9 +232,12 @@ function initRail(root, reduced) {
   const tiles = [...root.querySelectorAll('.offers-tile')];
   const dots = [...root.querySelectorAll('[data-dot]')];
   if (!rail || !dots.length) return null;
-  // data-dot = tile index in DOM order (= mobile visual and focus order)
+  // DOM order = visual order at every width; data-dot = tile index
+  const hero = root.querySelector('.offers-tile--hero');
   const dotFor = (tile) => dots.find((d) => +d.dataset.dot === tiles.indexOf(tile));
   const setCurrent = (dot) => dots.forEach((d) => d.setAttribute('aria-current', d === dot ? 'true' : 'false'));
+  // tiles snap to the centre of the rail (the browser clamps the first and last to the scroll ends)
+  const leftFor = (tile) => Math.max(0, Math.min(rail.scrollWidth - rail.clientWidth, tile.offsetLeft + tile.offsetWidth / 2 - rail.clientWidth / 2));
   const io = new IntersectionObserver((es) => {
     let best = null;
     es.forEach((e) => { if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) best = e; });
@@ -242,12 +245,43 @@ function initRail(root, reduced) {
   }, { root: rail, threshold: [0.6, 0.8, 1] });
   tiles.forEach((t) => io.observe(t));
   dots.forEach((d) => d.addEventListener('click', () => {
-    const tile = tiles[+d.dataset.dot];
-    const pad = parseFloat(getComputedStyle(rail).scrollPaddingInlineStart) || 0;
-    rail.scrollTo({ left: tile.offsetLeft - pad, behavior: reduced ? 'auto' : 'smooth' });
+    rail.scrollTo({ left: leftFor(tiles[+d.dataset.dot]), behavior: reduced ? 'auto' : 'smooth' });
     setCurrent(d);
   }));
-  return () => io.disconnect();
+  // the rail opens on the hero offer, with its neighbours peeking on both sides – once, and again only when the
+  // layout enters the rail breakpoint (never yanking a rail the visitor has already moved)
+  const mq = matchMedia('(max-width: 980px)');
+  const open = () => {
+    if (!mq.matches || !hero) return;
+    rail.scrollTo({ left: leftFor(hero), behavior: 'auto' });
+    setCurrent(dotFor(hero));
+  };
+  open();
+  // fonts and lazy images can change tile widths after first layout: re-centre until the visitor touches the rail
+  let touched = false;
+  const touch = () => { touched = true; };
+  rail.addEventListener('pointerdown', touch, { passive: true });
+  rail.addEventListener('touchstart', touch, { passive: true });
+  rail.addEventListener('wheel', touch, { passive: true });
+  rail.addEventListener('keydown', touch);
+  dots.forEach((d) => d.addEventListener('click', touch));
+  rail.addEventListener('focusin', touch);
+  // until the visitor moves it, the rail stays pinned on the hero: a scroll they did not cause (scroll restoration,
+  // a capture tool, an ancestor's scrollIntoView) is undone in the same frame
+  rail.addEventListener('scroll', () => {
+    if (touched || !mq.matches || !hero) return;
+    const want = leftFor(hero);
+    if (Math.abs(rail.scrollLeft - want) > 1) rail.scrollLeft = want;
+  }, { passive: true });
+  const settle = () => { if (!touched) open(); };
+  document.fonts?.ready?.then(settle);
+  addEventListener('load', settle, { once: true });
+  // any relayout of the rail (fonts, images, a rotated phone, a resized window) re-centres it until it has been touched
+  const ro = new ResizeObserver(settle);
+  ro.observe(rail); if (hero) ro.observe(hero);
+  const onMq = () => { touched = false; open(); };
+  mq.addEventListener('change', onMq);
+  return () => { io.disconnect(); ro.disconnect(); mq.removeEventListener('change', onMq); removeEventListener('load', settle); };
 }
 
 /* ------------------------------------------------------------------ the products settle onto the table, once */

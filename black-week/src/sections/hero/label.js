@@ -127,12 +127,22 @@ export async function drawLabel(asset, W = 4096, H = 2000) {
   const WW = wordW / F;
   g.font = fit('CBD SKIN CARE', (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * WW * 0.74);
   g.fillText('CBD SKIN CARE', cx, H * 0.484);
-  if ('letterSpacing' in g) g.letterSpacing = '2px';
-  g.font = fit('CBD SKIN OIL', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.9);
-  g.fillText('CBD SKIN OIL', cx, H * 0.548);
-  if ('letterSpacing' in g) g.letterSpacing = '0px';
-  g.font = fit('1000 mg', (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.38);
-  g.fillText('1000 mg', cx, H * 0.606);
+  // the product name and the strength: 700 weight, +0.03em tracking, and a soft 1-screen-px under-stroke in sage-900
+  // at 20 % (≈ 12 canvas px at the 1440 framing) under each glyph, so the strokes survive the mip-minification
+  const name = (txt, wFrac, y, track = 0.03) => {
+    const f = fit(txt, (sz) => `700 ${sz}px Philosopher, Georgia, serif`, F * WW * wFrac);
+    g.font = f;
+    const px = parseFloat(f.slice(4));
+    if ('letterSpacing' in g) { g.letterSpacing = `${(px * track).toFixed(1)}px`; g.font = f; }
+    g.save();
+    g.lineJoin = 'round'; g.strokeStyle = 'rgba(40,64,59,0.2)'; g.lineWidth = 12 * W / 4096;
+    g.strokeText(txt, cx, y);
+    g.restore();
+    g.fillText(txt, cx, y);
+    if ('letterSpacing' in g) g.letterSpacing = '0px';
+  };
+  name('CBD SKIN OIL', 0.94, H * 0.552);
+  name('1000 mg', 0.46, H * 0.62, 0.07);           // (a little more air between the digits: the '1' never merges into a 'K')
 
   // small print, bottom-right of the front face
   g.textAlign = 'right';

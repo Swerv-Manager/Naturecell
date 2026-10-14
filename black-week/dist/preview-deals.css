@@ -1384,6 +1384,8 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-price__save { font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .01em; white-space: nowrap; }
 [data-section="deals"] .deals-price--big .deals-price__now { font-size: 1.875rem; line-height: 36px; letter-spacing: -.02em; }
 [data-section="deals"] .deals-price--big .deals-price__save { font-size: 13px; }
+/* a Sampakke whose førpris saving equals its saving against the singles in Black Week: one line, one dot */
+[data-section="deals"] .deals-price__save--dot { display: flex; align-items: flex-start; gap: 13.5px; padding-left: 5.5px; }
 
 /* add to cart – morphs to "Lagt i kurv" with an ink that spreads like a drop of oil. Sampakker get the solid button,
    singles the quiet outline (it fills with the same ink on hover and on add). */
@@ -1446,8 +1448,8 @@ body.nc-ytbox-open { overflow: hidden; }
 [data-section="deals"] .deals-set__perks svg { width: 17px; height: 17px; flex: none; margin-top: -1px; fill: none; stroke: var(--sage-600); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 [data-section="deals"] .deals-set__perks li.is-gift svg { stroke: var(--accent-berry); }
 /* the honest comparison, in berry, right above the price it explains */
-[data-section="deals"] .deals-set__less { display: flex; align-items: center; gap: 13.5px; padding-left: 5.5px; margin: 0 0 4px; font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .005em; }
-[data-section="deals"] .deals-set__less-dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
+[data-section="deals"] .deals-set__less { display: flex; align-items: flex-start; text-wrap: balance; gap: 13.5px; padding-left: 5.5px; margin: 0 0 4px; font: 600 12.5px/18px var(--font-body); color: var(--accent-berry); letter-spacing: .005em; }
+[data-section="deals"] .deals-set__less-dot { width: 6px; height: 6px; margin-top: 6px; flex: none; border-radius: 50%; background: var(--accent-berry); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-berry) 14%, transparent); }
 /* the card ledger: the four numbered førpriser as one sum (they map to the numbered bottles above), and what the same
    items cost one by one in Black Week. Dotted seam and leaders – dotted, never solid. */
 [data-section="deals"] .deals-set__sum { margin-top: auto; padding-top: 12px; border-top: 1.5px dotted color-mix(in srgb, var(--sage-300) 90%, transparent); }
@@ -1560,12 +1562,19 @@ body.nc-ytbox-open { overflow: hidden; }
   position: absolute; z-index: 1; left: var(--lip-x, calc(50% - 44px)); bottom: var(--gfl, 22px); transform: translateX(-50%);
   display: grid; justify-items: center;
 }
+/* the light: a warm key glow behind the stick (centred on its upper half, fading out well above the art's lower edge) and,
+   centred exactly on the floor line the stick stands on, a lit plinth of sand light – the stick's foot sits on its
+   centre line, its contact shadow reads against it */
+[data-section="deals"] .deals-gift__pack::before, [data-section="deals"] .deals-gift__pack::after {
+  content: ""; position: absolute; z-index: -1; left: 50%; transform: translateX(-50%); pointer-events: none;
+}
 [data-section="deals"] .deals-gift__pack::before {
-  content: ""; position: absolute; z-index: -1; left: 50%; bottom: -26px; width: 220px; height: 150px; transform: translateX(-50%);
-  background:
-    /* the lit patch of floor the stick stands on – its contact shadow reads against it */
-    radial-gradient(64px 11px at 50% calc(100% - 26px), color-mix(in srgb, var(--sand-300) 30%, transparent), transparent),
-    radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 7%, transparent) 55%, transparent);
+  width: 300px; height: calc(var(--lip-h, 74px) * 2.1); bottom: calc(var(--lip-h, 74px) * -.5);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 24%, transparent), color-mix(in srgb, var(--sand-500) 8%, transparent) 55%, transparent 88%);
+}
+[data-section="deals"] .deals-gift__pack::after {
+  width: 192px; height: 34px; bottom: -17px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 55%, var(--sage-800)), color-mix(in srgb, var(--sand-500) 26%, transparent) 48%, color-mix(in srgb, var(--sand-500) 7%, transparent) 76%, transparent);
 }
 [data-section="deals"] .deals-line--gift { position: relative; left: auto; right: auto; bottom: auto; --u: var(--dl-u, 230px); }
 /* on the night-green tile the shared shadow recipe is re-weighted so it still reads as contact, not as a hole */
@@ -1586,6 +1595,14 @@ body.nc-ytbox-open { overflow: hidden; }
   position: absolute; z-index: 2; margin: 0; --tw: var(--tagw); transform-origin: 50% -220px;
   left: calc(var(--lip-x) + var(--lip-w) / 2 + var(--tgap)); bottom: calc(var(--gfl, 22px) + var(--lip-h) * .36);
 }
+/* in a row with product cards (deals.js .is-fit): the art ends just under the shared floor line, so the rule and the rail
+   sit right under the plinth, and the tag hangs from a short thread just under the title – no empty run of night above
+   it. The tag still hangs to the right of the stick, never over it. */
+[data-section="deals"] .is-fit .deals-gift__art.has-pack { flex: 0 0 auto; }
+[data-section="deals"] .is-fit .has-pack .deals-tag { top: var(--tag-top, 22px); bottom: auto; }
+[data-section="deals"] .is-fit .deals-tag__string { height: calc(var(--tag-top, 22px) + 34px); }
+[data-section="deals"] .is-fit .deals-gift__meter, [data-section="deals"] .is-fit .deals-gift__status { margin-top: auto; }
+[data-section="deals"] .is-fit .deals-gift__cta { margin-top: auto; }
 /* a real packshot is measured before it is shown (deals.js) – no frame of it standing at a placeholder size */
 [data-section="deals"] .deals-gift__art.is-measuring .deals-gift__pack { opacity: 0; }
 [data-section="deals"] .deals-gift__pack { transition: opacity 400ms var(--dl-ease); }
@@ -1639,12 +1656,9 @@ body.nc-ytbox-open { overflow: hidden; }
   [data-section="deals"] .has-pack { --tagw: 64px; --tgap: 12px; }
   [data-section="deals"] .has-pack .deals-tag { bottom: calc(var(--gfl, 16px) + var(--lip-h) * .3); }
   [data-section="deals"] .deals-gift__pack { left: var(--lip-x); bottom: var(--gfl, 16px); }
-  /* the small stick stands in a wider, warmer pool of light (≈ 1.4×) with a soft key behind it, so it reads as a lit
-     object at its truthful 6 ml size */
-  [data-section="deals"] .deals-gift__pack::before { width: 300px; height: 200px; bottom: -36px;
-    background:
-      radial-gradient(84px 14px at 50% calc(100% - 36px), color-mix(in srgb, var(--sand-300) 42%, transparent), transparent),
-      radial-gradient(closest-side, color-mix(in srgb, var(--sand-500) 30%, transparent), color-mix(in srgb, var(--sand-500) 9%, transparent) 55%, transparent); }
+  /* the small stick stands on a wider, warmer plinth (≈ 1.5×), its foot on the plinth's centre line */
+  [data-section="deals"] .deals-gift__pack::before { width: 220px; }
+  [data-section="deals"] .deals-gift__pack::after { width: 150px; height: 26px; bottom: -13px; }
   [data-section="deals"] .deals-gift__copy-x { display: none; }
   /* each node: what it gives over what it costs, two short lines centred under the knob (deals.js keeps them inside) */
   [data-section="deals"] .deals-gift__labels { letter-spacing: .04em; margin-top: 8px; }
@@ -1840,7 +1854,8 @@ body.nc-ytbox-open { overflow: hidden; }
 
   [data-section="deals"] .deals-foot { flex-direction: column; align-items: flex-start; gap: 14px; }
   [data-section="deals"] .deals-foot__legal { flex-basis: auto; }
-  [data-section="deals"] .deals-foot__usp { gap: 10px 18px; font-size: 12.5px; }
+  /* one deliberate checklist (never a 2 + 1 wrap): icons in one column */
+  [data-section="deals"] .deals-foot__usp { display: grid; grid-template-columns: 1fr; gap: 10px; font-size: 13px; }
 
   /* quick view becomes a bottom sheet */
   [data-section="deals"] .deals-qv { width: 100vw; max-height: 94dvh; margin: auto 0 0; inset: auto 0 0 0; }

@@ -174,12 +174,15 @@ export default function init(root, ctx) {
     const s = SHOT[p.id] || { src: p.img, box: [1000, 1000, 0, 0, 1000, 1000], h: 0.8 };
     return `<div class="deals-line" style="--lw:${lineW([s]).toFixed(4)}">${prodHtml(s, srcOf(s, p), `${p.name}${p.size ? ', ' + p.size : ''}`)}</div>`;
   }
+  const saveHtml = (p) => (lessSame(p)
+    ? `<p class="deals-price__save deals-price__save--dot"><span class="deals-set__less-dot" aria-hidden="true"></span>Spar ${kr(p.save)}</p>`
+    : `<p class="deals-price__save">Spar ${kr(p.save)}</p>`);
   // price: Black Week price with the struck førpris inline (§ 9 a wording), the saving on its own berry line
   const priceHtml = (p, big = false) => `
     <div class="deals-price${big ? ' deals-price--big' : ''}">
       <p class="deals-price__line"><span class="deals-price__now"><span class="nc-sr">Black Week-pris </span>${kr(p.price)}</span>
         <span class="deals-price__was">Førpris <s>${kr(p.price0)}</s></span></p>
-      <p class="deals-price__save">Spar ${kr(p.save)}</p>
+      ${saveHtml(p)}
     </div>`;
   // Label in Name (WCAG 2.5.3): the accessible name STARTS with the visible "Læg i kurv".
   // Singles get the quiet outline button, Sampakker the one solid CTA – the hierarchy steers toward the sets.
@@ -222,7 +225,14 @@ export default function init(root, ctx) {
     </div>`;
   };
   // the honest comparison, in berry, right above the price it explains
-  const lessHtml = (p) => (setLess(p) > 0 ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>${kr(setLess(p))} billigere end købt enkeltvis</p>` : '');
+  // Every saving names its basis. The berry dot marks the ONE headline number on a Sampakke card:
+  // · the pack beats buying the same items one by one in Black Week by a different amount than its own førpris saving →
+  //   the dot line says that ("… billigere end enkeltvis i Black Week") and "Spar X kr." stays the plain § 9 a line;
+  // · the two amounts coincide (the pack's førpris = the items' Black Week sum, e.g. All Day Facial) → no second line
+  //   repeating the number: the price's own "Spar X kr." (basis: the førpris printed right beside it) takes the dot, and
+  //   the ledger above shows the same sum as "Enkeltvis i Black Week".
+  const lessSame = (p) => p.bundle && setRows(p).length > 0 && setLess(p) === p.save;
+  const lessHtml = (p) => (setLess(p) > 0 && !lessSame(p) ? `<p class="deals-set__less"><span class="deals-set__less-dot" aria-hidden="true"></span>${kr(setLess(p))} billigere end enkeltvis i Black Week</p>` : '');
   const giftAt = ctx.campaign.giftThreshold, shipAt = ctx.campaign.freeShipping;
   const perksHtml = (p) => {
     const perks = [];
@@ -521,24 +531,44 @@ export default function init(root, ctx) {
     thread.innerHTML = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
   }
   function placeGiftFloor(row) {
-    const pack = $('.deals-gift__pack', giftLi), art = $('.deals-gift__art', giftLi);
+    const pack = $('.deals-gift__pack', giftLi), art = $('.deals-gift__art', giftLi), gin = $('.deals-gift__in', giftLi);
     const mate = row.find((li) => li !== giftLi && !li.classList.contains('deals-item--set')) || row.find((li) => li !== giftLi);
     if (!pack || !art) return;
+    art.style.removeProperty('height');
+    giftLi.classList.remove('is-fit');
     if (!mate) { giftLi.style.removeProperty('--gfl'); fitTag(); return; } // alone on its row (a full-width banner): its own floor
     // the line's bottom edge IS the floor line (contact shadows are drawn on it); both measured from the li's own top
     // layout offsets, not client rects: mid-reveal the two tiles are translated by different amounts
     const offY = (el, anc) => { let y = 0; for (let e = el; e && e !== anc; e = e.offsetParent) y += e.offsetTop; return y; };
     const line = $('.deals-card .deals-line', mate);
     const floorY = offY(line, mate) + line.offsetHeight;
+    const artTop = offY(art, giftLi);
+    // narrow (stacked) tile: the art ENDS just under the floor line – room for the plinth, then straight into the rule and
+    // the rail; the spare height goes to the lower stack (status and button keep the cards' button line)
+    if (gin && getComputedStyle(gin).display === 'flex') {
+      const G = innerWidth <= 760 ? 22 : 28;
+      const h = Math.round(floorY + G - artTop);
+      if (h > 120) {
+        giftLi.classList.add('is-fit');
+        art.style.height = `${h}px`;
+        giftLi.style.setProperty('--gfl', `${G}px`);
+        fitTag();
+        return;
+      }
+    }
     // (never closer than 14px to the art's bottom edge: if a row ever got too short, alignment yields before overlap)
-    giftLi.style.setProperty('--gfl', `${Math.max(14, Math.round(offY(art, giftLi) + art.offsetHeight - floorY))}px`);
+    giftLi.style.setProperty('--gfl', `${Math.max(14, Math.round(artTop + art.offsetHeight - floorY))}px`);
     fitTag();
   }
-  // the tag hangs beside the stick at a third of its height – unless that would push it out of the art (a short row):
-  // then it hangs as low as the art allows (it sits beside the stick, so it can never cover it)
+  // the tag hangs beside the stick – just under the title on a fitted tile, else at a third of the stick's height – and
+  // never out of the art (a short row): then it hangs as low as the art allows (beside the stick, so it never covers it)
   function fitTag() {
     const tg = $('.deals-tag', giftLi), art = $('.deals-gift__art', giftLi); if (!tg || !art) return;
-    tg.style.bottom = '';
+    tg.style.bottom = ''; tg.style.top = '';
+    if (giftLi.classList.contains('is-fit')) {
+      if (tg.offsetTop + tg.offsetHeight > art.clientHeight - 6) tg.style.top = `${Math.max(0, art.clientHeight - tg.offsetHeight - 6)}px`;
+      return;
+    }
     if (tg.offsetTop < 6) tg.style.bottom = `${Math.max(0, art.clientHeight - tg.offsetHeight - 6)}px`;
   }
   function layoutGift(key = current) {

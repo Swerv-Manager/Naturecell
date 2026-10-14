@@ -21541,12 +21541,25 @@ void main() {
     const WW = wordW / F;
     g.font = fit("CBD SKIN CARE", (s) => `500 ${s}px "Roboto Flex", Arial, sans-serif`, F * WW * 0.74);
     g.fillText("CBD SKIN CARE", cx, H * 0.484);
-    if ("letterSpacing" in g) g.letterSpacing = "2px";
-    g.font = fit("CBD SKIN OIL", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.9);
-    g.fillText("CBD SKIN OIL", cx, H * 0.548);
-    if ("letterSpacing" in g) g.letterSpacing = "0px";
-    g.font = fit("1000 mg", (s) => `700 ${s}px Philosopher, Georgia, serif`, F * WW * 0.38);
-    g.fillText("1000 mg", cx, H * 0.606);
+    const name = (txt, wFrac, y, track = 0.03) => {
+      const f = fit(txt, (sz) => `700 ${sz}px Philosopher, Georgia, serif`, F * WW * wFrac);
+      g.font = f;
+      const px = parseFloat(f.slice(4));
+      if ("letterSpacing" in g) {
+        g.letterSpacing = `${(px * track).toFixed(1)}px`;
+        g.font = f;
+      }
+      g.save();
+      g.lineJoin = "round";
+      g.strokeStyle = "rgba(40,64,59,0.2)";
+      g.lineWidth = 12 * W / 4096;
+      g.strokeText(txt, cx, y);
+      g.restore();
+      g.fillText(txt, cx, y);
+      if ("letterSpacing" in g) g.letterSpacing = "0px";
+    };
+    name("CBD SKIN OIL", 0.94, H * 0.552);
+    name("1000 mg", 0.46, H * 0.62, 0.07);
     g.textAlign = "right";
     const rx = X(50);
     g.font = `400 ${Math.round(F * 0.04)}px "Roboto Flex", Arial, sans-serif`;
@@ -21882,10 +21895,11 @@ void main() {
     return t * t * (3 - 2 * t);
   };
   var BOTTLE_X = 0.95;
-  var BOTTLE_Z = 6;
+  var BOTTLE_Z = 8.5;
   var NECK_Y = 7.02;
   var POS = { day: [-9.07, -6.8, 0.03], night: [-5.95, -9.2, -0.02], gel: [-2.18, -2.6, 0] };
-  var PIPETTE_LEN = 5.9;
+  var PIPETTE_LEN = 5.4;
+  var CAM_EL = 12;
   var DROP_R = 0.16;
   function lathe2(points, segs = 96, smoothN = 0) {
     let pts = points.map(([x, y]) => new Vector2(x, y));
@@ -21974,7 +21988,7 @@ void main() {
     }
     band(18, -36, -16, -14, 7, "#000000", 1);
     band(17.5, 20, 26, -14, 7, "#000000", 1);
-    band(18, -15, -9, -14, 7, "#fffaf2", 1.7);
+    band(18, -14, -10, -14, 7, "#fffaf2", 3.2);
     band(18, 30, 36, -14, 7, "#f4f6f4", 0.75);
     band(20, -125, 125, 6, 14, "#f1eee8", 0.09);
     const pm = new PMREMGenerator(renderer);
@@ -22001,8 +22015,8 @@ void main() {
   uniform vec2 uRes; uniform float uDpr;
   uniform vec3 uNight, uDeep, uWarm, uAmber, uSage;
   uniform vec2 uGlow; uniform float uGlowR;
-  uniform vec2 uSpot; uniform vec2 uSpotR; uniform vec3 uSpotCol; uniform vec2 uSpot2; uniform vec2 uSpot2R;
-  uniform vec2 uPool; uniform vec2 uPoolR;
+  uniform vec2 uSpot; uniform vec2 uSpotR; uniform vec3 uSpotCol;
+  uniform vec2 uPool; uniform vec2 uPoolR; uniform vec3 uPoolCol;
   varying vec2 vUv;
   float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
@@ -22021,18 +22035,18 @@ void main() {
     col *= 0.975 + 0.05 * m;
     // warm evening light behind the bottle
     float d = length((p - uGlow) / uGlowR);
-    col += uSage * 0.05 * exp(-d*d*1.1);
-    col += uWarm * 0.042 * exp(-d*d*2.6);
+    col += uSage * 0.055 * exp(-d*d*1.1);
+    col += uWarm * 0.036 * exp(-d*d*2.6);
     col += uAmber * 0.03 * exp(-d*d*6.0);
     // warm spot right behind the bottle's shoulder: only ever seen THROUGH the amber glass (transmission picks it
     // up and the attenuation turns it into the backlit amber glow of the shoulder and the heel)
     vec2 sq = (p - uSpot) / uSpotR;
     col += uSpotCol * exp(-dot(sq, sq) * 1.6);
-    vec2 sq2 = (p - uSpot2) / uSpot2R;
-    col += uSpotCol * 0.45 * exp(-dot(sq2, sq2) * 1.6);
-    // light pooling on the (invisible) floor
+    // light pooling on the (invisible) floor: night-green light (sage-600 with a quarter of sand-300), never a grey
+    // haze; the far edge (above the pool's centre on screen) falls off \u2248 30 % softer, so it never draws a horizon
     vec2 q = (p - uPool) / uPoolR;
-    col += mix(uSage, uWarm, 0.5) * 0.035 * exp(-dot(q,q) * 1.6);
+    q.y *= q.y > 0.0 ? 0.77 : 1.0;
+    col += uPoolCol * 0.03 * exp(-dot(q,q) * 1.6);
     gl_FragColor = vec4(col, 1.0);
   }`
   );
@@ -22077,7 +22091,7 @@ void main() {
     const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance", stencil: false });
     renderer.toneMapping = NoToneMapping;
     renderer.setClearColor(C2("#28403b"), 1);
-    let pr = dpr();
+    let pr = Math.min(2, Math.max(dpr(), 1.5));
     renderer.setPixelRatio(pr);
     const scene = new Scene();
     const camera = new PerspectiveCamera(24, 1, 1, 200);
@@ -22096,10 +22110,10 @@ void main() {
       uSpot: { value: new Vector2(-1e4, -1e4) },
       uSpotR: { value: new Vector2(100, 100) },
       uSpotCol: { value: C2("#f0a650").multiplyScalar(0.55) },
-      uSpot2: { value: new Vector2(-1e4, -1e4) },
-      uSpot2R: { value: new Vector2(100, 100) },
       uPool: { value: new Vector2() },
-      uPoolR: { value: new Vector2(300, 60) }
+      uPoolR: { value: new Vector2(300, 60) },
+      // sage-600 · sand-300 (3 : 1), its blue held back a hair so the lit floor stays green-gold (B ≤ G − 8), never grey-blue
+      uPoolCol: { value: C2("#5a7a72").multiplyScalar(0.75).add(C2("#e8d6c3").multiplyScalar(0.25)).multiply(new Color(1, 1.03, 0.8)) }
     };
     const bg = new Mesh(new PlaneGeometry(2, 2), new ShaderMaterial({ uniforms: bgU, vertexShader: BG_VERT, fragmentShader: BG_FRAG, depthWrite: false, depthTest: false }));
     bg.frustumCulled = false;
@@ -22147,10 +22161,11 @@ void main() {
         float fG = pow(ndvH, 1.3);
         float shG = smoothstep(7.22, 7.5, hy) * (1.0 - smoothstep(8.35, 8.75, hy));
         float hlG = smoothstep(0.08, 0.3, hy) * (1.0 - smoothstep(0.95, 1.12, hy));
-        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * fG * (shG * 0.2 + hlG * 0.22); }`);
+        totalEmissiveRadiance += vec3(0.62, 0.16, 0.018) * fG * (shG * 0.06 + hlG * 0.2); }`);
     };
     const heroAmber = amberGlass.clone();
     heroAmber.customProgramCacheKey = () => "hero-amber";
+    amberGlass.specularIntensity = 0.7;
     heroAmber.onBeforeCompile = (sh) => {
       sh.uniforms.uGlow = { value: 1 };
       sh.fragmentShader = "uniform float uGlow;\n" + sh.fragmentShader.replace("#include <emissivemap_fragment>", `#include <emissivemap_fragment>
@@ -22202,14 +22217,17 @@ void main() {
         float lenFade = smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${(PIPETTE_LEN - 0.3).toFixed(2)}, vY) * (1.0 - smoothstep(-0.2, 0.05, vY));
         // the wall itself: a cool-grey body that thickens toward the silhouette (the tube is glass, not wire)
         vec3 body = vec3(0.78, 0.84, 0.82) * 0.06 * pow(1.0 - ndv, 2.0) * mix(0.5, 1.0, emptyG);
-        vec3 c = (vec3(1.0, 0.97, 0.92) * (rim + band) + body) * lenFade;
+        // one fine cool streak just inside the key-side wall, the full length of the tube (oil or not): the glass
+        // reads as glass over the oil too
+        float streak = exp(-pow((lat + 0.8) / 0.035, 2.0)) * 0.55;
+        vec3 c = (vec3(1.0, 0.97, 0.92) * (rim + band) + vec3(0.86, 0.93, 1.0) * streak + body) * lenFade;
         gl_FragColor = vec4(c, 1.0);
       }`
       )
     });
     const OT = -2.5;
     const OIL_K = 0.72;
-    const oilU = { uAxis: glassRimU.uAxis, uKey: glassRimU.uK2, uR: { value: 0.302 * OIL_K }, uTop: { value: OT }, uDepth: { value: 0.19 } };
+    const oilU = { uAxis: glassRimU.uAxis, uKey: glassRimU.uK2, uR: { value: 0.302 * OIL_K }, uTop: { value: OT }, uDepth: { value: 0.05 } };
     const oilColumn = new ShaderMaterial({
       uniforms: oilU,
       transparent: true,
@@ -22236,39 +22254,37 @@ void main() {
         float ndv = clamp(abs(dot(n, v)), 0.0, 1.0);
         vec3 side = normalize(cross(uAxis, v));
         float lat = dot(n, side) * sign(dot(side, uKey) + 1e-4) * -1.0;      // \u22121 key side \u2026 +1 shadow side
-        float edge = pow(1.0 - ndv, 1.6);
-        // saturated backlit gold, not olive: the colour comes from the oil's own transmission (alpha \u2248 0.3 lets the
-        // stage through), with only 8% of the night green mixed in. Along the column: bright gold under the meniscus,
-        // deepening toward the nozzle (the refracted path through the narrowing glass gets longer)
-        vec3 night = lin(vec3(0.157, 0.251, 0.231));
+        // a backlit liquid lens, not a painted rod: the oil is darkest on its axis (the longest path through it,
+        // \u2248 120,70,25) and turns to bright honey toward both walls (\u2248 200,135,55), where the cylinder bends the back
+        // light into the eye; a hair of darker amber exactly at the oil/glass boundary keeps the wall thickness legible.
+        // Along the column it deepens a touch toward the nozzle (the narrowing glass lengthens the refracted path).
         float along = smoothstep(uTop - 0.1, -${(PIPETTE_LEN - 0.2).toFixed(2)}, vL.y);
-        vec3 topC = vec3(0.30, 0.118, 0.0), tipC = vec3(0.19, 0.042, 0.0);
-        vec3 core = mix(mix(topC, tipC, along), night, 0.08);
-        vec3 deep = lin(vec3(0.42, 0.2, 0.05));
-        vec3 col = mix(core, deep * 0.32, pow(1.0 - ndv, 1.4));
-        float a = mix(0.34, 0.86, edge);
-        // the back light focused by the cylinder lens: one side of the column glows
-        col += lin(vec3(0.95, 0.72, 0.33)) * 0.18 * exp(-pow((lat - 0.25) / 0.32, 2.0)) * (1.0 - 0.35 * along);
-        // refracted back-light line inside the shadow-side edge: quiet, breathing along the axis
-        float line = exp(-pow((lat - 0.7) / 0.03, 2.0));
-        line *= (0.55 + 0.45 * smoothstep(-${PIPETTE_LEN.toFixed(2)} + 0.4, -${PIPETTE_LEN.toFixed(2)} + 2.4, vL.y)) * (0.85 + 0.15 * sin(vL.y * 3.1));
-        line *= smoothstep(-${PIPETTE_LEN.toFixed(2)}, -${PIPETTE_LEN.toFixed(2)} + 0.25, vL.y) * (1.0 - smoothstep(uTop - 0.14, uTop - 0.06, vL.y));
-        col += vec3(1.0, 0.8, 0.45) * line * 0.12;
-        // a dark amber line one pixel inside each silhouette (the oil seen edge-on), separating oil from the clear wall
-        float sil = exp(-pow((abs(lat) - 0.93) / 0.045, 2.0));
-        col = mix(col, lin(vec3(0.376, 0.22, 0.078)), sil); a = mix(a, 0.96, sil);
-        // meniscus: concave (oil wets the glass) \u2013 seen from the side, one fine amber line, lowest on the axis and
-        // climbing to the wall. Above it: no oil, only a whisper of wetting film along the walls.
-        float x = clamp(abs(lat), 0.0, 1.0) * uR;
+        float al = abs(lat);
+        vec3 coreC = mix(vec3(0.185, 0.054, 0.0035), vec3(0.15, 0.04, 0.002), along);
+        vec3 edgeC = mix(vec3(0.58, 0.238, 0.034), vec3(0.47, 0.18, 0.024), along);
+        float lens = smoothstep(0.18, 0.82, al);
+        vec3 col = mix(coreC, edgeC, lens);
+        float a = mix(0.88, 0.93, lens);
+        // the back light focused by the lens: the shadow-side wall glows a little brighter than the key side
+        col += lin(vec3(0.95, 0.72, 0.33)) * 0.09 * exp(-pow((lat - 0.72) / 0.16, 2.0)) * (1.0 - 0.4 * along);
+        // the oil/glass boundary, edge-on
+        float sil = exp(-pow((al - 0.965) / 0.03, 2.0));
+        col = mix(col, lin(vec3(0.42, 0.25, 0.09)), sil * 0.85); a = mix(a, 0.96, sil);
+        // meniscus: concave (oil wets the glass) \u2013 a shallow dip (\u2248 0.05 cm) lowest on the axis, climbing to the wall,
+        // drawn as one fine bright rim (\u2265 215: the back light caught in the curved surface). Above it: clear glass with
+        // a whisper of wetting film along the walls.
+        float x = clamp(al, 0.0, 1.0) * uR;
         float Rs = (uR * uR + uDepth * uDepth) / (2.0 * uDepth);
         float u = uTop - uDepth + (Rs - sqrt(max(Rs * Rs - x * x, 0.0)));
         float above = smoothstep(u - 0.006, u + 0.006, vL.y);
+        float edge = pow(1.0 - ndv, 1.6);
         float wet = edge * (1.0 - smoothstep(uTop - 0.05, uTop + 0.03, vL.y));
+        vec3 deep = lin(vec3(0.42, 0.2, 0.05));
         col = mix(col, deep * 0.1 * wet, above);
         a = mix(a, 0.2 * wet, above);
-        float men = exp(-pow((vL.y - u) / 0.011, 2.0)) * (1.0 - 0.5 * sil);
-        col += lin(vec3(0.85, 0.6, 0.3)) * 0.5 * men;
-        a = max(a, men * 0.45);
+        float men = exp(-pow((vL.y - u) / 0.017, 2.0)) * (1.0 - 0.6 * sil);
+        col = mix(col, lin(vec3(1.0, 0.9, 0.7)), men * 0.9);
+        a = max(a, men * 0.9);
         float cut = 1.0 - smoothstep(uTop + 0.02, uTop + 0.06, vL.y);
         gl_FragColor = vec4(col * cut, a * cut);
       }`
@@ -22332,7 +22348,7 @@ void main() {
     const chrome = new MeshStandardMaterial({ color: C2("#eef0ef"), roughness: 0.06, metalness: 1, envMapIntensity: 1.8, envMap: makeChromeEnvironment(renderer) });
     chrome.onBeforeCompile = (sh) => {
       sh.vertexShader = "varying float vWY;\n" + sh.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\n  vWY = (modelMatrix * vec4(transformed, 1.0)).y;");
-      sh.fragmentShader = "varying float vWY;\n" + sh.fragmentShader.replace("#include <opaque_fragment>", "outgoingLight *= mix(1.22, 0.5, smoothstep(10.95, 12.9, vWY));\n#include <opaque_fragment>");
+      sh.fragmentShader = "varying float vWY;\n" + sh.fragmentShader.replace("#include <opaque_fragment>", "{ float k = smoothstep(10.9, 12.95, vWY); outgoingLight *= mix(1.42, 0.34, k * (0.6 + 0.4 * k)); }\n#include <opaque_fragment>");
     };
     const clearCap = new MeshPhysicalMaterial({ color: 0, metalness: 0, roughness: 0.08, specularIntensity: 0.6, envMapIntensity: 1.5, transparent: true, depthWrite: false, blending: AdditiveBlending });
     const capTint = new ShaderMaterial({
@@ -22392,7 +22408,7 @@ void main() {
     bottle.add(glass);
     const labelMat = new MeshPhysicalMaterial({ color: C2("#7bb1b0"), roughness: 0.78, metalness: 0, sheen: 0.35, sheenRoughness: 0.8, sheenColor: C2("#ffffff"), envMapIntensity: 0.42 });
     labelMat.onBeforeCompile = (sh) => {
-      sh.fragmentShader = sh.fragmentShader.replace("#include <map_fragment>", "#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.95 ).rgb;\n#endif").replace("#include <emissivemap_fragment>", "#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.95 ).rgb;\n#endif");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <map_fragment>", "#include <map_fragment>\n#ifdef USE_MAP\n  diffuseColor.rgb = texture2D( map, vMapUv, -0.5 ).rgb;\n#endif").replace("#include <emissivemap_fragment>", "#ifdef USE_EMISSIVEMAP\n  totalEmissiveRadiance *= texture2D( emissiveMap, vEmissiveMapUv, -0.5 ).rgb;\n#endif");
     };
     const labelGeo = new CylinderGeometry(1.614, 1.614, 4.75, 160, 1, true, -TAU * 0.97 / 2, TAU * 0.97);
     const label = new Mesh(labelGeo, labelMat);
@@ -22528,7 +22544,23 @@ void main() {
       return m;
     };
     const shadowCol = "#0f1d1a";
-    decal(featherDisk, "#ddbfa3", 0.075, 26, 12, (BOTTLE_X + POS.day[0]) / 2, 1.5, 0, true);
+    {
+      const c = document.createElement("canvas");
+      c.width = c.height = 256;
+      const g = c.getContext("2d"), im = g.createImageData(256, 256);
+      for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+        const u = (x - 127.5) / 128, v = (y - 127.5) / 128, vv = v < 0 ? v / 1.3 : v;
+        const d = Math.min(1, Math.hypot(u, vv * 1.3 / 1.15));
+        const k = (y * 256 + x) * 4, a = Math.pow(1 - d, 1.6) * (1 - d * d);
+        im.data[k] = im.data[k + 1] = im.data[k + 2] = 255 * a;
+        im.data[k + 3] = 255;
+      }
+      g.putImageData(im, 0, 0);
+      const t = new CanvasTexture(c);
+      t.colorSpace = NoColorSpace;
+      const pool = decal(t, "#ffffff", 0.068, 27, 15, (BOTTLE_X + POS.day[0]) / 2, 1, 0, true);
+      pool.material.color.copy(bgU.uPoolCol.value);
+    }
     const castTex = (() => {
       const c = document.createElement("canvas");
       c.width = 256;
@@ -22647,12 +22679,12 @@ void main() {
     }
     const RT = 0.052 * 0.95;
     setPendant(RT, DROP_R, 1.1, 0.04);
-    const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0 };
+    const OV = { tagW: 0, tagH: 0, copyTop: 1e9, pin: null, blocks: [], spot: null, trustTop: 0, gridR: 0, gutter: 16 };
     const ovTag = [0, 0, 0, 0, 0];
     const pointer = { ndc: new Vector2(0.3, 0), target: new Vector2(0.3, 0), active: false };
     const tmp = new Vector3(), tmp2 = new Vector3(), tmp3 = new Vector3();
     const camBase = { az: 0, el: 0 };
-    const TIP = new Vector3(BOTTLE_X + 0.02, NECK_Y + 0.72, BOTTLE_Z + 0.05);
+    const TIP = new Vector3(BOTTLE_X + 0.02, NECK_Y + 0.7, BOTTLE_Z + 0.05);
     const DROPPER_BASE = new Vector3();
     let tilt = 0.24;
     const setTilt = (t) => {
@@ -22688,21 +22720,57 @@ void main() {
       return pts;
     };
     const tagDrop = () => mobileNow ? 12 : 16;
-    const tagRoom = () => OV.pin ? 0 : tagDrop() + OV.tagH;
-    const tagRest = { left: 0, top: 0, vx: 0 };
+    const tagRoom = () => OV.pin || !mobileNow ? 0 : tagDrop() + OV.tagH;
+    const FOOT_GAP = 22;
+    const tagRest = { left: 0, top: 0, cx: 0, foot: false };
+    const silAt = (y, side) => {
+      let v = side < 0 ? 1e9 : -1e9;
+      for (let i = 0; i < 64; i++) {
+        const a = i / 64 * TAU, q = toPx(tmp3.set(BOTTLE_X + Math.sin(a) * 1.615, y, BOTTLE_Z + Math.cos(a) * 1.615))[0];
+        v = side < 0 ? Math.min(v, q) : Math.max(v, q);
+      }
+      return v;
+    };
+    const feetIn = (xa, xb) => {
+      let y = -1e9;
+      for (const k of ["day", "gel", "night"]) {
+        const it = range[k];
+        for (let i = 0; i <= 24; i++) {
+          const a = -Math.PI / 2 + i / 24 * Math.PI, q = toPx(tmp3.set(it.x + Math.sin(a) * it.R * 1.25, 0, it.z + Math.cos(a) * it.R * 1.25));
+          if (q[0] >= xa && q[0] <= xb) y = Math.max(y, q[1]);
+        }
+      }
+      return y;
+    };
     function restTag() {
       const az = camBase.az, el = camBase.el;
       camBase.az = 0;
       camBase.el = 0;
       placeCamera(0);
-      const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
-      const base = toPx(tmp2.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
-      const edge = toPx(tmp2.set(BOTTLE_X + 1.62, bottle.localToWorld(tmp3.copy(tagLocalM)).y, BOTTLE_Z))[0];
-      const vx = Math.round(edge + 16);
-      const lo = mobileNow ? 16 : layoutRect.x0 - 12, hi = Math.max(lo, (mobileNow ? W - 16 : layoutRect.x1) - OV.tagW);
-      tagRest.left = Math.round(clamp2(vx + 27 - OV.tagW, lo, hi));
-      tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
-      tagRest.vx = Math.min(vx, tagRest.left + OV.tagW - 20);
+      if (!mobileNow) {
+        const dw = bottle.localToWorld(tmp2.copy(tagLocalL));
+        const dot = toPx(dw);
+        const right = Math.round(silAt(dw.y, -1) - FOOT_GAP);
+        const left = Math.round(Math.max(layoutRect.x0 - 12, right - OV.tagW));
+        let top = Math.round(dot[1] - OV.tagH / 2);
+        const feet = feetIn(left - 8, left + OV.tagW + 8);
+        if (top < feet + 14) top = Math.round(feet + 14);
+        tagRest.left = left;
+        tagRest.top = top;
+        tagRest.foot = true;
+        const r = OV.tagH / 2, dy = dot[1] - (top + r);
+        tagRest.cx = Math.abs(dy) < r - 6 ? left + OV.tagW - r + Math.sqrt(r * r - dy * dy) : left + OV.tagW - 27;
+      } else {
+        const dw = bottle.localToWorld(tmp2.copy(tagLocalM));
+        const dot = toPx(dw);
+        const base = toPx(tmp3.set(BOTTLE_X, 0, BOTTLE_Z + 1.62));
+        const vx = Math.round(silAt(dw.y, 1) + 16);
+        const lo = OV.gutter || 16;
+        tagRest.left = Math.round(OV.tagW + lo <= W - lo ? lo : clamp2(vx + 27 - OV.tagW, lo, Math.max(lo, W - lo - OV.tagW)));
+        tagRest.top = Math.round(Math.max(base[1] + tagDrop(), dot[1] + 8));
+        tagRest.cx = Math.max(vx, tagRest.left + OV.tagW - 27);
+        tagRest.foot = false;
+      }
       camBase.az = az;
       camBase.el = el;
       placeCamera(0);
@@ -22739,7 +22807,7 @@ void main() {
         for (let i = 0; i < 5; i++) if (OV.blocks[i]) copyR = Math.max(copyR, OV.blocks[i][2]);
         const bottom = (OV.trustTop > 0 ? OV.trustTop : H) - 26 - tagRoom();
         const right = OV.gridR > 0 ? OV.gridR : Math.min(W - 24, (W + 1240) / 2 - 24);
-        rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(64, H * 0.1), y1: bottom };
+        rect = { x0: (copyR || W * 0.45) + 60, x1: right, y0: Math.max(72, H * 0.125), y1: bottom };
       }
       layoutRect = rect;
       frame = { fx: (rect.x0 + rect.x1) / 2 / W, fy: (rect.y0 + rect.y1) / 2 / H, hs: (rect.y1 - rect.y0) * 0.9, D: 0 };
@@ -22763,8 +22831,9 @@ void main() {
             by0 = Math.min(by0, q[1]);
             by1 = Math.max(by1, q[1]);
           }
-          let exR = 0;
-          const s = Math.min((rect.x1 - rect.x0 - exR) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
+          let exL = 0;
+          if (!mobile && !OV.pin) exL = Math.max(0, bx0 - (silAt(bottle.localToWorld(tmp2.copy(tagLocalL)).y, -1) - FOOT_GAP - OV.tagW));
+          const s = Math.min((rect.x1 - rect.x0 - exL) / (bx1 - bx0), (rect.y1 - rect.y0) / (by1 - by0));
           frame.hs *= it === 0 ? s : Math.pow(s, 0.9);
           frame.hs = Math.min(frame.hs, H * 0.86);
           setD();
@@ -22780,7 +22849,7 @@ void main() {
             by0 = Math.min(by0, q[1]);
             by1 = Math.max(by1, q[1]);
           }
-          const dx = (rect.x0 + rect.x1 - exR) / 2 - (bx0 + bx1) / 2;
+          const dx = mobile ? (rect.x0 + rect.x1) / 2 - (bx0 + bx1) / 2 : rect.x1 - bx1;
           const dy = mobile ? (rect.y0 + rect.y1) / 2 - (by0 + by1) / 2 : rect.y1 - by1;
           frame.fx += dx / W;
           frame.fy += dy / H;
@@ -22798,7 +22867,7 @@ void main() {
       dirty = true;
     }
     function placeCamera(intro) {
-      const az = camBase.az, el = MathUtils.degToRad(9) + camBase.el;
+      const az = camBase.az, el = MathUtils.degToRad(CAM_EL) + camBase.el;
       const D = frame.D * (1 + 0.045 * intro);
       target.set(SUBJECT.cx, SUBJECT.cy, 0);
       camera.position.set(target.x + Math.sin(az) * Math.cos(el) * D, target.y + Math.sin(el) * D, Math.cos(az) * Math.cos(el) * D);
@@ -22818,6 +22887,13 @@ void main() {
     const rt = new WebGLRenderTarget(2, 2, { type: HalfFloatType, samples: 4 });
     const composer = new EffectComposer(renderer, rt);
     composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new ShaderPass({
+      uniforms: { tDiffuse: { value: null } },
+      vertexShader: "varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+      fragmentShader: `precision highp float; uniform sampler2D tDiffuse; varying vec2 vUv;
+      float s(float v){ return v < 6.0 ? max(v, 0.0) : (v >= 6.0 ? 6.0 : 0.0); }
+      void main(){ vec4 c = texture2D(tDiffuse, vUv); gl_FragColor = vec4(s(c.r), s(c.g), s(c.b), 1.0); }`
+    }));
     const bloom = new UnrealBloomPass(new Vector2(256, 256), 0.3, 0.45, 1.05);
     composer.addPass(bloom);
     const finalPass = new ShaderPass(FINAL_SHADER);
@@ -22825,11 +22901,11 @@ void main() {
     const st = { intro: 1 };
     let dirty = true, running = false, raf = 0, last = 0, firstFrameDone = false;
     const tagLocalM = new Vector3(Math.sin(0.35) * 1.625, 0.48 + 0.27 * 4.75, Math.cos(0.35) * 1.625);
+    const tagLocalL = new Vector3(Math.sin(-0.36) * 1.625, 1.9, Math.cos(-0.36) * 1.625);
     const anchors = {
       glow: new Vector3(BOTTLE_X + 0.4, 5, BOTTLE_Z - 5),
       // the evening light on the backdrop: behind the oil's neck and the drop
       spot: new Vector3(BOTTLE_X, 5.6, BOTTLE_Z - 3),
-      spot2: new Vector3(POS.gel[0], 8.2, POS.gel[1] - 3.2),
       pool: new Vector3((POS.day[0] + BOTTLE_X) / 2, 0, 1.5)
     };
     function step(dt, t) {
@@ -22841,7 +22917,7 @@ void main() {
       pointer.ndc.x += (px - pointer.ndc.x) * k;
       pointer.ndc.y += (py - pointer.ndc.y) * k;
       if (!reduced) {
-        camBase.az = -pointer.ndc.x * MathUtils.degToRad(2.2);
+        camBase.az = -pointer.ndc.x * MathUtils.degToRad(2.6);
         camBase.el = pointer.ndc.y * MathUtils.degToRad(1.2);
       }
       placeCamera(introE);
@@ -22849,7 +22925,7 @@ void main() {
         const ks = reduced ? 0 : Math.sin(t * TAU / 16) * 0.085, c = Math.cos(ks), sn = Math.sin(ks);
         key.position.set(BOTTLE_X - 21 * c - 24 * sn, 4 + 27 + Math.sin(t * TAU / 23) * (reduced ? 0 : 1.2), BOTTLE_Z - 21 * sn + 24 * c);
       }
-      const bob = reduced ? 0 : Math.sin(t * TAU / 7.5) * 0.06 + Math.sin(t * TAU / 11.3) * 0.025;
+      const bob = reduced ? 0 : (1 + Math.sin(t * TAU / 7.5)) * 0.05 + (1 + Math.sin(t * TAU / 11.3)) * 0.015;
       dropperPivot.position.set(DROPPER_BASE.x, DROPPER_BASE.y + bob, DROPPER_BASE.z);
       dropperPivot.rotation.z = -tilt + (reduced ? 0 : Math.sin(t * TAU / 9.1) * 0.01);
       dropperPivot.updateMatrixWorld(true);
@@ -22858,12 +22934,12 @@ void main() {
       dropShadow.position.x = BOTTLE_X + 2.2 + bob * 0.4;
       glassRimU.uAxis.value.set(-Math.sin(dropperPivot.rotation.z), Math.cos(dropperPivot.rotation.z), 0);
       {
-        const dot = toPx(bottle.localToWorld(tmp2.copy(tagLocalM)));
+        const dot = toPx(bottle.localToWorld(tmp2.copy(tagRest.foot ? tagLocalL : tagLocalM)));
         ovTag[0] = tagRest.left;
         ovTag[1] = tagRest.top;
         ovTag[2] = dot[0] - tagRest.left;
         ovTag[3] = dot[1] - tagRest.top;
-        ovTag[4] = Math.max(10, tagRest.vx - dot[0]);
+        ovTag[4] = tagRest.cx - tagRest.left;
       }
       const g = toPx(anchors.glow);
       bgU.uGlow.value.set(g[0] * pr, (H - g[1]) * pr);
@@ -22873,9 +22949,6 @@ void main() {
       const sp = toPx(anchors.spot);
       bgU.uSpot.value.set(sp[0] * pr, (H - sp[1]) * pr);
       bgU.uSpotR.value.set(ppu * 1.35 * pr, ppu * 1 * pr);
-      const sp2 = toPx(anchors.spot2);
-      bgU.uSpot2.value.set(sp2[0] * pr, (H - sp2[1]) * pr);
-      bgU.uSpot2R.value.set(ppu * 1.9 * pr, ppu * 1.2 * pr);
       const pl = toPx(anchors.pool);
       bgU.uPool.value.set(pl[0] * pr, (H - pl[1]) * pr);
       bgU.uPoolR.value.set(ppu * 11 * pr, ppu * 2.2 * pr);
@@ -22945,7 +23018,7 @@ void main() {
         pointer.active = active;
       },
       setOverlays(o) {
-        const key2 = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), OV.blocks.map((r) => Math.round(r[2]) + ":" + Math.round(r[3]))]);
+        const key2 = () => JSON.stringify([OV.spot, Math.round(OV.trustTop), Math.round(OV.gridR), Math.round(OV.tagW), Math.round(OV.tagH), OV.gutter, OV.blocks.map((r) => Math.round(r[2]) + ":" + Math.round(r[3]))]);
         const k0 = key2();
         Object.assign(OV, o);
         if (key2() !== k0) {
@@ -22979,6 +23052,7 @@ void main() {
     const cardEl = root.querySelector(".hero-tag__card");
     const addBtn = root.querySelector("[data-hero-add]");
     const liveEl = root.querySelector("[data-hero-live]");
+    const innerEl = root.querySelector(".hero-inner");
     const p = ctx.byId["skin-oil"];
     if (p) {
       const now2 = root.querySelector("[data-hero-price]");
@@ -23015,6 +23089,8 @@ void main() {
       root.classList.add("is-static");
       const placeStill = () => {
         root.style.setProperty("--spot-top", `${spotEl.getBoundingClientRect().top - root.getBoundingClientRect().top}px`);
+        const gut = parseFloat(getComputedStyle(innerEl).paddingLeft) || 16;
+        root.style.setProperty("--tag-fw", `${Math.round(Math.min(440, root.clientWidth - 2 * gut))}px`);
       };
       placeStill();
       new ResizeObserver(placeStill).observe(root);
@@ -23072,6 +23148,9 @@ void main() {
         return rel({ left: r.left, top: r.top, right: Math.max(x1, r.left + 10), bottom: r.bottom });
       });
       const sp = spotEl.getBoundingClientRect();
+      const gut = parseFloat(getComputedStyle(innerEl).paddingLeft) || 16;
+      const fw = `${Math.round(Math.min(440, st.width - 2 * gut))}px`;
+      if (root.style.getPropertyValue("--tag-fw") !== fw) root.style.setProperty("--tag-fw", fw);
       const box = cardEl;
       let pin = null;
       if (pinnedMQ.matches) {
@@ -23081,6 +23160,7 @@ void main() {
       const tr = trustEl.getBoundingClientRect();
       scene.setOverlays({
         gridR: tr.right - st.left,
+        gutter: gut,
         tagW: box.offsetWidth,
         tagH: box.offsetHeight,
         pin,
@@ -23103,9 +23183,13 @@ void main() {
           tagEl.style.transform = pos;
           tagPos = pos;
         }
-        tagEl.style.setProperty("--lead-x", `${tag[2].toFixed(2)}px`);
-        tagEl.style.setProperty("--lead-y", `${tag[3].toFixed(2)}px`);
-        tagEl.style.setProperty("--lead-w", `${tag[4].toFixed(2)}px`);
+        const dx = tag[2], dy = tag[3], cx = tag[4], side = dx > cx ? 1 : 0;
+        const st = tagEl.style;
+        st.setProperty("--lead-x", `${Math.min(dx, cx).toFixed(2)}px`);
+        st.setProperty("--lead-y", `${dy.toFixed(2)}px`);
+        st.setProperty("--lead-w", `${Math.abs(dx - cx).toFixed(2)}px`);
+        st.setProperty("--lead-h", `${Math.max(0, -dy).toFixed(2)}px`);
+        st.setProperty("--lead-s", side);
       }
       if (!tracked) {
         tracked = true;

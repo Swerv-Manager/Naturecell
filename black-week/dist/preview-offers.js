@@ -468,8 +468,10 @@
     const tiles = [...root.querySelectorAll(".offers-tile")];
     const dots = [...root.querySelectorAll("[data-dot]")];
     if (!rail || !dots.length) return null;
+    const hero = root.querySelector(".offers-tile--hero");
     const dotFor = (tile) => dots.find((d) => +d.dataset.dot === tiles.indexOf(tile));
     const setCurrent = (dot) => dots.forEach((d) => d.setAttribute("aria-current", d === dot ? "true" : "false"));
+    const leftFor = (tile) => Math.max(0, Math.min(rail.scrollWidth - rail.clientWidth, tile.offsetLeft + tile.offsetWidth / 2 - rail.clientWidth / 2));
     const io = new IntersectionObserver((es) => {
       let best = null;
       es.forEach((e) => {
@@ -479,12 +481,50 @@
     }, { root: rail, threshold: [0.6, 0.8, 1] });
     tiles.forEach((t) => io.observe(t));
     dots.forEach((d) => d.addEventListener("click", () => {
-      const tile = tiles[+d.dataset.dot];
-      const pad = parseFloat(getComputedStyle(rail).scrollPaddingInlineStart) || 0;
-      rail.scrollTo({ left: tile.offsetLeft - pad, behavior: reduced ? "auto" : "smooth" });
+      rail.scrollTo({ left: leftFor(tiles[+d.dataset.dot]), behavior: reduced ? "auto" : "smooth" });
       setCurrent(d);
     }));
-    return () => io.disconnect();
+    const mq = matchMedia("(max-width: 980px)");
+    const open = () => {
+      if (!mq.matches || !hero) return;
+      rail.scrollTo({ left: leftFor(hero), behavior: "auto" });
+      setCurrent(dotFor(hero));
+    };
+    open();
+    let touched = false;
+    const touch = () => {
+      touched = true;
+    };
+    rail.addEventListener("pointerdown", touch, { passive: true });
+    rail.addEventListener("touchstart", touch, { passive: true });
+    rail.addEventListener("wheel", touch, { passive: true });
+    rail.addEventListener("keydown", touch);
+    dots.forEach((d) => d.addEventListener("click", touch));
+    rail.addEventListener("focusin", touch);
+    rail.addEventListener("scroll", () => {
+      if (touched || !mq.matches || !hero) return;
+      const want = leftFor(hero);
+      if (Math.abs(rail.scrollLeft - want) > 1) rail.scrollLeft = want;
+    }, { passive: true });
+    const settle = () => {
+      if (!touched) open();
+    };
+    document.fonts?.ready?.then(settle);
+    addEventListener("load", settle, { once: true });
+    const ro = new ResizeObserver(settle);
+    ro.observe(rail);
+    if (hero) ro.observe(hero);
+    const onMq = () => {
+      touched = false;
+      open();
+    };
+    mq.addEventListener("change", onMq);
+    return () => {
+      io.disconnect();
+      ro.disconnect();
+      mq.removeEventListener("change", onMq);
+      removeEventListener("load", settle);
+    };
   }
   function initSettle(root, reduced) {
     if (reduced || !("IntersectionObserver" in window)) return null;
