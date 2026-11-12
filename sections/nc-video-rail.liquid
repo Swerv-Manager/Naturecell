@@ -1,0 +1,115 @@
+{% comment %}
+  Produktside: moerkt sage-baand 1:1 fra NatureCell.dc.html med overskrift,
+  hoejrestillet note og 4 staaende videokort (YouTube-thumbnail, playknap, navn).
+  Kortene aabner videoen i et vindue paa siden (kundens rettelse 08-10), ikke paa YouTube.
+  Tomme tekstfelter bruger sprogfilen (pdp.videos.*): en overskrift uden tal og
+  den faste kundecase-disclaimer som note.
+{% endcomment %}
+
+{%- liquid
+  assign vid_heading = section.settings.heading
+  if vid_heading == blank
+    assign vid_heading = 'pdp.videos.heading' | t
+  endif
+  assign vid_note = section.settings.note
+  if vid_note == blank
+    assign vid_note = 'pdp.videos.note' | t
+  endif
+-%}
+
+{%- unless product.gift_card? -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-vidband { background: var(--nc-pdpband-bg, var(--sage-500)); }
+  #shopify-section-{{ section.id }} .nc-vidband__inner { max-width: 1140px; margin: 0 auto; padding: clamp(33px, 6vw, 60px) var(--gutter); }
+  #shopify-section-{{ section.id }} .nc-vidband__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .nc-vidband__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: var(--leading-relaxed); color: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-vidband__note { font-size: 14px; color: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-vidband__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(47%, 220px), 1fr)); gap: 16px; }
+  {%- comment -%} Jævne rækker: 4 pr. række ved 4/8 videoer, ellers 3 (fx 6 = 2 x 3). {%- endcomment -%}
+  {%- assign vid_n = section.blocks.size -%}
+  {%- assign vid_mod = vid_n | modulo: 4 -%}
+  {%- if vid_n > 4 and vid_mod != 0 -%}
+  @media (min-width: 900px) { #shopify-section-{{ section.id }} .nc-vidband__grid { grid-template-columns: repeat(3, 1fr); max-width: 900px; margin: 0 auto; } }
+  {%- endif -%}
+  #shopify-section-{{ section.id }} .nc-vidband__card { display: block; text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__media { display: block; position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3 / 4; cursor: pointer; }
+  #shopify-section-{{ section.id }} .nc-vidband__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-vidband__shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(40, 64, 59, 0.55)); pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-vidband__name { position: absolute; bottom: 12px; left: 12px; color: #fff; font-size: 13px; font-weight: 600; pointer-events: none; }
+{%- endstyle -%}
+
+<section class="nc-vidband">
+  <div class="nc-vidband__inner">
+    <div class="nc-vidband__head">
+      <h2>{% render 'nc-cbd', text: vid_heading %}</h2>
+      <span class="nc-vidband__note">{{ vid_note }}</span>
+    </div>
+    <div class="nc-vidband__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign yt = block.settings.youtube_id
+          assign de_video = nil
+          assign de_source = nil
+          if request.locale.iso_code == 'de' and block.settings.video_de != blank
+            assign de_video = block.settings.video_de
+            assign de_source = de_video.sources | where: 'format', 'mp4' | sort: 'height' | last
+          endif
+        -%}
+        {%- comment -%} Aabner i et vindue paa siden (nc-theme.js, data-nc-yt); linket til YouTube er fallback uden JS. {%- endcomment -%}
+        <a class="nc-vidband__card" href="{% if de_source.url != blank and de_source.url != nil %}{{ de_source.url | escape }}{% else %}https://www.youtube.com/watch?v={{ yt }}{% endif %}" target="_blank" rel="noopener" data-nc-yt="{{ yt }}"{% if de_source.url != blank and de_source.url != nil %} data-nc-video-src="{{ de_source.url | escape }}" data-nc-video-poster="{{ de_video.preview_image | image_url: width: 1080 | escape }}"{% endif %} data-nc-yt-name="{{ block.settings.name | escape }}" data-nc-yt-portrait="{% if section.settings.landscape %}false{% else %}true{% endif %}" data-nc-yt-close="{{ 'general.close' | t }}" {{ block.shopify_attributes }}>
+          <span class="nc-vidband__media">
+            {%- if de_source.url != blank and de_source.url != nil and de_video.preview_image != blank -%}
+              {{ de_video.preview_image | image_url: width: 640 | image_tag: alt: block.settings.name, loading: 'lazy' }}
+            {%- elsif block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 640 | image_tag: alt: block.settings.name, loading: 'lazy' }}
+            {%- elsif yt != blank -%}
+              <img src="https://img.youtube.com/vi/{{ yt }}/hqdefault.jpg" alt="{{ block.settings.name | escape }}" loading="lazy" width="480" height="360">
+            {%- endif -%}
+            <span class="nc-vidband__shade" aria-hidden="true"></span>
+            <span class="nc-vidband__play" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--sage-700)"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            <span class="nc-vidband__name">{% render 'nc-cbd', text: block.settings.name %}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Videorail",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Overskrift (valgfri)", "info": "Tom: \"Kunder fortæller om deres rutine\". Brug kun tal, der kan dokumenteres, og aldrig tal koblet til følelser." },
+    { "type": "text", "id": "note", "label": "Note (højre, valgfri)", "info": "Tom: \"Kunder deler deres egne oplevelser. Resultater kan variere.\"" },
+    { "type": "checkbox", "id": "landscape", "label": "Videoerne er liggende (16:9)", "info": "Slået fra: stående (9:16) som Shorts. Videoerne afspilles i et vindue på siden.", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Navn", "default": "Mette" },
+        { "type": "text", "id": "youtube_id", "label": "YouTube-ID", "default": "VRJSZeNlCoQ" },
+        { "type": "video", "id": "video_de", "label": "Tysk video (valgfri)", "info": "Vises kun på tysk. Tomt felt bruger den oprindelige YouTube-video." },
+        { "type": "image_picker", "id": "image", "label": "Thumbnail (valgfri)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Videorail",
+      "blocks": [
+        { "type": "video", "settings": { "name": "Mette", "youtube_id": "VRJSZeNlCoQ" } },
+        { "type": "video", "settings": { "name": "Christian", "youtube_id": "RHGezLkTcO8" } },
+        { "type": "video", "settings": { "name": "Astrid", "youtube_id": "7_Bpx7LJIGc" } },
+        { "type": "video", "settings": { "name": "Vivi", "youtube_id": "HwVoEwGZmyc" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

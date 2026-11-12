@@ -1,0 +1,36 @@
+{% comment %}
+  Prisvisning. Foer-pris vises kun som gennemstreget belob.
+  Ingen "SPAR X %"-tekst her: besparelsesudsagn kraever dokumenteret
+  30-dages normalpris (prismaerkningsbekendtgoerelsen, paragraf 9 a)
+  og maa ikke genereres automatisk af temaet.
+
+  Brug: {% render 'nc-price', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign target = product.selected_or_first_available_variant | default: product
+-%}
+
+<span class="nc-price">
+  <span class="nc-price__current">
+    {%- if product.price_varies -%}
+      {{ 'product.from' | t }} {{ product.price_min | money }}
+    {%- else -%}
+      {{ target.price | money }}
+    {%- endif -%}
+  </span>
+  {%- if target.compare_at_price > target.price -%}
+    <s class="nc-price__compare">
+      <span class="nc-visually-hidden">{{ 'product.regular_price' | t }}</span>
+      {{ target.compare_at_price | money }}
+    </s>
+  {%- endif -%}
+  {%- capture nc_unit_display -%}{% render 'nc-unit-price', variant: target %}{%- endcapture -%}
+    {%- assign nc_unit_display = nc_unit_display | strip -%}
+    {%- assign nc_show_unit = false -%}
+    {%- if target.unit_price_measurement -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if request.locale.iso_code == 'de' and nc_unit_display != blank -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if nc_show_unit -%}
+    <span class="nc-price__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ nc_unit_display }}</span>
+  {%- endif -%}
+</span>

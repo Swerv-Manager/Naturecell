@@ -1,0 +1,90 @@
+{%- comment -%}
+  nc-cbd: nedtoner ordene "CBD" og "CBG" i synlig tekst (CBG-ikon: kundens rettelse 07-10).
+
+  "CBD" vises som et lille ikon (bogstaverne tegnet som figur i en pille). Ordet staar
+  ikke som tekst i HTML'en, saa Google ikke laeser det (kundens oenske 07-10-2026).
+  Skaermlaesere faar "CBD" fra CSS (.nc-cbd-i::after i nc-theme.css): indhold fra
+  pseudo-elementer indekseres ikke af Google, men laeses op af skaermlaesere.
+
+  Virker paa ren tekst og paa HTML (beskrivelser, artikler, rich text): i HTML erstattes
+  kun tekst mellem tags, aldrig attributter som alt, title eller href, og aldrig indhold
+  i <script> eller <style>.
+
+  mode: 'category' bruges til kategorinavne: "CBD Ansigtspleje" vises som "Ansigtspleje",
+  mens navne uden "pleje" (fx "CBD Olie") faar ikonet.
+  mode: 'strip' fjerner kun kategori-praefikset og giver ren tekst (til oversaettelser).
+
+  Slaas fra i Temaindstillinger > SEO og produktdata > "Vis CBD som ikon".
+  Sidetitler, metabeskrivelser, alt-tekster og strukturerede data bruger ikke snippetten.
+
+  Brug:
+    {% render 'nc-cbd', text: product.title %}
+    {% render 'nc-cbd', text: collection.title, mode: 'category' %}
+{%- endcomment -%}
+{%- liquid
+  assign nc_t = text
+  assign nc_has = false
+  if nc_t contains 'CBD' or nc_t contains 'CBG'
+    assign nc_has = true
+  endif
+  if settings.nc_cbd_icon and nc_has
+    if mode == 'category' or mode == 'strip'
+      assign nc_head = nc_t | slice: 0, 4
+      if nc_head == 'CBD ' or nc_head == 'CBD-'
+        assign nc_rest = nc_t | slice: 4, 400 | strip
+        assign nc_rest_d = nc_rest | downcase
+        if nc_rest_d contains 'pleje'
+          assign nc_first = nc_rest | slice: 0 | upcase
+          assign nc_t = nc_rest | slice: 1, 400 | prepend: nc_first
+        endif
+      endif
+    endif
+    if mode != 'strip'
+      capture nc_icon
+        echo '<span class="nc-cbd-i"><svg class="nc-cbd" aria-hidden="true" focusable="false"><use href="#nc-cbd"></use></svg></span>'
+      endcapture
+      assign nc_icon_dash = nc_icon | prepend: '<span class="nc-cbd-w">' | append: '-</span>'
+      capture nc_gicon
+        echo '<span class="nc-cbd-i nc-cbg-i"><svg class="nc-cbd" aria-hidden="true" focusable="false"><use href="#nc-cbg"></use></svg></span>'
+      endcapture
+      assign nc_gicon_dash = nc_gicon | prepend: '<span class="nc-cbd-w">' | append: '-</span>'
+      if nc_t contains '<'
+        assign nc_parts = nc_t | split: '<'
+        assign nc_raw = false
+        capture nc_t
+          for nc_part in nc_parts
+            if forloop.first
+              assign nc_seg = nc_part
+            else
+              if nc_part contains '>'
+                assign nc_tag = nc_part | split: '>' | first
+                assign nc_seg = nc_part | remove_first: nc_tag | remove_first: '>'
+                echo '<' | append: nc_tag | append: '>'
+                assign nc_tag_lc = nc_tag | downcase | slice: 0, 7
+                if nc_tag_lc contains 'script' or nc_tag_lc contains 'style'
+                  assign nc_raw = true
+                  if nc_tag_lc contains '/'
+                    assign nc_raw = false
+                  endif
+                endif
+              else
+                echo '<'
+                assign nc_seg = nc_part
+              endif
+            endif
+            if nc_raw == false
+              # Pladsholdere foerst, saa "CBD-" og "CBD" ikke erstattes to gange
+              assign nc_seg = nc_seg | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%' | replace: 'CBG-', '%%NCXGDASH%%' | replace: 'CBG', '%%NCXGICON%%'
+              assign nc_seg = nc_seg | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon | replace: '%%NCXGDASH%%', nc_gicon_dash | replace: '%%NCXGICON%%', nc_gicon
+            endif
+            echo nc_seg
+          endfor
+        endcapture
+      else
+        assign nc_t = nc_t | replace: 'CBD-', '%%NCXDASH%%' | replace: 'CBD', '%%NCXICON%%' | replace: 'CBG-', '%%NCXGDASH%%' | replace: 'CBG', '%%NCXGICON%%'
+        assign nc_t = nc_t | replace: '%%NCXDASH%%', nc_icon_dash | replace: '%%NCXICON%%', nc_icon | replace: '%%NCXGDASH%%', nc_gicon_dash | replace: '%%NCXGICON%%', nc_gicon
+      endif
+    endif
+  endif
+  echo nc_t
+-%}

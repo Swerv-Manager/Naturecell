@@ -1,0 +1,73 @@
+{%- comment -%}
+  nc-free-shipping: graensen for fri fragt i kundens valuta.
+
+  Kilden er temaindstillingen "Fri fragt-graense pr. valuta" (en linje pr. valuta,
+  fx "DKK: 399"). Uden en linje for kundens valuta er output tomt, og alle tekster
+  om fri fragt skjules paa det marked, saa et euro-marked aldrig ser "399 kr.".
+
+  Black Week (Swerv 10.11): fra temaindstillingen "Black Week starter (UTC)" bruges
+  "Fri fragt-graense i Black Week" (fx "DKK: 499"). Valutaer, der ikke staar dér,
+  beholder den normale graense. Er "Black Week slutter (UTC)" udfyldt, skiftes tilbage
+  efter det tidspunkt. Samme tidspunkt styrer forsidens tilbud/BW-skift (nc-offer-switch).
+  OBS: Det er kun TEKSTEN. Selve fragtprisen i kassen styres i Shopify/fragt-appen.
+
+  Brug:
+    {%- capture fs %}{% render 'nc-free-shipping' %}{% endcapture -%}               formateret, fx "399 kr."
+    {%- capture fs_cents %}{% render 'nc-free-shipping', cents: true %}{% endcapture -%}  i oere/cent, fx 39900
+    phase: 'normal' eller 'bw' tvinger en bestemt graense (bruges af JS-skiftet i topbjaelken).
+{%- endcomment -%}
+{%- liquid
+  assign nc_iso = cart.currency.iso_code | default: shop.currency | upcase
+
+  assign nc_bw = false
+  assign nc_bw_start = settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | date: '%s' | plus: 0
+  assign nc_now = 'now' | date: '%s' | plus: 0
+  if nc_now >= nc_bw_start
+    assign nc_bw = true
+    if settings.nc_bw_end_utc != blank
+      assign nc_bw_end = settings.nc_bw_end_utc | date: '%s' | plus: 0
+      if nc_now >= nc_bw_end
+        assign nc_bw = false
+      endif
+    endif
+  endif
+  if phase == 'normal'
+    assign nc_bw = false
+  elsif phase == 'bw'
+    assign nc_bw = true
+  endif
+
+  assign nc_amount = ''
+  if nc_bw and settings.nc_free_shipping_bw != blank
+    assign nc_rows = settings.nc_free_shipping_bw | newline_to_br | split: '<br />'
+    for nc_row in nc_rows
+      assign nc_bits = nc_row | split: ':'
+      assign nc_cur = nc_bits[0] | strip | upcase
+      if nc_cur == nc_iso and nc_bits[1] != blank
+        assign nc_amount = nc_bits[1] | strip | remove: ' ' | replace: ',', '.'
+        break
+      endif
+    endfor
+  endif
+  if nc_amount == blank
+    assign nc_rows = settings.nc_free_shipping | newline_to_br | split: '<br />'
+    for nc_row in nc_rows
+      assign nc_bits = nc_row | split: ':'
+      assign nc_cur = nc_bits[0] | strip | upcase
+      if nc_cur == nc_iso and nc_bits[1] != blank
+        assign nc_amount = nc_bits[1] | strip | remove: ' ' | replace: ',', '.'
+        break
+      endif
+    endfor
+  endif
+  if nc_amount != blank and customer.b2b? != true
+    assign nc_cents = nc_amount | times: 100 | round
+    if nc_cents > 0
+      if cents
+        echo nc_cents
+      else
+        echo nc_cents | money_without_trailing_zeros
+      endif
+    endif
+  endif
+-%}

@@ -1,0 +1,102 @@
+{% comment %}
+  Produktside: to redaktionelle splits 1:1 fra NatureCell.dc.html -
+  "Om produktet" (billede venstre) og "Sådan bruger du den" (billede
+  hoejre). Tekst fra metafelter (ncell.story_title / ncell.story /
+  ncell.usage), ellers produktets egen beskrivelse og vejledning.
+{% endcomment %}
+
+{%- liquid
+  assign gimgs = product.images
+  assign img_a = gimgs[1] | default: product.featured_image
+  assign img_b = product.featured_image
+  # Fallback-overskrift naar ncell.story_title er tomt: designets "Skabt til <omraade>" ud fra produktets omraade-tag
+  assign area_label = 'din daglige rutine'
+  if product.tags contains 'Ansigt' or product.tags contains 'ansigt'
+    assign area_label = 'ansigtet'
+  elsif product.tags contains 'Hænder' or product.tags contains 'hænder'
+    assign area_label = 'hænderne'
+  elsif product.tags contains 'Krop' or product.tags contains 'krop'
+    assign area_label = 'kroppen'
+  elsif product.tags contains 'Fødder' or product.tags contains 'fødder'
+    assign area_label = 'fødderne'
+  elsif product.tags contains 'Hår' or product.tags contains 'hår'
+    assign area_label = 'håret'
+  endif
+  assign story_title_fallback = section.settings.heading_1 | replace: '[område]', area_label
+  # Fortaelling: ncell.story, ellers indledningen af beskrivelsen. Brug: ncell.usage, ellers vejledningsdelen.
+  capture story_text
+    render 'nc-product-part', product: product, part: 'desc', plain: true
+  endcapture
+  assign story_text = product.metafields.ncell.story.value | default: story_text | strip | truncatewords: 70
+  capture usage_text
+    render 'nc-product-part', product: product, part: 'usage', plain: true
+  endcapture
+  assign usage_text = product.metafields.ncell.usage.value | default: usage_text | strip | truncatewords: 70
+  if usage_text == blank
+    assign usage_text = section.settings.usage_fallback
+  endif
+  assign story_eyebrow = section.settings.eyebrow_1
+  if story_eyebrow == blank
+    assign story_eyebrow = 'pdp.story.eyebrow' | t
+  endif
+-%}
+
+{%- unless product.gift_card? -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-pdpstory { border-top: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__inner { max-width: 1140px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); display: grid; gap: clamp(28px, 5vw, 48px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 700px) {
+    #shopify-section-{{ section.id }} .nc-pdpstory__inner { grid-template-columns: 1fr 1fr; }
+    #shopify-section-{{ section.id }} .nc-pdpstory--flip .nc-pdpstory__media { order: 2; }
+  }
+  #shopify-section-{{ section.id }} .nc-pdpstory__media { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 18px; object-fit: cover; background: var(--sage-50); padding: 0; display: block; }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text { display: flex; flex-direction: column; gap: 14px; }
+  #shopify-section-{{ section.id }} .nc-pdpstory__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(20px, 3.1vw, 32px); line-height: 1.1; letter-spacing: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pdpstory__text p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--ink-700); }
+{%- endstyle -%}
+
+<section class="nc-pdpstory">
+  <div class="nc-pdpstory__inner">
+    {%- if img_a -%}
+      {{ img_a | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
+    {%- endif -%}
+    <div class="nc-pdpstory__text">
+      <span class="nc-pdpstory__eyebrow">{% render 'nc-cbd', text: story_eyebrow %}</span>
+      {%- assign nc_sh = product.metafields.ncell.story_title.value | default: story_title_fallback -%}
+      <h2>{% render 'nc-cbd', text: nc_sh %}</h2>
+      <p>{% render 'nc-cbd', text: story_text %}</p>
+    </div>
+  </div>
+</section>
+
+{%- if usage_text != blank -%}
+<section class="nc-pdpstory nc-pdpstory--flip">
+  <div class="nc-pdpstory__inner">
+    {%- if img_b -%}
+      {{ img_b | image_url: width: 1000 | image_tag: alt: product.title, loading: 'lazy', class: 'nc-pdpstory__media' }}
+    {%- endif -%}
+    <div class="nc-pdpstory__text">
+      <span class="nc-pdpstory__eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow_2 %}</span>
+      {%- assign nc_uh = product.metafields.ncell.usage_title.value | default: section.settings.heading_2 -%}
+      <h2>{% render 'nc-cbd', text: nc_uh %}</h2>
+      <p>{% render 'nc-cbd', text: usage_text %}</p>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Produkt-fortælling",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow_1", "label": "Blok 1: overlinje (valgfri)", "info": "Tom: \"Om produktet\", oversat automatisk." },
+    { "type": "text", "id": "heading_1", "label": "Blok 1: overskrift (fallback, [område] = produktets område)", "info": "Bruges kun når produktets metafelt ncell.story_title er tomt.", "default": "Skabt til [område]" },
+    { "type": "text", "id": "eyebrow_2", "label": "Blok 2: overlinje", "default": "Sådan bruger du den" },
+    { "type": "text", "id": "heading_2", "label": "Blok 2: overskrift (fallback)", "info": "Bruges kun når ncell.usage_title er tomt.", "default": "En enkel del af din daglige rutine" },
+    { "type": "textarea", "id": "usage_fallback", "label": "Brugstekst (fallback)", "info": "Bruges kun når produktet hverken har ncell.usage eller en vejledning i beskrivelsen (efter anden ----). Lad den stå tom, så skjules blok 2 i stedet for at vise en fælles tekst." }
+  ]
+}
+{% endschema %}

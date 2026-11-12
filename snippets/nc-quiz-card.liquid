@@ -1,0 +1,47 @@
+{%- comment -%}
+  nc-quiz-card: et skjult produktkort til quizzens resultat. Omraader og behov laeses fra produktets
+  tags (fx ansigt, tor-hud) og metafeltet ncell.needs; ratingen fra Judge.me (reviews.rating).
+  Udsolgte produkter springes over.
+  Brug: {% render 'nc-quiz-card', p: product %}
+{%- endcomment -%}
+{%- if p.available -%}
+{%- liquid
+  assign areas = ''
+  assign needs = ''
+  for tag in p.tags
+    assign lt = tag | downcase
+    case lt
+      when 'ansigt'
+        assign areas = areas | append: 'ansigt,'
+      when 'haender' or 'hænder'
+        assign areas = areas | append: 'haender,'
+      when 'krop'
+        assign areas = areas | append: 'krop,'
+      when 'foedder' or 'fødder'
+        assign areas = areas | append: 'foedder,'
+      when 'haar' or 'hår'
+        assign areas = areas | append: 'haar,'
+      when 'tor-hud' or 'toer' or 'tør hud'
+        assign needs = needs | append: 'toer,'
+      when 'fugt'
+        assign needs = needs | append: 'fugt,'
+      when 'moden-hud' or 'moden'
+        assign needs = needs | append: 'moden,'
+      when 'sensitiv-hud' or 'sensitiv'
+        assign needs = needs | append: 'sensitiv,'
+      when 'uren-hud' or 'uren'
+        assign needs = needs | append: 'uren,'
+      when 'genopbygning'
+        assign needs = needs | append: 'genopbygning,'
+    endcase
+  endfor
+  assign mf_needs = p.metafields.ncell.needs.value
+  if mf_needs != blank
+    assign needs = needs | append: mf_needs | append: ','
+  endif
+  assign rating = p.metafields.reviews.rating.value.rating | default: p.metafields.reviews.rating.value | default: 4.5
+-%}
+<div data-nc-quiz-card data-handle="{{ p.handle }}" data-areas="{{ areas }}" data-needs="{{ needs | replace: ' ', '' }}" data-rating="{{ rating }}" hidden>
+  {%- render 'nc-product-card', product: p -%}
+</div>
+{%- endif -%}

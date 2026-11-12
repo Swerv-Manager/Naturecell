@@ -1,0 +1,37 @@
+{%- doc -%}
+  Displays verified German single-product unit prices per litre, with the original measurement elsewhere.
+  @param {object} variant - The current product variant.
+  @param {object} [measurement] - Cart line measurement when rendering a cart item.
+  @param {number} [price] - Current cart line price per item in minor currency units.
+  @param {number} [unit_price] - Original cart line unit price.
+{%- enddoc -%}
+{%- liquid
+  assign nc_measurement = measurement | default: variant.unit_price_measurement
+  assign nc_current_price = price | default: variant.price
+  assign nc_original_unit_price = unit_price | default: variant.unit_price
+  assign nc_variant_id = variant.id | append: ''
+  assign nc_verified_ids = '41035481907381,41035672125621,41035752308917,41035816468661,41035859034293,41035988172981,42511357509813,47253017493842,47254132097362,48045504987474,48045527564626,50339509240146,50339536175442,50339540762962,51110758121810,53576497955154,53576516010322,53576538489170' | split: ','
+  assign nc_volume_unit = nc_measurement.quantity_unit | downcase
+  assign nc_measured_type = nc_measurement.measured_type | downcase
+  assign nc_volume = nc_measurement.quantity_value | plus: 0.0
+  assign nc_oil_ids = '50346111402322,50161992466770,50346102882642,50346106224978' | split: ','
+  assign nc_per_litre = false
+  if request.locale.iso_code == 'de' and nc_verified_ids contains nc_variant_id
+    if nc_measured_type == 'volume' and nc_volume_unit == 'ml' and nc_volume > 0 and nc_current_price != nil
+      assign nc_per_litre = true
+    endif
+  endif
+  if request.locale.iso_code == 'de' and nc_oil_ids contains nc_variant_id and nc_current_price != nil
+    if nc_volume == 0 and nc_volume_unit == '' and nc_measured_type == ''
+      assign nc_volume = 10.0
+      assign nc_per_litre = true
+    elsif nc_measured_type == 'volume' and nc_volume_unit == 'ml' and nc_volume == 10
+      assign nc_per_litre = true
+    endif
+  endif
+-%}
+{%- if nc_per_litre -%}
+  {{- nc_current_price | times: 1000.0 | divided_by: nc_volume | round | money }} / 1 l
+{%- elsif nc_measurement != nil and nc_measurement != blank -%}
+  {{- nc_original_unit_price | money }} / {% if nc_measurement.reference_value != 1 %}{{ nc_measurement.reference_value }} {% endif %}{{ nc_measurement.reference_unit -}}
+{%- endif -%}

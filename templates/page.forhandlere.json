@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "nc-page-hero",
+      "settings": {
+        "tone": "sage",
+        "band_compact": true,
+        "eyebrow": "Køb NatureCell",
+        "heading": "Her kan du købe NatureCell",
+        "intro": "Du kan købe NatureCell her i webshoppen og i Butik Lille Nyhavn i Skanderborg, hvor vi har shop-in-shop."
+      }
+    },
+    "cards": {
+      "type": "nc-rich-page",
+      "settings": {
+        "cta_heading": "Vil du forhandle NatureCell?",
+        "cta_body": "Butik, klinik eller kæde? Opret en B2B-konto og få adgang til engrospriser og materiale.",
+        "cta_text": "Bliv forhandler →",
+        "cta_url": "/pages/b2b#b2b-ansoegning"
+      },
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "badge": "Butik",
+            "heading": "Butik Lille Nyhavn, Skanderborg",
+            "text": "Vi har shop-in-shop i Butik Lille Nyhavn. Kom forbi og få personlig vejledning.",
+            "link_text": "Se åbningstider",
+            "link_url": "/pages/abningstider"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "badge": "Webshop",
+            "heading": "naturecell.dk",
+            "text": "Hele sortimentet samlet ét sted. Vi afsender fra Danmark, og webshoppen er e-mærket.",
+            "link_text": "Se alle produkter",
+            "link_url": "/collections/cbd-hudpleje"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "cards"
+  ]
+}

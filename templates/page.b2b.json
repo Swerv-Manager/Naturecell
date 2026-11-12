@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "b2b": {
+      "type": "nc-b2b",
+      "settings": {
+        "eyebrow": "For forhandlere & klinikker",
+        "heading": "NatureCell B2B",
+        "intro": "Velkommen til vores B2B-univers. Er du allerede forhandler med et login, kan du logge ind her.",
+        "info_title": "Ønsker du at blive forhandler?",
+        "info_text": "Vi udvider NatureCell og søger udvalgte forhandlere i bestemte byer. Vi lægger vægt på et godt match, hvor kvalitet, personlig rådgivning og kundeoplevelsen er i centrum.",
+        "login_heading": "Forhandlerlogin",
+        "apply_text": "Ansøg om en B2B-konto, og fortæl os om din virksomhed. Vi vurderer hver ansøgning individuelt og kontakter dig inden for 7 arbejdsdage om muligheden for et samarbejde.",
+        "apply_label": "Ansøg om at blive forhandler",
+        "apply_url": "#b2b-ansoegning"
+      }
+    },
+    "apply": {
+      "type": "nc-b2b-form",
+      "settings": {
+        "heading": "Ansøg om at blive forhandler",
+        "intro": "Fortæl os om din virksomhed. Vi vurderer hver ansøgning individuelt og kontakter dig inden for 7 arbejdsdage om muligheden for et samarbejde.",
+        "photo": "shopify://shop_images/Butik_Lille_Nyhavn.webp",
+        "photo_caption": "Sådan kan en NatureCell-butik se ud"
+      }
+    },
+    "portal": {
+      "type": "nc-b2b-portal",
+      "settings": {
+        "products": [
+          "natcreme",
+          "handcreme",
+          "fodcreme",
+          "dagcreme",
+          "rensegel",
+          "ansigtsolie-med-antioxidanter-30-ml",
+          "ansigtsolie-med-antioxidanter-30-ml",
+          "bodylotion",
+          "love-lubricant",
+          "deodorant",
+          "lip-balm",
+          "cbg-eye-gel",
+          "fugtserum-med-hyaluronsyre-30-ml",
+          "fugtserum-med-hyaluronsyre-30-ml",
+          "kosmetisk-hudolie-10-10-ml",
+          "kosmetisk-hudolie-10-10-ml",
+          "body-oil-100ml",
+          "shampoo-300ml",
+          "conditioner-300-ml",
+          "cbd-olie-10-10ml-test1-kopi",
+          "kosmetisk-hudolie-15-10-ml",
+          "cbd-olie-15-10ml-test-kopi",
+          "kosmetisk-hudolie-20-10-ml",
+          "kosmetisk-hudolie-5-10-ml",
+          "kosmetisk-hudolie-5-10-ml",
+          "re-new-balm",
+          "day-cream-alfalab-dagcreme-50-ml",
+          "night-cream-alfalab-natcreme-50-ml",
+          "glow-alfalab-hudolie-30-ml",
+          "exfoliating-hanske"
+        ]
+      }
+    }
+  },
+  "order": [
+    "portal",
+    "b2b",
+    "apply"
+  ]
+}

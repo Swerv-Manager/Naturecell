@@ -1,0 +1,303 @@
+{% comment %}
+  "Shop efter område eller behov" fra designet: centreret overskrift,
+  pille-toggle og 6 kort pr. fane.
+{% endcomment %}
+
+{%- style -%}
+  /* 1:1 fra designets "SHOP BY AREA / NEED": sektion 72px top/bund, centreret hoved (eyebrow, h2 +14, p +12, toggle +20, bund 34) */
+  #shopify-section-{{ section.id }} .nc-section { padding: clamp(43px, 5vw, 72px) 0 clamp(43px, 6vw, 72px); }
+  #shopify-section-{{ section.id }} .nc-section-head { max-width: none; margin-bottom: 34px; }
+  #shopify-section-{{ section.id }} .nc-eyebrow { display: block; margin: 0; line-height: 1.7; letter-spacing: 0.12em; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-section-head h2 { margin: 14px 0 0; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; text-wrap: wrap; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-section-head p:not(.nc-eyebrow) { margin: 12px auto 0; max-width: 560px; font-size: 16px; line-height: 1.6; color: var(--ink-500); }
+
+  .nc-shoptabs__pills { display: inline-flex; gap: 0; background: var(--sage-50); border: 1px solid var(--border-sage); border-radius: var(--radius-pill); padding: 4px; margin-top: 20px; vertical-align: top; }
+  .nc-shoptabs__pill { border: 0; background: transparent; color: var(--ink-700); padding: 9px 22px; border-radius: var(--radius-pill); font-family: var(--font-body); font-size: 14px; font-weight: 600; line-height: normal; cursor: pointer; transition: background var(--dur-fast), color var(--dur-fast); }
+  .nc-shoptabs__pill.is-active { background: var(--sage-500); color: #fff; }
+
+  /* Designets raekke: grid-auto-flow column, minmax(180px,1fr), gap 16, vandret scroll uden scrollbar */
+  .nc-shoptabs__grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(180px, 1fr); gap: 16px; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 10px; }
+  .nc-shoptabs__grid::-webkit-scrollbar { display: none; }
+  /* NCCat kind="tile": hvid flise med 1px soft-kant, mint panel 180px med multiply-packshot, tekst 16/12/18 */
+  .nc-shoptabs__card { display: flex; flex-direction: column; width: 100%; text-decoration: none; text-align: center; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; scroll-snap-align: start; transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base); }
+  .nc-shoptabs__card:hover { border-color: var(--sage-400); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
+  .nc-shoptabs__media { display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--sage-50); }
+  /* Packshots: contain + multiply paa mint-panelet; nc-packshot.js stiller produkterne paa samme underkant (kundens rettelse 39). */
+  .nc-shoptabs__media img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; }
+  .nc-shoptabs__label { display: flex; flex-direction: column; gap: 3px; padding: 16px 12px 18px; line-height: normal; }
+  .nc-shoptabs__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--sage-700); }
+  .nc-shoptabs__label span { font-size: 12.5px; color: var(--ink-400); }
+  /* Mobil (08-10): to kort + et synligt kig paa det tredje, fade i kanten og prikker (data-nc-rail i nc-theme.js) */
+  @media (max-width: 749px) {
+    .nc-shoptabs__grid { grid-auto-columns: calc(44% - 6px); gap: 12px; padding-bottom: 6px; }
+    .nc-shoptabs__label { padding: 12px 8px 14px; }
+    .nc-shoptabs__label strong { font-size: 16px; }
+    .nc-shoptabs__label span { font-size: 12px; }
+    .nc-shoptabs__pill { padding: 8px 18px; font-size: 13px; }
+  }
+{%- endstyle -%}
+
+<section class="nc-section">
+  <div class="nc-container" data-nc-tabs>
+    <div class="nc-section-head nc-section-head--center">
+      <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+      <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
+      <p>{% render 'nc-cbd', text: section.settings.subtext %}</p>
+      <div class="nc-shoptabs__pills" role="tablist">
+        <button class="nc-shoptabs__pill nc-shoptabs__pill--area is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.area' | t }}</button>
+        <button class="nc-shoptabs__pill" data-nc-tab="need" role="tab" aria-selected="false">{{ 'collection.need' | t }}</button>
+      </div>
+    </div>
+
+    <div data-nc-panel="area">
+      <div class="nc-shoptabs__grid" data-nc-rail>
+        {%- for block in section.blocks -%}
+{%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
+          {%- if block.type == 'area' -%}
+            <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
+              <span class="nc-shoptabs__media">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                {%- elsif nc_transition_block_product != blank -%}
+                  {{ nc_transition_block_product.featured_image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                {%- endif -%}
+              </span>
+              <span class="nc-shoptabs__label">
+                <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
+                <span>{% render 'nc-cbd', text: block.settings.desc %}</span>
+              </span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div data-nc-panel="need" hidden>
+      <div class="nc-shoptabs__grid" data-nc-rail>
+        {%- for block in section.blocks -%}
+{%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
+          {%- if block.type == 'need' -%}
+            <a class="nc-shoptabs__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
+              <span class="nc-shoptabs__media">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                {%- elsif nc_transition_block_product != blank -%}
+                  {{ nc_transition_block_product.featured_image | image_url: width: 480 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                {%- endif -%}
+              </span>
+              <span class="nc-shoptabs__label">
+                <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
+                <span>{% render 'nc-cbd', text: block.settings.desc %}</span>
+              </span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop efter område/behov",
+  "tag": "section",
+  "class": "nc-sec-shoptabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Overlinje",
+      "default": "Find det rigtige til dig"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "default": "Shop efter område eller behov"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Undertekst",
+      "default": "Vælg hvor du har brug for pleje, eller hvad din hud har brug for."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "area",
+      "name": "Område",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Ansigt"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Creme, serum & rens"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        }
+      ]
+    },
+    {
+      "type": "need",
+      "name": "Behov",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Tør hud"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Fugt & pleje"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        },
+        {
+          "type": "product",
+          "id": "product_migration",
+          "label": "URL-migration: reservevalg",
+          "info": "Midlertidigt reservevalg til samme produkt eller kollektion efter URL-skift."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop efter område/behov",
+      "blocks": [
+        {
+          "type": "area",
+          "settings": {
+            "label": "Ansigt",
+            "desc": "Creme, serum & rens",
+            "url": "/collections/cbd-ansigtspleje"
+          }
+        },
+        {
+          "type": "area",
+          "settings": {
+            "label": "Hænder",
+            "desc": "Håndcreme & balm",
+            "url": "/collections/cbd-handpleje"
+          }
+        },
+        {
+          "type": "area",
+          "settings": {
+            "label": "Krop",
+            "desc": "Lotion & olie",
+            "url": "/collections/cbd-kropspleje"
+          }
+        },
+        {
+          "type": "area",
+          "settings": {
+            "label": "Fødder",
+            "desc": "Fodcreme & pleje",
+            "url": "/collections/cbd-fodpleje"
+          }
+        },
+        {
+          "type": "area",
+          "settings": {
+            "label": "Hår",
+            "desc": "Shampoo & pleje",
+            "url": "/collections/cbd-haarpleje"
+          }
+        },
+        {
+          "type": "area",
+          "settings": {
+            "label": "Herre",
+            "desc": "ALFALAB til mænd",
+            "url": "/collections/herre-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Tør hud",
+            "desc": "Fugt & pleje",
+            "url": "/collections/cbd-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Fugt",
+            "desc": "Serum & creme",
+            "url": "/collections/cbd-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Moden hud",
+            "desc": "Eye gel & natcreme",
+            "url": "/collections/cbd-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Sensitiv hud",
+            "desc": "Mild & uden parfume",
+            "url": "/collections/cbd-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Uren hud",
+            "desc": "Rensegel & pleje",
+            "url": "/collections/cbd-hudpleje"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "label": "Genopbygning",
+            "desc": "Olie & balm",
+            "url": "/collections/cbd-hudpleje"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

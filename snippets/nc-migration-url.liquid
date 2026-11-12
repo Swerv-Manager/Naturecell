@@ -1,0 +1,697 @@
+{%- liquid
+  assign nc_result = path
+  assign nc_key = path
+  assign nc_prefix = nc_key | slice: 0, 4
+  if nc_prefix == '/de/'
+    assign nc_key = nc_key | remove_first: '/de'
+  endif
+  assign nc_segments = nc_key | remove_first: '/' | split: '/'
+  assign nc_extra = ''
+  assign nc_normalized_path = nc_key
+  if nc_segments[0] == 'collections' and nc_segments[2] != 'products'
+    assign nc_key = '/collections/' | append: nc_segments[1]
+    assign nc_extra = nc_normalized_path | remove_first: nc_key
+  endif
+  assign nc_ready = false
+  if collections['fodpleje'].id == 684433047890
+    assign nc_ready = true
+  endif
+  case nc_key
+    when '/products/natcreme' or '/products/nachtcreme-naturecell'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/nachtcreme-naturecell'
+        else
+          assign nc_result = '/de/products/nachtcreme-naturecell'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/natcreme'
+        else
+          assign nc_result = '/products/natcreme'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/handcreme' or '/products/handcreme-mit-cbd' or '/products/handcreme-fur-trockene-hande-feuchtigkeitsspendend-und-weichmachend-100-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/handcreme-fur-trockene-hande-feuchtigkeitsspendend-und-weichmachend-100-ml'
+        else
+          assign nc_result = '/de/products/handcreme-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/handcreme'
+        else
+          assign nc_result = '/products/handcreme'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/fodcreme' or '/products/fusscreme-mit-cbd' or '/products/fu-creme-mit-urea-fur-trockene-fu-e-und-weichere-haut-100-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/fu-creme-mit-urea-fur-trockene-fu-e-und-weichere-haut-100-ml'
+        else
+          assign nc_result = '/de/products/fusscreme-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/fodcreme'
+        else
+          assign nc_result = '/products/fodcreme'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/dagcreme' or '/products/tagescreme-naturecell'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/tagescreme-naturecell'
+        else
+          assign nc_result = '/de/products/tagescreme-naturecell'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/dagcreme'
+        else
+          assign nc_result = '/products/dagcreme'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/rensegel' or '/products/reinigungsgel-mit-cbd' or '/products/mildes-parfumfreies-reinigungsgel-fur-das-gesicht-100-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/mildes-parfumfreies-reinigungsgel-fur-das-gesicht-100-ml'
+        else
+          assign nc_result = '/de/products/reinigungsgel-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/rensegel'
+        else
+          assign nc_result = '/products/rensegel'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-olie-1000mg' or '/products/cbd-hautpflegeoel-1000mg-30ml' or '/products/ansigtsolie-med-antioxidanter-30-ml' or '/products/gesichtsol-mit-antioxidantien-30-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/gesichtsol-mit-antioxidantien-30-ml'
+        else
+          assign nc_result = '/de/products/cbd-hautpflegeoel-1000mg-30ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/ansigtsolie-med-antioxidanter-30-ml'
+        else
+          assign nc_result = '/products/cbd-olie-1000mg'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/bodylotion' or '/products/bodylotion-mit-cbd-200ml' or '/products/feuchtigkeitsspendende-bodylotion-200-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/feuchtigkeitsspendende-bodylotion-200-ml'
+        else
+          assign nc_result = '/de/products/bodylotion-mit-cbd-200ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/bodylotion'
+        else
+          assign nc_result = '/products/bodylotion'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/forkael-en-du-har-kaer' or '/products/all-day-cbd-skin-care' or '/products/hautpflege-set-all-day-tages-und-nachtcreme'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/hautpflege-set-all-day-tages-und-nachtcreme'
+        else
+          assign nc_result = '/de/products/all-day-cbd-skin-care'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/forkael-en-du-har-kaer'
+        else
+          assign nc_result = '/products/forkael-en-du-har-kaer'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-hudpleje-startpakke-plus' or '/products/hautpflege-starterpaket-plus' or '/products/hudpleje-startpakke-dagcreme-rensegel-og-ansigtsolie'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/hautpflege-starterpaket-plus'
+        else
+          assign nc_result = '/de/products/hautpflege-starterpaket-plus'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/hudpleje-startpakke-dagcreme-rensegel-og-ansigtsolie'
+        else
+          assign nc_result = '/products/cbd-hudpleje-startpakke-plus'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/hudpleje-startpakke-plus-1' or '/products/komplette-cbd-hautpflege' or '/products/komplettpaket-tagescreme-nachtcreme-reinigungsgel-und-gesichtsol' or '/products/cbd-hudpleje-startpakke-plus-1' or '/products/cbd-hudpleje-sampakke-komplet' or '/products/https-naturecell-dk-products-naturecell-dk-collections-cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/products/cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/products/https-naturecell-dk-collections-cbd-hudpleje-products-cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/products/naturecell-dk-collections-cbd-hudpleje-products-cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/products/naturecell-dk-collections-cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/products/collections-cbd-hudpleje-products-hudpleje-startpakke-plus-1' or '/collections/cbd-hudpleje/products/hudpleje-startpakke-plus-1'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/komplettpaket-tagescreme-nachtcreme-reinigungsgel-und-gesichtsol'
+        else
+          assign nc_result = '/de/products/komplette-cbd-hautpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/hudpleje-startpakke-plus-1'
+        else
+          assign nc_result = '/products/hudpleje-startpakke-plus-1'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/love-lubricant' or '/products/liebesgleitmittel-mit-cbd' or '/products/love-lubricant-wasserbasierte-intimpflege-30-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/love-lubricant-wasserbasierte-intimpflege-30-ml'
+        else
+          assign nc_result = '/de/products/liebesgleitmittel-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/love-lubricant'
+        else
+          assign nc_result = '/products/love-lubricant'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/deodorant'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/deodorant'
+        else
+          assign nc_result = '/de/products/deodorant'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/deodorant'
+        else
+          assign nc_result = '/products/deodorant'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/lip-balm' or '/products/lippenbalsam-mit-cbd' or '/products/lippenbalsam'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/lippenbalsam'
+        else
+          assign nc_result = '/de/products/lippenbalsam-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/lip-balm'
+        else
+          assign nc_result = '/products/lip-balm'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbg-eye-gel' or '/products/augengel-mit-cbg'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/augengel-mit-cbg'
+        else
+          assign nc_result = '/de/products/augengel-mit-cbg'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/cbg-eye-gel'
+        else
+          assign nc_result = '/products/cbg-eye-gel'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/naturecell-cbd-hyaluronic-serum' or '/products/hyaluronserum-mit-cbd' or '/products/fugtserum-med-hyaluronsyre-30-ml' or '/products/feuchtigkeitsserum-mit-hyaluronsaure-30-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/feuchtigkeitsserum-mit-hyaluronsaure-30-ml'
+        else
+          assign nc_result = '/de/products/hyaluronserum-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/fugtserum-med-hyaluronsyre-30-ml'
+        else
+          assign nc_result = '/products/naturecell-cbd-hyaluronic-serum'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/pakke' or '/products/hand-geschenkset' or '/collections/cbd-hudpleje/products/pakke'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/hand-geschenkset'
+        else
+          assign nc_result = '/de/products/hand-geschenkset'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/pakke'
+        else
+          assign nc_result = '/products/pakke'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-olie-10-10ml-test1' or '/products/cbd-oel-10-prozent-1000mg-10ml' or '/products/kosmetisk-hudolie-10-10-ml' or '/products/kosmetisches-hautol-10-10-ml' or '/products/raw-cbd-olie-1000mg-cbda-cbd-10' or '/products/cbd-olie-1000mg-10ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/kosmetisches-hautol-10-10-ml'
+        else
+          assign nc_result = '/de/products/cbd-oel-10-prozent-1000mg-10ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/kosmetisk-hudolie-10-10-ml'
+        else
+          assign nc_result = '/products/cbd-olie-10-10ml-test1'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/body-oil-100ml' or '/products/koerperoel-mit-cbd' or '/products/body-oil-pflegendes-korperol-100-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/body-oil-pflegendes-korperol-100-ml'
+        else
+          assign nc_result = '/de/products/koerperoel-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/body-oil-100ml'
+        else
+          assign nc_result = '/products/body-oil-100ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/shampoo-300ml' or '/products/shampoo-mit-cbd' or '/products/haarshampoo-pflegendes-shampoo-300-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/haarshampoo-pflegendes-shampoo-300-ml'
+        else
+          assign nc_result = '/de/products/shampoo-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/shampoo-300ml'
+        else
+          assign nc_result = '/products/shampoo-300ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/conditioner-300-ml' or '/products/conditioner-mit-cbd' or '/products/haarconditioner-pflegende-inhaltsstoffe-300-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/haarconditioner-pflegende-inhaltsstoffe-300-ml'
+        else
+          assign nc_result = '/de/products/conditioner-mit-cbd'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/conditioner-300-ml'
+        else
+          assign nc_result = '/products/conditioner-300-ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/sampakke-shampoo-conditioner' or '/products/komplette-haarpflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/komplette-haarpflege'
+        else
+          assign nc_result = '/de/products/komplette-haarpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/sampakke-shampoo-conditioner'
+        else
+          assign nc_result = '/products/sampakke-shampoo-conditioner'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-olie-10-10ml-test1-kopi' or '/products/cbd-oel-15-prozent-1500mg-10ml' or '/products/kosmetisk-hudolie-15-10-ml' or '/products/kosmetisches-hautol-15-10-ml' or '/products/raw-cbd-olie-1500mg-cbda-cbd-15'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/kosmetisches-hautol-15-10-ml'
+        else
+          assign nc_result = '/de/products/cbd-oel-15-prozent-1500mg-10ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/kosmetisk-hudolie-15-10-ml'
+        else
+          assign nc_result = '/products/cbd-olie-10-10ml-test1-kopi'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-olie-15-10ml-test-kopi' or '/products/cbd-oel-20-prozent-2000mg-10ml' or '/products/kosmetisk-hudolie-20-10-ml' or '/products/kosmetisches-hautol-20-10-ml'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/kosmetisches-hautol-20-10-ml'
+        else
+          assign nc_result = '/de/products/cbd-oel-20-prozent-2000mg-10ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/kosmetisk-hudolie-20-10-ml'
+        else
+          assign nc_result = '/products/cbd-olie-15-10ml-test-kopi'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/cbd-olie-15-10ml-test-kopi-1' or '/products/cbd-oel-5-prozent-500mg-10ml' or '/products/kosmetisk-hudolie-5-10-ml' or '/products/kosmetisches-hautol-5-10-ml' or '/products/naturecell-raw-cbd-olie-500mg-cbda-cbd-5'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/kosmetisches-hautol-5-10-ml'
+        else
+          assign nc_result = '/de/products/cbd-oel-5-prozent-500mg-10ml'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/kosmetisk-hudolie-5-10-ml'
+        else
+          assign nc_result = '/products/cbd-olie-15-10ml-test-kopi-1'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/sampakke-helkropspleje' or '/products/ganzkoerperpflege-mit-cbd-und-cbg' or '/products/pflegeset-fur-gesicht-und-korper-gesichtsol-korperol-und-augengel' or '/products/sampakke-intensiv-hudpleje-med-cbd-og-cbg'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/pflegeset-fur-gesicht-und-korper-gesichtsol-korperol-und-augengel'
+        else
+          assign nc_result = '/de/products/ganzkoerperpflege-mit-cbd-und-cbg'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/sampakke-helkropspleje'
+        else
+          assign nc_result = '/products/sampakke-helkropspleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/re-new-balm' or '/products/re-new-balsam'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/re-new-balsam'
+        else
+          assign nc_result = '/de/products/re-new-balsam'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/re-new-balm'
+        else
+          assign nc_result = '/products/re-new-balm'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/love-pakken-cbd-hudpleje' or '/products/loewenpaket-im-tv-gesehen' or '/products/loevepakken-dagcreme-natcreme-rensegel-og-ansigtsolie'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/loewenpaket-im-tv-gesehen'
+        else
+          assign nc_result = '/de/products/loewenpaket-im-tv-gesehen'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/loevepakken-dagcreme-natcreme-rensegel-og-ansigtsolie'
+        else
+          assign nc_result = '/products/love-pakken-cbd-hudpleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/day-cream-alfalab-dagcreme-50-ml' or '/products/tagescreme-alfalab'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/tagescreme-alfalab'
+        else
+          assign nc_result = '/de/products/tagescreme-alfalab'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/day-cream-alfalab-dagcreme-50-ml'
+        else
+          assign nc_result = '/products/day-cream-alfalab-dagcreme-50-ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/night-cream-alfalab-natcreme-50-ml' or '/products/nachtcreme-alfalab'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/nachtcreme-alfalab'
+        else
+          assign nc_result = '/de/products/nachtcreme-alfalab'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/night-cream-alfalab-natcreme-50-ml'
+        else
+          assign nc_result = '/products/night-cream-alfalab-natcreme-50-ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/glow-alfalab-hudolie-30-ml' or '/products/glow-alfalab'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/glow-alfalab'
+        else
+          assign nc_result = '/de/products/glow-alfalab'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/glow-alfalab-hudolie-30-ml'
+        else
+          assign nc_result = '/products/glow-alfalab-hudolie-30-ml'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/facial-cbd-care' or '/products/gesichts-cbd-pflege-3-produkte' or '/products/facial-care-3-dagcreme-natcreme-og-ansigtsolie' or '/products/facial-care-3-tagescreme-nachtcreme-und-gesichtsol'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/facial-care-3-tagescreme-nachtcreme-und-gesichtsol'
+        else
+          assign nc_result = '/de/products/gesichts-cbd-pflege-3-produkte'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/facial-care-3-dagcreme-natcreme-og-ansigtsolie'
+        else
+          assign nc_result = '/products/facial-cbd-care'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/pakketilbud-3-produkter-indhold-dagcreme-natcreme-hudolie' or '/products/paketangebot-3-produkte'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/paketangebot-3-produkte'
+        else
+          assign nc_result = '/de/products/paketangebot-3-produkte'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/pakketilbud-3-produkter-indhold-dagcreme-natcreme-hudolie'
+        else
+          assign nc_result = '/products/pakketilbud-3-produkter-indhold-dagcreme-natcreme-hudolie'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/exfoliating-hanske' or '/products/peeling-handschuh'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/peeling-handschuh'
+        else
+          assign nc_result = '/de/products/peeling-handschuh'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/exfoliating-hanske'
+        else
+          assign nc_result = '/products/exfoliating-hanske'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/hel-krops-pleje' or '/products/koerperpflege-set'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/koerperpflege-set'
+        else
+          assign nc_result = '/de/products/koerperpflege-set'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/hel-krops-pleje'
+        else
+          assign nc_result = '/products/hel-krops-pleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/pakke-til-starten-af-dagen' or '/products/hautpflege-set-tag'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/hautpflege-set-tag'
+        else
+          assign nc_result = '/de/products/hautpflege-set-tag'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/pakke-til-starten-af-dagen'
+        else
+          assign nc_result = '/products/pakke-til-starten-af-dagen'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/products/pakke-til-starten-af-natten' or '/products/hautpflege-set-nacht'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/products/hautpflege-set-nacht'
+        else
+          assign nc_result = '/de/products/hautpflege-set-nacht'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/products/pakke-til-starten-af-natten'
+        else
+          assign nc_result = '/products/pakke-til-starten-af-natten'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-olie' or '/collections/cbd-oel' or '/collections/koncentrerede-plejeolier' or '/collections/konzentrierte-pflegeoele'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/konzentrierte-pflegeoele'
+        else
+          assign nc_result = '/de/collections/cbd-oel'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/koncentrerede-plejeolier'
+        else
+          assign nc_result = '/collections/cbd-olie'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-hudpleje' or '/collections/cbd-hautpflege' or '/collections/hudpleje-sortiment' or '/collections/hautpflege-sortiment'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/hautpflege-sortiment'
+        else
+          assign nc_result = '/de/collections/cbd-hautpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/hudpleje-sortiment'
+        else
+          assign nc_result = '/collections/cbd-hudpleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-haarpleje' or '/collections/cbd-haarpflege' or '/collections/haarpleje' or '/collections/haarpflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/haarpflege'
+        else
+          assign nc_result = '/de/collections/cbd-haarpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/haarpleje'
+        else
+          assign nc_result = '/collections/cbd-haarpleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-hudpleje-1' or '/collections/cbd-hautpflege-1' or '/collections/hudpleje-udvalg' or '/collections/hautpflege-auswahl'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/hautpflege-auswahl'
+        else
+          assign nc_result = '/de/collections/cbd-hautpflege-1'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/hudpleje-udvalg'
+        else
+          assign nc_result = '/collections/cbd-hudpleje-1'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/nedsatte-vare' or '/collections/reduzierte-ware'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/reduzierte-ware'
+        else
+          assign nc_result = '/de/collections/reduzierte-ware'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/nedsatte-vare'
+        else
+          assign nc_result = '/collections/nedsatte-vare'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-ansigtspleje' or '/collections/cbd-gesichtspflege' or '/collections/ansigtspleje' or '/collections/gesichtspflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/gesichtspflege'
+        else
+          assign nc_result = '/de/collections/cbd-gesichtspflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/ansigtspleje'
+        else
+          assign nc_result = '/collections/cbd-ansigtspleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-kropspleje' or '/collections/cbd-koerperpflege' or '/collections/kropspleje' or '/collections/koerperpflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/koerperpflege'
+        else
+          assign nc_result = '/de/collections/cbd-koerperpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/kropspleje'
+        else
+          assign nc_result = '/collections/cbd-kropspleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-handpleje' or '/collections/cbd-handpflege' or '/collections/handpleje' or '/collections/handpflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/handpflege'
+        else
+          assign nc_result = '/de/collections/cbd-handpflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/handpleje'
+        else
+          assign nc_result = '/collections/cbd-handpleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+    when '/collections/cbd-fodpleje' or '/collections/cbd-fusspflege' or '/collections/fodpleje' or '/collections/fusspflege'
+      if request.locale.iso_code == 'de'
+        if nc_ready
+          assign nc_result = '/de/collections/fusspflege'
+        else
+          assign nc_result = '/de/collections/cbd-fusspflege'
+        endif
+      else
+        if nc_ready
+          assign nc_result = '/collections/fodpleje'
+        else
+          assign nc_result = '/collections/cbd-fodpleje'
+        endif
+      endif
+      assign nc_result = nc_result | append: nc_extra
+  endcase
+  echo nc_result
+-%}

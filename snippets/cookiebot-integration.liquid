@@ -1,0 +1,109 @@
+{% doc %}
+  Synchronizes explicit Cookiebot choices with Shopify customer privacy.
+{% enddoc %}
+<script>
+  (function () {
+    if (window.__ncCookiebotConsentSync) return;
+    window.__ncCookiebotConsentSync = true;
+
+    var timer;
+    var attempts = 0;
+    var featureRequested = false;
+    var lastSubmitted = '';
+    var inFlight = null;
+
+    function decision() {
+      var bot = window.Cookiebot;
+      var consent = bot && bot.consent;
+      if (!consent || consent.method !== 'explicit') return null;
+      if (typeof consent.statistics !== 'boolean' ||
+          typeof consent.marketing !== 'boolean' ||
+          typeof consent.preferences !== 'boolean') return null;
+      var withdrawn = !consent.statistics && !consent.marketing && !consent.preferences;
+      if (bot.hasResponse !== true && !withdrawn) return null;
+      return {
+        analytics: consent.statistics,
+        marketing: consent.marketing,
+        preferences: consent.preferences
+      };
+    }
+
+    function sync() {
+      var consent = decision();
+      if (!consent) return false;
+      var shopify = window.Shopify;
+      var privacy = shopify && shopify.customerPrivacy;
+      if (!privacy || typeof privacy.setTrackingConsent !== 'function') {
+        if (!featureRequested && shopify && typeof shopify.loadFeatures === 'function') {
+          featureRequested = true;
+          try {
+            shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], function (error) {
+              if (!error) wake();
+            });
+          } catch (error) {}
+        }
+        return false;
+      }
+      var key = JSON.stringify(consent);
+      if (inFlight !== null) return true;
+      if (typeof privacy.currentVisitorConsent === 'function') {
+        try {
+          var recorded = privacy.currentVisitorConsent();
+          if (recorded && recorded.analytics === (consent.analytics ? 'yes' : 'no') &&
+              recorded.marketing === (consent.marketing ? 'yes' : 'no') &&
+              recorded.preferences === (consent.preferences ? 'yes' : 'no')) {
+            lastSubmitted = key;
+            return true;
+          }
+        } catch (error) {}
+      }
+      if (key === lastSubmitted) return true;
+      try {
+        inFlight = key;
+        privacy.setTrackingConsent(consent, function (error) {
+          inFlight = null;
+          lastSubmitted = error ? '' : key;
+          var latest = decision();
+          if (latest && JSON.stringify(latest) !== key) wake();
+        });
+        return true;
+      } catch (error) {
+        inFlight = null;
+        lastSubmitted = '';
+        return true;
+      }
+    }
+
+    function tick() {
+      timer = undefined;
+      attempts -= 1;
+      if (!sync() && attempts > 0 && timer === undefined) {
+        timer = window.setTimeout(tick, 100);
+      }
+    }
+
+    function wake() {
+      if (timer !== undefined) window.clearTimeout(timer);
+      attempts = 100;
+      tick();
+    }
+
+    ['CookiebotOnConsentReady', 'CookiebotOnAccept', 'CookiebotOnDecline'].forEach(function (event) {
+      window.addEventListener(event, wake);
+    });
+
+    var previousDecline = window.CookiebotCallback_OnDecline;
+    window.CookiebotCallback_OnDecline = function () {
+      try {
+        var callback = typeof previousDecline === 'function'
+          ? previousDecline
+          : window.CookieConsentCallback_OnDecline;
+        if (typeof callback === 'function') callback.apply(this, arguments);
+      } finally {
+        wake();
+      }
+    };
+
+    wake();
+  })();
+</script>

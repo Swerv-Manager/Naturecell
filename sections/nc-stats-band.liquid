@@ -1,0 +1,113 @@
+{% comment %}
+  Statistikbaand fra om os-designet (template.html:2779-2788): fire
+  noegletal paa creme-baggrund (2019 / Vegansk / 100% / Trustpilot fra temaindstillingerne).
+{% endcomment %}
+
+{%- style -%}
+  {%- comment -%} Designets baand: paper-2, 1px kant top/bund, container 1000, padding clamp(31,6vw,56),
+      grid auto-fit minmax(200,1fr) gap 32; tal clamp(27,4.3vw,44)/1 sage-700, etiket 14px/1.4 ink-500, gap 6. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-stats { background: var(--paper-2); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: clamp(31px, 6vw, 56px) 0; }
+  #shopify-section-{{ section.id }} .nc-stats .nc-container { max-width: 1000px; }
+  #shopify-section-{{ section.id }} .nc-stats__grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(min(47%, 200px), 1fr)); }
+  #shopify-section-{{ section.id }} .nc-stats__item { display: flex; flex-direction: column; gap: 6px; text-align: center; }
+  #shopify-section-{{ section.id }} .nc-stats__num { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(27px, 4.3vw, 44px); line-height: 1; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-stats__label { display: block; font-size: 14px; line-height: 1.4; color: var(--ink-500); }
+{%- endstyle -%}
+
+<div class="nc-stats">
+  <div class="nc-container">
+    <div class="nc-stats__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign st_num = block.settings.num
+          assign st_label = block.settings.label
+          if block.settings.trustpilot
+            capture st_num
+              render 'nc-trustpilot', format: 'num'
+            endcapture
+            capture st_label
+              render 'nc-trustpilot', format: 'label'
+            endcapture
+          endif
+        -%}
+        {%- if st_num != blank -%}
+        <div class="nc-stats__item" {{ block.shopify_attributes }}>
+          <span class="nc-stats__num">{{ st_num | strip }}</span>
+          <span class="nc-stats__label">{{ st_label | strip }}</span>
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "NC statistikbånd",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Nøgletal",
+      "settings": [
+        {
+          "type": "text",
+          "id": "num",
+          "label": "Tal",
+          "default": "2019"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiket",
+          "default": "Først med tilladelse til CBD i Danmark"
+        },
+        {
+          "type": "checkbox",
+          "id": "trustpilot",
+          "label": "Vis Trustpilot-tal i stedet",
+          "info": "Tal og etiket hentes fra Temaindstillinger → Integrationer.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NC statistikbånd",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "num": "2019",
+            "label": "Først med tilladelse til CBD i Danmark"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "Vegansk",
+            "label": "Plantebaseret & uden syntetisk parfume"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "Dansk",
+            "label": "Udviklet af hudplejespecialister"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "num": "",
+            "label": "",
+            "trustpilot": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

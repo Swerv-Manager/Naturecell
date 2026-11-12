@@ -1,0 +1,14 @@
+{% comment %}
+  Tredjeparts-scripts sidst i <body>, styret fra temaindstillinger (Integrationer):
+  Google Tag Manager (noscript), e-maerket-widget og HeroDesk livechat.
+  Standardvaerdierne er kopieret fra det aktive tema.
+{% endcomment %}
+{%- if settings.gtm_id != blank -%}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.gtm_id | strip }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+{%- endif -%}
+{%- if settings.emaerket_key != blank -%}
+  <script type="text/javascript" src="https://widget.emaerket.dk/js/{{ settings.emaerket_key | strip }}" async></script>
+{%- endif -%}
+{%- if settings.herodesk_id != blank -%}
+  <script src="https://cdn.herodesk.io/livechat.js?wid={{ settings.herodesk_id | strip }}" async></script>
+{%- endif -%}

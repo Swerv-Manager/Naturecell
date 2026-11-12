@@ -1,0 +1,153 @@
+{% comment %} Trust-bar under hero, fra designet. {% endcomment %}
+
+{%- style -%}
+  /* Design: max-width 1240, padding 18px 24px, space-between, gap 20 => 59px hoej bjaelke over fuld indholdsbredde */
+  .nc-trust { background: var(--nc-trust-bg); border-bottom: 1px solid var(--border-soft); }
+  .nc-trust__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
+  .nc-trust__item { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-700); white-space: nowrap; }
+  .nc-trust__item svg { color: var(--sage-600); flex: none; }
+  .nc-trust__text { min-width: 0; }
+  /* Kundens rettelse 57 (09-10): Trustpilot hoejt paa forsiden, i trust-baren og i temaets groenne, ikke lyseroed */
+  .nc-trust__item--tp .nc-stars { display: inline-flex; gap: 2px; color: var(--sage-500); }
+  .nc-trust__item--tp .nc-stars svg { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+  .nc-trust__item--tp strong { font-weight: 700; color: var(--sage-700); }
+  /* Mobil (08-10): to lige kolonner i stedet for en skaev ombrydning */
+  .nc-trust__item--tp a { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+  .nc-trust__item--tpw { display: block; width: 330px; max-width: 100%; line-height: 1; }
+  .nc-trust__item--tpw .trustpilot-widget { min-height: 20px; }
+  .nc-trust__item--tpw .trustpilot-widget > a { font-size: 13.5px; line-height: 20px; }
+  .nc-trust__item--tp a:hover span:last-child, .nc-trust__item--tp a:focus-visible span:last-child { text-decoration: underline; }
+  @media (max-width: 749px) {
+    .nc-trust__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 13px 0; }
+    .nc-trust__item { font-size: 12.5px; line-height: 1.45; white-space: normal; align-items: flex-start; gap: 8px; }
+    .nc-trust__item svg { margin-top: 1px; }
+    .nc-trust__item--tp { grid-column: 1 / -1; justify-content: center; }
+    .nc-trust__item--tpw { width: 100%; }
+    .nc-trust__item--tpw .trustpilot-widget > a { justify-content: center; width: 100%; }
+    .nc-trust__item--tp a { align-items: flex-start; }
+    /* Kundens rettelse (Lizbeth 08-10): paa mobil kommer Trustpilot lige under banneret, og de fire punkter
+       rykkes ned under "Shop efter omraade/behov". Derfor kan samme sektion vises i to tilstande. */
+    .nc-trust--m-tp .nc-trust__item:not(.nc-trust__item--tp) { display: none; }
+    .nc-trust--m-tp .nc-trust__row { padding: 12px 0; }
+    .nc-trust--m-items .nc-trust__item--tp { display: none; }
+  }
+  @media (min-width: 750px) {
+    .nc-trust--m-items { display: none; }
+  }
+  {%- if section.settings.mobile_mode == 'items' -%}
+  #shopify-section-{{ section.id }} { display: none; }
+  /* Specificiteten skal slaa forsidens generelle order-regel i nc-theme.css */
+  @media (max-width: 749px) { #nc-main > #shopify-section-{{ section.id }}.nc-sec-trust { display: block; order: 4; } }
+  {%- endif -%}
+{%- endstyle -%}
+
+{%- liquid
+  assign nc_tp_url = settings.nc_trustpilot_url | default: 'https://dk.trustpilot.com/review/naturecell.dk'
+  # Tyske kunder sendes til Trustpilots tyske side for samme profil (samme anmeldelser, tysk brugerflade)
+  if request.locale.iso_code == 'de'
+    assign nc_tp_url = nc_tp_url | replace: '://dk.trustpilot.com', '://de.trustpilot.com' | replace: '://www.trustpilot.com', '://de.trustpilot.com'
+  endif
+  assign nc_trust_cls = ''
+  if section.settings.mobile_mode == 'tp'
+    assign nc_trust_cls = ' nc-trust--m-tp'
+  elsif section.settings.mobile_mode == 'items'
+    assign nc_trust_cls = ' nc-trust--m-items'
+  endif
+-%}
+<div class="nc-trust{{ nc_trust_cls }}">
+  <div class="nc-container">
+    <div class="nc-trust__row">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'trustpilot' -%}
+          {%- capture tp_line %}{% render 'nc-trustpilot', format: 'line' %}{% endcapture -%}
+          {%- if block.settings.style == 'widget' and settings.trustpilot_script and settings.nc_tp_business_id != blank -%}
+            {%- comment -%}
+              Rigtig TrustBox (Lizbeth 08-10, Frederik 09-10): Micro Combo-templaten, der viser stjerner, score og antal
+              live fra Trustpilot. Linket inde i div'en er fallback indtil scriptet har tegnet widgetten.
+            {%- endcomment -%}
+            <span class="nc-trust__item nc-trust__item--tp nc-trust__item--tpw" {{ block.shopify_attributes }}>
+              <div class="trustpilot-widget" data-locale="{{ request.locale.iso_code | downcase }}-{{ localization.country.iso_code | default: 'DK' | upcase }}" data-template-id="5419b6ffb0d04a076446a9af" data-businessunit-id="{{ settings.nc_tp_business_id | strip }}" data-style-height="20px" data-style-width="100%" data-theme="light" data-text-color="{{ block.settings.widget_text | default: '#2f4b45' }}">
+                <a href="{{ nc_tp_url }}" target="_blank" rel="noopener">{{ tp_line | default: 'Trustpilot' }}</a>
+              </div>
+            </span>
+            {%- continue -%}
+          {%- endif -%}
+          {%- if tp_line != blank -%}
+            {%- comment -%} Kundens rettelse (Lizbeth 08-10): et rigtigt Trustpilot-link som paa den gamle side. {%- endcomment -%}
+            <span class="nc-trust__item nc-trust__item--tp" {{ block.shopify_attributes }}>
+              <a href="{{ nc_tp_url }}" target="_blank" rel="noopener" aria-label="{{ 'general.tp_open' | t }}">
+                <span class="nc-stars" aria-hidden="true">
+                  {%- for i in (1..5) -%}
+                    <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                  {%- endfor -%}
+                </span>
+                <span>{{ tp_line }}</span>
+              </a>
+            </span>
+          {%- endif -%}
+          {%- continue -%}
+        {%- endif -%}
+        <span class="nc-trust__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon == 'shield' -%}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/></svg>
+          {%- else -%}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          {%- endif -%}
+          <span class="nc-trust__text">{% render 'nc-cbd', text: block.settings.label %}</span>
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust-bar",
+  "tag": "section",
+  "class": "nc-sec-trust",
+  "settings": [
+    {
+      "type": "select",
+      "id": "mobile_mode",
+      "label": "Visning på mobil",
+      "options": [
+        { "value": "all", "label": "Alt (som på computer)" },
+        { "value": "tp", "label": "Kun Trustpilot" },
+        { "value": "items", "label": "Kun punkterne (vises kun på mobil)" }
+      ],
+      "default": "all",
+      "info": "Forsiden: én trust-bar under banneret med 'Kun Trustpilot' og én under 'Shop efter område/behov' med 'Kun punkterne'. Linket går til Trustpilot-profilen fra Temaindstillinger → Virksomhed."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trustpilot",
+      "name": "Trustpilot",
+      "limit": 1,
+      "settings": [
+        { "type": "select", "id": "style", "label": "Visning", "options": [ { "value": "widget", "label": "Trustpilot-widget (live tal)" }, { "value": "line", "label": "Temaets egen linje" } ], "default": "widget", "info": "Widgetten kræver at Trustpilot-scriptet er slået til under Temaindstillinger → Integrationer. Ellers vises temaets egen linje." },
+        { "type": "color", "id": "widget_text", "label": "Widget: tekstfarve", "default": "#2f4b45" }
+      ]
+    },
+    {
+      "type": "item",
+      "name": "Punkt",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tekst", "default": "Tilladelse til CBD i Danmark · 2019" },
+        { "type": "select", "id": "icon", "label": "Ikon", "options": [ { "value": "check", "label": "Flueben" }, { "value": "shield", "label": "Skjold" } ], "default": "check" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust-bar",
+      "blocks": [
+        { "type": "trustpilot" },
+        { "type": "item", "settings": { "label": "Tilladelse til CBD i Danmark · 2019", "icon": "check" } },
+        { "type": "item", "settings": { "label": "Vegansk & plantebaseret", "icon": "shield" } },
+        { "type": "item", "settings": { "label": "e-mærket webshop", "icon": "shield" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

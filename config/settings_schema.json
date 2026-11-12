@@ -1,0 +1,316 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "NatureCell",
+    "theme_version": "0.1.0",
+    "theme_author": "Swerv Digital",
+    "theme_documentation_url": "https://github.com/Swerv-Manager/Naturecell",
+    "theme_support_url": "https://swerv.dk"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Wordmark til lys baggrund (header)."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_white",
+        "label": "Logo, hvidt",
+        "info": "Hvidt wordmark til grøn baggrund (footer)."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Typografi",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_brand_fonts",
+        "label": "Brug brandets egne fonte",
+        "default": true,
+        "info": "Henter Philosopher og Roboto Flex fra Google Fonts, som brandguiden foreskriver. Slå fra for at undgå eksterne kald af hensyn til Cookiebot."
+      }
+    ]
+  },
+  {
+    "name": "Sociale medier",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "info": "https://www.instagram.com/naturecell_dk"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "info": "https://www.facebook.com/NatureCellDK"
+      }
+    ]
+  },
+  {
+    "name": "Produktkort",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_save_badge",
+        "label": "Vis besparelses-badge (Spar X%)",
+        "default": true,
+        "info": "Viser kun badge når produktet har en førpris i Shopify. Førprisen skal kunne dokumenteres som 30 dages normalpris (§ 9 a)."
+      }
+    ]
+  },
+  {
+    "name": "Farver",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Farvepaletten er med vilje låst til NatureCells designsystem (paper, grøn, sand, pink, berry) og styres i temaets kode, så der ikke kan introduceres farver uden for systemet."
+      }
+    ]
+  },
+  {
+    "name": "Fragt og handel",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Bruges af kurv-skuffen, kurven, USP-løbet på produktsiden, topbjælken og FAQ-svaret om levering."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_free_shipping",
+        "label": "Fri fragt-grænse pr. valuta",
+        "default": "DKK: 399",
+        "info": "Én valuta pr. linje, fx DKK: 399. Står kundens valuta ikke på listen, nævner temaet ikke fri fragt på det marked. EU-zonen har i dag ingen fri fragt i Shopify, så EUR står bevidst ikke her endnu."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_start_utc",
+        "label": "Black Week starter (UTC)",
+        "default": "2026-11-20T14:00:00Z",
+        "info": "2026-11-20T14:00:00Z = fre 20.11.2026 kl. 15.00 dansk tid (VIP-start). Styrer fri fragt-teksten og forsidens tilbud/BW-skift."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_free_shipping_bw",
+        "label": "Fri fragt-grænse i Black Week",
+        "default": "DKK: 499",
+        "info": "Vises fra Black Week-start. Valutaer, der ikke står her, beholder den normale grænse. Kun teksten – selve fragtprisen ændres i Shopify/fragt-appen."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_end_utc",
+        "label": "Black Week slutter (UTC, valgfri)",
+        "info": "Tom = grænsen i Black Week gælder, indtil den ændres. Fx 2026-11-30T22:59:59Z = 30.11 kl. 23.59."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_unit_price_da",
+        "label": "Vis grundpris (pris pr. 100 ml) også på dansk",
+        "default": false,
+        "info": "Grundprisen vises altid på tysk og andre sprog (lovkrav i Tyskland), når varianten har mængdedata. På dansk kun hvis dette er slået til."
+      }
+    ]
+  },
+  {
+    "name": "SEO og produktdata",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Produktsiderne bygges af produktets egne data og metaobjekter, så der kun er én produktskabelon at vedligeholde."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_cbd_icon",
+        "label": "Vis CBD som ikon",
+        "default": true,
+        "info": "Ordet CBD vises som et lille ikon i produktnavne, overskrifter, badges, topbjælken og footeren, og kategorinavne som \"CBD Ansigtspleje\" vises som \"Ansigtspleje\". Sidetitler, metabeskrivelser, alt-tekster og strukturerede data beholder ordet som tekst."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_schema",
+        "label": "Strukturerede data (JSON-LD)",
+        "default": true,
+        "info": "Organization, WebSite, Product, BreadcrumbList, CollectionPage, Blog og BlogPosting. Slå kun fra, hvis en app leverer det samme."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_schema_rating",
+        "label": "Medtag bedømmelser (AggregateRating) i Product-markup",
+        "default": true,
+        "info": "Bruger produktets reviews.rating og reviews.rating_count fra Judge.me. Slå fra, hvis Judge.me selv udsender Product-markup med bedømmelser."
+      },
+      {
+        "type": "image_picker",
+        "id": "nc_share_image",
+        "label": "Delingsbillede (standard)",
+        "info": "Vises, når en side deles på sociale medier og ikke har sit eget billede. 1200 × 630 px anbefales. Uden billede bruges logoet."
+      },
+      {
+        "type": "text",
+        "id": "nc_primary_collections",
+        "label": "Primær kollektion (prioriteret)",
+        "default": "cbd-ansigtspleje, cbd-handpleje, cbd-fodpleje, cbd-kropspleje, cbd-haarpleje, herre-hudpleje, cbd-olie, sampakker, cbd-hudpleje",
+        "info": "Den første kollektion på listen, som produktet ligger i, styrer brødkrummer, tilbage-knap, FAQ og relaterede produkter."
+      },
+      {
+        "type": "text",
+        "id": "nc_ingredient_skip",
+        "label": "Ingredienser der aldrig vises",
+        "default": "water, test, test-1, cbd, cannabis-sativa-l-extract, koldpresset-hamp-froolie, natural-myrcene, natural-alpha-pinene, natural-beta-caryophyllene, citrus-aurantium-dulcis-oil-orange, citrus-medica-limonum-oil-lemon",
+        "info": "Handles på metaobjektet Ingredients, adskilt med komma. Gælder både automatisk match og produktets egen ingrediensliste (custom.ingredients). Bliver der intet tilbage af produktets liste, vises de ingredienser der matcher INCI-listen. Duftstofferne (terpener og citrusolier) står her, fordi de endnu ikke har billeder i den nye serie: fjern dem fra listen, når de har."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_doc_badges",
+        "label": "Dokumentations-ikon pr. produkt",
+        "default": "dagcreme: dermatest\nnatcreme: kemiluppen\ncbd-olie-10-10ml-test1: coa\ncbd-olie-10-10ml-test1-kopi: coa\ncbd-olie-15-10ml-test-kopi: coa\ncbd-olie-15-10ml-test-kopi-1: coa",
+        "info": "Én pr. linje: produkt-handle: dermatest, kemiluppen eller coa. Brug kun dokumentation, der gælder netop det produkt."
+      },
+      {
+        "type": "text",
+        "id": "nc_org_name",
+        "label": "Virksomhedens juridiske navn",
+        "default": "NatureCell Denmark ApS"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_vat",
+        "label": "CVR-nummer",
+        "default": "42256013"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_street",
+        "label": "Adresse",
+        "default": "Lille Nyhavn 10, 2. tv."
+      },
+      {
+        "type": "text",
+        "id": "nc_org_zip",
+        "label": "Postnummer",
+        "default": "8660"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_city",
+        "label": "By",
+        "default": "Skanderborg"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_email",
+        "label": "Kundeservice: e-mail",
+        "default": "hello@naturecell.dk"
+      },
+      {
+        "type": "text",
+        "id": "nc_org_phone",
+        "label": "Kundeservice: telefon",
+        "default": "+45 40 55 00 42"
+      },
+      {
+        "type": "url",
+        "id": "nc_trustpilot_url",
+        "label": "Trustpilot-profil",
+        "info": "Fx https://dk.trustpilot.com/review/naturecell.dk. Bruges som sameAs i Organization-markup."
+      }
+    ]
+  },
+  {
+    "name": "Blog og artikler",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Etiketten på artikelkort og over artiklens titel er et af artiklens tags (Indhold > Blogopslag > Tags). Temaet viser det første tag fra listen herunder, som artiklen har. Har artiklen ingen af dem, vises det første tag, der ikke står på listen over tags, der aldrig bruges. Ret listerne her, eller ret artiklens tags."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_article_labels",
+        "label": "Artikel-etiketter, i prioriteret rækkefølge",
+        "default": "Guides, Presseomtale, Ekspert, Kosmetolog, Hudplejetips, Hudplejerutine, Forskning, Moden hud, Uren hud, Sensitiv hud, Tørre hænder, Tørre fødder, Tørt ansigt, Ansigt, Hænder, Fødder, Krop",
+        "info": "Kommasepareret. Store og små bogstaver er ligegyldige."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_article_label_skip",
+        "label": "Tags der aldrig bruges som etiket",
+        "default": "CBD, CBD olie, NatureCell, Test, LS, studie, studier, Anmeldelser, Kundecases",
+        "info": "Kommasepareret. Fx brede tags, der står på næsten alle artikler."
+      }
+    ]
+  },
+  {
+    "name": "Integrationer",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Scripts der ikke er Shopify-apps. Standardværdierne er kopieret fra det nuværende tema. Apps med app-embed (Klaviyo, Yotpo Loyalty, Kaching, Judge.me, Tolstoy, Triple Whale, Avada, EG Auto Add to Cart) slås til under App-embeds i temaeditoren."
+      },
+      {
+        "type": "text",
+        "id": "cookiebot_id",
+        "label": "Cookiebot: Domain Group ID (data-cbid)",
+        "default": "565dfd90-221f-420f-90ef-ac24c9377ee7",
+        "info": "Samtykkebanner. Tøm feltet for at slå Cookiebot fra."
+      },
+      {
+        "type": "text",
+        "id": "gtm_id",
+        "label": "Google Tag Manager: container-ID",
+        "default": "GTM-T7RVQ2D4"
+      },
+      {
+        "type": "text",
+        "id": "emaerket_key",
+        "label": "e-mærket: widget-nøgle",
+        "default": "4094ad9cbcd8b50992a5af5310844549",
+        "info": "Nøglen efter /js/ i widget-scriptet fra e-mærket."
+      },
+      {
+        "type": "text",
+        "id": "herodesk_id",
+        "label": "HeroDesk: livechat widget-ID (wid)",
+        "default": "60379a0887000e"
+      },
+      {
+        "type": "text",
+        "id": "nc_tp_score",
+        "label": "Trustpilot: bedømmelse",
+        "default": "4,7",
+        "info": "Bruges på forsiden, i anmeldelsesbåndet og på Om os. Slå det aktuelle tal op på Trustpilot, før det ændres (4,7 pr. 07-10-2026)."
+      },
+      {
+        "type": "number",
+        "id": "nc_tp_count",
+        "label": "Trustpilot: antal anmeldelser",
+        "default": 615,
+        "info": "Vises som \"615 anmeldelser\". Opdatér samtidig med bedømmelsen (615 pr. 07-10-2026)."
+      },
+      {
+        "type": "checkbox",
+        "id": "trustpilot_script",
+        "label": "Indlæs Trustpilot-widget-script",
+        "default": false,
+        "info": "Slå til, hvis der indsættes TrustBox-widgets i temaet (fx i trust-baren)."
+      },
+      {
+        "type": "text",
+        "id": "nc_tp_business_id",
+        "label": "Trustpilot: business unit-id",
+        "default": "5d5bafba5563e40001e11a6e",
+        "info": "Fra Trustpilot Business → TrustBox. NatureCells id er 5d5bafba5563e40001e11a6e (samme som på den gamle side)."
+      }
+    ]
+  }
+]

@@ -1,0 +1,115 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "quiz": {
+      "type": "nc-quiz",
+      "blocks": {
+        "r_ansigt_toer": {
+          "type": "rule",
+          "settings": {
+            "area": "ansigt",
+            "need": "toer",
+            "products": [
+              "dagcreme",
+              "natcreme",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "fugtserum-med-hyaluronsyre-30-ml",
+              "fugtserum-med-hyaluronsyre-30-ml",
+              "cbg-eye-gel",
+              "hudpleje-startpakke-plus-1"
+            ]
+          }
+        },
+        "r_haender": {
+          "type": "rule",
+          "settings": {
+            "area": "haender",
+            "need": "any",
+            "products": [
+              "handcreme",
+              "re-new-balm",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "pakke"
+            ]
+          }
+        },
+        "r_krop": {
+          "type": "rule",
+          "settings": {
+            "area": "krop",
+            "need": "any",
+            "products": [
+              "bodylotion",
+              "body-oil-100ml",
+              "hel-krops-pleje",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "re-new-balm",
+              "exfoliating-hanske"
+            ]
+          }
+        },
+        "r_foedder": {
+          "type": "rule",
+          "settings": {
+            "area": "foedder",
+            "need": "any",
+            "products": [
+              "fodcreme",
+              "re-new-balm",
+              "ansigtsolie-med-antioxidanter-30-ml",
+              "ansigtsolie-med-antioxidanter-30-ml"
+            ]
+          }
+        },
+        "r_haar": {
+          "type": "rule",
+          "settings": {
+            "area": "haar",
+            "need": "any",
+            "products": [
+              "shampoo-300ml",
+              "conditioner-300-ml",
+              "sampakke-shampoo-conditioner"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "r_ansigt_toer",
+        "r_haender",
+        "r_krop",
+        "r_foedder",
+        "r_haar"
+      ],
+      "settings": {
+        "eyebrow": "Find din rutine",
+        "heading": "Hudpleje-quiz",
+        "intro_text": "Svar på to hurtige spørgsmål, så guider vi dig til de NatureCell-produkter, der passer bedst til din hud. Ingen løfter om mirakler, bare et godt sted at starte.",
+        "result_text": "Her er de produkter, vores kunder oftest vælger til netop dét. Start med ét, eller byg hele rutinen.",
+        "collection": "hudpleje-sortiment",
+        "collection_migration": "hudpleje-sortiment",
+        "all_url": "/collections/cbd-hudpleje",
+        "product_face": "dagcreme",
+        "product_hands": "handcreme",
+        "product_body": "bodylotion",
+        "product_feet": "fodcreme",
+        "product_hair": "shampoo-300ml",
+        "results_count": 6
+      }
+    }
+  },
+  "order": [
+    "quiz"
+  ]
+}

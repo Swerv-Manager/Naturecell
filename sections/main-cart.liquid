@@ -1,0 +1,177 @@
+{% comment %} Kurv, skelet. {% endcomment %}
+
+{%- style -%}
+  .nc-cart__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nc-cart__item img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--nc-radius-media);
+    background: var(--nc-white);
+    padding: 0;
+  }
+
+  .nc-cart__item a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nc-cart__qty {
+    width: 80px;
+  }
+
+  .nc-cart__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .nc-cart__subtotal {
+    font-size: clamp(18px, 1.8vw, 22px);
+    font-family: var(--nc-font-display);
+    font-weight: var(--nc-weight-display);
+  }
+
+  .nc-cart__note {
+    font-size: 12px;
+    color: rgba(44, 70, 61, 0.65);
+  }
+
+  .nc-cart__meta { font-size: 13px; color: rgba(44, 70, 61, 0.65); }
+  .nc-cart__discount { color: var(--accent-berry); }
+  .nc-cart__was { color: var(--ink-400); font-weight: 400; margin-right: 4px; }
+  .nc-cart__savings { font-size: 14px; color: var(--accent-berry); }
+  /* Mobil (08-10): varen paa fuld bredde, antal og pris paa linjen under, ingen tabelhoved */
+  @media (max-width: 749px) {
+    .nc-cart__table { width: 100%; border-collapse: collapse; }
+    .nc-cart__table thead { display: none; }
+    .nc-cart__table tbody tr { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 12px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); }
+    .nc-cart__table td { display: block; border: 0; padding: 0; }
+    .nc-cart__table td:first-child { grid-column: 1 / -1; }
+    .nc-cart__table td:nth-child(3) { text-align: right; font-weight: 600; white-space: nowrap; }
+    .nc-cart__item { align-items: flex-start; }
+    .nc-cart__item img { width: 64px; height: 64px; }
+    .nc-cart__item a { font-size: 15px; }
+    .nc-cart__qty { width: 72px; }
+  }
+{%- endstyle -%}
+
+<div class="nc-section">
+  <div class="nc-container">
+    <h1>{{ 'nav.cart' | t }}</h1>
+
+    {%- if cart.item_count > 0 -%}
+      {%- form 'cart', cart -%}
+        <table class="nc-cart__table">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'cart.item' | t }}</th>
+              <th scope="col">{{ 'cart.quantity' | t }}</th>
+              <th scope="col">{{ 'cart.price' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr>
+                <td>
+                  <div class="nc-cart__item">
+                    {%- if item.image -%}
+                      {{ item.image | image_url: width: 144 | image_tag: alt: item.title, loading: 'lazy' }}
+                    {%- endif -%}
+                    <div>
+                      <a href="{{ item.url }}">{% render 'nc-cbd', text: item.product.title %}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div style="font-size: 13px; color: rgba(44,70,61,0.65);">{{ item.variant.title }}</div>
+                      {%- endunless -%}
+                      {%- capture nc_unit_display -%}{% render 'nc-unit-price', variant: item.variant, measurement: item.unit_price_measurement, price: item.final_price, unit_price: item.unit_price %}{%- endcapture -%}
+    {%- assign nc_unit_display = nc_unit_display | strip -%}
+    {%- assign nc_show_unit = false -%}
+    {%- if item.unit_price_measurement and request.locale.iso_code != 'da' or item.unit_price_measurement and settings.nc_unit_price_da -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if request.locale.iso_code == 'de' and nc_unit_display != blank -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if nc_show_unit -%}
+                        <div class="nc-cart__meta">{{ nc_unit_display }}</div>
+                      {%- endif -%}
+                      {%- comment -%} Rabatter (fx Katchings maengderabat) kommer fra Shopify som discount allocations. {%- endcomment -%}
+                      {%- for d in item.line_level_discount_allocations -%}
+                        <div class="nc-cart__meta nc-cart__discount">{{ d.discount_application.title }} (−{{ d.amount | money }})</div>
+                      {%- endfor -%}
+                      <div>
+                        <a href="{{ item.url_to_remove }}" style="font-size: 13px;">{{ 'cart.remove' | t }}</a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <label class="nc-visually-hidden" for="nc-cart-qty-{{ forloop.index }}">{{ 'cart.quantity' | t }}</label>
+                  <input
+                    id="nc-cart-qty-{{ forloop.index }}"
+                    class="nc-input nc-cart__qty"
+                    type="number"
+                    name="updates[]"
+                    min="0"
+                    value="{{ item.quantity }}"
+                  >
+                </td>
+                <td>
+                  {%- if item.line_level_total_discount > 0 -%}<s class="nc-cart__was">{{ item.original_line_price | money }}</s> {% endif -%}
+                  {{ item.final_line_price | money }}
+                </td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="nc-cart__footer">
+          {%- if cart.total_discount > 0 -%}
+            <div class="nc-cart__savings">{{ 'cart.you_save' | t }}: {{ cart.total_discount | money }}</div>
+          {%- endif -%}
+          <div class="nc-cart__subtotal">{{ 'cart.subtotal' | t }}: {{ cart.total_price | money }}</div>
+          {%- comment -%} Uden egen note: "Fragt beregnes ved kassen" plus fri fragt-graensen, hvis kundens valuta har en. {%- endcomment -%}
+          {%- capture cart_fs %}{% render 'nc-free-shipping' %}{% endcapture -%}
+          {%- assign cart_fs = cart_fs | strip -%}
+          <p class="nc-cart__note">
+            {%- if section.settings.shipping_note != blank and customer.b2b? != true -%}
+              {% render 'nc-cbd', text: section.settings.shipping_note %}
+            {%- else -%}
+              {{ 'cart.shipping_calc' | t }}{% if cart_fs != blank %} {{ 'cart.free_shipping_over' | t: amount: cart_fs | replace: '..', '.' }}{% endif %}
+            {%- endif -%}
+          </p>
+          {%- comment -%} Handelsbetingelser accepteres foer kassen (som paa det nuvaerende site); nc-theme.js aabner knappen. {%- endcomment -%}
+          <label class="nc-terms" data-nc-terms-scope>
+            <input type="checkbox" data-nc-terms>
+            <span>{{ 'cart.accept_terms_html' | t: url: shop.terms_of_service.url | default: '/policies/terms-of-service' }}</span>
+          </label>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="nc-btn nc-btn--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
+            <button class="nc-btn nc-btn--primary" type="submit" name="checkout" data-nc-terms-btn disabled aria-disabled="true">{{ 'cart.checkout' | t }}</button>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- else -%}
+      <p>{{ 'cart.empty_dot' | t }}</p>
+      <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'general.view_all_products' | t }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kurv",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "shipping_note",
+      "label": "Fragtnote (valgfri)",
+      "info": "Tom: \"Fragt beregnes ved kassen\" plus grænsen for fri fragt i kundens valuta (Temaindstillinger → Fragt og handel), oversat automatisk."
+    }
+  ]
+}
+{% endschema %}

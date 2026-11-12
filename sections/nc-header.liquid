@@ -1,0 +1,779 @@
+{%- assign nc_transition_best_collection = section.settings.best_collection | default: section.settings.best_collection_migration -%}
+{% comment %}
+  Header, oversat fra NatureCell.dc.html: annonceringslinje (moerk groen),
+  logo, nav (Shop-megamenu med Omraade/Behov/Bestsellers-faner, Kundecases,
+  Artikler, Om os-dropdown, Kundeklub med stjerne), sprogvalg (kun hvis
+  flere sprog er udgivet), soeg, favoritter, konto og kurv.
+{% endcomment %}
+
+{%- style -%}
+  .nc-announce {
+    background: var(--nc-announce);
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    padding: 9px var(--gutter);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+  }
+
+  .nc-announce__guar a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  @keyframes nc-ann-a { 0%, 44% { opacity: 1; visibility: visible; } 47%, 97% { opacity: 0; visibility: hidden; } 100% { opacity: 1; visibility: visible; } }
+  @keyframes nc-ann-b { 0%, 50% { opacity: 0; visibility: hidden; } 53%, 91% { opacity: 1; visibility: visible; } 94%, 100% { opacity: 0; visibility: hidden; } }
+
+  .nc-header {
+    position: relative;
+    background: var(--paper);
+    border-bottom: 1px solid rgba(62, 93, 88, 0.1);
+    z-index: var(--z-sticky);
+  }
+
+  .nc-header__row {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2vw, 28px);
+    min-height: 74px;
+  }
+
+  .nc-header__logo { display: inline-flex; align-items: center; flex: none; text-decoration: none; }
+  .nc-header__logo img { display: block; width: auto; height: {{ section.settings.logo_height | default: 36 }}px; }
+  .nc-header__logo-text { font-family: var(--font-display); font-size: 26px; color: var(--ink-900); }
+
+  .nc-header__nav { display: none; flex: 1 1 auto; }
+  {%- comment -%} Designets nav (template.html:1057): gap clamp(0px,0.5vw,6px) og knapper med padding 10px 14px + pille-radius. {%- endcomment -%}
+  .nc-header__nav > ul { display: flex; align-items: center; justify-content: center; gap: clamp(0px, 0.5vw, 6px); margin: 0; padding: 0; list-style: none; }
+  .nc-header__link {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: 6px;
+    padding: 10px 14px;
+    background: none;
+    border: 0;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--sage-700);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  {%- comment -%} Designet har ingen "aktiv side"-tilstand i navigationen, kun hover-pillen (sage-100). Pillen paa
+      "Kundecases" i designets skaermbillede er hover fra optagelsen, ikke en aktiv markering. {%- endcomment -%}
+  .nc-header__link:hover, .nc-header__link:focus-visible { background: var(--sage-100); color: var(--sage-700); }
+  .nc-header__link svg { transition: transform var(--dur-fast) var(--ease-soft); }
+  .nc-header__link[aria-expanded="true"] svg { transform: rotate(180deg); }
+  {%- comment -%} Designet: 14px stjerne centreret i knappens inline-flex (ikke baseline-justeret). {%- endcomment -%}
+  .nc-header__star { display: inline-flex; align-items: center; color: var(--sage-500); }
+  {%- comment -%} Bland selv-menupunktet: lille badge over teksten (som referencen "Koeb 3 og spar"). {%- endcomment -%}
+  .nc-header__mix { position: relative; }
+  .nc-header__badge { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); padding: 2px 8px; border-radius: var(--radius-pill); background: var(--sage-700); color: var(--cloud); font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; line-height: 1.5; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
+  .nc-mobilenav__badge { margin-left: 8px; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--sage-700); color: var(--cloud); font-size: 11px; font-weight: 700; vertical-align: middle; }
+  .nc-header__star svg { display: block; }
+
+  .nc-header__actions { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: none; }
+  .nc-header__action {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    border-radius: var(--radius-pill);
+    border: 0;
+    background: none;
+    color: var(--ink-900);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* Designet: soeg/kurv har padding 11px (43px), favoritter/konto padding 9px (39px) om 21px-ikoner */
+  .nc-header__action--sm { width: 39px; height: 39px; }
+  /* Designets ikoner er inline-svg'er justeret paa tekstens baseline og sidder derfor 2px over knapmidten (maalt: y 65-83 vs. 67-85) */
+  .nc-header__action svg { position: relative; top: -2px; }
+  .nc-header__action:hover, .nc-header__action:focus-visible { color: var(--sage-600); background: rgba(62, 93, 88, 0.06); }
+  .nc-header__count {
+    position: absolute;
+    top: 3px;
+    right: 1px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: var(--radius-pill);
+    background: var(--sage-700);
+    color: var(--cloud);
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: center;
+  }
+  .nc-header__count.is-empty { display: none; }
+
+  .nc-langs { display: none; align-items: stretch; background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); overflow: hidden; margin-right: 6px; }
+  .nc-langs a, .nc-langs button { display: inline-flex; align-items: center; padding: 6px 9px; border: 0; background: transparent; cursor: pointer; font-family: var(--font-body); font-size: 11px; font-weight: 600; line-height: normal; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-500); }
+    .nc-langs a.is-active, .nc-langs button.is-active { background: var(--sage-500); color: var(--cloud); }
+
+  .nc-header__burger { display: inline-flex; }
+
+  /* Megamenu */
+  .nc-mega {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--cloud);
+    border-top: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft), visibility 0s linear var(--dur-base);
+    z-index: 60;
+  }
+  .nc-mega.is-open { opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0s; }
+  .nc-mega__inner { padding: clamp(22px, 3vw, 36px) 0 clamp(26px, 3vw, 40px); }
+  .nc-mega__tabs { display: inline-flex; gap: 4px; background: var(--paper); border-radius: var(--radius-pill); padding: 4px; margin-bottom: 22px; }
+  .nc-mega__tab { border: 0; background: transparent; color: var(--ink-700); padding: 9px 18px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 600; cursor: pointer; }
+  .nc-mega__tab.is-active { background: var(--sage-500); color: var(--cloud); }
+  .nc-mega__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+  .nc-mega__card { display: flex; flex-direction: column; text-decoration: none; border-radius: var(--radius-md); overflow: hidden; background: var(--paper-2); transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft); }
+  .nc-mega__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .nc-mega__media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--nc-product-tint); }
+  /* Packshots: contain + multiply paa tinten; nc-packshot.js stiller produkterne paa samme underkant (kundens rettelse 39). */
+  .nc-mega__media img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; transform-origin: 0 0; mix-blend-mode: multiply; }
+  .nc-mega__label { padding: 10px 14px 12px; }
+  .nc-mega__label strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 16.5px; color: var(--sage-700); }
+  .nc-mega__label span { font-size: 12.5px; color: var(--ink-500); }
+  .nc-mega__foot { display: flex; justify-content: flex-end; margin-top: 18px; }
+
+  /* Om os-dropdown */
+  .nc-dd { position: relative; }
+  .nc-dd__panel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    min-width: 220px;
+    background: var(--cloud);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-soft);
+    padding: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-fast) var(--ease-soft);
+    z-index: 61;
+  }
+  .nc-dd:hover .nc-dd__panel, .nc-dd:focus-within .nc-dd__panel { opacity: 1; visibility: visible; }
+  .nc-dd__panel a { display: block; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 14.5px; color: var(--ink-900); text-decoration: none; }
+  .nc-dd__panel a:hover { background: var(--paper); color: var(--sage-700); }
+
+  /* Mobilnav */
+  .nc-mobilenav { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; }
+  .nc-mobilenav__overlay { position: absolute; inset: 0; background: rgba(35, 51, 48, 0.4); opacity: 0; transition: opacity var(--dur-base) var(--ease-soft); }
+  .nc-mobilenav__panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(400px, 88vw); background: var(--paper); transform: translateX(-102%); transition: transform var(--dur-base) var(--ease-soft); display: flex; flex-direction: column; overflow-y: auto; padding: 18px 22px 32px; }
+  .nc-mobilenav.is-open { pointer-events: auto; }
+  .nc-mobilenav.is-open .nc-mobilenav__overlay { opacity: 1; }
+  .nc-mobilenav.is-open .nc-mobilenav__panel { transform: translateX(0); }
+  .nc-mobilenav__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .nc-mobilenav__panel nav a { display: block; padding: 13px 2px; font-size: 17px; font-family: var(--font-display); color: var(--sage-700); text-decoration: none; border-bottom: 1px solid var(--border-soft); }
+  .nc-mobilenav__sub { padding: 4px 0 10px; }
+  .nc-mobilenav__sub a { font-family: var(--font-body) !important; font-size: 14.5px !important; color: var(--ink-700) !important; border-bottom: 0 !important; padding: 8px 2px 8px 14px !important; }
+  .nc-mobilenav__head-right { display: flex; align-items: center; gap: 10px; }
+  .nc-mobilenav__head-right .nc-langs { display: inline-flex; margin-right: 0; }
+  .nc-mobilenav__head-right .nc-langs button { padding: 8px 11px; font-size: 12px; }
+
+  @media (min-width: 1041px) {
+    .nc-header__nav { display: block; }
+    .nc-header__burger { display: none; }
+    .nc-langs { display: inline-flex; }
+  }
+  /* Mobil (kundens mobiloptimering 08-10): raekken maa ikke blive bredere end skaermen
+     (burger + logo + fire ikoner), og topbjaelken holder een linje: kun foerste led (fri fragt) vises. */
+  @media (max-width: 749px) {
+    .nc-announce { padding: 8px var(--gutter); font-size: 12px; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nc-announce__tail { display: none; }
+    /* Garantien skifter med foerste led paa mobil, saa bjaelken stadig holder een linje. */
+    .nc-announce--guar { display: grid; }
+    .nc-announce--guar > .nc-announce__lead, .nc-announce--guar > .nc-announce__guar { grid-area: 1 / 1; overflow: hidden; text-overflow: ellipsis; }
+    .nc-announce--guar > .nc-announce__lead { animation: nc-ann-a 10s infinite; }
+    .nc-announce--guar > .nc-announce__guar { display: block; animation: nc-ann-b 10s infinite; }
+    .nc-announce__guar-sep { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .nc-announce--guar > .nc-announce__lead { animation: none; }
+      .nc-announce--guar > .nc-announce__guar { display: none; }
+    }
+    .nc-header__row { gap: 6px; min-height: 62px; }
+    .nc-header__burger { margin-left: -8px; }
+    .nc-header__logo img { height: min({{ section.settings.logo_height | default: 36 }}px, 30px); }
+    .nc-header__actions { gap: 0; }
+    .nc-header__action { width: 40px; height: 40px; }
+    .nc-header__action--sm { width: 36px; height: 36px; }
+    .nc-header__actions .nc-header__action:last-child { margin-right: -8px; }
+  }
+{%- endstyle -%}
+
+{%- comment -%}
+  Topbjaelke: egen tekst fra indstillingen, ellers sprogfilens tekst med fri fragt-graensen
+  foran, kun hvis kundens valuta har fri fragt (Temaindstillinger → Fragt og handel).
+{%- endcomment -%}
+{%- liquid
+  assign announce = section.settings.announcement
+  if customer.b2b?
+    assign announce = 'general.announce_tail' | t
+  endif
+  if announce == blank and section.settings.announce_auto
+    capture hdr_fs
+      render 'nc-free-shipping'
+    endcapture
+    assign hdr_fs = hdr_fs | strip
+    assign announce = 'general.announce_tail' | t
+    if hdr_fs != blank
+      assign hdr_fs_txt = 'general.free_shipping' | t: amount: hdr_fs
+      assign announce = hdr_fs_txt | append: ' · ' | append: announce
+    endif
+  endif
+-%}
+{%- comment -%} 30 dages tilfredshedsgaranti (Frederik 10.11): kun dansk, ikke B2B. Link til /pages/tilfredshedsgaranti. {%- endcomment -%}
+{%- liquid
+  assign ann_guar = false
+  if request.locale.iso_code != 'de' and customer.b2b? != true
+    assign ann_guar = true
+  endif
+-%}
+{%- if announce != blank -%}
+  {%- comment -%} Leddene efter det foerste (" · ") skjules paa mobil, saa bjaelken holder een linje. {%- endcomment -%}
+  {%- assign ann_parts = announce | split: ' · ' -%}
+  <div class="nc-announce{% if ann_guar %} nc-announce--guar{% endif %}">
+    {%- for ann_part in ann_parts -%}
+      {%- if forloop.first -%}
+        <span class="nc-announce__lead">{% render 'nc-cbd', text: ann_part %}</span>
+      {%- else -%}
+        <span class="nc-announce__tail"> · {% render 'nc-cbd', text: ann_part %}</span>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if ann_guar -%}
+      <span class="nc-announce__guar"><span class="nc-announce__guar-sep"> · </span><a href="/pages/tilfredshedsgaranti">30 dages tilfredshedsgaranti på første ordre</a></span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{%- comment -%}
+  Fri fragt-graense skifter ved Black Week-start (temaindstilling "Black Week starter (UTC)").
+  Serveren viser den rigtige graense; scriptet her retter teksten paa en side, der er cachet
+  fra foer skiftet (topbjaelke, USP-loeb, FAQ-svar osv.). Fragtbaren i kurv-skuffen genberegnes
+  af serveren, naar kurven opdateres.
+{%- endcomment -%}
+{%- capture nc_fs_n %}{% render 'nc-free-shipping', phase: 'normal' %}{% endcapture -%}
+{%- capture nc_fs_b %}{% render 'nc-free-shipping', phase: 'bw' %}{% endcapture -%}
+{%- capture nc_fs_cur %}{% render 'nc-free-shipping' %}{% endcapture -%}
+{%- assign nc_fs_n = nc_fs_n | strip -%}{%- assign nc_fs_b = nc_fs_b | strip -%}{%- assign nc_fs_cur = nc_fs_cur | strip -%}
+{%- if nc_fs_n != blank and nc_fs_b != blank and nc_fs_n != nc_fs_b -%}
+<script>
+(function () {
+  var start = Date.parse({{ settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | json }});
+  var end = {% if settings.nc_bw_end_utc != blank %}Date.parse({{ settings.nc_bw_end_utc | json }}){% else %}NaN{% endif %};
+  var txt = { normal: {{ nc_fs_n | json }}, bw: {{ nc_fs_b | json }} };
+  var shown = {% if nc_fs_cur == nc_fs_b %}'bw'{% else %}'normal'{% endif %};
+  if (isNaN(start)) return;
+  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '[\\s\\u00a0]+'); }
+  function want() { var t = Date.now(); return (t >= start && (isNaN(end) || t < end)) ? 'bw' : 'normal'; }
+  function swap() {
+    var w = want();
+    if (w === shown) return;
+    var re = new RegExp('(?<![0-9.,])' + esc(txt[shown]), 'g'), to = txt[w];
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n, hits = [];
+    while ((n = walker.nextNode())) {
+      if (!re.test(n.nodeValue)) { re.lastIndex = 0; continue; }
+      re.lastIndex = 0;
+      var ctx = (n.parentElement && n.parentElement.closest('p,li,span,div,a,strong')) || n.parentElement;
+      var c = ((ctx && ctx.textContent) || n.nodeValue).slice(0, 400);
+      if (/fragt|versand|shipping/i.test(c)) hits.push(n);
+    }
+    hits.forEach(function (h) { h.nodeValue = h.nodeValue.replace(re, to); });
+    shown = w;
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', swap); else swap();
+  setInterval(swap, 60000);
+  document.addEventListener('visibilitychange', swap);
+})();
+</script>
+{%- endif -%}
+
+<header class="nc-header" data-nc-header>
+  <div class="nc-container">
+    <div class="nc-header__row">
+      <button class="nc-header__action nc-header__burger" data-nc-burger aria-expanded="false" aria-label="{{ 'general.menu' | t }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <a class="nc-header__logo" href="{{ routes.root_url }}">
+        {%- if settings.logo != blank -%}
+          {{ settings.logo | image_url: width: 440 | image_tag: alt: shop.name, widths: '220, 440', loading: 'eager' }}
+        {%- else -%}
+          <img src="{{ 'nc-logo-wordmark.webp' | asset_url }}" alt="{{ shop.name | escape }}" loading="eager" width="220" height="53">
+        {%- endif -%}
+      </a>
+
+      <nav class="nc-header__nav" aria-label="{{ 'general.main_menu' | t }}">
+        <ul>
+          <li>
+            <button class="nc-header__link" data-nc-mega-toggle aria-expanded="false" aria-controls="nc-mega">
+              {{ 'nav.shop' | t }}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </li>
+          {%- if section.settings.mix_show and section.settings.mix_label != blank -%}
+            <li><a class="nc-header__link nc-header__mix" href="{% render 'nc-url', url: section.settings.mix_url, fallback: '/collections/bland-selv' %}">{% render 'nc-cbd', text: section.settings.mix_label %}{%- if section.settings.mix_badge != blank -%}<span class="nc-header__badge">{% render 'nc-cbd', text: section.settings.mix_badge %}</span>{%- endif -%}</a></li>
+          {%- endif -%}
+          <li><a class="nc-header__link" href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a></li>
+          <li class="nc-dd">
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}" aria-haspopup="true">
+              {{ 'nav.articles' | t }}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+            <div class="nc-dd__panel">
+              <a href="{% render 'nc-url', fallback: '/pages/hvor-skal-jeg-starte' %}">{{ 'search.where_to_start' | t }}</a>
+            </div>
+          </li>
+          <li class="nc-dd">
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}" aria-haspopup="true">
+              {{ 'nav.about' | t }}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+            <div class="nc-dd__panel">
+              <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.our_story' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{%- assign nc_nav_cbd = 'nav.about_cbd' | t -%}{% render 'nc-cbd', text: nc_nav_cbd %}</a>
+              <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
+              <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
+              {%- if section.settings.show_jesper -%}
+                <a href="{% render 'nc-url', url: section.settings.jesper_url, fallback: '/pages/velkommen-jesper' %}">{{ 'nav.jesper' | t }}</a>
+              {%- endif -%}
+            </div>
+          </li>
+          {%- unless request.locale.iso_code == 'de' -%}
+          <li>
+            <a class="nc-header__link" href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">
+              <span class="nc-header__star" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+              </span>
+              {{ 'nav.club' | t }}
+            </a>
+          </li>
+          {%- endunless -%}
+          {%- if request.locale.iso_code == 'da' -%}
+          <li><a class="nc-header__link" href="{% render 'nc-url', url: '/pages/gaveideer' %}">{{ 'nav.gift_guide' | t }}</a></li>
+          {%- endif -%}
+        </ul>
+      </nav>
+
+      <div class="nc-header__actions">
+        {%- comment -%} Sprogskift via Shopifys localization-form: virker baade med undermapper (/de) og egne domaener (naturecell.de) under Markets. {%- endcomment -%}
+        {%- if localization.available_languages.size > 1 and section.settings.show_lang -%}
+          {%- form 'localization', id: 'nc-lang-form', class: 'nc-langs' -%}
+            <input type="hidden" name="return_to" value="{{ request.path }}">
+            {%- for language in localization.available_languages -%}
+              <button type="submit" name="language_code" value="{{ language.iso_code }}" lang="{{ language.iso_code }}" class="{% if language.iso_code == localization.language.iso_code %}is-active{% endif %}" aria-label="{{ language.endonym_name }}">{{ language.iso_code | upcase }}</button>
+            {%- endfor -%}
+          {%- endform -%}
+        {%- endif -%}
+
+        <a class="nc-header__action" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </a>
+        <a class="nc-header__action nc-header__action--sm" href="{% render 'nc-url', url: section.settings.favorites_url, fallback: '/pages/favoritter' %}" aria-label="{{ 'nav.favorites' | t }}">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
+          <span class="nc-header__count is-empty" data-nc-fav-count aria-hidden="true">0</span>
+        </a>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="nc-header__action nc-header__action--sm" href="{{ routes.account_url }}" aria-label="{{ 'nav.account' | t }}">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+          </a>
+        {%- endif -%}
+        <button class="nc-header__action" data-nc-cart-open aria-label="{{ 'nav.cart' | t }}">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="nc-header__count {% if cart.item_count == 0 %}is-empty{% endif %}" data-nc-cart-count>{{ cart.item_count }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nc-mega" id="nc-mega" data-nc-mega>
+    <div class="nc-container">
+      <div class="nc-mega__inner" data-nc-tabs>
+        <div class="nc-mega__tabs" role="tablist">
+          <button class="nc-mega__tab is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.by_area' | t }}</button>
+          <button class="nc-mega__tab" data-nc-tab="need" role="tab" aria-selected="false">{{ 'collection.by_need' | t }}</button>
+          <button class="nc-mega__tab" data-nc-tab="best" role="tab" aria-selected="false">{{ 'collection.bestsellers' | t }}</button>
+        </div>
+
+        {%- if request.locale.iso_code == 'da' -%}
+        <div class="nc-mega__quicklinks">
+          <a class="nc-header__link" href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}">{{ 'nav.offers' | t }}</a>
+          <a class="nc-header__link" href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
+        </div>
+        {%- endif -%}
+
+        <div data-nc-panel="area">
+          <div class="nc-mega__grid">
+            {%- for block in section.blocks -%}
+{%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
+              {%- if block.type == 'area' -%}
+                <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
+                  <span class="nc-mega__media">
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                    {%- elsif nc_transition_block_product != blank -%}
+                      {{ nc_transition_block_product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="nc-mega__label">
+                    <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
+                    <span>{% render 'nc-cbd', text: block.settings.desc %}</span>
+                  </span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div data-nc-panel="need" hidden>
+          <div class="nc-mega__grid">
+            {%- for block in section.blocks -%}
+{%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
+              {%- if block.type == 'need' -%}
+                <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
+                  <span class="nc-mega__media">
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                    {%- elsif nc_transition_block_product != blank -%}
+                      {{ nc_transition_block_product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="nc-mega__label">
+                    <strong>{% render 'nc-cbd', text: block.settings.label %}</strong>
+                    <span>{% render 'nc-cbd', text: block.settings.desc %}</span>
+                  </span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div data-nc-panel="best" hidden>
+          <div class="nc-mega__grid">
+            {%- assign best = nc_transition_best_collection -%}
+            {%- if best != blank -%}
+              {%- for product in best.products limit: 8 -%}
+                <a class="nc-mega__card" href="{{ product.url }}">
+                  <span class="nc-mega__media">
+                    {{ product.featured_image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: product.title, loading: 'lazy' }}
+                  </span>
+                  <span class="nc-mega__label">
+                    {%- assign nc_mt = product.title | split: ' | ' | first -%}
+                    <strong>{% render 'nc-cbd', text: nc_mt %}</strong>
+                    <span>{{ product.price | money }}</span>
+                  </span>
+                </a>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="nc-mega__foot">
+          <a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'general.view_all_products_arrow' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="nc-mobilenav" data-nc-mobilenav aria-hidden="true">
+  <div class="nc-mobilenav__overlay" data-nc-close></div>
+  <div class="nc-mobilenav__panel">
+    <div class="nc-mobilenav__head">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name, style: 'height: 32px; width: auto;' }}
+      {%- else -%}
+        <img src="{{ 'nc-logo-wordmark.webp' | asset_url }}" alt="{{ shop.name | escape }}" style="height: 32px; width: auto;" width="220" height="53">
+      {%- endif -%}
+      <div class="nc-mobilenav__head-right">
+        {%- comment -%} Sprogskift i mobilmenuen (Allan 08-10): samme localization-form som paa computer, oeverst saa den er til at finde. {%- endcomment -%}
+        {%- if localization.available_languages.size > 1 and section.settings.show_lang -%}
+          {%- form 'localization', id: 'nc-lang-form-mobile', class: 'nc-langs nc-langs--mobile' -%}
+            <input type="hidden" name="return_to" value="{{ request.path }}">
+            {%- for language in localization.available_languages -%}
+              <button type="submit" name="language_code" value="{{ language.iso_code }}" lang="{{ language.iso_code }}" class="{% if language.iso_code == localization.language.iso_code %}is-active{% endif %}" aria-label="{{ language.endonym_name }}">{{ language.iso_code | upcase }}</button>
+            {%- endfor -%}
+          {%- endform -%}
+        {%- endif -%}
+        <button class="nc-iconbtn" data-nc-close aria-label="{{ 'general.close_menu' | t }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav aria-label="{{ 'general.mobile_menu' | t }}">
+      <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>
+      <div class="nc-mobilenav__sub">
+        {%- if request.locale.iso_code == 'da' -%}
+        <a href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}">{{ 'nav.offers' | t }}</a>
+        <a href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+{%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
+          {%- if block.type == 'area' -%}
+            <a href="{% render 'nc-url', url: block.settings.url %}">{% render 'nc-cbd', text: block.settings.label %}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.mix_show and section.settings.mix_label != blank -%}
+        <a href="{% render 'nc-url', url: section.settings.mix_url, fallback: '/collections/bland-selv' %}">{% render 'nc-cbd', text: section.settings.mix_label %}{%- if section.settings.mix_badge != blank -%}<span class="nc-mobilenav__badge">{% render 'nc-cbd', text: section.settings.mix_badge %}</span>{%- endif -%}</a>
+      {%- endif -%}
+      <a href="{% render 'nc-url', url: section.settings.cases_url, fallback: '/blogs/kundecases' %}">{{ 'nav.cases' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.articles_url, fallback: '/blogs/artikler' %}">{{ 'nav.articles' | t }}</a>
+      <div class="nc-mobilenav__sub">
+        <a href="{% render 'nc-url', fallback: '/pages/hvor-skal-jeg-starte' %}">{{ 'search.where_to_start' | t }}</a>
+      </div>
+      <a href="{% render 'nc-url', url: section.settings.about_url, fallback: '/pages/om-os' %}">{{ 'nav.about' | t }}</a>
+      <a href="{% render 'nc-url', url: section.settings.omcbd_url, fallback: '/pages/om-cbd' %}">{%- assign nc_nav_cbd = 'nav.about_cbd' | t -%}{% render 'nc-cbd', text: nc_nav_cbd %}</a>
+      <a href="{% render 'nc-url', url: section.settings.ingredients_url, fallback: '/pages/ingredienser' %}">{{ 'nav.ingredients' | t }}</a>
+      {%- unless request.locale.iso_code == 'de' -%}
+      <a href="{% render 'nc-url', url: section.settings.kundeklub_url, fallback: '/pages/kundeklub' %}">{{ 'nav.club' | t }}</a>
+      {%- if request.locale.iso_code == 'da' -%}
+      <a href="{% render 'nc-url', url: '/pages/gaveideer' %}">{{ 'nav.gift_guide' | t }}</a>
+      {%- endif -%}
+      {%- endunless -%}
+      <a href="{% render 'nc-url', url: section.settings.faq_url, fallback: '/pages/faq' %}">{{ 'nav.faq' | t }}</a>
+      {%- if section.settings.show_jesper -%}
+        <a href="{% render 'nc-url', url: section.settings.jesper_url, fallback: '/pages/velkommen-jesper' %}">{{ 'nav.jesper' | t }}</a>
+      {%- endif -%}
+    </nav>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "header",
+  "class": "nc-header-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_lang",
+      "label": "Vis sprogskifter (DA/DE)",
+      "default": true,
+      "info": "Slaaet fra indtil den tyske version er klar. /de virker stadig, knappen er bare skjult."
+    },
+    {
+      "type": "checkbox",
+      "id": "announce_auto",
+      "label": "Vis annonceringslinje",
+      "info": "Uden egen tekst vises fri fragt-grænsen i kundens valuta plus \"Vegansk & plantebaseret · Dansk, e-mærket webshop\", oversat automatisk.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Annonceringslinje (egen tekst)",
+      "info": "Overstyrer standardteksten på alle sprog. Nævn ikke et fast fragtbeløb her, hvis der også sælges i euro."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logohøjde",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "url",
+      "id": "all_url",
+      "label": "Alle produkter",
+      "info": "Standard: /collections/cbd-hudpleje"
+    },
+    {
+      "type": "checkbox",
+      "id": "mix_show",
+      "label": "Vis \"Bland selv\" i menuen",
+      "info": "Slå først til, når kollektionen og de automatiske rabatter findes.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "mix_label",
+      "label": "Bland selv: tekst",
+      "default": "Bland selv"
+    },
+    {
+      "type": "text",
+      "id": "mix_badge",
+      "label": "Bland selv: badge",
+      "info": "Fx Køb 3 og spar 25 %. Skal matche rabatterne.",
+      "default": "Køb 3 og spar 25 %"
+    },
+    {
+      "type": "url",
+      "id": "mix_url",
+      "label": "Bland selv: link",
+      "info": "Standard: /collections/bland-selv"
+    },
+    {
+      "type": "url",
+      "id": "cases_url",
+      "label": "Kundecases",
+      "info": "Standard: /blogs/kundecases"
+    },
+    {
+      "type": "url",
+      "id": "articles_url",
+      "label": "Artikler",
+      "info": "Standard: /blogs/artikler"
+    },
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "Om os",
+      "info": "Standard: /pages/om-os"
+    },
+    {
+      "type": "url",
+      "id": "omcbd_url",
+      "label": "Om CBD",
+      "info": "Standard: /pages/om-cbd"
+    },
+    {
+      "type": "url",
+      "id": "ingredients_url",
+      "label": "Ingredienser",
+      "info": "Standard: /pages/ingredienser"
+    },
+    {
+      "type": "url",
+      "id": "faq_url",
+      "label": "FAQ",
+      "info": "Standard: /pages/faq"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_jesper",
+      "label": "Vis \"Jesper Buch & Løvens Hule\" under Om os",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "jesper_url",
+      "label": "Jesper Buch-siden",
+      "info": "Standard: /pages/velkommen-jesper"
+    },
+    {
+      "type": "url",
+      "id": "kundeklub_url",
+      "label": "Kundeklub",
+      "info": "Standard: /pages/kundeklub"
+    },
+    {
+      "type": "url",
+      "id": "favorites_url",
+      "label": "Favoritter",
+      "info": "Standard: /pages/favoritter"
+    },
+    {
+      "type": "collection",
+      "id": "best_collection",
+      "label": "Bestseller-kollektion (megamenu)",
+      "info": "Produkterne i megamenuens Bestsellers-fane."
+    },
+    {
+      "type": "collection",
+      "id": "best_collection_migration",
+      "label": "URL-migration: reservevalg",
+      "info": "Midlertidigt reservevalg til samme produkt eller kollektion efter URL-skift."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "area",
+      "name": "Område",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Ansigt"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Creme, serum & rens"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        },
+        {
+          "type": "product",
+          "id": "product_migration",
+          "label": "URL-migration: reservevalg",
+          "info": "Midlertidigt reservevalg til samme produkt eller kollektion efter URL-skift."
+        }
+      ]
+    },
+    {
+      "type": "need",
+      "name": "Behov",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Navn",
+          "default": "Tør hud"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Undertekst",
+          "default": "Fugt & pleje"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produkt (billed-fallback)"
+        },
+        {
+          "type": "product",
+          "id": "product_migration",
+          "label": "URL-migration: reservevalg",
+          "info": "Midlertidigt reservevalg til samme produkt eller kollektion efter URL-skift."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

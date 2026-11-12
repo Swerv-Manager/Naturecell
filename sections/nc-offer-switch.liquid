@@ -1,0 +1,245 @@
+{% comment %}
+  NC hero: tilbud + Black Week-skift + reserve-hero (Swerv, 10.11.2026, testtema "NC anmeldelser test 10.11").
+  Står ØVERST på forsiden og erstatter den gamle hero (nc-hero, deaktiveret i index.json – ikke slettet).
+  Tre tilstande, hvoraf præcis én vises:
+    1) Pakke-hero (før skiftet): Facial Care 3. Pris, samlet enkeltpris (compare-at), besparelse i kr og %
+       hentes fra produktet, så tallene altid passer med Shopify. Ingen effekt- eller popularitetsclaims.
+    2) Black Week (efter skiftet): vises kun når der er valgt BW-billede/tekst og «Pladsholder» er slået fra.
+    3) Reserve-hero (velkomst med Allan og Lizbeth): vises når 1) eller 2) ikke kan vises
+       (pakken udsolgt, B2B-kunde, BW stadig pladsholder), så toppen aldrig er tom.
+  Skiftet sker både på serveren (Liquid 'now') og i browseren (JS), så en cachet side også skifter
+  til tiden. Tidspunkt i UTC: 2026-11-20T14:00:00Z = 20.11.2026 kl. 15.00 dansk tid.
+{% endcomment %}
+{%- liquid
+  assign switch_iso = section.settings.switch_at_utc | default: settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z'
+  assign switch_ts = switch_iso | date: '%s' | plus: 0
+  assign now_ts = 'now' | date: '%s' | plus: 0
+  assign is_bw = false
+  if now_ts >= switch_ts
+    assign is_bw = true
+  endif
+  if section.settings.preview_mode == 'offer'
+    assign is_bw = false
+  elsif section.settings.preview_mode == 'bw'
+    assign is_bw = true
+  endif
+
+  assign p = section.settings.product
+  assign offer_ok = false
+  if section.settings.offer_enabled and p != blank and p.available and p.compare_at_price > p.price and customer.b2b? != true
+    assign offer_ok = true
+  endif
+  if offer_ok
+    assign save_amount = p.compare_at_price | minus: p.price
+    assign save_pct = save_amount | times: 100 | divided_by: p.compare_at_price
+    assign img = section.settings.image
+    if img == blank
+      for pi in p.images
+        if pi.src contains 'milijoe'
+          assign img = pi
+          break
+        endif
+      endfor
+    endif
+    if img == blank
+      assign img = p.featured_image
+    endif
+  endif
+
+  assign bw_ok = false
+  if section.settings.bw_placeholder == false and section.settings.bw_heading != blank
+    assign bw_ok = true
+  endif
+  if section.settings.bw_placeholder == false and section.settings.bw_image != blank
+    assign bw_ok = true
+  endif
+  if customer.b2b?
+    assign bw_ok = false
+  endif
+
+  assign fb_ok = false
+  if section.settings.fb_enabled and section.settings.fb_image != blank
+    assign fb_ok = true
+  endif
+
+  assign state = 'none'
+  if is_bw and bw_ok
+    assign state = 'bw'
+  elsif is_bw == false and offer_ok
+    assign state = 'offer'
+  elsif fb_ok
+    assign state = 'fb'
+  endif
+  assign show_guar = false
+  if section.settings.show_guarantee and request.locale.iso_code != 'de' and customer.b2b? != true
+    assign show_guar = true
+  endif
+-%}
+{%- style -%}
+  #ncos-{{ section.id }} { --ncos-ink: var(--sage-700, #28403b); --ncos-paper: var(--paper, #f6f4ee); background: var(--ncos-paper); color: var(--ncos-ink); }
+  #ncos-{{ section.id }} [hidden] { display: none !important; }
+  #ncos-{{ section.id }} .ncos__hero { display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); min-height: clamp(520px, 40vw, 640px); }
+  #ncos-{{ section.id }} .ncos__text { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(40px, 5vw, 80px) clamp(28px, 4vw, 64px) clamp(40px, 5vw, 80px) max(var(--gutter, 24px), calc((100vw - 1320px) / 2 + var(--gutter, 24px))); }
+  #ncos-{{ section.id }} .ncos__eyebrow { margin: 0 0 18px; font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ section.id }} .ncos__h { margin: 0; max-width: 11ch; font-family: var(--font-display); font-weight: 400; font-size: clamp(42px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--ncos-ink); text-wrap: balance; }
+  #ncos-{{ section.id }} .ncos__save { margin: 22px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.1; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ section.id }} .ncos__body { margin: 14px 0 0; font-family: var(--font-body); font-size: 17px; line-height: 1.6; color: var(--ink-700, #3a3f3d); max-width: 400px; }
+  #ncos-{{ section.id }} .ncos__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 28px 0 0; padding-top: 22px; border-top: 1px solid rgba(40, 64, 59, 0.14); font-family: var(--font-body); min-width: min(360px, 100%); }
+  #ncos-{{ section.id }} .ncos__now { font-size: 30px; font-weight: 600; line-height: 1; color: var(--ncos-ink); }
+  #ncos-{{ section.id }} .ncos__was { font-size: 15px; color: var(--ink-500, #6b706e); }
+  #ncos-{{ section.id }} .ncos__btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 26px; min-height: 52px; padding: 16px 34px; border-radius: 999px; background: var(--ncos-ink); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 600; letter-spacing: 0.02em; line-height: 1; text-decoration: none; transition: background-color .2s ease; }
+  #ncos-{{ section.id }} .ncos__btn:hover, #ncos-{{ section.id }} .ncos__btn:focus-visible { background: #1f332f; color: #fff; }
+  #ncos-{{ section.id }} .ncos__guar { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; font-family: var(--font-body); font-size: 13.5px; color: var(--ink-500, #6b706e); text-decoration: none; }
+  #ncos-{{ section.id }} .ncos__guar svg { flex: none; width: 16px; height: 16px; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ section.id }} .ncos__guar span { text-decoration: underline; text-decoration-color: rgba(40, 64, 59, 0.3); text-underline-offset: 3px; }
+  #ncos-{{ section.id }} .ncos__media { position: relative; display: block; overflow: hidden; background: #8a9a6a; isolation: isolate; }
+  {%- comment -%} Hele produktet skal kunne ses: forgrunden vises uskaaret (contain) og bag den ligger samme billede sloeret som baggrund, saa der ikke opstaar kanter. {%- endcomment -%}
+  #ncos-{{ section.id }} .ncos__media img { display: block; }
+  #ncos-{{ section.id }} .ncos__media .ncos__bg { position: absolute; top: -15%; left: -15%; width: 130%; height: 130%; max-width: none; object-fit: cover; filter: blur(26px) saturate(1.05); }
+  #ncos-{{ section.id }} .ncos__media .ncos__fg { position: absolute; top: 3%; left: 50%; height: 94%; width: auto; max-width: none; aspect-ratio: 1 / 1; transform: translateX(-50%); object-fit: contain;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%); mask-composite: intersect; }
+  #ncos-{{ section.id }} .ncos__bw { display: block; }
+  #ncos-{{ section.id }} .ncos__bw img { width: 100%; height: auto; display: block; }
+  #ncos-{{ section.id }} .ncos__bwtext { background: #111; color: #fff; padding: clamp(48px, 7vw, 110px) var(--gutter, 24px); text-align: center; font-family: var(--font-display); font-size: clamp(30px, 4vw, 56px); }
+  #ncos-{{ section.id }} .ncos__fb { position: relative; display: flex; align-items: center; min-height: clamp(520px, 40vw, 640px); overflow: hidden; color: var(--ncos-paper); }
+  #ncos-{{ section.id }} .ncos__fb picture, #ncos-{{ section.id }} .ncos__fb picture img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #ncos-{{ section.id }} .ncos__fb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20, 34, 31, 0.62), rgba(20, 34, 31, 0.15) 60%, transparent); }
+  #ncos-{{ section.id }} .ncos__fb .ncos__text { position: relative; z-index: 1; }
+  #ncos-{{ section.id }} .ncos__fb .ncos__h { color: var(--ncos-paper); max-width: 12ch; }
+  #ncos-{{ section.id }} .ncos__fb .ncos__body { color: rgba(246, 244, 238, 0.88); white-space: pre-line; }
+  #ncos-{{ section.id }} .ncos__fb .ncos__btn { background: var(--ncos-paper); color: var(--ncos-ink); }
+  #ncos-{{ section.id }} .ncos__placeholder { margin: 16px var(--gutter, 24px); border: 2px dashed #c0392b; border-radius: 16px; padding: 24px; text-align: center; font-family: var(--font-body); color: #c0392b; background: #fff6f5; }
+  @media (max-width: 749px) {
+    #ncos-{{ section.id }} .ncos__hero { grid-template-columns: 1fr; min-height: 0; }
+    #ncos-{{ section.id }} .ncos__media { order: -1; aspect-ratio: 10 / 9; }
+    #ncos-{{ section.id }} .ncos__text { padding: 24px var(--gutter, 20px) 30px; }
+    #ncos-{{ section.id }} .ncos__eyebrow { margin-bottom: 10px; font-size: 11px; }
+    #ncos-{{ section.id }} .ncos__h { max-width: none; font-size: clamp(32px, 8.6vw, 38px); line-height: 1.05; }
+    #ncos-{{ section.id }} .ncos__save { margin-top: 10px; font-size: 22px; }
+    #ncos-{{ section.id }} .ncos__body { display: none; }
+    #ncos-{{ section.id }} .ncos__price { margin-top: 16px; padding-top: 14px; min-width: 0; width: 100%; }
+    #ncos-{{ section.id }} .ncos__now { font-size: 26px; }
+    #ncos-{{ section.id }} .ncos__was { font-size: 14px; }
+    #ncos-{{ section.id }} .ncos__btn { width: 100%; margin-top: 18px; min-height: 50px; }
+    #ncos-{{ section.id }} .ncos__guar { margin-top: 14px; font-size: 13px; }
+    #ncos-{{ section.id }} .ncos__fb { min-height: min(560px, 78vh); align-items: flex-end; }
+    #ncos-{{ section.id }} .ncos__fb::after { background: linear-gradient(0deg, rgba(20, 34, 31, 0.7), rgba(20, 34, 31, 0.1) 70%); }
+    #ncos-{{ section.id }} .ncos__fb .ncos__body { display: block; font-size: 15px; }
+  }
+{%- endstyle -%}
+
+<div class="ncos" id="ncos-{{ section.id }}" data-switch-at="{{ switch_iso | escape }}" data-preview="{{ section.settings.preview_mode }}" data-has-offer="{{ offer_ok }}" data-has-bw="{{ bw_ok }}" data-has-fb="{{ fb_ok }}"{% if state == 'none' and request.design_mode == false %} hidden{% endif %}>
+  {%- if offer_ok -%}
+    <div class="ncos__hero" data-ncos-offer{% unless state == 'offer' %} hidden{% endunless %}>
+      <div class="ncos__text">
+        {%- if section.settings.eyebrow != blank -%}<p class="ncos__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h1 class="ncos__h">{{ section.settings.heading | escape }}</h1>
+        <p class="ncos__save">Spar {{ save_amount | money_without_trailing_zeros }} · {{ save_pct }}&nbsp;%</p>
+        {%- if section.settings.body != blank -%}<p class="ncos__body">{{ section.settings.body | escape }}</p>{%- endif -%}
+        <p class="ncos__price"><span class="ncos__now">{{ p.price | money_without_trailing_zeros }}</span><span class="ncos__was">{{ p.compare_at_price | money_without_trailing_zeros }} {{ section.settings.was_label | escape }}</span></p>
+        <a class="ncos__btn" href="{{ p.url }}">{{ section.settings.cta | escape }} <span aria-hidden="true">→</span></a>
+        {%- if show_guar -%}
+          <a class="ncos__guar" href="/pages/tilfredshedsgaranti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>30 dages tilfredshedsgaranti på første ordre</span></a>
+        {%- endif -%}
+      </div>
+      <a class="ncos__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+        {%- if img != blank -%}
+          {{ img | image_url: width: 600 | image_tag: class: 'ncos__bg', widths: '400, 600', sizes: '(min-width: 750px) 56vw, 100vw', loading: 'eager', alt: '' }}
+          {{ img | image_url: width: 1600 | image_tag: class: 'ncos__fg', widths: '500, 800, 1100, 1600', sizes: '(min-width: 750px) 40vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: '' }}
+        {%- endif -%}
+      </a>
+    </div>
+  {%- endif -%}
+  <div data-ncos-bw{% unless state == 'bw' %} hidden{% endunless %}>
+    {%- if bw_ok -%}
+      <a class="ncos__bw" href="{% render 'nc-url', url: section.settings.bw_url, fallback: '/' %}">
+        {%- if section.settings.bw_image != blank -%}
+          <picture>
+            {%- if section.settings.bw_image_mobile != blank -%}<source media="(max-width: 749px)" srcset="{{ section.settings.bw_image_mobile | image_url: width: 1000 }}">{%- endif -%}
+            {{ section.settings.bw_image | image_url: width: 2200 | image_tag: widths: '800, 1200, 1600, 2200', sizes: '100vw', loading: 'eager', alt: section.settings.bw_heading }}
+          </picture>
+        {%- else -%}
+          <div class="ncos__bwtext">{{ section.settings.bw_heading | escape }}</div>
+        {%- endif -%}
+      </a>
+    {%- elsif request.design_mode and is_bw -%}
+      <div class="ncos__placeholder"><strong>PLADSHOLDER – Black Week-banner</strong><br>Vises fra {{ switch_iso | escape }} (UTC). Indtil der er valgt et BW-billede eller en tekst og «Pladsholder» er slået fra, viser kunderne reserve-heroen (velkomst).</div>
+    {%- endif -%}
+  </div>
+  {%- if fb_ok -%}
+    <div class="ncos__fb" data-ncos-fb{% unless state == 'fb' %} hidden{% endunless %}>
+      <picture>
+        {%- if section.settings.fb_image_mobile != blank -%}<source media="(max-width: 749px)" srcset="{{ section.settings.fb_image_mobile | image_url: width: 900 }} 900w, {{ section.settings.fb_image_mobile | image_url: width: 1200 }} 1200w" sizes="100vw">{%- endif -%}
+        {{ section.settings.fb_image | image_url: width: 2400 | image_tag: widths: '900, 1400, 1900, 2400', sizes: '100vw', loading: 'eager', alt: '' }}
+      </picture>
+      <div class="ncos__text">
+        {%- if section.settings.fb_eyebrow != blank -%}<p class="ncos__eyebrow" style="color: rgba(246,244,238,.8)">{{ section.settings.fb_eyebrow | escape }}</p>{%- endif -%}
+        <h1 class="ncos__h">{{ section.settings.fb_heading | escape }}</h1>
+        {%- if section.settings.fb_body != blank -%}<p class="ncos__body">{{ section.settings.fb_body | escape }}</p>{%- endif -%}
+        {%- if section.settings.fb_cta != blank -%}<a class="ncos__btn" href="{% render 'nc-url', url: section.settings.fb_url, fallback: '/collections/all' %}">{{ section.settings.fb_cta | escape }} <span aria-hidden="true">→</span></a>{%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+<script>
+(function () {
+  var root = document.getElementById('ncos-{{ section.id }}');
+  if (!root) return;
+  var mode = root.dataset.preview;
+  if (mode === 'offer' || mode === 'bw') return;
+  var at = Date.parse(root.dataset.switchAt);
+  if (isNaN(at)) return;
+  var els = { offer: root.querySelector('[data-ncos-offer]'), bw: root.querySelector('[data-ncos-bw]'), fb: root.querySelector('[data-ncos-fb]') };
+  var has = { offer: root.dataset.hasOffer === 'true', bw: root.dataset.hasBw === 'true', fb: root.dataset.hasFb === 'true' };
+  function update() {
+    var isBw = Date.now() >= at;
+    var s = isBw ? (has.bw ? 'bw' : (has.fb ? 'fb' : 'none')) : (has.offer ? 'offer' : (has.fb ? 'fb' : 'none'));
+    for (var k in els) { if (els[k]) els[k].hidden = (k !== s); }
+    root.hidden = (s === 'none');
+    return !isBw;
+  }
+  update();
+  var t = setInterval(function () { if (!root.isConnected || !update()) clearInterval(t); }, 30000);
+  document.addEventListener('visibilitychange', update);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "NC tilbud + BW-skift",
+  "tag": "section",
+  "class": "nc-sec-hero",
+  "settings": [
+    { "type": "header", "content": "Datoskift" },
+    { "type": "text", "id": "switch_at_utc", "label": "Skift til Black Week (UTC, valgfri)", "info": "Tom = temaindstillingen «Black Week starter (UTC)» (Fragt og handel), som også styrer fri fragt-grænsen. Udfyld kun for at skifte dette banner på et andet tidspunkt." },
+    { "type": "select", "id": "preview_mode", "label": "Visning (kun til test)", "default": "auto", "options": [ { "value": "auto", "label": "Automatisk efter dato" }, { "value": "offer", "label": "Tving pakke-hero" }, { "value": "bw", "label": "Tving Black Week-plads" } ], "info": "Skal stå på Automatisk, før temaet publiceres." },
+    { "type": "header", "content": "Pakke-hero (før skiftet)" },
+    { "type": "checkbox", "id": "offer_enabled", "label": "Vis pakke-hero", "default": true },
+    { "type": "product", "id": "product", "label": "Pakke" },
+    { "type": "image_picker", "id": "image", "label": "Billede (tom = produktets miljøbillede)" },
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Facial Care 3" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hele ansigtsrutinen i én pakke" },
+    { "type": "textarea", "id": "body", "label": "Tekst (skjult på mobil)", "default": "Dagcreme, natcreme og ansigtsolie." },
+    { "type": "text", "id": "was_label", "label": "Tekst efter samlet enkeltpris", "default": "købt enkeltvis" },
+    { "type": "text", "id": "cta", "label": "Knaptekst", "default": "Se pakken" },
+    { "type": "checkbox", "id": "show_guarantee", "label": "Vis linje om tilfredshedsgaranti", "default": true },
+    { "type": "header", "content": "Black Week-plads (efter skiftet)" },
+    { "type": "checkbox", "id": "bw_placeholder", "label": "PLADSHOLDER – vis reserve-hero", "default": true, "info": "PLADSHOLDER. Slå fra, når det endelige BW-billede/tekst er valgt. Så længe den er slået til, vises reserve-heroen efter skiftet." },
+    { "type": "image_picker", "id": "bw_image", "label": "BW-billede (desktop)" },
+    { "type": "image_picker", "id": "bw_image_mobile", "label": "BW-billede (mobil)" },
+    { "type": "text", "id": "bw_heading", "label": "BW-tekst / alt-tekst" },
+    { "type": "url", "id": "bw_url", "label": "BW-link" },
+    { "type": "header", "content": "Reserve-hero", "info": "Vises når pakken er udsolgt, for B2B-kunder og når BW-pladsen er pladsholder." },
+    { "type": "checkbox", "id": "fb_enabled", "label": "Brug reserve-hero", "default": true },
+    { "type": "image_picker", "id": "fb_image", "label": "Billede (desktop)" },
+    { "type": "image_picker", "id": "fb_image_mobile", "label": "Billede (mobil)" },
+    { "type": "text", "id": "fb_eyebrow", "label": "Overlinje", "default": "Velkommen" },
+    { "type": "text", "id": "fb_heading", "label": "Overskrift", "default": "Hudpleje med omtanke" },
+    { "type": "textarea", "id": "fb_body", "label": "Tekst" },
+    { "type": "text", "id": "fb_cta", "label": "Knaptekst", "default": "Se produkterne" },
+    { "type": "url", "id": "fb_url", "label": "Knaplink" }
+  ],
+  "presets": [ { "name": "NC tilbud + BW-skift" } ]
+}
+{% endschema %}

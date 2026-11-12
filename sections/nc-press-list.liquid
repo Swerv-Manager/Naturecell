@@ -1,0 +1,155 @@
+{% comment %}
+  Presseside: al omtale af NatureCell samlet ét sted (SEO/GEO og troværdighed).
+  Hver blok er én omtale: medie, år, rubrik, kort tekst og link. Er der skrevet en artikel
+  om omtalen på bloggen, linker kortet dertil (og bruger artiklens billede), ellers til
+  originalen. "Læs originalen" vises, når begge links findes.
+  Strukturerede data: ItemList med hver omtale som Article med medie og år.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-presslist { padding: 0 0 clamp(48px, 7vw, 88px); }
+  #shopify-section-{{ section.id }} .nc-presslist__hero { background: var(--sage-50); border-bottom: 1px solid var(--border-soft); margin-bottom: clamp(28px, 5vw, 48px); }
+  #shopify-section-{{ section.id }} .nc-presslist__hero-in { max-width: 820px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) var(--gutter); text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-presslist__hero .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-presslist__hero h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(29px, 4.5vw, 46px); line-height: 1.15; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-presslist__hero p { margin: 0; max-width: 620px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-presslist__grid { list-style: none; margin: 0 auto; padding: 0; max-width: 1180px; display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }
+  #shopify-section-{{ section.id }} .nc-presslist__card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--border-soft); border-radius: var(--radius-xl); overflow: hidden; background: var(--cloud); }
+  #shopify-section-{{ section.id }} .nc-presslist__media { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--sage-100); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-presslist__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-presslist__body { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; flex: 1; }
+  #shopify-section-{{ section.id }} .nc-presslist__source { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-presslist__body h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.3; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-presslist__body h2 a { color: inherit; text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-presslist__body h2 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  #shopify-section-{{ section.id }} .nc-presslist__body p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-presslist__links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: auto; padding-top: 6px; }
+  #shopify-section-{{ section.id }} .nc-presslist__links a { font-weight: 600; font-size: 14px; color: var(--sage-700); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+{%- endstyle -%}
+
+{%- liquid
+  assign pl_heading = section.settings.heading | default: page.title
+  assign pl_ld = ''
+  assign pl_n = 0
+-%}
+
+<div class="nc-presslist">
+  <div class="nc-presslist__hero">
+    <div class="nc-presslist__hero-in">
+      {%- if section.settings.eyebrow != blank -%}<p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>{%- endif -%}
+      <h1>{% render 'nc-cbd', text: pl_heading %}</h1>
+      {%- if section.settings.intro != blank -%}<p>{% render 'nc-cbd', text: section.settings.intro %}</p>{%- endif -%}
+    </div>
+  </div>
+
+  <div class="nc-container">
+    <ul class="nc-presslist__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign pl_art = blank
+          assign pl_art_url = block.settings.article_url
+          if pl_art_url != blank and pl_art_url contains '/blogs/'
+            assign pl_key = pl_art_url | split: '/blogs/' | last | split: '?' | first | split: '#' | first
+            assign pl_art = articles[pl_key]
+          endif
+          assign pl_ext = block.settings.url
+          assign pl_href = pl_art_url | default: pl_ext
+          assign pl_is_ext = false
+          if pl_art_url == blank and pl_ext != blank
+            assign pl_is_ext = true
+          endif
+          capture pl_link
+            render 'nc-url', url: pl_href
+          endcapture
+          assign pl_link = pl_link | strip
+          assign pl_label = block.settings.outlet
+          if block.settings.year != blank
+            assign pl_label = pl_label | append: ' · ' | append: block.settings.year
+          endif
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <article class="nc-presslist__card">
+            {%- if block.settings.image != blank or pl_art.image or block.settings.image_url != blank -%}
+              <a class="nc-presslist__media" href="{{ pl_link }}"{% if pl_is_ext %} target="_blank" rel="noopener"{% endif %} tabindex="-1" aria-hidden="true">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 760 | image_tag: alt: '', loading: 'lazy', sizes: '(min-width: 1100px) 380px, (min-width: 700px) 46vw, 92vw' }}
+                {%- elsif pl_art.image -%}
+                  {{ pl_art.image | image_url: width: 760 | image_tag: alt: '', loading: 'lazy', sizes: '(min-width: 1100px) 380px, (min-width: 700px) 46vw, 92vw' }}
+                {%- else -%}
+                  <img src="{{ block.settings.image_url }}" alt="" loading="lazy" width="760" height="475">
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            <div class="nc-presslist__body">
+              <p class="nc-presslist__source">{{ pl_label }}</p>
+              <h2>{%- if pl_href != blank -%}<a href="{{ pl_link }}"{% if pl_is_ext %} target="_blank" rel="noopener"{% endif %}>{% render 'nc-cbd', text: block.settings.title %}</a>{%- else -%}{% render 'nc-cbd', text: block.settings.title %}{%- endif -%}</h2>
+              {%- if block.settings.text != blank -%}<p>{% render 'nc-cbd', text: block.settings.text %}</p>{%- endif -%}
+              <div class="nc-presslist__links">
+                {%- if pl_art_url != blank -%}<a href="{{ pl_link }}">{{ 'press.read_more' | t }}</a>{%- endif -%}
+                {%- if pl_ext != blank -%}<a href="{{ pl_ext }}" target="_blank" rel="noopener">{{ 'press.read_original' | t: outlet: block.settings.outlet }}</a>{%- endif -%}
+              </div>
+            </div>
+          </article>
+        </li>
+        {%- liquid
+          if pl_href != blank
+            assign pl_n = pl_n | plus: 1
+            if pl_link contains '://'
+              assign pl_abs = pl_link
+            else
+              assign pl_abs = request.origin | append: pl_link
+            endif
+            assign pl_title_json = block.settings.title | json
+            assign pl_url_json = pl_abs | json
+            assign pl_outlet_json = block.settings.outlet | json
+            assign pl_year_json = block.settings.year | json
+            capture pl_item
+              echo '{"@type":"ListItem","position":' | append: pl_n | append: ',"item":{"@type":"Article","headline":' | append: pl_title_json | append: ',"url":' | append: pl_url_json | append: ',"publisher":{"@type":"Organization","name":' | append: pl_outlet_json | append: '}'
+              if block.settings.year.size == 4
+                echo ',"datePublished":' | append: pl_year_json
+              endif
+              echo ',"about":{"@type":"Organization","name":"NatureCell"}}}'
+            endcapture
+            if pl_ld != ''
+              assign pl_ld = pl_ld | append: ','
+            endif
+            assign pl_ld = pl_ld | append: pl_item
+          endif
+        -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{%- if pl_ld != '' -%}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":{{ pl_heading | json }},"itemListElement":[{{ pl_ld }}]}</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Presseomtale",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Presse" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "info": "Tom = sidens titel." },
+    { "type": "textarea", "id": "intro", "label": "Intro" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Omtale",
+      "settings": [
+        { "type": "text", "id": "outlet", "label": "Medie", "default": "Medie" },
+        { "type": "text", "id": "year", "label": "År" },
+        { "type": "text", "id": "title", "label": "Rubrik", "default": "Rubrik" },
+        { "type": "textarea", "id": "text", "label": "Kort tekst" },
+        { "type": "url", "id": "article_url", "label": "Vores artikel om omtalen (valgfri)", "info": "Kortet linker hertil og bruger artiklens billede." },
+        { "type": "url", "id": "url", "label": "Original artikel (valgfri)" },
+        { "type": "image_picker", "id": "image", "label": "Billede (valgfri)" },
+        { "type": "text", "id": "image_url", "label": "Billede-URL (fallback)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Presseomtale" } ]
+}
+{% endschema %}

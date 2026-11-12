@@ -1,0 +1,578 @@
+{% comment %}
+  Produktside 1:1 fra NatureCell.dc.html (PDP):
+  "Tilbage til shop"-knap, galleri (hovedkort + kvadratiske thumbs under),
+  koebskolonne i designets raekkefoelge: eyebrow, titel, stoerrelse, stjerner,
+  pris, beskrivelse, 3 claim-badges, "Køb flere, spar mere"-label med
+  app-blok-slot (Katching lejer felterne), fuldbredde CTA, lyst USP-loeb
+  og accordions (Beskrivelse aaben som standard).
+
+  Maengderabatten ejes af Katching-appen (app-blok); temaet regner aldrig
+  selv rabatter.
+{% endcomment %}
+
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign is_bundle = false
+  if product.tags contains 'pakker' or product.tags contains 'Pakker' or product.tags contains 'bundle'
+    assign is_bundle = true
+  endif
+  assign eyebrow = 'NatureCell'
+  assign title_up = product.title | upcase
+  assign vendor_up = product.vendor | upcase
+  if title_up contains 'ALFALAB' or vendor_up contains 'ALFALAB'
+    assign eyebrow = 'ALFALAB'
+  endif
+  if is_bundle
+    assign bundle_word = 'product.bundle' | t
+    assign eyebrow = eyebrow | append: ' ' | append: bundle_word
+  endif
+  assign title_parts = product.title | split: ' | '
+  capture main_title
+    render 'nc-title', title: title_parts[0]
+  endcapture
+  assign main_title = main_title | strip
+  assign sub_title = title_parts[1]
+  assign size_line = product.metafields.ncell.size.value | default: sub_title | default: product.metafields.custom.product_size.value
+  capture primary_handle
+    render 'nc-primary-collection', product: product
+  endcapture
+  assign primary_handle = primary_handle | strip
+  assign back_href = ''
+  if primary_handle != blank
+    assign back_href = collections[primary_handle].url
+  endif
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
+  assign on_sale = false
+  if v.compare_at_price > v.price
+    assign on_sale = true
+    assign save_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+  endif
+-%}
+
+{%- style -%}
+  .nc-pdp-top { padding: clamp(18px, 5vw, 30px) 0 0; }
+  .nc-pdp-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 22px; padding: 1px 6px; border: 0; background: none; cursor: pointer; font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: normal; color: var(--sage-700); text-decoration: none; }
+
+  .nc-pdp { display: grid; gap: clamp(28px, 5vw, 56px); grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 900px) {
+    .nc-pdp { grid-template-columns: 1fr 1fr; }
+    /* Designet: galleri-flisen sidder ~24px lavere end tekstkolonnens top */
+    .nc-pdp__gallery { margin-top: 24px; }
+  }
+
+  .nc-pdp__gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px; }
+  .nc-pdp__main { position: relative; background: var(--nc-product-tint, var(--sage-50)); border: 1px solid var(--border-soft); border-radius: var(--radius-xl); aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; }
+  /* Billedet fylder rammen helt ud til den graa kant (ogsaa kvadratiske packshots). */
+  .nc-pdp__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .nc-pdp__badges { position: absolute; top: 18px; left: 18px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; z-index: 2; }
+  .nc-pdp__thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nc-pdp__thumbs button { width: 72px; height: 72px; border-radius: var(--radius-md); border: 2px solid var(--border-soft); background: var(--sage-50); cursor: pointer; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .nc-pdp__thumbs button.is-active { border-color: var(--sage-500); }
+  .nc-pdp__thumbs img { width: 100%; height: 100%; object-fit: cover; }
+  .nc-pdp__main > img[hidden] { display: none; }
+  .nc-pdp__main.is-video .nc-pdp__badges { display: none; }
+  .nc-pdp__gallery-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; z-index: 1; }
+  .nc-pdp__thumbs .nc-pdp__video-thumb { position: relative; }
+  .nc-pdp__video-thumb svg { position: absolute; width: 28px; height: 28px; padding: 6px; border-radius: 50%; background: rgba(0, 0, 0, 0.65); color: #fff; pointer-events: none; }
+
+  .nc-pdp__info { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .nc-pdp__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
+  .nc-pdp__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.08; letter-spacing: -0.01em; color: var(--sage-700); }
+  .nc-pdp__size { font-size: 15px; color: var(--ink-400); }
+
+  .nc-pdp__rating { display: inline-flex; align-items: center; gap: 7px; }
+  .nc-pdp__rating .nc-pdp__stars { display: inline-flex; gap: 2px; }
+  .nc-pdp__rating svg { display: block; }
+  .nc-pdp__count { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-500); }
+  a.nc-pdp__rating { color: inherit; text-decoration: none; cursor: pointer; }
+  a.nc-pdp__rating:hover .nc-pdp__count, a.nc-pdp__rating:focus-visible .nc-pdp__count { text-decoration: underline; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  #anmeldelser { scroll-margin-top: 90px; }
+
+  .nc-pdp__price { display: inline-flex; align-items: baseline; gap: 10px; font-family: var(--font-body); }
+  .nc-pdp__price-now { font-size: var(--text-2xl); font-weight: 500; color: var(--ink-900); line-height: 1; }
+  .nc-pdp__price.is-sale .nc-pdp__price-now { color: var(--sale); }
+  .nc-pdp__price-was { font-size: var(--text-md); color: var(--ink-400); text-decoration: line-through; line-height: 1; }
+  .nc-pdp__pricebox { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+  .nc-pdp__unit { font-family: var(--font-body); font-size: 13px; line-height: 1.3; color: var(--ink-500); }
+  .nc-pdp__taxnote { font-family: var(--font-body); font-size: 12.5px; line-height: 1.3; color: var(--ink-400); }
+
+  .nc-pdp__desc { margin: 0; max-width: 500px; font-size: 16px; line-height: 1.7; color: var(--ink-700); }
+  .nc-pdp__desc p { margin: 0; }
+
+  .nc-pdp__usps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 18px 0; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); margin: 2px 0 4px; }
+  .nc-pdp__usp { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 11px; padding: 0 6px; }
+  .nc-pdp__usp img { width: 62px; height: 62px; flex: none; display: block; }
+  .nc-pdp__usp span { font-size: 12.5px; font-weight: 500; color: var(--ink-700); line-height: 1.3; }
+
+  .nc-pdp__tiers { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .nc-pdp__tierlabel { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-500); }
+
+  .nc-pdp__form { margin-top: 6px; }
+  .nc-pdp__add { display: flex; width: 100%; align-items: center; justify-content: center; gap: 9px; padding: 15px 32px; font-family: var(--font-body); font-weight: 600; font-size: var(--text-lg); line-height: 1.1; letter-spacing: 0.01em; border-radius: var(--radius-pill); border: 1.5px solid var(--action); background: var(--action); color: var(--action-contrast, var(--cloud)); cursor: pointer; transition: background var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft); }
+  .nc-pdp__add:hover, .nc-pdp__add:focus-visible { background: var(--action-hover); border-color: var(--action-hover); }
+  .nc-pdp__add[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+  .nc-pdp__guarantee { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px 14px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); color: var(--sage-700); text-decoration: none; font-family: var(--font-body); font-size: var(--text-sm); line-height: 1.45; }
+  .nc-pdp__guarantee svg { flex: none; margin-top: 1px; }
+  .nc-pdp__guarantee strong { font-weight: 600; }
+  .nc-pdp__guarantee-link { white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; }
+  .nc-pdp__guarantee:hover .nc-pdp__guarantee-link, .nc-pdp__guarantee:focus-visible .nc-pdp__guarantee-link { text-decoration-thickness: 2px; }
+  .nc-pdp__ticker { margin-top: 10px; background: var(--sage-50); border-radius: var(--radius-md); overflow: hidden; padding: 14px 0; width: 100%; min-width: 0; }
+  .nc-pdp__ticker-rail { display: flex; width: max-content; animation: nc-marquee 24s linear infinite; }
+  .nc-pdp__ticker-item { display: flex; align-items: center; gap: 8px; padding: 0 22px; white-space: nowrap; color: var(--sage-700); }
+  .nc-pdp__ticker-item svg { flex: none; display: block; }
+  .nc-pdp__ticker-item span { font-family: var(--font-body); font-weight: 600; font-size: 13.5px; }
+
+  .nc-pdp__acc { margin-top: 8px; border-top: 1px solid var(--border-soft); }
+  .nc-pdp__acc details { border-bottom: 1px solid var(--border-soft); }
+  .nc-pdp__acc summary { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 2px; cursor: pointer; text-align: left; font-family: var(--font-display); font-weight: 400; font-size: 17px; line-height: 1.3; color: var(--sage-700); list-style: none; }
+  .nc-pdp__acc summary::-webkit-details-marker { display: none; }
+  .nc-pdp__acc summary svg { flex: none; color: var(--ink-400); transition: transform var(--dur-fast) var(--ease-out); }
+  .nc-pdp__acc details[open] summary svg { transform: rotate(180deg); }
+  .nc-pdp__acc-body { margin: 0 2px 18px; font-size: 14px; line-height: 1.7; color: var(--ink-500); max-width: 500px; }
+  .nc-pdp__acc-body p { margin: 0; }
+
+  {%- comment -%} Mobil koebsbar 1:1 fra designet (shell.html 2998-3005): 44px billede, navn + stoerrelse, sage-knap. {%- endcomment -%}
+  .nc-buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); background: rgba(246, 244, 238, 0.96); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--border-default); box-shadow: 0 -6px 24px rgba(44, 70, 61, 0.10); padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); display: none; align-items: center; gap: 12px; transform: translateY(110%); transition: transform var(--dur-base) var(--ease-soft); }
+  .nc-buybar.is-visible { transform: translateY(0); }
+  .nc-buybar__img { width: 44px; height: 44px; flex: none; object-fit: cover; border-radius: 10px; background: var(--nc-product-tint, var(--sage-50)); }
+  .nc-buybar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .nc-buybar__title { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--sage-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nc-buybar__size { font-size: 12px; color: var(--ink-500); }
+  .nc-buybar__add { flex: none; border: 0; cursor: pointer; background: var(--sage-500); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 14px; min-height: 46px; padding: 0 20px; border-radius: 999px; }
+  .nc-buybar__add:hover, .nc-buybar__add:focus-visible { background: var(--sage-600); }
+  .nc-buybar__add[disabled] { opacity: 0.45; cursor: not-allowed; }
+  @media (max-width: 899px) {
+    .nc-buybar { display: flex; }
+    .nc-pdp__gallery { position: static; }
+  }
+{%- endstyle -%}
+
+<div class="nc-pdp-top" data-nc-buybar-anchor>
+  <div class="nc-container">
+    <a class="nc-pdp-back" href="{% if back_href != blank %}{{ back_href }}{% else %}{% render 'nc-url', url: section.settings.back_url %}{% endif %}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      {%- if back_href != blank -%}
+        {%- capture nc_back_title %}{% render 'nc-cbd', text: collections[primary_handle].title, mode: 'strip' %}{% endcapture -%}
+        {{ 'product.back_to' | t: title: nc_back_title }}
+      {%- else -%}
+        {% render 'nc-cbd', text: section.settings.back_label %}
+      {%- endif -%}
+    </a>
+
+    <div class="nc-pdp">
+      <div class="nc-pdp__gallery" data-nc-gallery>
+        <div class="nc-pdp__main" data-nc-gallery-main>
+          <div class="nc-pdp__badges">
+            {%- if on_sale and settings.show_save_badge -%}
+              <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
+            {%- endif -%}
+          </div>
+          {%- if product.featured_image -%}
+            {%- liquid
+              assign main_class = ''
+              if product.featured_image.aspect_ratio < 0.96 or product.featured_image.aspect_ratio > 1.04
+                assign main_class = 'is-photo'
+              endif
+            -%}
+            {{ product.featured_image | image_url: width: 1200 | image_tag: class: main_class, alt: product.featured_image.alt | default: main_title, widths: '480, 720, 960, 1200', sizes: '(min-width: 900px) 600px, 94vw', loading: 'eager', fetchpriority: 'high' }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        {%- assign nc_gallery_videos = product.media | where: 'media_type', 'video' -%}
+        {%- if product.images.size > 1 or nc_gallery_videos.size > 0 -%}
+          <div class="nc-pdp__thumbs">
+            {%- for image in product.images limit: 8 -%}
+              {%- comment -%} is-photo bruges af galleri-scriptet; alle billeder fylder rammen. {%- endcomment -%}
+              {%- liquid
+                assign is_photo = false
+                if image.aspect_ratio < 0.96 or image.aspect_ratio > 1.04
+                  assign is_photo = true
+                endif
+              -%}
+              <button
+                type="button"
+                class="{% if forloop.first %}is-active{% endif %}{% if is_photo %} is-photo{% endif %}"
+                data-nc-thumb="{{ image | image_url: width: 1200 }}"
+                data-nc-thumb-srcset="{{ image | image_url: width: 480 }} 480w, {{ image | image_url: width: 720 }} 720w, {{ image | image_url: width: 960 }} 960w, {{ image | image_url: width: 1200 }} 1200w"
+                data-nc-thumb-ratio="{{ image.aspect_ratio | default: 1 }}"
+                data-nc-thumb-alt="{{ image.alt | default: main_title | escape }}"
+                aria-label="{{ 'product.show_image' | t: n: forloop.index }}"
+              >
+                {{ image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endfor -%}
+            {%- for media in nc_gallery_videos -%}
+              {%- assign nc_german_oil_video = false -%}
+              {%- if request.locale.iso_code == 'de' and media.id == 58243755540818 -%}
+                {%- assign nc_german_oil_video = true -%}
+              {%- endif -%}
+              <button
+                type="button"
+                class="nc-pdp__video-thumb"
+                data-nc-video-thumb="{{ media.id }}"
+                aria-label="{{ media.alt | default: main_title | escape }}"
+                aria-pressed="false"
+              >
+                {%- if nc_german_oil_video -%}
+                  <img src="https://cdn.shopify.com/s/files/1/0600/7111/6981/files/preview_images/6dae7d3732824e2398089ab564841fb5.thumbnail.0000000000.jpg?v=1792852374&amp;width=160" width="90" height="160" alt="" loading="lazy">
+                {%- else -%}
+                {{ media.preview_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
+                {%- endif -%}
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <template data-nc-gallery-video>
+                  {%- if nc_german_oil_video -%}
+                    <video controls playsinline preload="none" class="nc-pdp__gallery-video" poster="https://cdn.shopify.com/s/files/1/0600/7111/6981/files/preview_images/6dae7d3732824e2398089ab564841fb5.thumbnail.0000000000.jpg?v=1792852374&amp;width=1200">
+                      <source src="https://cdn.shopify.com/videos/c/vp/6dae7d3732824e2398089ab564841fb5/6dae7d3732824e2398089ab564841fb5.HD-1080p-7.2Mbps-98754219.mp4" type="video/mp4">
+                    </video>
+                  {%- else -%}
+                  {{ media | video_tag: image_size: '1200x', controls: true, autoplay: false, playsinline: true, preload: 'none', class: 'nc-pdp__gallery-video' }}
+                  {%- endif -%}
+                </template>
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="nc-pdp__info">
+        <span class="nc-pdp__eyebrow">{{ eyebrow }}</span>
+        <h1 class="nc-pdp__title">{% render 'nc-cbd', text: main_title %}</h1>
+        {%- if size_line != blank -%}
+          <span class="nc-pdp__size">{{ size_line }}</span>
+        {%- endif -%}
+
+        {%- if rating != blank and rating_count != blank -%}
+          {%- assign rating_round = rating.rating | default: rating | times: 1.0 | round -%}
+          <a class="nc-pdp__rating" href="#anmeldelser" aria-label="Se anmeldelser ({{ rating_count }})">
+            <span class="nc-pdp__stars" aria-hidden="true">
+              {%- for i in (1..5) -%}
+                {%- if i <= rating_round -%}
+                  <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z" fill="var(--sage-500)" stroke="var(--sage-500)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                {%- else -%}
+                  <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z" fill="none" stroke="var(--ink-300)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                {%- endif -%}
+              {%- endfor -%}
+            </span>
+            <span class="nc-pdp__count">({{ rating_count }})</span>
+          </a>
+        {%- endif -%}
+
+        <div class="nc-pdp__pricebox">
+          <span class="nc-pdp__price{% if on_sale %} is-sale{% endif %}">
+            <span class="nc-pdp__price-now">{{ v.price | money }}</span>
+            {%- if on_sale -%}
+              <span class="nc-pdp__price-was"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</span>
+            {%- endif -%}
+          </span>
+          {%- comment -%}
+            Enhedspris (Grundpreis) er lovpligtig i Tyskland (PAngV) for varer solgt efter
+            maengde. Vises kun naar varianten har "pris pr. enhed" udfyldt i Shopify.
+            Momsnoten "inkl. MwSt., zzgl. Versand" er ligeledes et tysk krav taet paa prisen.
+          {%- endcomment -%}
+          {%- capture nc_unit_display -%}{% render 'nc-unit-price', variant: v %}{%- endcapture -%}
+    {%- assign nc_unit_display = nc_unit_display | strip -%}
+    {%- assign nc_show_unit = false -%}
+    {%- if v.unit_price_measurement and request.locale.iso_code != 'da' or v.unit_price_measurement and settings.nc_unit_price_da -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if request.locale.iso_code == 'de' and nc_unit_display != blank -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if nc_show_unit -%}
+            <span class="nc-pdp__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ nc_unit_display }}</span>
+          {%- endif -%}
+          {%- comment -%}
+            Det godkendte danske design har ingen momsnote under prisen; noten vises derfor kun
+            paa andre sprog (tysk lovkrav), medmindre "ogsaa paa dansk" er slaaet til.
+          {%- endcomment -%}
+          {%- if section.settings.show_tax_note -%}
+            {%- if request.locale.iso_code != 'da' or section.settings.tax_note_da -%}
+              <span class="nc-pdp__taxnote">{%- if customer.b2b? -%}{{ 'b2b_portal.tax_excluded' | t }}{%- else -%}{{ 'product.tax_note' | t }}{%- endif -%}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Beskrivelsen vises kun én gang: i "Beskrivelse"-accordionen under CTA'en (kundens ønske). {%- endcomment -%}
+
+        {%- comment -%} Fakta-ikoner pr. produkt: ncell.badges, ellers bygget af produktets egne data (snippets/nc-product-badges). {%- endcomment -%}
+        {%- if section.settings.show_badges and product.gift_card? == false -%}
+          {%- render 'nc-product-badges', product: product -%}
+        {%- endif -%}
+
+        {%- comment -%}
+          App-slot: app-blokke (Katching maengderabat, Yotpo Loyalty-point m.fl.) lejer
+          felterne her. Temaet viser kun labelen og slottet og regner aldrig selv rabatter.
+          Uden en "Label"-blok vises labelen "Køb flere, spar mere" foerst og alle app-blokke
+          under den. Tilfoejes en Label-blok, styrer raekkefoelgen i temaeditoren placeringen,
+          fx: [Yotpo-point] [Label] [Katching].
+        {%- endcomment -%}
+        {%- assign has_label_block = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'label' -%}{%- assign has_label_block = true -%}{%- endif -%}
+        {%- endfor -%}
+        {%- comment -%} Uden blokke vises hverken label eller slot, saa der ikke staar en forladt overskrift. {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
+        <div class="nc-pdp__tiers">
+          {%- unless has_label_block -%}
+            <span class="nc-pdp__tierlabel">{% render 'nc-cbd', text: section.settings.tiers_label %}</span>
+          {%- endunless -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'label' -%}
+              <span class="nc-pdp__tierlabel" {{ block.shopify_attributes }}>{%- assign nc_tier_label = block.settings.text | default: section.settings.tiers_label -%}{% render 'nc-cbd', text: nc_tier_label %}</span>
+            {%- elsif block.type == 'yotpo_widget' -%}
+              {%- if block.settings.instance_id != blank and request.locale.iso_code != 'de' -%}
+                <div class="yotpo-widget-instance" data-yotpo-instance-id="{{ block.settings.instance_id | strip }}" data-yotpo-product-id="{{ product.id }}" {{ block.shopify_attributes }}></div>
+              {%- endif -%}
+            {%- else -%}
+              {%- render block -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+
+        <div class="nc-pdp__form">
+        {%- form 'product', product, data-nc-product-form: '' -%}
+          {%- unless product.has_only_default_variant -%}
+            <div style="margin-bottom: 12px;">
+              <label class="nc-label" for="nc-variant">{{ 'product.variant' | t }}</label>
+              <select id="nc-variant" class="nc-select" name="id">
+                {%- for variant in product.variants -%}
+                  <option value="{{ variant.id }}" {% if variant == v %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                    {{ variant.title }} · {{ variant.price | money }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ v.id }}">
+          {%- endunless -%}
+          <input type="hidden" name="quantity" value="1">
+          <button class="nc-pdp__add" type="submit" name="add" {% unless v.available %}disabled{% endunless %}>
+            {%- if v.available %}{% assign cta_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: cta_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
+          </button>
+        {%- endform -%}
+        </div>
+
+        {%- comment -%} Tilfredshedsgaranti (Swerv 10.11): fast linje under kurv-knappen med link til /pages/tilfredshedsgaranti. Gælder kundens første ordre (hele ordren). Skjult for B2B, gavekort, tysk sprog og produkter med tagget ingen-garanti. {%- endcomment -%}
+        {%- unless product.gift_card? or customer.b2b? or request.locale.iso_code == 'de' or product.tags contains 'ingen-garanti' -%}
+          <a class="nc-pdp__guarantee" href="{% render 'nc-url', url: '/pages/tilfredshedsgaranti' %}">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+            <span><strong>{{ 'pdp.guarantee.title' | t }}</strong> {{ 'pdp.guarantee.text' | t }} <span class="nc-pdp__guarantee-link">{{ 'pdp.guarantee.link' | t }}</span></span>
+          </a>
+        {%- endunless -%}
+
+        {%- comment -%}
+          USP-loeb: egen liste fra indstillingen, ellers sprogfilens fem punkter (pdp.ticker.*).
+          Vises ikke paa gavekort (hudpleje-punkterne passer ikke til et gavekort).
+          Fri fragt vises kun, naar kundens valuta har en graense (Temaindstillinger → Fragt og handel).
+        {%- endcomment -%}
+        {%- unless product.gift_card? -%}
+        {%- if section.settings.ticker_items != blank and customer.b2b? != true -%}
+          {%- assign ticker_lines = section.settings.ticker_items | newline_to_br | split: '<br />' -%}
+        {%- else -%}
+          {%- capture tk_fs %}{% render 'nc-free-shipping' %}{% endcapture -%}
+          {%- assign tk_fs = tk_fs | strip -%}
+          {%- assign tk_guar = true -%}
+          {%- if customer.b2b? or request.locale.iso_code == 'de' or product.tags contains 'ingen-garanti' -%}{%- assign tk_guar = false -%}{%- endif -%}
+          {%- capture ticker_src -%}
+            {%- if tk_fs != blank -%}{{ 'pdp.ticker.free_shipping' | t: amount: tk_fs }} | M5 18H3V6h12v4 M14 9h4l3 3v6h-2 M7.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3 M17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3¶{%- endif -%}
+            {{- 'pdp.ticker.dk_test' | t }} | M20 6 9 17l-5-5¶
+            {{- 'pdp.ticker.vegan' | t }} | M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z¶
+            {{- 'pdp.ticker.emaerket' | t }} | M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z¶
+            {%- if tk_guar -%}{{- 'pdp.ticker.guarantee' | t }} | M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5Z M8.5 12l2.5 2.5 4.5-5 | {% render 'nc-url', url: '/pages/tilfredshedsgaranti' %}¶{%- endif -%}
+            {%- comment -%} 14 dages fortrydelsesret vises kun, hvor garantien ikke vises (tysk, ingen-garanti). Ellers et andet punkt, saa garantien ikke staar to gange (Swerv 10.11). {%- endcomment -%}
+            {%- unless customer.b2b? -%}{%- if tk_guar -%}{{- 'pdp.ticker.since' | t }} | M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z{%- else -%}{{- 'pdp.ticker.returns' | t }} | M3 12a9 9 0 1 0 3-6.7L3 8 M3 3v5h5{%- endif -%}{%- endunless -%}
+          {%- endcapture -%}
+          {%- assign ticker_lines = ticker_src | split: '¶' -%}
+        {%- endif -%}
+        {%- if ticker_lines.size > 0 -%}
+          <div class="nc-pdp__ticker" aria-label="{{ 'cart.benefits_title' | t }}">
+            <div class="nc-pdp__ticker-rail">
+              {%- for i in (1..2) -%}
+                {%- for line in ticker_lines -%}
+                  {%- assign ticker_line = line | strip -%}
+                  {%- if ticker_line == blank -%}{%- continue -%}{%- endif -%}
+                  {%- assign tp = line | split: ' | ' -%}
+                  {%- assign tp_url = tp[2] | strip -%}
+                  <{% if tp_url != blank %}a href="{{ tp_url }}" style="text-decoration:none"{% if i == 2 %} tabindex="-1"{% endif %}{% else %}div{% endif %} class="nc-pdp__ticker-item" {% if i == 2 %}aria-hidden="true"{% endif %}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ tp[1] | strip }}"/></svg>
+                    {%- assign tp_label = tp[0] | strip -%}<span>{% render 'nc-cbd', text: tp_label %}</span>
+                  </{% if tp_url != blank %}a{% else %}div{% endif %}>
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+        {%- endunless -%}
+
+        <div class="nc-pdp__acc">
+          {%- comment -%} Beskrivelsen kan vaere aaben som standard (designet) eller foldet sammen som de andre (kundens oenske, sat i templaten). {%- endcomment -%}
+          <details{% if section.settings.desc_open %} open{% endif %}>
+            <summary>
+              {{ 'product.description' | t }}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            {%- capture part_desc %}{% render 'nc-product-part', product: product, part: 'desc' %}{% endcapture -%}
+            <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_desc %}</div>
+          </details>
+          {%- capture part_usage %}{% render 'nc-product-part', product: product, part: 'usage' %}{% endcapture -%}
+          {%- if part_usage == blank -%}{%- assign part_usage = section.settings.usage_fallback -%}{%- endif -%}
+          {%- if part_usage != blank -%}
+            <details>
+              <summary>
+                {{ 'product.usage' | t }}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_usage %}</div>
+            </details>
+          {%- endif -%}
+          {%- capture part_ingr %}{% render 'nc-product-part', product: product, part: 'ingredients' %}{% endcapture -%}
+          {%- if part_ingr == blank -%}{%- assign part_ingr = section.settings.ingredients_fallback -%}{%- endif -%}
+          {%- if part_ingr != blank -%}
+            <details>
+              <summary>
+                {{ 'nav.ingredients' | t }}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="nc-pdp__acc-body">{% render 'nc-cbd', text: part_ingr %}</div>
+            </details>
+          {%- endif -%}
+          {%- comment -%} Tilfredshedsgaranti som accordion-punkt (Lizbeth 10.11). Samme skjul-regler som garantilinjen under kurv-knappen. {%- endcomment -%}
+          {%- unless product.gift_card? or customer.b2b? or request.locale.iso_code == 'de' or product.tags contains 'ingen-garanti' -%}
+            <details>
+              <summary>
+                {{ 'pdp.guarantee.acc_title' | t }}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="nc-pdp__acc-body">{{ 'pdp.guarantee.acc_body_html' | t }}</div>
+            </details>
+          {%- endunless -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nc-buybar" data-nc-buybar>
+  {%- if product.featured_image -%}
+    {{ product.featured_image | image_url: width: 88 | image_tag: class: 'nc-buybar__img', alt: '', loading: 'lazy', widths: '44, 88' }}
+  {%- endif -%}
+  <div class="nc-buybar__text">
+    <span class="nc-buybar__title">{% render 'nc-cbd', text: main_title %}</span>
+    {%- if size_line != blank -%}<span class="nc-buybar__size">{{ size_line }}</span>{%- endif -%}
+  </div>
+  <button class="nc-buybar__add" type="button" data-nc-add="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
+    {%- if v.available %}{% assign bar_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: bar_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
+  </button>
+</div>
+
+{% javascript %}
+(function () {
+  function initGalleryVideos(root) {
+    root.querySelectorAll('[data-nc-gallery]').forEach(function (gallery) {
+      if (gallery.dataset.ncVideosReady) return;
+      var main = gallery.querySelector('[data-nc-gallery-main]');
+      var image = main && main.querySelector('img');
+      if (!main || !image || !gallery.querySelector('[data-nc-video-thumb]')) return;
+      gallery.dataset.ncVideosReady = 'true';
+      var activeVideo = null;
+      var activeButton = null;
+      var buttons = gallery.querySelectorAll('[data-nc-thumb], [data-nc-video-thumb]');
+      buttons.forEach(function (button) {
+        button.setAttribute('aria-pressed', button.classList.contains('is-active') ? 'true' : 'false');
+      });
+      gallery.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-nc-thumb], [data-nc-video-thumb]');
+        if (!button || !gallery.contains(button)) return;
+        var isVideo = button.hasAttribute('data-nc-video-thumb');
+        if (isVideo && button === activeButton && activeVideo) return;
+        var nextVideo = null;
+        if (isVideo) {
+          var template = button.querySelector('template[data-nc-gallery-video]');
+          if (!template) return;
+          var fragment = template.content.cloneNode(true);
+          nextVideo = fragment.querySelector('video');
+          if (!nextVideo) return;
+        }
+        if (activeVideo) {
+          activeVideo.pause();
+          activeVideo.remove();
+          activeVideo = null;
+        }
+        image.hidden = isVideo;
+        main.classList.toggle('is-video', isVideo);
+        buttons.forEach(function (item) {
+          item.classList.toggle('is-active', item === button);
+          item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+        });
+        activeButton = button;
+        if (nextVideo) {
+          main.appendChild(nextVideo);
+          activeVideo = nextVideo;
+          var play = nextVideo.play();
+          if (play && play.catch) play.catch(function () {});
+        }
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { initGalleryVideos(document); });
+  } else {
+    initGalleryVideos(document);
+  }
+  document.addEventListener('shopify:section:load', function (event) { initGalleryVideos(event.target); });
+})();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Produkt",
+  "tag": "section",
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "label",
+      "name": "Label til app-slot",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Tekst", "default": "Køb flere, spar mere", "info": "Placér labelen mellem app-blokkene for at styre, hvad der står over hvad, fx Yotpo-point først, så labelen, så Kaching." }
+      ]
+    },
+    {
+      "type": "yotpo_widget",
+      "name": "Yotpo Loyalty-widget",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "instance_id", "label": "Yotpo instans-id", "info": "Fx produktsidens pointvisning (Points on product page). Findes i Yotpo Loyalty under Display on site → Widgets." }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "back_label", "label": "Tilbage-knap: tekst", "info": "Bruges kun, når produktet ikke ligger i en af de primære kollektioner. Ellers står der \"Tilbage til\" og kollektionens navn.", "default": "Tilbage til shop" },
+    { "type": "text", "id": "back_url", "label": "Tilbage-knap: link", "info": "Sti eller URL. Shopify tillader ikke standardværdi på url-typen.", "default": "/collections/cbd-hudpleje" },
+    { "type": "checkbox", "id": "show_tax_note", "label": "Vis momsnote under prisen på andre sprog end dansk", "info": "Lovpligtig tæt på prisen i Tyskland (inkl. MwSt., zzgl. Versand). Det danske design har ingen note.", "default": true },
+    { "type": "checkbox", "id": "tax_note_da", "label": "Vis momsnoten også på dansk", "default": false },
+    { "type": "checkbox", "id": "show_badges", "label": "Vis fakta-ikoner", "info": "Bygges pr. produkt af størrelse, CBD-indhold, ingredienser og dokumentation. Overstyr med metafeltet ncell.badges (én pr. linje: ikon: tekst; ikoner: moisture, vegan, lab, easy, mild).", "default": true },
+    { "type": "checkbox", "id": "desc_open", "label": "Beskrivelse åben som standard", "info": "Slået fra: alle tekstfelter under Læg i kurv er foldet sammen, indtil kunden klikker.", "default": true },
+    { "type": "text", "id": "tiers_label", "label": "Mængderabat-label", "default": "Køb flere, spar mere" },
+    {
+      "type": "textarea",
+      "id": "ticker_items",
+      "label": "USP-løb (valgfri egen liste: Tekst | SVG-sti pr. linje)",
+      "info": "Tom: fri fragt (kun i valutaer med en grænse), dansk udviklet af hudplejespecialister, vegansk & plantebaseret, e-mærket webshop, 30 dages tilfredshedsgaranti (link) og Dansk hudpleje siden 2018 (14 dages fortrydelsesret, hvor garantien ikke gælder), oversat automatisk. Linje-format: Tekst | ikon-sti | valgfrit link."
+    },
+    {
+      "type": "textarea",
+      "id": "usage_fallback",
+      "label": "Sådan bruger du den (fallback)",
+      "info": "Vises kun når produktet hverken har en vejledning i beskrivelsen (efter anden ----) eller metafeltet ncell.usage. Lad feltet stå tomt, så vises ingen fælles tekst."
+    },
+    {
+      "type": "textarea",
+      "id": "ingredients_fallback",
+      "label": "Ingredienser (fallback)",
+      "info": "Vises kun når produktet hverken har ingredienser i beskrivelsen (efter første ----) eller metafeltet ncell.ingredients. Lad feltet stå tomt, så vises ingen fælles tekst."
+    }
+  ]
+}
+{% endschema %}

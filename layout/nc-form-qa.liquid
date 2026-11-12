@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>{{ page_title | escape }}</title>
+    <script id="nc-form-context">
+      (() => {
+        const isWholesale = {% if customer.b2b? %}true{% else %}false{% endif %};
+        const key = 'nc_form_context';
+        const reconcile = () => {
+          try {
+            const current = new URL(window.location.href);
+            const parts = current.search.slice(1).split('&').filter(Boolean);
+            const retained = parts.filter((part) => {
+              try {
+                return decodeURIComponent(part.split('=')[0].replace(/\+/g, ' ')) !== key;
+              } catch (error) {
+                return true;
+              }
+            });
+            if (isWholesale) retained.push(key + '=wholesale');
+            const next = current.pathname + (retained.length ? '?' + retained.join('&') : '') + current.hash;
+            const previous = current.pathname + current.search + current.hash;
+            if (next !== previous) history.replaceState(history.state, '', next);
+          } catch (error) {}
+        };
+        reconcile();
+        window.addEventListener('popstate', reconcile);
+        window.addEventListener('pageshow', reconcile);
+      })();
+    </script>
+{%- if settings.cookiebot_id != blank -%}
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ settings.cookiebot_id | strip }}" data-culture="{{ request.locale.iso_code | upcase }}" type="text/javascript" defer></script>
+{%- endif -%}
+{{ content_for_header }}
+{% render 'cookiebot-integration' %}
+</head>
+<body>
+<main id="nc-form-qa-main" style="max-width:640px;margin:32px auto;padding:16px;">
+{{ content_for_layout }}
+</main>
+</body>
+</html>

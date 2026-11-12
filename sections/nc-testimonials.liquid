@@ -1,0 +1,205 @@
+{% comment %}
+  "Det siger vores kunder" fra designet: centreret overskrift,
+  samlet rating-linje og to modsat-loebende marquee-raekker af
+  anmeldelseskort.
+
+  Kun aegte anmeldelser: app-blokke (Judge.me-karrusel, Trustpilot TrustBox) vises i
+  stedet for kortene, naar de er sat ind. Manuelle kort maa kun indeholde kundens egne
+  ord og faar altid den faste disclaimer. Uden kort og app vises overskrift, samlet
+  Trustpilot-tal fra temaindstillingerne og et link.
+{% endcomment %}
+
+{%- liquid
+  assign t_app = false
+  assign t_reviews = 0
+  for block in section.blocks
+    if block.type == '@app'
+      assign t_app = true
+    elsif block.type == 'review'
+      assign t_reviews = t_reviews | plus: 1
+    endif
+  endfor
+  assign t_agg = section.settings.agg_text
+  if t_agg == blank
+    capture t_agg
+      render 'nc-trustpilot', format: 'agg'
+    endcapture
+    assign t_agg = t_agg | strip
+  endif
+-%}
+
+{%- style -%}
+  /* 1:1 fra designets TESTIMONIALS: sage-50 flade, 1px linje over, 64px top/bund, hoved + 40 under, raekker gap 20 */
+  .nc-testi { background: var(--nc-testimonials-bg); border-top: 1px solid var(--border-soft); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-testi.nc-section { padding: clamp(37px, 7vw, 64px) 0; }
+  .nc-testi__head { max-width: var(--container-max); margin: 0 auto 40px; padding: 0 var(--gutter); text-align: center; }
+  /* Designets eyebrow er en inline span i en 16px/1.7 linjeboks (27.2px) */
+  #shopify-section-{{ section.id }} .nc-testi__head .nc-eyebrow { margin: 0; line-height: 27.2px; letter-spacing: 0.14em; color: var(--sage-600); }
+  .nc-testi__head h2 { margin: 10px 0 14px; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.7; letter-spacing: normal; color: var(--sage-700); }
+  .nc-testi__agg { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink-700); vertical-align: top; }
+  .nc-testi__agg .nc-stars { gap: 3px; color: var(--sage-500); }
+  .nc-testi__agg .nc-stars svg { width: 22px; height: 22px; }
+  .nc-testi__agg strong { color: var(--sage-700); }
+  .nc-testi__rows { display: flex; flex-direction: column; gap: 20px; }
+  .nc-testi .nc-rail { gap: 20px; animation-duration: 60s; }
+  /* Kort: 360px, hvid, 1px soft-kant, 24px padding, kolonne-gap 12, citat i Philosopher 16/1.6 sage-700 */
+  .nc-testi__card { display: flex; flex-direction: column; gap: 12px; width: 360px; flex: none; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); }
+  .nc-testi__card .nc-stars { gap: 2px; color: var(--sage-500); }
+  .nc-testi__card .nc-stars svg { width: 16px; height: 16px; }
+  .nc-testi__card p { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.6; color: var(--sage-700); }
+  .nc-testi__who { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
+  .nc-testi__card strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.7; color: var(--sage-700); }
+  .nc-testi__card small { display: block; font-size: 12.5px; line-height: 1.7; color: var(--ink-400); }
+  .nc-testi__app { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+  .nc-testi__more { display: flex; justify-content: center; margin-top: 28px; padding: 0 var(--gutter); }
+  .nc-testi__note { margin: 18px auto 0; padding: 0 var(--gutter); max-width: 46rem; text-align: center; font-size: 12.5px; line-height: 1.6; color: var(--ink-500); }
+{%- endstyle -%}
+
+<section class="nc-testi nc-section">
+  <div class="nc-testi__head">
+    <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+    <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
+    {%- if t_agg != blank -%}
+      <div class="nc-testi__agg">
+        <span class="nc-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+          {%- endfor -%}
+        </span>
+        <span>{{ t_agg }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if t_app -%}
+    <div class="nc-testi__app">
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- elsif t_reviews > 0 -%}
+  <div class="nc-testi__rows">
+    {%- assign half = t_reviews | divided_by: 2 -%}
+    <div class="nc-marqwrap">
+      <div class="nc-rail">
+        {%- for i in (1..2) -%}
+          {%- assign t_rev_blocks = section.blocks | where: 'type', 'review' -%}
+          {%- for block in t_rev_blocks limit: half -%}
+            <div class="nc-testi__card" {{ block.shopify_attributes }}>
+              <span class="nc-stars" aria-hidden="true">
+                {%- for s in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                {%- endfor -%}
+              </span>
+              <p>"{% render 'nc-cbd', text: block.settings.text %}"</p>
+              <div class="nc-testi__who">
+                <strong>{% render 'nc-cbd', text: block.settings.name %}</strong>
+                {%- if block.settings.meta != blank -%}<small>{% render 'nc-cbd', text: block.settings.meta %}</small>{%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="nc-marqwrap">
+      <div class="nc-rail nc-rail--rev">
+        {%- for i in (1..2) -%}
+          {%- assign t_rev_blocks = section.blocks | where: 'type', 'review' -%}
+          {%- for block in t_rev_blocks offset: half -%}
+            <div class="nc-testi__card">
+              <span class="nc-stars" aria-hidden="true">
+                {%- for s in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                {%- endfor -%}
+              </span>
+              <p>"{% render 'nc-cbd', text: block.settings.text %}"</p>
+              <div class="nc-testi__who">
+                <strong>{% render 'nc-cbd', text: block.settings.name %}</strong>
+                {%- if block.settings.meta != blank -%}<small>{% render 'nc-cbd', text: block.settings.meta %}</small>{%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+  {%- if section.settings.link_text != blank -%}
+    <div class="nc-testi__more"><a class="nc-btn nc-btn--outline" href="{% render 'nc-url', url: section.settings.link_url, fallback: '/blogs/kundecases' %}">{% render 'nc-cbd', text: section.settings.link_text %}</a></div>
+  {%- endif -%}
+  {%- if t_reviews > 0 or t_app -%}
+    <p class="nc-testi__note">{{ 'general.reviews_disclaimer' | t }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Anmeldelser",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Overlinje",
+      "default": "Anmeldelser"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "default": "Det siger vores kunder"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "agg_text",
+      "label": "Samlet rating (egen tekst)",
+      "info": "Tom: Trustpilot-tallene fra Temaindstillinger → Integrationer."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link: tekst",
+      "info": "Fx \"Læs kundecases\". Tom: intet link."
+    },
+    {
+      "type": "text",
+      "id": "link_url",
+      "label": "Link: adresse",
+      "default": "/blogs/kundecases"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "review",
+      "name": "Anmeldelse (kun ægte)",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Citat",
+          "info": "Kun kundens egne ord, ordret fra Judge.me, Trustpilot eller kundecasen. Ingen før/efter-udsagn."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Navn"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Meta",
+          "info": "Fx produktet. Skriv kun \"Verificeret køb\", hvis anmeldelsen er markeret sådan i Judge.me eller Trustpilot."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anmeldelser"
+    }
+  ]
+}
+{% endschema %}

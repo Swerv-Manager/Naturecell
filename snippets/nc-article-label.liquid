@@ -1,0 +1,43 @@
+{%- comment -%}
+  nc-article-label: den mest relevante etiket for en artikel (paa kort og over titlen).
+  Etiketten kommer fra artiklens tags i Shopify (Indhold > Blogopslag > Tags). Temaet viser
+  det foerste tag, der staar i "Artikel-etiketter, i prioriteret raekkefoelge" under
+  Temaindstillinger > Blog og artikler. Har artiklen ingen af dem, vises det foerste tag, der
+  ikke staar under "Tags der aldrig bruges som etiket". Uden brugbare tags vises ingen etiket.
+  Brug: {% render 'nc-article-label', article: a %}
+{%- endcomment -%}
+{%- liquid
+  assign nc_prio = settings.nc_article_labels | default: 'Guides, Presseomtale, Ekspert, Kosmetolog, Hudplejetips, Hudplejerutine, Forskning, Moden hud, Uren hud, Sensitiv hud, Tørre hænder, Tørre fødder, Tørt ansigt, Ansigt, Hænder, Fødder, Krop' | split: ','
+  assign nc_skip = settings.nc_article_label_skip | default: 'CBD, CBD olie, NatureCell, Test, LS, studie, studier, Anmeldelser, Kundecases' | downcase | split: ','
+  assign nc_skip_s = ','
+  for s in nc_skip
+    assign s_clean = s | strip
+    assign nc_skip_s = nc_skip_s | append: s_clean | append: ','
+  endfor
+  assign nc_pick = ''
+  for want in nc_prio
+    assign want_dc = want | strip | downcase
+    for tag in article.tags
+      assign tag_dc = tag | downcase | strip
+      if tag_dc == want_dc
+        assign nc_pick = tag
+        break
+      endif
+    endfor
+    if nc_pick != ''
+      break
+    endif
+  endfor
+  if nc_pick == ''
+    for tag in article.tags
+      assign tag_key = tag | downcase | strip | prepend: ',' | append: ','
+      unless nc_skip_s contains tag_key
+        assign nc_pick = tag
+        break
+      endunless
+    endfor
+  endif
+  if nc_pick != ''
+    render 'nc-tag-label', tag: nc_pick
+  endif
+-%}

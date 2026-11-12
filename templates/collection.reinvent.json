@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "search_placeholder": "Søg på produkt, ingrediens, behov …",
+        "chips_label": "Område",
+        "chips": "Alle | /collections/cbd-hudpleje\nAnsigt | /collections/cbd-ansigtspleje\nHænder | /collections/cbd-handpleje\nKrop | /collections/cbd-kropspleje\nFødder | /collections/cbd-fodpleje\nHår | /collections/cbd-haarpleje",
+        "need_label": "Behov",
+        "need_chips": "Tør hud | /collections/cbd-hudpleje/tor-hud\nFugt | /collections/cbd-hudpleje/fugt\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nUren hud | /collections/cbd-hudpleje/uren-hud\nGenopbygning | /collections/cbd-hudpleje/genopbygning",
+        "sort_label": "Sortiment",
+        "sort_chips": "Hele sortimentet | /collections/cbd-hudpleje\n♂ Herre hudpleje | /collections/herre-hudpleje\nTilbud | /collections/nedsatte-varer"
+      }
+    },
+    "seo": {
+      "type": "nc-seo-text",
+      "settings": {
+        "heading": "",
+        "body": "",
+        "links": ""
+      }
+    },
+    "faq": {
+      "type": "nc-faq",
+      "settings": {
+        "heading": "Ofte stillede spørgsmål",
+        "eyebrow": "",
+        "open_first": false,
+        "compact": true,
+        "links_label": "Populære søgninger",
+        "links": "CBD creme | /collections/cbd-ansigtspleje\nDagcreme | /collections/cbd-ansigtspleje\nNatcreme | /collections/cbd-ansigtspleje\nHåndcreme til tørre hænder | /collections/cbd-handpleje\nFodcreme til hælrevner | /collections/cbd-fodpleje\nBodylotion til tør hud | /collections/cbd-kropspleje\nSerum med hyaluronsyre | /collections/cbd-ansigtspleje\nHudpleje til tør hud | /collections/cbd-hudpleje/tor-hud\nHudpleje til moden hud | /collections/cbd-hudpleje/moden-hud\nHudpleje til uren hud | /collections/cbd-hudpleje/uren-hud\nMild hudpleje til sensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nHudpleje til mænd | /collections/herre-hudpleje\nSampakker | /collections/sampakker\nHele sortimentet | /collections/cbd-hudpleje",
+        "disclaimer": "Disclaimer: Vores produkter er hudpleje, ikke medicin. Individuelle resultater kan variere, og vi garanterer ikke samme effekt som beskrevet i kundehistorien. Anvend ikke vores produkter som erstatning for medicinsk behandling. Konsultér altid en sundhedsprofessionel ved sundhedsrelaterede bekymringer."
+      },
+      "blocks": {
+        "ship": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "ship",
+            "dedupe": "leverer, levering, lieferung, delivery"
+          }
+        },
+        "return": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "return",
+            "dedupe": "fortryd, widerruf, withdrawal"
+          }
+        }
+      },
+      "block_order": [
+        "ship",
+        "return"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "seo",
+    "faq"
+  ]
+}

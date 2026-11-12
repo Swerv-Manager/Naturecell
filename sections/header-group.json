@@ -1,0 +1,181 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header": {
+      "type": "nc-header",
+      "blocks": {
+        "area_ansigt": {
+          "type": "area",
+          "settings": {
+            "label": "Ansigt",
+            "desc": "Creme, serum & rens",
+            "url": "/collections/cbd-ansigtspleje",
+            "product": "dagcreme"
+          }
+        },
+        "area_haender": {
+          "type": "area",
+          "settings": {
+            "label": "Hænder",
+            "desc": "Håndcreme & balm",
+            "url": "/collections/cbd-handpleje",
+            "product": "handcreme"
+          }
+        },
+        "area_krop": {
+          "type": "area",
+          "settings": {
+            "label": "Krop",
+            "desc": "Lotion & olie",
+            "url": "/collections/cbd-kropspleje",
+            "product": "bodylotion"
+          }
+        },
+        "area_foedder": {
+          "type": "area",
+          "settings": {
+            "label": "Fødder",
+            "desc": "Fodcreme & pleje",
+            "url": "/collections/cbd-fodpleje",
+            "product": "fodcreme"
+          }
+        },
+        "area_haar": {
+          "type": "area",
+          "settings": {
+            "label": "Hår",
+            "desc": "Shampoo & pleje",
+            "url": "/collections/cbd-haarpleje",
+            "product": "shampoo-300ml"
+          }
+        },
+        "area_olier": {
+          "type": "area",
+          "settings": {
+            "label": "Olier",
+            "desc": "Dråber 5, 10, 15 og 20 %",
+            "url": "/collections/cbd-olie",
+            "product": "kosmetisk-hudolie-10-10-ml",
+            "product_migration": "kosmetisk-hudolie-10-10-ml"
+          }
+        },
+        "area_herre": {
+          "type": "area",
+          "settings": {
+            "label": "Herre",
+            "desc": "ALFALAB til mænd",
+            "url": "/collections/herre-hudpleje",
+            "product": "day-cream-alfalab-dagcreme-50-ml"
+          }
+        },
+        "need_toer": {
+          "type": "need",
+          "settings": {
+            "label": "Tør hud",
+            "desc": "Fugt & pleje",
+            "url": "/collections/cbd-hudpleje/tor-hud",
+            "product": "natcreme"
+          }
+        },
+        "need_fugt": {
+          "type": "need",
+          "settings": {
+            "label": "Fugt",
+            "desc": "Serum & creme",
+            "url": "/collections/cbd-hudpleje/fugt",
+            "product": "fugtserum-med-hyaluronsyre-30-ml",
+            "product_migration": "fugtserum-med-hyaluronsyre-30-ml"
+          }
+        },
+        "need_moden": {
+          "type": "need",
+          "settings": {
+            "label": "Moden hud",
+            "desc": "Eye gel & natcreme",
+            "url": "/collections/cbd-hudpleje/moden-hud",
+            "product": "cbg-eye-gel"
+          }
+        },
+        "need_sensitiv": {
+          "type": "need",
+          "settings": {
+            "label": "Sensitiv hud",
+            "desc": "Mild & uden parfume",
+            "url": "/collections/cbd-hudpleje/sensitiv-hud",
+            "product": "rensegel"
+          }
+        },
+        "need_uren": {
+          "type": "need",
+          "settings": {
+            "label": "Uren hud",
+            "desc": "Rensegel & pleje",
+            "url": "/collections/cbd-hudpleje/uren-hud",
+            "product": "rensegel"
+          }
+        },
+        "need_genopbygning": {
+          "type": "need",
+          "settings": {
+            "label": "Genopbygning",
+            "desc": "Olie & balm",
+            "url": "/collections/cbd-hudpleje/genopbygning",
+            "product": "ansigtsolie-med-antioxidanter-30-ml",
+            "product_migration": "ansigtsolie-med-antioxidanter-30-ml"
+          }
+        }
+      },
+      "block_order": [
+        "area_ansigt",
+        "area_haender",
+        "area_krop",
+        "area_foedder",
+        "area_haar",
+        "area_olier",
+        "area_herre",
+        "need_toer",
+        "need_fugt",
+        "need_moden",
+        "need_sensitiv",
+        "need_uren",
+        "need_genopbygning"
+      ],
+      "settings": {
+        "show_lang": false,
+        "announce_auto": true,
+        "announcement": "",
+        "logo_height": 36,
+        "all_url": "",
+        "mix_show": false,
+        "mix_label": "Bland selv",
+        "mix_badge": "Køb 3 og spar 25 %",
+        "mix_url": "",
+        "cases_url": "",
+        "articles_url": "",
+        "about_url": "",
+        "omcbd_url": "",
+        "ingredients_url": "",
+        "faq_url": "",
+        "show_jesper": true,
+        "jesper_url": "",
+        "kundeklub_url": "",
+        "favorites_url": "",
+        "best_collection": "hudpleje-sortiment",
+        "best_collection_migration": "hudpleje-sortiment"
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

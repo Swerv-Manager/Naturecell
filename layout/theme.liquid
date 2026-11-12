@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f4ee">
+
+    <script id="nc-form-context">
+      (() => {
+        const isWholesale = {% if customer.b2b? %}true{% else %}false{% endif %};
+        const key = 'nc_form_context';
+        const reconcile = () => {
+          try {
+            const current = new URL(window.location.href);
+            const parts = current.search.slice(1).split('&').filter(Boolean);
+            const retained = parts.filter((part) => {
+              try {
+                return decodeURIComponent(part.split('=')[0].replace(/\+/g, ' ')) !== key;
+              } catch (error) {
+                return true;
+              }
+            });
+            if (isWholesale) retained.push(key + '=wholesale');
+            const next = current.pathname + (retained.length ? '?' + retained.join('&') : '') + current.hash;
+            const previous = current.pathname + current.search + current.hash;
+            if (next !== previous) history.replaceState(history.state, '', next);
+          } catch (error) {}
+        };
+        reconcile();
+        window.addEventListener('popstate', reconcile);
+        window.addEventListener('pageshow', reconcile);
+      })();
+    </script>
+
+    {%- render 'nc-integrations-head' -%}
+
+    {%- comment -%} Brandet tilfoejes, medmindre titlen allerede naevner NatureCell. Skilletegn er |, ikke tankestreg. {%- endcomment -%}
+    {%- assign nc_title_lc = page_title | downcase -%}
+    <title>
+      {{- page_title -}}
+      {%- if current_tags %} | {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} | {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless nc_title_lc contains 'naturecell' %} | NatureCell{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- comment -%} Delingskort og strukturerede data (Temaindstillinger → SEO og produktdata). Hreflang lægger Shopify selv ind via content_for_header. {%- endcomment -%}
+    {%- render 'nc-social-meta' -%}
+    {%- if settings.nc_schema -%}
+      {%- render 'nc-structured-data' -%}
+    {%- endif -%}
+
+    {%- comment -%} Favicon: temaets indstilling, ellers temaets eget ikon (bladmaerket). {%- endcomment -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="icon" type="image/png" sizes="192x192" href="{{ settings.favicon | image_url: width: 192, height: 192 }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" sizes="512x512" href="{{ 'nc-favicon.png' | asset_url }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ 'nc-touch-icon.png' | asset_url }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      Brandets fonte (Philosopher + Roboto Flex) er selvhostede i temaet,
+      saa der ikke sker eksterne kald (Cookiebot-hensyn).
+    {%- endcomment -%}
+    {{ 'nc-philosopher-regular.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'nc-robotoflex.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+
+    {{ 'nc-theme.css' | asset_url | stylesheet_tag }}
+
+    <style>
+      html.nc-lock { overflow: hidden; }
+    </style>
+
+    {{ content_for_header }}
+    {% render 'cookiebot-integration' %}
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}">
+    {%- if settings.nc_cbd_icon %}{% render 'nc-cbd-sprite' %}{% endif -%}
+    <a class="nc-skip-link" href="#nc-main">{{ 'general.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="nc-main" role="main" tabindex="-1">
+      {%- assign nc_de_club_hold = false -%}
+      {%- if request.locale.iso_code == 'de' -%}
+        {%- if template.suffix == 'kundeklub' or template.suffix == 'rewards' -%}
+          {%- assign nc_de_club_hold = true -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if nc_de_club_hold -%}
+        <section class="nc-section"><div class="nc-container">
+          <h1>{{ 'nc_loyalty.unavailable_heading' | t }}</h1>
+          <p>{{ 'nc_loyalty.unavailable_body' | t }}</p>
+          <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'nc_loyalty.unavailable_shop' | t }}</a>
+        </div></section>
+      {%- else -%}
+        {{ content_for_layout }}
+      {%- endif -%}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% section 'nc-cart-drawer' %}
+
+    <script src="{{ 'nc-theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'nc-packshot.js' | asset_url }}" defer></script>
+
+    {%- render 'nc-integrations-body' -%}
+  </body>
+</html>

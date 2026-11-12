@@ -1,0 +1,365 @@
+{% comment %}
+  Artikelside 1:1 fra NatureCell.dc.html.
+  Kundecase: fuldbred sage-hero med tilbage-link, omraade-pill, citat,
+  avatar med kundens navn, medie med play-cirkel. Broedtekst med drop cap
+  og citat-callouts, tag-chips, og "Produkterne bag resultatet"-baand med
+  Tilfoej hele rutinen. Navn/citat/produkter laeses fra artiklens
+  metafelter ncell.name, ncell.quote og ncell.products.
+  Artikel: tilbage-link, tag-eyebrow, stor rubrik, herobillede, lead og
+  broedtekst i tekstkolonne, plus "Laes ogsaa".
+{% endcomment %}
+
+{%- liquid
+  assign is_case = false
+  if blog.handle == 'kundecases'
+    assign is_case = true
+  endif
+
+  assign clean_title = article.title | split: ' | ' | first
+  assign person = article.metafields.ncell.name | default: ''
+  assign quote = article.metafields.ncell.quote | default: ''
+  assign case_products = article.metafields.ncell.products.value
+
+  assign area_label = ''
+  assign area_tag = ''
+  for tag in article.tags
+    assign lt = tag | downcase
+    if area_label == blank
+      if lt contains 'ansigt'
+        assign area_label = 'areas.face' | t
+      elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
+        assign area_label = 'areas.hands' | t
+      elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
+        assign area_label = 'areas.feet' | t
+      elsif lt == 'krop'
+        assign area_label = 'areas.body' | t
+      endif
+      if area_label != blank
+        assign area_tag = tag
+      endif
+    endif
+  endfor
+
+  assign has_video = false
+  if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
+    assign has_video = true
+  endif
+
+  comment
+    Kundecase: videoen bliver staaende, hvor artiklen har den. Mange cases har videoen i en ramme
+    med fast format (fx padding-top: 177.78 %), og flyttes iframen, staar rammen tom tilbage.
+    Har casen en YouTube- eller Vimeo-video, faar den foerste iframe id'et nc-case-video, og heroen
+    viser knappen "Se videoen", der hopper ned til den. Billedet i heroen har ingen falsk playknap.
+  endcomment
+  assign body_html = article.content
+  assign case_has_video = false
+  if is_case and body_html contains '<iframe'
+    assign embed_split = body_html | split: '<iframe'
+    assign if_attrs = embed_split[1] | split: '>' | first
+    if if_attrs contains 'youtube' or if_attrs contains 'youtu.be' or if_attrs contains 'vimeo'
+      assign case_has_video = true
+      assign body_html = body_html | replace_first: '<iframe', '<iframe id="nc-case-video"'
+    endif
+  endif
+
+  assign author_name = article.author | strip
+  assign author_img = blank
+  if section.settings.author_avatar != blank
+    assign avatar_for = section.settings.author_avatar_name | default: 'Lizbeth Falk' | strip | downcase
+    assign author_dc = author_name | downcase
+    if author_dc == avatar_for
+      assign author_img = section.settings.author_avatar
+    endif
+  endif
+-%}
+
+{%- style -%}
+  /* ===== Kundecase-hero (design template.html l.1965-1984) ===== */
+  #shopify-section-{{ section.id }} .nc-casehero { position: relative; background: var(--sage-500); color: var(--paper); padding: 28px 0 clamp(34px, 6vw, 56px); }
+  #shopify-section-{{ section.id }} .nc-casehero__fab { position: absolute; right: clamp(16px, 2vw, 30px); bottom: clamp(22px, 3.2vw, 46px); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--sage-700); color: var(--cloud); box-shadow: var(--shadow-md); cursor: pointer; }
+  #shopify-section-{{ section.id }} .nc-casehero__fab svg { display: block; }
+  #shopify-section-{{ section.id }} .nc-casehero .nc-backlink { font-weight: 600; font-size: 14px; color: rgba(246, 244, 238, 0.85); }
+  #shopify-section-{{ section.id }} .nc-casehero .nc-backlink:hover { color: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-casehero__grid { display: grid; gap: clamp(26px, 5vw, 56px); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: center; margin-top: clamp(22px, 5vw, 36px); }
+  #shopify-section-{{ section.id }} .nc-casehero__pill { display: inline-flex; align-self: flex-start; padding: 6px 13px; border-radius: var(--radius-pill); background: rgba(246, 244, 238, 0.14); color: var(--paper); font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .nc-casehero__body { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+  #shopify-section-{{ section.id }} .nc-casehero__body h1 { margin: 0; color: var(--paper); font-family: var(--font-display); font-weight: 400; font-size: clamp(36px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -0.01em; text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-casehero__quote { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 21px; line-height: 1.5; color: rgba(246, 244, 238, 0.9); }
+  #shopify-section-{{ section.id }} .nc-casehero__person { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  #shopify-section-{{ section.id }} .nc-casehero__person .nc-avatar { width: 44px; height: 44px; background: rgba(246, 244, 238, 0.16); color: var(--paper); }
+  #shopify-section-{{ section.id }} .nc-casehero__person strong { display: block; font-size: 15px; color: var(--paper); font-weight: 600; }
+  #shopify-section-{{ section.id }} .nc-casehero__person small { display: block; font-size: 13px; color: rgba(246, 244, 238, 0.7); }
+  #shopify-section-{{ section.id }} .nc-casehero__media { position: relative; border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 4 / 5; background: var(--sage-600); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); }
+  #shopify-section-{{ section.id }} .nc-casehero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-casehero__media .nc-ccard__play span { width: 74px; height: 74px; background: rgba(255, 255, 255, 0.95); color: var(--sage-700); box-shadow: var(--shadow-lg); }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.95); color: var(--sage-700); font-family: var(--font-body); font-weight: 600; font-size: 14.5px; text-decoration: none; box-shadow: var(--shadow-md); transition: transform var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink:hover, #shopify-section-{{ section.id }} .nc-casehero__videolink:focus-visible { transform: translateY(-1px); }
+  #shopify-section-{{ section.id }} .nc-casehero__videolink span { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: var(--sage-600); color: #fff; }
+  #shopify-section-{{ section.id }} #nc-case-video { scroll-margin-top: 120px; }
+  #shopify-section-{{ section.id }} .nc-art__byline .nc-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; border-radius: inherit; display: block; }
+  #shopify-section-{{ section.id }} .nc-art__byline--article { max-width: 712px; margin: -18px auto 30px; padding-bottom: 0; border-bottom: 0; }
+
+  /* ===== Kundecase-artikel (design l.1987-2008) ===== */
+  #shopify-section-{{ section.id }} .nc-section--case { padding: 52px 0 0; }
+  #shopify-section-{{ section.id }} .nc-art { max-width: 952px; margin: 0 auto; }
+  #shopify-section-{{ section.id }} .nc-art--case { max-width: 712px; }
+  #shopify-section-{{ section.id }} .nc-art__byline { display: flex; align-items: center; gap: 10px; padding-bottom: 22px; margin-bottom: 8px; border-bottom: 1px solid var(--border-soft, var(--ink-100)); font-size: 13.5px; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-art__byline .nc-avatar { width: 38px; height: 38px; background: var(--sage-100); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-art__byline strong { color: var(--sage-700); font-weight: 600; }
+  #shopify-section-{{ section.id }} .nc-case-body { font-family: var(--font-body); font-size: 16.5px; line-height: 1.9; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-case-body p { margin: 15px 0; }
+  #shopify-section-{{ section.id }} .nc-case-body h2 { margin: 36px 0 8px; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-case-body > p:first-of-type,
+  #shopify-section-{{ section.id }} .nc-case-body .nc-lead { margin: 0 0 14px; font-size: 18px; line-height: 1.9; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-case-body > p:first-of-type::first-letter,
+  #shopify-section-{{ section.id }} .nc-case-body .nc-lead::first-letter { font-family: var(--font-display); font-size: 3.6em; line-height: 0.82; float: left; margin: 6px 12px 0 0; padding: 0; color: var(--sage-600); font-weight: 400; }
+  #shopify-section-{{ section.id }} .nc-case-body blockquote { margin: 30px 0; padding: 22px 28px; border: 0; border-left: 3px solid var(--sage-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--sage-50); font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.5; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-case-body blockquote p { margin: 0; }
+  #shopify-section-{{ section.id }} .nc-art__tags { display: flex; flex-wrap: wrap; gap: 8px; max-width: 712px; margin: 32px auto 0; padding-top: 22px; border-top: 1px solid var(--border-soft, var(--ink-100)); }
+  #shopify-section-{{ section.id }} .nc-art__tags .nc-chip { border: 0; padding: 6px 13px; background: var(--sage-50); color: var(--sage-700); font-size: 12px; font-weight: 600; letter-spacing: 0.03em; line-height: var(--leading-relaxed, 1.7); }
+  #shopify-section-{{ section.id }} .nc-art__tags .nc-chip:hover { background: var(--sage-100); color: var(--sage-800); }
+
+  /* ===== "Produkterne bag ... resultat" (design l.2011-2028) ===== */
+  #shopify-section-{{ section.id }} .nc-caseprods { background: var(--sage-500); color: var(--paper); padding: clamp(38px, 5vw, 64px) 0 clamp(43px, 6vw, 72px); margin-top: 64px; }
+  #shopify-section-{{ section.id }} .nc-caseprods__head { display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; margin-bottom: 36px; }
+  #shopify-section-{{ section.id }} .nc-caseprods__eyebrow { margin: 0; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-caseprods h2 { margin: 0; color: var(--paper); font-family: var(--font-display); font-weight: 400; font-size: clamp(21px, 3.3vw, 34px); line-height: var(--leading-relaxed, 1.7); letter-spacing: normal; }
+  #shopify-section-{{ section.id }} .nc-caseprods__sub { margin: 4px 0 0; max-width: 520px; font-size: 16px; line-height: 1.6; color: rgba(246, 244, 238, 0.82); }
+  {%- comment -%} Flex i stedet for grid, saa 2 eller 3 produkter staar centreret i stedet for i venstre side. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-caseprods__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 0; list-style: none; padding: 0; text-align: left; }
+  #shopify-section-{{ section.id }} .nc-caseprods__grid > li { flex: 0 1 270px; min-width: 0; }
+  @media (max-width: 599px) { #shopify-section-{{ section.id }} .nc-caseprods__grid > li { flex-basis: calc(50% - 10px); } }
+  #shopify-section-{{ section.id }} .nc-caseprods__ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 36px; }
+  #shopify-section-{{ section.id }} .nc-caseprods__ctas .nc-btn { gap: 9px; min-height: 0; padding: 15px 30px; font-size: 15px; font-weight: 600; line-height: normal; letter-spacing: normal; }
+  #shopify-section-{{ section.id }} .nc-caseprods__ctas .nc-btn--light { border: 0; }
+  #shopify-section-{{ section.id }} .nc-caseprods__ctas .nc-btn--outline-light { border: 1.5px solid rgba(246, 244, 238, 0.4); }
+  #shopify-section-{{ section.id }} .nc-caseprods.nc-on-dark .nc-product-card__title { color: var(--sage-700); }
+
+  /* ===== Artikel (design l.2090-2127) ===== */
+  #shopify-section-{{ section.id }} .nc-section--art { padding-top: clamp(24px, 5vw, 38px); padding-bottom: 0; } /* 34px + 4px: designets tilbage-knap staar i en linjeboks (strut 27px) og lander 4px lavere end en flex-boks */
+  #shopify-section-{{ section.id }} .nc-art__back { display: flex; max-width: 712px; margin: 0 auto 26px; }
+  #shopify-section-{{ section.id }} .nc-art__back .nc-backlink { font-weight: 600; font-size: 14px; line-height: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-art__back .nc-backlink:hover { color: var(--sage-800); }
+  #shopify-section-{{ section.id }} .nc-art__eyebrow { max-width: 712px; margin: 0 auto 14px; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-art__title { max-width: 712px; margin: 0 auto 38px; font-family: var(--font-display); font-weight: 400; font-size: clamp(25px, 3.9vw, 40px); line-height: 1.1; letter-spacing: -0.01em; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-art__hero { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; margin-bottom: clamp(24px, 5vw, 40px); aspect-ratio: 16 / 9; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-art__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-art__inset { max-width: 632px; margin-left: auto; margin-right: auto; }
+  #shopify-section-{{ section.id }} .nc-article-body--lead > p:first-of-type { margin: 0 0 24px; font-family: var(--font-display); font-size: 21px; line-height: 1.55; color: var(--sage-700); }
+  /* Disclaimer-afsnittet ("Denne artikel er en del af...") under en tynd delelinje. */
+  #shopify-section-{{ section.id }} .nc-article-body--lead > p:last-of-type:not(:first-of-type) { margin: 0; padding-top: 24px; border-top: 1px solid var(--border-soft, var(--ink-100)); font-size: 16px; line-height: 1.8; color: var(--ink-700); }
+  #shopify-section-{{ section.id }} .nc-art__cta-row { margin-top: 16px; }
+  #shopify-section-{{ section.id }} .nc-art__cta-row .nc-btn { gap: 8px; min-height: 0; padding: 14px 26px; border: 0; font-size: 15px; font-weight: 600; line-height: var(--leading-relaxed, 1.7); letter-spacing: normal; color: #fff; }
+  #shopify-section-{{ section.id }} .nc-art--article { padding-bottom: clamp(12px, 6vw, 20px); }
+
+  /* "Laes ogsaa": deler venstre/hoejre kant med herobilledet, hairline over. */
+  #shopify-section-{{ section.id }} .nc-art__more { max-width: 952px; margin: 0 auto; padding: clamp(24px, 5vw, 40px) 0 clamp(48px, 6vw, 80px); border-top: 1px solid var(--border-soft, var(--ink-100)); }
+  #shopify-section-{{ section.id }} .nc-art__more h2 { margin: 0 0 22px; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: var(--leading-relaxed, 1.7); letter-spacing: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-art__more-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(47%, 260px), 1fr)); list-style: none; margin: 0; padding: 0; }
+  #shopify-section-{{ section.id }} .nc-art__more .nc-ccard__media { border-radius: var(--radius-lg); background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-art__more .nc-ccard__area { top: 10px; left: 10px; padding: 4px 9px; border: 0; background: var(--paper); color: var(--sage-700); font-family: var(--font-body); font-size: 10px; font-weight: 700; line-height: var(--leading-relaxed, 1.7); letter-spacing: 0.08em; text-rendering: geometricPrecision; /* undgaar ujaevne glyf-afstande ved 10px */ }
+  #shopify-section-{{ section.id }} .nc-art__more .nc-ccard__title { margin: 12px 0 0; font-size: 18px; line-height: 1.25; color: var(--sage-700); }
+  /* Mobil (08-10): kundecase-hero med mindre overskrift */
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .nc-casehero__body h1 { font-size: clamp(28px, 7.8vw, 34px); line-height: 1.1; }
+  }
+{%- endstyle -%}
+
+{%- if is_case -%}
+  <div class="nc-casehero nc-on-dark">
+    <div class="nc-container">
+      <a class="nc-backlink" href="{{ blog.url }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        {{ 'blog.all_cases_link' | t }}
+      </a>
+      <div class="nc-casehero__grid">
+        <div class="nc-casehero__body">
+          <span class="nc-casehero__pill">{% if area_label != blank %}{{ area_label }} · {% endif %}Kundecase</span>
+          <h1>{% render 'nc-cbd', text: clean_title %}</h1>
+          {%- if quote != blank -%}
+            <p class="nc-casehero__quote">"{% render 'nc-cbd', text: quote %}"</p>
+          {%- endif -%}
+          {%- if person != blank -%}
+            <div class="nc-casehero__person">
+              <span class="nc-avatar" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              </span>
+              <span>
+                <strong>{{ person }}</strong>
+                <small>{{ 'blog.real_customer' | t }}</small>
+              </span>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="nc-casehero__media">
+          {%- if article.image -%}
+            {{ article.image | image_url: width: 1100 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 900px) 590px, 94vw' }}
+          {%- endif -%}
+          {%- if case_has_video -%}
+            <a class="nc-casehero__videolink" href="#nc-case-video">
+              <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+              {{ 'blog.watch_video' | t }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+    <button class="nc-casehero__fab" type="button" aria-label="{{ 'blog.case_colors' | t }}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+    </button>
+  </div>
+{%- endif -%}
+
+<div class="nc-section nc-flush-footer {% if is_case %}nc-section--case{% else %}nc-section--art{% endif %}">
+  <div class="nc-container">
+    <article class="nc-art {% if is_case %}nc-art--case{% else %}nc-art--article{% endif %}">
+      {%- if is_case -%}
+        {%- render 'nc-article-byline', author_name: author_name, author_img: author_img, extra_class: '' -%}
+      {%- else -%}
+        <div class="nc-art__back">
+          <a class="nc-backlink" href="{{ blog.url }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            {{ 'blog.all_articles' | t }}
+          </a>
+        </div>
+        {%- capture art_lbl %}{% render 'nc-article-label', article: article %}{% endcapture -%}
+        {%- if art_lbl != blank -%}
+          <p class="nc-art__eyebrow">{{ art_lbl }}</p>
+        {%- endif -%}
+        <h1 class="nc-art__title">{% render 'nc-cbd', text: clean_title %}</h1>
+        {%- render 'nc-article-byline', author_name: author_name, author_img: author_img, extra_class: 'nc-art__byline--article' -%}
+        {%- if article.image -%}
+          <div class="nc-art__hero">
+            {{ article.image | image_url: width: 1900 | image_tag: alt: article.title, loading: 'eager', sizes: '(min-width: 1024px) 950px, 94vw' }}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      <div class="nc-article-body {% if is_case %}nc-case-body{% else %}nc-article-body--lead nc-art__inset{% endif %}">
+        {% render 'nc-cbd', text: body_html %}
+      </div>
+
+      {%- unless is_case -%}
+        {%- comment -%} Knappen linker aldrig til artiklen selv: uden link vises den ikke. {%- endcomment -%}
+        {%- if section.settings.show_cta and section.settings.cta_url != blank and section.settings.cta_label != blank -%}
+          <div class="nc-art__cta-row nc-art__inset">
+            <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url %}">
+              {% render 'nc-cbd', text: section.settings.cta_label %}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        {%- endif -%}
+      {%- endunless -%}
+    </article>
+
+    {%- if is_case and article.tags.size > 0 and section.settings.show_tags -%}
+      <div class="nc-art__tags">
+        {%- for tag in article.tags limit: 6 -%}
+          {%- if is_case and tag == area_tag -%}{%- continue -%}{%- endif -%}
+          <a class="nc-chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if is_case and section.settings.show_products and case_products != blank -%}
+    {%- assign routine_name = person | default: article.author -%}
+    <div class="nc-caseprods nc-on-dark">
+      <div class="nc-container">
+        <div class="nc-caseprods__head">
+          <p class="nc-caseprods__eyebrow">{{ routine_name }}s rutine</p>
+          <h2>Produkterne bag {{ routine_name }}s resultat</h2>
+          <p class="nc-caseprods__sub">{{ 'blog.shop_routine' | t }}</p>
+        </div>
+        <ul class="nc-caseprods__grid">
+          {%- assign case_variant_ids = '' -%}
+          {%- for p in case_products limit: 4 -%}
+            <li>{% render 'nc-product-card', product: p %}</li>
+            {%- assign vid = p.selected_or_first_available_variant.id | append: '' -%}
+            {%- if case_variant_ids == '' -%}
+              {%- assign case_variant_ids = vid -%}
+            {%- else -%}
+              {%- assign case_variant_ids = case_variant_ids | append: ',' | append: vid -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        <div class="nc-caseprods__ctas">
+          <button class="nc-btn nc-btn--light" type="button" data-nc-add-all="{{ case_variant_ids }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Tilføj hele rutinen · {{ case_products.size }} produkter
+          </button>
+          <a class="nc-btn nc-btn--outline-light" href="{{ blog.url }}">{{ 'blog.more_cases' | t }}</a>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- unless is_case -%}
+    <div class="nc-container">
+      <div class="nc-art__more">
+        <h2>{{ 'blog.read_also' | t }}</h2>
+        <ul class="nc-art__more-grid">
+          {%- assign shown = 0 -%}
+          {%- for a in blog.articles -%}
+            {%- if a.id != article.id and shown < 3 -%}
+              <li>
+                <a class="nc-ccard" href="{{ a.url }}">
+                  <span class="nc-ccard__media nc-ccard__media--wide">
+                    {%- if a.image -%}
+                      {{ a.image | image_url: width: 560 | image_tag: alt: a.title, loading: 'lazy' }}
+                    {%- endif -%}
+                    {%- capture rel_lbl %}{% render 'nc-article-label', article: a %}{% endcapture -%}
+                    {%- if rel_lbl != blank -%}
+                      <span class="nc-ccard__area">{{ rel_lbl }}</span>
+                    {%- endif -%}
+                  </span>
+                  {%- assign nc_at = a.title | split: ' | ' | first -%}
+                  <h3 class="nc-ccard__title">{% render 'nc-cbd', text: nc_at %}</h3>
+                </a>
+              </li>
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {%- endunless -%}
+</div>
+
+<script>
+  (function () {
+    var btn = document.querySelector('[data-nc-add-all]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var ids = (btn.getAttribute('data-nc-add-all') || '').split(',').filter(Boolean);
+      if (!ids.length) return;
+      btn.disabled = true;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: ids.map(function (id) { return { id: parseInt(id, 10), quantity: 1 }; }) })
+      }).then(function () {
+        btn.disabled = false;
+        if (window.ncRefreshCart) { window.ncRefreshCart(true); }
+        else { window.location.href = '/cart'; }
+      }).catch(function () { btn.disabled = false; window.location.href = '/cart'; });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Artikel",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_products", "label": "Vis produkter fra casen", "default": true, "info": "Kræver metafeltet ncell.products (produktliste) på artiklen." },
+    { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips under artiklen", "default": true, "info": "Vises kun på kundecases." },
+    { "type": "checkbox", "id": "show_cta", "label": "Vis knap efter artiklen", "default": true },
+    { "type": "text", "id": "cta_label", "label": "Knaptekst", "default": "Se alle produkter" },
+    { "type": "url", "id": "cta_url", "label": "Knaplink", "info": "Uden link vises knappen ikke. Teksten skal passe til siden, knappen fører til." },
+    { "type": "header", "content": "Forfatter" },
+    { "type": "image_picker", "id": "author_avatar", "label": "Forfatterbillede", "info": "Vises i den runde cirkel ved \"Skrevet af\"." },
+    { "type": "text", "id": "author_avatar_name", "label": "Billedet hører til forfatteren", "default": "Lizbeth Falk", "info": "Navnet skal stå præcis som forfatteren på blogindlægget." }
+  ]
+}
+{% endschema %}

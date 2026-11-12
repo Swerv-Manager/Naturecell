@@ -1,0 +1,138 @@
+{% comment %}
+  Tidslinje 1:1 fra om os-designet (template.html:2732-2763): centreret
+  kolonne med lodret rygrad og prikker, lille billedthumb, aarstal, titel,
+  tekst og "Laes mere"-link pr. milepael (nyeste foerst), afsluttet med en
+  CTA-knap. Strukturen spejler designets flex-DOM, saa maalene falder ens.
+{% endcomment %}
+
+{%- style -%}
+  {%- comment -%} Designets sektion: max-width 1000, padding clamp(35,6vw,64). {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl { background: var(--paper); padding: clamp(35px, 6vw, 64px) 0; }
+  #shopify-section-{{ section.id }} .nc-tl .nc-container { max-width: 1000px; }
+  {%- comment -%} Designets hoved: flex-kolonne, gap 8, centreret, margin-bottom 40; eyebrow-span uden linjehoejde (normal). {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__head { display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; margin: 0 0 40px; }
+  #shopify-section-{{ section.id }} .nc-tl__head .nc-eyebrow { margin: 0; line-height: var(--leading-relaxed); font-size: 12px; letter-spacing: 0.12em; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-tl__head h2 { margin: 0; font-size: clamp(20px, 3.1vw, 32px); line-height: 1.1; letter-spacing: normal; }
+
+  {%- comment -%} Designets liste: max-width 820, centreret. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__list { max-width: 820px; margin: 0 auto; }
+  #shopify-section-{{ section.id }} .nc-tl__item { display: flex; gap: clamp(14px, 3vw, 24px); align-items: stretch; }
+  {%- comment -%} Rygrad: 20px kolonne; prik 18px sage-fyldt m. 3px papir-kant og 2px sage-ring, margin-top 6;
+      streg 2px sage-200, flex 1, min-height 34, margin 6px 0, kun mellem prikker. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__spine { flex: 0 0 20px; display: flex; flex-direction: column; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-tl__dot { flex: none; width: 18px; height: 18px; margin-top: 6px; border-radius: 999px; border: 3px solid var(--paper); box-shadow: 0 0 0 2px var(--sage-200); background: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-tl__rail { width: 2px; flex: 1; min-height: 34px; margin: 6px 0; background: var(--sage-200); }
+  #shopify-section-{{ section.id }} .nc-tl__item:last-child .nc-tl__rail { display: none; }
+  {%- comment -%} Designets indhold: flex 1, padding-bottom clamp(26,5vw,44), raekke med gap clamp(14,3vw,22), lodret centreret, ombrydes. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__content { flex: 1; min-width: 0; padding: 0 0 clamp(26px, 5vw, 44px); display: flex; gap: clamp(14px, 3vw, 22px); align-items: center; flex-wrap: wrap; text-align: left; }
+  {%- comment -%} Designets thumb: flex 0 0 min(190px,40%), 3:2, radius-lg, shadow-sm. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__media { flex: 0 0 min(240px, 42%); max-width: 240px; aspect-ratio: 3 / 2; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); box-shadow: var(--shadow-sm); }
+  #shopify-section-{{ section.id }} .nc-tl__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-tl__media--contain { background: var(--cloud, #fff); }
+  #shopify-section-{{ section.id }} .nc-tl__media--contain img { object-fit: contain; padding: 6px; }
+  {%- comment -%} Designets tekstspalte: flex 1, min-width 200, kolonne med gap 5. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__body { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
+  #shopify-section-{{ section.id }} .nc-tl__year { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--sage-600); line-height: 1; }
+  #shopify-section-{{ section.id }} .nc-tl__body h3 { margin: 2px 0 0; font-size: 21px; line-height: 1.2; letter-spacing: normal; color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-tl__body p:not(.nc-tl__year) { margin: 0; font-size: 15px; line-height: 1.65; color: var(--ink-700); }
+  {%- comment -%} Designets "Laes mere": 13.5px/600 sage-600, gap 6, margin-top 4, pil 14px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__link { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-family: var(--font-body); font-size: 13.5px; font-weight: 600; line-height: normal; color: var(--sage-600); text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-tl__link:hover { color: var(--sage-700); text-decoration: underline; text-underline-offset: 3px; }
+
+  {%- comment -%} Designets CTA: centreret, margin-top 40; knap sage-500, 15px/600, padding 15px 30px, pille. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-tl__cta { display: flex; justify-content: center; margin-top: 40px; }
+  #shopify-section-{{ section.id }} .nc-tl__cta .nc-btn { min-height: 0; padding: 15px 30px; line-height: normal; letter-spacing: normal; border-width: 0; }
+{%- endstyle -%}
+
+<section class="nc-tl">
+  <div class="nc-container">
+    {%- if section.settings.heading != blank -%}
+      <div class="nc-tl__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        {%- endif -%}
+        <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="nc-tl__list">
+      {%- for block in section.blocks -%}
+        <div class="nc-tl__item" {{ block.shopify_attributes }}>
+          <div class="nc-tl__spine">
+            <span class="nc-tl__dot" aria-hidden="true"></span>
+            <span class="nc-tl__rail" aria-hidden="true"></span>
+          </div>
+          <div class="nc-tl__content">
+            <div class="nc-tl__media{% if block.settings.fit == 'contain' %} nc-tl__media--contain{% endif %}">
+              {%- assign tl_alt = block.settings.title | escape -%}
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 520 | image_tag: alt: tl_alt, loading: 'lazy', sizes: '240px' }}
+              {%- elsif block.settings.image_url contains '//' -%}
+                <img src="{{ block.settings.image_url }}" alt="{{ tl_alt }}" loading="lazy" width="420" height="280">
+              {%- elsif block.settings.image_url != blank -%}
+                <img src="{{ block.settings.image_url | asset_url }}" alt="{{ tl_alt }}" loading="lazy" width="420" height="280">
+              {%- endif -%}
+            </div>
+            <div class="nc-tl__body">
+              <p class="nc-tl__year">{{ block.settings.year }}</p>
+              <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
+              {%- if block.settings.url != blank -%}
+                <a class="nc-tl__link" href="{% render 'nc-url', url: block.settings.url %}">
+                  {{ 'general.read_more' | t }}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_text != blank -%}
+      <div class="nc-tl__cta">
+        <a class="nc-btn nc-btn--sage" href="{% render 'nc-url', url: section.settings.cta_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.cta_text %}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tidslinje",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Overlinje", "default": "Vores rejse" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Fra idé til i dag" },
+    { "type": "text", "id": "cta_text", "label": "CTA-knap, tekst", "default": "Shop NatureCell →" },
+    { "type": "url", "id": "cta_url", "label": "CTA-knap, link" }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milepæl",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Årstal", "default": "2018" },
+        { "type": "text", "id": "title", "label": "Titel", "default": "Idéen fødes" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form." },
+        { "type": "url", "id": "url", "label": "Læs mere-link" },
+        { "type": "image_picker", "id": "image", "label": "Billede" },
+        { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" },
+        { "type": "select", "id": "fit", "label": "Billedvisning", "options": [ { "value": "cover", "label": "Fyld rammen" }, { "value": "contain", "label": "Hele billedet (fx produktbilleder)" } ], "default": "cover" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tidslinje",
+      "settings": { "eyebrow": "Vores rejse", "heading": "Fra idé til i dag", "cta_text": "Shop NatureCell →" },
+      "blocks": [
+        { "type": "milestone", "settings": { "year": "2026", "title": "Løvens Hule", "text": "Vi pitcher NatureCell i Løvens Hule, og Jesper Buch bliver investor.", "url": "/blogs/artikler/vores-oplevelse-i-lovens-hule", "image_url": "nc-lovens-hule.webp" } },
+        { "type": "milestone", "settings": { "year": "2021", "title": "Webshoppen", "text": "NatureCell sælges direkte til dig gennem vores egen webshop, drevet af Lizbeth.", "image_url": "https://naturecell.dk/cdn/shop/files/Naturecell_CBD_skincare_pige_vasker_ansigt_kopier.webp" } },
+        { "type": "milestone", "settings": { "year": "2019", "title": "Først med tilladelse til CBD", "text": "NatureCell får som den første danske hudplejeserie tilladelse til at tilsætte CBD.", "url": "/blogs/artikler/naturecell-i-b-rsen-pleasure-dansk-cbd-hudpleje-omtalt", "image_url": "https://naturecell.dk/cdn/shop/files/NatureCell_Sortiment_Hudpleje_0725.webp?v=1752671972", "fit": "contain" } },
+        { "type": "milestone", "settings": { "year": "2018", "title": "Idéen fødes", "text": "På Møllerup Gods tager en ambition om ærlig, plantebaseret CBD-hudpleje form.", "url": "/blogs/artikler/interview-pa-mollerup-gods-her-begynder-historien-bag-naturecell", "image_url": "nc-founders.webp" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

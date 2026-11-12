@@ -1,0 +1,13 @@
+{% layout 'nc-form-qa' %}
+{% if request.locale.iso_code == 'de' and request.path == '/de/pages/kundenclub' %}
+<script id="nc-form-qa-gate">
+(() => {
+  const params = new URL(window.location.href).searchParams;
+  if (params.get('view') !== 'nc-form-qa' || params.get('nc_qa_form') !== 'Umn6ku') return;
+  const container = document.createElement('div');
+  container.className = 'klaviyo-form-Umn6ku';
+  container.id = 'nc-form-qa-embed';
+  document.currentScript.insertAdjacentElement('beforebegin', container);
+})();
+</script>
+{% endif %}

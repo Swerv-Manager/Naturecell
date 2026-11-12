@@ -1,0 +1,243 @@
+{% comment %}
+  Produktkort fra NatureCell.dc.html: medie paa produkt-tint med
+  billede nr. 2 ved hover, SPAR/SAMPAKKE-badges, favorit-hjerte,
+  hurtig-laeg-i-kurv, eyebrow, titel, stoerrelse, rating og pris.
+
+  Brug: {% render 'nc-product-card', product: product %}
+  Valgfrit: loading: 'eager' (kort over folden) og priority: 'high' (LCP-kortet).
+{% endcomment %}
+
+{%- liquid
+  assign primary_image = product.featured_image
+  assign hover_image = blank
+  if product.images.size > 1
+    assign hover_image = product.images[1]
+  endif
+
+  assign primary_class = 'nc-img-primary nc-packshot'
+  if hover_image != blank
+    assign primary_class = 'nc-img-primary nc-packshot has-hover'
+  endif
+  assign primary_alt = primary_image.alt | default: product.title
+
+  assign is_bundle = false
+  if product.tags contains 'pakker' or product.tags contains 'Pakker' or product.tags contains 'bundle'
+    assign is_bundle = true
+  endif
+
+  comment
+    Eyebrow som i designet: NatureCell, eller ALFALAB for herreserien. Butikkens
+    vendor-felt ("Naturecell.dk") bruges ikke, da det ikke er designets tekst.
+  endcomment
+  assign eyebrow = 'NatureCell'
+  assign title_up = product.title | upcase
+  assign vendor_up = product.vendor | upcase
+  if title_up contains 'ALFALAB' or vendor_up contains 'ALFALAB'
+    assign eyebrow = 'ALFALAB'
+  endif
+  assign supplement_word = 'product.supplement' | t
+  assign bundle_word = 'product.bundle' | t
+  if product.type contains 'Kosttilskud'
+    unless eyebrow contains supplement_word
+      assign eyebrow = eyebrow | append: ' ' | append: supplement_word
+    endunless
+  endif
+  unless eyebrow contains bundle_word or eyebrow contains supplement_word
+    if is_bundle
+      assign eyebrow = eyebrow | append: ' ' | append: bundle_word
+    endif
+  endunless
+
+  assign v = product.selected_or_first_available_variant
+  assign on_sale = false
+  if v.compare_at_price > v.price
+    assign on_sale = true
+    assign save_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+  endif
+
+  assign title_parts = product.title | split: ' | '
+  capture card_title
+    render 'nc-title', title: title_parts[0]
+  endcapture
+  assign card_title = card_title | strip
+  assign card_sub = product.metafields.ncell.size.value | default: title_parts[1]
+  comment
+    Pakkernes undertitel ("Indhold: Dagcreme, Rensegel ...") vises uden praefiks og paa een linje (ellipsis i CSS),
+    saa alle kort faar samme hoejde, ogsaa paa mobil (kundens mobiloptimering 08-10).
+  endcomment
+  assign card_sub = card_sub | remove_first: 'Indhold:' | strip
+  assign sub_is_content = false
+  if title_parts[1] contains 'Indhold'
+    assign sub_is_content = true
+  endif
+
+  comment
+    Kundens rettelse 08-10 (Allan): "med CBD"/"med CBG" staar paa stoerrelseslinjen sammen med ml, ikke i titlen,
+    og linjen skrives ens: "30ml · med CBD". Titlen bliver fx "Hudpleje Olie" / "Eye Gel".
+  endcomment
+  assign nc_med = ''
+  if card_title contains ' med '
+    assign nc_tp = card_title | split: ' med '
+    if nc_tp.size == 2
+      assign nc_tail = nc_tp[1] | strip
+      if nc_tail contains 'CBD' or nc_tail contains 'CBG'
+        assign card_title = nc_tp[0] | strip
+        if nc_tail contains ' - '
+          assign nc_dp = nc_tail | split: ' - '
+          assign nc_tail = nc_dp[0] | strip
+          if card_sub == blank
+            assign card_sub = nc_dp[1] | strip
+          endif
+        endif
+        assign nc_med = 'med ' | append: nc_tail
+      endif
+    endif
+  endif
+  assign card_sub = card_sub | replace: 'Indeholder CBD', 'med CBD'
+  if sub_is_content == false
+    if card_sub contains 'med CBD' or card_sub contains 'med CBG'
+      if nc_med == blank
+        if card_sub contains 'med CBG'
+          assign nc_med = 'med CBG'
+        else
+          assign nc_med = 'med CBD'
+        endif
+      endif
+      assign card_sub = card_sub | remove: 'med CBD' | remove: 'med CBG' | strip
+    endif
+    assign nc_pref = card_title | append: ','
+    if card_sub contains nc_pref
+      assign card_sub = card_sub | remove_first: nc_pref | strip
+    endif
+    if nc_med != blank
+      if card_sub != blank
+        assign card_sub = card_sub | append: ' · ' | append: nc_med
+      else
+        assign card_sub = nc_med
+      endif
+    endif
+  endif
+
+  assign show_badge = true
+  if settings.show_save_badge == false
+    assign show_badge = false
+  endif
+
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
+  comment
+    Shopifys rating-metafelt er et objekt ({ rating, scale_min, scale_max }); tal/streng accepteres ogsaa.
+  endcomment
+  assign rating_num = rating.rating | default: rating | times: 1.0
+  assign rating_round = rating_num | round
+-%}
+
+<div class="nc-product-card">
+  <div class="nc-product-card__media">
+    <div class="nc-product-card__tags">
+      {%- if on_sale and show_badge -%}
+        <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
+      {%- endif -%}
+      {%- if is_bundle -%}
+        <span class="nc-tag nc-tag--sage">{{ 'product.bundle' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    <button class="nc-product-card__fav" data-nc-fav="{{ product.handle }}" aria-label="{{ 'product.save_favorite' | t: title: card_title | escape }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
+    </button>
+
+    {%- if primary_image != blank -%}
+      {%- comment -%}
+        loading/priority saettes af sektionen: kort i foerste raekke over folden
+        indlaeses eager, og det foerste kort (LCP-kandidat) faar fetchpriority high.
+      {%- endcomment -%}
+      {%- assign img_loading = loading | default: 'lazy' -%}
+      {%- if priority == 'high' -%}
+        {{
+          primary_image
+          | image_url: width: 720
+          | image_tag:
+            class: primary_class,
+            alt: primary_alt,
+            widths: '240, 360, 480, 720',
+            sizes: '(min-width: 990px) 300px, 46vw',
+            loading: img_loading,
+            fetchpriority: 'high'
+        }}
+      {%- else -%}
+        {{
+          primary_image
+          | image_url: width: 720
+          | image_tag:
+            class: primary_class,
+            alt: primary_alt,
+            widths: '240, 360, 480, 720',
+            sizes: '(min-width: 990px) 300px, 46vw',
+            loading: img_loading
+        }}
+      {%- endif -%}
+      {%- if hover_image != blank -%}
+        {{
+          hover_image
+          | image_url: width: 720
+          | image_tag: class: 'nc-img-hover', alt: '', widths: '240, 360, 480, 720', sizes: '(min-width: 990px) 300px, 46vw', loading: 'lazy'
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'nc-img-primary placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if product.available and product.has_only_default_variant -%}
+      <button class="nc-product-card__add" data-nc-add="{{ v.id }}" aria-label="{{ 'product.add_named' | t: title: card_title | escape }}">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="nc-product-card__info">
+    <span class="nc-product-card__eyebrow">{{ eyebrow }}</span>
+    <h3 class="nc-product-card__title"><a href="{{ product.url }}">{% render 'nc-cbd', text: card_title %}</a></h3>
+    {%- comment -%} Stoerrelse og rating gengives altid (tomme som pladsholder), saa alle kort faar samme raekker og hoejde (kundens rettelse 08-10). {%- endcomment -%}
+    <span class="nc-product-card__size"{% if card_sub != blank %} title="{{ card_sub | escape }}"{% endif %}>{% if card_sub != blank %}{% render 'nc-cbd', text: card_sub %}{% else %}&nbsp;{% endif %}</span>
+    {%- if rating != blank and rating_count != blank -%}
+      <span class="nc-product-card__rating">
+        <span class="nc-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg viewBox="0 0 24 24"{% if i > rating_round %} class="is-empty"{% endif %}><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z"/></svg>
+          {%- endfor -%}
+        </span>
+        <span>({{ rating_count }})</span>
+        <span class="nc-visually-hidden">{{ 'product.rated' | t: rating: rating_num }}</span>
+      </span>
+    {%- else -%}
+      <span class="nc-product-card__rating" aria-hidden="true"></span>
+    {%- endif -%}
+    <span class="nc-product-card__price{% if on_sale %} is-sale{% endif %}">
+      <span class="nc-product-card__amount">
+        {%- if product.price_varies -%}{{ 'product.from' | t }} {% endif -%}
+        {{- v.price | money -}}
+      </span>
+      {%- if on_sale -%}
+        <s class="nc-product-card__compare"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</s>
+      {%- endif -%}
+      {%- unless product.available -%}<span class="nc-product-card__stock">{{ 'product.sold_out' | t }}</span>{%- endunless -%}
+    </span>
+    {%- comment -%}
+      Enhedspris vises naar varianten har "pris pr. enhed" (tysk Grundpreis-krav).
+      Den korte momsnote vises kun paa andre sprog end dansk: det godkendte danske
+      design har ingen note paa kortene, mens tysk lov kraever den taet paa listepriser.
+    {%- endcomment -%}
+    {%- capture nc_unit_display -%}{% render 'nc-unit-price', variant: v %}{%- endcapture -%}
+    {%- assign nc_unit_display = nc_unit_display | strip -%}
+    {%- assign nc_show_unit = false -%}
+    {%- if v.unit_price_measurement and request.locale.iso_code != 'da' or v.unit_price_measurement and settings.nc_unit_price_da -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if request.locale.iso_code == 'de' and nc_unit_display != blank -%}{%- assign nc_show_unit = true -%}{%- endif -%}
+    {%- if nc_show_unit -%}
+      <span class="nc-product-card__unit"><span class="nc-visually-hidden">{{ 'product.unit_price' | t }} </span>{{ nc_unit_display }}</span>
+    {%- endif -%}
+    {%- if request.locale.iso_code != 'da' -%}
+      <span class="nc-product-card__taxnote">{%- if customer.b2b? -%}{{ 'b2b_portal.tax_excluded' | t }}{%- else -%}{{ 'product.tax_note_short' | t }}{%- endif -%}</span>
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,704 @@
+{%- if customer.b2b? -%}
+<div class="nc-container" style="padding-block:24px"><p>{{ customer.current_company.name | escape }} · {{ customer.current_location.name | escape }}</p><a class="nc-btn nc-btn--primary" href="{% render 'nc-url', url: '/pages/b2b' %}">{{ 'b2b_portal.home_link' | t }}</a></div>
+{%- endif -%}
+{%- liquid
+  assign nc_campaign_end = '2026-10-31T23:00:00Z' | date: '%s' | plus: 0
+  assign nc_campaign_now = 'now' | date: '%s' | plus: 0
+  assign nc_campaign_active = false
+  if section.settings.hc_enabled and nc_campaign_now < nc_campaign_end and customer.b2b? != true
+    assign nc_campaign_active = true
+  endif
+-%}
+<div id="nc-handcream-{{ section.id }}" data-campaign-end="2026-10-31T23:00:00Z" data-campaign-enabled="{% if customer.b2b? %}false{% else %}{{ section.settings.hc_enabled }}{% endif %}">
+  <div data-campaign-content{% unless nc_campaign_active %} hidden{% endunless %}>
+    <section class="nc-hc-offer" aria-labelledby="nc-hc-title-{{ section.id }}">
+      <div class="nc-hc-copy">
+        <p class="nc-hc-eyebrow">{{ section.settings.hc_eyebrow | escape }}</p>
+        <h1 id="nc-hc-title-{{ section.id }}">{{ section.settings.hc_heading | escape }}</h1>
+        <p class="nc-hc-intro">{{ section.settings.hc_body | escape }}</p>
+        <a class="nc-btn nc-hc-button" href="{{ section.settings.hc_url }}">{{ section.settings.hc_cta | escape }}</a>
+        <p class="nc-hc-terms">{{ section.settings.hc_terms | escape }}</p>
+      </div>
+      <picture class="nc-hc-picture">
+        <source media="(max-width: 699px)" srcset="{{ section.settings.hc_mobile | image_url: width: 1000 }}">
+        {{ section.settings.hc_desktop | image_url: width: 1800 | image_tag: widths: '700, 1000, 1400, 1800', sizes: '(min-width: 1000px) 55vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: 'Lizbeth med to NatureCell håndcremer' }}
+      </picture>
+    </section>
+  </div>
+  <div data-campaign-original{% if nc_campaign_active %} hidden{% endif %}>
+{% comment %}
+  Hero-karrusel fra NatureCell.dc.html: 4 slides, autoplay 7s,
+  pile og dots. Tre slide-typer: produkt (sage-baggrund + packshot),
+  billede (fuldt baggrundsbillede med gradient) og split (tekst +
+  billede side om side, fx Loevens Hule).
+{% endcomment %}
+
+{%- style -%}
+  .nc-hero { position: relative; background: var(--nc-hero-bg); color: var(--paper); overflow: hidden; }
+  .nc-hero__track { display: flex; transform: translateX(0); transition: transform 700ms var(--ease-out); }
+  /* Designets slides: min-height clamp(540px, 82vh, 600px); hoejden saettes af produkt-slidens indhold (~620px) */
+  .nc-hero__slide { flex: 0 0 100%; position: relative; min-height: clamp(540px, 82vh, 600px); overflow: hidden; }
+
+  .nc-hero__inner {
+    position: relative;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 clamp(22px, 6.6vw, 72px) 64px;
+    min-height: clamp(540px, 82vh, 600px);
+  }
+  .nc-hero__inner--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: clamp(24px, 4vw, 40px);
+    align-items: center;
+  }
+  .nc-hero__slide--split .nc-hero__inner--grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(28px, 5vw, 48px); }
+  .nc-hero__slide--split .nc-hero__text { gap: 20px; padding: clamp(28px, 7vw, 48px) 0; }
+  .nc-hero__inner--stack { display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  @media (max-width: 699px) {
+    .nc-hero__inner--stack { justify-content: flex-end; }
+  }
+
+  .nc-hero__text { display: flex; flex-direction: column; gap: 22px; padding: clamp(37px, 7vw, 64px) 0; max-width: 520px; }
+  .nc-hero__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-200); margin: 0; }
+  /* text-wrap: wrap (ikke temaets "pretty"), saa linjebrud matcher designet: "CBD i samspil med ren / botanik" */
+  .nc-hero__h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--paper); text-wrap: wrap; }
+  .nc-hero__h2 { margin: 0; max-width: 560px; font-family: var(--font-display); font-weight: 400; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; letter-spacing: normal; color: var(--paper); text-wrap: wrap; }
+  .nc-hero__slide--split .nc-hero__h2 { letter-spacing: -0.01em; }
+  .nc-hero__body { margin: 0; font-size: 18px; line-height: 1.7; color: rgba(246, 244, 238, 0.82); max-width: 440px; }
+  .nc-hero__inner--stack .nc-hero__body { color: rgba(246, 244, 238, 0.9); }
+  .nc-hero__slide--split .nc-hero__body { color: rgba(246, 244, 238, 0.85); }
+  .nc-hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  /* Designets lyse hero-knap har ingen kant: 15px 28px => 224x48 */
+  .nc-hero .nc-btn--light { border: 0; padding: 15px 28px; }
+
+  .nc-hero__trust { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+  .nc-hero__trust .nc-stars { color: var(--accent-pink); }
+  .nc-hero__trust .nc-stars svg { width: 18px; height: 18px; }
+  .nc-hero__trust span { font-size: 14px; color: rgba(246, 244, 238, 0.82); }
+  .nc-hero__trust strong { color: var(--paper); }
+
+  .nc-hero__packshot-wrap { position: relative; display: flex; align-items: center; justify-content: center; padding: 40px 0; }
+  .nc-hero__glow { position: absolute; width: 380px; height: 380px; border-radius: var(--radius-pill); background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 70%); }
+  .nc-hero__packshot { position: relative; max-width: 400px; width: 100%; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.35)); }
+
+  .nc-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .nc-hero__wash { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40, 64, 59, 0.74), rgba(40, 64, 59, 0.26)); pointer-events: none; }
+
+  .nc-hero__split-media { display: flex; align-items: center; justify-content: center; padding: clamp(19px, 7vw, 32px) 0; }
+  .nc-hero__split-media img { display: block; width: 100%; max-width: 560px; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 22%; border-radius: 18px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35); }
+
+  .nc-hero__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; width: 44px; height: 44px; background: rgba(246, 244, 238, 0.85); border: 0; color: var(--sage-700); }
+  .nc-hero__arrow:hover { background: var(--paper); }
+  .nc-hero__arrow--prev { left: clamp(4px, 1.1vw, 18px); }
+  .nc-hero__arrow--next { right: clamp(4px, 1.1vw, 18px); }
+
+  .nc-hero__dots { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; align-items: center; justify-content: center; gap: 9px; z-index: 5; }
+  .nc-hero__dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: var(--radius-pill); background: rgba(246, 244, 238, 0.45); cursor: pointer; transition: width var(--dur-base) var(--ease-soft), background-color var(--dur-base) var(--ease-soft); }
+  .nc-hero__dot.is-active { width: 26px; background: var(--paper); }
+
+  /* Mobil (kundens mobiloptimering 08-10): kortere slides, mindre typografi, tekst der ikke loeber
+     over flere skaerme, packshot under teksten og synlige prikker. Pilene er skjult: man swiper. */
+  @media (max-width: 699px) {
+    .nc-hero__arrow { display: none; }
+    .nc-hero__slide { min-height: 0; }
+    .nc-hero__inner { min-height: 0; padding: 0 var(--gutter) 52px; }
+    .nc-hero__inner--grid { gap: 0; align-items: start; }
+    .nc-hero__text { gap: 14px; padding: 34px 0 6px; max-width: none; }
+    .nc-hero__slide--split .nc-hero__text { gap: 14px; padding: 34px 0 10px; }
+    .nc-hero__eyebrow { font-size: 11px; letter-spacing: 0.12em; }
+    .nc-hero__h1 { font-size: clamp(32px, 9vw, 40px); line-height: 1.06; }
+    .nc-hero__h2 { font-size: clamp(28px, 8vw, 36px); line-height: 1.08; max-width: none; }
+    .nc-hero__body { font-size: 15.5px; line-height: 1.6; max-width: none; }
+    .nc-hero__ctas { gap: 10px; margin-top: 2px; }
+    .nc-hero__ctas .nc-btn { min-height: 44px; padding: 13px 20px; font-size: 14px; }
+    .nc-hero .nc-btn--light { padding: 13px 20px; }
+    .nc-hero__trust { gap: 10px; margin-top: 4px; }
+    .nc-hero__trust .nc-stars svg { width: 15px; height: 15px; }
+    .nc-hero__trust span { font-size: 13px; }
+    .nc-hero__packshot-wrap { padding: 10px 0 0; }
+    .nc-hero__glow { width: 240px; height: 240px; }
+    .nc-hero__packshot { max-width: 66%; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35)); }
+    .nc-hero__slide--image .nc-hero__inner--stack { min-height: 520px; gap: 14px; padding-bottom: 60px; }
+    .nc-hero__wash { background: linear-gradient(180deg, rgba(40, 64, 59, 0.3), rgba(40, 64, 59, 0.78)); }
+    .nc-hero__split-media { padding: 0 0 6px; }
+    .nc-hero__split-media img { aspect-ratio: 16 / 10; border-radius: 14px; box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3); }
+    .nc-hero__dots { bottom: 16px; }
+    /* Kundens rettelse (Lizbeth 08-10): paa mobil eet fast velkomstbillede i stedet for to koerende bannere. */
+    .nc-hero--m-welcome .nc-hero__track, .nc-hero--m-welcome .nc-hero__dots, .nc-hero--m-welcome .nc-hero__arrow { display: none; }
+    .nc-hero--m-welcome .nc-hero__welcome { display: block; }
+    .nc-hero__welcome .nc-hero__inner--stack { min-height: min(560px, 78vh); justify-content: flex-end; gap: 12px; padding: 34px var(--gutter) 40px; }
+    .nc-hero__welcome .nc-hero__wash { background: linear-gradient(180deg, rgba(40, 64, 59, 0.12) 0%, rgba(40, 64, 59, 0.42) 45%, rgba(40, 64, 59, 0.86) 100%); }
+    .nc-hero__welcome .nc-hero__h2 { font-size: clamp(32px, 9vw, 40px); line-height: 1.06; }
+    .nc-hero__welcome .nc-hero__body { font-size: 15px; line-height: 1.55; color: rgba(246, 244, 238, 0.92); }
+    .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -4px; }
+  }
+  .nc-hero__welcome { display: none; position: relative; overflow: hidden; }
+  /* Velkomstbanner paa alle skaerme (Frederik 09-10): samme banner erstatter karrusellen paa computer */
+  .nc-hero--welcome-all .nc-hero__welcome { display: block; }
+  .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal-m, 50% 50%); }
+  @media (min-width: 700px) {
+    /* Produktbanneret (Frederik 09-10) er 1920x620: hoejden foelger billedets format, saa alle produkter er med,
+       og billedet ankres med fokuspunktet (fx 0% 50%), saa teksten faar den tomme vaeg til venstre. */
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__bg { object-position: var(--nc-welcome-focal, 50% 50%); }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__inner--stack { min-height: clamp(440px, 40vw, 560px); padding-bottom: 56px; padding-top: 40px; gap: 16px; justify-content: center; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__h1 { max-width: 520px; font-size: clamp(38px, 4.2vw, 60px); }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body { max-width: 430px; font-size: 17px; line-height: 1.6; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__body + .nc-hero__body { margin-top: -6px; }
+    .nc-hero--welcome-all .nc-hero__welcome .nc-hero__wash { background: linear-gradient(90deg, rgba(40, 64, 59, 0.78) 0%, rgba(40, 64, 59, 0.5) 50%, rgba(40, 64, 59, 0.22) 100%); }
+  }
+{%- endstyle -%}
+
+{%- assign autoplay_ms = section.settings.autoplay | default: 7 | times: 1000 -%}
+{%- liquid
+  assign welcome_all = false
+  if section.settings.m_welcome and section.settings.welcome_scope == 'all'
+    assign welcome_all = true
+  endif
+-%}
+<section class="nc-hero{% if welcome_all %} nc-hero--welcome-all{% elsif section.settings.m_welcome %} nc-hero--m-welcome{% endif %}"{% unless welcome_all %} data-nc-carousel="{{ autoplay_ms }}"{% endunless %} aria-label="{{ 'general.featured_content' | t }}"{% if welcome_all %} style="--nc-welcome-focal: {{ section.settings.w_focal | default: '50% 50%' }}; --nc-welcome-focal-m: {{ section.settings.m_focal | default: '50% 50%' }};"{% endif %}>
+  {%- if section.settings.m_welcome -%}
+    {%- comment -%}
+      Velkomstbanner, kun paa mobil (Lizbeth 08-10): fast billede med velkomsttekst, saa man med det samme
+      ser hvem man er kommet til. Karrusellen vises stadig paa computer. Billedet er mobilens LCP-element.
+    {%- endcomment -%}
+    <div class="nc-hero__welcome">
+      {%- if welcome_all and section.settings.w_image_desktop != blank -%}
+        {%- comment -%} Eget billede til computer (liggende), mobilbilledet bruges under 700px. {%- endcomment -%}
+        <picture>
+          {%- if section.settings.m_image != blank -%}
+            <source media="(max-width: 699px)" srcset="{{ section.settings.m_image | image_url: width: 700 }} 700w, {{ section.settings.m_image | image_url: width: 1000 }} 1000w, {{ section.settings.m_image | image_url: width: 1400 }} 1400w" sizes="100vw">
+          {%- endif -%}
+          {{ section.settings.w_image_desktop | image_url: width: 2400 | image_tag: class: 'nc-hero__bg', alt: '', widths: '1000, 1400, 1800, 2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+        </picture>
+      {%- elsif section.settings.m_image != blank -%}
+        {{ section.settings.m_image | image_url: width: 2000 | image_tag: class: 'nc-hero__bg', alt: '', widths: '500, 700, 900, 1200, 1400, 2000', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+      {%- elsif section.settings.m_fallback_asset != blank -%}
+        <img class="nc-hero__bg" src="{{ section.settings.m_fallback_asset | asset_url }}" alt="" width="1400" height="1050" loading="eager" fetchpriority="high" style="object-position: 60% 50%;">
+      {%- endif -%}
+      <div class="nc-hero__wash" aria-hidden="true"></div>
+      <div class="nc-hero__inner nc-hero__inner--stack">
+        {%- if section.settings.m_eyebrow != blank -%}
+          <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: section.settings.m_eyebrow %}</p>
+        {%- endif -%}
+        {%- if welcome_all -%}
+          <h1 class="nc-hero__h1">{% render 'nc-cbd', text: section.settings.m_heading %}</h1>
+        {%- else -%}
+          <h2 class="nc-hero__h2">{% render 'nc-cbd', text: section.settings.m_heading %}</h2>
+        {%- endif -%}
+        {%- assign m_paras = section.settings.m_body | newline_to_br | split: '<br />' -%}
+        {%- for para in m_paras -%}
+          {%- assign para_s = para | strip -%}
+          {%- if para_s != blank -%}
+            <p class="nc-hero__body">{% render 'nc-cbd', text: para_s %}</p>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.settings.m_cta_text != blank -%}
+          <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: section.settings.m_cta_url, fallback: '/collections/cbd-hudpleje' %}">{% render 'nc-cbd', text: section.settings.m_cta_text %}</a></div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+  {%- unless welcome_all -%}
+  <div class="nc-hero__track" data-nc-track>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'product_slide' -%}
+          <div class="nc-hero__slide" data-nc-slide {{ block.shopify_attributes }}>
+            <div class="nc-hero__inner nc-hero__inner--grid">
+              <div class="nc-hero__text">
+                <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+                <h1 class="nc-hero__h1">{% render 'nc-cbd', text: block.settings.heading %}</h1>
+                <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
+                <div class="nc-hero__ctas">
+                  {%- if block.settings.cta_text != blank -%}
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a>
+                  {%- endif -%}
+                  {%- if block.settings.cta2_text != blank -%}
+                    <a class="nc-btn nc-btn--outline-light" href="{% render 'nc-url', url: block.settings.cta2_url %}">{% render 'nc-cbd', text: block.settings.cta2_text %}</a>
+                  {%- endif -%}
+                </div>
+                {%- liquid
+                  assign hero_trust = block.settings.trust_text
+                  if hero_trust == blank and block.settings.show_trustpilot
+                    capture hero_trust
+                      render 'nc-trustpilot', format: 'line'
+                    endcapture
+                    assign hero_trust = hero_trust | strip
+                  endif
+                -%}
+                {%- if hero_trust != blank -%}
+                  <div class="nc-hero__trust">
+                    <span class="nc-stars" aria-hidden="true">
+                      {%- for i in (1..5) -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+                      {%- endfor -%}
+                    </span>
+                    <span>{% render 'nc-cbd', text: hero_trust %}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="nc-hero__packshot-wrap">
+                <div class="nc-hero__glow" aria-hidden="true"></div>
+                {%- comment -%} Packshottet er forsidens LCP-element: eager, fetchpriority high og WebP-fallback i stedet for PNG'en paa 1,2 MB. {%- endcomment -%}
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 800 | image_tag: class: 'nc-hero__packshot', alt: block.settings.heading, widths: '400, 600, 800', sizes: '(min-width: 700px) 400px, 86vw', loading: 'eager', fetchpriority: 'high' }}
+                {%- else -%}
+                  <img class="nc-hero__packshot" src="{{ 'nc-hero-kompletpakken.webp' | asset_url }}" alt="Komplet CBD Hudpleje" width="800" height="800" loading="eager" fetchpriority="high">
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+
+        {%- when 'image_slide' -%}
+          <div class="nc-hero__slide nc-hero__slide--image" data-nc-slide {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 2200 | image_tag: class: 'nc-hero__bg', alt: '', widths: '800, 1200, 1600, 2200', sizes: '100vw', loading: 'lazy' }}
+            {%- elsif block.settings.fallback_asset != blank -%}
+              <img class="nc-hero__bg" src="{{ block.settings.fallback_asset | asset_url }}" alt="" loading="lazy" width="2200" height="1400">
+            {%- endif -%}
+            <div class="nc-hero__wash" aria-hidden="true"></div>
+            <div class="nc-hero__inner nc-hero__inner--stack">
+              <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+              <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
+              <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
+              {%- if block.settings.cta_text != blank -%}
+                <div><a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a></div>
+              {%- endif -%}
+            </div>
+          </div>
+
+        {%- when 'split_slide' -%}
+          <div class="nc-hero__slide nc-hero__slide--split" data-nc-slide {{ block.shopify_attributes }}>
+            <div class="nc-hero__inner nc-hero__inner--grid">
+              <div class="nc-hero__text">
+                <p class="nc-hero__eyebrow">{% render 'nc-cbd', text: block.settings.eyebrow %}</p>
+                <h2 class="nc-hero__h2">{% render 'nc-cbd', text: block.settings.heading %}</h2>
+                <p class="nc-hero__body">{% render 'nc-cbd', text: block.settings.body %}</p>
+                {%- if block.settings.cta_text != blank -%}
+                  <div class="nc-hero__ctas">
+                    <a class="nc-btn nc-btn--light" href="{% render 'nc-url', url: block.settings.cta_url %}">{% render 'nc-cbd', text: block.settings.cta_text %}</a>
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="nc-hero__split-media">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 1040 | image_tag: alt: block.settings.heading, widths: '520, 780, 1040', loading: 'lazy' }}
+                {%- elsif block.settings.fallback_asset != blank -%}
+                  <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ block.settings.heading | escape }}" loading="lazy" width="1040" height="780">
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--prev" data-nc-prev aria-label="{{ 'general.previous_slide' | t }}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="nc-iconbtn nc-hero__arrow nc-hero__arrow--next" data-nc-next aria-label="{{ 'general.next_slide' | t }}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div class="nc-hero__dots">
+      {%- for block in section.blocks -%}
+        <button class="nc-hero__dot" data-nc-dot aria-label="{{ 'general.go_to_slide' | t: n: forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  {%- endunless -%}
+</section>
+
+
+  </div>
+</div>
+{% style %}
+  #nc-handcream-{{ section.id }} [hidden] { display: none !important; }
+  #nc-handcream-{{ section.id }} .nc-hc-offer { display: grid; grid-template-columns: 45% 55%; background: #f6f4ee; color: #28403b; }
+  #nc-handcream-{{ section.id }} .nc-hc-copy { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(28px, 4.5vw, 70px); }
+  #nc-handcream-{{ section.id }} .nc-hc-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 18px; }
+  #nc-handcream-{{ section.id }} h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(36px, 4.2vw, 64px); line-height: 1.06; margin: 0 0 22px; color: #28403b; }
+  #nc-handcream-{{ section.id }} .nc-hc-intro { font-size: 18px; line-height: 1.55; margin: 0 0 24px; max-width: 440px; }
+  #nc-handcream-{{ section.id }} .nc-hc-button { background: #28403b; color: #fff; border: 1px solid #28403b; padding: 16px 28px; min-height: 48px; text-decoration: none; }
+  #nc-handcream-{{ section.id }} .nc-hc-button:hover { background: #3d5c54; }
+  #nc-handcream-{{ section.id }} .nc-hc-button:focus-visible { outline: 3px solid #28403b; outline-offset: 4px; }
+  #nc-handcream-{{ section.id }} .nc-hc-terms { font-size: 13px; line-height: 1.6; margin: 20px 0 0; max-width: 450px; }
+  #nc-handcream-{{ section.id }} .nc-hc-picture { display: block; min-width: 0; }
+  #nc-handcream-{{ section.id }} .nc-hc-picture img { width: 100%; height: 100%; min-height: 510px; max-height: 680px; display: block; object-fit: cover; object-position: 50% 58%; }
+  @media (max-width: 999px) and (min-width: 700px) {
+    #nc-handcream-{{ section.id }} .nc-hc-copy { padding: 28px; }
+    #nc-handcream-{{ section.id }} .nc-hc-intro { font-size: 16px; }
+  }
+  @media (max-width: 699px) {
+    #nc-handcream-{{ section.id }} .nc-hc-offer { display: flex; flex-direction: column; }
+    #nc-handcream-{{ section.id }} .nc-hc-picture { order: -1; }
+    #nc-handcream-{{ section.id }} .nc-hc-picture img { height: 330px; min-height: 0; object-position: 50% 60%; }
+    #nc-handcream-{{ section.id }} .nc-hc-copy { padding: 26px 24px 30px; }
+    #nc-handcream-{{ section.id }} .nc-hc-eyebrow { margin-bottom: 12px; font-size: 11px; }
+    #nc-handcream-{{ section.id }} h1 { font-size: 38px; margin-bottom: 15px; }
+    #nc-handcream-{{ section.id }} .nc-hc-intro { font-size: 16px; margin-bottom: 20px; }
+    #nc-handcream-{{ section.id }} .nc-hc-terms { font-size: 12px; margin-top: 16px; }
+  }
+{% endstyle %}
+<script>
+(function () {
+  var root = document.getElementById('nc-handcream-{{ section.id }}');
+  if (!root) return;
+  var end = Date.parse(root.dataset.campaignEnd);
+  var campaign = root.querySelector('[data-campaign-content]');
+  var original = root.querySelector('[data-campaign-original]');
+  function update() {
+    var active = root.dataset.campaignEnabled === 'true' && Date.now() < end;
+    campaign.hidden = !active;
+    original.hidden = active;
+    return active;
+  }
+  update();
+  var timer = window.setInterval(function () {
+    if (!root.isConnected || !update()) window.clearInterval(timer);
+  }, 1000);
+  document.addEventListener('visibilitychange', update);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero-karrusel",
+  "tag": "section",
+  "class": "nc-sec-hero",
+  "settings": [
+    {
+      "type": "range",
+      "id": "autoplay",
+      "label": "Autoplay-interval",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Velkomstbanner"
+    },
+    {
+      "type": "checkbox",
+      "id": "m_welcome",
+      "label": "Vis ét fast velkomstbanner i stedet for karrusellen",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "welcome_scope",
+      "label": "Hvor",
+      "options": [
+        {
+          "value": "mobile",
+          "label": "Kun på mobil"
+        },
+        {
+          "value": "all",
+          "label": "På alle skærme"
+        }
+      ],
+      "default": "mobile",
+      "info": "På alle skærme vises slides slet ikke."
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "Billede, mobil (stående format passer bedst)"
+    },
+    {
+      "type": "image_picker",
+      "id": "w_image_desktop",
+      "label": "Billede, computer (liggende)",
+      "info": "Tomt: mobilbilledet bruges også på computer."
+    },
+    {
+      "type": "text",
+      "id": "w_focal",
+      "label": "Billedets fokuspunkt (computer)",
+      "default": "50% 50%",
+      "info": "Fx 0% 50% ankrer billedet til venstre, så teksten får den tomme side."
+    },
+    {
+      "type": "text",
+      "id": "m_focal",
+      "label": "Billedets fokuspunkt (mobil)",
+      "default": "50% 50%"
+    },
+    {
+      "type": "text",
+      "id": "m_fallback_asset",
+      "label": "Fallback-billede (asset)",
+      "default": "nc-hero-kunder.jpg",
+      "info": "Bruges kun hvis der ikke er valgt et billede."
+    },
+    {
+      "type": "text",
+      "id": "m_eyebrow",
+      "label": "Overlinje",
+      "default": "Velkommen"
+    },
+    {
+      "type": "text",
+      "id": "m_heading",
+      "label": "Overskrift",
+      "default": "Hudpleje med omtanke"
+    },
+    {
+      "type": "textarea",
+      "id": "m_body",
+      "label": "Tekst",
+      "default": "Dansk udviklet hudpleje med nøje udvalgte ingredienser og ekspertise i CBD siden 2018.\nEnkle rutiner og personlig service. Til dig, der går op i, hvad du smører på din hud.",
+      "info": "Linjeskift giver et nyt afsnit."
+    },
+    {
+      "type": "text",
+      "id": "m_cta_text",
+      "label": "Knap",
+      "default": "Se produkterne"
+    },
+    {
+      "type": "url",
+      "id": "m_cta_url",
+      "label": "Knap: link"
+    },
+    {
+      "type": "header",
+      "content": "Håndcremetilbud · oktober 2026"
+    },
+    {
+      "type": "checkbox",
+      "id": "hc_enabled",
+      "label": "Vis tilbud til 31. oktober kl. 23.59",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "hc_desktop",
+      "label": "Tilbudsbillede, computer"
+    },
+    {
+      "type": "image_picker",
+      "id": "hc_mobile",
+      "label": "Tilbudsbillede, mobil"
+    },
+    {
+      "type": "text",
+      "id": "hc_eyebrow",
+      "label": "Tilbud: overlinje"
+    },
+    {
+      "type": "text",
+      "id": "hc_heading",
+      "label": "Tilbud: overskrift"
+    },
+    {
+      "type": "textarea",
+      "id": "hc_body",
+      "label": "Tilbud: tekst"
+    },
+    {
+      "type": "textarea",
+      "id": "hc_terms",
+      "label": "Tilbud: betingelser"
+    },
+    {
+      "type": "text",
+      "id": "hc_cta",
+      "label": "Tilbud: knap"
+    },
+    {
+      "type": "url",
+      "id": "hc_url",
+      "label": "Tilbud: link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_slide",
+      "name": "Produkt-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Dansk hudpleje siden 2018"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Ægte pleje, til al slags hud"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Plantebaseret CBD-hudpleje, udviklet og testet i Danmark. Vi lover ikke mirakler, vi lader vores kunder fortælle om deres egne oplevelser."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Primær knap",
+          "default": "Shop nu →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Primær knap: link"
+        },
+        {
+          "type": "text",
+          "id": "cta2_text",
+          "label": "Sekundær knap",
+          "default": "Se kundecases"
+        },
+        {
+          "type": "url",
+          "id": "cta2_url",
+          "label": "Sekundær knap: link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_trustpilot",
+          "label": "Vis Trustpilot-tal",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "trust_text",
+          "label": "Trust-linje (egen tekst)",
+          "info": "Tom: Trustpilot-tallene fra Temaindstillinger → Integrationer, hvis \"Vis Trustpilot-tal\" er slået til."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Packshot"
+        }
+      ]
+    },
+    {
+      "type": "image_slide",
+      "name": "Billed-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Plantebaseret & dansk"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "CBD i samspil med ren botanik"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Glycerin, mandelolie, squalane og aloe vera. Vegansk, uden syntetisk parfume, udviklet og testet i Danmark."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Knap",
+          "default": "Udforsk produkterne →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Knap: link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Baggrundsbillede"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Fallback-asset (avanceret)",
+          "info": "Filnavn i temaets assets, bruges når intet billede er valgt."
+        }
+      ]
+    },
+    {
+      "type": "split_slide",
+      "name": "Split-slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Overlinje",
+          "default": "Investering i Løvens Hule"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Overskrift",
+          "default": "Jesper Buch er trådt ind som investor"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Brødtekst",
+          "default": "Et stærkt skulderklap til dansk CBD-hudpleje: efter vores tur i Løvens Hule er Jesper Buch gået ind som investor i NatureCell, sammen med grundlæggerne Lizbeth Falk og Allan Gamborg."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Knap",
+          "default": "Læs historien →"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Knap: link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Fallback-asset (avanceret)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero-karrusel",
+      "blocks": [
+        {
+          "type": "product_slide"
+        },
+        {
+          "type": "image_slide"
+        },
+        {
+          "type": "image_slide",
+          "settings": {
+            "eyebrow": "Ægte oplevelser",
+            "heading": "Vi lader vores kunder fortælle",
+            "body": "Vi lover ikke mirakler. Læs ægte kundecases, med billeder, video og produkterne de bruger.",
+            "cta_text": "Se kundecases →",
+            "fallback_asset": "nc-hero-kunder.jpg"
+          }
+        },
+        {
+          "type": "split_slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

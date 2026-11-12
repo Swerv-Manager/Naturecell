@@ -1,6 +1,6 @@
 {% comment %}
   ============================================================
-  NatureCell – Augustkampagne: gratis eksfolieringshandske
+  NatureCell: Augustkampagne: gratis eksfolieringshandske
   Sektion: nc-august-campaign-banner.liquid
   Version: 1.0
 
@@ -59,7 +59,7 @@
   assign badge_value = section.settings.badge_value
   if badge_value == blank and product != blank
     assign badge_price = product.price | money_without_trailing_zeros
-    assign badge_value = 'Værdi ' | append: badge_price
+    assign badge_value = 'campaign.value' | t: price: badge_price
   endif
 
   assign glove_total = section.settings.glove_total
@@ -92,9 +92,11 @@
 -%}
 
 {% style %}
-  {%- if use_brand_fonts -%}
-    @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap');
-  {%- endif -%}
+  {%- comment -%}
+    Brandfontene (Philosopher og Roboto Flex) er selvhostede i temaet og
+    indlaeses fra nc-theme.css. Ingen ekstern @import: den ville blokere
+    rendering og lave et kald til Google, som Cookiebot-opsaetningen undgaar.
+  {%- endcomment -%}
 
   #shopify-section-{{ section.id }} .nc-aug {
     {%- if use_brand_fonts %}
@@ -449,7 +451,7 @@
               aria-valuemin="0"
               aria-valuemax="{{ glove_total }}"
               aria-valuenow="{{ glove_claimed }}"
-              aria-label="Antal hentede handsker"
+              aria-label="{{ 'campaign.gloves_count' | t }}"
             >
               <div class="nc-aug__progress-fill" style="width: {{ progress_width }}%;"></div>
             </div>
@@ -459,12 +461,12 @@
         {%- if cta_primary_text != blank or cta_secondary_text != blank -%}
           <div class="nc-aug__ctas">
             {%- if cta_primary_text != blank -%}
-              <a class="nc-aug__btn nc-aug__btn--primary" href="{{ cta_primary_url | default: routes.all_products_collection_url }}">
+              <a class="nc-aug__btn nc-aug__btn--primary" href="{% render 'nc-url', url: cta_primary_url, fallback: routes.all_products_collection_url %}">
                 {{ cta_primary_text }}
               </a>
             {%- endif -%}
             {%- if cta_secondary_text != blank -%}
-              <a class="nc-aug__btn nc-aug__btn--secondary" href="{{ cta_secondary_url | default: routes.all_products_collection_url }}">
+              <a class="nc-aug__btn nc-aug__btn--secondary" href="{% render 'nc-url', url: cta_secondary_url, fallback: routes.all_products_collection_url %}">
                 {{ cta_secondary_text }}
               </a>
             {%- endif -%}

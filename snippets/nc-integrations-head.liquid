@@ -1,0 +1,17 @@
+{% comment %}
+  Tredjeparts-scripts i <head>, styret fra temaindstillinger (Integrationer).
+  Standardvaerdierne er kopieret fra det aktive tema, saa samtykke (Cookiebot)
+  og Google Tag Manager fortsaetter uaendret ved temaskift. Cookiebot skal
+  ligge foerst i head. Apps med app-embed (Klaviyo, Yotpo, Kaching, Judge.me,
+  Tolstoy, Triple Whale, Avada, EG Auto Add to Cart) styres ikke her, men i
+  temaeditoren under App-embeds.
+{% endcomment %}
+{%- if settings.cookiebot_id != blank -%}
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ settings.cookiebot_id | strip }}" data-culture="{{ request.locale.iso_code | upcase }}" type="text/javascript" defer></script>
+{%- endif -%}
+{%- if settings.gtm_id != blank -%}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ settings.gtm_id | strip }}');</script>
+{%- endif -%}
+{%- if settings.trustpilot_script -%}
+  <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+{%- endif -%}

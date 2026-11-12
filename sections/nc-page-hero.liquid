@@ -1,0 +1,139 @@
+{% comment %}
+  Sidehero med tre varianter fra designet:
+  - "plain": enkel eyebrow/overskrift/intro paa papir (som hidtil)
+  - "sage": fuldbred sage-500-baand med hvid tekst (om os, ingredienser)
+  - "image": moerkt baand med baggrundsbillede og overlay (Om CBD)
+{% endcomment %}
+
+{%- liquid
+  assign tone = section.settings.tone | default: 'plain'
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .nc-pagehero { padding: clamp(36px, 5vw, 64px) 0 clamp(10px, 2vw, 20px); }
+  #shopify-section-{{ section.id }} .nc-pagehero__inner { max-width: 70ch; }
+  #shopify-section-{{ section.id }} .nc-pagehero--center .nc-pagehero__inner { margin: 0 auto; text-align: center; }
+  {%- comment -%} Designets enkle sidehoveder (kontakt m.fl.) har 12px mellem eyebrow og h1, ikke sektionsafstanden paa 22px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero .nc-eyebrow { margin-bottom: 12px; }
+
+  {%- comment -%} Baand-maal 1:1 fra designet: centreret 760px-kolonne (712px + 24px sidepadding), H1 clamp(38,5vw,58)/1.05, intro 18px maks 560px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--band { position: relative; padding: clamp(50px, 6vw, 90px) 0; background: var(--sage-500); overflow: hidden; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__inner { max-width: 712px; margin: 0 auto; position: relative; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band h1 { margin: 0; color: var(--cloud); font-size: clamp(38px, 5vw, 58px); line-height: 1.05; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__intro { margin: 18px 0 0; color: rgba(246, 244, 238, 0.85); font-size: 18px; line-height: 1.7; max-width: 560px; }
+  {%- comment -%} Designets eyebrow paa sage-baandet er lys sage (sage-200), ikke sand. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--band .nc-eyebrow { margin: 0 0 16px; color: var(--sage-200); } {%- comment -%} designets flex-gap 16-18px {%- endcomment -%}
+  {%- comment -%} Kompakt baand (designets forhandlerside, shell.html 2567-2573): padding clamp(44,6vw,80), H1 clamp(38,5vw,56), 16px gap. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact { padding: clamp(44px, 6vw, 80px) 0; }
+  #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact h1 { font-size: clamp(38px, 5vw, 56px); }
+  #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact .nc-pagehero__intro { margin-top: 16px; max-width: 520px; }
+  {%- comment -%} Bred intro (designets ingrediensside, shell.html 2825: max-width 600px). {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero__intro.is-wide { max-width: 600px; }
+
+  {%- comment -%} "soft": lyst sage-50-baand med moerk tekst (designets FAQ-side, template.html:2306-2312):
+      820px-kolonne inkl. 24px sidepadding, eyebrow 12px/0.14em sage-600, H1 clamp(29,4.5vw,46), intro 17px maks 560px. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--soft { padding: clamp(35px, 6vw, 64px) 0; background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__inner { max-width: 772px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--sage-600); }
+  {%- comment -%} Designets h1 saetter ingen line-height og arver derfor body'ens 1.7, det giver baandets hoejde. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-pagehero--soft h1 { margin: 0; font-size: clamp(29px, 4.5vw, 46px); letter-spacing: -0.01em; line-height: var(--leading-relaxed); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-pagehero--soft .nc-pagehero__intro { margin: 0; max-width: 560px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
+
+  #shopify-section-{{ section.id }} .nc-pagehero--image { background: var(--sage-800); }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg { position: absolute; inset: 0; opacity: 0.35; }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .nc-pagehero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40, 64, 59, 0.55) 0%, rgba(40, 64, 59, 0.1) 70%); }
+  /* Mobil (08-10): kortere baand og mindre overskrift, saa teksten ikke loeber over flere skaerme */
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .nc-pagehero--band,
+    #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact { padding: 40px 0 44px; }
+    #shopify-section-{{ section.id }} .nc-pagehero--band h1,
+    #shopify-section-{{ section.id }} .nc-pagehero--band.is-compact h1 { font-size: clamp(30px, 8.4vw, 36px); line-height: 1.1; }
+    #shopify-section-{{ section.id }} .nc-pagehero--band .nc-pagehero__intro { margin-top: 14px; font-size: 16px; line-height: 1.6; }
+  }
+{%- endstyle -%}
+
+{%- if tone == 'plain' -%}
+  <div class="nc-pagehero {% if section.settings.center %}nc-pagehero--center{% endif %}">
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        {%- endif -%}
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p>{% render 'nc-cbd', text: section.settings.intro %}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- elsif tone == 'soft' -%}
+  <div class="nc-pagehero--soft">
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        {%- endif -%}
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{% render 'nc-cbd', text: section.settings.intro %}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  <div class="nc-pagehero--band {% if tone == 'image' %}nc-pagehero--image{% endif %}{% if section.settings.band_compact %} is-compact{% endif %} nc-on-dark">
+    {%- if tone == 'image' -%}
+      <div class="nc-pagehero__bg" aria-hidden="true">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 2200 | image_tag: alt: '', loading: 'eager', sizes: '100vw' }}
+        {%- elsif section.settings.image_url contains '//' -%}
+          <img src="{{ section.settings.image_url }}" alt="" loading="eager" width="2200" height="800">
+        {%- elsif section.settings.image_url != blank -%}
+          <img src="{{ section.settings.image_url | asset_url }}" alt="" loading="eager" width="2200" height="800">
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="nc-container">
+      <div class="nc-pagehero__inner">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.eyebrow %}</p>
+        {%- endif -%}
+        <h1>{%- assign nc_h1 = section.settings.heading | default: page.title -%}{% render 'nc-cbd', text: nc_h1 %}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="nc-pagehero__intro{% if section.settings.intro_wide %} is-wide{% endif %}">{% render 'nc-cbd', text: section.settings.intro %}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Side-hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Variant",
+      "options": [
+        { "value": "plain", "label": "Enkel (papir)" },
+        { "value": "sage", "label": "Sage-bånd" },
+        { "value": "soft", "label": "Lyst sage-bånd (FAQ)" },
+        { "value": "image", "label": "Mørkt bånd med billede" }
+      ],
+      "default": "plain"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Overlinje" },
+    { "type": "text", "id": "heading", "label": "Overskrift", "info": "Tom = sidens titel" },
+    { "type": "textarea", "id": "intro", "label": "Intro" },
+    { "type": "checkbox", "id": "center", "label": "Centrér (kun enkel variant)", "default": false },
+    { "type": "checkbox", "id": "band_compact", "label": "Kompakt bånd (forhandlere: 56px overskrift)", "default": false },
+    { "type": "checkbox", "id": "intro_wide", "label": "Bred intro (600px, ingredienser)", "default": false },
+    { "type": "image_picker", "id": "image", "label": "Baggrundsbillede (kun billedvariant)" },
+    { "type": "text", "id": "image_url", "label": "Billede-URL/asset (fallback)" }
+  ],
+  "presets": [ { "name": "Side-hero" } ]
+}
+{% endschema %}

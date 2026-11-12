@@ -1,0 +1,346 @@
+{% comment %}
+  Blogoversigt 1:1 fra NatureCell.dc.html (template.html 1920-1962 kundecases,
+  2032-2088 artikler). Al maal-/farvedata er spejlet fra designets inline styles.
+  Kundecases: sage-50 hero, omraadechips + soegning, 4-kolonners case-kort med
+  omraade-tag, VIDEO-pill og play-cirkel, navn under titlen.
+  Artikler: samme hero, tag-chips + soegning, featured "NYESTE"-kort og
+  3-kolonners artikelkort med tag-pill paa billedet, uddrag og "Laes mere".
+{% endcomment %}
+
+{%- liquid
+  assign is_cases = false
+  if blog.handle == 'kundecases'
+    assign is_cases = true
+  endif
+
+  if is_cases
+    assign eyebrow = section.settings.cases_eyebrow | default: section.settings.eyebrow
+    assign heading = section.settings.cases_heading
+    assign intro = section.settings.cases_intro | default: section.settings.intro
+  else
+    assign eyebrow = section.settings.articles_eyebrow | default: section.settings.eyebrow
+    assign heading = section.settings.articles_heading
+    assign intro = section.settings.articles_intro | default: section.settings.intro
+  endif
+  if heading == blank
+    assign heading = blog.title
+  endif
+  if eyebrow == blank
+    if is_cases
+      assign eyebrow = 'blog.eyebrow_cases' | t
+    else
+      assign eyebrow = 'blog.eyebrow_articles' | t
+    endif
+  endif
+  if intro == blank
+    if is_cases
+      assign intro = 'blog.intro_cases' | t
+    else
+      assign intro = 'blog.intro_articles' | t
+    endif
+  endif
+
+  if is_cases
+    assign search_placeholder = 'blog.search_cases' | t
+    assign empty_text = 'blog.empty_cases' | t
+  else
+    assign search_placeholder = 'blog.search_articles' | t
+    assign empty_text = 'blog.empty_articles' | t
+  endif
+-%}
+
+{%- style -%}
+  /* Hero (design: section sage-50 + 1px border-soft, inner max 900, gap 14, alt arver body line-height 1.7) */
+  #shopify-section-{{ section.id }} .nc-blogidx__hero { background: var(--sage-50); border-bottom: 1px solid var(--border-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__hero-in { max-width: 900px; margin: 0 auto; padding: clamp(35px, 6vw, 64px) clamp(16px, 4vw, 24px); text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .nc-blogidx__eyebrow { margin: 0; font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 1.7; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-600); }
+  #shopify-section-{{ section.id }} .nc-blogidx__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(29px, 4.5vw, 46px); line-height: 1.7; letter-spacing: -0.01em; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-blogidx__intro { margin: 0; max-width: 600px; font-size: 17px; line-height: 1.7; color: var(--ink-700); }
+
+  /* Indhold (design: max 1240, padding 36/24/80) */
+  #shopify-section-{{ section.id }} .nc-blogidx { max-width: 1240px; margin: 0 auto; padding: clamp(22px, 5vw, 36px) clamp(16px, 4vw, 24px) clamp(48px, 6vw, 80px); }
+
+  /* Vaerktoejsraekke: chips + soegning (design: flex, space-between, gap 18, mb 28/30) */
+  #shopify-section-{{ section.id }} .nc-blogidx__tools { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: {% if is_cases %}28px{% else %}30px{% endif %}; }
+  /* Emne-chips: én vandret raekke med pile i siderne, naar der er flere chips end plads */
+  #shopify-section-{{ section.id }} .nc-blogidx__chipwrap { position: relative; flex: 1 1 360px; min-width: 0; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chips { display: flex; gap: {% if is_cases %}9px{% else %}8px{% endif %}; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px 1px; scroll-padding-inline: 44px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chips::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chipwrap.is-scrollable .nc-blogidx__chips { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn { position: absolute; top: 50%; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin: 0; padding: 0; border: 1px solid var(--border-default); border-radius: 999px; background: var(--paper); color: var(--sage-700); box-shadow: var(--shadow-sm); cursor: pointer; transform: translateY(-50%); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn:hover { border-color: var(--sage-500); }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn--prev { left: 0; }
+  #shopify-section-{{ section.id }} .nc-hscroll__btn--next { right: 0; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip { display: inline-block; border: 1.5px solid var(--border-default); background: transparent; color: var(--ink-700); font-family: var(--font-body); font-weight: 600; font-size: {% if is_cases %}13.5px{% else %}13px{% endif %}; line-height: normal; padding: {% if is_cases %}8px 16px{% else %}7px 15px{% endif %}; border-radius: 999px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip:hover { border-color: var(--sage-500); color: var(--sage-700); text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__chip.is-active { border-color: var(--sage-500); background: var(--sage-500); color: #fff; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search { position: relative; display: flex; align-items: center; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search-ico { position: absolute; left: 14px; color: var(--ink-400); display: flex; pointer-events: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input { border: 1px solid var(--border-default); background: var(--cloud); border-radius: 999px; padding: 10px 16px 10px 38px; font-family: var(--font-body); font-size: 14px; line-height: normal; outline: none; color: var(--sage-700); min-width: 240px; width: 240px; margin: 0; -webkit-appearance: none; appearance: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input::placeholder { color: var(--ink-400); opacity: 1; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  #shopify-section-{{ section.id }} .nc-blogidx__search input:focus-visible { outline: 2px solid var(--sage-500); outline-offset: 1px; }
+
+  /* Featured "Nyeste"-kort (artikler) */
+  #shopify-section-{{ section.id }} .nc-blogidx__feat { display: grid; grid-template-columns: 1fr; gap: 0; width: 100%; margin-bottom: 40px; border: 1px solid var(--border-soft); background: var(--cloud); border-radius: var(--radius-xl); overflow: hidden; text-align: left; text-decoration: none; color: inherit; line-height: normal; transition: border-color var(--dur-fast) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat:hover { border-color: var(--sage-400); text-decoration: none; }
+  @media (min-width: 900px) { #shopify-section-{{ section.id }} .nc-blogidx__feat { grid-template-columns: 1.15fr 1fr; } }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-media { position: relative; display: block; min-height: 340px; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-body { display: flex; flex-direction: column; gap: 16px; justify-content: center; padding: clamp(22px, 3vw, 40px); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-pill { align-self: flex-start; background: var(--sage-100); color: var(--sage-700); font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.9vw, 30px); line-height: 1.15; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-text { margin: 0; font-size: 16px; line-height: 1.7; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-blogidx__feat-more { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: normal; color: var(--sage-700); margin-top: 4px; }
+
+  /* Kort-grid (design: auto-fill minmax(min(47%,280px),1fr) gap 24 / minmax(min(47%,290px),1fr) gap 26) */
+  #shopify-section-{{ section.id }} .nc-blogidx__grid { display: grid; list-style: none; margin: 0; padding: 0; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid--cases { grid-template-columns: repeat(auto-fill, minmax(min(47%, 280px), 1fr)); gap: 24px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid--articles { grid-template-columns: repeat(auto-fill, minmax(min(47%, 290px), 1fr)); gap: 26px; }
+  #shopify-section-{{ section.id }} .nc-blogidx__grid > li { min-width: 0; }
+
+  #shopify-section-{{ section.id }} .nc-bcard { display: flex; flex-direction: column; gap: 14px; padding: 0; text-align: left; text-decoration: none; color: inherit; line-height: normal; }
+  {%- comment -%} Kundecases (kundens rettelse 50/51): hvidt kort med tekstboks under billedet, som produktkortene; ingen play-ikon midt paa. {%- endcomment -%}
+  {%- if is_cases -%}
+  #shopify-section-{{ section.id }} .nc-bcard { gap: 0; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-soft); }
+  #shopify-section-{{ section.id }} .nc-bcard:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  #shopify-section-{{ section.id }} .nc-bcard__media { border-radius: 0; }
+  #shopify-section-{{ section.id }} .nc-bcard__text { padding: 16px 18px 18px; }
+  {%- comment -%} Kundens rettelse 63 (09-10): lige hoejt tekstfelt: titlen reserverer 3 linjer og klippes derefter, navnet altid paa egen linje {%- endcomment -%}
+  #shopify-section-{{ section.id }} .nc-bcard__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; min-height: calc(3 * 1.2em); }
+  #shopify-section-{{ section.id }} .nc-bcard__who { min-height: 1.2em; }
+  {%- endif -%}
+  #shopify-section-{{ section.id }} .nc-bcard:hover { text-decoration: none; }
+  #shopify-section-{{ section.id }} .nc-bcard__media { position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--sage-50); }
+  #shopify-section-{{ section.id }} .nc-bcard__media--wide { aspect-ratio: 4 / 3; }
+  #shopify-section-{{ section.id }} .nc-bcard__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--dur-base) var(--ease-out); }
+  #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__media img { transform: scale(1.03); }
+  #shopify-section-{{ section.id }} .nc-bcard__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 54px; height: 54px; border-radius: 999px; background: rgba(255, 255, 255, 0.92); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); color: var(--sage-700); }
+  #shopify-section-{{ section.id }} .nc-bcard__tag { position: absolute; top: 12px; left: 12px; background: var(--paper); color: var(--sage-700); font-family: var(--font-body); font-size: 10.5px; font-weight: 700; line-height: normal; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .nc-bcard__video { position: absolute; top: 12px; right: 12px; background: rgba(32, 38, 35, 0.6); color: #fff; font-family: var(--font-body); font-size: 10px; font-weight: 600; line-height: normal; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; display: flex; align-items: center; gap: 5px; }
+  #shopify-section-{{ section.id }} .nc-bcard__text { display: flex; flex-direction: column; gap: {% if is_cases %}5px{% else %}8px{% endif %}; }
+  #shopify-section-{{ section.id }} .nc-bcard__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: {% if is_cases %}1.2{% else %}1.25{% endif %}; letter-spacing: normal; color: var(--sage-700); text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__title { color: var(--sage-900); }
+  #shopify-section-{{ section.id }} .nc-bcard__who { font-size: 14px; line-height: normal; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-bcard__excerpt { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-bcard__more { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-weight: 600; font-size: 13.5px; line-height: normal; color: var(--sage-700); margin-top: 2px; }
+
+  #shopify-section-{{ section.id }} .nc-blogidx__empty { padding: 60px; text-align: center; color: var(--ink-400); font-size: 15px; margin: 0; }
+  #shopify-section-{{ section.id }} .nc-pagination { margin-top: 40px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .nc-bcard:hover .nc-bcard__media img { transform: none; }
+  }
+{%- endstyle -%}
+
+<section class="nc-blogidx__hero">
+  <div class="nc-blogidx__hero-in">
+    <span class="nc-blogidx__eyebrow">{% render 'nc-cbd', text: eyebrow %}</span>
+    <h1 class="nc-blogidx__title">{% render 'nc-cbd', text: heading %}</h1>
+    <p class="nc-blogidx__intro">{% render 'nc-cbd', text: intro %}</p>
+  </div>
+</section>
+
+<section class="nc-blogidx nc-flush-footer" data-nc-bloglist>
+  {%- paginate blog.articles by 24 -%}
+    <div class="nc-blogidx__tools">
+      {%- if section.settings.show_tags -%}
+        <div class="nc-blogidx__chipwrap" data-nc-hscroll>
+        <button type="button" class="nc-hscroll__btn nc-hscroll__btn--prev" data-nc-hscroll-prev aria-label="{{ 'general.scroll_left' | t }}" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="nc-blogidx__chips" data-nc-hscroll-track role="group" aria-label="{{ 'blog.filter_topic' | t }}">
+          <a class="nc-blogidx__chip {% unless current_tags %}is-active{% endunless %}" href="{{ blog.url }}">{% if is_cases %}{{ 'blog.all_cases' | t }}{% else %}{{ 'general.all' | t }}{% endif %}</a>
+          {%- if is_cases -%}
+            {%- assign area_names = 'Ansigt,Hænder,Fødder' | split: ',' -%}
+            {%- assign area_keys = 'areas.face,areas.hands,areas.feet' | split: ',' -%}
+            {%- for area in area_names -%}
+              {%- assign area_dc = area | downcase -%}
+              {%- assign chip_tag = '' -%}
+              {%- for tag in blog.all_tags -%}
+                {%- assign tag_dc = tag | downcase -%}
+                {%- if tag_dc == area_dc -%}
+                  {%- assign chip_tag = tag -%}
+                  {%- break -%}
+                {%- elsif chip_tag == blank and tag_dc contains area_dc -%}
+                  {%- assign chip_tag = tag -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if chip_tag == blank -%}
+                {%- assign chip_tag = area -%}
+              {%- endif -%}
+              <a class="nc-blogidx__chip {% if current_tags contains chip_tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ chip_tag | handle }}">{{ area_keys[forloop.index0] | t }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- liquid
+              assign pinned = section.settings.pinned_tags | split: ','
+              assign skip_s = ','
+              for p in pinned
+                assign p_dc = p | strip | downcase
+                assign skip_s = skip_s | append: p_dc | append: ','
+              endfor
+              assign hidden = section.settings.hidden_tags | split: ','
+              for h in hidden
+                assign h_dc = h | strip | downcase
+                assign skip_s = skip_s | append: h_dc | append: ','
+              endfor
+            -%}
+            {%- for p in pinned -%}
+              {%- assign p_dc = p | strip | downcase -%}
+              {%- for tag in blog.all_tags -%}
+                {%- assign tag_dc = tag | downcase -%}
+                {%- if tag_dc == p_dc -%}
+                  <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            {%- for tag in blog.all_tags -%}
+              {%- assign tag_key = tag | downcase | prepend: ',' | append: ',' -%}
+              {%- if skip_s contains tag_key -%}{%- continue -%}{%- endif -%}
+              <a class="nc-blogidx__chip {% if current_tags contains tag %}is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{% render 'nc-tag-label', tag: tag %}</a>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        <button type="button" class="nc-hscroll__btn nc-hscroll__btn--next" data-nc-hscroll-next aria-label="{{ 'general.scroll_right' | t }}" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      {%- endif -%}
+      <div class="nc-blogidx__search">
+        <span class="nc-blogidx__search-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <label class="nc-visually-hidden" for="nc-blog-search">{{ 'general.search' | t }}</label>
+        <input id="nc-blog-search" type="search" placeholder="{{ search_placeholder }}" data-nc-blog-search autocomplete="off">
+      </div>
+    </div>
+
+    {%- unless is_cases or current_tags or paginate.current_page > 1 -%}
+      {%- assign feat = blog.articles.first -%}
+      {%- if feat -%}
+        <a class="nc-blogidx__feat" href="{{ feat.url }}">
+          <span class="nc-blogidx__feat-media">
+            {%- if feat.image -%}
+              {{ feat.image | image_url: width: 1400 | image_tag: alt: feat.title, loading: 'eager', sizes: '(min-width: 900px) 640px, 94vw' }}
+            {%- endif -%}
+          </span>
+          <span class="nc-blogidx__feat-body">
+            {%- capture feat_lbl %}{% render 'nc-article-label', article: feat %}{% endcapture -%}
+            <span class="nc-blogidx__feat-pill">{{ 'blog.newest' | t }}{% if feat_lbl != blank %} · {{ feat_lbl }}{% endif %}</span>
+            {%- assign nc_ft = feat.title | split: ' | ' | first -%}
+            <h2 class="nc-blogidx__feat-title">{% render 'nc-cbd', text: nc_ft %}</h2>
+            {%- assign feat_text = feat.excerpt_or_content | strip_html | truncate: 320 -%}
+            <p class="nc-blogidx__feat-text">{% render 'nc-cbd', text: feat_text %}</p>
+            <span class="nc-blogidx__feat-more">{{ 'general.read_more' | t }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+          </span>
+        </a>
+      {%- endif -%}
+    {%- endunless -%}
+
+    <ul class="nc-blogidx__grid {% if is_cases %}nc-blogidx__grid--cases{% else %}nc-blogidx__grid--articles{% endif %}">
+      {%- for article in blog.articles -%}
+        {%- if is_cases == false and current_tags == blank and paginate.current_page == 1 and forloop.first -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- liquid
+          assign area_label = ''
+          for tag in article.tags
+            assign lt = tag | downcase
+            if area_label == blank
+              if lt contains 'ansigt'
+                assign area_label = 'areas.face' | t
+              elsif lt contains 'hænder' or lt contains 'haender' or lt contains 'håndcreme'
+                assign area_label = 'areas.hands' | t
+              elsif lt contains 'fødder' or lt contains 'foedder' or lt contains 'fodcreme'
+                assign area_label = 'areas.feet' | t
+              elsif lt == 'krop'
+                assign area_label = 'areas.body' | t
+              endif
+            endif
+          endfor
+          assign has_video = false
+          if article.content contains 'youtube' or article.content contains 'youtu.be' or article.content contains '<video'
+            assign has_video = true
+          endif
+          assign clean_title = article.title | split: ' | ' | first
+          assign person = article.metafields.ncell.name | default: ''
+        -%}
+
+        <li data-nc-blog-item data-nc-search-text="{{ clean_title | downcase | escape }} {{ person | downcase | escape }} {{ article.tags | join: ' ' | downcase | escape }}">
+          <a class="nc-bcard" href="{{ article.url }}">
+            <span class="nc-bcard__media {% unless is_cases %}nc-bcard__media--wide{% endunless %}">
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 760 | image_tag: alt: article.title, loading: 'lazy', sizes: '(min-width: 990px) 380px, 46vw' }}
+              {%- endif -%}
+              {%- if is_cases -%}
+                {%- if area_label != blank -%}
+                  <span class="nc-bcard__tag">{{ area_label }}</span>
+                {%- endif -%}
+                {%- if has_video -%}
+                  <span class="nc-bcard__video"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ 'general.see_video' | t }}</span>
+                {%- endif -%}
+              {%- else -%}
+                {%- capture card_lbl %}{% render 'nc-article-label', article: article %}{% endcapture -%}
+                {%- if card_lbl != blank -%}<span class="nc-bcard__tag">{{ card_lbl }}</span>{%- endif -%}
+              {%- endif -%}
+            </span>
+            <span class="nc-bcard__text">
+              <h3 class="nc-bcard__title">{% render 'nc-cbd', text: clean_title %}</h3>
+              {%- if is_cases -%}
+                <span class="nc-bcard__who">{% if person != blank %}{{ person }}{% else %}&nbsp;{% endif %}</span>
+              {%- else -%}
+                {%- assign card_text = article.excerpt_or_content | strip_html | truncate: 320 -%}
+                <p class="nc-bcard__excerpt">{% render 'nc-cbd', text: card_text %}</p>
+                <span class="nc-bcard__more">{{ 'general.read_more' | t }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+              {%- endif -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <p class="nc-blogidx__empty" data-nc-blog-empty hidden>{{ empty_text }}</p>
+
+    {% render 'nc-pagination', paginate: paginate %}
+  {%- endpaginate -%}
+</section>
+
+<script>
+  (function () {
+    var wrap = document.querySelector('[data-nc-bloglist]');
+    if (!wrap) return;
+    var input = wrap.querySelector('[data-nc-blog-search]');
+    var items = wrap.querySelectorAll('[data-nc-blog-item]');
+    var empty = wrap.querySelector('[data-nc-blog-empty]');
+    if (!input || !items.length) return;
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      var shown = 0;
+      items.forEach(function (li) {
+        var hit = !q || (li.getAttribute('data-nc-search-text') || '').indexOf(q) !== -1;
+        li.hidden = !hit;
+        if (hit) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Artikler" },
+    { "type": "text", "id": "articles_eyebrow", "label": "Overlinje", "info": "Tom = Viden & inspiration" },
+    { "type": "text", "id": "articles_heading", "label": "Overskrift", "info": "Tom = bloggens navn" },
+    { "type": "textarea", "id": "articles_intro", "label": "Introtekst", "info": "Tom = standardteksten" },
+    { "type": "text", "id": "pinned_tags", "label": "Emne-chips først (kommasepareret)", "default": "Guides", "info": "Tags der står først efter Alle, fx Guides. Tagget sættes på artiklerne i Shopify." },
+    { "type": "text", "id": "hidden_tags", "label": "Tags der ikke vises som chips", "default": "Test, LS" },
+    { "type": "header", "content": "Kundecases" },
+    { "type": "text", "id": "cases_eyebrow", "label": "Overlinje", "info": "Tom = Ægte oplevelser" },
+    { "type": "text", "id": "cases_heading", "label": "Overskrift", "info": "Tom = bloggens navn" },
+    { "type": "textarea", "id": "cases_intro", "label": "Introtekst", "info": "Tom = standardteksten" },
+    { "type": "header", "content": "Fælles" },
+    { "type": "text", "id": "eyebrow", "label": "Overlinje (gammel, begge blogs)", "info": "Bruges kun, hvis feltet for bloggen er tomt." },
+    { "type": "textarea", "id": "intro", "label": "Introtekst (gammel, begge blogs)", "info": "Bruges kun, hvis feltet for bloggen er tomt." },
+    { "type": "checkbox", "id": "show_tags", "label": "Vis emne-chips", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,301 @@
+{% comment %}
+  Kundeklub 1:1 fra NatureCell.dc.html: sage-hero med to knapper,
+  fire fordelskort med ikon-cirkler, "Saadan virker det" med tre
+  nummererede trin paa lys sage-bund, og tilmelding med e-mailfelt.
+{% endcomment %}
+
+{%- style -%}
+  .nc-klub__hero { background: var(--sage-500); padding: clamp(48px, 6vw, 88px) 0; }
+  .nc-klub__hero-inner { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .nc-klub__hero.nc-on-dark .nc-eyebrow { color: var(--sage-200); }
+  .nc-klub__hero h1 { margin: 0; color: var(--paper); font-size: clamp(38px, 5vw, 58px); line-height: 1.05; }
+  .nc-klub__hero p { margin: 0; color: rgba(246, 244, 238, 0.85); font-size: 18px; line-height: 1.7; max-width: 560px; }
+  .nc-klub__hero .nc-eyebrow { font-size: var(--text-xs); line-height: 1.4; letter-spacing: var(--tracking-wider); }
+  .nc-klub__hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .nc-klub__hero-ctas .nc-btn { padding-top: 16px; padding-bottom: 16px; min-height: 50px; }
+
+  .nc-klub__perksec { padding: clamp(43px, 5vw, 72px) 0 clamp(17px, 6vw, 28px); }
+  .nc-klub__head { text-align: center; max-width: 62ch; margin: 0 auto 40px; }
+  .nc-klub__head h2 { margin: 0; font-size: clamp(21px, 3.3vw, 34px); }
+
+  .nc-klub__perks { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(47%, 240px), 1fr)); }
+  {%- comment -%} 3 eller 6 fordele: tre pr. raekke, saa ingen raekke staar halvtom. {%- endcomment -%}
+  @media (min-width: 900px) { .nc-klub__perks--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .nc-klub__perk { background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 28px 28px 36px; }
+  .nc-klub__perk-icon { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 999px; background: var(--sage-100); color: var(--sage-700); margin-bottom: 12px; }
+  .nc-klub__perk h3 { font-size: 20px; margin: 0 0 20px; }
+  .nc-klub__perk p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-500); }
+
+  .nc-klub__how { background: var(--sage-50); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); padding: clamp(50px, 7vw, 94px) 0 clamp(35px, 6vw, 64px); }
+  .nc-klub__how .nc-klub__head h2 { font-size: clamp(19px, 2.9vw, 30px); }
+  .nc-klub__steps { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(47%, 220px), 1fr)); text-align: center; max-width: 900px; margin: 0 auto; }
+  .nc-klub__step strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(21px, 3.3vw, 34px); color: var(--sage-400); letter-spacing: 0.04em; }
+  .nc-klub__step h3 { font-size: 19px; margin: 8px 0; }
+  .nc-klub__step p { margin: 0 auto; font-size: 14px; line-height: 1.6; color: var(--ink-500); max-width: 280px; }
+
+  .nc-klub__signup { padding: clamp(40px, 6vw, 72px) 0 clamp(8px, 1vw, 12px); text-align: center; }
+  .nc-klub__signup h2 { margin: 0; font-size: clamp(19px, 2.9vw, 30px); }
+  .nc-klub__signup > .nc-container > p { margin: 18px auto 0; font-size: 16px; line-height: 1.7; color: var(--ink-500); max-width: 560px; }
+  .nc-klub__form { display: flex; gap: 10px; max-width: 440px; margin: 18px auto 0; }
+  .nc-klub__form .nc-input { flex: 1; min-width: 0; border-radius: var(--radius-pill); }
+  .nc-klub__fine { margin: 22px auto 0; font-size: 12.5px; color: var(--ink-400); }
+
+  /* Sideskopede justeringer, saa kundeklub-siden matcher det godkendte design:
+     nyhedsbrevsknappen i footeren er moerk sage med lys pil, og sprogvaelgeren
+     er én omkranset kapsel uden indre skillelinjer, hvor det aktive DA-segment
+     er en fuldt afrundet sage-pille med lille luft til kapslens kant. */
+  .nc-footer .nc-footer__form .nc-iconbtn { background: var(--sage-700, #3E5D58); border-color: var(--sage-700, #3E5D58); color: var(--paper, #F6F4EE); }
+  .nc-footer .nc-footer__form .nc-iconbtn:hover, .nc-footer .nc-footer__form .nc-iconbtn:focus-visible { background: var(--sage-800, #33504b); border-color: var(--sage-800, #33504b); color: var(--paper, #F6F4EE); }
+  .nc-langs { background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-pill); padding: 3px; align-items: center; overflow: hidden; }
+  .nc-langs a { border-radius: var(--radius-pill, 999px); padding: 4px 11px; margin: 0; color: var(--sage-600, #4F6E68); }
+  .nc-langs a.is-active { background: var(--sage-500, #80A097); color: var(--cloud, #FDFDFB); }
+
+  /* Kundeklub-navpunktet: baade stjerne og tekst i dyb sage. */
+  .nc-header__link[href*="kundeklub"] { color: var(--sage-700, #3E5D58); }
+  .nc-header__link[href*="kundeklub"] .nc-header__star { color: var(--sage-700, #3E5D58); }
+
+  /* Footer-rytme: kompaktere linkkolonner og smallere brandkolonne som i designet.
+     Hoejere specificitet, da footerens eget style-blok kommer senere i kaskaden. */
+  .nc-footer .nc-footer__grid ul { gap: 5px; }
+  .nc-footer .nc-footer__grid ul a { line-height: 1.5; }
+  .nc-footer .nc-footer__grid .nc-footer__brand p { max-width: 190px; }
+
+  /* Footer-nyhedsbrev: fuld pille-form paa e-mailfeltet og plads nok til hele
+     placeholderen "din@email.dk" (bredere nyhedsbrevskolonne + slankere pilknap). */
+  @media (min-width: 990px) { .nc-footer .nc-footer__grid { grid-template-columns: 1.3fr repeat(3, minmax(140px, 1fr)) minmax(158px, 1.05fr); } }
+  .nc-footer .nc-footer__form .nc-input { border-radius: var(--radius-pill, 999px); padding-left: 14px; padding-right: 6px; font-size: 15px; }
+  .nc-footer .nc-footer__form .nc-iconbtn { padding: 0 13px; }
+
+  /* Footer-bundlinje: lysere footer-krop (#85A49B) og en moerkere fuldbreddes
+     baandfarve (#80A097) bag copyright/disclaimer-raekken som i designet. */
+  .nc-footer.nc-on-dark { background: #85A49B; }
+  .nc-footer .nc-footer__bottom { background: var(--nc-footer-bg, #80A097); box-shadow: 0 0 0 100vmax var(--nc-footer-bg, #80A097); clip-path: inset(0 -100vmax); }
+  .nc-footer .nc-footer__bottom p { max-width: 80ch; }
+  /* Mobil (08-10): kortere hero med mindre overskrift */
+  @media (max-width: 749px) {
+    .nc-klub__hero { padding: 40px 0 44px; }
+    .nc-klub__hero h1 { font-size: clamp(30px, 8.4vw, 36px); line-height: 1.1; }
+    .nc-klub__hero p { font-size: 16px; line-height: 1.6; }
+  }
+  .nc-klub__hero p.nc-klub__terms { color: var(--paper); font-weight: 600; font-size: 16px; padding: 16px 0; border-top: 1px solid rgba(246, 244, 238, 0.45); border-bottom: 1px solid rgba(246, 244, 238, 0.45); }
+  .nc-klub__redemption-terms { max-width: 680px; margin: 16px auto; color: var(--ink-700); font-family: var(--font-body); font-size: 16px; line-height: 1.6; font-weight: 600; }
+{%- endstyle -%}
+
+{%- liquid
+  assign klub_perks = section.blocks | where: 'type', 'perk'
+  assign klub_perk_mod = klub_perks.size | modulo: 3
+  assign klub_signup = section.settings.show_signup
+  assign klub_rewards_url = pages['kundeklub'].url | default: '/pages/kundeklub' | append: '#nc-klub-point'
+  if section.settings.signup_mode == 'account' or klub_signup == false
+    assign klub_join_url = routes.account_register_url
+  else
+    assign klub_join_url = '#nc-klub-tilmeld'
+  endif
+-%}
+<div class="nc-klub">
+  <div class="nc-klub__hero nc-on-dark">
+    <div class="nc-container">
+      <div class="nc-klub__hero-inner">
+        <p class="nc-eyebrow" style="margin: 0;">{% render 'nc-cbd', text: section.settings.hero_eyebrow %}</p>
+        <h1>{% render 'nc-cbd', text: section.settings.hero_heading %}</h1>
+        <p>{% render 'nc-cbd', text: section.settings.hero_text %}</p>
+        {%- if request.locale.iso_code == 'da' -%}
+          <p class="nc-klub__terms" data-nc-club-terms>{{ 'nc_loyalty.purchase_terms' | t }}</p>
+        {%- endif -%}
+        <div class="nc-klub__hero-ctas">
+          {%- if customer -%}
+          <a class="nc-btn nc-btn--light" href="#nc-klub-point">{{ 'nc_loyalty.heading' | t }}</a>
+          <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_url }}">{{ 'nc_loyalty.orders' | t }}</a>
+          {%- else -%}
+          <a class="nc-btn nc-btn--light" href="{{ klub_join_url }}">{% render 'nc-cbd', text: section.settings.hero_cta1 %}</a>
+          <a class="nc-btn nc-btn--outline-light" href="{{ routes.account_login_url }}?return_to={{ klub_rewards_url | url_encode }}">{% render 'nc-cbd', text: section.settings.hero_cta2 %}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nc-section nc-klub__perksec">
+    <div class="nc-container">
+      <div class="nc-klub__head">
+        <p class="nc-eyebrow">{% render 'nc-cbd', text: section.settings.perks_eyebrow %}</p>
+        <h2>{% render 'nc-cbd', text: section.settings.perks_heading %}</h2>
+      </div>
+      <div class="nc-klub__perks{% if klub_perks.size > 0 and klub_perk_mod == 0 %} nc-klub__perks--3{% endif %}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' -%}
+            <div class="nc-klub__perk" {{ block.shopify_attributes }}>
+              <span class="nc-klub__perk-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  {%- case block.settings.icon -%}
+                    {%- when 'star' -%}<path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z" fill="currentColor"/>
+                    {%- when 'percent' -%}<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
+                    {%- when 'gift' -%}<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3.5 8 4.6 8.4 8 12 8ZM12 8s1.5-4.5 4-3.4S15.6 8 12 8Z"/>
+                    {%- when 'bell' -%}<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    {%- when 'bag' -%}<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                    {%- when 'cake' -%}<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3M12 8v3M17 8v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/>
+                    {%- when 'share' -%}<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>
+                    {%- when 'heart' -%}<path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/>
+                    {%- when 'user' -%}<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+                    {%- else -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                  {%- endcase -%}
+                </svg>
+              </span>
+              <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%}
+    App-slot til loyalitetsprogrammet (Yotpo Loyalty & Referrals): pointsaldo, "saadan
+    optjener du", "saadan indloeser du" og VIP-niveauer tilfoejes som app-blokke i
+    temaeditoren og vises her mellem fordelene og "Saadan virker det".
+  {%- endcomment -%}
+  {%- assign has_app_blocks = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == '@app' or block.type == 'yotpo_widget' -%}{%- assign has_app_blocks = true -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if has_app_blocks -%}
+    <div class="nc-section nc-klub__apps" id="nc-klub-point" style="scroll-margin-top: 110px;">
+      <div class="nc-container">
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}
+            {%- render block -%}
+          {%- elsif block.type == 'yotpo_widget' and block.settings.instance_id != blank -%}
+            {%- comment -%} Yotpo Loyalty-widget (samme instans-id som paa den nuvaerende kundeklubside). Kraever Yotpos app-embed. {%- endcomment -%}
+            <div class="yotpo-widget-instance" data-yotpo-instance-id="{{ block.settings.instance_id | strip }}" {{ block.shopify_attributes }}></div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="nc-klub__how">
+    <div class="nc-container">
+      <div class="nc-klub__head" style="margin-bottom: 34px;">
+        <h2>{% render 'nc-cbd', text: section.settings.steps_heading %}</h2>
+      </div>
+      <div class="nc-klub__steps">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' -%}
+            <div class="nc-klub__step" {{ block.shopify_attributes }}>
+              <strong>{{ block.settings.num }}</strong>
+              <h3>{% render 'nc-cbd', text: block.settings.title %}</h3>
+              <p>{% render 'nc-cbd', text: block.settings.text %}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if klub_signup -%}
+  <div class="nc-klub__signup" id="nc-klub-tilmeld">
+    <div class="nc-container">
+      <h2>{% render 'nc-cbd', text: section.settings.cta_heading %}</h2>
+      <p>{% render 'nc-cbd', text: section.settings.cta_text %}</p>
+      {%- if section.settings.signup_mode == 'account' -%}
+        {%- comment -%} Pointprogrammet kraever en kundekonto: medlemskab = oprettelse af konto. {%- endcomment -%}
+        <p style="margin-top: 18px;">
+          <a class="nc-btn nc-btn--sage" href="{{ routes.account_register_url }}">{% render 'nc-cbd', text: section.settings.cta_button %}</a>
+        </p>
+      {%- else -%}
+      {%- form 'customer' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,kundeklub">
+        <div class="nc-klub__form">
+          <label class="nc-visually-hidden" for="nc-klub-email">{{ 'forms.email' | t }}</label>
+          <input id="nc-klub-email" class="nc-input" type="email" name="contact[email]" placeholder="{{ 'forms.email_placeholder' | t }}" autocomplete="email" required>
+          <button class="nc-btn nc-btn--sage" type="submit">{% render 'nc-cbd', text: section.settings.cta_button %}</button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p role="status" style="margin-top: 12px; color: var(--sage-700);">{{ 'forms.welcome' | t }}</p>
+        {%- elsif form.errors -%}
+          <p role="alert" style="margin-top: 12px;">{{ 'forms.email_error' | t }}</p>
+        {%- endif -%}
+      {%- endform -%}
+      {%- endif -%}
+      <p class="nc-klub__fine">{% render 'nc-cbd', text: section.settings.cta_fine %}</p>
+    </div>
+  </div>
+  {%- endif -%}
+</div>
+
+{%- if request.locale.iso_code == 'da' -%}
+  <script src="{{ 'nc-club-terms.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kundeklub",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Overlinje", "default": "Bliv medlem · Gratis" },
+    { "type": "text", "id": "hero_heading", "label": "Overskrift", "default": "NatureCell Kundeklub" },
+    { "type": "textarea", "id": "hero_text", "label": "Tekst", "default": "Bliv medlem af NatureCells kundeklub og få adgang til gaver og rabatter før alle andre. Optjen point ved køb, på din fødselsdag og når du følger os på sociale medier. Del dit personlige henvisningslink med venner, og få point, når de handler via linket. Ombyt dine point til rabatkoder." },
+    { "type": "text", "id": "hero_cta1", "label": "Primær knap", "default": "Bliv medlem →" },
+    { "type": "text", "id": "hero_cta2", "label": "Sekundær knap", "default": "Allerede medlem? Log ind" },
+    { "type": "header", "content": "Fordele" },
+    { "type": "text", "id": "perks_eyebrow", "label": "Overlinje", "default": "NatureCells kundeklub" },
+    { "type": "text", "id": "perks_heading", "label": "Overskrift", "default": "Optjen point til rabatter – få adgang før andre" },
+    { "type": "header", "content": "Sådan virker det" },
+    { "type": "text", "id": "steps_heading", "label": "Overskrift", "default": "Sådan virker det" },
+    { "type": "header", "content": "Tilmelding" },
+    { "type": "checkbox", "id": "show_signup", "label": "Vis tilmeldingsboksen nederst", "info": "Slået fra: \"Bliv medlem\" fører til oprettelse af kundekonto.", "default": false },
+    { "type": "select", "id": "signup_mode", "label": "Tilmelding sker via", "options": [ { "value": "email", "label": "E-mailfelt (nyhedsbrev + tag kundeklub)" }, { "value": "account", "label": "Kundekonto (kræves af pointprogrammet)" } ], "default": "account", "info": "Vælg Kundekonto, når Yotpo Loyalty er aktivt: point optjenes kun på en konto." },
+    { "type": "text", "id": "cta_heading", "label": "Overskrift", "default": "Meld dig ind på 30 sekunder" },
+    { "type": "textarea", "id": "cta_text", "label": "Tekst", "default": "Tilmeld dig med din e-mail, og optjen point fra dit første køb." },
+    { "type": "text", "id": "cta_button", "label": "Knaptekst", "default": "Bliv medlem" },
+    { "type": "text", "id": "cta_fine", "label": "Fin print", "default": "Gratis medlemskab · afmeld når som helst · vi deler ikke dine data." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Fordel",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Ikon", "options": [ { "value": "star", "label": "Stjerne" }, { "value": "percent", "label": "Procent" }, { "value": "gift", "label": "Gave" }, { "value": "clock", "label": "Ur" }, { "value": "bell", "label": "Klokke (først)" }, { "value": "bag", "label": "Indkøbspose (køb)" }, { "value": "cake", "label": "Kage (fødselsdag)" }, { "value": "share", "label": "Del (venner)" }, { "value": "heart", "label": "Hjerte (følg os)" }, { "value": "user", "label": "Ny bruger (opret konto)" } ], "default": "star" },
+        { "type": "text", "id": "title", "label": "Titel", "default": "Optjen point" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tjen point på hvert køb og indløs dem til rabat på din næste ordre." }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Trin",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Nummer", "default": "01" },
+        { "type": "text", "id": "title", "label": "Titel", "default": "Meld dig ind" },
+        { "type": "textarea", "id": "text", "label": "Tekst", "default": "Tilmeld dig gratis med din e-mail, det tager under et minut." }
+      ]
+    },
+    { "type": "@app" },
+    {
+      "type": "yotpo_widget",
+      "name": "Yotpo Loyalty-widget",
+      "settings": [
+        { "type": "text", "id": "instance_id", "label": "Yotpo instans-id", "info": "Findes i Yotpo Loyalty under Display on site → Widgets. Den nuværende kundeklubside bruger 1048950." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kundeklub",
+      "blocks": [
+        { "type": "perk", "settings": { "icon": "bell", "title": "Få adgang før andre", "text": "Som medlem får du nyheder først og tidlig adgang til kampagner, tilbud og gaver." } },
+        { "type": "perk", "settings": { "icon": "bag", "title": "Optjen point ved hvert køb", "text": "Få point, hver gang du handler. Indløs dine point til rabatter." } },
+        { "type": "perk", "settings": { "icon": "cake", "title": "Få point på din fødselsdag", "text": "Registrér din fødselsdag i kundeklubben, og få point på dagen." } },
+        { "type": "perk", "settings": { "icon": "share", "title": "Del med venner og optjen point", "text": "Send dit personlige henvisningslink til venner. De får point, og du får point, når de handler via linket." } },
+        { "type": "perk", "settings": { "icon": "heart", "title": "Få point for at følge os", "text": "Følg NatureCell på Facebook og Instagram via kundeklubben, og optjen point." } },
+        { "type": "perk", "settings": { "icon": "user", "title": "Få point, når du opretter dig", "text": "Opret din konto i kundeklubben, og få dine første point, som du kan spare op og indløse til rabatter." } },
+        { "type": "step", "settings": { "num": "01", "title": "Opret konto", "text": "Få 500 point fra starten." } },
+        { "type": "step", "settings": { "num": "02", "title": "Optjen flere point", "text": "Ved køb, fødselsdag, følg os på sociale medier og venners køb via dit link." } },
+        { "type": "step", "settings": { "num": "03", "title": "Få rabat", "text": "Ombyt dine point til rabatkoder." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

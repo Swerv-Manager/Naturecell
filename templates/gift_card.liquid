@@ -1,0 +1,43 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gavekort · {{ shop.name }}</title>
+    <meta name="robots" content="noindex">
+    {{ 'nc-theme.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <div class="nc-section">
+      <div class="nc-container" style="max-width: 560px; text-align: center;">
+        <p class="nc-eyebrow">{{ shop.name }}</p>
+        <h1>Gavekort</h1>
+
+        <div class="nc-card" style="padding: clamp(24px, 4vw, 40px); box-shadow: var(--nc-shadow-soft);">
+          <p style="font-size: clamp(26px, 4vw, 40px); font-family: var(--nc-font-display); font-weight: 700; margin: 0 0 8px;">
+            {{ gift_card.balance | money }}
+          </p>
+
+          {%- if gift_card.enabled == false or gift_card.expired -%}
+            <p role="alert">Gavekortet er udløbet.</p>
+          {%- elsif gift_card.balance != gift_card.initial_value -%}
+            <p>Restsaldo af oprindeligt {{ gift_card.initial_value | money }}</p>
+          {%- endif -%}
+
+          <p style="font-size: 20px; letter-spacing: 0.12em; background: var(--nc-paper); border-radius: 10px; padding: 14px;">
+            {{ gift_card.code | format_code }}
+          </p>
+
+          <p style="font-size: 14px; color: rgba(44,70,61,0.7);">
+            Indtast koden ved kassen for at bruge gavekortet.
+          </p>
+        </div>
+
+        <p style="margin-top: 24px;">
+          <a class="nc-btn nc-btn--primary" href="{{ shop.url }}">Gå til butikken</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

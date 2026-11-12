@@ -1,0 +1,47 @@
+{%- assign nc_transition_section_products = section.settings.products | uniq -%}
+{%- if customer.b2b? -%}
+<section class="nc-b2b-portal nc-container" data-b2b-portal data-add-url="{{ routes.cart_add_url }}.js" data-cart-url="{{ routes.cart_url }}" data-empty="{{ 'b2b_portal.empty' | t | escape }}" data-working="{{ 'b2b_portal.working' | t | escape }}" data-error="{{ 'b2b_portal.error' | t | escape }}">
+  <header class="nc-b2b-portal__head">
+    <div><p class="nc-eyebrow">{{ customer.current_company.name | escape }}</p><h1>{{ 'b2b_portal.heading' | t }}</h1><p>{{ 'b2b_portal.intro' | t }}</p></div>
+    <nav><a href="https://shopify.com/60071116981/account">{{ 'b2b_portal.account' | t }}</a><a href="{{ routes.cart_url }}">{{ 'b2b_portal.cart' | t }}</a></nav>
+  </header>
+  <p><strong>{{ 'b2b_portal.location' | t }}:</strong> {{ customer.current_location.name | escape }}</p>
+  {%- if customer.company_available_locations.size > 1 -%}
+    <ul>{%- for location in customer.company_available_locations -%}{%- unless location.current? -%}<li><a href="{{ location.url_to_set_as_current }}">{{ location.name | escape }}</a></li>{%- endunless -%}{%- endfor -%}</ul>
+  {%- endif -%}
+  <p class="nc-b2b-portal__note">{% if cart.taxes_included %}{{ 'b2b_portal.tax_included' | t }}{% else %}{{ 'b2b_portal.tax_excluded' | t }}{% endif %} {{ 'b2b_portal.terms' | t }}</p>
+  <form data-b2b-order>
+    <div class="nc-b2b-portal__table-wrap"><table>
+      <thead><tr><th scope="col">{{ 'b2b_portal.product' | t }}</th><th scope="col">{{ 'b2b_portal.price' | t }}</th><th scope="col">{{ 'b2b_portal.quantity' | t }}</th></tr></thead>
+      <tbody>
+      {%- for product in nc_transition_section_products -%}
+        {%- unless product.gift_card? -%}
+        {%- for variant in product.variants -%}
+          {%- liquid
+            assign in_cart = cart | item_count_for_variant: variant.id
+            assign minimum = variant.quantity_rule.min | default: 1
+            assign increment = variant.quantity_rule.increment | default: 1
+          -%}
+          <tr>
+            <th scope="row"><div class="nc-b2b-portal__product">{% if product.featured_image %}{{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,120', sizes: '60px' }}{% endif %}<div><a href="{{ variant.url }}">{{ product.title | escape }}</a>{% unless product.has_only_default_variant %}<small>{{ variant.title | escape }}</small>{% endunless %}{% if variant.sku != blank %}<small>{{ variant.sku | escape }}</small>{% endif %}</div></div></th>
+            <td>{{ variant.price | money }}</td>
+            <td><label class="nc-visually-hidden" for="nc-b2b-qty-{{ section.id }}-{{ variant.id }}">{{ 'b2b_portal.quantity' | t }}: {{ product.title | escape }} {{ variant.title | escape }}</label><input id="nc-b2b-qty-{{ section.id }}-{{ variant.id }}" type="number" inputmode="numeric" min="0" step="1" value="0" data-variant="{{ variant.id }}" data-in-cart="{{ in_cart }}" data-minimum="{{ minimum }}" data-increment="{{ increment }}" data-maximum="{{ variant.quantity_rule.max }}" data-invalid="{{ 'b2b_portal.invalid' | t: product: product.title | escape }}" {% unless variant.available %}disabled{% endunless %}><small>{{ 'b2b_portal.in_cart' | t: count: in_cart }}</small>{% unless variant.available %}<small>{{ 'b2b_portal.unavailable' | t }}</small>{% endunless %}{% if minimum > 1 or increment > 1 %}<small>{{ 'b2b_portal.rules' | t: min: minimum, step: increment }}</small>{% endif %}{% if variant.quantity_rule.max != blank %}<small>{{ 'b2b_portal.maximum' | t: max: variant.quantity_rule.max }}</small>{% endif %}</td>
+          </tr>
+        {%- endfor -%}
+        {%- endunless -%}
+      {%- else -%}<tr><td colspan="3">{{ 'b2b_portal.no_products' | t }}</td></tr>{%- endfor -%}
+      </tbody>
+    </table></div>
+    <div class="nc-b2b-portal__actions"><button class="nc-btn nc-btn--primary" type="submit" data-submit>{{ 'b2b_portal.add' | t }}</button><a href="{{ routes.cart_url }}">{{ 'b2b_portal.cart' | t }}</a><p role="status" aria-live="polite" data-status></p></div>
+    <noscript>{{ 'b2b_portal.noscript' | t }}</noscript>
+  </form>
+</section>
+<script src="{{ 'nc-b2b-portal.js' | asset_url }}" defer></script>
+{%- endif -%}
+{% stylesheet %}
+.nc-b2b-portal{padding-block:40px;color:var(--sage-700)}
+.nc-b2b-portal__head{display:flex;justify-content:space-between;align-items:start;gap:24px}.nc-b2b-portal h1{margin:8px 0 14px}.nc-b2b-portal__head nav{display:grid;gap:12px;flex:none}.nc-b2b-portal__note{font-size:14px}.nc-b2b-portal__table-wrap{overflow-x:auto;border:1px solid var(--border-soft);border-radius:var(--radius-lg)}.nc-b2b-portal table{width:100%;border-collapse:collapse;text-align:left}.nc-b2b-portal th,.nc-b2b-portal td{padding:12px;border-bottom:1px solid var(--border-soft);vertical-align:middle}.nc-b2b-portal thead{background:var(--sage-50)}.nc-b2b-portal tbody th{font-weight:500}.nc-b2b-portal__product{display:flex;align-items:center;gap:14px}.nc-b2b-portal__product img{width:60px;height:72px;object-fit:contain;flex:none}.nc-b2b-portal small{display:block;font-size:12px;margin-top:5px;font-weight:400}.nc-b2b-portal input{width:86px;min-height:44px;border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:8px;background:var(--cloud);font:inherit}.nc-b2b-portal input:focus-visible{outline:2px solid var(--sage-500);outline-offset:2px}.nc-b2b-portal td:nth-child(2){white-space:nowrap}.nc-b2b-portal__actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:22px}.nc-b2b-portal__actions [data-status]{width:100%;margin:0}.nc-b2b-portal button:disabled{opacity:.65;cursor:wait}@media(max-width:699px){.nc-b2b-portal__head{display:block}.nc-b2b-portal__head nav{margin-block:20px}.nc-b2b-portal th,.nc-b2b-portal td{padding:9px}.nc-b2b-portal__product{gap:8px}.nc-b2b-portal__product img{width:40px;height:52px}.nc-b2b-portal tbody th{min-width:150px}.nc-b2b-portal{font-size:14px}.nc-b2b-portal input{width:68px}}
+{% endstylesheet %}
+{% schema %}
+{"name":"B2B forhandlerportal","settings":[{"type":"product_list","id":"products","label":"Enkeltprodukter fra B2B-kataloget","limit":50}],"presets":[{"name":"B2B forhandlerportal"}]}
+{% endschema %}

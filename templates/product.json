@@ -1,0 +1,222 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "back_label": "Tilbage til shop",
+        "desc_open": false,
+        "tiers_label": "Køb flere, spar mere"
+      }
+    },
+    "infographic": {
+      "type": "nc-pdp-infographic",
+      "settings": {}
+    },
+    "ingredients": {
+      "type": "nc-pdp-ingredients",
+      "settings": {
+        "button_label": "Udforsk alle ingredienser →"
+      }
+    },
+    "related": {
+      "type": "nc-related",
+      "settings": {
+        "heading": "Passer godt sammen med"
+      }
+    },
+    "story": {
+      "type": "nc-pdp-story",
+      "settings": {
+        "heading_1": "Skabt til [område]",
+        "eyebrow_2": "Sådan bruger du den",
+        "heading_2": "En enkel del af din daglige rutine"
+      }
+    },
+    "foundervideo": {
+      "type": "nc-pdp-founder",
+      "settings": {
+        "eyebrow": "Hvordan bruges den?",
+        "heading": "Se [produkt] i brug",
+        "poster_alt": "Lizbeth fra NatureCell",
+        "pill": "Video kommer snart"
+      }
+    },
+    "videos": {
+      "type": "nc-video-rail",
+      "blocks": {
+        "v1": {
+          "type": "video",
+          "settings": {
+            "name": "Mette",
+            "youtube_id": "VRJSZeNlCoQ"
+          }
+        },
+        "v2": {
+          "type": "video",
+          "settings": {
+            "name": "Christian",
+            "youtube_id": "RHGezLkTcO8",
+            "video_de": "shopify://files/videos/naturecell-christian-RHGezLkTcO8-de.mp4"
+          }
+        },
+        "v3": {
+          "type": "video",
+          "settings": {
+            "name": "Astrid",
+            "youtube_id": "7_Bpx7LJIGc",
+            "video_de": "shopify://files/videos/naturecell-astrid-7_Bpx7LJIGc-de.mp4"
+          }
+        },
+        "v4": {
+          "type": "video",
+          "settings": {
+            "name": "Vivi",
+            "youtube_id": "HwVoEwGZmyc"
+          }
+        },
+        "v5": {
+          "type": "video",
+          "settings": {
+            "name": "Emma",
+            "youtube_id": "PCFwLqqGngE",
+            "video_de": "shopify://files/videos/naturecell-emma-PCFwLqqGngE-de.mp4"
+          }
+        },
+        "v6": {
+          "type": "video",
+          "settings": {
+            "name": "Frederik",
+            "youtube_id": "7oDE9SaSxbY"
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "v5",
+        "v6"
+      ],
+      "settings": {}
+    },
+    "ambassador": {
+      "type": "nc-pdp-ambassador",
+      "settings": {
+        "products": [
+          "hudpleje-startpakke-plus-1",
+          "loevepakken-dagcreme-natcreme-rensegel-og-ansigtsolie",
+          "loevepakken-dagcreme-natcreme-rensegel-og-ansigtsolie",
+          "ansigtsolie-med-antioxidanter-30-ml",
+          "ansigtsolie-med-antioxidanter-30-ml",
+          "dagcreme",
+          "natcreme",
+          "rensegel",
+          "cbg-eye-gel",
+          "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+          "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+          "forkael-en-du-har-kaer",
+          "pakke-til-starten-af-dagen",
+          "pakke-til-starten-af-natten",
+          "hudpleje-startpakke-dagcreme-rensegel-og-ansigtsolie",
+          "hudpleje-startpakke-dagcreme-rensegel-og-ansigtsolie"
+        ],
+        "pill": "Kundecase",
+        "heading": "“Jeg bruger hele serien – og kun den.”",
+        "body": "Winnie har brugt Kompletpakken i over otte måneder. I videoen fortæller hun med sine egne ord om sin rutine, og i kundecasen kan du læse hele hendes historie.",
+        "name": "Winnie",
+        "role": "Bruger Kompletpakken",
+        "case_url": "/blogs/kundecases/winnie-kompletpakken-har-gjort-en-kaempe-forskel-for-min-hud",
+        "link_label": "Læs Winnies historie",
+        "youtube_id": "UQQF2NPfATE"
+      }
+    },
+    "reviews": {
+      "type": "nc-pdp-reviews",
+      "blocks": {
+        "judgeme": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "other_products_reviews"
+          }
+        }
+      },
+      "block_order": [
+        "judgeme"
+      ],
+      "settings": {
+        "heading": "Hvad kunderne siger"
+      }
+    },
+    "faq": {
+      "type": "nc-faq",
+      "blocks": {
+        "ship": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "ship",
+            "dedupe": "leverer, levering, lieferung, delivery"
+          }
+        },
+        "return": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "return",
+            "dedupe": "fortryd, widerruf, withdrawal"
+          }
+        },
+        "storage": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "storage",
+            "dedupe": "opbevar, aufbewahr, bewahre, storage"
+          }
+        },
+        "advice": {
+          "type": "locale_qa",
+          "settings": {
+            "key": "advice",
+            "dedupe": "rådgivning, beratung, advice"
+          }
+        }
+      },
+      "block_order": [
+        "ship",
+        "return",
+        "storage",
+        "advice"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Ofte stillede spørgsmål",
+        "open_first": true,
+        "display_style": true,
+        "links_label": "Populære søgninger"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "infographic",
+    "ingredients",
+    "related",
+    "story",
+    "foundervideo",
+    "videos",
+    "ambassador",
+    "faq"
+  ]
+}
