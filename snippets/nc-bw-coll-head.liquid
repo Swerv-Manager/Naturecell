@@ -1,0 +1,91 @@
+{%- comment -%}
+  nc-bw-coll-head: toppen af en kollektion i Black Week (boards 03–05).
+    Landing (/collections/black-week): hero med foto, brødkrumme, overskrift, tilbud og nedtælling.
+    Andre kollektioner: brødkrumme + banner (billede, titel, tekst, lagerforbehold, nedtælling) fra
+    temaindstillingen "Kollektionsbannere" (linje med kollektionens handle, ellers linjen *).
+    Derefter fanerne (Alle, Enkeltvarer, Pakker, Gaver …) fra "Faner over kollektionerne".
+  Parametre: collection, landing (true/false), cfg (bannerlinjen som array, se main-collection)
+{%- endcomment -%}
+{%- liquid
+  assign b_file = cfg[1] | strip
+  assign b_title = cfg[2] | strip
+  if b_title == blank
+    capture b_title
+      render 'nc-cbd', text: collection.title, mode: 'strip'
+    endcapture
+    assign b_title = b_title | strip
+  endif
+  assign b_lead = cfg[3] | strip
+  if b_lead == blank
+    assign b_lead = collection.description | strip_html | strip | truncatewords: 30
+  endif
+  assign b_pos_d = cfg[4] | strip | default: '50% 50%'
+  assign b_pos_m = cfg[5] | strip | default: '50% 50%'
+  assign b_flags = cfg[6] | strip
+  assign b_img = collection.image
+  if b_file != blank and images[b_file] != blank
+    assign b_img = images[b_file]
+  endif
+  assign is_sub = false
+  assign sub_rows = settings.nc_bw_subnav | newline_to_br | split: '<br />'
+  for r in sub_rows
+    assign rp = r | split: '|'
+    assign rh = rp[1] | strip | split: '/collections/' | last | split: '/' | first
+    if rh != blank and rh == collection.handle
+      assign is_sub = true
+    endif
+  endfor
+  assign style_d = 'object-position: ' | append: b_pos_d
+  assign style_m = 'object-position: ' | append: b_pos_m
+-%}
+{%- if landing -%}
+  {%- assign limg = images['nc-bw-hero-butik.jpg'] -%}
+  {%- assign limg_m = images['nc-bw-hero-butik-mobil.jpg'] -%}
+  <section class="nc-bwc-land">
+    <div class="nc-bwc-land__media">
+      <picture>
+        {%- if limg_m != blank -%}<source media="(max-width: 749px)" srcset="{{ limg_m | image_url: width: 800 }} 800w, {{ limg_m | image_url: width: 1200 }} 1200w" sizes="100vw">{%- endif -%}
+        {%- if limg != blank -%}{{ limg | image_url: width: 2400 | image_tag: alt: 'Lizbeth Falk og Allan Gamborg i NatureCell-butikken', widths: '1200, 1800, 2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}{%- endif -%}
+      </picture>
+      <div class="nc-bwc-land__fade" aria-hidden="true"></div>
+    </div>
+    <div class="nc-container nc-bwc-land__in">
+      <nav class="nc-bwx__crumbs nc-bwc-land__crumbs" aria-label="{{ 'general.breadcrumb' | t }}"><span><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></span><span>Black Week</span></nav>
+      <div class="nc-bwc-land__title">
+        <div class="nc-bwc-land__eyebrow">23.–30. NOVEMBER</div>
+        <h1 class="nc-bwc-land__h1">Black&nbsp;Week&nbsp;·<br class="nc-bwc-d"> 20%&nbsp;på&nbsp;enkeltvarer</h1>
+      </div>
+      <p class="nc-bwc-land__offer">25%&nbsp;ved&nbsp;2&nbsp;ens · 30%&nbsp;ved&nbsp;3&nbsp;ens – trækkes automatisk i&nbsp;kurven</p>
+      <p class="nc-bwc-land__stock">{{ settings.nc_bw_stock | escape }}</p>
+      <div class="nc-bwc-land__cd"><span class="nc-bwc-land__cdl">Slutter<br class="nc-bwc-m"> om</span>{% render 'nc-bw-countdown', to: 'end', size: 'lg' %}</div>
+    </div>
+  </section>
+{%- else -%}
+  <nav class="nc-container nc-bwx__crumbs nc-bwc-crumbs" aria-label="{{ 'general.breadcrumb' | t }}">
+    <span><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></span>
+    {%- if is_sub -%}{%- assign land_url = '/collections/' | append: settings.nc_bw_landing -%}<span><a href="{% render 'nc-url', url: land_url %}">Black Week</a></span>{%- endif -%}
+    <span>{{ b_title | escape }}</span>
+  </nav>
+  <section class="nc-bwc-ban{% if b_flags contains 'venstre' %} nc-bwc-ban--left{% endif %}{% if b_flags contains 'venstre420' %} nc-bwc-ban--l420{% endif %}{% if b_flags contains 'hoej' %} nc-bwc-ban--tall{% endif %}">
+    {%- if b_img != blank -%}
+      {{ b_img | image_url: width: 2400 | image_tag: class: 'nc-bwc-ban__img nc-bwc-ban__img--d', alt: b_title, widths: '1000, 1600, 2400', sizes: '100vw', loading: 'eager', style: style_d }}
+      {{ b_img | image_url: width: 900 | image_tag: class: 'nc-bwc-ban__img nc-bwc-ban__img--m', alt: '', widths: '450, 900', sizes: '100vw', loading: 'eager', style: style_m }}
+    {%- endif -%}
+    <div class="nc-bwc-ban__fade" aria-hidden="true"></div>
+    <div class="nc-container nc-bwc-ban__in">
+      <h1 class="nc-bwc-ban__h1">{{ b_title | escape }}</h1>
+      {%- if b_lead != blank -%}<p class="nc-bwc-ban__lead">{{ b_lead | escape }}</p>{%- endif -%}
+      {%- if b_flags contains 'lager' -%}<p class="nc-bwc-ban__stock">{{ settings.nc_bw_stock | escape }}</p>{%- endif -%}
+      <div class="nc-bwc-ban__cd"><span class="nc-bwc-ban__cdl">Black Week<br>slutter om</span>{% render 'nc-bw-countdown', to: 'end', size: 'md' %}</div>
+    </div>
+  </section>
+{%- endif -%}
+<nav class="nc-container" aria-label="Black Week"><div class="nc-bwc-sub">
+  {%- for r in sub_rows -%}
+    {%- assign rp = r | strip | split: '|' -%}
+    {%- if rp[1] == blank -%}{%- continue -%}{%- endif -%}
+    {%- assign rurl = rp[1] | strip -%}
+    {%- assign rh = rurl | split: '/collections/' | last | split: '/' | first -%}
+    <a class="nc-bwc-sub__a{% if rh == collection.handle %} is-on{% endif %}" href="{% render 'nc-url', url: rurl %}"{% if rh == collection.handle %} aria-current="page"{% endif %}>{{ rp[0] | strip | escape }}</a>
+  {%- endfor -%}
+</div></nav>

@@ -1,0 +1,93 @@
+{%- comment -%}
+  nc-bw-head: Black Week i <head>. Renderes af layout/theme.liquid.
+  - Indlæser nc-bw.css (mørkt tema og alle Black Week-komponenter), når temaet er slået til.
+  - Sætter klasser på html-elementet, FØR siden tegnes (ingen blink):
+      nc-bw      : det mørke Black Week-tema er aktivt (fase bw, eller fase vip + VIP-adgang)
+      nc-vip-ok  : besøgende har VIP-adgang
+      nc-ph-*    : fasen (normal, vip, bw)
+  - VIP-adgang: ?vip=<VIP-nøgle> i et link (mail) sætter en cookie i 14 dage. Tilmelding på VIP-siden
+    gør det samme (nc-bw.js). Kunder, der er logget ind og har sagt ja til nyhedsbrev, har altid adgang.
+  - Lukning under VIP Access: Black Week-kollektionerne sender ikke-VIP videre til VIP-siden.
+  - Cache: fasen regnes også ud i browseren. Er en side cachet fra før et skift, genindlæses den én gang.
+{%- endcomment -%}
+{%- capture bw_phase %}{% render 'nc-bw-phase' %}{% endcapture -%}
+{%- assign bw_phase = bw_phase | strip -%}
+{%- liquid
+  assign bw_on = false
+  if settings.nc_bw_enabled and request.locale.iso_code == 'da' and customer.b2b? != true
+    assign bw_on = true
+  endif
+  assign vip_known = false
+  if customer and customer.accepts_marketing
+    assign vip_known = true
+  endif
+  assign vip_handle = settings.nc_vip_page_handle | default: 'vip-black'
+  assign gated = false
+  assign force_dark = false
+  assign terms_handle = settings.nc_bw_terms_url | default: '/pages/black-week-vilkaar' | split: '/' | last
+  if request.page_type == 'page'
+    if page.handle == vip_handle or page.handle == terms_handle
+      assign force_dark = true
+    endif
+  endif
+  if request.page_type == 'collection'
+    assign sub_rows = settings.nc_bw_menu | newline_to_br | split: '<br />'
+    for r in sub_rows
+      assign rp = r | split: '|'
+      assign ru = rp[1] | strip
+      assign rh = ru | split: '/collections/' | last | split: '/' | first | split: '?' | first
+      if rh != blank and rh == collection.handle
+        assign gated = true
+      endif
+    endfor
+  endif
+-%}
+{%- if bw_on -%}
+  {{ 'nc-bw.css' | asset_url | stylesheet_tag }}
+  <script>
+    (function () {
+      var d = document.documentElement;
+      var T = {
+        vip: Date.parse({{ settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | json }}),
+        open: Date.parse({{ settings.nc_bw_open_utc | default: '2026-11-22T23:01:00Z' | json }}),
+        end: Date.parse({{ settings.nc_bw_close_utc | default: '2026-11-30T22:59:00Z' | json }})
+      };
+      var override = {{ settings.nc_bw_phase_override | default: 'auto' | json }};
+      var server = {{ bw_phase | json }};
+      var token = {{ settings.nc_vip_token | strip | json }};
+      var vipUrl = {{ '/pages/' | append: vip_handle | json }};
+      function phase() {
+        if (override && override !== 'auto') return override;
+        var t = Date.now();
+        if (t >= T.vip && t < T.open) return 'vip';
+        if (t >= T.open && t < T.end) return 'bw';
+        return 'normal';
+      }
+      function setVip() {
+        document.cookie = 'nc_vip=1; path=/; max-age=1209600; samesite=lax';
+        d.classList.add('nc-vip-ok');
+        if (window.ncBW && window.ncBW.phase === 'vip') d.classList.add('nc-bw');
+        if (window.ncBW) window.ncBW.vipOk = true;
+      }
+      try {
+        var q = new URLSearchParams(location.search).get('vip');
+        if (token && q && q === token) document.cookie = 'nc_vip=1; path=/; max-age=1209600; samesite=lax';
+      } catch (e) {}
+      var ok = {{ vip_known }} || /(?:^|;\s*)nc_vip=1/.test(document.cookie);
+      var p = phase();
+      window.ncBW = { phase: p, server: server, vipOk: ok, T: T, vipUrl: vipUrl, setVip: setVip };
+      if (p !== server) {
+        try {
+          var k = 'nc_bw_reload_' + p;
+          if (!sessionStorage.getItem(k)) { sessionStorage.setItem(k, '1'); location.reload(); return; }
+        } catch (e) {}
+      }
+      d.classList.add('nc-ph-' + p);
+      if (ok) d.classList.add('nc-vip-ok');
+      if (p === 'bw' || (p === 'vip' && ok){% if force_dark %} || true{% endif %}) d.classList.add('nc-bw');
+      {%- if gated %}
+      if (p === 'vip' && !ok) location.replace(vipUrl);
+      {%- endif %}
+    })();
+  </script>
+{%- endif -%}

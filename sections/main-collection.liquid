@@ -76,9 +76,52 @@
   }
 {%- endstyle -%}
 
-<div class="nc-section nc-coll-main">
+{%- comment -%}
+  Black Week (Swerv 12.11): banner/landing, faner og kort i fuld bredde mellem produkterne
+  (snippets/nc-bw-coll-head, nc-bw-inter). bw_mode on: kun Black Week. dual (VIP Access): begge, html.nc-bw vaelger.
+{%- endcomment -%}
+{%- liquid
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign bw_mode = 'off'
+  if bw_phase == 'bw'
+    assign bw_mode = 'on'
+  elsif bw_phase == 'vip'
+    assign bw_mode = 'dual'
+  endif
+  assign bw_landing = false
+  if collection.handle == settings.nc_bw_landing
+    assign bw_landing = true
+  endif
+  assign bw_cfg = ''
+  assign bw_rows = settings.nc_bw_banners | newline_to_br | split: '<br />'
+  for r in bw_rows
+    assign rp = r | split: '|'
+    assign rh = rp[0] | strip
+    if rh == collection.handle
+      assign bw_cfg = rp
+      break
+    elsif rh == '*' and bw_cfg == ''
+      assign bw_cfg = rp
+    endif
+  endfor
+  assign bw_flags = bw_cfg[6] | strip
+  assign bw_slots = 'gift,rutine' | split: ','
+  if collection.handle contains 'ansigt'
+    assign bw_slots = 'tre,gift,rutine' | split: ','
+  endif
+-%}
+{%- if bw_mode != 'off' -%}
+  <div class="nc-bwx nc-bwc{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+    {%- render 'nc-bw-coll-head', collection: collection, landing: bw_landing, cfg: bw_cfg -%}
+  </div>
+{%- endif -%}
+<div class="nc-section nc-coll-main{% if bw_mode != 'off' %} nc-coll-main--bw{% if bw_landing %} nc-coll-main--bwland{% endif %}{% endif %}">
   <div class="nc-container">
-    {%- if section.settings.show_breadcrumb -%}
+    {%- if bw_mode == 'on' -%}{%- comment -%} Black Week-toppen erstatter broedkrumme og titel. {%- endcomment -%}{%- else -%}<div class="nc-coll__normalhead{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">{%- endif -%}
+    {%- if section.settings.show_breadcrumb and bw_mode != 'on' -%}
       <nav class="nc-coll__crumbs" aria-label="{{ 'general.breadcrumb' | t }}">
         <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a>
         <span aria-hidden="true">/</span>
@@ -86,6 +129,7 @@
       </nav>
     {%- endif -%}
 
+    {%- unless bw_mode == 'on' -%}
     <header class="nc-coll__header">
       <h1>{% render 'nc-cbd', text: collection.title, mode: 'category' %}</h1>
       {%- assign coll_desc_text = collection.description | strip_html | strip -%}
@@ -93,9 +137,11 @@
         <div class="nc-coll__desc">{% render 'nc-cbd', text: collection.description %}</div>
       {%- endif -%}
     </header>
+    {%- endunless -%}
+    {%- unless bw_mode == 'on' -%}</div>{%- endunless -%}
 
     {%- if section.settings.show_search or section.settings.show_chips -%}
-      <div class="nc-coll__toolbar">
+      <div class="nc-coll__toolbar{% if bw_landing and bw_mode != 'off' %}{% if bw_mode == 'dual' %} nc-bw-hide{% else %} nc-coll__toolbar--none{% endif %}{% endif %}">
         {%- if section.settings.show_search -%}
           <form class="nc-coll__search" action="{{ routes.search_url }}" method="get" role="search" data-nc-predictive="{{ routes.predictive_search_url }}">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -261,6 +307,16 @@
               endif
             -%}
             <li>{% render 'nc-product-card', product: product, loading: card_loading, priority: card_priority %}</li>
+            {%- comment -%} Black Week: kort i fuld bredde efter hver anden raekke (8 produkter) paa foerste side. {%- endcomment -%}
+            {%- if bw_mode != 'off' and paginate.current_page == 1 -%}
+              {%- assign bw_mod = forloop.index | modulo: 8 -%}
+              {%- if bw_mod == 0 and forloop.last == false -%}
+                {%- assign bw_slot_i = forloop.index | divided_by: 8 | minus: 1 -%}
+                {%- if bw_slots[bw_slot_i] != blank -%}
+                  <li class="nc-bwi-li{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">{%- render 'nc-bw-inter', type: bw_slots[bw_slot_i] -%}</li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
           {%- endfor -%}
         </ul>
       {%- else -%}
@@ -273,6 +329,36 @@
 
       {% render 'nc-pagination', paginate: paginate %}
     {%- endpaginate -%}
+    {%- if bw_mode != 'off' -%}
+      <div class="nc-bwx{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+        {%- if bw_flags contains 'julefoto' -%}
+          {%- assign jimg = images['nc-bw-helkrop-marmor.jpg'] -%}
+          <div class="nc-bwc-jul">
+            <div class="nc-bwc-jul__img">{%- if jimg != blank -%}{{ jimg | image_url: width: 1400 | image_tag: alt: 'Øjengel, Body Oil og Ansigtsolie på marmor med børste og håndklæde', widths: '700, 1000, 1400', sizes: '(min-width: 990px) 600px, 100vw', loading: 'lazy', style: 'object-position: 54% 60%' }}{%- endif -%}</div>
+            <div class="nc-bwc-jul__txt">
+              <div class="nc-bwx__eyebrow">Julegaver</div>
+              <h2 class="nc-bwx__h2">Giv hudpleje, vi selv bruger.</h2>
+              <p class="nc-bwx__lead" style="margin:0;max-width:480px;">Alle julegaver har Black Week-pris til og med mandag 30.11 kl. 23.59.</p>
+              <a class="nc-bwx__btn nc-bwx__btn--md" style="margin-top:10px;" href="{{ routes.root_url }}#gaver">Se gaver under 300, 500, 700 og 1.000 kr</a>
+            </div>
+          </div>
+        {%- endif -%}
+        {%- if bw_landing -%}
+          <div class="nc-bwc-dates">
+            <div class="nc-bwc-dates__head">
+              <h2 class="nc-bwc-dates__h">Datoer du skal kende</h2>
+              <a class="nc-bwx__link" style="font-size:15.5px;" href="{% render 'nc-url', url: settings.nc_bw_terms_url %}">Spørgsmål om Black Week? Læs FAQ og vilkår →</a>
+            </div>
+            {%- assign bw_dates = 'Fre | 20.11 | kl. 15.00 | VIP Access | 2026-11-20T14:00:00Z
+Man | 23.11 | kl. 00.01 | Black Week åbner | 2026-11-22T23:01:00Z
+Man | 23.11 | kl. 19–20 | Facebook LIVE med Lizbeth og Allan | 2026-11-23T19:00:00Z
+Fre | 27.11 |  | Black Friday | 2026-11-27T22:59:59Z
+Man | 30.11 | kl. 23.59 | Black Week slutter | 2026-11-30T22:59:00Z' -%}
+            {%- render 'nc-bw-dates', style: 'cards', rows: bw_dates -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
   </div>
 </div>
 

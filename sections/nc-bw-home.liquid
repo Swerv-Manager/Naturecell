@@ -1,0 +1,815 @@
+{% comment %}
+  Section contract.
+  Black Week-forside (board 02 "Forside · Black Week" i Claude Design-eksporten "Black Week ALT I ET v2").
+  Renderes af layout/theme.liquid i stedet for templates/index.json, når fasen er bw (og under VIP Access for
+  besøgende med VIP-adgang). Statisk sektion: tilpasses i temaeditoren via forsiden, når Black Week er aktiv
+  (eller "Fase: Tving Black Week" i et upubliceret tema).
+  Rækkefølge som i designet: hero med nedtælling, tillid, anmeldelser + presse, shop efter område, favoritter,
+  sådan virker Black Week, pakker, find din rutine, julegaver (faner), Lizbeths valg, datoer, kundecases,
+  vores historie, rådgivning, FAQ og nyhedsbrev.
+{% endcomment %}
+{%- liquid
+  assign s = section.settings
+  assign gift_p = settings.nc_bw_gift_product | default: all_products['exfoliating-hanske']
+  assign tp_score = settings.nc_tp_score | default: '4,7'
+  assign tp_count = settings.nc_tp_count | default: 615
+  assign landing = '/collections/' | append: settings.nc_bw_landing
+-%}
+{%- capture star -%}<path d="M12 2.8l2.8 6 6.5.7-4.9 4.4 1.4 6.4L12 17l-5.8 3.3 1.4-6.4L2.7 9.5l6.5-.7z"/>{%- endcapture -%}
+
+<div class="nc-bwx nc-bwh">
+  {%- comment -%} Hero (desktop 786px med foto til højre, mobil 731px med foto bagved) {%- endcomment -%}
+  <section class="nc-bwh-hero">
+    {%- assign hd = s.hero_img | default: images['nc-bw-hero-butik.jpg'] -%}
+    {%- assign hm = s.hero_img_m | default: images['nc-bw-hero-butik-mobil.jpg'] -%}
+    <picture>
+      {%- if hm != blank -%}<source media="(max-width: 749px)" srcset="{{ hm | image_url: width: 800 }} 800w, {{ hm | image_url: width: 1200 }} 1200w" sizes="100vw">{%- endif -%}
+      {%- if hd != blank -%}{{ hd | image_url: width: 2160 | image_tag: class: 'nc-bwh-hero__img', alt: s.hero_alt, widths: '1080, 1620, 2160', sizes: '(min-width: 750px) 1080px, 100vw', loading: 'eager', fetchpriority: 'high' }}{%- endif -%}
+    </picture>
+    <div class="nc-bwh-hero__fade" aria-hidden="true"></div>
+    <div class="nc-container nc-bwh-hero__in">
+      <div class="nc-bwh-hero__txt">
+        <div class="nc-bwh-hero__eyebrow">{{ s.hero_eyebrow | escape }}</div>
+        <h1 class="nc-bwh-hero__h1">{{ s.hero_title }}</h1>
+        <p class="nc-bwh-hero__offer">{{ s.hero_offer }}</p>
+        <p class="nc-bwh-hero__stock">{{ settings.nc_bw_stock | escape }}</p>
+        <a class="nc-bwx__btn nc-bwh-hero__cta" href="{% render 'nc-url', url: s.hero_url, fallback: landing %}">{{ s.hero_cta | escape }}</a>
+        <div class="nc-bwh-hero__cd">
+          <div class="nc-bwh-hero__cdl">Slutter om</div>
+          {% render 'nc-bw-countdown', to: 'end', size: 'xl' %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Tillid {%- endcomment -%}
+  <section class="nc-bwh-trust">
+    <div class="nc-container">
+      <ul class="nc-bwh-trust__list">
+        <li><span class="nc-bwh-trust__ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8-4.3-4.1 5.9-.8z"/></svg></span><span>Udviklet og testet i Danmark</span></li>
+        <li><span class="nc-bwh-trust__ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-13.5 14.5-14 0 9.5-5.5 14-14 14zM5 19l7.5-7.5"/></svg></span><span>Vegansk &amp; plantebaseret</span></li>
+        <li><span class="nc-bwh-trust__ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.8-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5-7.5-9.8V6zM8.8 12.2l2.3 2.3 4.3-4.5"/></svg></span><span>e-mærket webshop</span></li>
+        <li><span class="nc-bwh-trust__ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5M10.5 3v6.2L5.6 18.3A1.8 1.8 0 0 0 7.2 21h9.6a1.8 1.8 0 0 0 1.6-2.7L13.5 9.2V3M9.3 15.6l1.9 1.9 3.6-3.8"/></svg></span><span>GMP- &amp; ISO-certificeret</span></li>
+        <li><span class="nc-bwh-trust__ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8a7 7 0 1 1 0 14a7 7 0 1 1 0-14zM9 9.9l2.1 2.1 4-4.1M8.6 15.9L7.6 21.2l2.6-1 1.8 1.6 1.8-1.6 2.6 1-1-5.3"/></svg></span><a href="{% render 'nc-url', url: '/pages/tilfredshedsgaranti' %}">30 dages tilfredshedsgaranti<small>på første ordre</small></a></li>
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} Anmeldelser + Omtalt i {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--nb">
+    <div class="nc-container">
+      <div class="nc-bwh-rev__head">
+        <div class="nc-bwx__eyebrow">Anmeldelser</div>
+        <h2 class="nc-bwx__h2">Det siger vores kunder</h2>
+        <div class="nc-bwx__stars" aria-hidden="true">{%- for i in (1..5) -%}<svg viewBox="0 0 24 24" width="24" height="24" fill="#00B67A">{{ star }}</svg>{%- endfor -%}</div>
+        <div class="nc-bwh-rev__agg"><strong>{{ tp_score }}</strong>/5 · <strong>{{ tp_count }}</strong> anmeldelser på <a href="{{ settings.nc_trustpilot_url | default: 'https://dk.trustpilot.com/review/naturecell.dk' }}" target="_blank" rel="noopener"><strong class="nc-bwh-tp">Trustpilot</strong></a></div>
+      </div>
+      {%- assign revs = section.blocks | where: 'type', 'review' -%}
+      {%- if revs.size > 0 -%}
+        <div class="nc-bwh-rev__grid">
+          {%- for block in revs -%}
+            <figure class="nc-bwh-rev__card" {{ block.shopify_attributes }}>
+              <div class="nc-bwh-rev__stars" aria-hidden="true">{%- for i in (1..5) -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="#00B67A">{{ star }}</svg>{%- endfor -%}</div>
+              <blockquote>“{{ block.settings.text | escape }}”</blockquote>
+              <figcaption>{{ block.settings.name | escape }}{% if block.settings.city != blank %}, {{ block.settings.city | escape }}{% endif %}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="nc-bwh-press">
+        <div class="nc-bwx__eyebrow">Omtalt i</div>
+        <div class="nc-bwh-press__list">
+          {%- assign press = s.press | split: ',' -%}
+          {%- for m in press -%}<span>{{ m | strip | escape }}</span>{%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Shop efter område {%- endcomment -%}
+  <section class="nc-bwx__sec">
+    <div class="nc-container">
+      <div class="nc-bwx__head"><div><div class="nc-bwx__eyebrow">Find det rigtige til dig</div><h2 class="nc-bwx__h2">Shop efter område</h2></div></div>
+      <div class="nc-bwh-areas">
+        {%- assign area_rows = s.areas | newline_to_br | split: '<br />' -%}
+        {%- for r in area_rows -%}
+          {%- assign ap = r | strip | split: '|' -%}
+          {%- if ap[1] == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign a_t = ap[0] | strip -%}{%- assign a_u = ap[1] | strip -%}{%- assign a_f = ap[2] | strip -%}{%- assign a_pos = ap[3] | strip | default: '50% 50%' -%}{%- assign a_alt = ap[4] | strip -%}
+          {%- assign a_img = images[a_f] -%}
+          {%- assign a_style = 'object-position: ' | append: a_pos -%}
+          <a class="nc-bwh-area" href="{% render 'nc-url', url: a_u %}">
+            {%- if a_img != blank -%}{{ a_img | image_url: width: 600 | image_tag: alt: a_alt, widths: '300, 450, 600', sizes: '(min-width: 990px) 200px, 46vw', loading: 'lazy', style: a_style }}{%- endif -%}
+            <span class="nc-bwh-area__fade" aria-hidden="true"></span>
+            <span class="nc-bwh-area__lbl"><span>{{ a_t | escape }}</span><span aria-hidden="true">→</span></span>
+          </a>
+        {%- endfor -%}
+      </div>
+      <div class="nc-bwh-needs">
+        <span class="nc-bwx__eyebrow">Shop efter behov</span>
+        {%- assign need_rows = s.needs | newline_to_br | split: '<br />' -%}
+        {%- for r in need_rows -%}
+          {%- assign np = r | strip | split: '|' -%}
+          {%- if np[1] == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign n_u = np[1] | strip -%}
+          <a class="nc-bwh-pill" href="{% render 'nc-url', url: n_u %}">{{ np[0] | strip | escape }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Kundernes favoritter {%- endcomment -%}
+  {%- if s.favs.size > 0 -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwx__head"><div><div class="nc-bwx__eyebrow">Mest elskede</div><h2 class="nc-bwx__h2">Kundernes favoritter</h2></div><a class="nc-bwx__more" href="{% render 'nc-url', url: s.favs_url, fallback: landing %}">Se alle →</a></div>
+      <ul class="nc-bwx__grid4">{%- for p in s.favs limit: 4 -%}<li>{% render 'nc-product-card', product: p %}</li>{%- endfor -%}</ul>
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} Sådan virker Black Week {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwx__head"><div><div class="nc-bwx__eyebrow">Black Week</div><h2 class="nc-bwx__h2">Sådan virker Black Week</h2></div></div>
+      <div class="nc-bwh-how">
+        <div class="nc-bwh-how__c"><span class="nc-bwh-how__n">1</span><span class="nc-bwh-how__t">{{ s.how1_t }}</span><span class="nc-bwh-how__s">{{ s.how1_s }}</span></div>
+        <div class="nc-bwh-how__c"><span class="nc-bwh-how__n">2</span><span class="nc-bwh-how__t">{{ s.how2_t }}</span><span class="nc-bwh-how__s">{{ s.how2_s }}</span></div>
+        <div class="nc-bwh-how__c"><span class="nc-bwh-how__n">3</span><span class="nc-bwh-how__t">{{ s.how3_t }}</span><span class="nc-bwh-how__s">{{ s.how3_s }}</span>
+          {%- if gift_p != blank -%}<div class="nc-bwx__mini" style="width:68px;height:68px;border-radius:14px;">{{ gift_p.featured_image | image_url: width: 160 | image_tag: alt: gift_p.featured_image.alt | default: gift_p.title, loading: 'lazy' }}</div>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Black Week-pakker {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwx__head"><div><div class="nc-bwx__eyebrow">Pakker</div><h2 class="nc-bwx__h2">Black Week-pakker</h2></div></div>
+      <ul class="nc-bwx__grid4 nc-bwh-packs">
+        <li class="nc-bwh-packs__big">
+          <a href="{% render 'nc-url', url: s.packs_url, fallback: '/collections/black-week-pakker' %}">
+            {%- assign pimg = s.packs_img | default: images['nc-bw-komplet-topview.jpg'] -%}
+            {%- if pimg != blank -%}{{ pimg | image_url: width: 1400 | image_tag: alt: 'Dagcreme, Natcreme, Rensegel og Ansigtsolie set ovenfra', widths: '700, 1000, 1400', sizes: '(min-width: 990px) 600px, 100vw', loading: 'lazy' }}{%- endif -%}
+            <span class="nc-bwh-packs__pill">Se alle pakker →</span>
+          </a>
+        </li>
+        {%- for p in s.packs limit: 4 -%}<li>{% render 'nc-product-card', product: p %}</li>{%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} Find din rutine {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container nc-bwh-split">
+      <div class="nc-bwh-split__img nc-bwh-split__img--45">
+        {%- assign rimg = s.routine_img | default: images['nc-bw-rensegel-bad.jpg'] -%}
+        {%- if rimg != blank -%}{{ rimg | image_url: width: 1200 | image_tag: alt: 'Rensegel på kanten af håndvasken', widths: '600, 900, 1200', sizes: '(min-width: 990px) 560px, 100vw', loading: 'lazy', style: 'object-position: 50% 55%' }}{%- endif -%}
+      </div>
+      <div class="nc-bwh-split__txt">
+        <div class="nc-bwx__eyebrow">Hvor skal jeg starte?</div>
+        <h2 class="nc-bwx__h2" style="margin-top:10px;">Find din rutine</h2>
+        <p class="nc-bwx__lead">Samme rutine i tre trin for hver hudtype: rens, olie og creme.</p>
+        <div class="nc-bwh-rut">
+          {%- assign groups = 'Tør hud,Sensitiv hud,Moden hud' | split: ',' -%}
+          {%- for g in groups -%}
+            {%- case forloop.index -%}
+              {%- when 1 -%}{%- assign creme = s.rut_cream_dry -%}
+              {%- when 2 -%}{%- assign creme = s.rut_cream_sens -%}
+              {%- else -%}{%- assign creme = s.rut_cream_mature -%}
+            {%- endcase -%}
+            <div class="nc-bwh-rut__g">
+              <span class="nc-bwh-rut__tag">{{ g }}</span>
+              <div class="nc-bwh-rows">
+                {%- render 'nc-bw-row', product: s.rut_cleanse, eyebrow: 'Trin 1 · Rens', size: 'sm' -%}
+                {%- render 'nc-bw-row', product: s.rut_oil, eyebrow: 'Trin 2 · Olie', size: 'sm' -%}
+                {%- render 'nc-bw-row', product: creme, eyebrow: 'Trin 3 · Creme', size: 'sm' -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <a class="nc-bwx__link" style="margin-top:22px;align-self:flex-start;" href="{% render 'nc-url', url: '/collections/cbd-ansigtspleje' %}">Se hele ansigtsplejen →</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Julegaver og gaver under 300, 500, 700 og 1.000 kr (faner) {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b" id="gaver">
+    <div class="nc-container" data-nc-gifttabs>
+      <div class="nc-bwh-gifts__head"><div class="nc-bwx__eyebrow">Julegaver</div><h2 class="nc-bwx__h2">Julegaver og gaver under 300, 500, 700 og 1.000 kr</h2></div>
+      {%- assign gtabs = section.blocks | where: 'type', 'gift_tab' -%}
+      <div class="nc-bwh-tabs-wrap">
+        <div class="nc-bwh-tabs" role="tablist">
+          {%- for block in gtabs -%}
+            <button type="button" role="tab" class="nc-bwh-tab{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- for block in gtabs -%}
+        <div data-panel="{{ forloop.index }}" role="tabpanel"{% unless forloop.first %} hidden{% endunless %}>
+          <ul class="nc-bwx__grid4">{%- for p in block.settings.products limit: 4 -%}<li>{% render 'nc-product-card', product: p %}</li>{%- endfor -%}</ul>
+          {%- if block.settings.url != blank -%}<div class="nc-bwh-gifts__all"><a class="nc-bwx__btn nc-bwx__btn--ghost nc-bwx__btn--md" href="{% render 'nc-url', url: block.settings.url %}">{{ block.settings.cta | escape }}</a></div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+
+  {%- comment -%} Lizbeths valg {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container nc-bwh-split">
+      <div class="nc-bwh-split__img nc-bwh-split__img--sq">
+        {%- assign limg = s.liz_img | default: images['nc-bw-lizbeth-olie.jpg'] -%}
+        {%- if limg != blank -%}{{ limg | image_url: width: 1200 | image_tag: alt: 'Lizbeth Falk med Ansigtsolie i NatureCell-butikken', widths: '600, 900, 1200', sizes: '(min-width: 990px) 560px, 100vw', loading: 'lazy', style: 'object-position: 60% 35%' }}{%- endif -%}
+      </div>
+      <div class="nc-bwh-split__txt">
+        <div class="nc-bwh-liz__eb"><span class="nc-bwh-liz__l" aria-hidden="true">L</span><span class="nc-bwx__eyebrow">Lizbeths valg</span></div>
+        <h2 class="nc-bwx__h2" style="margin-top:14px;">{{ s.liz_title | escape }}</h2>
+        <p class="nc-bwx__lead">{{ s.liz_text | escape }}</p>
+        <div class="nc-bwh-rows" style="margin-top:24px;">
+          {%- for p in s.liz_products limit: 3 -%}{%- render 'nc-bw-row', product: p, size: 'lg' -%}{%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Datoer du skal kende {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwh-dates__head"><div class="nc-bwx__eyebrow">Black Week 2026</div><h2 class="nc-bwx__h2">Datoer du skal kende</h2></div>
+      {%- render 'nc-bw-dates', style: 'timeline', rows: s.dates, photo: images['nc-bw-hero-butik.jpg'] -%}
+    </div>
+  </section>
+
+  {%- comment -%} Kundecases (fra bloggen) {%- endcomment -%}
+  {%- assign cblog = blogs[s.cases_blog] -%}
+  {%- if cblog.articles_count > 0 -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b nc-bwh-cases">
+    <div class="nc-container">
+      <div class="nc-bwx__head">
+        <div style="max-width:680px;"><div class="nc-bwx__eyebrow">Ægte oplevelser</div><h2 class="nc-bwx__h2">Kundecases</h2><p class="nc-bwx__lead" style="margin-top:4px;">Vi lover ikke mirakler. I stedet lader vi vores kunder fortælle deres egen historie, med billeder, video og produkterne de bruger.</p></div>
+        <a class="nc-bwx__btn nc-bwx__btn--ghost nc-bwx__btn--md" href="{{ cblog.url }}">Se alle cases →</a>
+      </div>
+    </div>
+    <div class="nc-bwh-cases__rail">
+      {%- for a in cblog.articles limit: 3 -%}
+        {%- liquid
+          assign ctag = ''
+          for tg in a.tags
+            if tg == 'Ansigt' or tg == 'Fødder' or tg == 'Hænder' or tg == 'Krop'
+              assign ctag = tg
+              break
+            endif
+          endfor
+        -%}
+        <a class="nc-bwh-case" href="{{ a.url }}">
+          <span class="nc-bwh-case__img">
+            {%- if a.image -%}{{ a.image | image_url: width: 800 | image_tag: alt: a.image.alt | default: a.title, widths: '400, 600, 800', sizes: '(min-width: 990px) 400px, 80vw', loading: 'lazy' }}{%- endif -%}
+            {%- if ctag != blank -%}<span class="nc-bwh-case__tag">{{ ctag }}</span>{%- endif -%}
+          </span>
+          <span class="nc-bwh-case__body"><span class="nc-bwh-case__t">{{ a.title | escape }}</span><span class="nc-bwh-case__n">{{ a.author | escape }}</span></span>
+        </a>
+      {%- endfor -%}
+    </div>
+    <div class="nc-container"><p class="nc-bwh-cases__note">Resultater kan variere</p></div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} Vores historie {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container nc-bwh-story">
+      <div class="nc-bwh-story__txt">
+        <div class="nc-bwx__eyebrow">Vores historie</div>
+        <h2 class="nc-bwh-story__h">Danmarks første, og stadig drevet af én familie</h2>
+        <p class="nc-bwx__lead" style="margin-top:20px;line-height:1.7;">{{ s.story_text | escape }}</p>
+        <div class="nc-bwh-story__stats">
+          <div><span>{{ tp_score }}</span><small>ud af 5 anmeldelser</small></div>
+          <div><span>100%</span><small>Dansk udviklet</small></div>
+        </div>
+        <a class="nc-bwx__btn nc-bwx__btn--light" style="margin-top:30px;height:54px;padding:0 28px;font-size:16.5px;" href="{% render 'nc-url', url: '/pages/om-os' %}">Læs vores historie →</a>
+      </div>
+      <div class="nc-bwh-story__img">
+        {%- assign fimg = s.story_img | default: images['nc-bw-founders.jpg'] -%}
+        {%- if fimg != blank -%}{{ fimg | image_url: width: 1400 | image_tag: alt: 'Lizbeth Falk og Allan Gamborg, grundlæggere af NatureCell', widths: '700, 1000, 1400', sizes: '(min-width: 990px) 600px, 100vw', loading: 'lazy' }}{%- endif -%}
+        <span class="nc-bwh-story__fade" aria-hidden="true"></span>
+        <span class="nc-bwh-story__cap"><span>Lizbeth Falk &amp; Allan Gamborg</span><small>Grundlæggere af NatureCell</small></span>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Rådgivning og levering {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwh-service">
+        <div class="nc-bwh-service__l">
+          <div class="nc-bwx__eyebrow">Rådgivning &amp; levering</div>
+          <h2 class="nc-bwx__h2">Vi tager selv telefonen</h2>
+          {%- assign phone = settings.nc_org_phone | default: '+45 40 55 00 42' -%}
+          <a class="nc-bwh-service__tel" href="tel:{{ phone | remove: ' ' }}">{{ phone }}</a>
+          <a class="nc-bwh-service__mail" href="mailto:{{ settings.nc_org_email | default: 'hello@naturecell.dk' }}">{{ settings.nc_org_email | default: 'hello@naturecell.dk' }}</a>
+        </div>
+        <ul class="nc-bwh-service__list">
+          <li><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 10h4l3 3v2.5h-7M6.5 17a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3zM17 17a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3z"/></svg>{{ s.service1 | escape }}</li>
+          <li><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.5l1.5-5h14l1.5 5zM5 9.5V20h14V9.5M10 20v-5h4v5"/></svg>{{ s.service2 | escape }}</li>
+          <li><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F5F4EF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5v5h5M4.6 9.5A8 8 0 1 1 4 13"/></svg>{{ s.service3 | escape }}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Spørgsmål om Black Week {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container nc-bwh-faq">
+      <div class="nc-bwh-faq__l">
+        <div class="nc-bwx__eyebrow">Vilkår</div>
+        <h2 class="nc-bwx__h2">Spørgsmål om Black Week</h2>
+        <a class="nc-bwx__link" style="margin-top:6px;" href="{% render 'nc-url', url: settings.nc_bw_terms_url %}">Læs alle vilkår →</a>
+      </div>
+      {%- render 'nc-bw-faq', rows: s.faq, open_first: true -%}
+    </div>
+  </section>
+
+  {%- comment -%} Nyhedsbrev {%- endcomment -%}
+  <section class="nc-bwx__sec nc-bwx__sec--b">
+    <div class="nc-container">
+      <div class="nc-bwh-news">
+        <div class="nc-bwx__eyebrow">Nyhedsbrev</div>
+        <h2 class="nc-bwx__h2">Hør først om næste kampagne</h2>
+        {%- form 'customer', id: 'nc-bw-news-home', class: 'nc-bwx__news-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+          <div class="nc-bwx__news">
+            <input class="nc-bwx__input" type="email" name="contact[email]" placeholder="din@email.dk" aria-label="E-mail" autocomplete="email" required>
+            <button class="nc-bwx__go" type="submit" aria-label="Tilmeld">→</button>
+          </div>
+          {%- if form.posted_successfully? -%}<p class="nc-bwx__msg" role="status">{{ 'forms.thanks' | t }}</p>{%- elsif form.errors -%}<p class="nc-bwx__msg" role="alert">{{ 'forms.email_error' | t }}</p>{%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% stylesheet %}
+  .nc-bwh { background: #0B0F0E; }
+  .nc-bwh-hero { position: relative; height: 786px; overflow: hidden; background: #0B0F0E; }
+  .nc-bwh-hero picture, .nc-bwh-hero__img { position: absolute; top: 0; right: 0; width: 1080px; max-width: 75%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .nc-bwh-hero__fade { position: absolute; inset: 0; background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,0) 16%), linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 30%, rgba(11,15,14,.9) 40%, rgba(11,15,14,.55) 46%, rgba(11,15,14,0) 52%); }
+  .nc-bwh-hero__in { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .nc-bwh-hero__txt { max-width: 616px; display: flex; flex-direction: column; }
+  .nc-bwh-hero__eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .18em; color: #F5F4EF; }
+  .nc-bwh-hero__h1 { margin: 22px 0 0; font-family: 'Philosopher', serif; font-weight: 700; font-size: 106px; line-height: .98; letter-spacing: -.01em; color: #FFFFFF; }
+  .nc-bwh-hero__offer { margin: 22px 0 0; max-width: 470px; font-size: 22px; line-height: 1.45; color: #F5F4EF; text-wrap: pretty; }
+  .nc-bwh-hero__stock { margin: 12px 0 0; max-width: 470px; font-size: 16px; line-height: 1.45; color: #C4C3BC; }
+  .nc-bwh-hero__cta { align-self: flex-start; margin-top: 34px; }
+  .nc-bwh-hero__cd { margin-top: 40px; display: flex; flex-direction: column; gap: 12px; }
+  .nc-bwh-hero__cdl { font-size: 14px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #F5F4EF; }
+  @media (max-width: 1100px) and (min-width: 750px) { .nc-bwh-hero__h1 { font-size: 80px; } }
+  @media (max-width: 749px) {
+    .nc-bwh-hero { height: 731px; }
+    .nc-bwh-hero picture, .nc-bwh-hero__img { inset: 0; width: 100%; max-width: none; object-position: 58% 0%; }
+    .nc-bwh-hero__fade { background: linear-gradient(0deg, #0B0F0E 0%, #0B0F0E 25%, rgba(11,15,14,.9) 40%, rgba(11,15,14,.55) 49%, rgba(11,15,14,0) 60%); }
+    .nc-bwh-hero__in { justify-content: flex-end; padding-bottom: 22px; }
+    .nc-bwh-hero__eyebrow { font-size: 12.5px; letter-spacing: .16em; }
+    .nc-bwh-hero__h1 { margin-top: 12px; font-size: 58px; line-height: 1; letter-spacing: 0; }
+    .nc-bwh-hero__offer { margin-top: 12px; font-size: 17px; }
+    .nc-bwh-hero__stock { margin-top: 8px; font-size: 14px; }
+    .nc-bwh-hero__cta { margin-top: 20px; height: 52px; padding: 0 30px; font-size: 16.5px; }
+    .nc-bwh-hero__cd { margin-top: 22px; gap: 9px; }
+    .nc-bwh-hero__cdl { font-size: 12.5px; }
+  }
+  .nc-bwh-trust { padding-block: min(calc(1.714vw + 17.3px), 42px); border-bottom: 1px solid #222927; }
+  .nc-bwh-trust__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 18px min(calc(1.524vw + 8px), 30px); }
+  .nc-bwh-trust__list li { display: flex; align-items: center; gap: 12px; min-width: 0; font-size: min(calc(.19vw + 13.76px), 16.5px); font-weight: 500; line-height: 1.35; color: #F5F4EF; }
+  .nc-bwh-trust__list a { color: #F5F4EF; }
+  .nc-bwh-trust__list small { display: block; margin-top: 3px; font-size: min(calc(.095vw + 11.6px), 13px); font-weight: 400; line-height: 1.4; color: #C4C3BC; }
+  .nc-bwh-trust__ic { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #3A413F; display: flex; align-items: center; justify-content: center; }
+  .nc-bwx__sec--nb { padding-bottom: 0; }
+  .nc-bwh-rev__head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .nc-bwh-rev__head .nc-bwx__stars { margin-top: 4px; }
+  .nc-bwh-rev__agg { font-size: min(calc(.095vw + 15.63px), 17px); color: #F5F4EF; }
+  .nc-bwh-tp { color: #00B67A; }
+  .nc-bwh-rev__grid { margin-top: min(calc(1.524vw + 26px), 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: min(calc(.762vw + 10.03px), 21px); }
+  .nc-bwh-rev__card { margin: 0; display: flex; flex-direction: column; gap: 14px; padding: 22px; border: 1px solid #2A312F; border-radius: 18px; background: #121816; }
+  .nc-bwh-rev__stars { display: flex; gap: 3px; }
+  .nc-bwh-rev__card blockquote { margin: 0; font-family: 'Philosopher', serif; font-size: min(calc(.476vw + 18.14px), 25px); line-height: 1.35; color: #FFFFFF; text-wrap: pretty; }
+  .nc-bwh-rev__card figcaption { margin-top: auto; font-size: 15px; color: #C4C3BC; }
+  .nc-bwh-press { margin-top: min(calc(1.524vw + 26px), 48px); padding-top: min(calc(1.524vw + 22px), 44px); border-top: 1px solid #2A312F; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .nc-bwh-press__list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px min(calc(2.286vw + 15px), 48px); }
+  .nc-bwh-press__list span { font-family: 'Philosopher', serif; font-size: min(calc(.571vw + 18.8px), 27px); color: #F5F4EF; white-space: nowrap; }
+  .nc-bwh-areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(150px, calc((100% - 5 * min(calc(.762vw + 10.03px), 21px)) / 6 - 1px)), 1fr)); gap: min(calc(.762vw + 10.03px), 21px); }
+  .nc-bwh-area { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; background: #1A201E; }
+  .nc-bwh-area img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .nc-bwh-area:hover img { transform: scale(1.03); }
+  .nc-bwh-area__fade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(11,15,14,.92) 0%, rgba(11,15,14,.55) 30%, rgba(11,15,14,0) 55%); }
+  .nc-bwh-area__lbl { position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; font-family: 'Philosopher', serif; font-size: min(calc(.286vw + 18.9px), 23px); line-height: 1.15; color: #FFFFFF; }
+  .nc-bwh-area__lbl span:last-child { flex: none; font-family: 'Roboto Flex', sans-serif; font-size: 18px; }
+  .nc-bwh-needs { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .nc-bwh-needs .nc-bwx__eyebrow { margin-right: 6px; }
+  .nc-bwh-pill { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #5B625F; font-size: 15px; font-weight: 500; color: #F5F4EF; }
+  .nc-bwh-pill:hover { border-color: #F5F4EF; }
+  .nc-bwh-how { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: min(calc(.762vw + 10.03px), 21px); }
+  .nc-bwh-how__c { display: flex; flex-direction: column; gap: 12px; padding: min(calc(.952vw + 18.3px), 32px); border: 1px solid #2A312F; border-radius: 18px; background: #121816; }
+  .nc-bwh-how__n { width: 44px; height: 44px; border-radius: 50%; background: #84334E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; }
+  .nc-bwh-how__t { font-family: 'Philosopher', serif; font-size: min(calc(.571vw + 19.8px), 28px); line-height: 1.2; color: #FFFFFF; }
+  .nc-bwh-how__s { font-size: 15.5px; line-height: 1.5; color: #C4C3BC; }
+  .nc-bwh-packs__big { grid-column: span 2; grid-row: span 2; }
+  .nc-bwh-packs__big a { position: relative; display: block; height: 100%; min-height: 100%; border-radius: 18px; overflow: hidden; }
+  .nc-bwh-packs__big img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
+  .nc-bwh-packs__pill { position: absolute; left: 16px; top: 16px; display: inline-flex; align-items: center; height: 46px; padding: 0 20px; border-radius: 999px; background: #0B0F0E; color: #F5F4EF; font-size: 15.5px; font-weight: 600; }
+  @media (max-width: 749px) { .nc-bwh-packs__big { grid-column: 1 / -1; grid-row: auto; } .nc-bwh-packs__big a { aspect-ratio: 16 / 11; height: auto; } }
+  .nc-bwh-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: min(calc(3.048vw + 16.1px), 60px); align-items: center; }
+  .nc-bwh-split__img { position: relative; border-radius: 24px; overflow: hidden; }
+  .nc-bwh-split__img--45 { aspect-ratio: 4 / 5; }
+  .nc-bwh-split__img--sq { aspect-ratio: 1 / 1; }
+  .nc-bwh-split__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .nc-bwh-split__txt { display: flex; flex-direction: column; min-width: 0; }
+  .nc-bwh-rut { margin-top: 22px; display: flex; flex-direction: column; gap: 22px; }
+  .nc-bwh-rut__g { display: flex; flex-direction: column; }
+  .nc-bwh-rut__tag { align-self: flex-start; display: inline-flex; align-items: center; height: 32px; margin-bottom: 10px; padding: 0 14px; border-radius: 999px; background: #84334E; color: #FFFFFF; font-size: 14px; font-weight: 600; }
+  .nc-bwh-rows { display: flex; flex-direction: column; border-bottom: 1px solid #2A312F; }
+  .nc-bwh-gifts__head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+  .nc-bwh-tabs-wrap { max-width: 100%; overflow-x: auto; scrollbar-width: none; margin-bottom: min(calc(1.143vw + 19.54px), 36px); }
+  .nc-bwh-tabs { display: flex; width: max-content; padding: 4px; gap: 4px; border: 1px solid #343B39; border-radius: 999px; }
+  .nc-bwh-tab { border: 0; cursor: pointer; font-family: inherit; font-size: min(calc(.095vw + 13.63px), 15px); font-weight: 600; color: #F5F4EF; background: transparent; padding: 10px min(calc(.857vw + 7.66px), 20px); border-radius: 999px; white-space: nowrap; }
+  .nc-bwh-tab.is-active { background: #84334E; }
+  .nc-bwh-gifts__all { display: flex; justify-content: center; margin-top: 28px; }
+  .nc-bwh-liz__eb { display: flex; align-items: center; gap: 12px; }
+  .nc-bwh-liz__l { flex: none; width: 44px; height: 44px; border-radius: 50%; background: #84334E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'Philosopher', serif; font-size: 22px; font-weight: 700; }
+  .nc-bwh-dates__head { display: flex; flex-direction: column; gap: 10px; margin-bottom: min(calc(2.286vw + 23.1px), 56px); }
+  .nc-bwh-cases { padding-left: 0; padding-right: 0; }
+  .nc-bwh-cases__rail { display: flex; gap: min(calc(.762vw + 10.03px), 21px); overflow-x: auto; scrollbar-width: none; padding: 0 max(var(--gutter), calc((100vw - var(--container-max)) / 2 + var(--gutter))); }
+  .nc-bwh-case { flex: 1 0 290px; display: flex; flex-direction: column; border: 1px solid #2A312F; border-radius: 18px; overflow: hidden; background: #121816; }
+  .nc-bwh-case__img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #1A201E; }
+  .nc-bwh-case__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+  .nc-bwh-case__tag { position: absolute; left: 14px; top: 14px; background: #F5F4EF; color: #1F2523; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
+  .nc-bwh-case__body { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; }
+  .nc-bwh-case__t { font-family: 'Philosopher', serif; font-size: min(calc(.476vw + 18.14px), 25px); line-height: 1.3; color: #FFFFFF; text-wrap: pretty; }
+  .nc-bwh-case__n { margin-top: auto; font-size: 15px; color: #C4C3BC; }
+  .nc-bwh-cases__note { margin: 16px 0 0; font-size: 14px; color: #C4C3BC; }
+  .nc-bwh-story { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: min(calc(3.048vw + 28.1px), 72px); align-items: center; }
+  .nc-bwh-story__txt { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  .nc-bwh-story__h { margin: 14px 0 0; font-family: 'Philosopher', serif; font-weight: 400; font-size: min(calc(2.095vw + 21.83px), 52px); line-height: 1.12; color: #F5F4EF; text-wrap: balance; }
+  .nc-bwh-story__stats { margin-top: 26px; display: flex; }
+  .nc-bwh-story__stats > div { display: flex; flex-direction: column; gap: 4px; }
+  .nc-bwh-story__stats > div:first-child { padding-right: 24px; border-right: 1px solid #3A413F; }
+  .nc-bwh-story__stats > div + div { padding-left: 24px; }
+  .nc-bwh-story__stats span { font-family: 'Philosopher', serif; font-size: 34px; line-height: 1; color: #FFFFFF; }
+  .nc-bwh-story__stats small { font-size: 14px; color: #C4C3BC; }
+  .nc-bwh-story__img { position: relative; aspect-ratio: 1.17 / 1; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+  .nc-bwh-story__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+  .nc-bwh-story__fade { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(0deg, rgba(11,15,14,.9) 0%, rgba(11,15,14,0) 100%); }
+  .nc-bwh-story__cap { position: absolute; left: min(calc(1.143vw + 13.5px), 30px); bottom: min(calc(1.143vw + 13.5px), 30px); display: flex; flex-direction: column; gap: 4px; font-family: 'Philosopher', serif; font-size: min(calc(.571vw + 17.8px), 26px); color: #FFFFFF; }
+  .nc-bwh-story__cap small { font-family: 'Roboto Flex', sans-serif; font-size: 14.5px; color: #E4E3DD; }
+  .nc-bwh-service { border: 1px solid #2A312F; border-radius: 24px; padding: min(calc(2.286vw + 19px), 52px) min(calc(2.857vw + 11px), 52px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: min(calc(2.286vw + 19px), 52px); align-items: center; }
+  .nc-bwh-service__l { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+  .nc-bwh-service__tel { margin-top: 8px; font-family: 'Philosopher', serif; font-size: min(calc(.952vw + 22.3px), 36px); line-height: 1.1; color: #FFFFFF; white-space: nowrap; }
+  .nc-bwh-service__mail { font-size: 17px; text-decoration: underline !important; text-underline-offset: 4px; }
+  .nc-bwh-service__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-bottom: 1px solid #2A312F; }
+  .nc-bwh-service__list li { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-top: 1px solid #2A312F; font-size: min(calc(.19vw + 15.26px), 18px); color: #F5F4EF; }
+  .nc-bwh-service__list svg { flex: none; }
+  .nc-bwh-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: min(calc(2.286vw + 15.1px), 48px); align-items: start; }
+  .nc-bwh-faq__l { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .nc-bwh-news { border-top: 1px solid #2A312F; padding-top: min(calc(4.571vw + 38.17px), 104px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .nc-bwh-news form { margin-top: 14px; display: flex; flex-direction: column; align-items: center; width: 100%; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Black Week-forside",
+  "class": "nc-bw-home-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_img",
+      "label": "Billede, desktop",
+      "info": "Tom = nc-bw-hero-butik.jpg fra Filer."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_img_m",
+      "label": "Billede, mobil (4:5)",
+      "info": "Tom = nc-bw-hero-butik-mobil.jpg fra Filer."
+    },
+    {
+      "type": "text",
+      "id": "hero_alt",
+      "label": "Alt-tekst",
+      "default": "Lizbeth Falk og Allan Gamborg i NatureCell-butikken"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Overlinje",
+      "default": "BLACK WEEK · 23.–30. NOVEMBER"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hero_title",
+      "label": "Overskrift",
+      "default": "20% på enkeltvarer"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hero_offer",
+      "label": "Tilbud",
+      "default": "25% ved 2 ens · 30% ved 3 ens – trækkes automatisk i kurven"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Knap",
+      "default": "Se alle tilbud"
+    },
+    {
+      "type": "url",
+      "id": "hero_url",
+      "label": "Knap-link",
+      "info": "Tom = Black Week-landingen."
+    },
+    {
+      "type": "header",
+      "content": "Anmeldelser og presse"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tilføj anmeldelser som blokke (citat, fornavn, by). Uden blokke vises kun overskrift, Trustpilot-tal og presse."
+    },
+    {
+      "type": "text",
+      "id": "press",
+      "label": "Omtalt i (kommasepareret)",
+      "default": "Løvens Hule, Børsen, Ude og Hjemme, Helse, ALT Beauty"
+    },
+    {
+      "type": "header",
+      "content": "Shop efter område"
+    },
+    {
+      "type": "textarea",
+      "id": "areas",
+      "label": "Områder (Tekst | /url | billedfil | position | alt-tekst)",
+      "default": "Ansigt | /collections/cbd-ansigtspleje | nc-bw-omraade-ansigt.jpg | 50% 30% | Dagcreme holdes op ved håndvasken\nKrop | /collections/cbd-kropspleje | nc-bw-omraade-krop.jpg | 50% 40% | Body Oil holdes i hånden\nHænder & fødder | /collections/cbd-handpleje | nc-bw-omraade-haender.jpg | 45% 50% | Kvinde smører Håndcreme på hånden\nHår | /collections/cbd-haarpleje | nc-bw-omraade-haar.jpg | 45% 40% | Shampoo og balsam på en bordplade\nOlier | /collections/cbd-olie | nc-bw-omraade-olier.jpg | 58% 50% | Håndcreme og Ansigtsolie på en sten\nBlack Week-pakker | /collections/black-week-pakker | nc-bw-omraade-pakker.jpg | 50% 50% | Rensegel, Dagcreme og Ansigtsolie med pipette"
+    },
+    {
+      "type": "textarea",
+      "id": "needs",
+      "label": "Shop efter behov (Tekst | /url)",
+      "default": "Tør hud | /collections/cbd-hudpleje/tor-hud\nModen hud | /collections/cbd-hudpleje/moden-hud\nSensitiv hud | /collections/cbd-hudpleje/sensitiv-hud\nFugt | /collections/cbd-hudpleje/fugt"
+    },
+    {
+      "type": "header",
+      "content": "Kundernes favoritter"
+    },
+    {
+      "type": "product_list",
+      "id": "favs",
+      "label": "Produkter",
+      "limit": 4
+    },
+    {
+      "type": "url",
+      "id": "favs_url",
+      "label": "Se alle-link"
+    },
+    {
+      "type": "header",
+      "content": "Sådan virker Black Week"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "how1_t",
+      "label": "Trin 1",
+      "default": "20% på enkeltvarer"
+    },
+    {
+      "type": "text",
+      "id": "how1_s",
+      "label": "Trin 1, tekst",
+      "default": "Trækkes automatisk – ingen kode."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "how2_t",
+      "label": "Trin 2",
+      "default": "25% ved 2 ens · 30% ved 3 ens"
+    },
+    {
+      "type": "text",
+      "id": "how2_s",
+      "label": "Trin 2, tekst",
+      "default": "Køb 2 eller 3 af samme produkt. Rabatten beregnes automatisk i kurven."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "how3_t",
+      "label": "Trin 3",
+      "default": "Gave til de første 100 ordrer over 899 kr"
+    },
+    {
+      "type": "text",
+      "id": "how3_s",
+      "label": "Trin 3, tekst",
+      "default": "Eksfolieringshandske (værdi 119 kr). Én pr. ordre, fra 23.11."
+    },
+    {
+      "type": "header",
+      "content": "Black Week-pakker"
+    },
+    {
+      "type": "image_picker",
+      "id": "packs_img",
+      "label": "Stort billede",
+      "info": "Tom = nc-bw-komplet-topview.jpg."
+    },
+    {
+      "type": "url",
+      "id": "packs_url",
+      "label": "Link",
+      "info": "Tom = /collections/black-week-pakker"
+    },
+    {
+      "type": "product_list",
+      "id": "packs",
+      "label": "Pakker",
+      "limit": 4
+    },
+    {
+      "type": "header",
+      "content": "Find din rutine"
+    },
+    {
+      "type": "image_picker",
+      "id": "routine_img",
+      "label": "Billede",
+      "info": "Tom = nc-bw-rensegel-bad.jpg."
+    },
+    {
+      "type": "product",
+      "id": "rut_cleanse",
+      "label": "Trin 1: rens"
+    },
+    {
+      "type": "product",
+      "id": "rut_oil",
+      "label": "Trin 2: olie"
+    },
+    {
+      "type": "product",
+      "id": "rut_cream_dry",
+      "label": "Trin 3, tør hud"
+    },
+    {
+      "type": "product",
+      "id": "rut_cream_sens",
+      "label": "Trin 3, sensitiv hud"
+    },
+    {
+      "type": "product",
+      "id": "rut_cream_mature",
+      "label": "Trin 3, moden hud"
+    },
+    {
+      "type": "header",
+      "content": "Lizbeths valg"
+    },
+    {
+      "type": "image_picker",
+      "id": "liz_img",
+      "label": "Billede",
+      "info": "Tom = nc-bw-lizbeth-olie.jpg."
+    },
+    {
+      "type": "text",
+      "id": "liz_title",
+      "label": "Overskrift",
+      "default": "Udvalgt af Lizbeth Falk"
+    },
+    {
+      "type": "text",
+      "id": "liz_text",
+      "label": "Tekst",
+      "default": "Tre produkter fra serien, valgt af Lizbeth Falk, medstifter af NatureCell."
+    },
+    {
+      "type": "product_list",
+      "id": "liz_products",
+      "label": "Produkter",
+      "limit": 3
+    },
+    {
+      "type": "header",
+      "content": "Datoer"
+    },
+    {
+      "type": "textarea",
+      "id": "dates",
+      "label": "Datoer (Ugedag | Dato | Tid | Tekst | slut-tidspunkt UTC | foto)",
+      "default": "Fre | 20.11 | kl. 15.00 | VIP Access | 2026-11-20T14:00:00Z\nMan | 23.11 | kl. 00.01 | Black Week åbner | 2026-11-22T23:01:00Z\nMan | 23.11 | kl. 19–20 | Facebook LIVE med Lizbeth og Allan | 2026-11-23T19:00:00Z | foto\nFre | 27.11 |  | Black Friday | 2026-11-27T22:59:59Z\nMan | 30.11 | kl. 23.59 | Black Week slutter | 2026-11-30T22:59:00Z"
+    },
+    {
+      "type": "header",
+      "content": "Kundecases, historie og service"
+    },
+    {
+      "type": "blog",
+      "id": "cases_blog",
+      "label": "Kundecases (blog)"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Vores historie",
+      "default": "Bag NatureCell står Lizbeth Falk og Allan Gamborg, en familiedrevet virksomhed bygget på ærlighed, dansk udvikling og ægte oplevelser frem for løfter."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_img",
+      "label": "Billede",
+      "info": "Tom = nc-bw-founders.jpg."
+    },
+    {
+      "type": "text",
+      "id": "service1",
+      "label": "Service 1",
+      "default": "Bestil før kl. 14 – afsendes samme dag"
+    },
+    {
+      "type": "text",
+      "id": "service2",
+      "label": "Service 2",
+      "default": "Afhent i butikken i Skanderborg"
+    },
+    {
+      "type": "text",
+      "id": "service3",
+      "label": "Service 3",
+      "default": "14 dages fortrydelsesret"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "textarea",
+      "id": "faq",
+      "label": "Spørgsmål (Spørgsmål | Svar)",
+      "default": "Hvordan får jeg rabatten? | 20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens trækkes automatisk i kurven. Du skal ikke bruge nogen kode. Rabatten på enkeltvarer gives ikke oven i pakkepriserne. Point og rabatkoder kan ikke bruges under VIP Access og Black Week.\nKan jeg bruge point eller rabatkoder? | Nej. Point og rabatkoder kan ikke bruges under VIP Access og Black Week.\nHvornår får jeg gaven? | Fra mandag 23.11 kl. 00.01 får de første 100 ordrer over 899 kr efter rabat en Eksfolieringshandske (værdi 119 kr) med. Én gave pr. ordre, indtil de 100 er uddelt.\nHvad koster fragt? | Fri fragt ved køb over 499 kr.\nKan jeg fortryde eller returnere? | Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Derudover har du 30 dages tilfredshedsgaranti på din første ordre hos os: Er du ikke tilfreds, kan du sende produkterne retur – også selvom de er åbnet og brugt – i den originale flaske eller emballage med indhold tilbage. Du betaler selv returfragten.\nHvornår slutter Black Week? | Mandag 30.11 kl. 23.59. Fra tirsdag 1.12 gælder normale priser igen."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Anmeldelse",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Citat"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Fornavn"
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "By"
+        }
+      ]
+    },
+    {
+      "type": "gift_tab",
+      "name": "Gavefane",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Fane",
+          "default": "Julegaver"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Produkter",
+          "limit": 4
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Knap",
+          "default": "Se alle julegaver →"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

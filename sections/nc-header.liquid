@@ -240,10 +240,44 @@
     assign ann_guar = true
   endif
 -%}
-{%- if announce != blank -%}
+{%- comment -%}
+  Black Week (Swerv 12.11): bordeaux topbjaelke, "Black Week"-punkt med dropdown og Black Week-gruppe
+  i mobilmenuen. bw_mode on: kun Black Week. dual (VIP Access): begge dele, klassen nc-bw paa html-elementet vaelger.
+{%- endcomment -%}
+{%- liquid
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign bw_mode = 'off'
+  if bw_phase == 'bw'
+    assign bw_mode = 'on'
+  elsif bw_phase == 'vip'
+    assign bw_mode = 'dual'
+  endif
+  assign bw_menu = settings.nc_bw_menu | newline_to_br | split: '<br />'
+  assign bw_first_url = '/collections/black-week'
+  for r in bw_menu
+    assign rp = r | split: '|'
+    if rp[1] != blank
+      assign bw_first_url = rp[1] | strip
+      break
+    endif
+  endfor
+  assign bw_vip_url = '/pages/' | append: settings.nc_vip_page_handle | default: '/pages/vip-black'
+-%}
+{%- if bw_mode != 'off' -%}
+  <div class="nc-announce nc-announce--bw{% if ann_guar %} nc-announce--guar{% endif %}{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+    <span class="nc-announce__lead"><span class="nc-announce__bwa">{{ settings.nc_bw_bar_a | escape }}</span> <span class="nc-announce__bwb">{{ settings.nc_bw_bar_b | escape }}</span></span>
+    {%- if ann_guar -%}
+      <span class="nc-announce__guar"><span class="nc-announce__guar-sep"> · </span><a href="/pages/tilfredshedsgaranti">30 dages tilfredshedsgaranti på første ordre</a></span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+{%- if announce != blank and bw_mode != 'on' -%}
   {%- comment -%} Leddene efter det foerste (" · ") skjules paa mobil, saa bjaelken holder een linje. {%- endcomment -%}
   {%- assign ann_parts = announce | split: ' · ' -%}
-  <div class="nc-announce{% if ann_guar %} nc-announce--guar{% endif %}">
+  <div class="nc-announce{% if ann_guar %} nc-announce--guar{% endif %}{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">
     {%- for ann_part in ann_parts -%}
       {%- if forloop.first -%}
         <span class="nc-announce__lead">{% render 'nc-cbd', text: ann_part %}</span>
@@ -316,6 +350,35 @@
 
       <nav class="nc-header__nav" aria-label="{{ 'general.main_menu' | t }}">
         <ul>
+          {%- if bw_mode != 'off' -%}
+          <li class="nc-dd nc-dd--bw{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+            <a class="nc-header__link nc-header__link--bw" href="{% render 'nc-url', url: bw_first_url %}" aria-haspopup="true">
+              <span class="nc-header__bwdot" aria-hidden="true"></span><span>Black Week</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+            <div class="nc-dd__panel nc-dd__panel--bw">
+              {%- for r in bw_menu -%}
+                {%- assign rl = r | strip -%}
+                {%- if rl == '--' -%}
+                  <span class="nc-dd__sep" aria-hidden="true"></span>
+                {%- else -%}
+                  {%- assign rp = rl | split: '|' -%}
+                  {%- if rp[1] != blank -%}
+                    {%- assign rlab = rp[0] | strip -%}{%- assign rurl = rp[1] | strip -%}
+                    <a href="{% render 'nc-url', url: rurl %}"{% if forloop.first %} class="is-strong"{% endif %}>{{ rlab | escape }}</a>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="nc-dd__offer">
+                <span class="nc-dd__offer-t">{{ settings.nc_bw_offer | escape | replace: ' ', '&nbsp;' | replace: '&nbsp;·&nbsp;', ' · ' }}</span>
+                <span class="nc-dd__offer-s">{{ settings.nc_bw_auto | escape }}</span>
+              </div>
+            </div>
+          </li>
+          {%- endif -%}
+          {%- if bw_mode == 'dual' -%}
+          <li class="nc-bw-hide"><a class="nc-header__link nc-header__link--bw" href="{{ bw_vip_url }}"><span class="nc-header__bwdot" aria-hidden="true"></span><span>VIP Access</span></a></li>
+          {%- endif -%}
           <li>
             <button class="nc-header__link" data-nc-mega-toggle aria-expanded="false" aria-controls="nc-mega">
               {{ 'nav.shop' | t }}
@@ -361,7 +424,7 @@
           </li>
           {%- endunless -%}
           {%- if request.locale.iso_code == 'da' -%}
-          <li><a class="nc-header__link" href="{% render 'nc-url', url: '/pages/gaveideer' %}">{{ 'nav.gift_guide' | t }}</a></li>
+          {%- unless bw_mode == 'on' -%}<li {% if bw_mode == 'dual' %} class="nc-bw-hide"{% endif %}><a class="nc-header__link" href="{% render 'nc-url', url: '/pages/gaveideer' %}">{{ 'nav.gift_guide' | t }}</a></li>{%- endunless -%}
           {%- endif -%}
         </ul>
       </nav>
@@ -418,7 +481,11 @@
             {%- for block in section.blocks -%}
 {%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
               {%- if block.type == 'area' -%}
-                <a class="nc-mega__card" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
+                {%- comment -%} Black Week-designet har ikke Herre i menuen (noHerre). {%- endcomment -%}
+                {%- assign bw_herre = false -%}
+                {%- if bw_mode != 'off' and block.settings.url contains 'herre' -%}{%- assign bw_herre = true -%}{%- endif -%}
+                {%- if bw_herre and bw_mode == 'on' -%}{%- continue -%}{%- endif -%}
+                <a class="nc-mega__card{% if bw_herre %} nc-bw-hide{% endif %}" href="{% render 'nc-url', url: block.settings.url %}" {{ block.shopify_attributes }}>
                   <span class="nc-mega__media">
                     {%- if block.settings.image != blank -%}
                       {{ block.settings.image | image_url: width: 360 | image_tag: class: 'nc-packshot', alt: block.settings.label, loading: 'lazy' }}
@@ -512,6 +579,23 @@
       </div>
     </div>
     <nav aria-label="{{ 'general.mobile_menu' | t }}">
+      {%- if bw_mode != 'off' -%}
+      <div class="nc-mobilenav__bw{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+        <a href="{% render 'nc-url', url: bw_first_url %}"><span class="nc-header__bwdot" aria-hidden="true"></span>Black Week</a>
+        <div class="nc-mobilenav__sub">
+          {%- for r in bw_menu -%}
+            {%- assign rp = r | strip | split: '|' -%}
+            {%- if rp[1] != blank -%}
+              {%- assign rlab = rp[0] | strip -%}{%- assign rurl = rp[1] | strip -%}
+              <a href="{% render 'nc-url', url: rurl %}">{{ rlab | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+      {%- if bw_mode == 'dual' -%}
+        <a class="nc-bw-hide" href="{{ bw_vip_url }}"><span class="nc-header__bwdot" aria-hidden="true"></span>VIP Access</a>
+      {%- endif -%}
       <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>
       <div class="nc-mobilenav__sub">
         {%- if request.locale.iso_code == 'da' -%}
@@ -521,7 +605,10 @@
         {%- for block in section.blocks -%}
 {%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
           {%- if block.type == 'area' -%}
-            <a href="{% render 'nc-url', url: block.settings.url %}">{% render 'nc-cbd', text: block.settings.label %}</a>
+            {%- assign bw_herre = false -%}
+            {%- if bw_mode != 'off' and block.settings.url contains 'herre' -%}{%- assign bw_herre = true -%}{%- endif -%}
+            {%- if bw_herre and bw_mode == 'on' -%}{%- continue -%}{%- endif -%}
+            <a href="{% render 'nc-url', url: block.settings.url %}"{% if bw_herre %} class="nc-bw-hide"{% endif %}>{% render 'nc-cbd', text: block.settings.label %}</a>
           {%- endif -%}
         {%- endfor -%}
       </div>

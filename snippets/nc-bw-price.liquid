@@ -1,0 +1,33 @@
+{%- comment -%}
+  nc-bw-price: Black Week-pris for en variant. Udskriver "type,pris_i_oere,vaerdi_i_oere".
+    type single: enkeltvare. Prisen er normalprisen × (1 − rabat %) rundet NED til hele kroner
+                 (Viktor 22.10). Normalprisen vises overstreget.
+    type pack:   pakke (tag pakker/Pakker/bundle). Egen pris, ingen ekstra rabat. Værdien er
+                 førprisen (summen af enkeltpriserne) og vises IKKE overstreget, men som
+                 "Værdi ved køb enkeltvis" (30-dages-reglen, § 9 a).
+    type none:   ingen Black Week-pris (gavekort, tagget "ingen-bw", pris 0).
+  Temaet viser kun prisen. Selve rabatten trækkes af Shopifys automatiske rabat.
+
+  Brug: {%- capture bwp %}{% render 'nc-bw-price', product: product, variant: v %}{% endcapture -%}
+        {%- assign bwp = bwp | strip | split: ',' -%}  → bwp[0] type, bwp[1] pris, bwp[2] værdi
+{%- endcomment -%}
+{%- liquid
+  assign vv = variant | default: product.selected_or_first_available_variant
+  assign kind = 'single'
+  assign skip_tag = settings.nc_bw_skip_tag | default: 'ingen-bw'
+  if product.gift_card? or product.tags contains skip_tag or product.tags contains 'Gavekort' and product.title contains 'Gavekort' or vv.price == 0
+    assign kind = 'none'
+  elsif product.tags contains 'pakker' or product.tags contains 'Pakker' or product.tags contains 'bundle'
+    assign kind = 'pack'
+  endif
+  assign pct = settings.nc_bw_pct | default: 20
+  assign keep = 100 | minus: pct
+  assign bw = vv.price
+  assign val = 0
+  if kind == 'single'
+    assign bw = vv.price | times: keep | divided_by: 10000 | times: 100
+  elsif kind == 'pack' and vv.compare_at_price > vv.price
+    assign val = vv.compare_at_price
+  endif
+  echo kind | append: ',' | append: bw | append: ',' | append: val
+-%}

@@ -312,5 +312,246 @@
         "info": "Fra Trustpilot Business → TrustBox. NatureCells id er 5d5bafba5563e40001e11a6e (samme som på den gamle side)."
       }
     ]
+  },
+  {
+    "name": "Black Week 2026",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Styrer hele Black Week-temaet: mørkt tema, priser, badges, VIP-lukning, forside, kollektioner, produktside og kurv. Faserne skifter selv på tidspunkterne nedenfor (både på serveren og i browseren, så cachede sider også skifter). Gælder kun dansk og ikke B2B-kunder."
+      },
+      {
+        "type": "checkbox",
+        "id": "nc_bw_enabled",
+        "label": "Slå Black Week-temaet til",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "nc_bw_phase_override",
+        "label": "Fase",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Automatisk efter tidspunkterne"
+          },
+          {
+            "value": "normal",
+            "label": "Tving: normal"
+          },
+          {
+            "value": "vip",
+            "label": "Tving: VIP Access"
+          },
+          {
+            "value": "bw",
+            "label": "Tving: Black Week (åben for alle)"
+          }
+        ],
+        "info": "Brug kun 'Tving' til test i et upubliceret tema eller i en nødsituation. Husk at sætte tilbage til Automatisk."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_open_utc",
+        "label": "Black Week åbner for alle (UTC)",
+        "default": "2026-11-22T23:01:00Z",
+        "info": "2026-11-22T23:01:00Z = mandag 23.11 kl. 00.01 dansk tid. VIP Access starter på 'Black Week starter (UTC)' under Fragt og handel (fre 20.11 kl. 15.00)."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_close_utc",
+        "label": "Black Week slutter (UTC)",
+        "default": "2026-11-30T22:59:00Z",
+        "info": "2026-11-30T22:59:00Z = mandag 30.11 kl. 23.59. Derefter vises det normale tema igen."
+      },
+      {
+        "type": "header",
+        "content": "VIP Access"
+      },
+      {
+        "type": "text",
+        "id": "nc_vip_token",
+        "label": "VIP-nøgle i mail-link",
+        "default": "bw2026",
+        "info": "Links i VIP-mailen skal have ?vip=bw2026 (fx https://naturecell.dk/?vip=bw2026). Linket giver adgang i 14 dage på den enhed. Tilmelding på VIP-siden giver også adgang. Kunder, der er logget ind og har sagt ja til nyhedsbrev, har altid adgang."
+      },
+      {
+        "type": "text",
+        "id": "nc_vip_page_handle",
+        "label": "VIP-side (handle)",
+        "default": "vip-black",
+        "info": "Siden /pages/vip-black vises med VIP-designet. Ikke-VIP-besøgende sendes hertil fra Black Week-kollektionerne under VIP Access."
+      },
+      {
+        "type": "paragraph",
+        "content": "OBS: Lukningen er en hindring i butikken, ikke en sikkerhed. Selve rabatten skal også begrænses i Shopify (rabatter), hvis den kun må gælde VIP."
+      },
+      {
+        "type": "header",
+        "content": "Priser og gaver"
+      },
+      {
+        "type": "number",
+        "id": "nc_bw_pct",
+        "label": "Rabat på enkeltvarer (%)",
+        "default": 20,
+        "info": "Vist pris = normalpris × (1 − %) rundet ned til hele kroner. Selve rabatten trækkes af Shopifys automatiske rabat. Pakker (tag 'pakker' eller 'bundle') får ikke rabatten: de viser deres egen pris og 'Værdi ved køb enkeltvis' (førprisen)."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_skip_tag",
+        "label": "Tag: ingen Black Week-rabat",
+        "default": "ingen-bw",
+        "info": "Produkter med dette tag vises med normal pris og uden badge."
+      },
+      {
+        "type": "product",
+        "id": "nc_bw_gift_product",
+        "label": "Black Week-gave (fra åbning)",
+        "info": "Eksfolieringshandske. Billedet bruges i gavebokse."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_gift_title",
+        "label": "Black Week-gave: overskrift",
+        "default": "Gave til de første 100 ordrer over 899 kr"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_gift_name",
+        "label": "Black Week-gave: navn",
+        "default": "Eksfolieringshandske"
+      },
+      {
+        "type": "number",
+        "id": "nc_bw_gift_min",
+        "label": "Black Week-gave: minimumsordre (kr)",
+        "default": 899
+      },
+      {
+        "type": "product",
+        "id": "nc_vip_gift_product",
+        "label": "VIP-gave",
+        "info": "Håndcreme."
+      },
+      {
+        "type": "text",
+        "id": "nc_vip_gift_title",
+        "label": "VIP-gave: overskrift",
+        "default": "Gave til de første 100 ordrer over 499 kr: Håndcreme"
+      },
+      {
+        "type": "textarea",
+        "id": "nc_vip_gift_text",
+        "label": "VIP-gave: tekst",
+        "default": "Håndcreme (værdi 249 kr) til ordrer over 499 kr efter rabat. Én pr. ordre, fre 20.11 kl. 15.00 – søn 22.11 kl. 23.59."
+      },
+      {
+        "type": "number",
+        "id": "nc_vip_gift_min",
+        "label": "VIP-gave: minimumsordre (kr)",
+        "default": 499
+      },
+      {
+        "type": "header",
+        "content": "Tekster"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_bar_a",
+        "label": "Topbjælke, 1. led",
+        "default": "BLACK WEEK 23.–30. november ·"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_bar_b",
+        "label": "Topbjælke, 2. led",
+        "default": "Spar 20–30% på enkeltvarer ved køb af 1–3 ens"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_offer",
+        "label": "Tilbudslinje",
+        "default": "20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_auto",
+        "label": "Undertekst til tilbud",
+        "default": "Trækkes automatisk i kurven"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_stock",
+        "label": "Lagerforbehold",
+        "default": "Alle tilbud og kampagnegaver gælder kun, så længe lager haves."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_bw_pdp_lines",
+        "label": "Produktside, enkeltvarer: punkter",
+        "default": "Trækkes automatisk i kurven – ingen kode\nFri fragt over 499 kr\nAlle tilbud og kampagnegaver gælder kun, så længe lager haves."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_bw_pdp_pack_lines",
+        "label": "Produktside, pakker: punkter",
+        "default": "Fri fragt over 499 kr\nPoint og rabatkoder kan ikke bruges under VIP Access og Black Week\nRabatten på enkeltvarer gives ikke oven i pakkeprisen\nAlle tilbud og kampagnegaver gælder kun, så længe lager haves."
+      },
+      {
+        "type": "header",
+        "content": "Navigation og kollektioner"
+      },
+      {
+        "type": "textarea",
+        "id": "nc_bw_menu",
+        "label": "Black Week-menu (Tekst | /url)",
+        "default": "Alle tilbud | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nBlack Week-pakker | /collections/black-week-pakker\n--\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver",
+        "info": "Bruges i menuen, mobilmenuen og fanerne over kollektionerne. -- giver en skillelinje i menuen. Kollektionerne skal findes i Shopify."
+      },
+      {
+        "type": "textarea",
+        "id": "nc_bw_subnav",
+        "label": "Faner over kollektionerne (Tekst | /url)",
+        "default": "Alle | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nPakker | /collections/black-week-pakker\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver"
+      },
+      {
+        "type": "textarea",
+        "id": "nc_bw_banners",
+        "label": "Kollektionsbannere",
+        "default": "black-week-enkeltvarer | nc-bw-banner-enkeltvarer.jpg | Enkeltvarer | 20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens, trækkes automatisk i kurven. | 50% 38% | 72% 34% | lager\nblack-week-pakker | nc-bw-banner-pakker.jpg | Black Week-pakker | Hele rutinen samlet i én pakke. Spar op til 33% på pakker – rabatten på enkeltvarer gives ikke oven i pakkepriserne. | 50% 60% | 50% 100% | lager venstre360\ngaver-under-300 | nc-bw-banner-g300.jpg | Gaver under 300 kr | Små gaver med Black Week-pris. | 50% 42% | 55% 45%\ngaver-under-500 | nc-bw-banner-g500.jpg | Gaver under 500 kr | Gaver med Black Week-pris. | 50% 30% | 50% 36%\ngaver-under-700 | nc-bw-banner-g700.jpg | Gaver under 700 kr | Gaver med Black Week-pris. | 50% 58% | 50% 85% | hoej\ngaver-under-1000 | nc-bw-banner-g1000.jpg | Gaver under 1.000 kr | Pakker og større gaver med Black Week-pris. | 50% 70% | 50% 68%\njulegaver | nc-bw-banner-julegaver.jpg | Julegaver | Giv hudpleje, vi selv bruger. | 50% 62% | 100% 50% | julefoto\n* | nc-bw-banner-ansigt.jpg | | | 50% 35% | 50% 100% | venstre420",
+        "info": "Én kollektion pr. linje: handle | billedfil i Indhold → Filer | titel | tekst | position desktop | position mobil | flag. Tom titel = kollektionens egen titel. * gælder alle andre kollektioner. Flag: lager (vis lagerforbehold), venstre360/venstre420 (billede til højre), hoej (højt mobilbanner), julefoto (julefoto under listen)."
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_landing",
+        "label": "Black Week-landing (handle)",
+        "default": "black-week"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_terms_url",
+        "label": "Vilkår og FAQ (url)",
+        "default": "/pages/black-week-vilkaar",
+        "info": "Siden /pages/black-week-vilkaar vises med vilkårs-designet, når den findes i Shopify."
+      },
+      {
+        "type": "header",
+        "content": "Kurv"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_cart_recs",
+        "label": "Kurv: 'Tilføj til din ordre' (produkt-handles)",
+        "default": "lip-balm, deodorant, exfoliating-hanske"
+      },
+      {
+        "type": "text",
+        "id": "nc_bw_cart_recs_empty",
+        "label": "Tom kurv: bestsellere (produkt-handles)",
+        "default": "ansigtsolie-med-antioxidanter-30-ml, dagcreme, hudpleje-startpakke-plus-1, facial-care-3-dagcreme-natcreme-og-ansigtsolie"
+      }
+    ]
   }
 ]

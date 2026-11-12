@@ -48,6 +48,34 @@
     assign on_sale = true
     assign save_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
   endif
+
+  comment
+    Black Week (Swerv 12.11, boards 06/07): BLACK WEEK-badge, Black Week-pris (enkeltvarer) eller
+    "Værdi ved køb enkeltvis" (pakker), Black Week-boks med punkter, gave og nedtælling under garantilinjen.
+    bw_mode on: kun Black Week. dual (VIP Access): begge, klassen nc-bw paa html-elementet vaelger.
+  endcomment
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign bw_mode = 'off'
+  if bw_phase == 'bw'
+    assign bw_mode = 'on'
+  elsif bw_phase == 'vip'
+    assign bw_mode = 'dual'
+  endif
+  if bw_mode != 'off'
+    capture bwp
+      render 'nc-bw-price', product: product, variant: v
+    endcapture
+    assign bwp = bwp | strip | split: ','
+    assign bw_kind = bwp[0]
+    assign bw_price = bwp[1] | plus: 0
+    assign bw_value = bwp[2] | plus: 0
+    if bw_kind == 'none'
+      assign bw_mode = 'off'
+    endif
+  endif
 -%}
 
 {%- style -%}
@@ -166,8 +194,11 @@
       <div class="nc-pdp__gallery" data-nc-gallery>
         <div class="nc-pdp__main" data-nc-gallery-main>
           <div class="nc-pdp__badges">
-            {%- if on_sale and settings.show_save_badge -%}
-              <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
+            {%- if on_sale and settings.show_save_badge and bw_mode != 'on' -%}
+              <span class="nc-tag nc-tag--sale{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">{{ 'product.save_pct' | t: pct: save_pct }}</span>
+            {%- endif -%}
+            {%- if bw_mode != 'off' -%}
+              <span class="nc-tag nc-tag--bw nc-pdp__bwbadge{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">BLACK WEEK</span>
             {%- endif -%}
           </div>
           {%- if product.featured_image -%}
@@ -262,12 +293,25 @@
         {%- endif -%}
 
         <div class="nc-pdp__pricebox">
-          <span class="nc-pdp__price{% if on_sale %} is-sale{% endif %}">
+          {%- if bw_mode != 'off' -%}
+            <span class="nc-pdp__price nc-pdp__price--bw is-sale{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+              {%- if bw_kind == 'pack' -%}
+                <span class="nc-pdp__price-now">{{ v.price | money }}</span>
+                {%- if bw_value > 0 -%}<span class="nc-pdp__price-value">Værdi ved køb enkeltvis: {{ bw_value | money }}</span>{%- endif -%}
+              {%- else -%}
+                <span class="nc-pdp__price-now">{{ bw_price | money }}</span>
+                <span class="nc-pdp__price-was"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.price | money }}</span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- unless bw_mode == 'on' -%}
+          <span class="nc-pdp__price{% if on_sale %} is-sale{% endif %}{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">
             <span class="nc-pdp__price-now">{{ v.price | money }}</span>
             {%- if on_sale -%}
               <span class="nc-pdp__price-was"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.compare_at_price | money }}</span>
             {%- endif -%}
           </span>
+          {%- endunless -%}
           {%- comment -%}
             Enhedspris (Grundpreis) er lovpligtig i Tyskland (PAngV) for varer solgt efter
             maengde. Vises kun naar varianten har "pris pr. enhed" udfyldt i Shopify.
@@ -348,7 +392,15 @@
           {%- endunless -%}
           <input type="hidden" name="quantity" value="1">
           <button class="nc-pdp__add" type="submit" name="add" {% unless v.available %}disabled{% endunless %}>
-            {%- if v.available %}{% assign cta_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: cta_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
+            {%- if v.available -%}
+              {%- assign cta_price = v.price | money_without_trailing_zeros -%}
+              {%- if bw_mode != 'off' -%}
+                {%- assign bw_cta_price = bw_price | money_without_trailing_zeros -%}
+                {%- if bw_mode == 'dual' -%}<span class="nc-bw-hide">{{ 'product.add_to_cart_price' | t: price: cta_price }}</span><span class="nc-bw-only">{{ 'product.add_to_cart_price' | t: price: bw_cta_price }}</span>{%- else -%}{{ 'product.add_to_cart_price' | t: price: bw_cta_price }}{%- endif -%}
+              {%- else -%}
+                {{ 'product.add_to_cart_price' | t: price: cta_price }}
+              {%- endif -%}
+            {%- else -%}{{ 'product.sold_out' | t }}{%- endif -%}
           </button>
         {%- endform -%}
         </div>
@@ -361,6 +413,9 @@
           </a>
         {%- endunless -%}
 
+        {%- if bw_mode != 'off' -%}
+          {%- render 'nc-bw-pdp-box', kind: bw_kind, dual: bw_mode, phase: bw_phase -%}
+        {%- endif -%}
         {%- comment -%}
           USP-loeb: egen liste fra indstillingen, ellers sprogfilens fem punkter (pdp.ticker.*).
           Vises ikke paa gavekort (hudpleje-punkterne passer ikke til et gavekort).
@@ -462,7 +517,15 @@
     {%- if size_line != blank -%}<span class="nc-buybar__size">{{ size_line }}</span>{%- endif -%}
   </div>
   <button class="nc-buybar__add" type="button" data-nc-add="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
-    {%- if v.available %}{% assign bar_price = v.price | money_without_trailing_zeros %}{{ 'product.add_to_cart_price' | t: price: bar_price }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
+    {%- if v.available -%}
+      {%- assign bar_price = v.price | money_without_trailing_zeros -%}
+      {%- if bw_mode != 'off' -%}
+        {%- assign bw_bar_price = bw_price | money_without_trailing_zeros -%}
+        {%- if bw_mode == 'dual' -%}<span class="nc-bw-hide">{{ 'product.add_to_cart_price' | t: price: bar_price }}</span><span class="nc-bw-only">{{ 'product.add_to_cart_price' | t: price: bw_bar_price }}</span>{%- else -%}{{ 'product.add_to_cart_price' | t: price: bw_bar_price }}{%- endif -%}
+      {%- else -%}
+        {{ 'product.add_to_cart_price' | t: price: bar_price }}
+      {%- endif -%}
+    {%- else -%}{{ 'product.sold_out' | t }}{%- endif -%}
   </button>
 </div>
 

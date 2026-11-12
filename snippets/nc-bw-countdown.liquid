@@ -1,0 +1,38 @@
+{%- comment -%}
+  nc-bw-countdown: nedtælling i bordeaux-bokse (dage, timer, min, sek). nc-bw.js tæller videre hvert sekund.
+  Parametre:
+    to:   'end' (Black Week slutter, standard), 'open' (Black Week åbner) eller 'vip' (VIP Access starter)
+    size: 'xl' (forside-hero), 'lg' (landing), 'md' (kollektionsbanner), 'box' (produktside), 'vip' (VIP-hero)
+  Brug: {% render 'nc-bw-countdown', to: 'end', size: 'xl' %}
+{%- endcomment -%}
+{%- liquid
+  case to
+    when 'vip'
+      assign iso = settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z'
+    when 'open'
+      assign iso = settings.nc_bw_open_utc | default: '2026-11-22T23:01:00Z'
+    else
+      assign iso = settings.nc_bw_close_utc | default: '2026-11-30T22:59:00Z'
+  endcase
+  assign t_to = iso | date: '%s' | plus: 0
+  assign t_now = 'now' | date: '%s' | plus: 0
+  assign s = t_to | minus: t_now
+  if s < 0
+    assign s = 0
+  endif
+  assign cd_d = s | divided_by: 86400
+  assign cd_h = s | modulo: 86400 | divided_by: 3600
+  assign cd_m = s | modulo: 3600 | divided_by: 60
+  assign cd_s = s | modulo: 60
+-%}
+<div class="nc-cd nc-cd--{{ size | default: 'md' }}" data-nc-cd="{{ iso }}" role="timer" aria-label="Nedtælling">
+  {%- for u in (1..4) -%}
+    {%- case u -%}
+      {%- when 1 -%}{%- assign v = cd_d -%}{%- assign k = 'd' -%}{%- assign l = 'Dage' -%}
+      {%- when 2 -%}{%- assign v = cd_h -%}{%- assign k = 'h' -%}{%- assign l = 'Timer' -%}
+      {%- when 3 -%}{%- assign v = cd_m -%}{%- assign k = 'm' -%}{%- assign l = 'Min' -%}
+      {%- else -%}{%- assign v = cd_s -%}{%- assign k = 's' -%}{%- assign l = 'Sek' -%}
+    {%- endcase -%}
+    <div class="nc-cd__u"><span class="nc-cd__v" data-u="{{ k }}">{% if v < 10 %}0{% endif %}{{ v }}</span><span class="nc-cd__l">{{ l }}</span></div>
+  {%- endfor -%}
+</div>

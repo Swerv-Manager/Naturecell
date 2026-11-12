@@ -3,6 +3,13 @@
   4 linkkolonner + nyhedsbrev med 15%-krog, bundlinje med compliance).
 {% endcomment %}
 
+{%- comment -%} Black Week (Swerv 12.11, board 12): moerk footer (nc-bw.css), ingen Herre-link og intet 15%-tilbud i nyhedsbrevet. {%- endcomment -%}
+{%- liquid
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+-%}
 {%- style -%}
   .nc-footer { background: var(--nc-footer-bg); color: rgba(255, 255, 255, 0.88); margin-top: var(--section-y); }
   /* Sider hvor designets sidste sektion gaar direkte over i footeren (fx Om CBD-notestrimlen, B2B):
@@ -150,8 +157,10 @@
                     {%- assign nc_footer_link_end = parts[1] | strip | split: '#' | first | split: '?' | first | split: '/' | last -%}
                     {%- if nc_footer_link_end == 'kundeklub' or nc_footer_link_end == 'kundenclub' or nc_footer_link_end == 'rewards' -%}{%- continue -%}{%- endif -%}
                   {%- endif -%}
-                  
-                    <li><a href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: nc_lbl %}</a></li>
+                  {%- assign nc_is_herre = false -%}
+                  {%- if bw_phase != 'normal' and parts[1] contains 'herre' -%}{%- assign nc_is_herre = true -%}{%- endif -%}
+                  {%- if nc_is_herre and bw_phase == 'bw' -%}{%- continue -%}{%- endif -%}
+                    <li {% if nc_is_herre %} class="nc-bw-hide"{% endif %}><a href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: nc_lbl %}</a></li>
                   {%- endif -%}
                 {%- endfor -%}
               {%- endif -%}
@@ -191,7 +200,11 @@
 
       <div class="nc-footer__news">
         <h2 class="nc-footer__heading">{% render 'nc-cbd', text: section.settings.newsletter_heading %}</h2>
-        {%- unless customer.b2b? -%}<p>{% render 'nc-cbd', text: section.settings.newsletter_text %}</p>{%- endunless -%}
+        {%- unless customer.b2b? -%}
+          {%- if bw_phase == 'bw' -%}<p>Tilmeld dig vores nyhedsbrev.</p>
+          {%- elsif bw_phase == 'vip' -%}<p class="nc-bw-hide">{% render 'nc-cbd', text: section.settings.newsletter_text %}</p><p class="nc-bw-only">Tilmeld dig vores nyhedsbrev.</p>
+          {%- else -%}<p>{% render 'nc-cbd', text: section.settings.newsletter_text %}</p>{%- endif -%}
+        {%- endunless -%}
         {%- if request.locale.iso_code == 'de' -%}
           <a class="nc-btn nc-btn--primary" href="https://manage.kmail-lists.com/subscriptions/subscribe?a=WPpXvR&amp;g=Tg7KMD" target="_blank" rel="noopener noreferrer" aria-describedby="nc-newsletter-external-note">{{ 'forms.newsletter_external' | t }}</a>
           <p id="nc-newsletter-external-note" style="margin-top: 8px;">{{ 'forms.newsletter_external_note' | t }}</p>

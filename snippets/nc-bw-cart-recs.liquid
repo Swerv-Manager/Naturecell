@@ -1,0 +1,50 @@
+{%- comment -%}
+  nc-bw-cart-recs: anbefalinger i kurv-skuffen under Black Week (board 10).
+  layout 'rows' (kurv med varer: "Tilføj til din ordre", 3 rækker) eller 'grid' (tom kurv: "Bestsellere", 2×2).
+  Produkterne er handles i temaindstillingerne. Varer, der allerede ligger i kurven, springes over.
+  "Tilføj" bruger temaets data-nc-add (nc-theme.js genrenderer skuffen).
+{%- endcomment -%}
+{%- liquid
+  if layout == 'grid'
+    assign handles = settings.nc_bw_cart_recs_empty | split: ','
+  else
+    assign handles = settings.nc_bw_cart_recs | split: ','
+  endif
+  assign in_cart = cart.items | map: 'product_id' | join: ','
+  assign in_cart = ',' | append: in_cart | append: ','
+-%}
+<div class="nc-drawer__recs nc-drawer__recs--{{ layout }}{% if mode == 'dual' %} nc-bw-only{% endif %}">
+  <span class="nc-drawer__recs-t">{{ title }}</span>
+  <div class="nc-drawer__recs-list">
+    {%- for h in handles -%}
+      {%- assign hs = h | strip -%}{%- assign p = all_products[hs] -%}
+      {%- if p == blank or p.available == false -%}{%- continue -%}{%- endif -%}
+      {%- assign pid = ',' | append: p.id | append: ',' -%}
+      {%- if in_cart contains pid -%}{%- continue -%}{%- endif -%}
+      {%- liquid
+        assign v = p.selected_or_first_available_variant
+        capture bwp
+          render 'nc-bw-price', product: p, variant: v
+        endcapture
+        assign bwp = bwp | strip | split: ','
+        assign bp = bwp[1] | plus: 0
+        assign bv = bwp[2] | plus: 0
+        assign t = p.title | split: ' | ' | first
+      -%}
+      <div class="nc-drawer__rec">
+        <a class="nc-bwx__mini nc-drawer__rec-img" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{{ p.featured_image | image_url: width: 240 | image_tag: alt: '', loading: 'lazy' }}{%- if layout == 'grid' -%}<span class="nc-tag nc-tag--bw">BLACK WEEK</span>{%- endif -%}</a>
+        <div class="nc-drawer__rec-txt">
+          {%- if layout != 'grid' -%}<span class="nc-tag nc-tag--bw">BLACK WEEK</span>{%- endif -%}
+          <span class="nc-drawer__rec-eb">NatureCell{% if bwp[0] == 'pack' %} Sampakke{% endif %}</span>
+          <a class="nc-drawer__rec-name" href="{{ p.url }}">{% render 'nc-cbd', text: t %}</a>
+          <span class="nc-drawer__rec-price"><span>{{ bp | money }}</span>{%- if bwp[0] == 'single' -%}<s>{{ v.price | money }}</s>{%- elsif bv > 0 and layout == 'grid' -%}<small>Værdi ved køb enkeltvis: {{ bv | money }}</small>{%- endif -%}</span>
+        </div>
+        {%- if p.has_only_default_variant -%}
+          <button type="button" class="nc-drawer__rec-add" data-nc-add="{{ v.id }}" aria-label="{{ 'product.add_named' | t: title: t | escape }}">Tilføj</button>
+        {%- else -%}
+          <a class="nc-drawer__rec-add" href="{{ p.url }}">Se</a>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

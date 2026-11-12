@@ -1,0 +1,609 @@
+/* ============================================================
+   NatureCell Black Week 2026 (Swerv 12.11)
+   Oversat fra Claude Design "Black Week ALT I ET v2" (NatureCell – Black Week 2026).
+   Alt er scopet under html.nc-bw (sat af snippets/nc-bw-head), saa temaet er uroert
+   uden for Black Week-faserne. Maal er designets egne: flydende vaerdier fra designets
+   1440/390-rammer (Xcqi + Ypx) er oversat til vw og loftet ved 1440px.
+   Farver (designets egne):
+     #0B0F0E side · #121816 kort paa moerk · #151B19/#161D1B felter · #2A312F/#3A413F linjer
+     #F5F4EF tekst · #E4E3DD broedtekst · #C4C3BC daempet · #84334E bordeaux · #7C9C91 salvie
+   ============================================================ */
+
+/* --- Synlighed pr. fase (VIP Access: begge varianter renderes) --- */
+html:not(.nc-bw) .nc-bw-only { display: none !important; }
+html.nc-bw .nc-bw-hide { display: none !important; }
+.nc-bw-contents { display: contents; }
+
+/* --- Moerke tokens: header, footer og hovedindhold paa sider med moerkt tema --- */
+html.nc-bw body.nc-bw-dark { background: #0B0F0E; color: #E4E3DD; }
+html.nc-bw :is(.shopify-section-group-header-group, .shopify-section-group-footer-group, .nc-mobilenav, body.nc-bw-dark main) {
+  --paper: #0B0F0E;
+  --paper-2: #121816;
+  --cloud: #121816;
+  --sage-50: #121816;
+  --sage-100: rgba(245, 244, 239, 0.12);
+  --sage-200: #2A312F;
+  --sage-300: #3A413F;
+  --sage-400: #C4C3BC;
+  --sage-600: #C4C3BC;
+  --sage-700: #F5F4EF;
+  --sage-800: #FFFFFF;
+  --ink-900: #FFFFFF;
+  --ink-700: #E4E3DD;
+  --ink-500: #C4C3BC;
+  --ink-400: #C4C3BC;
+  --ink-300: #6E7672;
+  --ink-200: #3A413F;
+  --ink-100: #2A312F;
+  --linen-100: #121816;
+  --sand-100: #121816;
+  --surface-page: #0B0F0E;
+  --surface-card: #121816;
+  --text-strong: #FFFFFF;
+  --text-body: #E4E3DD;
+  --text-muted: #C4C3BC;
+  --text-brand: #F5F4EF;
+  --border-soft: #2A312F;
+  --border-default: #3A413F;
+  --border-sage: #3A413F;
+  --nc-announce: #84334E;
+  --nc-footer-bg: #0B0F0E;
+  --nc-trust-bg: #0B0F0E;
+  --nc-lifestyle-bg: #0B0F0E;
+  --nc-bestsellers-bg: #0B0F0E;
+  --nc-testimonials-bg: #0B0F0E;
+  --nc-foundervid-bg: #0B0F0E;
+  --nc-founder-bg: #0B0F0E;
+  --nc-reviews-bg: #0B0F0E;
+  --nc-hero-bg: #0B0F0E;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.45);
+  color: #E4E3DD;
+}
+
+/* --- Lyse "oeer" i designet: produktkort, kobsboks, kurv, lyse kort --- */
+html.nc-bw :is(.nc-product-card, .nc-pdp__info, .nc-drawer__panel, .nc-bw-light, .nc-ps-box, .nc-buybar) {
+  --paper: #F6F4EE;
+  --paper-2: #FBFAF5;
+  --cloud: #FFFFFF;
+  --sage-50: #E6ECEA;
+  --sage-100: #D9E3E0;
+  --sage-200: #D2DFDB;
+  --sage-300: #B6C9C2;
+  --sage-400: #9AB4AC;
+  --sage-600: #657D79;
+  --sage-700: #3E5D58;
+  --sage-800: #324E48;
+  --ink-900: #233330;
+  --ink-700: #516D69;
+  --ink-500: #788E8A;
+  --ink-400: #828A87;
+  --ink-300: #AAB0AD;
+  --ink-200: #D3D6D1;
+  --ink-100: #E7E8E2;
+  --linen-100: #F1EFE8;
+  --sand-100: #F4ECE3;
+  --surface-page: #F6F4EE;
+  --surface-card: #FFFFFF;
+  --text-strong: #233330;
+  --text-body: #516D69;
+  --text-muted: #788E8A;
+  --text-brand: #3E5D58;
+  --border-soft: #E7E8E2;
+  --border-default: #D3D6D1;
+  --border-sage: #D2DFDB;
+  color: #516D69;
+}
+
+/* --- Faelles knapper paa moerk baggrund --- */
+html.nc-bw :is(.shopify-section-group-footer-group, body.nc-bw-dark main) .nc-btn--primary { background: #84334E; border-color: #84334E; color: #FFFFFF; }
+html.nc-bw :is(.shopify-section-group-footer-group, body.nc-bw-dark main) .nc-btn--primary:hover { background: #6E2A41; border-color: #6E2A41; color: #FFFFFF; }
+html.nc-bw body.nc-bw-dark main .nc-btn--outline { color: #F5F4EF; border-color: #F5F4EF; }
+html.nc-bw body.nc-bw-dark main .nc-btn--light { background: #F5F4EF; color: #0B0F0E; border-color: #F5F4EF; }
+html.nc-bw body.nc-bw-dark main .nc-chip { border-color: #3A413F; color: #F5F4EF; background: transparent; }
+html.nc-bw body.nc-bw-dark main .nc-chip.is-active { background: #F5F4EF; border-color: #F5F4EF; color: #0B0F0E; }
+html.nc-bw body.nc-bw-dark main a { color: inherit; }
+
+/* ============================================================
+   01 Topbjaelke + header
+   ============================================================ */
+.nc-announce--bw {
+  min-height: calc(min(0.286vw, 4.12px) + 34.9px);
+  padding: 7px 16px;
+  background: #84334E;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 6px;
+  text-align: center;
+}
+.nc-announce--bw .nc-announce__lead { display: inline-flex; flex-wrap: wrap; justify-content: center; column-gap: 6px; }
+.nc-announce--bw .nc-announce__bwa, .nc-announce--bw .nc-announce__bwb { white-space: nowrap; }
+.nc-announce--bw .nc-announce__guar a { color: #FFFFFF; }
+@media (max-width: 749px) {
+  .nc-announce.nc-announce--bw { white-space: normal; font-size: 14px; letter-spacing: 0.02em; padding: 7px 16px; display: grid; }
+  .nc-announce--bw.nc-announce--guar > .nc-announce__lead,
+  .nc-announce--bw.nc-announce--guar > .nc-announce__guar { white-space: normal; }
+}
+
+html.nc-bw .nc-header { background: #0B0F0E; border-bottom: 1px solid rgba(245, 244, 239, 0.10); }
+html.nc-bw .nc-header__logo img { filter: brightness(0) invert(1); }
+html.nc-bw .nc-mobilenav__head img { filter: brightness(0) invert(1); }
+html.nc-bw .nc-header__link { color: #F5F4EF; }
+html.nc-bw .nc-header__link:hover, html.nc-bw .nc-header__link:focus-visible, html.nc-bw .nc-header__link[aria-expanded="true"] { background: rgba(245, 244, 239, 0.12); color: #F5F4EF; }
+html.nc-bw .nc-header__star { color: #7C9C91; }
+html.nc-bw .nc-header__action { color: #F5F4EF; }
+html.nc-bw .nc-header__action:hover, html.nc-bw .nc-header__action:focus-visible { color: #FFFFFF; background: rgba(245, 244, 239, 0.08); }
+html.nc-bw .nc-header__count { background: #84334E; color: #FFFFFF; }
+.nc-header__bwdot { width: 8px; height: 8px; border-radius: 50%; background: #84334E; flex: none; display: inline-block; }
+html.nc-bw .nc-dd--bw .nc-dd__panel--bw { width: 320px; padding: 10px; border-radius: 12px; display: flex; flex-direction: column; }
+html.nc-bw .nc-dd__panel {
+  background: #0B0F0E;
+  border: 1px solid rgba(245, 244, 239, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+html.nc-bw .nc-dd__panel a { color: #F5F4EF; font-size: 14.5px; line-height: 1.3; border-radius: 8px; white-space: nowrap; }
+html.nc-bw .nc-dd__panel a:hover { background: rgba(245, 244, 239, 0.08); color: #FFFFFF; }
+html.nc-bw .nc-dd__panel--bw a { padding: 10px 14px; font-size: 15px; }
+html.nc-bw .nc-dd__panel--bw a.is-strong { font-weight: 600; }
+.nc-dd__sep { display: block; height: 1px; background: rgba(245, 244, 239, 0.12); margin: 6px 14px; }
+.nc-dd__offer { margin-top: 8px; background: #84334E; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.nc-dd__offer-t { font-size: 14.5px; line-height: 1.3; font-weight: 600; color: #FFFFFF; }
+.nc-dd__offer-s { font-size: 13.5px; line-height: 1.3; color: #FFFFFF; }
+
+/* Shop-megamenu (01b) */
+html.nc-bw .nc-mega { background: #0B0F0E; border-top: 1px solid rgba(245, 244, 239, 0.10); border-bottom: 1px solid rgba(245, 244, 239, 0.10); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); }
+html.nc-bw .nc-mega__inner { padding: 26px 0 30px; }
+html.nc-bw .nc-mega__tabs { background: transparent; padding: 0; gap: 8px; margin-bottom: 22px; }
+html.nc-bw .nc-mega__tab { height: 38px; padding: 0 18px; font-size: 14.5px; font-weight: 500; color: #F5F4EF; background: transparent; }
+html.nc-bw .nc-mega__tab.is-active { background: #F5F4EF; color: #0B0F0E; }
+html.nc-bw .nc-mega__tab[data-nc-tab="best"], html.nc-bw .nc-mega__quicklinks { display: none; }
+html.nc-bw .nc-mega__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+html.nc-bw .nc-mega__card { border-radius: 14px; background: #161B1A; }
+html.nc-bw .nc-mega__card:hover { background: #1D2321; transform: none; box-shadow: none; }
+html.nc-bw .nc-mega__media { background: #E4E8E5; padding: 14px; }
+html.nc-bw .nc-mega__label { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+html.nc-bw .nc-mega__label strong { font-size: 19px; line-height: 1.2; color: #F5F4EF; }
+html.nc-bw .nc-mega__label span { font-size: 13.5px; line-height: 1.35; color: rgba(245, 244, 239, 0.65); }
+html.nc-bw .nc-mega__foot .nc-btn { height: 46px; padding: 0 22px; border: 1px solid #F5F4EF; color: #F5F4EF; background: transparent; font-size: 15px; font-weight: 500; }
+
+/* Mobilmenu (01 · 390) */
+html.nc-bw .nc-mobilenav__overlay { background: rgba(35, 51, 48, 0.40); }
+html.nc-bw .nc-mobilenav__panel { background: #0B0F0E; width: min(343px, 88vw); box-shadow: 12px 0 40px rgba(0, 0, 0, 0.45); }
+html.nc-bw .nc-mobilenav__panel nav a { color: #F5F4EF; border-bottom-color: rgba(245, 244, 239, 0.12); display: flex; align-items: center; gap: 8px; }
+html.nc-bw .nc-mobilenav__sub a { color: #C4C3BC !important; }
+html.nc-bw .nc-mobilenav .nc-iconbtn { color: #F5F4EF; border: 1px solid rgba(245, 244, 239, 0.24); background: transparent; width: 44px; height: 44px; border-radius: 50%; }
+
+/* ============================================================
+   Produktkort i Black Week (designets kort: hvidt, badge oeverst til hoejre, hjerte under)
+   ============================================================ */
+html.nc-bw .nc-product-card { container-type: inline-size; background: #FFFFFF; border: 1px solid #E3E5E0; border-radius: 18px; color: #2F4F49; }
+html.nc-bw .nc-product-card__media { background: #ECF0EE; }
+html.nc-bw .nc-product-card__tags--bw { left: auto; right: calc(0.913cqi + 7.4px); top: calc(0.913cqi + 7.4px); align-items: flex-end; }
+.nc-tag--bw { background: #84334E; color: #FFFFFF; font-weight: 700; letter-spacing: 0.06em; line-height: 1.2; border-radius: 999px; white-space: nowrap; }
+html.nc-bw .nc-product-card .nc-tag--bw { font-size: calc(2.74cqi + 3.27px); padding: calc(1.826cqi - 1.15px) calc(4.566cqi - 2.88px); }
+html.nc-bw .nc-product-card__fav {
+  top: calc(0.913cqi + 7.4px + 2.74cqi * 1.2 + 3.27px * 1.2 + (1.826cqi - 1.15px) * 2 + 1.826cqi + 2.85px);
+  right: calc(0.913cqi + 7.4px);
+  width: calc(3.653cqi + 27.7px);
+  height: calc(3.653cqi + 27.7px);
+  background: #FFFFFF;
+  color: #3D5A55;
+  box-shadow: 0 1px 4px rgba(16, 24, 22, 0.08);
+}
+html.nc-bw .nc-product-card__add { right: calc(1.826cqi + 6.85px); bottom: calc(1.826cqi + 6.85px); width: calc(3.653cqi + 31.7px); height: calc(3.653cqi + 31.7px); background: #7C9C91; color: #FFFFFF; }
+html.nc-bw .nc-product-card__info { padding: calc(5.479cqi + 2.55px) calc(5.479cqi + 2.55px) calc(5.479cqi + 4.55px); gap: 0; line-height: 1.25; }
+html.nc-bw .nc-product-card__eyebrow { font-size: calc(0.457cqi + 9.71px); font-weight: 600; letter-spacing: 0.14em; color: #526D66; }
+html.nc-bw .nc-product-card__title { margin-top: calc(2.74cqi + 3.27px); font-size: calc(3.196cqi + 10.99px); line-height: 1.25; color: #2F4F49; }
+html.nc-bw .nc-product-card__size { margin-top: calc(1.826cqi + 2.85px); font-size: calc(1.37cqi + 11.14px); color: #5E6B67; min-height: 1.3em; }
+html.nc-bw .nc-product-card__rating { margin-top: calc(2.74cqi + 3.27px); min-height: calc(1.826cqi + 10.85px); gap: calc(0.913cqi + 1.4px); font-size: calc(1.37cqi + 11.14px); color: #5E6B67; }
+html.nc-bw .nc-product-card__rating .nc-stars svg { width: calc(1.826cqi + 8.85px); height: calc(1.826cqi + 8.85px); fill: #7C9C91; stroke: #7C9C91; stroke-width: 1.6; }
+html.nc-bw .nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: #7C9C91; }
+html.nc-bw .nc-product-card__price { padding-top: calc(5.479cqi + 4.55px); column-gap: 10px; row-gap: 2px; font-size: calc(3.653cqi + 11.7px); font-weight: 500; line-height: 1.2; color: #84334E; }
+html.nc-bw .nc-product-card__price .nc-product-card__amount { color: #84334E; }
+html.nc-bw .nc-product-card__compare { font-size: calc(1.826cqi + 10.85px); color: #6B7470; }
+.nc-product-card__value { flex-basis: 100%; font-size: calc(1.826cqi + 10.85px); font-weight: 400; color: #6B7470; line-height: 1.3; }
+
+/* ============================================================
+   Nedtaelling
+   ============================================================ */
+.nc-cd { display: flex; gap: 10px; }
+.nc-cd__u { background: #84334E; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; border-radius: 12px; }
+.nc-cd__v { line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
+.nc-cd__l { line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.nc-cd--xl .nc-cd__u, .nc-cd--vip .nc-cd__u { width: 88px; height: 90px; }
+.nc-cd--xl .nc-cd__v, .nc-cd--vip .nc-cd__v { font-size: 40px; }
+.nc-cd--xl .nc-cd__l, .nc-cd--vip .nc-cd__l { font-size: 11px; }
+.nc-cd--lg { gap: 8px; }
+.nc-cd--lg .nc-cd__u { width: 68px; height: 66px; border-radius: 11px; gap: 5px; }
+.nc-cd--lg .nc-cd__v { font-size: 28px; }
+.nc-cd--lg .nc-cd__l { font-size: 10px; }
+.nc-cd--md { gap: 6px; }
+.nc-cd--md .nc-cd__u { width: 60px; height: 56px; border-radius: 10px; gap: 4px; }
+.nc-cd--md .nc-cd__v { font-size: 24px; }
+.nc-cd--md .nc-cd__l { font-size: 9.5px; letter-spacing: 0.12em; }
+.nc-cd--box { gap: 8px; }
+.nc-cd--box .nc-cd__u { flex: 1; height: 62px; border-radius: 10px; gap: 5px; }
+.nc-cd--box .nc-cd__v { font-size: 27px; }
+.nc-cd--box .nc-cd__l { font-size: 10px; }
+@media (max-width: 749px) {
+  .nc-cd--xl, .nc-cd--vip { gap: 8px; width: 100%; }
+  .nc-cd--xl .nc-cd__u, .nc-cd--vip .nc-cd__u { flex: 1; width: auto; height: 70px; border-radius: 11px; gap: 6px; }
+  .nc-cd--xl .nc-cd__v, .nc-cd--vip .nc-cd__v { font-size: 30px; }
+  .nc-cd--xl .nc-cd__l, .nc-cd--vip .nc-cd__l { font-size: 10px; }
+  .nc-cd--lg { gap: 6px; flex: 1; }
+  .nc-cd--lg .nc-cd__u { flex: 1; width: auto; height: 52px; border-radius: 10px; gap: 4px; }
+  .nc-cd--lg .nc-cd__v { font-size: 21px; }
+  .nc-cd--lg .nc-cd__l { font-size: 9px; letter-spacing: 0.12em; }
+  .nc-cd--md { gap: 5px; flex: 1; }
+  .nc-cd--md .nc-cd__u { flex: 1; width: auto; height: 38px; border-radius: 8px; gap: 3px; }
+  .nc-cd--md .nc-cd__v { font-size: 16.5px; }
+  .nc-cd--md .nc-cd__l { font-size: 8.5px; letter-spacing: 0.1em; }
+  .nc-cd--box .nc-cd__u { height: 62px; }
+  .nc-cd--box .nc-cd__v { font-size: 26px; }
+}
+
+/* ============================================================
+   Faelles Black Week-typografi (forside, landing, VIP, vilkaar)
+   ============================================================ */
+.nc-bwx { color: #F5F4EF; font-family: 'Roboto Flex', system-ui, sans-serif; }
+.nc-bwx a { color: inherit; text-decoration: none; }
+.nc-bwx__sec { padding-block: min(calc(4.571vw + 38.17px), 104px); }
+.nc-bwx__sec--b { padding-top: 0; }
+.nc-bwx__eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #C4C3BC; }
+.nc-bwx__h2 { margin: 0; font-family: 'Philosopher', serif; font-weight: 400; font-size: min(calc(1.4286vw + 21.43px), 42px); line-height: 1.15; color: #F5F4EF; text-wrap: balance; }
+.nc-bwx__lead { margin: 14px 0 0; font-size: min(calc(0.095vw + 15.63px), 17px); line-height: 1.6; color: #E4E3DD; text-wrap: pretty; }
+.nc-bwx__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; margin-bottom: min(calc(1.143vw + 19.54px), 36px); }
+.nc-bwx__head > div { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.nc-bwx__more { font-size: 16px; font-weight: 600; color: #F5F4EF; white-space: nowrap; }
+.nc-bwx__btn { display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 34px; border-radius: 999px; background: #84334E; color: #FFFFFF !important; font-size: 17px; font-weight: 600; border: 0; cursor: pointer; font-family: inherit; }
+.nc-bwx__btn:hover { background: #6E2A41; }
+.nc-bwx__btn--sm { height: 44px; padding: 0 18px; font-size: 15px; }
+.nc-bwx__btn--md { height: 52px; padding: 0 26px; font-size: 16px; }
+.nc-bwx__btn--ghost { background: transparent; border: 1.5px solid #F5F4EF; color: #F5F4EF !important; }
+.nc-bwx__btn--ghost:hover { background: rgba(245, 244, 239, 0.08); }
+.nc-bwx__btn--light { background: #F5F4EF; color: #0B0F0E !important; }
+.nc-bwx__btn--light:hover { background: #FFFFFF; }
+.nc-bwx__link { font-size: 16px; font-weight: 600; text-decoration: underline !important; text-underline-offset: 4px; }
+.nc-bwx__grid4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(155px, calc((100% - 3 * min(calc(0.762vw + 10.03px), 21px)) / 4 - 1px)), 1fr)); gap: min(calc(0.762vw + 10.03px), 21px); list-style: none; margin: 0; padding: 0; }
+.nc-bwx__grid4 > li { min-width: 0; }
+.nc-bwx__stars { display: flex; gap: 6px; }
+.nc-bwx__mini { position: relative; flex: none; border-radius: 12px; background: #ECF0EE; overflow: hidden; }
+.nc-bwx__mini img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.nc-bwx__crumbs { font-size: 15.5px; color: #C4C3BC; }
+.nc-bwx__crumbs span + span::before { content: '/'; margin: 0 10px; color: #C4C3BC; }
+.nc-bwx__crumbs span:last-child { color: #F5F4EF; }
+.nc-bwx__faq { border-bottom: 1px solid #2A312F; }
+.nc-bwx__faq details { border-top: 1px solid #2A312F; }
+.nc-bwx__faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; cursor: pointer; color: #F5F4EF; font-size: min(calc(0.286vw + 15.89px), 20px); font-weight: 600; }
+.nc-bwx__faq summary::-webkit-details-marker { display: none; }
+.nc-bwx__faq summary svg { flex: none; transition: transform 0.2s; }
+.nc-bwx__faq details[open] summary svg { transform: rotate(45deg); }
+.nc-bwx__faq .nc-bwx__ans { padding: 0 40px 22px 0; font-size: min(calc(0.095vw + 15.63px), 17px); line-height: 1.6; color: #C4C3BC; }
+.nc-bwx__news { display: flex; gap: 12px; width: min(100%, 460px); }
+.nc-bwx__input { flex: 1; min-width: 0; height: 56px; border-radius: 999px; border: 1px solid #4A514F; background: transparent; padding: 0 24px; font-family: inherit; font-size: 16px; color: #F5F4EF; outline: none; }
+.nc-bwx__input::placeholder { color: #A9A9A2; }
+.nc-bwx__input:focus-visible { border-color: #F5F4EF; }
+.nc-bwx__go { flex: none; width: 56px; height: 56px; border-radius: 50%; border: 0; background: #84334E; color: #FFFFFF; font-size: 20px; cursor: pointer; }
+.nc-bwx__msg { margin: 10px 0 0; font-size: 15px; color: #E4E3DD; }
+@keyframes nc-ping { 0% { transform: scale(1); opacity: 0.85; } 75%, 100% { transform: scale(2.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .nc-bwx [class*="ping"] { animation: none !important; } }
+
+/* --- Produktraekke (rutine, Lizbeths valg) --- */
+.nc-bw-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid #2A312F; }
+.nc-bw-row--lg { padding: 14px 0; }
+.nc-bw-row__img { width: 64px; height: 64px; border-radius: 12px; display: block; }
+.nc-bw-row--lg .nc-bw-row__img { width: 76px; height: 76px; border-radius: 14px; }
+.nc-bw-row__txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.nc-bw-row__eb { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #C4C3BC; }
+.nc-bw-row__name { font-family: 'Philosopher', serif; font-size: 18px; line-height: 1.2; color: #FFFFFF !important; }
+.nc-bw-row--lg .nc-bw-row__name { font-size: 20px; }
+.nc-bw-row__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.nc-bw-row__price > span { font-size: 16px; font-weight: 600; color: #FFFFFF; white-space: nowrap; }
+.nc-bw-row__price s { font-size: 14px; color: #C4C3BC; white-space: nowrap; }
+
+/* --- Datoer du skal kende --- */
+.nc-bw-dates { list-style: none; margin: 0; padding: 0; }
+.nc-bw-dates__dot { position: absolute; display: block; }
+.nc-bw-dates__ping { position: absolute; inset: 0; border-radius: 50%; }
+.nc-bw-dates__wd { font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #C4C3BC; }
+.nc-bw-dates__date { font-family: 'Philosopher', serif; line-height: 1; color: #FFFFFF; }
+.nc-bw-dates__time { color: #C4C3BC; }
+.nc-bw-dates__label { font-weight: 600; line-height: 1.35; color: #F5F4EF; text-wrap: balance; }
+.nc-bw-dates__photo { display: block; width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; object-position: 60% 30%; border-radius: 14px; }
+/* tidslinje: computer vandret med streg, mobil lodret */
+.nc-bw-dates--timeline { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.nc-bw-dates--timeline::before { content: ''; position: absolute; left: 0; right: 0; top: 8px; height: 1px; background: #3A413F; }
+.nc-bw-dates--timeline .nc-bw-dates__i { position: relative; display: flex; flex-direction: column; padding-top: 42px; min-width: 0; }
+.nc-bw-dates--timeline .nc-bw-dates__top { display: flex; flex-direction: column; }
+.nc-bw-dates--timeline .nc-bw-dates__wd { font-size: 14px; }
+.nc-bw-dates--timeline .nc-bw-dates__date { margin-top: 6px; font-size: 54px; }
+.nc-bw-dates--timeline .nc-bw-dates__time { margin-top: 12px; font-size: 16px; }
+.nc-bw-dates--timeline .nc-bw-dates__label { margin-top: 8px; font-size: 18px; }
+.nc-bw-dates--timeline .nc-bw-dates__photo { margin-top: 18px; }
+.nc-bw-dates--timeline .nc-bw-dates__dot { top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #0B0F0E; border: 1.5px solid #F5F4EF; box-shadow: 0 0 0 4px #0B0F0E; }
+.nc-bw-dates--timeline .is-past .nc-bw-dates__dot { top: 4px; left: 4px; width: 9px; height: 9px; background: #F5F4EF; border: 0; }
+.nc-bw-dates--timeline .is-next .nc-bw-dates__dot { top: 0; left: 0; width: 17px; height: 17px; background: #84334E; border: 0; }
+.nc-bw-dates .is-next .nc-bw-dates__ping { background: #84334E; animation: nc-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+@media (max-width: 749px) {
+  .nc-bw-dates--timeline { display: flex; flex-direction: column; gap: 30px; padding-left: 36px; }
+  .nc-bw-dates--timeline::before { left: 8px; right: auto; top: 18px; bottom: 18px; width: 1px; height: auto; }
+  .nc-bw-dates--timeline .nc-bw-dates__i { padding-top: 0; }
+  .nc-bw-dates--timeline .nc-bw-dates__top { flex-direction: row; align-items: baseline; gap: 12px; }
+  .nc-bw-dates--timeline .nc-bw-dates__wd { font-size: 13px; }
+  .nc-bw-dates--timeline .nc-bw-dates__date { margin-top: 0; font-size: 38px; }
+  .nc-bw-dates--timeline .nc-bw-dates__time { margin-top: 0; font-size: 15px; }
+  .nc-bw-dates--timeline .nc-bw-dates__label { font-size: 17px; }
+  .nc-bw-dates--timeline .nc-bw-dates__photo { margin-top: 14px; }
+  .nc-bw-dates--timeline .nc-bw-dates__dot { top: 12px; left: -34px; }
+  .nc-bw-dates--timeline .is-past .nc-bw-dates__dot { top: 14px; left: -32px; }
+  .nc-bw-dates--timeline .is-next .nc-bw-dates__dot { top: 10px; left: -36px; }
+}
+/* kort (landing) */
+.nc-bw-dates--cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); gap: 18px 20px; }
+.nc-bw-dates--cards .nc-bw-dates__i { position: relative; display: flex; gap: 12px; min-width: 0; padding: 14px 16px 14px 38px; border: 1px solid #2A312F; border-radius: 14px; }
+.nc-bw-dates--cards .nc-bw-dates__dot { left: 16px; top: 20px; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #F5F4EF; }
+.nc-bw-dates--cards .is-next .nc-bw-dates__dot { background: #84334E; border: 0; }
+.nc-bw-dates--cards .is-next .nc-bw-dates__ping { animation: none; }
+.nc-bw-dates--cards .nc-bw-dates__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.nc-bw-dates--cards .nc-bw-dates__top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 8px; }
+.nc-bw-dates--cards .nc-bw-dates__wd { font-size: 12px; }
+.nc-bw-dates--cards .nc-bw-dates__date { font-size: 26px; }
+.nc-bw-dates--cards .nc-bw-dates__time { flex-basis: 100%; font-size: 14px; }
+.nc-bw-dates--cards .nc-bw-dates__label { font-size: 15px; }
+
+/* ============================================================
+   03–05 Kollektioner i Black Week
+   ============================================================ */
+html.nc-bw .nc-coll-main--bw { padding-top: 0; }
+html.nc-bw .nc-coll-main--bw .nc-coll__toolbar { border-top: 0; border-bottom: 0; padding: min(calc(0.762vw + 13px), 24px) 0 0; margin: 0; gap: 14px; }
+html.nc-bw .nc-coll-main--bw .nc-coll__toolbar--none { display: none; }
+html.nc-bw .nc-coll-main--bw .nc-coll__search { height: 44px; width: min(440px, 100%); border: 1px solid #3A413F; border-radius: 999px; background: transparent; color: #A9A9A2; padding: 0 18px; gap: 10px; }
+html.nc-bw .nc-coll-main--bw .nc-coll__search input { color: #F5F4EF; font-size: 15.5px; height: auto; line-height: 1.3; }
+html.nc-bw .nc-coll-main--bw .nc-coll__search input::placeholder { color: #A9A9A2; }
+html.nc-bw .nc-coll-main--bw .nc-coll__filter-row { gap: 10px 20px; flex-wrap: nowrap; }
+html.nc-bw .nc-coll-main--bw .nc-coll__filter-label { width: 72px; min-width: 72px; font-size: 12px; letter-spacing: 0.14em; color: #C4C3BC; }
+html.nc-bw .nc-coll-main--bw .nc-coll__filter-row--sort { border-top: 1px dashed #3A413F; padding-top: 14px; margin-top: 0; }
+html.nc-bw .nc-coll-main--bw .nc-chip { height: 34px; padding: 0 16px; border: 1px solid #3A413F; border-radius: 999px; font-size: 15px; font-weight: 500; color: #F5F4EF; background: transparent; display: inline-flex; align-items: center; }
+html.nc-bw .nc-coll-main--bw .nc-chip.is-active { background: #F5F4EF; border-color: #F5F4EF; color: #0B0F0E; font-weight: 600; }
+html.nc-bw .nc-coll-main--bw .nc-coll__countrow { margin: min(calc(0.762vw + 13px), 24px) 0 min(calc(0.762vw + 11px), 22px); padding-top: min(calc(0.762vw + 11px), 22px); border-top: 1px solid #2A312F; }
+html.nc-bw .nc-coll-main--bw .nc-coll__sort { font-size: 15px; color: #C4C3BC; gap: 10px; }
+html.nc-bw .nc-coll-main--bw .nc-coll__sort select { height: min(calc(0.381vw + 38.5px), 44px); padding: 0 40px 0 16px; border: 1px solid #3A413F; border-radius: 999px; background-color: transparent; color: #F5F4EF; font-size: 15.5px; font-weight: 600; filter: none; }
+html.nc-bw .nc-coll-main--bw .nc-coll__sort select option { color: #0B0F0E; }
+html.nc-bw .nc-coll-main--bw .nc-coll__count { font-size: 15px; color: #C4C3BC; }
+html.nc-bw .nc-coll-main--bw .nc-grid { gap: min(calc(0.762vw + 10.03px), 21px); }
+html.nc-bw .nc-pagination { gap: 10px; margin-top: min(calc(1.524vw + 22px), 44px); }
+html.nc-bw .nc-pagination__item { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #3A413F; color: #F5F4EF; font-size: 16px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; background: transparent; }
+html.nc-bw .nc-pagination__item.is-current { background: #F5F4EF; color: #0B0F0E; border-color: #F5F4EF; }
+@media (max-width: 749px) {
+  html.nc-bw .nc-coll-main--bw .nc-coll__search { display: none; }
+  html.nc-bw .nc-coll-main--bw .nc-coll__filter-row { flex-direction: row; align-items: center; }
+  html.nc-bw .nc-coll-main--bw .nc-coll__filter-row:not(:first-of-type) { display: none; }
+  html.nc-bw .nc-coll-main--bw .nc-coll__row-chips { flex: 1 1 auto; min-width: 0; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+}
+
+/* Broedkrumme over banner */
+.nc-bwc-crumbs { display: block; padding-top: min(calc(1.143vw + 9.5px), 26px); padding-bottom: min(calc(0.381vw + 10.5px), 16px); font-size: min(calc(0.095vw + 14.13px), 15.5px); }
+.nc-bwx__crumbs a { color: inherit; }
+
+/* Kollektionsbanner (desktop 360px, mobil 200/316px) */
+.nc-bwc-ban { position: relative; height: 360px; overflow: hidden; background: #0B0F0E; }
+.nc-bwc-ban__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nc-bwc-ban__img--m { display: none; }
+.nc-bwc-ban--left .nc-bwc-ban__img--d { left: 360px; width: calc(100% - 360px); -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 240px); mask-image: linear-gradient(90deg, transparent 0, #000 240px); }
+.nc-bwc-ban--l420 .nc-bwc-ban__img--d { left: 420px; width: calc(100% - 420px); }
+.nc-bwc-ban__fade { position: absolute; inset: 0; background: linear-gradient(90deg, #0B0F0E 0%, rgba(11,15,14,.94) 30%, rgba(11,15,14,.62) 45%, rgba(11,15,14,0) 64%); }
+.nc-bwc-ban__in { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+.nc-bwc-ban__in > * { max-width: 656px; }
+.nc-bwc-ban__h1 { margin: 0; font-family: 'Philosopher', serif; font-weight: 400; font-size: 56px; line-height: 1.05; color: #FFFFFF; }
+.nc-bwc-ban__lead { margin: 12px 0 0; font-size: 18px; line-height: 1.45; color: #F5F4EF; text-wrap: pretty; }
+.nc-bwc-ban__stock { margin: 8px 0 0; font-size: 15px; line-height: 1.45; color: #C4C3BC; }
+.nc-bwc-ban__cd { margin-top: 24px; display: flex; align-items: center; gap: 14px; }
+.nc-bwc-ban__cdl { flex: none; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.3; text-transform: uppercase; color: #FFFFFF; }
+@media (max-width: 749px) {
+  .nc-bwc-ban { height: 200px; }
+  .nc-bwc-ban__img--d { display: none; }
+  .nc-bwc-ban__img--m { display: block; }
+  .nc-bwc-ban__fade { background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,.93) 42%, rgba(11,15,14,.5) 72%, rgba(11,15,14,.08) 100%); }
+  .nc-bwc-ban--tall { height: 316px; }
+  .nc-bwc-ban--tall .nc-bwc-ban__img--m { bottom: auto; height: 210px; }
+  .nc-bwc-ban--tall .nc-bwc-ban__fade { background: linear-gradient(0deg, #0B0F0E 0%, #0B0F0E 106px, rgba(11,15,14,.55) 140px, rgba(11,15,14,0) 190px); }
+  .nc-bwc-ban__in { justify-content: flex-end; padding-bottom: 12px; }
+  .nc-bwc-ban__h1 { font-size: 28px; line-height: 1.08; text-shadow: 0 1px 8px rgba(0,0,0,.45); }
+  .nc-bwc-ban__lead { margin-top: 4px; font-size: 13.5px; line-height: 1.35; }
+  .nc-bwc-ban__stock { margin-top: 3px; font-size: 12px; line-height: 1.35; }
+  .nc-bwc-ban__cd { margin-top: 8px; gap: 10px; }
+  .nc-bwc-ban__cdl { font-size: 10.5px; letter-spacing: 0.12em; }
+}
+
+/* Landing (03) */
+.nc-bwc-land { position: relative; height: 420px; overflow: hidden; background: #0B0F0E; }
+.nc-bwc-land__media { position: absolute; inset: 0; }
+.nc-bwc-land__media picture, .nc-bwc-land__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%; }
+.nc-bwc-land__fade { position: absolute; inset: 0; background: linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 38%, rgba(11,15,14,.85) 46%, rgba(11,15,14,.4) 54%, rgba(11,15,14,0) 62%); }
+.nc-bwc-land__in { position: relative; height: 100%; padding-top: 30px; display: flex; flex-direction: column; }
+.nc-bwc-land__title { margin-top: 44px; }
+.nc-bwc-land__eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; color: #F5F4EF; }
+.nc-bwc-land__h1 { margin: 14px 0 0; font-family: 'Philosopher', serif; font-weight: 700; font-size: 64px; line-height: 1.02; color: #FFFFFF; }
+.nc-bwc-land__offer { margin: 14px 0 0; font-size: 19px; line-height: 1.45; color: #F5F4EF; }
+.nc-bwc-land__stock { margin: 8px 0 0; font-size: 15px; line-height: 1.45; color: #C4C3BC; }
+.nc-bwc-land__cd { margin-top: 28px; display: flex; align-items: center; gap: 16px; }
+.nc-bwc-land__cdl { flex: none; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; line-height: 1.3; text-transform: uppercase; color: #F5F4EF; }
+.nc-bwc-m { display: none; }
+@media (max-width: 749px) {
+  .nc-bwc-land { height: auto; }
+  .nc-bwc-land__media { position: relative; inset: auto; height: 300px; }
+  .nc-bwc-land__media picture, .nc-bwc-land__media img { object-position: 58% 12%; }
+  .nc-bwc-land__fade { background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,.85) 28%, rgba(11,15,14,0) 62%); }
+  .nc-bwc-land__in { position: static; height: auto; padding-top: 4px; gap: 12px; }
+  .nc-bwc-land__crumbs { position: absolute; left: 16px; top: 14px; font-size: 14px; color: #FFFFFF; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .nc-bwc-land__crumbs span:last-child { color: #FFFFFF; }
+  .nc-bwc-land__crumbs span + span::before { margin: 0 8px; color: #FFFFFF; }
+  .nc-bwc-land__title { position: absolute; left: 16px; right: 16px; top: 290px; transform: translateY(-100%); margin: 0; }
+  .nc-bwc-land__eyebrow { font-size: 12px; letter-spacing: 0.16em; }
+  .nc-bwc-land__h1 { margin-top: 8px; font-size: 34px; line-height: 1.05; }
+  .nc-bwc-d { display: none; }
+  .nc-bwc-m { display: inline; }
+  .nc-bwc-land__offer { margin: 0; font-size: 15.5px; }
+  .nc-bwc-land__stock { margin: -4px 0 0; font-size: 13.5px; }
+  .nc-bwc-land__cd { margin-top: 0; gap: 10px; }
+  .nc-bwc-land__cdl { font-size: 11.5px; letter-spacing: 0.14em; }
+}
+
+/* Faner (Alle, Enkeltvarer, Pakker, Gaver …) */
+.nc-bwc-sub { margin-top: min(calc(0.762vw + 13px), 24px); display: flex; gap: min(calc(0.762vw + 19px), 30px); overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid #2A312F; }
+.nc-bwc-sub::-webkit-scrollbar { display: none; }
+.nc-bwc-sub__a { flex: none; padding: 14px 0 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; font-size: min(calc(0.095vw + 14.63px), 16px); font-weight: 500; color: #E4E3DD !important; white-space: nowrap; }
+.nc-bwc-sub__a.is-on { border-bottom-color: #84334E; font-weight: 700; color: #FFFFFF !important; }
+
+/* Kort i fuld bredde mellem produkterne */
+.nc-bwi-li { grid-column: 1 / -1; list-style: none; }
+.nc-bwi { list-style: none; border-radius: 18px; overflow: hidden; }
+.nc-bwi--gift { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: min(calc(1.524vw + 14px), 36px) min(calc(2.286vw + 15px), 48px); align-items: center; padding: min(calc(2.286vw + 15px), 48px) min(calc(2.857vw + 9px), 50px); background: #84334E; color: #FFFFFF; }
+.nc-bwi__txt { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.nc-bwi__eb { font-size: 12.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #FFFFFF; }
+.nc-bwi__eb--muted { color: #C4C3BC; }
+.nc-bwi__h { font-family: 'Philosopher', serif; font-size: min(calc(1.524vw + 22px), 44px); line-height: 1.12; color: #FFFFFF; text-wrap: balance; }
+.nc-bwi__s { font-size: min(calc(0.19vw + 14.76px), 17.5px); line-height: 1.5; color: #FFFFFF; text-wrap: pretty; }
+.nc-bwi__s--muted { color: #E4E3DD; }
+.nc-bwi__pic { display: flex; justify-content: center; }
+.nc-bwi__pic .nc-bwx__mini { width: min(100%, 260px); aspect-ratio: 1 / 1; border-radius: 14px; }
+.nc-bwi--photo a { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); background: #151B19; border: 1px solid #2A312F; border-radius: 18px; overflow: hidden; color: #F5F4EF; }
+.nc-bwi__img { position: relative; min-height: min(calc(9.524vw + 192.9px), 330px); }
+.nc-bwi--tre .nc-bwi__img { min-height: min(calc(9.524vw + 212.9px), 350px); }
+.nc-bwi__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nc-bwi--photo .nc-bwi__txt { justify-content: center; align-items: flex-start; padding: min(calc(2.286vw + 15px), 48px) min(calc(2.857vw + 9px), 50px); }
+.nc-bwi--tre .nc-bwi__txt { gap: 14px; }
+.nc-bwi__btn { margin-top: 8px; height: 48px; padding: 0 24px; font-size: 15.5px; }
+.nc-bwi--tre .nc-bwi__btn { margin-top: 4px; }
+.nc-bwi__steps { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.nc-bwi__steps > span { display: flex; align-items: center; gap: 14px; padding-bottom: 10px; border-bottom: 1px solid #2A312F; }
+.nc-bwi__steps b { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #84334E; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.nc-bwi__steps > span > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.nc-bwi__steps strong { font-size: min(calc(0.19vw + 15.26px), 18px); font-weight: 600; color: #FFFFFF; }
+.nc-bwi__steps small { font-size: min(calc(0.095vw + 14.13px), 15.5px); line-height: 1.45; color: #E4E3DD; }
+
+/* Julefoto og datoer under listen */
+.nc-bwc-jul { margin-top: min(calc(3.048vw + 36px), 80px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: min(calc(2.857vw + 12.86px), 54px); align-items: stretch; }
+.nc-bwc-jul__img { position: relative; min-height: min(calc(19vw + 186px), 460px); border-radius: 18px; overflow: hidden; }
+.nc-bwc-jul__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nc-bwc-jul__txt { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 12px; min-width: 0; }
+.nc-bwc-dates { margin-top: min(calc(3.048vw + 36px), 80px); padding-top: min(calc(1.524vw + 26px), 48px); border-top: 1px solid #2A312F; display: flex; flex-direction: column; gap: min(calc(0.762vw + 17px), 28px); }
+.nc-bwc-dates__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px 24px; }
+.nc-bwc-dates__h { margin: 0; font-family: 'Philosopher', serif; font-weight: 400; font-size: min(calc(0.952vw + 22.3px), 36px); line-height: 1.15; color: #F5F4EF; }
+
+/* ============================================================
+   06/07 Produktside i Black Week
+   ============================================================ */
+html.nc-bw .nc-pdp__info { background: #F5F4EF; color: #2F4F49; border-radius: 18px; padding: min(calc(1.524vw + 14.06px), 36px); align-self: start; }
+html.nc-bw .nc-pdp__eyebrow { font-size: min(calc(0.19vw + 12.26px), 15px); letter-spacing: 0.16em; color: #526D66; }
+html.nc-bw .nc-pdp__title { font-size: min(calc(0.952vw + 26.29px), 40px); line-height: 1.15; color: #2F4F49; text-wrap: balance; }
+html.nc-bw .nc-pdp__size { color: #5E6B67; font-size: min(calc(0.286vw + 15.9px), 20px); line-height: 1.5; }
+html.nc-bw .nc-pdp__price--bw { flex-wrap: wrap; gap: 4px 14px; }
+html.nc-bw .nc-pdp__price--bw .nc-pdp__price-now { font-size: min(calc(0.762vw + 27.03px), 38px); font-weight: 500; color: #84334E; }
+html.nc-bw .nc-pdp__price--bw .nc-pdp__price-was { font-size: min(calc(0.286vw + 16.9px), 21px); color: #5F6763; }
+.nc-pdp__price-value { flex-basis: 100%; font-size: min(calc(0.286vw + 16.9px), 21px); color: #5F6763; }
+html.nc-bw .nc-pdp__badges .nc-tag--bw { top: auto; font-size: min(calc(0.19vw + 12.26px), 15px); letter-spacing: 0.08em; padding: 7px 14px; }
+html.nc-bw .nc-pdp__badges { top: min(calc(0.762vw + 15px), 26px); left: min(calc(0.762vw + 15px), 26px); }
+html.nc-bw .nc-pdp__add { background: #84334E; border-color: #84334E; color: #FFFFFF; border-radius: 999px; min-height: min(calc(0.571vw + 51.77px), 60px); font-size: min(calc(0.286vw + 16.9px), 21px); }
+html.nc-bw .nc-pdp__add:hover, html.nc-bw .nc-pdp__add:focus-visible { background: #6E2A41; border-color: #6E2A41; }
+html.nc-bw .nc-pdp__ticker { background: #E7ECEA; border-radius: 16px; }
+html.nc-bw .nc-pdp__ticker-item { color: #2F4F49; }
+html.nc-bw .nc-pdp__acc summary { font-size: min(calc(0.286vw + 18.9px), 23px); color: #2F4F49; }
+html.nc-bw .nc-pdp__guarantee { color: #3D5A55; border-color: #DCDFDB; }
+html.nc-bw .nc-pdp-back { color: #F5F4EF; font-weight: 600; }
+html.nc-bw .nc-buybar { background: #F5F4EF; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4); }
+html.nc-bw .nc-buybar__add { background: #84334E; border-color: #84334E; color: #FFFFFF; border-radius: 999px; }
+
+/* Black Week-boksen */
+.nc-bw-box { background: #0B0F0E; color: #F5F4EF; border-radius: 16px; padding: min(calc(0.762vw + 15px), 26px); display: flex; flex-direction: column; gap: 16px; }
+.nc-bw-box__head { display: flex; flex-direction: column; gap: 6px; }
+.nc-bw-box__eb { font-size: 12.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #C4C3BC; }
+.nc-bw-box__t { font-family: 'Philosopher', serif; font-size: min(calc(0.381vw + 19.5px), 25px); line-height: 1.2; color: #FFFFFF; }
+.nc-bw-box__lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.nc-bw-box__lines li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.45; color: #F5F4EF; }
+.nc-bw-box__lines svg { flex: none; margin-top: 2px; }
+.nc-bw-box__gift { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; background: #161D1B; }
+.nc-bw-box__gtxt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.nc-bw-box__gtxt strong { font-size: 15px; font-weight: 700; color: #FFFFFF; }
+.nc-bw-box__gtxt span { font-size: 14px; line-height: 1.4; color: #E4E3DD; }
+.nc-bw-box__cd { display: flex; flex-direction: column; gap: 8px; }
+.nc-bw-box__cdl { font-size: 12.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #F5F4EF; }
+.nc-bw-box--pack .nc-bw-box__head { order: -2; }
+.nc-bw-box--pack .nc-bw-box__gift { order: -1; }
+
+/* ============================================================
+   12 Footer i Black Week
+   ============================================================ */
+html.nc-bw .nc-footer { background: #0B0F0E; color: #F5F4EF; border-top: 1px solid #222927; margin-top: 0; }
+html.nc-bw .nc-footer a { color: #F5F4EF; }
+html.nc-bw .nc-footer__heading { color: #FFFFFF; font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+html.nc-bw .nc-footer ul { font-size: 16px; line-height: 1.45; gap: 10px; }
+html.nc-bw .nc-footer__brand p, html.nc-bw .nc-footer__brand-lines { font-size: 15.5px; line-height: 1.6; color: #F5F4EF; }
+html.nc-bw .nc-footer__brand strong { color: #F5F4EF; font-weight: 700; }
+html.nc-bw .nc-footer__logo img { filter: brightness(0) invert(1); }
+html.nc-bw .nc-footer__news p { font-size: 16px; line-height: 1.45; color: #F5F4EF; }
+html.nc-bw .nc-footer__form .nc-input { height: 50px; border-radius: 999px; border: 1px solid #4A514F; background: transparent; color: #F5F4EF; padding: 0 18px; font-size: 15px; }
+html.nc-bw .nc-footer__form .nc-input::placeholder { color: #A9A9A2; }
+html.nc-bw .nc-footer__form .nc-iconbtn { width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #84334E; color: #FFFFFF; font-size: 18px; }
+html.nc-bw .nc-footer__form .nc-iconbtn:hover { background: #6E2A41; }
+html.nc-bw .nc-footer__news .nc-btn--primary { background: #84334E; border-color: #84334E; color: #FFFFFF; }
+html.nc-bw .nc-footer__bottom-wrap { border-top: 1px solid #2A312F; }
+html.nc-bw .nc-footer__bottom, html.nc-bw .nc-footer__legal { font-size: 14.5px; line-height: 1.6; color: #E4E3DD; }
+html.nc-bw .nc-footer__legal a { color: #E4E3DD; opacity: 1; }
+
+/* ============================================================
+   10 Kurv-skuffe i Black Week
+   ============================================================ */
+html.nc-bw .nc-drawer__panel { background: #F5F4EF; color: #2F4F49; }
+html.nc-bw .nc-drawer__head { height: 72px; padding: 0 22px; border-bottom: 1px solid #E1E3DE; }
+html.nc-bw .nc-drawer__head h2 { font-family: 'Philosopher', serif; font-weight: 400; font-size: 25px; color: #2F4F49; }
+.nc-drawer__ship--off, .nc-drawer__empty--off { display: none !important; }
+.nc-drawer__bw { flex: none; background: #0B0F0E; color: #F5F4EF; padding: 16px 22px 18px; display: flex; flex-direction: column; gap: 14px; }
+.nc-drawer__bwship { display: flex; flex-direction: column; gap: 10px; }
+.nc-drawer__bwship p { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 500; color: #FFFFFF; }
+.nc-drawer__bwbar { height: 8px; border-radius: 4px; background: #E4E3DD; overflow: hidden; }
+.nc-drawer__bwbar > div { height: 100%; border-radius: 4px; background: #84334E; transition: width 0.3s ease; }
+.nc-drawer__bwgift { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; background: #161D1B; }
+.nc-drawer__bwgtxt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nc-drawer__bwgtxt strong { font-size: 14.5px; font-weight: 700; line-height: 1.35; color: #FFFFFF; text-wrap: pretty; }
+.nc-drawer__bwgtxt span { font-size: 13.5px; line-height: 1.4; color: #E4E3DD; text-wrap: pretty; }
+.nc-drawer__bwadded { flex: none; display: inline-flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 600; color: #FFFFFF; }
+.nc-drawer__giftbadge { align-self: flex-start; margin-top: 6px; display: inline-block; background: #84334E; color: #FFFFFF; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; line-height: 1.2; padding: 5px 10px; border-radius: 999px; text-transform: uppercase; text-wrap: balance; }
+html.nc-bw .nc-drawer__line-price { color: #84334E; font-weight: 600; }
+html.nc-bw .nc-drawer__checkout { height: 56px; border-radius: 999px; background: #84334E; color: #FFFFFF; font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+html.nc-bw .nc-drawer__checkout:hover { background: #6E2A41; }
+html.nc-bw .nc-drawer__foot { background: #FAFAF7; border-top: 1px solid #E1E3DE; }
+html.nc-bw .nc-drawer__totals strong { font-size: 26px; font-weight: 700; color: #2F4F49; }
+.nc-drawer__bwtrust { margin: 0; text-align: center; font-size: 13.5px; font-weight: 500; line-height: 1.45; color: #2F4F49; text-wrap: balance; }
+.nc-drawer__bwempty { padding: 30px 22px 26px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; border-bottom: 1px solid #E1E3DE; margin: 0 22px; }
+.nc-drawer__bwempty > span { font-family: 'Philosopher', serif; font-size: 23px; color: #2F4F49; }
+.nc-drawer__recs { padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; }
+.nc-drawer__recs-t { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #3D5A55; }
+.nc-drawer__recs--rows .nc-drawer__recs-list { display: flex; flex-direction: column; gap: 8px; }
+.nc-drawer__recs--grid .nc-drawer__recs-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.nc-drawer__rec { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 8px; background: #FFFFFF; border: 1px solid #E3E5E0; border-radius: 14px; }
+.nc-drawer__recs--grid .nc-drawer__rec { flex-direction: column; align-items: stretch; padding: 0; overflow: hidden; gap: 0; }
+.nc-drawer__rec-img { width: 56px; height: 56px; border-radius: 10px; display: block; }
+.nc-drawer__recs--grid .nc-drawer__rec-img { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 0; }
+.nc-drawer__recs--grid .nc-drawer__rec-img .nc-tag--bw { position: absolute; top: 6px; right: 6px; }
+.nc-drawer__rec .nc-tag--bw { font-size: 9.5px; letter-spacing: 0.05em; padding: 3px 7px; align-self: flex-start; }
+.nc-drawer__rec-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nc-drawer__recs--grid .nc-drawer__rec-txt { gap: 3px; padding: 9px 10px 0; }
+.nc-drawer__rec-eb { font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #526D66; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nc-drawer__rec-name { font-family: 'Philosopher', serif; font-size: 14.5px; line-height: 1.2; color: #2F4F49 !important; text-decoration: none; text-wrap: pretty; }
+.nc-drawer__rec-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; }
+.nc-drawer__rec-price > span { font-size: 14.5px; font-weight: 600; color: #84334E; white-space: nowrap; }
+.nc-drawer__rec-price s { font-size: 12.5px; color: #6B7470; white-space: nowrap; }
+.nc-drawer__rec-price small { flex-basis: 100%; font-size: 12.5px; color: #6B7470; }
+.nc-drawer__rec-add { flex: none; height: 34px; padding: 0 12px; border-radius: 999px; border: 1.5px solid #2F4F49; background: transparent; color: #2F4F49; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.nc-drawer__recs--grid .nc-drawer__rec-add { margin: 8px 10px 10px; }
+.nc-drawer__rec-add:hover { background: #2F4F49; color: #FFFFFF; }

@@ -1,0 +1,78 @@
+{% comment %}
+  Section contract.
+  "Vilkår og FAQ" for Black Week (board 11). Renderes af layout/theme.liquid på siden fra temaindstillingen
+  "Vilkår og FAQ (url)" (standard /pages/black-week-vilkaar). Siden skal oprettes i Shopify (Indhold → Sider);
+  dens eget indhold bruges ikke, alt styres her.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{%- assign landing = '/collections/' | append: settings.nc_bw_landing -%}
+<div class="nc-bwx nc-bwt">
+  <section class="nc-container nc-bwt__in">
+    <nav class="nc-bwx__crumbs nc-bwt__crumbs" aria-label="{{ 'general.breadcrumb' | t }}"><span><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></span><span><a href="{% render 'nc-url', url: landing %}">Black Week</a></span><span>Vilkår og FAQ</span></nav>
+    <h1 class="nc-bwt__h1">{{ s.title | escape }}</h1>
+    <p class="nc-bwt__sub">{{ s.sub | escape }}</p>
+    <div class="nc-bwt__facts">
+      {%- assign facts = s.facts | newline_to_br | split: '<br />' -%}
+      {%- for r in facts -%}
+        {%- assign fp = r | strip | split: ' | ' -%}
+        {%- if fp[1] == blank -%}{%- continue -%}{%- endif -%}
+        <div class="nc-bwt__fact"><span class="nc-bwt__k">{{ fp[0] | escape }}</span><span class="nc-bwt__v">{{ fp[1] | escape | replace: ' kr', '&nbsp;kr' }}</span><span class="nc-bwt__s">{{ fp[2] | escape }}</span></div>
+      {%- endfor -%}
+    </div>
+    <div class="nc-bwt__two">
+      <div class="nc-bwt__lh"><div class="nc-bwx__eyebrow">Vilkår</div><h2 class="nc-bwx__h2">Kampagnevilkår</h2></div>
+      <ol class="nc-bwt__list">
+        {%- assign terms = s.terms | newline_to_br | split: '<br />' -%}
+        {%- assign n = 0 -%}
+        {%- for t in terms -%}
+          {%- assign tt = t | strip -%}
+          {%- if tt == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign n = n | plus: 1 -%}
+          <li><span class="nc-bwt__n">{% if n < 10 %}0{% endif %}{{ n }}</span><span>{{ tt | escape }}</span></li>
+        {%- endfor -%}
+      </ol>
+    </div>
+    <div class="nc-bwt__two">
+      <div class="nc-bwt__lh"><div class="nc-bwx__eyebrow">FAQ</div><h2 class="nc-bwx__h2">Spørgsmål om Black Week</h2></div>
+      {%- render 'nc-bw-faq', rows: s.faq, open_first: true -%}
+    </div>
+    <div class="nc-bwt__cta">
+      <a class="nc-bwx__btn" style="height:54px;padding:0 30px;font-size:16.5px;" href="{% render 'nc-url', url: landing %}">Se alle tilbud</a>
+      <a class="nc-bwx__link" style="font-size:15.5px;" href="{% render 'nc-url', url: '/pages/kontakt' %}">Kontakt &amp; åbningstider →</a>
+    </div>
+  </section>
+</div>
+
+{% stylesheet %}
+  .nc-bwt { background: #0B0F0E; }
+  .nc-bwt__in { display: flex; flex-direction: column; padding-top: min(calc(1.143vw + 11.5px), 28px); padding-bottom: min(calc(3.048vw + 44px), 88px); }
+  .nc-bwt__crumbs { font-size: min(calc(.095vw + 14.13px), 15.5px); }
+  .nc-bwt__h1 { margin: min(calc(1.524vw + 12px), 34px) 0 0; font-family: 'Philosopher', serif; font-weight: 400; font-size: min(calc(2.286vw + 23.1px), 56px); line-height: 1.1; color: #FFFFFF; }
+  .nc-bwt__sub { margin: min(calc(.381vw + 6.5px), 12px) 0 0; font-size: min(calc(.286vw + 14.39px), 18.5px); line-height: 1.45; color: #E4E3DD; }
+  .nc-bwt__facts { margin-top: min(calc(1.524vw + 22px), 44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+  .nc-bwt__fact { display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; border: 1px solid #2A312F; border-radius: 16px; min-width: 0; }
+  .nc-bwt__k { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #C4C3BC; }
+  .nc-bwt__v { font-family: 'Philosopher', serif; font-size: min(calc(.381vw + 19.5px), 25px); line-height: 1.2; color: #FFFFFF; text-wrap: balance; }
+  .nc-bwt__s { font-size: 15px; line-height: 1.45; color: #E4E3DD; }
+  .nc-bwt__two { margin-top: min(calc(3.048vw + 36px), 80px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: min(calc(2.286vw + 15.1px), 48px); align-items: start; }
+  .nc-bwt__lh { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .nc-bwt__list { margin: 0; padding: 0; list-style: none; border-bottom: 1px solid #2A312F; }
+  .nc-bwt__list li { display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid #2A312F; font-size: min(calc(.095vw + 15.63px), 17px); line-height: 1.55; color: #F5F4EF; }
+  .nc-bwt__n { flex: none; width: 26px; font-family: 'Philosopher', serif; font-size: 19px; line-height: 1.4; color: #C4C3BC; }
+  .nc-bwt__cta { margin-top: min(calc(2.286vw + 30px), 64px); display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+  .nc-bwt .nc-bwx__faq .nc-bwx__ans { color: #E4E3DD; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Black Week: vilkår og FAQ",
+  "class": "nc-bw-terms-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Overskrift", "default": "Vilkår og FAQ" },
+    { "type": "text", "id": "sub", "label": "Undertekst", "default": "Black Week · 23.–30. november" },
+    { "type": "textarea", "id": "facts", "label": "Fakta (Etiket | Værdi | Undertekst)", "default": "Rabat | 20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens | Trækkes automatisk i kurven\nGave | Eksfolieringshandske | De første 100 ordrer over 899 kr · én pr. ordre\nFragt | Fri fragt over 499 kr | Gælder hele Black Week\nPeriode | Man 23.11 kl. 00.01 – man 30.11 kl. 23.59 | VIP Access fre 20.11 kl. 15.00 – søn 22.11 kl. 23.59" },
+    { "type": "textarea", "id": "terms", "label": "Kampagnevilkår (ét punkt pr. linje)", "default": "Rabatten trækkes automatisk i kurven: 20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens. Du skal ikke bruge nogen kode.\nPoint og rabatkoder kan ikke bruges under VIP Access og Black Week.\nRabatten på enkeltvarer gives ikke oven i pakkepriserne.\nSpar op til 33% på pakker: besparelsen er regnet ud fra normalprisen på de samme produkter købt enkeltvis (fx Facial Care 3: 899,00 kr mod 1.347,00 kr).\nVIP-gave (fre 20.11 kl. 15.00 – søn 22.11 kl. 23.59): De første 100 ordrer over 499 kr efter rabat får en Håndcreme (værdi 249 kr).\nBlack Week-gave (fra man 23.11 kl. 00.01): De første 100 ordrer over 899 kr efter rabat får en Eksfolieringshandske (værdi 119 kr). Du får kun den gave, der gælder, når du bestiller.\nÉn gave pr. ordre, indtil de 100 er uddelt.\nFri fragt ved køb over 499 kr.\nVIP Access: fredag 20.11 kl. 15.00 – søndag 22.11 kl. 23.59.\nBlack Week: mandag 23.11 kl. 00.01 – mandag 30.11 kl. 23.59. Fra tirsdag 1.12 gælder normale priser igen, og point og rabatkoder kan bruges igen." },
+    { "type": "textarea", "id": "faq", "label": "FAQ (Spørgsmål | Svar)", "default": "Hvordan får jeg rabatten? | 20% på enkeltvarer · 25% ved 2 ens · 30% ved 3 ens trækkes automatisk i kurven. Du skal ikke bruge nogen kode. Rabatten på enkeltvarer gives ikke oven i pakkepriserne. Point og rabatkoder kan ikke bruges under VIP Access og Black Week.\nKan jeg bruge point eller rabatkoder? | Nej. Point og rabatkoder kan ikke bruges under VIP Access og Black Week.\nHvornår får jeg gaven? | Fra mandag 23.11 kl. 00.01 får de første 100 ordrer over 899 kr efter rabat en Eksfolieringshandske (værdi 119 kr) med. Én gave pr. ordre, indtil de 100 er uddelt.\nHvad koster fragt? | Fri fragt ved køb over 499 kr.\nHvornår starter VIP Access? | Fredag 20.11 kl. 15.00 og til og med søndag 22.11 kl. 23.59. Rabatten trækkes automatisk i kurven.\nKan jeg fortryde eller returnere? | Ja. Du har 14 dages fortrydelsesret fra den dag, du modtager varen. Derudover har du 30 dages tilfredshedsgaranti på din første ordre hos os: Er du ikke tilfreds, kan du sende produkterne retur – også selvom de er åbnet og brugt – i den originale flaske eller emballage med indhold tilbage. Du betaler selv returfragten.\nHvornår slutter Black Week? | Mandag 30.11 kl. 23.59. Fra tirsdag 1.12 gælder normale priser igen." }
+  ]
+}
+{% endschema %}

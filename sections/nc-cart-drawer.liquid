@@ -76,7 +76,40 @@
   {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 {%- endif -%}
 
-<div class="nc-drawer" data-nc-drawer inert aria-label="{{ 'cart.title' | t }}" role="dialog" aria-modal="true">
+{%- comment -%}
+  Black Week (Swerv 12.11, board 10): moerk boks oeverst med fri fragt-bar og gaven (Eksfolieringshandske
+  over 899 kr, under VIP Access Haandcreme over 499 kr). Gaven laegges i kurven af appen EG Auto Add to Cart;
+  temaet viser kun status. Gavelinjen (pris 0) faar en bordeaux-etiket. Tom kurv: "Se alle tilbud" + bestsellere.
+{%- endcomment -%}
+{%- liquid
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign bw_mode = 'off'
+  if bw_phase == 'bw'
+    assign bw_mode = 'on'
+  elsif bw_phase == 'vip'
+    assign bw_mode = 'dual'
+  endif
+  if bw_phase == 'vip'
+    assign bw_gift = settings.nc_vip_gift_product | default: all_products['handcreme']
+    assign bw_gift_min = settings.nc_vip_gift_min | default: 499 | times: 100
+    assign bw_gift_title = 'Gave til de første 100 ordrer over ' | append: settings.nc_vip_gift_min | append: '&nbsp;kr: Håndcreme'
+  else
+    assign bw_gift = settings.nc_bw_gift_product | default: all_products['exfoliating-hanske']
+    assign bw_gift_min = settings.nc_bw_gift_min | default: 899 | times: 100
+    assign bw_gift_title = settings.nc_bw_gift_title | escape | replace: ' kr', '&nbsp;kr' | append: ': ' | append: settings.nc_bw_gift_name
+  endif
+  assign bw_gift_in = false
+  for item in cart.items
+    if item.final_price == 0 and bw_gift != blank and item.product_id == bw_gift.id
+      assign bw_gift_in = true
+    endif
+  endfor
+  assign bw_landing = '/collections/' | append: settings.nc_bw_landing
+-%}
+<div class="nc-drawer{% if bw_mode != 'off' %} nc-drawer--bw{% endif %}" data-nc-drawer inert aria-label="{{ 'cart.title' | t }}" role="dialog" aria-modal="true">
   <div class="nc-drawer__overlay" data-nc-drawer-overlay></div>
   <div class="nc-drawer__panel">
     <div class="nc-drawer__head">
@@ -86,9 +119,32 @@
       </button>
     </div>
 
+    {%- if bw_mode != 'off' -%}
+      <div class="nc-drawer__bw{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+        <div class="nc-drawer__bwship">
+          <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F4EF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 10h4l3 3v2.5h-7M6.5 17a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3zM17 17a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3z"/></svg>
+            <span>
+              {%- if cart.item_count == 0 and free_limit > 0 -%}Fri fragt over {{ free_limit | money_without_trailing_zeros }}
+              {%- elsif free_limit > 0 and cart.total_price >= free_limit -%}Du har fri fragt · køb over {{ free_limit | money_without_trailing_zeros }}
+              {%- elsif free_limit > 0 -%}{%- assign missing = free_limit | minus: cart.total_price | money -%}Du mangler {{ missing }} til fri fragt
+              {%- endif -%}
+            </span>
+          </p>
+          {%- if free_limit > 0 -%}<div class="nc-drawer__bwbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="{{ 'cart.free_shipping_status' | t }}"><div style="width: {{ pct }}%;"></div></div>{%- endif -%}
+        </div>
+        <div class="nc-drawer__bwgift">
+          {%- if bw_gift != blank -%}<span class="nc-bwx__mini" style="width:44px;height:44px;border-radius:10px;">{{ bw_gift.featured_image | image_url: width: 100 | image_tag: alt: bw_gift.featured_image.alt | default: bw_gift.title, loading: 'lazy' }}</span>{%- endif -%}
+          <span class="nc-drawer__bwgtxt">
+            <strong>{{ bw_gift_title }}</strong>
+            <span>{%- if bw_gift_in or cart.item_count == 0 or cart.total_price >= bw_gift_min -%}Én pr. ordre{%- else -%}Køb for over {{ bw_gift_min | money_without_trailing_zeros }}, så får du en {{ bw_gift.title | split: ' | ' | first | split: ' til ' | first | default: 'gave' }} med (de første 100&nbsp;ordrer).{%- endif -%}</span>
+          </span>
+          {%- if bw_gift_in -%}<span class="nc-drawer__bwadded"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Tilføjet</span>{%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
     {%- if cart.item_count > 0 -%}
       {%- if free_limit > 0 -%}
-      <div class="nc-drawer__ship">
+      <div class="nc-drawer__ship{% if bw_mode == 'on' %} nc-drawer__ship--off{% elsif bw_mode == 'dual' %} nc-bw-hide{% endif %}">
         <p>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18H3V6h12v4"/><path d="M14 9h4l3 3v6h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>
           <span>
@@ -116,6 +172,9 @@
             </a>
             <div class="nc-drawer__line-info">
               <a class="nc-drawer__line-title" href="{{ item.url }}">{% render 'nc-cbd', text: item.product.title %}</a>
+              {%- if bw_mode != 'off' and item.final_price == 0 and bw_gift != blank and item.product_id == bw_gift.id -%}
+                <span class="nc-drawer__giftbadge{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">{{ bw_gift_title | split: ':' | first }}</span>
+              {%- endif -%}
               {%- unless item.product.has_only_default_variant -%}
                 <span class="nc-drawer__line-meta">{{ item.variant.title }}</span>
               {%- endunless -%}
@@ -151,6 +210,9 @@
 
       </div>
 
+      {%- if bw_mode != 'off' -%}
+        {%- render 'nc-bw-cart-recs', title: 'Tilføj til din ordre', mode: bw_mode, layout: 'rows' -%}
+      {%- endif -%}
       <div class="nc-drawer__foot">
         {%- if cart.total_discount > 0 -%}
           <div class="nc-drawer__savings">
@@ -167,10 +229,18 @@
           <span>{{ 'cart.accept_terms_html' | t: url: shop.terms_of_service.url | default: '/policies/terms-of-service' }}</span>
         </label>
         <a class="nc-drawer__checkout" href="{{ routes.cart_url }}/checkout" data-nc-terms-btn aria-disabled="true">{{ 'cart.checkout' | t }} →</a>
+        {%- if bw_mode != 'off' -%}<p class="nc-drawer__bwtrust{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">14 dages fortrydelsesret · e-mærket webshop · bestil før kl. 14 – afsendes samme dag</p>{%- endif -%}
         <p class="nc-drawer__note">{{ 'cart.vat_note' | t }}</p>
       </div>
     {%- else -%}
-      <div class="nc-drawer__empty">
+      {%- if bw_mode != 'off' -%}
+        <div class="nc-drawer__bwempty{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+          <span>Din kurv er tom</span>
+          <a class="nc-bwx__btn nc-bwx__btn--md" href="{% render 'nc-url', url: bw_landing %}" data-nc-cart-close>Se alle tilbud</a>
+        </div>
+        {%- render 'nc-bw-cart-recs', title: 'Bestsellere', mode: bw_mode, layout: 'grid' -%}
+      {%- endif -%}
+      <div class="nc-drawer__empty{% if bw_mode == 'on' %} nc-drawer__empty--off{% elsif bw_mode == 'dual' %} nc-bw-hide{% endif %}">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <p>{{ 'cart.empty' | t }}</p>
         <a href="{% render 'nc-url', url: '/collections/cbd-hudpleje' %}" data-nc-cart-close>{{ 'cart.shop' | t }}</a>

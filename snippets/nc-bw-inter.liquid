@@ -1,0 +1,50 @@
+{%- comment -%}
+  nc-bw-inter: kort i fuld bredde mellem produkterne i en Black Week-kollektion.
+  type: 'gift' (Black Week-gaven), 'rutine' (Køb flere og spar) eller 'tre' (Rutinen i tre trin → Kompletpakken).
+{%- endcomment -%}
+{%- liquid
+  assign gift_p = settings.nc_bw_gift_product | default: all_products['exfoliating-hanske']
+-%}
+{%- case type -%}
+  {%- when 'gift' -%}
+    <li class="nc-bwi nc-bwi--gift">
+      <div class="nc-bwi__txt">
+        <span class="nc-bwi__eb">Black Week-gave</span>
+        <span class="nc-bwi__h">{{ settings.nc_bw_gift_title | escape | replace: ' kr', '&nbsp;kr' }}</span>
+        <span class="nc-bwi__s">{{ settings.nc_bw_gift_name | escape }}{% if gift_p != blank %} (værdi {{ gift_p.price | money_without_trailing_zeros }}){% endif %} til ordrer over {{ settings.nc_bw_gift_min }}&nbsp;kr efter rabat. Én pr.&nbsp;ordre.</span>
+      </div>
+      <div class="nc-bwi__pic">{%- if gift_p != blank -%}<span class="nc-bwx__mini">{{ gift_p.featured_image | image_url: width: 520 | image_tag: alt: gift_p.featured_image.alt | default: gift_p.title, loading: 'lazy' }}</span>{%- endif -%}</div>
+    </li>
+  {%- when 'rutine' -%}
+    {%- assign rimg = images['nc-bw-rutine-lizbeth.jpg'] -%}
+    {%- assign rurl = '/collections/black-week-enkeltvarer' -%}
+    <li class="nc-bwi nc-bwi--photo">
+      <a href="{% render 'nc-url', url: rurl %}">
+        <span class="nc-bwi__img">{%- if rimg != blank -%}{{ rimg | image_url: width: 1200 | image_tag: alt: 'Lizbeth Falk i sin daglige hudplejerutine på badeværelset', widths: '600, 900, 1200', sizes: '(min-width: 990px) 600px, 100vw', loading: 'lazy', style: 'object-position: 60% 30%' }}{%- endif -%}</span>
+        <span class="nc-bwi__txt">
+          <span class="nc-bwi__eb nc-bwi__eb--muted">Køb flere og spar</span>
+          <span class="nc-bwi__h">25%&nbsp;ved&nbsp;2&nbsp;ens · 30%&nbsp;ved&nbsp;3&nbsp;ens</span>
+          <span class="nc-bwi__s nc-bwi__s--muted">Gælder 2 eller 3 af samme enkeltvare. Trækkes automatisk i kurven – ingen&nbsp;kode.</span>
+          <span class="nc-bwx__btn nc-bwi__btn">Se enkeltvarer →</span>
+        </span>
+      </a>
+    </li>
+  {%- when 'tre' -%}
+    {%- assign timg = images['nc-bw-komplet-topview.jpg'] -%}
+    {%- assign kp = all_products['hudpleje-startpakke-plus-1'] -%}
+    <li class="nc-bwi nc-bwi--photo nc-bwi--tre">
+      <a href="{% if kp != blank %}{{ kp.url }}{% else %}{% render 'nc-url', url: '/collections/black-week-pakker' %}{% endif %}">
+        <span class="nc-bwi__img">{%- if timg != blank -%}{{ timg | image_url: width: 1200 | image_tag: alt: 'Rensegel, Dagcreme, Natcreme og Ansigtsolie set ovenfra', widths: '600, 900, 1200', sizes: '(min-width: 990px) 600px, 100vw', loading: 'lazy', style: 'object-position: 50% 55%' }}{%- endif -%}</span>
+        <span class="nc-bwi__txt">
+          <span class="nc-bwi__eb nc-bwi__eb--muted">Din daglige rutine</span>
+          <span class="nc-bwi__h">Rutinen i tre trin</span>
+          <span class="nc-bwi__steps">
+            <span><b>1</b><span><strong>Rensegel</strong><small>Rens huden morgen og aften.</small></span></span>
+            <span><b>2</b><span><strong>Ansigtsolie</strong><small>Et par dråber er alt der skal til.</small></span></span>
+            <span><b>3</b><span><strong>Dagcreme / Natcreme</strong><small>Dagcreme om morgenen, Natcreme om&nbsp;aftenen.</small></span></span>
+          </span>
+          <span class="nc-bwx__btn nc-bwi__btn">Se Kompletpakken →</span>
+        </span>
+      </a>
+    </li>
+{%- endcase -%}

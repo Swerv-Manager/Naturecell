@@ -1,0 +1,28 @@
+{%- comment -%}
+  nc-bw-phase: Black Week-fasen på serveren. Udskriver normal, vip eller bw.
+
+  vip: fra "Black Week starter (UTC)" (VIP Access, fre 20.11 kl. 15.00) til "Black Week åbner for alle (UTC)".
+  bw:  fra "Black Week åbner for alle (UTC)" (man 23.11 kl. 00.01) til "Black Week slutter (UTC)".
+  Kun dansk og ikke B2B. "Fase" i temaindstillingerne kan tvinge en fase (test).
+  Browseren regner samme fase ud (snippets/nc-bw-head) og genindlæser en cachet side, hvis fasen er skiftet.
+
+  Brug: {%- capture bw_phase %}{% render 'nc-bw-phase' %}{% endcapture -%}{%- assign bw_phase = bw_phase | strip -%}
+{%- endcomment -%}
+{%- liquid
+  assign ph = 'normal'
+  if settings.nc_bw_enabled and request.locale.iso_code == 'da' and customer.b2b? != true
+    assign t_now = 'now' | date: '%s' | plus: 0
+    assign t_vip = settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | date: '%s' | plus: 0
+    assign t_open = settings.nc_bw_open_utc | default: '2026-11-22T23:01:00Z' | date: '%s' | plus: 0
+    assign t_end = settings.nc_bw_close_utc | default: '2026-11-30T22:59:00Z' | date: '%s' | plus: 0
+    if t_now >= t_vip and t_now < t_open
+      assign ph = 'vip'
+    elsif t_now >= t_open and t_now < t_end
+      assign ph = 'bw'
+    endif
+    if settings.nc_bw_phase_override != blank and settings.nc_bw_phase_override != 'auto'
+      assign ph = settings.nc_bw_phase_override
+    endif
+  endif
+  echo ph
+-%}

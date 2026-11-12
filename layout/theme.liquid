@@ -73,6 +73,8 @@
     {{ 'nc-robotoflex.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
 
     {{ 'nc-theme.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Black Week 2026 (Swerv 12.11): mørkt tema, VIP-lukning og faseskift. Se snippets/nc-bw-head. {%- endcomment -%}
+    {%- render 'nc-bw-head' -%}
 
     <style>
       html.nc-lock { overflow: hidden; }
@@ -82,7 +84,37 @@
     {% render 'cookiebot-integration' %}
   </head>
 
-  <body class="template-{{ request.page_type | handle }}">
+  {%- liquid
+    capture bw_phase
+      render 'nc-bw-phase'
+    endcapture
+    assign bw_phase = bw_phase | strip
+    assign bw_on = false
+    if settings.nc_bw_enabled and request.locale.iso_code == 'da' and customer.b2b? != true
+      assign bw_on = true
+    endif
+    assign bw_page = ''
+    if bw_on and request.page_type == 'page'
+      assign bw_vip_handle = settings.nc_vip_page_handle | default: 'vip-black'
+      assign bw_terms_handle = settings.nc_bw_terms_url | default: '/pages/black-week-vilkaar' | split: '/' | last
+      if page.handle == bw_vip_handle
+        assign bw_page = 'vip'
+      elsif page.handle == bw_terms_handle
+        assign bw_page = 'terms'
+      endif
+    endif
+    assign bw_dark = false
+    if bw_on
+      case request.page_type
+        when 'index', 'collection', 'product', 'search', 'cart', 'list-collections', '404'
+          assign bw_dark = true
+      endcase
+      if bw_page != blank
+        assign bw_dark = true
+      endif
+    endif
+  -%}
+  <body class="template-{{ request.page_type | handle }}{% if bw_dark %} nc-bw-dark{% endif %}{% if bw_page != blank %} nc-bw-page-{{ bw_page }}{% endif %}">
     {%- if settings.nc_cbd_icon %}{% render 'nc-cbd-sprite' %}{% endif -%}
     <a class="nc-skip-link" href="#nc-main">{{ 'general.skip_to_content' | t }}</a>
 
@@ -102,7 +134,23 @@
           <a class="nc-btn nc-btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'nc_loyalty.unavailable_shop' | t }}</a>
         </div></section>
       {%- else -%}
-        {{ content_for_layout }}
+        {%- comment -%}
+          Black Week: forsiden er Black Week-forsiden (sections/nc-bw-home) i fase bw. Under VIP Access
+          renderes begge forsider, og klassen nc-bw på html-elementet (VIP-adgang) vælger den rigtige uden blink.
+          VIP-siden og vilkårssiden har egne sektioner (sections/nc-bw-vip, sections/nc-bw-terms).
+        {%- endcomment -%}
+        {%- if bw_page == 'vip' -%}
+          {% section 'nc-bw-vip' %}
+        {%- elsif bw_page == 'terms' -%}
+          {% section 'nc-bw-terms' %}
+        {%- elsif request.page_type == 'index' and bw_phase == 'bw' -%}
+          {% section 'nc-bw-home' %}
+        {%- elsif request.page_type == 'index' and bw_phase == 'vip' -%}
+          <div class="nc-bw-hide nc-bw-contents">{{ content_for_layout }}</div>
+          <div class="nc-bw-only nc-bw-contents">{% section 'nc-bw-home' %}</div>
+        {%- else -%}
+          {{ content_for_layout }}
+        {%- endif -%}
       {%- endif -%}
     </main>
 
@@ -112,6 +160,7 @@
 
     <script src="{{ 'nc-theme.js' | asset_url }}" defer></script>
     <script src="{{ 'nc-packshot.js' | asset_url }}" defer></script>
+    {%- if bw_on -%}<script src="{{ 'nc-bw.js' | asset_url }}" defer></script>{%- endif -%}
 
     {%- render 'nc-integrations-body' -%}
   </body>

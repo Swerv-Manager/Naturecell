@@ -1,0 +1,34 @@
+{%- comment -%}
+  nc-bw-row: produktrække med billede, overlinje, navn, Black Week-pris og "Tilføj" (forsidens rutine og Lizbeths valg).
+  Parametre: product, eyebrow (valgfri, ellers størrelse), size: 'sm' (64px, rutine) eller 'lg' (76px, Lizbeths valg)
+  "Tilføj" bruger temaets data-nc-add (nc-theme.js), så kurv-skuffen åbner.
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign v = product.selected_or_first_available_variant
+    capture bwp
+      render 'nc-bw-price', product: product, variant: v
+    endcapture
+    assign bwp = bwp | strip | split: ','
+    assign bw_price = bwp[1] | plus: 0
+    assign tparts = product.title | split: ' | '
+    assign name = tparts[0] | strip
+    assign sub = eyebrow
+    if sub == blank
+      assign sub = product.metafields.ncell.size.value | default: tparts[1] | strip
+    endif
+  -%}
+  <div class="nc-bw-row nc-bw-row--{{ size | default: 'sm' }}">
+    <a class="nc-bwx__mini nc-bw-row__img" href="{{ product.url }}" tabindex="-1" aria-hidden="true">{{ product.featured_image | image_url: width: 180 | image_tag: alt: '', loading: 'lazy' }}</a>
+    <div class="nc-bw-row__txt">
+      {%- if sub != blank -%}<span class="nc-bw-row__eb">{{ sub | escape }}</span>{%- endif -%}
+      <a class="nc-bw-row__name" href="{{ product.url }}">{% render 'nc-cbd', text: name %}</a>
+      <span class="nc-bw-row__price"><span>{{ bw_price | money }}</span>{%- if bwp[0] == 'single' -%}<s><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.price | money }}</s>{%- endif -%}</span>
+    </div>
+    {%- if product.available and product.has_only_default_variant -%}
+      <button type="button" class="nc-bwx__btn nc-bwx__btn--sm" data-nc-add="{{ v.id }}" aria-label="{{ 'product.add_named' | t: title: name | escape }}">Tilføj</button>
+    {%- else -%}
+      <a class="nc-bwx__btn nc-bwx__btn--sm" href="{{ product.url }}">Se</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

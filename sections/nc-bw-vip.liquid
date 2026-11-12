@@ -1,0 +1,193 @@
+{% comment %}
+  Section contract.
+  VIP Access-siden (board 09 "VIP Access · 20.–22.11"). Renderes af layout/theme.liquid på siden med handle
+  fra temaindstillingen "VIP-side (handle)" (standard /pages/vip-black), i alle faser, så snart Black Week-temaet er slået til.
+  Tilstande:
+    Før VIP (normal):   "Starter om" (til fre 20.11 kl. 15.00) og tilmelding til nyhedsbrevet.
+    Under VIP (vip):    med VIP-adgang: "Slutter om" og "Se alle tilbud". Uden: tilmelding, som giver adgang med det samme.
+    Black Week (bw):    "Black Week er åben for alle" og "Se alle tilbud".
+  Tilmelding bruger Shopifys kundeformular (tags newsletter, vip-black-week-2026, accepts_marketing), som synkes til Klaviyo.
+{% endcomment %}
+{%- liquid
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign s = section.settings
+  assign landing = '/collections/' | append: settings.nc_bw_landing
+  assign vip_gift = settings.nc_vip_gift_product | default: all_products['handcreme']
+  assign img = s.image | default: images['nc-bw-lizbeth-olie.jpg']
+-%}
+<div class="nc-bwx nc-bwv">
+  <section class="nc-bwv-hero">
+    <div class="nc-bwv-hero__media">
+      {%- if img != blank -%}{{ img | image_url: width: 1800 | image_tag: alt: 'Lizbeth Falk med Ansigtsolie i NatureCell-butikken', widths: '800, 1200, 1800', sizes: '(min-width: 750px) 860px, 100vw', loading: 'eager', fetchpriority: 'high' }}{%- endif -%}
+      <div class="nc-bwv-hero__fade" aria-hidden="true"></div>
+    </div>
+    <div class="nc-container nc-bwv-hero__in">
+      <nav class="nc-bwx__crumbs nc-bwv-hero__crumbs" aria-label="{{ 'general.breadcrumb' | t }}"><span><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></span><span>VIP Access</span></nav>
+      <div class="nc-bwv-hero__title">
+        <div class="nc-bwv-hero__eyebrow"><span class="nc-bwc-d">{{ s.eyebrow_d | escape }}</span><span class="nc-bwc-m">{{ s.eyebrow_m | escape }}</span></div>
+        <h1 class="nc-bwv-hero__h1">{{ s.title | escape }}</h1>
+      </div>
+      <div class="nc-bwv-hero__txt">
+        <p class="nc-bwv-hero__offer">{{ settings.nc_bw_offer | escape | replace: ' ', '&nbsp;' | replace: '&nbsp;·&nbsp;', ' · ' }}</p>
+        <p class="nc-bwv-hero__how"><span class="nc-bwc-m">Fre 20.11 kl. 15.00 – søn 22.11 kl.&nbsp;23.59 · </span>{{ s.how | escape }}</p>
+      </div>
+      <div class="nc-bwv-hero__cd">
+        {%- case bw_phase -%}
+          {%- when 'normal' -%}
+            <div class="nc-bwv-hero__cdl">Starter om</div>
+            {% render 'nc-bw-countdown', to: 'vip', size: 'vip' %}
+          {%- when 'vip' -%}
+            <div class="nc-bwv-hero__cdl">Black Week åbner for alle om</div>
+            {% render 'nc-bw-countdown', to: 'open', size: 'vip' %}
+          {%- else -%}
+            <div class="nc-bwv-hero__cdl">Black Week slutter om</div>
+            {% render 'nc-bw-countdown', to: 'end', size: 'vip' %}
+        {%- endcase -%}
+      </div>
+      {%- if bw_phase == 'normal' -%}
+        <a class="nc-bwx__btn nc-bwv-hero__cta" href="#vip-tilmeld">Tilmeld dig nyhedsbrevet</a>
+      {%- elsif bw_phase == 'vip' -%}
+        <a class="nc-bwx__btn nc-bwv-hero__cta nc-bwv-only-ok" href="{% render 'nc-url', url: landing %}">Se alle tilbud</a>
+        <a class="nc-bwx__btn nc-bwv-hero__cta nc-bwv-only-no" href="#vip-tilmeld">Tilmeld dig og få adgang</a>
+      {%- else -%}
+        <a class="nc-bwx__btn nc-bwv-hero__cta" href="{% render 'nc-url', url: landing %}">Se alle tilbud</a>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- unless bw_phase == 'bw' -%}
+  <section class="nc-container nc-bwv-sec">
+    <div class="nc-bwi nc-bwi--gift">
+      <div class="nc-bwi__txt">
+        <span class="nc-bwi__eb">VIP-gave</span>
+        <span class="nc-bwi__h">{{ settings.nc_vip_gift_title | escape | replace: ' kr', '&nbsp;kr' }}</span>
+        <span class="nc-bwi__s">{{ settings.nc_vip_gift_text | escape }}</span>
+      </div>
+      <div class="nc-bwi__pic">{%- if vip_gift != blank -%}<span class="nc-bwx__mini">{{ vip_gift.featured_image | image_url: width: 520 | image_tag: alt: vip_gift.featured_image.alt | default: vip_gift.title, loading: 'lazy' }}</span>{%- endif -%}</div>
+    </div>
+  </section>
+  {%- endunless -%}
+
+  <section class="nc-container nc-bwv-sec nc-bwv-sec--l">
+    <div class="nc-bwv-dates__head"><div class="nc-bwx__eyebrow">Datoer</div><h2 class="nc-bwx__h2">Sådan forløber VIP Access</h2></div>
+    <ol class="nc-bwv-dates" data-nc-dates>
+      <li data-end="{{ settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' }}"><span class="nc-bwv-dates__dot" aria-hidden="true"></span><div><span class="nc-bwv-dates__d">Fre 20.11</span><span class="nc-bwv-dates__t">kl. 15.00</span><span class="nc-bwv-dates__l">VIP Access åbner</span></div></li>
+      <li data-end="2026-11-22T22:59:00Z"><span class="nc-bwv-dates__dot" aria-hidden="true"></span><div><span class="nc-bwv-dates__d">Søn 22.11</span><span class="nc-bwv-dates__t">kl. 23.59</span><span class="nc-bwv-dates__l">VIP Access slutter</span></div></li>
+      <li data-end="{{ settings.nc_bw_open_utc | default: '2026-11-22T23:01:00Z' }}"><span class="nc-bwv-dates__dot" aria-hidden="true"></span><div><span class="nc-bwv-dates__d">Man 23.11</span><span class="nc-bwv-dates__t">kl. 00.01</span><span class="nc-bwv-dates__l">Black Week åbner for alle</span></div></li>
+    </ol>
+  </section>
+
+  {%- unless bw_phase == 'bw' -%}
+  <section class="nc-container nc-bwv-sec nc-bwv-sec--l" id="vip-tilmeld">
+    <div class="nc-bwv-news">
+      <div class="nc-bwv-news__l">
+        <span class="nc-bwx__eyebrow">Nyhedsbrev</span>
+        <span class="nc-bwv-news__h">{{ s.news_title | escape | replace: ' nyhedsbrevsmodtagere', '&nbsp;nyhedsbrevsmodtagere' }}</span>
+        <span class="nc-bwv-news__s">{{ s.news_text | escape }}</span>
+      </div>
+      <div class="nc-bwv-news__r">
+        {%- form 'customer', id: 'nc-vip-form', class: 'nc-bwv-news__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter, vip-black-week-2026">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+          <div class="nc-bwv-news__row">
+            <input class="nc-bwx__input" type="email" name="contact[email]" placeholder="din@email.dk" aria-label="E-mail" autocomplete="email" required>
+            <button class="nc-bwx__btn nc-bwv-news__btn" type="submit">Tilmeld</button>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p class="nc-bwx__msg" role="status" data-nc-vip-success>Tak! Du er nu på listen{% if bw_phase == 'vip' %}, og VIP Access er åben for dig. <a class="nc-bwx__link" style="font-size:15px;" href="{% render 'nc-url', url: landing %}">Se alle tilbud →</a>{% else %}. Vi skriver til dig fredag 20.11 kl. 15.00.{% endif %}</p>
+          {%- elsif form.errors -%}
+            <p class="nc-bwx__msg" role="alert">{{ 'forms.email_error' | t }}</p>
+          {%- endif -%}
+        {%- endform -%}
+        <a class="nc-bwx__link" style="font-size:15px;" href="{% render 'nc-url', url: settings.nc_bw_terms_url %}">Vilkår og FAQ →</a>
+      </div>
+    </div>
+  </section>
+  {%- endunless -%}
+
+  {%- if s.favs.size > 0 -%}
+  <section class="nc-container nc-bwv-sec nc-bwv-sec--l nc-bwv-sec--end">
+    <div class="nc-bwx__head"><div><div class="nc-bwx__eyebrow">{{ s.favs_eyebrow | escape }}</div><h2 class="nc-bwx__h2">Kundernes favoritter</h2></div><a class="nc-bwx__more" href="{% render 'nc-url', url: landing %}">Se alle tilbud →</a></div>
+    <ul class="nc-bwx__grid4 nc-bwv-favs">{%- for p in s.favs limit: 4 -%}<li>{% render 'nc-product-card', product: p, force_bw: true %}</li>{%- endfor -%}</ul>
+  </section>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .nc-bwv { background: #0B0F0E; }
+  .nc-bwv-hero { position: relative; height: 640px; overflow: hidden; background: #0B0F0E; }
+  .nc-bwv-hero__media { position: absolute; inset: 0; }
+  .nc-bwv-hero__media img { position: absolute; top: 0; right: 0; width: 860px; max-width: 70%; height: 100%; object-fit: cover; object-position: 60% 28%; }
+  .nc-bwv-hero__fade { position: absolute; inset: 0; background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,0) 14%), linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 40%, rgba(11,15,14,.85) 47%, rgba(11,15,14,.35) 55%, rgba(11,15,14,0) 63%); }
+  .nc-bwv-hero__in { position: relative; height: 100%; padding-top: 30px; display: flex; flex-direction: column; }
+  .nc-bwv-hero__in > * { max-width: 656px; }
+  .nc-bwv-hero__title { margin-top: 70px; }
+  .nc-bwv-hero__eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .18em; color: #F5F4EF; }
+  .nc-bwv-hero__h1 { margin: 18px 0 0; font-family: 'Philosopher', serif; font-weight: 700; font-size: 68px; line-height: 1.02; color: #FFFFFF; white-space: nowrap; }
+  .nc-bwv-hero__offer { margin: 18px 0 0; font-size: 21px; line-height: 1.45; color: #F5F4EF; }
+  .nc-bwv-hero__how { margin: 6px 0 0; font-size: 17px; line-height: 1.45; color: #E4E3DD; }
+  .nc-bwv-hero__cd { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+  .nc-bwv-hero__cdl { font-size: 14px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #F5F4EF; }
+  .nc-bwv-hero__cta { align-self: flex-start; margin-top: 32px; }
+  html:not(.nc-vip-ok) .nc-bwv-only-ok, html.nc-vip-ok .nc-bwv-only-no { display: none !important; }
+  @media (max-width: 1100px) and (min-width: 750px) { .nc-bwv-hero__h1 { white-space: normal; font-size: 56px; } }
+  @media (max-width: 749px) {
+    .nc-bwv-hero { height: auto; }
+    .nc-bwv-hero__media { position: relative; inset: auto; height: 400px; }
+    .nc-bwv-hero__media img { width: 100%; max-width: none; object-position: 66% 22%; }
+    .nc-bwv-hero__fade { background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,.85) 26%, rgba(11,15,14,0) 58%); }
+    .nc-bwv-hero__in { position: static; padding-top: 6px; gap: 14px; }
+    .nc-bwv-hero__crumbs { position: absolute; left: 16px; top: 14px; font-size: 14px; color: #FFFFFF; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+    .nc-bwv-hero__crumbs span:last-child { color: #FFFFFF; }
+    .nc-bwv-hero__title { position: absolute; left: 16px; right: 16px; top: 390px; transform: translateY(-100%); margin: 0; }
+    .nc-bwv-hero__eyebrow { font-size: 12px; letter-spacing: .16em; }
+    .nc-bwv-hero__h1 { margin-top: 8px; font-size: 38px; line-height: 1.05; white-space: normal; text-wrap: balance; }
+    .nc-bwv-hero__txt { display: flex; flex-direction: column; gap: 4px; }
+    .nc-bwv-hero__offer { margin: 0; font-size: 17px; }
+    .nc-bwv-hero__how { margin: 0; font-size: 15px; }
+    .nc-bwv-hero__cd { margin-top: 0; gap: 9px; }
+    .nc-bwv-hero__cdl { font-size: 12.5px; }
+    .nc-bwv-hero__cta { margin-top: 0; align-self: stretch; height: 52px; font-size: 16.5px; }
+  }
+  .nc-bwv-sec { display: block; padding-top: min(calc(3.048vw + 28px), 72px); }
+  .nc-bwv-sec--l { padding-top: min(calc(3.048vw + 36px), 80px); }
+  .nc-bwv-sec--end { padding-bottom: min(calc(3.048vw + 36px), 80px); }
+  .nc-bwv-dates__head { display: flex; flex-direction: column; gap: 10px; margin-bottom: min(calc(.762vw + 17px), 28px); }
+  .nc-bwv-dates { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); border-top: 1px solid #2A312F; }
+  .nc-bwv-dates li { display: flex; gap: 14px; align-items: flex-start; padding: min(calc(.762vw + 15px), 26px) min(calc(.762vw + 4px), 15px) min(calc(.762vw + 15px), 26px) 0; border-bottom: 1px solid #2A312F; }
+  .nc-bwv-dates__dot { flex: none; margin-top: 9px; width: 12px; height: 12px; border-radius: 50%; background: #84334E; }
+  .nc-bwv-dates li.is-past .nc-bwv-dates__dot { background: #F5F4EF; }
+  .nc-bwv-dates li > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .nc-bwv-dates__d { font-family: 'Philosopher', serif; font-size: min(calc(.762vw + 21px), 32px); line-height: 1.15; color: #FFFFFF; }
+  .nc-bwv-dates__t { font-size: 15px; color: #E4E3DD; }
+  .nc-bwv-dates__l { font-size: 16px; font-weight: 600; color: #F5F4EF; }
+  .nc-bwv-news { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: min(calc(1.524vw + 14px), 36px) min(calc(2.857vw + 12.86px), 54px); align-items: center; padding: min(calc(2.286vw + 19px), 52px) min(calc(2.857vw + 9px), 50px); border-radius: 18px; background: #151B19; border: 1px solid #2A312F; }
+  .nc-bwv-news__l { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .nc-bwv-news__h { font-family: 'Philosopher', serif; font-size: min(calc(1.4286vw + 21.43px), 42px); line-height: 1.15; color: #FFFFFF; text-wrap: balance; }
+  .nc-bwv-news__s { font-size: min(calc(.19vw + 14.76px), 17.5px); line-height: 1.5; color: #E4E3DD; text-wrap: pretty; }
+  .nc-bwv-news__r { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .nc-bwv-news__row { display: flex; gap: 8px; }
+  .nc-bwv-news__row .nc-bwx__input { height: 52px; padding: 0 20px; font-size: 15.5px; }
+  .nc-bwv-news__btn { flex: none; height: 52px; padding: 0 26px; font-size: 16px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "VIP Access-side",
+  "class": "nc-bw-vip-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Billede", "info": "Tom = nc-bw-lizbeth-olie.jpg fra Filer." },
+    { "type": "text", "id": "eyebrow_d", "label": "Overlinje (computer)", "default": "VIP ACCESS · FRE 20.11 KL. 15.00 – SØN 22.11 KL. 23.59" },
+    { "type": "text", "id": "eyebrow_m", "label": "Overlinje (mobil)", "default": "VIP ACCESS · 20.–22. NOVEMBER" },
+    { "type": "text", "id": "title", "label": "Overskrift", "default": "Black Week før alle andre" },
+    { "type": "text", "id": "how", "label": "Sådan virker det", "default": "Trækkes automatisk i kurven – ingen kode" },
+    { "type": "text", "id": "news_title", "label": "Tilmelding: overskrift", "default": "VIP Access er for alle nyhedsbrevsmodtagere" },
+    { "type": "text", "id": "news_text", "label": "Tilmelding: tekst", "default": "Tilmeld dig vores nyhedsbrev, så er du klar fredag 20.11 kl. 15.00." },
+    { "type": "text", "id": "favs_eyebrow", "label": "Favoritter: overlinje", "default": "Klar til fredag" },
+    { "type": "product_list", "id": "favs", "label": "Favoritter", "limit": 4 }
+  ]
+}
+{% endschema %}

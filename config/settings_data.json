@@ -23,6 +23,128 @@
       "nc-cart-drawer": {
         "type": "nc-cart-drawer",
         "settings": {}
+      },
+      "nc-bw-home": {
+        "type": "nc-bw-home",
+        "settings": {
+          "favs": [
+            "ansigtsolie-med-antioxidanter-30-ml",
+            "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+            "hudpleje-startpakke-plus-1",
+            "dagcreme"
+          ],
+          "packs": [
+            "sampakke-helkropspleje",
+            "hudpleje-startpakke-dagcreme-rensegel-og-ansigtsolie",
+            "pakke",
+            "pakke-til-starten-af-dagen"
+          ],
+          "rut_cleanse": "rensegel",
+          "rut_oil": "ansigtsolie-med-antioxidanter-30-ml",
+          "rut_cream_dry": "natcreme",
+          "rut_cream_sens": "dagcreme",
+          "rut_cream_mature": "dagcreme",
+          "liz_products": [
+            "ansigtsolie-med-antioxidanter-30-ml",
+            "dagcreme",
+            "cbg-eye-gel"
+          ],
+          "cases_blog": "kundecases"
+        },
+        "blocks": {
+          "gift_tab_1": {
+            "type": "gift_tab",
+            "settings": {
+              "label": "Julegaver",
+              "products": [
+                "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+                "forkael-en-du-har-kaer",
+                "sampakke-shampoo-conditioner",
+                "hel-krops-pleje"
+              ],
+              "url": "/collections/julegaver",
+              "cta": "Se alle julegaver →"
+            }
+          },
+          "gift_tab_2": {
+            "type": "gift_tab",
+            "settings": {
+              "label": "Under 300 kr",
+              "products": [
+                "handcreme",
+                "body-oil-100ml",
+                "fugtserum-med-hyaluronsyre-30-ml",
+                "lip-balm"
+              ],
+              "url": "/collections/gaver-under-300",
+              "cta": "Se alle gaver under 300 kr →"
+            }
+          },
+          "gift_tab_3": {
+            "type": "gift_tab",
+            "settings": {
+              "label": "Under 500 kr",
+              "products": [
+                "cbg-eye-gel",
+                "natcreme",
+                "re-new-balm",
+                "kosmetisk-hudolie-10-10-ml"
+              ],
+              "url": "/collections/gaver-under-500",
+              "cta": "Se alle gaver under 500 kr →"
+            }
+          },
+          "gift_tab_4": {
+            "type": "gift_tab",
+            "settings": {
+              "label": "Under 700 kr",
+              "products": [
+                "forkael-en-du-har-kaer",
+                "hel-krops-pleje",
+                "pakke",
+                "kosmetisk-hudolie-20-10-ml"
+              ],
+              "url": "/collections/gaver-under-700",
+              "cta": "Se alle gaver under 700 kr →"
+            }
+          },
+          "gift_tab_5": {
+            "type": "gift_tab",
+            "settings": {
+              "label": "Under 1.000 kr",
+              "products": [
+                "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+                "pakke-til-starten-af-dagen",
+                "pakke-til-starten-af-natten",
+                "sampakke-helkropspleje"
+              ],
+              "url": "/collections/gaver-under-1000",
+              "cta": "Se alle gaver under 1.000 kr →"
+            }
+          }
+        },
+        "block_order": [
+          "gift_tab_1",
+          "gift_tab_2",
+          "gift_tab_3",
+          "gift_tab_4",
+          "gift_tab_5"
+        ]
+      },
+      "nc-bw-vip": {
+        "type": "nc-bw-vip",
+        "settings": {
+          "favs": [
+            "ansigtsolie-med-antioxidanter-30-ml",
+            "dagcreme",
+            "facial-care-3-dagcreme-natcreme-og-ansigtsolie",
+            "hudpleje-startpakke-plus-1"
+          ]
+        }
+      },
+      "nc-bw-terms": {
+        "type": "nc-bw-terms",
+        "settings": {}
       }
     },
     "content_for_index": [],
@@ -84,6 +206,8 @@
           "version": "v3"
         }
       }
-    }
+    },
+    "nc_bw_gift_product": "exfoliating-hanske",
+    "nc_vip_gift_product": "handcreme"
   }
 }

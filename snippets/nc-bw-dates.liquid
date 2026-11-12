@@ -1,0 +1,25 @@
+{%- comment -%}
+  nc-bw-dates: "Datoer du skal kende". nc-bw.js markerer næste dato (bordeaux, pulserende), tidligere datoer og kommende.
+  Parametre:
+    rows:  linjer "Ugedag | Dato | Tid | Tekst | slut-tidspunkt UTC | foto" (foto = vis foto under punktet)
+    style: 'timeline' (forsiden: vandret på computer, lodret på mobil) eller 'cards' (landingen: små kort)
+    photo: billede til punkter markeret "foto"
+{%- endcomment -%}
+{%- assign drows = rows | newline_to_br | split: '<br />' -%}
+<ol class="nc-bw-dates nc-bw-dates--{{ style | default: 'timeline' }}" data-nc-dates>
+  {%- for r in drows -%}
+    {%- assign dp = r | strip | split: '|' -%}
+    {%- if dp[1] == blank -%}{%- continue -%}{%- endif -%}
+    {%- assign d_wd = dp[0] | strip -%}{%- assign d_date = dp[1] | strip -%}{%- assign d_time = dp[2] | strip -%}{%- assign d_label = dp[3] | strip -%}{%- assign d_end = dp[4] | strip -%}{%- assign d_photo = dp[5] | strip -%}
+    <li class="nc-bw-dates__i is-future" data-end="{{ d_end }}">
+      <span class="nc-bw-dates__dot" aria-hidden="true"><span class="nc-bw-dates__ping"></span></span>
+      <div class="nc-bw-dates__body">
+        <div class="nc-bw-dates__top"><span class="nc-bw-dates__wd">{{ d_wd | escape }}</span><span class="nc-bw-dates__date">{{ d_date | escape }}</span>{%- if d_time != blank -%}<span class="nc-bw-dates__time">{{ d_time | escape }}</span>{%- endif -%}</div>
+        <span class="nc-bw-dates__label">{{ d_label | escape }}</span>
+        {%- if d_photo == 'foto' and photo != blank and style != 'cards' -%}
+          {{ photo | image_url: width: 800 | image_tag: class: 'nc-bw-dates__photo', alt: 'Lizbeth Falk og Allan Gamborg i NatureCell-butikken i Lille Nyhavn', widths: '400, 800', sizes: '(min-width: 990px) 230px, 90vw', loading: 'lazy' }}
+        {%- endif -%}
+      </div>
+    </li>
+  {%- endfor -%}
+</ol>

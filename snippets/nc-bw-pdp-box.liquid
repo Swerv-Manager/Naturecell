@@ -1,0 +1,45 @@
+{%- comment -%}
+  nc-bw-pdp-box: Black Week-boksen på produktsiden (boards 06/07): overlinje, overskrift, punkter,
+  gaven og nedtælling. Enkeltvarer: tilbudstrappen. Pakker: "Black Week-pakke", gaven øverst.
+  Under VIP Access vises VIP-gaven (Håndcreme over 499 kr), ellers Black Week-gaven (Eksfolieringshandske over 899 kr).
+  Parametre: kind ('single' | 'pack'), dual ('on' | 'dual'), phase ('vip' | 'bw')
+{%- endcomment -%}
+{%- liquid
+  if phase == 'vip'
+    assign g_p = settings.nc_vip_gift_product | default: all_products['handcreme']
+    assign g_title = 'Gave til de første 100 ordrer over ' | append: settings.nc_vip_gift_min | append: '&nbsp;kr'
+    assign g_name = g_p.title | split: ' | ' | first | default: 'Håndcreme'
+    assign eb = 'VIP Access'
+  else
+    assign g_p = settings.nc_bw_gift_product | default: all_products['exfoliating-hanske']
+    assign g_title = settings.nc_bw_gift_title | escape | replace: ' kr', '&nbsp;kr'
+    assign g_name = settings.nc_bw_gift_name
+    assign eb = 'Black Week'
+  endif
+  if kind == 'pack'
+    assign lines = settings.nc_bw_pdp_pack_lines | newline_to_br | split: '<br />'
+  else
+    assign lines = settings.nc_bw_pdp_lines | newline_to_br | split: '<br />'
+  endif
+-%}
+<div class="nc-bw-box nc-bw-box--{{ kind }}{% if dual == 'dual' %} nc-bw-only{% endif %}">
+  <div class="nc-bw-box__head">
+    <span class="nc-bw-box__eb">{{ eb }}</span>
+    <span class="nc-bw-box__t">{%- if kind == 'pack' -%}Black Week-pakke{%- else -%}{{ settings.nc_bw_offer | escape | replace: ' ', '&nbsp;' | replace: '&nbsp;·&nbsp;', ' · ' }}{%- endif -%}</span>
+  </div>
+  <ul class="nc-bw-box__lines">
+    {%- for l in lines -%}
+      {%- assign lt = l | strip -%}
+      {%- if lt == blank -%}{%- continue -%}{%- endif -%}
+      <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>{{ lt | escape }}</span></li>
+    {%- endfor -%}
+  </ul>
+  <div class="nc-bw-box__gift">
+    {%- if g_p != blank -%}<span class="nc-bwx__mini" style="width:54px;height:54px;border-radius:10px;">{{ g_p.featured_image | image_url: width: 120 | image_tag: alt: g_p.featured_image.alt | default: g_p.title, loading: 'lazy' }}</span>{%- endif -%}
+    <span class="nc-bw-box__gtxt"><strong>{{ g_title }}</strong><span>{{ g_name | escape }}</span></span>
+  </div>
+  <div class="nc-bw-box__cd">
+    <span class="nc-bw-box__cdl">Slutter om</span>
+    {% render 'nc-bw-countdown', to: 'end', size: 'box' %}
+  </div>
+</div>

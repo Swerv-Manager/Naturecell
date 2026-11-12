@@ -5,6 +5,7 @@
 
   Brug: {% render 'nc-product-card', product: product %}
   Valgfrit: loading: 'eager' (kort over folden) og priority: 'high' (LCP-kortet).
+  Valgfrit: force_bw: true (vis Black Week-pris og -badge uanset fase, bruges på VIP-siden).
 {% endcomment %}
 
 {%- liquid
@@ -130,11 +131,45 @@
   endcomment
   assign rating_num = rating.rating | default: rating | times: 1.0
   assign rating_round = rating_num | round
+
+  comment
+    Black Week (Swerv 12.11): BLACK WEEK-badge og Black Week-pris (snippets/nc-bw-price).
+    bw_mode on: kun Black Week-visning. dual (VIP Access): begge, og klassen nc-bw på html-elementet vælger.
+  endcomment
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  assign bw_mode = 'off'
+  if bw_phase == 'bw'
+    assign bw_mode = 'on'
+  elsif bw_phase == 'vip'
+    assign bw_mode = 'dual'
+  endif
+  comment
+    force_bw: VIP-siden viser Black Week-priserne som forsmag, også før VIP Access starter.
+  endcomment
+  if force_bw and bw_mode == 'off' and settings.nc_bw_enabled and request.locale.iso_code == 'da' and customer.b2b? != true
+    assign bw_mode = 'on'
+  endif
+  if bw_mode != 'off'
+    capture bwp
+      render 'nc-bw-price', product: product, variant: v
+    endcapture
+    assign bwp = bwp | strip | split: ','
+    assign bw_kind = bwp[0]
+    assign bw_price = bwp[1] | plus: 0
+    assign bw_value = bwp[2] | plus: 0
+    if bw_kind == 'none'
+      assign bw_mode = 'off'
+    endif
+  endif
 -%}
 
 <div class="nc-product-card">
   <div class="nc-product-card__media">
-    <div class="nc-product-card__tags">
+    {%- unless bw_mode == 'on' -%}
+    <div class="nc-product-card__tags{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">
       {%- if on_sale and show_badge -%}
         <span class="nc-tag nc-tag--sale">{{ 'product.save_pct' | t: pct: save_pct }}</span>
       {%- endif -%}
@@ -142,6 +177,10 @@
         <span class="nc-tag nc-tag--sage">{{ 'product.bundle' | t }}</span>
       {%- endif -%}
     </div>
+    {%- endunless -%}
+    {%- if bw_mode != 'off' -%}
+      <div class="nc-product-card__tags nc-product-card__tags--bw{% if bw_mode == 'dual' %} nc-bw-only{% endif %}"><span class="nc-tag nc-tag--bw">BLACK WEEK</span></div>
+    {%- endif -%}
 
     <button class="nc-product-card__fav" data-nc-fav="{{ product.handle }}" aria-label="{{ 'product.save_favorite' | t: title: card_title | escape }}">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C7.2 17 4.3 13.6 4.3 10 4.3 7.4 6.2 5.5 8.5 5.5c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2 2.3 0 4.2 1.9 4.2 4.5 0 3.6-2.9 7-7.7 10.4Z"/></svg>
@@ -213,7 +252,20 @@
     {%- else -%}
       <span class="nc-product-card__rating" aria-hidden="true"></span>
     {%- endif -%}
-    <span class="nc-product-card__price{% if on_sale %} is-sale{% endif %}">
+    {%- if bw_mode != 'off' -%}
+      <span class="nc-product-card__price nc-product-card__price--bw is-sale{% if bw_mode == 'dual' %} nc-bw-only{% endif %}">
+        {%- if bw_kind == 'pack' -%}
+          <span class="nc-product-card__amount">{%- if product.price_varies -%}{{ 'product.from' | t }} {% endif -%}{{- v.price | money -}}</span>
+          {%- if bw_value > 0 -%}<span class="nc-product-card__value">Værdi ved køb enkeltvis: {{ bw_value | money }}</span>{%- endif -%}
+        {%- else -%}
+          <span class="nc-product-card__amount">{%- if product.price_varies -%}{{ 'product.from' | t }} {% endif -%}{{- bw_price | money -}}</span>
+          <s class="nc-product-card__compare"><span class="nc-visually-hidden">{{ 'product.regular_price' | t }} </span>{{ v.price | money }}</s>
+        {%- endif -%}
+        {%- unless product.available -%}<span class="nc-product-card__stock">{{ 'product.sold_out' | t }}</span>{%- endunless -%}
+      </span>
+    {%- endif -%}
+    {%- unless bw_mode == 'on' -%}
+    <span class="nc-product-card__price{% if on_sale %} is-sale{% endif %}{% if bw_mode == 'dual' %} nc-bw-hide{% endif %}">
       <span class="nc-product-card__amount">
         {%- if product.price_varies -%}{{ 'product.from' | t }} {% endif -%}
         {{- v.price | money -}}
@@ -223,6 +275,7 @@
       {%- endif -%}
       {%- unless product.available -%}<span class="nc-product-card__stock">{{ 'product.sold_out' | t }}</span>{%- endunless -%}
     </span>
+    {%- endunless -%}
     {%- comment -%}
       Enhedspris vises naar varianten har "pris pr. enhed" (tysk Grundpreis-krav).
       Den korte momsnote vises kun paa andre sprog end dansk: det godkendte danske
