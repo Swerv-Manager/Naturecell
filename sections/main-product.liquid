@@ -49,11 +49,9 @@
     assign save_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
   endif
 
-  comment
-    Black Week (Swerv 12.11, boards 06/07): BLACK WEEK-badge, Black Week-pris (enkeltvarer) eller
-    "Værdi ved køb enkeltvis" (pakker), Black Week-boks med punkter, gave og nedtælling under garantilinjen.
-    bw_mode on: kun Black Week. dual (VIP Access): begge, klassen nc-bw paa html-elementet vaelger.
-  endcomment
+  # Black Week (Swerv 12.11, boards 06/07): BLACK WEEK-badge, Black Week-pris for enkeltvarer
+  # eller Vaerdi ved koeb enkeltvis for pakker, og Black Week-boksen under garantilinjen.
+  # bw_mode on: kun Black Week. dual (VIP Access): begge, klassen nc-bw paa html-elementet vaelger.
   capture bw_phase
     render 'nc-bw-phase'
   endcapture
