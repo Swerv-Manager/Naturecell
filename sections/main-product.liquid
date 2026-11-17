@@ -412,6 +412,9 @@
         {%- endunless -%}
 
         {%- if bw_mode != 'off' -%}
+          {%- if settings.nc_bw_ship_note != blank -%}
+            <p class="nc-bw-ship{% if bw_mode == 'dual' %} nc-bw-only{% endif %}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18zM12 7.5V12l3 2"/></svg><span>{{ settings.nc_bw_ship_note | escape }}</span></p>
+          {%- endif -%}
           {%- render 'nc-bw-pdp-box', kind: bw_kind, dual: bw_mode, phase: bw_phase -%}
         {%- endif -%}
         {%- comment -%}

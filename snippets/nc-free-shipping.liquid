@@ -8,7 +8,7 @@
   Black Week (Swerv 10.11): fra temaindstillingen "Black Week starter (UTC)" bruges
   "Fri fragt-graense i Black Week" (fx "DKK: 499"). Valutaer, der ikke staar dér,
   beholder den normale graense. Er "Black Week slutter (UTC)" udfyldt, skiftes tilbage
-  efter det tidspunkt. Samme tidspunkt styrer forsidens tilbud/BW-skift (nc-offer-switch).
+  efter det tidspunkt, ellers efter "Black Week slutter (UTC)" i Black Week 2026-gruppen (Swerv 17.11). Samme tidspunkt styrer forsidens tilbud/BW-skift (nc-offer-switch).
   OBS: Det er kun TEKSTEN. Selve fragtprisen i kassen styres i Shopify/fragt-appen.
 
   Brug:
@@ -24,11 +24,10 @@
   assign nc_now = 'now' | date: '%s' | plus: 0
   if nc_now >= nc_bw_start
     assign nc_bw = true
-    if settings.nc_bw_end_utc != blank
-      assign nc_bw_end = settings.nc_bw_end_utc | date: '%s' | plus: 0
-      if nc_now >= nc_bw_end
-        assign nc_bw = false
-      endif
+    assign nc_bw_end_iso = settings.nc_bw_end_utc | default: settings.nc_bw_close_utc | default: '2026-11-30T22:59:00Z'
+    assign nc_bw_end = nc_bw_end_iso | date: '%s' | plus: 0
+    if nc_now >= nc_bw_end
+      assign nc_bw = false
     endif
   endif
   if phase == 'normal'

@@ -494,6 +494,13 @@
         "default": "Trækkes automatisk i kurven – ingen kode\nFri fragt over 499 kr\nAlle tilbud og kampagnegaver gælder kun, så længe lager haves."
       },
       {
+        "type": "text",
+        "id": "nc_bw_ship_note",
+        "label": "Produktside: leveringslinje under kurv-knappen",
+        "info": "Vises under Black Week og VIP Access. Tom = skjult.",
+        "default": "Bestil før kl. 14 på hverdage – afsendes samme dag"
+      },
+      {
         "type": "textarea",
         "id": "nc_bw_pdp_pack_lines",
         "label": "Produktside, pakker: punkter",

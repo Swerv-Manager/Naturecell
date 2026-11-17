@@ -159,6 +159,7 @@
                   {%- endif -%}
                   {%- assign nc_is_herre = false -%}
                   {%- if bw_phase != 'normal' and parts[1] contains 'herre' -%}{%- assign nc_is_herre = true -%}{%- endif -%}
+                  {%- if bw_phase != 'normal' and parts[1] contains 'gavekort' -%}{%- assign nc_is_herre = true -%}{%- endif -%}
                   {%- if nc_is_herre and bw_phase == 'bw' -%}{%- continue -%}{%- endif -%}
                     <li {% if nc_is_herre %} class="nc-bw-hide"{% endif %}><a href="{% render 'nc-url', url: parts[1] %}">{% render 'nc-cbd', text: nc_lbl %}</a></li>
                   {%- endif -%}

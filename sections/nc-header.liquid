@@ -305,7 +305,7 @@
 <script>
 (function () {
   var start = Date.parse({{ settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | json }});
-  var end = {% if settings.nc_bw_end_utc != blank %}Date.parse({{ settings.nc_bw_end_utc | json }}){% else %}NaN{% endif %};
+  var end = Date.parse({{ settings.nc_bw_end_utc | default: settings.nc_bw_close_utc | default: '2026-11-30T22:59:00Z' | json }});
   var txt = { normal: {{ nc_fs_n | json }}, bw: {{ nc_fs_b | json }} };
   var shown = {% if nc_fs_cur == nc_fs_b %}'bw'{% else %}'normal'{% endif %};
   if (isNaN(start)) return;
