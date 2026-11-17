@@ -1,6 +1,6 @@
 {%- comment -%}
   nc-bw-pdp-box: Black Week-boksen på produktsiden (boards 06/07): overlinje, overskrift, punkter,
-  gaven og nedtælling. Enkeltvarer: tilbudstrappen. Pakker: "Black Week-pakke", gaven øverst.
+  gaven og nedtælling. Over boksen: leveringslinjen fra temaindstillingen (board 06/07). Enkeltvarer: tilbudstrappen. Pakker: "Black Week-pakke", gaven øverst.
   Under VIP Access vises VIP-gaven (Håndcreme over 499 kr), ellers Black Week-gaven (Eksfolieringshandske over 899 kr).
   Parametre: kind ('single' | 'pack'), dual ('on' | 'dual'), phase ('vip' | 'bw')
 {%- endcomment -%}
@@ -22,6 +22,9 @@
     assign lines = settings.nc_bw_pdp_lines | newline_to_br | split: '<br />'
   endif
 -%}
+{%- if settings.nc_bw_ship_note != blank -%}
+  <p class="nc-bw-ship{% if dual == 'dual' %} nc-bw-only{% endif %}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18zM12 7.5V12l3 2"/></svg><span>{{ settings.nc_bw_ship_note | escape }}</span></p>
+{%- endif -%}
 <div class="nc-bw-box nc-bw-box--{{ kind }}{% if dual == 'dual' %} nc-bw-only{% endif %}">
   <div class="nc-bw-box__head">
     <span class="nc-bw-box__eb">{{ eb }}</span>
