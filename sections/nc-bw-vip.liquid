@@ -61,6 +61,30 @@
     </div>
   </section>
 
+  {%- comment -%} VIP-kode lige under toppen (Swerv 19.11, kundens ønske). {%- endcomment -%}
+  {%- if bw_phase == 'vip' -%}
+  <section class="nc-container nc-bwv-sec nc-bwv-only-no" id="vip-kode">
+    <div class="nc-bwv-news">
+      <div class="nc-bwv-news__l">
+        <span class="nc-bwx__eyebrow">VIP Access</span>
+        <span class="nc-bwv-news__h">{{ s.code_title | escape }}</span>
+        <span class="nc-bwv-news__s">{{ s.code_text | escape }}</span>
+      </div>
+      <div class="nc-bwv-news__r">
+        <form class="nc-bwv-news__form" data-nc-vip-code novalidate>
+          <div class="nc-bwv-news__row">
+            <label class="nc-visually-hidden" for="nc-vip-code-{{ section.id }}">{{ s.code_label | escape }}</label>
+            <input class="nc-bwx__input" id="nc-vip-code-{{ section.id }}" type="text" name="code" placeholder="{{ s.code_label | escape }}" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="nc-vip-code-msg-{{ section.id }}">
+            <button class="nc-bwx__btn nc-bwv-news__btn" type="submit">{{ s.code_btn | escape }}</button>
+          </div>
+          <p class="nc-bwx__msg" id="nc-vip-code-msg-{{ section.id }}" role="alert" data-nc-vip-code-msg hidden>{{ s.code_error | escape }}</p>
+        </form>
+        <a class="nc-bwx__link" style="font-size:15px;" href="#vip-tilmeld">{{ s.code_signup_link | escape }}</a>
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
   {%- unless bw_phase == 'bw' -%}
   <section class="nc-container nc-bwv-sec">
     <div class="nc-bwi nc-bwi--gift">
@@ -82,29 +106,6 @@
       <li data-end="{{ settings.nc_bw_open_utc | default: '2026-11-22T23:01:00Z' }}"><span class="nc-bwv-dates__dot" aria-hidden="true"></span><div><span class="nc-bwv-dates__d">Man 23.11</span><span class="nc-bwv-dates__t">kl. 00.01</span><span class="nc-bwv-dates__l">Black Week åbner for alle</span></div></li>
     </ol>
   </section>
-
-  {%- if bw_phase == 'vip' -%}
-  <section class="nc-container nc-bwv-sec nc-bwv-sec--l nc-bwv-only-no" id="vip-kode">
-    <div class="nc-bwv-news">
-      <div class="nc-bwv-news__l">
-        <span class="nc-bwx__eyebrow">VIP Access</span>
-        <span class="nc-bwv-news__h">{{ s.code_title | escape }}</span>
-        <span class="nc-bwv-news__s">{{ s.code_text | escape }}</span>
-      </div>
-      <div class="nc-bwv-news__r">
-        <form class="nc-bwv-news__form" data-nc-vip-code novalidate>
-          <div class="nc-bwv-news__row">
-            <label class="nc-visually-hidden" for="nc-vip-code-{{ section.id }}">{{ s.code_label | escape }}</label>
-            <input class="nc-bwx__input" id="nc-vip-code-{{ section.id }}" type="text" name="code" placeholder="{{ s.code_label | escape }}" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="nc-vip-code-msg-{{ section.id }}">
-            <button class="nc-bwx__btn nc-bwv-news__btn" type="submit">{{ s.code_btn | escape }}</button>
-          </div>
-          <p class="nc-bwx__msg" id="nc-vip-code-msg-{{ section.id }}" role="alert" data-nc-vip-code-msg hidden>{{ s.code_error | escape }}</p>
-        </form>
-        <a class="nc-bwx__link" style="font-size:15px;" href="#vip-tilmeld">{{ s.code_signup_link | escape }}</a>
-      </div>
-    </div>
-  </section>
-  {%- endif -%}
 
   {%- unless bw_phase == 'bw' -%}
   <section class="nc-container nc-bwv-sec nc-bwv-sec--l{% if bw_phase == 'vip' %} nc-bwv-only-no{% endif %}" id="vip-tilmeld">
@@ -155,6 +156,7 @@
   /* Fade bundet til billedets venstre kant (Swerv 19.11), så overgangen er glidende på alle skærmbredder. */
   .nc-bwv-hero__media::before { content: ''; position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 860px; max-width: 70%; pointer-events: none; background: linear-gradient(90deg, #0B0F0E 0%, rgba(11,15,14,.85) 11%, rgba(11,15,14,.35) 25%, rgba(11,15,14,0) 38%); }
   .nc-bwv-hero__fade { z-index: 1; }
+  .nc-bwv-hero__in { z-index: 2; }
   .nc-bwv-hero__in { position: relative; height: 100%; padding-top: 30px; display: flex; flex-direction: column; }
   .nc-bwv-hero__in > * { max-width: 656px; }
   .nc-bwv-hero__title { margin-top: 70px; }
