@@ -283,6 +283,11 @@
     render 'nc-bw-phase'
   endcapture
   assign bw_phase = bw_phase | strip
+  # Tilbud-knappen (live 16.11) peger på Black Week-landingssiden under VIP Access og Black Week (Swerv 19.11).
+  assign nc_offers_url = '/collections/nedsatte-varer'
+  if bw_phase != 'normal' and settings.nc_bw_enabled
+    assign nc_offers_url = '/collections/' | append: settings.nc_bw_landing
+  endif
   assign bw_mode = 'off'
   if bw_phase == 'bw'
     assign bw_mode = 'on'
@@ -528,7 +533,7 @@
           </div>
           {%- if request.locale.iso_code == 'da' -%}
             <div class="nc-mega__tabs nc-mega__tabs--links">
-              <a class="nc-mega__tab" href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}" data-nc-offers-label>{{ nc_offers_label }}</a>
+              <a class="nc-mega__tab" href="{% render 'nc-url', url: nc_offers_url %}" data-nc-offers-label>{{ nc_offers_label }}</a>
               <a class="nc-mega__tab" href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
             </div>
           {%- endif -%}
@@ -657,7 +662,7 @@
       <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>
       <div class="nc-mobilenav__sub">
         {%- if request.locale.iso_code == 'da' -%}
-          <a href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}" data-nc-offers-label>{{ nc_offers_label }}</a>
+          <a href="{% render 'nc-url', url: nc_offers_url %}" data-nc-offers-label>{{ nc_offers_label }}</a>
           <a href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
         {%- endif -%}
         {%- for block in section.blocks -%}

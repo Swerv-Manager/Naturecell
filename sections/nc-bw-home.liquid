@@ -14,11 +14,26 @@
   assign tp_score = settings.nc_tp_score | default: '4,7'
   assign tp_count = settings.nc_tp_count | default: 615
   assign landing = '/collections/' | append: settings.nc_bw_landing
+  capture bw_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign bw_phase = bw_phase | strip
+  # VIP Access (Swerv 19.11): forsidens mørke Facial Care 3-banner fra live-temaet som top i stedet for designets hero.
+  assign vip_hero = ''
+  if bw_phase == 'vip' and settings.nc_vip_hero
+    capture vip_hero
+      render 'nc-bw-offer-hero', product: settings.nc_vip_hero_product, image: settings.nc_vip_hero_image, eyebrow: 'Facial Care 3', heading: 'Hele ansigtsrutinen i én pakke', body: 'Dagcreme, natcreme og ansigtsolie.', was_label: 'købt enkeltvis', cta: 'Se pakken'
+    endcapture
+    assign vip_hero = vip_hero | strip
+  endif
 -%}
 {%- capture star -%}<path d="M12 2.8l2.8 6 6.5.7-4.9 4.4 1.4 6.4L12 17l-5.8 3.3 1.4-6.4L2.7 9.5l6.5-.7z"/>{%- endcapture -%}
 
 <div class="nc-bwx nc-bwh">
-  {%- comment -%} Hero (desktop 786px med foto til højre, mobil 731px med foto bagved) {%- endcomment -%}
+  {%- comment -%} Hero (desktop 786px med foto til højre, mobil 731px med foto bagved). Under VIP Access: live-bannerets kopi. {%- endcomment -%}
+  {%- if vip_hero != blank -%}
+  {{ vip_hero }}
+  {%- else -%}
   <section class="nc-bwh-hero">
     {%- assign hd = s.hero_img | default: images['nc-bw-hero-butik.jpg'] -%}
     {%- assign hm = s.hero_img_m | default: images['nc-bw-hero-butik-mobil.jpg'] -%}
@@ -41,6 +56,7 @@
       </div>
     </div>
   </section>
+  {%- endif -%}
 
   {%- comment -%} Tillid {%- endcomment -%}
   <section class="nc-bwh-trust">
@@ -353,6 +369,9 @@
   .nc-bwh-hero { position: relative; height: 786px; overflow: hidden; background: #0B0F0E; }
   .nc-bwh-hero picture, .nc-bwh-hero__img { position: absolute; top: 0; right: 0; width: 1080px; max-width: 75%; height: 100%; object-fit: cover; object-position: 50% 20%; }
   .nc-bwh-hero__fade { position: absolute; inset: 0; background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,0) 16%), linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 30%, rgba(11,15,14,.9) 40%, rgba(11,15,14,.55) 46%, rgba(11,15,14,0) 52%); }
+  /* Fade bundet til billedets venstre kant (Swerv 19.11): designets forløb ved 1440 px, men regnet fra billedet,
+     så overgangen også er glidende på brede skærme, hvor billedet starter efter sektionens fade. */
+  .nc-bwh-hero picture::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 7%, rgba(11,15,14,.9) 20%, rgba(11,15,14,.55) 28%, rgba(11,15,14,0) 40%), linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,0) 16%); }
   .nc-bwh-hero__in { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   .nc-bwh-hero__txt { max-width: 616px; display: flex; flex-direction: column; }
   .nc-bwh-hero__eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .18em; color: #F5F4EF; }
@@ -366,6 +385,7 @@
   @media (max-width: 749px) {
     .nc-bwh-hero { height: 731px; }
     .nc-bwh-hero picture, .nc-bwh-hero__img { inset: 0; width: 100%; max-width: none; object-position: 58% 0%; }
+    .nc-bwh-hero picture::after { content: none; }
     .nc-bwh-hero__fade { background: linear-gradient(0deg, #0B0F0E 0%, #0B0F0E 25%, rgba(11,15,14,.9) 40%, rgba(11,15,14,.55) 49%, rgba(11,15,14,0) 60%); }
     .nc-bwh-hero__in { justify-content: flex-end; padding-bottom: 22px; }
     .nc-bwh-hero__eyebrow { font-size: 12.5px; letter-spacing: .16em; }

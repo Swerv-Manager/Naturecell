@@ -4,7 +4,10 @@
   fra temaindstillingen "VIP-side (handle)" (standard /pages/vip-black), i alle faser, så snart Black Week-temaet er slået til.
   Tilstande:
     Før VIP (normal):   "Starter om" (til fre 20.11 kl. 15.00) og tilmelding til nyhedsbrevet.
-    Under VIP (vip):    med VIP-adgang: "Slutter om" og "Se alle tilbud". Uden: tilmelding, som giver adgang med det samme.
+    Under VIP (vip):    med VIP-adgang: "Se alle tilbud". Uden: felt til VIP-koden fra mailen (temaindstillingen
+                        "VIP-nøgle") og tilmelding. Tilmelding giver IKKE adgang med det samme: koden sendes på mail
+                        af et Klaviyo-flow (udløses af tagget vip-black-week-2026 / tilmelding til listen).
+                        Resten af butikken sender besøgende uden adgang hertil (snippets/nc-bw-head).
     Black Week (bw):    "Black Week er åben for alle" og "Se alle tilbud".
   Tilmelding bruger Shopifys kundeformular (tags newsletter, vip-black-week-2026, accepts_marketing), som synkes til Klaviyo.
 {% endcomment %}
@@ -51,7 +54,7 @@
         <a class="nc-bwx__btn nc-bwv-hero__cta" href="#vip-tilmeld">Tilmeld dig nyhedsbrevet</a>
       {%- elsif bw_phase == 'vip' -%}
         <a class="nc-bwx__btn nc-bwv-hero__cta nc-bwv-only-ok" href="{% render 'nc-url', url: landing %}">Se alle tilbud</a>
-        <a class="nc-bwx__btn nc-bwv-hero__cta nc-bwv-only-no" href="#vip-tilmeld">Tilmeld dig og få adgang</a>
+        <a class="nc-bwx__btn nc-bwv-hero__cta nc-bwv-only-no" href="#vip-kode">{{ s.code_cta | escape }}</a>
       {%- else -%}
         <a class="nc-bwx__btn nc-bwv-hero__cta" href="{% render 'nc-url', url: landing %}">Se alle tilbud</a>
       {%- endif -%}
@@ -80,8 +83,31 @@
     </ol>
   </section>
 
+  {%- if bw_phase == 'vip' -%}
+  <section class="nc-container nc-bwv-sec nc-bwv-sec--l nc-bwv-only-no" id="vip-kode">
+    <div class="nc-bwv-news">
+      <div class="nc-bwv-news__l">
+        <span class="nc-bwx__eyebrow">VIP Access</span>
+        <span class="nc-bwv-news__h">{{ s.code_title | escape }}</span>
+        <span class="nc-bwv-news__s">{{ s.code_text | escape }}</span>
+      </div>
+      <div class="nc-bwv-news__r">
+        <form class="nc-bwv-news__form" data-nc-vip-code novalidate>
+          <div class="nc-bwv-news__row">
+            <label class="nc-visually-hidden" for="nc-vip-code-{{ section.id }}">{{ s.code_label | escape }}</label>
+            <input class="nc-bwx__input" id="nc-vip-code-{{ section.id }}" type="text" name="code" placeholder="{{ s.code_label | escape }}" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="nc-vip-code-msg-{{ section.id }}">
+            <button class="nc-bwx__btn nc-bwv-news__btn" type="submit">{{ s.code_btn | escape }}</button>
+          </div>
+          <p class="nc-bwx__msg" id="nc-vip-code-msg-{{ section.id }}" role="alert" data-nc-vip-code-msg hidden>{{ s.code_error | escape }}</p>
+        </form>
+        <a class="nc-bwx__link" style="font-size:15px;" href="#vip-tilmeld">{{ s.code_signup_link | escape }}</a>
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
   {%- unless bw_phase == 'bw' -%}
-  <section class="nc-container nc-bwv-sec nc-bwv-sec--l" id="vip-tilmeld">
+  <section class="nc-container nc-bwv-sec nc-bwv-sec--l{% if bw_phase == 'vip' %} nc-bwv-only-no{% endif %}" id="vip-tilmeld">
     <div class="nc-bwv-news">
       <div class="nc-bwv-news__l">
         <span class="nc-bwx__eyebrow">Nyhedsbrev</span>
@@ -97,7 +123,11 @@
             <button class="nc-bwx__btn nc-bwv-news__btn" type="submit">Tilmeld</button>
           </div>
           {%- if form.posted_successfully? -%}
-            <p class="nc-bwx__msg" role="status" data-nc-vip-success>Tak! Du er nu på listen{% if bw_phase == 'vip' %}, og VIP Access er åben for dig. <a class="nc-bwx__link" style="font-size:15px;" href="{% render 'nc-url', url: landing %}">Se alle tilbud →</a>{% else %}. Vi skriver til dig fredag 20.11 kl. 15.00.{% endif %}</p>
+            {%- if bw_phase == 'vip' -%}
+              <p class="nc-bwx__msg" role="status">{{ s.code_sent | escape }}</p>
+            {%- else -%}
+              <p class="nc-bwx__msg" role="status" data-nc-vip-success>Tak! Du er nu på listen. Vi skriver til dig fredag 20.11 kl. 15.00.</p>
+            {%- endif -%}
           {%- elsif form.errors -%}
             <p class="nc-bwx__msg" role="alert">{{ 'forms.email_error' | t }}</p>
           {%- endif -%}
@@ -122,6 +152,9 @@
   .nc-bwv-hero__media { position: absolute; inset: 0; }
   .nc-bwv-hero__media img { position: absolute; top: 0; right: 0; width: 860px; max-width: 70%; height: 100%; object-fit: cover; object-position: 60% 28%; }
   .nc-bwv-hero__fade { position: absolute; inset: 0; background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,0) 14%), linear-gradient(90deg, #0B0F0E 0%, #0B0F0E 40%, rgba(11,15,14,.85) 47%, rgba(11,15,14,.35) 55%, rgba(11,15,14,0) 63%); }
+  /* Fade bundet til billedets venstre kant (Swerv 19.11), så overgangen er glidende på alle skærmbredder. */
+  .nc-bwv-hero__media::before { content: ''; position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 860px; max-width: 70%; pointer-events: none; background: linear-gradient(90deg, #0B0F0E 0%, rgba(11,15,14,.85) 11%, rgba(11,15,14,.35) 25%, rgba(11,15,14,0) 38%); }
+  .nc-bwv-hero__fade { z-index: 1; }
   .nc-bwv-hero__in { position: relative; height: 100%; padding-top: 30px; display: flex; flex-direction: column; }
   .nc-bwv-hero__in > * { max-width: 656px; }
   .nc-bwv-hero__title { margin-top: 70px; }
@@ -139,6 +172,7 @@
     .nc-bwv-hero__media { position: relative; inset: auto; height: 400px; }
     .nc-bwv-hero__media img { width: 100%; max-width: none; object-position: 66% 22%; }
     .nc-bwv-hero__fade { background: linear-gradient(0deg, #0B0F0E 0%, rgba(11,15,14,.85) 26%, rgba(11,15,14,0) 58%); }
+    .nc-bwv-hero__media::before { content: none; }
     .nc-bwv-hero__in { position: static; padding-top: 6px; gap: 14px; }
     .nc-bwv-hero__crumbs { position: absolute; left: 16px; top: 14px; font-size: 14px; color: #FFFFFF; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
     .nc-bwv-hero__crumbs span:last-child { color: #FFFFFF; }
@@ -186,6 +220,15 @@
     { "type": "text", "id": "how", "label": "Sådan virker det", "default": "Trækkes automatisk i kurven – ingen kode" },
     { "type": "text", "id": "news_title", "label": "Tilmelding: overskrift", "default": "VIP Access er for alle nyhedsbrevsmodtagere" },
     { "type": "text", "id": "news_text", "label": "Tilmelding: tekst", "default": "Tilmeld dig vores nyhedsbrev, så er du klar fredag 20.11 kl. 15.00." },
+    { "type": "header", "content": "VIP-kode (under VIP Access)" },
+    { "type": "text", "id": "code_cta", "label": "Knap i toppen", "default": "Indtast din VIP-kode" },
+    { "type": "text", "id": "code_title", "label": "Kode: overskrift", "default": "Har du fået din VIP-kode?" },
+    { "type": "text", "id": "code_text", "label": "Kode: tekst", "default": "Skriv koden fra din mail, så åbner VIP Access for dig." },
+    { "type": "text", "id": "code_label", "label": "Kode: feltets navn", "default": "VIP-kode" },
+    { "type": "text", "id": "code_btn", "label": "Kode: knap", "default": "Åbn VIP Access" },
+    { "type": "text", "id": "code_error", "label": "Kode: forkert kode", "default": "Koden passer ikke. Tjek mailen og prøv igen." },
+    { "type": "text", "id": "code_signup_link", "label": "Kode: link til tilmelding", "default": "Ingen kode? Tilmeld dig her →" },
+    { "type": "text", "id": "code_sent", "label": "Tilmelding under VIP: tak-besked", "default": "Tak! Vi sender dig VIP-koden på mail om et øjeblik." },
     { "type": "text", "id": "favs_eyebrow", "label": "Favoritter: overlinje", "default": "Klar til fredag" },
     { "type": "product_list", "id": "favs", "label": "Favoritter", "limit": 4 }
   ]

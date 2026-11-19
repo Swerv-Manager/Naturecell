@@ -11,11 +11,44 @@
 
 {%- liquid
   assign mm_tiers = section.blocks | where: 'type', 'tier'
-  assign mm_first = mm_tiers | first
-  assign mm_last = mm_tiers | last
-  assign mm_first_qty = mm_first.settings.qty | default: 2
-  assign mm_first_pct = mm_first.settings.pct | default: 10
-  assign mm_max_qty = mm_last.settings.qty | default: mm_first_qty
+  # Trin som lister (Swerv 19.11), så Black Week kan bruge sine egne trin: under VIP Access og Black Week
+  # bruges "Black Week-trin" (samme rabat som enkeltvarerne: 20/25/30 %), ellers trin-blokkene.
+  capture mm_phase
+    render 'nc-bw-phase'
+  endcapture
+  assign mm_phase = mm_phase | strip
+  assign mm_bw = false
+  if settings.nc_bw_enabled and section.settings.bw_tiers != blank
+    if mm_phase == 'vip' or mm_phase == 'bw'
+      assign mm_bw = true
+    endif
+  endif
+  assign mm_qtys = ''
+  assign mm_pcts = ''
+  if mm_bw
+    assign mm_rows = section.settings.bw_tiers | split: ','
+    for r in mm_rows
+      assign rp = r | split: ':'
+      assign rq = rp[0] | strip | plus: 0
+      assign rpct = rp[1] | strip | plus: 0
+      if rq > 0 and rpct > 0
+        assign mm_qtys = mm_qtys | append: rq | append: ','
+        assign mm_pcts = mm_pcts | append: rpct | append: ','
+      endif
+    endfor
+  else
+    for tier in mm_tiers
+      assign mm_qtys = mm_qtys | append: tier.settings.qty | append: ','
+      assign mm_pcts = mm_pcts | append: tier.settings.pct | append: ','
+    endfor
+  endif
+  assign mm_qtys = mm_qtys | split: ','
+  assign mm_pcts = mm_pcts | split: ','
+  assign mm_n_tiers = mm_qtys.size
+  assign mm_last_i = mm_n_tiers | minus: 1
+  assign mm_first_qty = mm_qtys.first | default: 2 | plus: 0
+  assign mm_first_pct = mm_pcts.first | default: 10 | plus: 0
+  assign mm_max_qty = mm_qtys.last | default: mm_first_qty | plus: 0
 
   if nc_transition_section_products != blank
     assign mm_src = nc_transition_section_products
@@ -150,7 +183,7 @@
   #shopify-section-{{ section.id }} [hidden] { display: none !important; }
 {%- endstyle -%}
 
-<div class="nc-mm" data-nc-mm data-nc-mm-id="{{ section.id }}">
+<div class="nc-mm{% if mm_bw %} nc-bw-light{% endif %}" data-nc-mm data-nc-mm-id="{{ section.id }}">
   <div class="nc-container nc-mm__layout">
     <div class="nc-mm__main">
       <div class="nc-mm__intro">
@@ -175,12 +208,12 @@
         {%- endif -%}
       </div>
 
-      {%- if mm_tiers.size > 0 -%}
+      {%- if mm_n_tiers > 0 -%}
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <ul class="nc-mm__tiers" aria-label="{{ section.settings.tiers_label | escape }}">
-            {%- for tier in mm_tiers -%}
-              {%- capture mm_n -%}{{ tier.settings.qty }}{% if forloop.last and mm_tiers.size > 1 %}+{% endif %}{%- endcapture -%}
-              <li class="nc-mm__tier" data-mm-tier="{{ tier.settings.qty }}" {{ tier.shopify_attributes }}><i aria-hidden="true"></i>{{ 'mix.tier' | t: n: mm_n, pct: tier.settings.pct }}</li>
+            {%- for i in (0..mm_last_i) -%}
+              {%- capture mm_n -%}{{ mm_qtys[i] }}{% if forloop.last and mm_n_tiers > 1 %}+{% endif %}{%- endcapture -%}
+              <li class="nc-mm__tier" data-mm-tier="{{ mm_qtys[i] }}" {% unless mm_bw %}{{ mm_tiers[i].shopify_attributes }}{% endunless %}><i aria-hidden="true"></i>{{ 'mix.tier' | t: n: mm_n, pct: mm_pcts[i] }}</li>
             {%- endfor -%}
           </ul>
           {%- if section.settings.tiers_note != blank -%}<p class="nc-mm__small">{% render 'nc-cbd', text: section.settings.tiers_note %}</p>{%- endif -%}
@@ -209,7 +242,7 @@
           {%- endif -%}
           {%- if section.settings.step2 != blank -%}
             {%- capture mm_tiertext -%}
-              {%- for tier in mm_tiers -%}{{ tier.settings.qty }}{% if forloop.last and mm_tiers.size > 1 %}+{% endif %} {{ section.settings.unit_word }} {{ tier.settings.pct }} %{% unless forloop.last %}, {% endunless %}{%- endfor -%}
+              {%- for i in (0..mm_last_i) -%}{{ mm_qtys[i] }}{% if forloop.last and mm_n_tiers > 1 %}+{% endif %} {{ section.settings.unit_word }} {{ mm_pcts[i] }} %{% unless forloop.last %}, {% endunless %}{%- endfor -%}
             {%- endcapture -%}
             {%- assign mm_s2 = section.settings.step2 | replace: '[trin]', mm_tiertext -%}
             <li><span>{% render 'nc-cbd', text: mm_s2 %}</span></li>
@@ -352,19 +385,19 @@
     <aside class="nc-mm__aside" id="nc-mm-pakke-{{ section.id }}">
       <div class="nc-mm__pack">
         <h2>{{ 'mix.pack_title' | t }}</h2>
-        {%- if mm_tiers.size > 0 -%}
+        {%- if mm_n_tiers > 0 -%}
           <div class="nc-mm__progress" aria-hidden="true">
             <div class="nc-mm__bar">
               <span class="nc-mm__fill" data-mm-fill></span>
-              {%- for tier in mm_tiers -%}
-                {%- assign mm_pos = tier.settings.qty | times: 100.0 | divided_by: mm_max_qty -%}
-                <span class="nc-mm__dot" data-mm-dot="{{ tier.settings.qty }}" style="left: {{ mm_pos }}%;"></span>
+              {%- for i in (0..mm_last_i) -%}
+                {%- assign mm_pos = mm_qtys[i] | times: 100.0 | divided_by: mm_max_qty -%}
+                <span class="nc-mm__dot" data-mm-dot="{{ mm_qtys[i] }}" style="left: {{ mm_pos }}%;"></span>
               {%- endfor -%}
             </div>
             <div class="nc-mm__ticks">
-              {%- for tier in mm_tiers -%}
-                {%- assign mm_pos = tier.settings.qty | times: 100.0 | divided_by: mm_max_qty -%}
-                <span style="left: {{ mm_pos }}%;">{{ tier.settings.qty }}{% if forloop.last and mm_tiers.size > 1 %}+{% endif %} · {{ tier.settings.pct }} %</span>
+              {%- for i in (0..mm_last_i) -%}
+                {%- assign mm_pos = mm_qtys[i] | times: 100.0 | divided_by: mm_max_qty -%}
+                <span style="left: {{ mm_pos }}%;">{{ mm_qtys[i] }}{% if forloop.last and mm_n_tiers > 1 %}+{% endif %} · {{ mm_pcts[i] }} %</span>
               {%- endfor -%}
             </div>
           </div>
@@ -413,8 +446,8 @@
     assign mm_cart_add = routes.cart_add_url | append: '.js'
     capture mm_tiers_json
       echo '['
-      for tier in mm_tiers
-        echo '{"qty":' | append: tier.settings.qty | append: ',"pct":' | append: tier.settings.pct | append: '}'
+      for i in (0..mm_last_i)
+        echo '{"qty":' | append: mm_qtys[i] | append: ',"pct":' | append: mm_pcts[i] | append: '}'
         unless forloop.last
           echo ','
         endunless
@@ -462,6 +495,7 @@
     { "type": "image_picker", "id": "quote_image", "label": "Billede", "info": "Tom = billedet af Lizbeth og Allan." },
     { "type": "header", "content": "Trin og tekster" },
     { "type": "text", "id": "tiers_label", "label": "Trin: skjult etiket til skærmlæsere", "default": "Rabattrin" },
+    { "type": "text", "id": "bw_tiers", "label": "Black Week-trin (antal:rabat %)", "default": "1:20, 2:25, 3:30", "info": "Bruges under VIP Access og Black Week i stedet for trin-blokkene. Skal matche de automatiske Black Week-rabatter i Shopify. Tom = trin-blokkene hele tiden." },
     { "type": "text", "id": "tiers_note", "label": "Tekst under trinene", "default": "Rabatten stiger automatisk, jo flere du vælger" },
     { "type": "checkbox", "id": "show_trust", "label": "Vis Trustpilot, fri fragt, e-mærket og fortrydelsesret", "default": true },
     { "type": "text", "id": "fine_print", "label": "Betingelser (lille tekst)", "default": "Gælder enkeltprodukterne på denne side. Kan ikke kombineres med rabatkoder." },

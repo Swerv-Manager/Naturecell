@@ -1,0 +1,107 @@
+{%- comment -%}
+  nc-bw-offer-hero: forsidens mørke tilbudsbanner fra live-temaet (sections/nc-offer-switch, pakke-heroen
+  "Facial Care 3", 18.11) som top på Black Week-forsiden under VIP Access (Swerv 19.11, kundens ønske).
+  Markup og CSS er kopieret fra nc-offer-switch; ret begge steder, hvis banneret ændres.
+  Udskriver intet, hvis pakken er udsolgt, mangler førpris eller kunden er B2B: så viser forsiden designets hero.
+  Parametre: product, image (valgfri), eyebrow, heading, body, was_label, cta
+{%- endcomment -%}
+{%- liquid
+  assign uid = 'bwvip'
+  assign p = product
+  assign offer_ok = false
+  if p != blank and p.available and p.compare_at_price > p.price and customer.b2b? != true
+    assign offer_ok = true
+  endif
+  if offer_ok
+    assign save_amount = p.compare_at_price | minus: p.price
+    assign save_pct = save_amount | times: 100 | divided_by: p.compare_at_price
+    assign img = image
+    if img == blank
+      assign img = p.featured_image
+    endif
+  endif
+  assign h_eyebrow = eyebrow
+  assign h_heading = heading
+  assign h_body = body
+  assign h_was_label = was_label
+  assign h_cta = cta
+  assign show_guar = false
+  if request.locale.iso_code != 'de' and customer.b2b? != true
+    assign show_guar = true
+  endif
+-%}
+{%- if offer_ok -%}
+{%- style -%}
+  #ncos-{{ uid }} { --ncos-ink: var(--sage-700, #28403b); --ncos-paper: var(--paper, #f6f4ee); background: var(--ncos-paper); color: var(--ncos-ink); }
+  #ncos-{{ uid }} .ncos__hero { display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); min-height: clamp(520px, 40vw, 640px); background: #111; color: var(--paper, #f6f4ee); }
+  #ncos-{{ uid }} .ncos__text { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(40px, 5vw, 80px) clamp(28px, 4vw, 64px) clamp(40px, 5vw, 80px) max(var(--gutter, 24px), calc((100vw - 1320px) / 2 + var(--gutter, 24px))); }
+  #ncos-{{ uid }} .ncos__eyebrow { margin: 0 0 18px; font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ uid }} .ncos__h { margin: 0; max-width: 11ch; font-family: var(--font-display); font-weight: 400; font-size: clamp(42px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--ncos-ink); text-wrap: balance; }
+  #ncos-{{ uid }} .ncos__save { margin: 22px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.1; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ uid }} .ncos__body { margin: 14px 0 0; font-family: var(--font-body); font-size: 17px; line-height: 1.6; color: var(--ink-700, #3a3f3d); max-width: 400px; }
+  #ncos-{{ uid }} .ncos__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 28px 0 0; padding-top: 22px; border-top: 1px solid rgba(40, 64, 59, 0.14); font-family: var(--font-body); min-width: min(360px, 100%); }
+  #ncos-{{ uid }} .ncos__now { font-size: 30px; font-weight: 600; line-height: 1; color: var(--ncos-ink); }
+  #ncos-{{ uid }} .ncos__was { font-size: 15px; color: var(--ink-500, #6b706e); }
+  #ncos-{{ uid }} .ncos__btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 26px; min-height: 52px; padding: 16px 34px; border-radius: 999px; background: var(--ncos-ink); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 600; letter-spacing: 0.02em; line-height: 1; text-decoration: none; transition: background-color .2s ease; }
+  #ncos-{{ uid }} .ncos__btn:hover, #ncos-{{ uid }} .ncos__btn:focus-visible { background: #1f332f; color: #fff; }
+  #ncos-{{ uid }} .ncos__guar { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; font-family: var(--font-body); font-size: 13.5px; color: var(--ink-500, #6b706e); text-decoration: none; }
+  #ncos-{{ uid }} .ncos__guar svg { flex: none; width: 16px; height: 16px; color: var(--sage-500, #6f8f86); }
+  #ncos-{{ uid }} .ncos__guar span { text-decoration: underline; text-decoration-color: rgba(40, 64, 59, 0.3); text-underline-offset: 3px; }
+  #ncos-{{ uid }} .ncos__media { position: relative; display: block; overflow: hidden; background: #111; isolation: isolate; }
+  {%- comment -%} Hele produktet skal kunne ses: forgrunden vises uskaaret (contain) og bag den ligger samme billede sloeret som baggrund, saa der ikke opstaar kanter. {%- endcomment -%}
+  #ncos-{{ uid }} .ncos__media img { display: block; }
+  #ncos-{{ uid }} .ncos__media .ncos__bg { position: absolute; top: -15%; left: -15%; width: 130%; height: 130%; max-width: none; object-fit: cover; filter: blur(26px) saturate(0.7) brightness(0.4); z-index: 0; }
+  #ncos-{{ uid }} .ncos__media .ncos__fg { position: absolute; top: 3%; left: 50%; height: 94%; width: auto; max-width: none; aspect-ratio: 1 / 1; transform: translateX(-50%); object-fit: contain; z-index: 2;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%); mask-composite: intersect; }
+  #ncos-{{ uid }} .ncos__media::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(17, 17, 17, 0.45), rgba(17, 17, 17, 0.2) 40%, rgba(17, 17, 17, 0.35)); }
+  #ncos-{{ uid }} .ncos__hero .ncos__eyebrow { color: rgba(246, 244, 238, 0.8); }
+  #ncos-{{ uid }} .ncos__hero .ncos__h { color: var(--paper, #f6f4ee); }
+  #ncos-{{ uid }} .ncos__hero .ncos__save { color: var(--accent-pink, #F9B5C4); }
+  #ncos-{{ uid }} .ncos__hero .ncos__body { color: rgba(246, 244, 238, 0.88); }
+  #ncos-{{ uid }} .ncos__hero .ncos__price { border-top-color: rgba(246, 244, 238, 0.18); }
+  #ncos-{{ uid }} .ncos__hero .ncos__now { color: var(--paper, #f6f4ee); }
+  #ncos-{{ uid }} .ncos__hero .ncos__was { color: rgba(246, 244, 238, 0.65); }
+  #ncos-{{ uid }} .ncos__hero .ncos__btn { background: var(--paper, #f6f4ee); color: #111; }
+  #ncos-{{ uid }} .ncos__hero .ncos__btn:hover, #ncos-{{ uid }} .ncos__hero .ncos__btn:focus-visible { background: var(--accent-pink, #F9B5C4); color: #111; }
+  #ncos-{{ uid }} .ncos__hero .ncos__guar { color: rgba(246, 244, 238, 0.7); }
+  #ncos-{{ uid }} .ncos__hero .ncos__guar svg { color: rgba(246, 244, 238, 0.7); }
+  #ncos-{{ uid }} .ncos__hero .ncos__guar span { text-decoration-color: rgba(246, 244, 238, 0.35); }
+  @media (max-width: 749px) {
+    #ncos-{{ uid }} .ncos__hero { grid-template-columns: 1fr; min-height: 0; }
+    #ncos-{{ uid }} .ncos__media { order: -1; aspect-ratio: 10 / 9; }
+    #ncos-{{ uid }} .ncos__text { padding: 24px var(--gutter, 20px) 30px; }
+    #ncos-{{ uid }} .ncos__eyebrow { margin-bottom: 10px; font-size: 11px; }
+    #ncos-{{ uid }} .ncos__h { max-width: none; font-size: clamp(32px, 8.6vw, 38px); line-height: 1.05; }
+    #ncos-{{ uid }} .ncos__save { margin-top: 10px; font-size: 22px; }
+    #ncos-{{ uid }} .ncos__body { display: none; }
+    #ncos-{{ uid }} .ncos__price { margin-top: 16px; padding-top: 14px; min-width: 0; width: 100%; }
+    #ncos-{{ uid }} .ncos__now { font-size: 26px; }
+    #ncos-{{ uid }} .ncos__was { font-size: 14px; }
+    #ncos-{{ uid }} .ncos__btn { width: 100%; margin-top: 18px; min-height: 50px; }
+    #ncos-{{ uid }} .ncos__guar { margin-top: 14px; font-size: 13px; }
+    #ncos-{{ uid }} .ncos__media::after { background: linear-gradient(0deg, rgba(17, 17, 17, 0.35), rgba(17, 17, 17, 0.15)); }
+  }
+{%- endstyle -%}
+<div class="ncos" id="ncos-{{ uid }}">
+    <div class="ncos__hero">
+      <div class="ncos__text">
+        {%- if h_eyebrow != blank -%}<p class="ncos__eyebrow">{{ h_eyebrow | escape }}</p>{%- endif -%}
+        <h1 class="ncos__h">{{ h_heading | escape }}</h1>
+        <p class="ncos__save">Spar {{ save_amount | money_without_trailing_zeros }} · {{ save_pct }}&nbsp;%</p>
+        {%- if h_body != blank -%}<p class="ncos__body">{{ h_body | escape }}</p>{%- endif -%}
+        <p class="ncos__price"><span class="ncos__now">{{ p.price | money_without_trailing_zeros }}</span><span class="ncos__was">{{ p.compare_at_price | money_without_trailing_zeros }} {{ h_was_label | escape }}</span></p>
+        <a class="ncos__btn" href="{{ p.url }}">{{ h_cta | escape }} <span aria-hidden="true">→</span></a>
+        {%- if show_guar -%}
+          <a class="ncos__guar" href="/pages/tilfredshedsgaranti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>30 dages tilfredshedsgaranti på første ordre</span></a>
+        {%- endif -%}
+      </div>
+      <a class="ncos__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+        {%- if img != blank -%}
+          {{ img | image_url: width: 600 | image_tag: class: 'ncos__bg', widths: '400, 600', sizes: '(min-width: 750px) 56vw, 100vw', loading: 'eager', alt: '' }}
+          {{ img | image_url: width: 1600 | image_tag: class: 'ncos__fg', widths: '500, 800, 1100, 1600', sizes: '(min-width: 750px) 40vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: '' }}
+        {%- endif -%}
+      </a>
+    </div>
+</div>
+{%- endif -%}

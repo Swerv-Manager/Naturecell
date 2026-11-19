@@ -7,7 +7,8 @@
       nc-ph-*    : fasen (normal, vip, bw)
   - VIP-adgang: ?vip=<VIP-nøgle> i et link (mail) sætter en cookie i 14 dage. Tilmelding på VIP-siden
     gør det samme (nc-bw.js). Kunder, der er logget ind og har sagt ja til nyhedsbrev, har altid adgang.
-  - Lukning under VIP Access: Black Week-kollektionerne sender ikke-VIP videre til VIP-siden.
+  - Lukning under VIP Access: hele butikken sender besøgende uden VIP-adgang til VIP-siden, hvor de taster
+    koden fra mailen (temaindstillingen "VIP-nøgle") eller tilmelder sig og får koden på mail (Klaviyo-flow).
   - Cache: fasen regnes også ud i browseren. Er en side cachet fra før et skift, genindlæses den én gang.
 {%- endcomment -%}
 {%- capture bw_phase %}{% render 'nc-bw-phase' %}{% endcapture -%}
@@ -22,24 +23,12 @@
     assign vip_known = true
   endif
   assign vip_handle = settings.nc_vip_page_handle | default: 'vip-black'
-  assign gated = false
   assign force_dark = false
   assign terms_handle = settings.nc_bw_terms_url | default: '/pages/black-week-vilkaar' | split: '/' | last
   if request.page_type == 'page'
     if page.handle == vip_handle or page.handle == terms_handle
       assign force_dark = true
     endif
-  endif
-  if request.page_type == 'collection'
-    assign sub_rows = settings.nc_bw_menu | newline_to_br | split: '<br />'
-    for r in sub_rows
-      assign rp = r | split: '|'
-      assign ru = rp[1] | strip
-      assign rh = ru | split: '/collections/' | last | split: '/' | first | split: '?' | first
-      if rh != blank and rh == collection.handle
-        assign gated = true
-      endif
-    endfor
   endif
 -%}
 {%- if bw_on -%}
@@ -75,7 +64,13 @@
       } catch (e) {}
       var ok = {{ vip_known }} || /(?:^|;\s*)nc_vip=1/.test(document.cookie);
       var p = phase();
-      window.ncBW = { phase: p, server: server, vipOk: ok, T: T, vipUrl: vipUrl, setVip: setVip };
+      /* Gaver (Swerv 19.11): lægges i kurven af nc-bw.js, gøres gratis af Shopifys automatiske "Køb X få Y"-rabat. */
+      var gifts = {
+        vip: { id: {{ settings.nc_vip_gift_product.selected_or_first_available_variant.id | default: 0 }}, ok: {{ settings.nc_vip_gift_product.available | default: false }}, min: {{ settings.nc_vip_gift_min | default: 499 | times: 100 }} },
+        bw: { id: {{ settings.nc_bw_gift_product.selected_or_first_available_variant.id | default: 0 }}, ok: {{ settings.nc_bw_gift_product.available | default: false }}, min: {{ settings.nc_bw_gift_min | default: 899 | times: 100 }} }
+      };
+      window.ncBW = { phase: p, server: server, vipOk: ok, T: T, vipUrl: vipUrl, setVip: setVip, gifts: gifts,
+        tryCode: function (c) { return !!token && String(c || '').trim().toLowerCase() === String(token).trim().toLowerCase(); } };
       if (p !== server) {
         try {
           var k = 'nc_bw_reload_' + p;
@@ -85,9 +80,17 @@
       d.classList.add('nc-ph-' + p);
       if (ok) d.classList.add('nc-vip-ok');
       if (p === 'bw' || (p === 'vip' && ok){% if force_dark %} || true{% endif %}) d.classList.add('nc-bw');
-      {%- if gated %}
-      if (p === 'vip' && !ok) location.replace(vipUrl);
-      {%- endif %}
+      /* VIP-lukning (Swerv 19.11): under VIP Access er hele butikken lukket for besøgende uden adgang.
+         De sendes til VIP-siden (kode fra mailen eller tilmelding). Undtaget: VIP-siden, vilkår, konto,
+         politikker og kontakt. Temaeditoren lukkes aldrig. */
+      {%- unless request.design_mode %}
+      if (p === 'vip' && !ok) {
+        var path = location.pathname.replace(/^\/(en|de)(?=\/|$)/, '') || '/';
+        var open = [vipUrl, {{ settings.nc_bw_terms_url | default: '/pages/black-week-vilkaar' | json }}, '/pages/kontakt', '/pages/contact'];
+        var free = open.indexOf(path) > -1 || /^\/(account|policies|challenge|password|apps|tools)(\/|$)/.test(path);
+        if (!free) location.replace(vipUrl + '?return=' + encodeURIComponent(location.pathname + location.search));
+      }
+      {%- endunless %}
     })();
   </script>
 {%- endif -%}

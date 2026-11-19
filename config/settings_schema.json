@@ -384,6 +384,24 @@
         "info": "Siden /pages/vip-black vises med VIP-designet. Ikke-VIP-besøgende sendes hertil fra Black Week-kollektionerne under VIP Access."
       },
       {
+        "type": "checkbox",
+        "id": "nc_vip_hero",
+        "label": "Forside under VIP Access: brug det mørke Facial Care 3-banner",
+        "default": true,
+        "info": "Kopi af live-forsidens tilbudsbanner (18.11). Fra: designets Black Week-hero. Vises ikke, hvis pakken er udsolgt."
+      },
+      {
+        "type": "product",
+        "id": "nc_vip_hero_product",
+        "label": "VIP-banner: pakke"
+      },
+      {
+        "type": "image_picker",
+        "id": "nc_vip_hero_image",
+        "label": "VIP-banner: billede",
+        "info": "Tom = pakkens første billede."
+      },
+      {
         "type": "paragraph",
         "content": "OBS: Lukningen er en hindring i butikken, ikke en sikkerhed. Selve rabatten skal også begrænses i Shopify (rabatter), hvis den kun må gælde VIP."
       },
@@ -514,14 +532,14 @@
         "type": "textarea",
         "id": "nc_bw_menu",
         "label": "Black Week-menu (Tekst | /url)",
-        "default": "Alle tilbud | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nBlack Week-pakker | /collections/black-week-pakker\n--\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver",
+        "default": "Alle tilbud | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nBlack Week-pakker | /collections/black-week-pakker\nBland selv | /collections/bland-selv\n--\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver",
         "info": "Bruges i menuen, mobilmenuen og fanerne over kollektionerne. -- giver en skillelinje i menuen. Kollektionerne skal findes i Shopify."
       },
       {
         "type": "textarea",
         "id": "nc_bw_subnav",
         "label": "Faner over kollektionerne (Tekst | /url)",
-        "default": "Alle | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nPakker | /collections/black-week-pakker\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver"
+        "default": "Alle | /collections/black-week\nEnkeltvarer | /collections/black-week-enkeltvarer\nPakker | /collections/black-week-pakker\nBland selv | /collections/bland-selv\nGaver under 300 kr | /collections/gaver-under-300\nGaver under 500 kr | /collections/gaver-under-500\nGaver under 700 kr | /collections/gaver-under-700\nGaver under 1.000 kr | /collections/gaver-under-1000\nJulegaver | /collections/julegaver"
       },
       {
         "type": "textarea",
