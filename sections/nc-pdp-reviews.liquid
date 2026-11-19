@@ -11,10 +11,14 @@
   assign rating_count = product.metafields.reviews.rating_count.value
   assign rating_label = ''
   if rating != blank and rating_count != blank
-    assign rating_str = rating.rating | default: rating | append: ''
-    assign rating_dec = rating_str | replace: '.', ','
-    assign rating_label = 'product.rating_summary' | t: rating: rating_dec, count: rating_count
-    assign rating_round = rating.rating | default: rating | times: 1.0 | round
+    # 16.11 v2: én decimal, dansk komma: «4,9 ud af 5 · 12 anmeldelser»
+    assign rating_num = rating.rating | default: rating | times: 1.0
+    assign rating_dec = rating_num | round: 1 | append: ''
+    unless request.locale.iso_code == 'en'
+      assign rating_dec = rating_dec | replace: '.', ','
+    endunless
+    assign rating_label = 'product.rating_line_long' | t: rating: rating_dec, count: rating_count
+    assign rating_round = rating_num | round
   endif
   # App-blokke (Judge.me) erstatter de manuelle kort: ingen haardkodede anmeldelser naar appen er sat ind.
   assign has_app = false
@@ -32,11 +36,12 @@
 {%- style -%}
   #shopify-section-{{ section.id }} .nc-pdprev__app { max-width: 1000px; margin: 0 auto; padding: 0 var(--gutter); }
   #shopify-section-{{ section.id }} .nc-pdprev { background: var(--nc-reviews-bg, var(--sage-50)); border-top: 1px solid var(--border-soft); padding: 60px 0; overflow: hidden; }
-  #shopify-section-{{ section.id }} .nc-pdprev__head { max-width: var(--container-max); margin: 0 auto 36px; padding: 0 var(--gutter); text-align: center; }
-  #shopify-section-{{ section.id }} .nc-pdprev__stars { display: inline-flex; gap: 3px; margin-bottom: 10px; color: var(--sage-500); }
-  #shopify-section-{{ section.id }} .nc-pdprev__stars svg { fill: currentColor; }
+  #shopify-section-{{ section.id }} .nc-pdprev__head { max-width: var(--container-max); margin: 0 auto 20px; padding: 0 var(--gutter); text-align: center; }
+  #shopify-section-{{ section.id }} .nc-pdprev__rating { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 10px; margin-top: 10px; }
+  #shopify-section-{{ section.id }} .nc-pdprev__stars { display: inline-flex; gap: 3px; color: var(--nc-star-fill, #E39B00); }
+  #shopify-section-{{ section.id }} .nc-pdprev__stars svg { fill: currentColor; stroke: var(--nc-star-stroke, #A86F00); stroke-width: 1.2; stroke-linejoin: round; }
   #shopify-section-{{ section.id }} .nc-pdprev__head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: var(--leading-relaxed); letter-spacing: normal; color: var(--sage-700); }
-  #shopify-section-{{ section.id }} .nc-pdprev__head p { margin: 6px 0 0; font-size: 14px; color: var(--ink-500); }
+  #shopify-section-{{ section.id }} .nc-pdprev__head p { margin: 0; font-size: 15px; font-weight: 500; color: var(--ink-900); }
   #shopify-section-{{ section.id }} .nc-pdprev__row { position: relative; width: 100%; overflow: hidden; }
   #shopify-section-{{ section.id }} .nc-pdprev__row--a { margin-bottom: 20px; }
   #shopify-section-{{ section.id }} .nc-pdprev__rail { display: flex; gap: 20px; width: max-content; }
@@ -44,8 +49,8 @@
   #shopify-section-{{ section.id }} .nc-pdprev__row--b .nc-pdprev__rail { animation: nc-marquee 60s linear infinite; }
   #shopify-section-{{ section.id }} .nc-pdprev__row:hover .nc-pdprev__rail { animation-play-state: paused; }
   #shopify-section-{{ section.id }} .nc-pdprev__card { flex: none; width: 360px; background: var(--cloud); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
-  #shopify-section-{{ section.id }} .nc-pdprev__card-stars { display: flex; gap: 2px; color: var(--sage-500); }
-  #shopify-section-{{ section.id }} .nc-pdprev__card-stars svg { fill: currentColor; }
+  #shopify-section-{{ section.id }} .nc-pdprev__card-stars { display: flex; gap: 2px; color: var(--nc-star-fill, #E39B00); }
+  #shopify-section-{{ section.id }} .nc-pdprev__card-stars svg { fill: currentColor; stroke: var(--nc-star-stroke, #A86F00); stroke-width: 1.2; stroke-linejoin: round; }
   #shopify-section-{{ section.id }} .nc-pdprev__quote { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.6; color: var(--sage-700); }
   #shopify-section-{{ section.id }} .nc-pdprev__by { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
   #shopify-section-{{ section.id }} .nc-pdprev__by strong { font-weight: 600; font-size: 14px; color: var(--sage-700); }
@@ -57,18 +62,20 @@
 
 {%- capture star16 -%}<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>{%- endcapture -%}
 
-<section id="anmeldelser" class="nc-pdprev">
+<section id="anmeldelser" class="nc-pdprev{% if rating_label == blank %} nc-pdprev--empty{% endif %}">
   <div class="nc-pdprev__head">
-    {%- if rating_round > 0 -%}
-    <div class="nc-pdprev__stars" aria-hidden="true">
-      {%- for i in (1..rating_round) -%}
-        <svg width="24" height="24" viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
-      {%- endfor -%}
-    </div>
-    {%- endif -%}
     <h2>{% render 'nc-cbd', text: section.settings.heading %}</h2>
     {%- if rating_label != blank -%}
+    <div class="nc-pdprev__rating">
+      {%- if rating_round > 0 -%}
+      <span class="nc-pdprev__stars" aria-hidden="true">
+        {%- for i in (1..rating_round) -%}
+          <svg width="22" height="22" viewBox="0 0 24 24"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9Z"/></svg>
+        {%- endfor -%}
+      </span>
+      {%- endif -%}
       <p>{{ rating_label }}</p>
+    </div>
     {%- endif -%}
   </div>
 
@@ -116,7 +123,7 @@
   "name": "Produkt: anmeldelser",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Hvad kunderne siger" }
+    { "type": "text", "id": "heading", "label": "Overskrift", "default": "Det siger vores kunder" }
   ],
   "blocks": [
     { "type": "@app" },

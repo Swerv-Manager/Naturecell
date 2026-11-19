@@ -187,6 +187,14 @@
     "add_named": "Læg {{ title }} i kurven",
     "rated": "Bedømt {{ rating }} ud af 5",
     "ambassador": "Ambassadør",
+    "rating_line_long": {
+      "one": "{{ rating }} ud af 5 · {{ count }} anmeldelse",
+      "other": "{{ rating }} ud af 5 · {{ count }} anmeldelser"
+    },
+    "rating_line": {
+      "one": "{{ rating }} · {{ count }} anmeldelse",
+      "other": "{{ rating }} · {{ count }} anmeldelser"
+    },
     "rating_summary": "{{ rating }}/5 · {{ count }} anmeldelser",
     "back_to": "Tilbage til {{ title }}"
   },

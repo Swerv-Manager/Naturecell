@@ -183,6 +183,14 @@
     "add_named": "Add {{ title }} to cart",
     "rated": "Rated {{ rating }} out of 5",
     "ambassador": "Ambassador",
+    "rating_line_long": {
+      "one": "{{ rating }} out of 5 · {{ count }} review",
+      "other": "{{ rating }} out of 5 · {{ count }} reviews"
+    },
+    "rating_line": {
+      "one": "{{ rating }} · {{ count }} review",
+      "other": "{{ rating }} · {{ count }} reviews"
+    },
     "rating_summary": "{{ rating }}/5 · {{ count }} reviews",
     "back_to": "Back to {{ title }}"
   },

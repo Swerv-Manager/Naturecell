@@ -670,3 +670,66 @@ body.nc-ytbox-open { overflow: hidden; }
   .template-index #nc-main > .nc-sec-shoptabs { order: 3; }
   .template-index #nc-main > .nc-sec-press { order: 4; }
 }
+
+/* ------------------------------------------------------------
+   Stjerner 16.11.2026 (Lizbeth/Frederik): gul i stedet for sage.
+   Fyld amber #E39B00 + tynd kant #A86F00 (kanten giver >= 3:1 mod
+   #F6F4EE og #E6ECEA). Kun tema-CSS; Judge.me-indstillingerne er ikke
+   aendret (de er faelles for alle temaer).
+   ------------------------------------------------------------ */
+:root { --nc-star-fill: #E39B00; --nc-star-stroke: #A86F00; }
+
+/* Produktkort (kollektioner, bestsellers, relaterede) */
+.nc-stars { color: var(--nc-star-fill); }
+.nc-stars svg { stroke: var(--nc-star-stroke); stroke-width: 1.2; stroke-linejoin: round; }
+.nc-product-card__rating .nc-stars svg { fill: var(--nc-star-fill); stroke: var(--nc-star-stroke); stroke-width: 1.2; }
+.nc-product-card__rating .nc-stars svg.is-empty { fill: none; stroke: var(--nc-star-stroke); }
+.nc-product-card__rating-num { font-weight: 600; color: var(--ink-900); margin-right: -3px; }
+
+/* Judge.me (widget, preview-badges, karrusel). html:root slaar Judge.me's :root-variabler uanset raekkefoelge. */
+html:root { --jdgm-star-color: #E39B00; --jdgm-snippet-star-color: #E39B00; }
+.jdgm-star, .jdgm-star.jdgm--on, .jdgm-star.jdgm--half, .jdgm-star.jdgm--off,
+.jdgm-review-snippet-widget .jdgm-rev-snippet-widget__cards-container .jdgm-rev-snippet-card__rev-rating .jdgm-star {
+  color: #E39B00 !important;
+  -webkit-text-stroke: 0.6px #A86F00;
+}
+/* Judge.me v2-widget (jm-*): stjernefarven saettes inline via --jm-review-widget-star-and-histogram-color */
+.jm-star-rating__font-icon { color: #E39B00 !important; -webkit-text-stroke: 0.6px #A86F00; }
+.jm-star-rating__filled svg path, .jm-star-rating__half svg path { fill: #E39B00 !important; stroke: #A86F00 !important; stroke-width: 1.2; }
+.jm-star-rating__empty svg path { stroke: #A86F00 !important; }
+
+/* Anmeldelser paa produktsiden v2 (16.11, Lizbeth): kun vores opsummering oeverst.
+   Judge.me's titel, gentagne rating og de to medaljer skjules; knap + filter/sortering
+   centreres lige under. Gaelder gammel (jdgm-) og ny (jm-) widget. */
+#anmeldelser .jm-review-widget-minimal-header__title,
+#anmeldelser .jm-average-rating-display--minimal-header,
+#anmeldelser .jm-medals,
+#anmeldelser .jm-review-widget-minimal-header > .jm-cluster > .jm-stack:not(.jm-review-widget-minimal-header__filter-container),
+#anmeldelser .jdgm-rev-widg__title,
+#anmeldelser .jdgm-rev-widg__summary,
+#anmeldelser .jdgm-rev-widg__summary-stars,
+#anmeldelser .jdgm-rev-widg__summary-average,
+#anmeldelser .jdgm-rev-widg__summary-text,
+#anmeldelser .jdgm-medals-wrapper,
+#anmeldelser .jdgm-medals { display: none !important; }
+#anmeldelser .jm-review-widget-minimal-header > .jm-cluster { --cluster-justify: center !important; justify-content: center !important; }
+#anmeldelser .jm-review-widget-minimal-header__filter-container { flex-grow: 0 !important; width: auto; }
+#anmeldelser .jm-review-widget-minimal-header__button-and-filters { --cluster-justify: center !important; justify-content: center !important; flex-wrap: nowrap !important; }
+#anmeldelser .jdgm-rev-widg__header { text-align: center; }
+@media (max-width: 767px) {
+  #anmeldelser .jm-review-widget-minimal-header__filter-container { flex-grow: 1 !important; width: 100%; }
+}
+/* 0 anmeldelser (fx pakker): kun overskrift + «Skriv en anmeldelse». Judge.me's
+   «Vær den første …» og anmeldelser af andre produkter skjules her. */
+#anmeldelser.nc-pdprev--empty .jm-no-reviews-state__text,
+#anmeldelser.nc-pdprev--empty .jm-other-products-reviews-text,
+#anmeldelser.nc-pdprev--empty .jm-review-widget__body,
+#anmeldelser.nc-pdprev--empty .jm-review-widget-minimal-header__filter-container,
+#anmeldelser.nc-pdprev--empty .jm-review-widget-minimal-header > .jm-cluster,
+#anmeldelser.nc-pdprev--empty .jm-pagination-controls { display: none !important; }
+#anmeldelser.nc-pdprev--empty .jm-no-reviews-state__action-buttons { justify-content: center !important; --cluster-justify: center !important; }
+/* Ingen tomrum mellem vores opsummering og Judge.me-knappen */
+#anmeldelser .jm-review-widget { padding-top: 4px !important; }
+#anmeldelser.nc-pdprev--empty .jm-review-widget { padding-bottom: 0 !important; }
+#anmeldelser.nc-pdprev--empty .jm-no-reviews-state,
+#anmeldelser.nc-pdprev--empty .jm-no-reviews-state__action-buttons { margin-top: 0 !important; }

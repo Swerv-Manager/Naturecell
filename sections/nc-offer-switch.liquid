@@ -81,7 +81,7 @@
 {%- style -%}
   #ncos-{{ section.id }} { --ncos-ink: var(--sage-700, #28403b); --ncos-paper: var(--paper, #f6f4ee); background: var(--ncos-paper); color: var(--ncos-ink); }
   #ncos-{{ section.id }} [hidden] { display: none !important; }
-  #ncos-{{ section.id }} .ncos__hero { display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); min-height: clamp(520px, 40vw, 640px); }
+  #ncos-{{ section.id }} .ncos__hero { display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); min-height: clamp(520px, 40vw, 640px); background: #111; color: var(--paper, #f6f4ee); }
   #ncos-{{ section.id }} .ncos__text { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(40px, 5vw, 80px) clamp(28px, 4vw, 64px) clamp(40px, 5vw, 80px) max(var(--gutter, 24px), calc((100vw - 1320px) / 2 + var(--gutter, 24px))); }
   #ncos-{{ section.id }} .ncos__eyebrow { margin: 0 0 18px; font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-500, #6f8f86); }
   #ncos-{{ section.id }} .ncos__h { margin: 0; max-width: 11ch; font-family: var(--font-display); font-weight: 400; font-size: clamp(42px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.01em; color: var(--ncos-ink); text-wrap: balance; }
@@ -95,13 +95,26 @@
   #ncos-{{ section.id }} .ncos__guar { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; font-family: var(--font-body); font-size: 13.5px; color: var(--ink-500, #6b706e); text-decoration: none; }
   #ncos-{{ section.id }} .ncos__guar svg { flex: none; width: 16px; height: 16px; color: var(--sage-500, #6f8f86); }
   #ncos-{{ section.id }} .ncos__guar span { text-decoration: underline; text-decoration-color: rgba(40, 64, 59, 0.3); text-underline-offset: 3px; }
-  #ncos-{{ section.id }} .ncos__media { position: relative; display: block; overflow: hidden; background: #8a9a6a; isolation: isolate; }
+  #ncos-{{ section.id }} .ncos__media { position: relative; display: block; overflow: hidden; background: #111; isolation: isolate; }
   {%- comment -%} Hele produktet skal kunne ses: forgrunden vises uskaaret (contain) og bag den ligger samme billede sloeret som baggrund, saa der ikke opstaar kanter. {%- endcomment -%}
   #ncos-{{ section.id }} .ncos__media img { display: block; }
-  #ncos-{{ section.id }} .ncos__media .ncos__bg { position: absolute; top: -15%; left: -15%; width: 130%; height: 130%; max-width: none; object-fit: cover; filter: blur(26px) saturate(1.05); }
-  #ncos-{{ section.id }} .ncos__media .ncos__fg { position: absolute; top: 3%; left: 50%; height: 94%; width: auto; max-width: none; aspect-ratio: 1 / 1; transform: translateX(-50%); object-fit: contain;
+  #ncos-{{ section.id }} .ncos__media .ncos__bg { position: absolute; top: -15%; left: -15%; width: 130%; height: 130%; max-width: none; object-fit: cover; filter: blur(26px) saturate(0.7) brightness(0.4); z-index: 0; }
+  #ncos-{{ section.id }} .ncos__media .ncos__fg { position: absolute; top: 3%; left: 50%; height: 94%; width: auto; max-width: none; aspect-ratio: 1 / 1; transform: translateX(-50%); object-fit: contain; z-index: 2;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%);
     -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 5%, #000 97%, transparent 100%); mask-composite: intersect; }
+  #ncos-{{ section.id }} .ncos__media::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(17, 17, 17, 0.45), rgba(17, 17, 17, 0.2) 40%, rgba(17, 17, 17, 0.35)); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__eyebrow { color: rgba(246, 244, 238, 0.8); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__h { color: var(--paper, #f6f4ee); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__save { color: var(--accent-pink, #F9B5C4); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__body { color: rgba(246, 244, 238, 0.88); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__price { border-top-color: rgba(246, 244, 238, 0.18); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__now { color: var(--paper, #f6f4ee); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__was { color: rgba(246, 244, 238, 0.65); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__btn { background: var(--paper, #f6f4ee); color: #111; }
+  #ncos-{{ section.id }} .ncos__hero .ncos__btn:hover, #ncos-{{ section.id }} .ncos__hero .ncos__btn:focus-visible { background: var(--accent-pink, #F9B5C4); color: #111; }
+  #ncos-{{ section.id }} .ncos__hero .ncos__guar { color: rgba(246, 244, 238, 0.7); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__guar svg { color: rgba(246, 244, 238, 0.7); }
+  #ncos-{{ section.id }} .ncos__hero .ncos__guar span { text-decoration-color: rgba(246, 244, 238, 0.35); }
   #ncos-{{ section.id }} .ncos__bw { display: block; }
   #ncos-{{ section.id }} .ncos__bw img { width: 100%; height: auto; display: block; }
   #ncos-{{ section.id }} .ncos__bwtext { background: #111; color: #fff; padding: clamp(48px, 7vw, 110px) var(--gutter, 24px); text-align: center; font-family: var(--font-display); font-size: clamp(30px, 4vw, 56px); }
@@ -126,6 +139,7 @@
     #ncos-{{ section.id }} .ncos__was { font-size: 14px; }
     #ncos-{{ section.id }} .ncos__btn { width: 100%; margin-top: 18px; min-height: 50px; }
     #ncos-{{ section.id }} .ncos__guar { margin-top: 14px; font-size: 13px; }
+    #ncos-{{ section.id }} .ncos__media::after { background: linear-gradient(0deg, rgba(17, 17, 17, 0.35), rgba(17, 17, 17, 0.15)); }
     #ncos-{{ section.id }} .ncos__fb { min-height: min(560px, 78vh); align-items: flex-end; }
     #ncos-{{ section.id }} .ncos__fb::after { background: linear-gradient(0deg, rgba(20, 34, 31, 0.7), rgba(20, 34, 31, 0.1) 70%); }
     #ncos-{{ section.id }} .ncos__fb .ncos__body { display: block; font-size: 15px; }

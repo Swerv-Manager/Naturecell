@@ -131,9 +131,11 @@
   }
   .nc-mega.is-open { opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0s; }
   .nc-mega__inner { padding: clamp(22px, 3vw, 36px) 0 clamp(26px, 3vw, 40px); }
-  .nc-mega__tabs { display: inline-flex; gap: 4px; background: var(--paper); border-radius: var(--radius-pill); padding: 4px; margin-bottom: 22px; }
+  .nc-mega__tabs-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 22px; }
+  .nc-mega__tabs { display: inline-flex; gap: 4px; background: var(--paper); border-radius: var(--radius-pill); padding: 4px; margin-bottom: 0; }
   .nc-mega__tab { border: 0; background: transparent; color: var(--ink-700); padding: 9px 18px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 600; cursor: pointer; }
   .nc-mega__tab.is-active { background: var(--sage-500); color: var(--cloud); }
+  .nc-mega__tabs--links a.nc-mega__tab { text-decoration: none; display: inline-flex; align-items: center; }
   .nc-mega__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
   .nc-mega__card { display: flex; flex-direction: column; text-decoration: none; border-radius: var(--radius-md); overflow: hidden; background: var(--paper-2); transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft); }
   .nc-mega__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
@@ -211,6 +213,38 @@
     .nc-header__actions .nc-header__action:last-child { margin-right: -8px; }
   }
 {%- endstyle -%}
+
+{%- comment -%}
+  Tilbud-knap (topmenu, mobilmenu og Shop-pille). Kun denne knap kan hedde Black Week.
+  Pakker aendres ikke. Mode: tilbud, black_week, eller auto (foelger nc_bw_start_utc).
+{%- endcomment -%}
+{%- liquid
+  assign nc_offers_label = 'nav.offers' | t
+  assign nc_offers_bw_label = section.settings.offers_label_bw | strip
+  if nc_offers_bw_label == blank
+    assign nc_offers_bw_label = 'Black Week'
+  endif
+  assign nc_offers_mode = section.settings.offers_label_mode | default: 'auto'
+  if nc_offers_mode == 'black_week'
+    assign nc_offers_label = nc_offers_bw_label
+  elsif nc_offers_mode == 'auto'
+    assign nc_offers_bw_start = settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | date: '%s' | plus: 0
+    assign nc_offers_now = 'now' | date: '%s' | plus: 0
+    assign nc_offers_is_bw = false
+    if nc_offers_now >= nc_offers_bw_start
+      assign nc_offers_is_bw = true
+      if settings.nc_bw_end_utc != blank
+        assign nc_offers_bw_end = settings.nc_bw_end_utc | date: '%s' | plus: 0
+        if nc_offers_now >= nc_offers_bw_end
+          assign nc_offers_is_bw = false
+        endif
+      endif
+    endif
+    if nc_offers_is_bw
+      assign nc_offers_label = nc_offers_bw_label
+    endif
+  endif
+-%}
 
 {%- comment -%}
   Topbjaelke: egen tekst fra indstillingen, ellers sprogfilens tekst med fri fragt-graensen
@@ -329,6 +363,29 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', swap); else swap();
   setInterval(swap, 60000);
   document.addEventListener('visibilitychange', swap);
+})();
+</script>
+{%- endif -%}
+{%- if nc_offers_mode == 'auto' -%}
+<script>
+(function () {
+  var start = Date.parse({{ settings.nc_bw_start_utc | default: '2026-11-20T14:00:00Z' | json }});
+  var end = {% if settings.nc_bw_end_utc != blank %}Date.parse({{ settings.nc_bw_end_utc | json }}){% else %}NaN{% endif %};
+  if (isNaN(start)) return;
+  var labels = { normal: {{ 'nav.offers' | t | json }}, bw: {{ nc_offers_bw_label | json }} };
+  function want() {
+    var t = Date.now();
+    return (t >= start && (isNaN(end) || t < end)) ? 'bw' : 'normal';
+  }
+  function apply() {
+    var text = labels[want()];
+    document.querySelectorAll('[data-nc-offers-label]').forEach(function (el) {
+      if (el.textContent.trim() !== text) el.textContent = text;
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply); else apply();
+  setInterval(apply, 60000);
+  document.addEventListener('visibilitychange', apply);
 })();
 </script>
 {%- endif -%}
@@ -463,18 +520,19 @@
   <div class="nc-mega" id="nc-mega" data-nc-mega>
     <div class="nc-container">
       <div class="nc-mega__inner" data-nc-tabs>
-        <div class="nc-mega__tabs" role="tablist">
-          <button class="nc-mega__tab is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.by_area' | t }}</button>
-          <button class="nc-mega__tab" data-nc-tab="need" role="tab" aria-selected="false">{{ 'collection.by_need' | t }}</button>
-          <button class="nc-mega__tab" data-nc-tab="best" role="tab" aria-selected="false">{{ 'collection.bestsellers' | t }}</button>
+        <div class="nc-mega__tabs-row">
+          <div class="nc-mega__tabs" role="tablist">
+            <button class="nc-mega__tab is-active" data-nc-tab="area" role="tab" aria-selected="true">{{ 'collection.by_area' | t }}</button>
+            <button class="nc-mega__tab" data-nc-tab="need" role="tab" aria-selected="false">{{ 'collection.by_need' | t }}</button>
+            <button class="nc-mega__tab" data-nc-tab="best" role="tab" aria-selected="false">{{ 'collection.bestsellers' | t }}</button>
+          </div>
+          {%- if request.locale.iso_code == 'da' -%}
+            <div class="nc-mega__tabs nc-mega__tabs--links">
+              <a class="nc-mega__tab" href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}" data-nc-offers-label>{{ nc_offers_label }}</a>
+              <a class="nc-mega__tab" href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
+            </div>
+          {%- endif -%}
         </div>
-
-        {%- if request.locale.iso_code == 'da' -%}
-        <div class="nc-mega__quicklinks">
-          <a class="nc-header__link" href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}">{{ 'nav.offers' | t }}</a>
-          <a class="nc-header__link" href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
-        </div>
-        {%- endif -%}
 
         <div data-nc-panel="area">
           <div class="nc-mega__grid">
@@ -599,8 +657,8 @@
       <a href="{% render 'nc-url', url: section.settings.all_url, fallback: '/collections/cbd-hudpleje' %}">{{ 'nav.shop' | t }}</a>
       <div class="nc-mobilenav__sub">
         {%- if request.locale.iso_code == 'da' -%}
-        <a href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}">{{ 'nav.offers' | t }}</a>
-        <a href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
+          <a href="{% render 'nc-url', url: '/collections/nedsatte-varer' %}" data-nc-offers-label>{{ nc_offers_label }}</a>
+          <a href="{% render 'nc-url', url: '/collections/sampakker' %}">{{ 'nav.bundles' | t }}</a>
         {%- endif -%}
         {%- for block in section.blocks -%}
 {%- assign nc_transition_block_product = block.settings.product | default: block.settings.product_migration -%}
@@ -672,6 +730,29 @@
       "step": 2,
       "unit": "px",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Tilbud-knap"
+    },
+    {
+      "type": "select",
+      "id": "offers_label_mode",
+      "label": "Tekst på Tilbud-knappen",
+      "options": [
+        { "value": "tilbud", "label": "Tilbud" },
+        { "value": "black_week", "label": "Black Week" },
+        { "value": "auto", "label": "Automatisk ved Black Week-start" }
+      ],
+      "default": "auto",
+      "info": "Gælder kun Tilbud i topmenu, mobilmenu og Shop-menuen. Pakker ændres ikke. Automatisk følger «Black Week starter (UTC)» under Tema-indstillinger → Fragt og handel (20.11.2026 kl. 15.00 dansk tid som standard)."
+    },
+    {
+      "type": "text",
+      "id": "offers_label_bw",
+      "label": "Black Week-tekst",
+      "default": "Black Week",
+      "info": "Vises når Tilbud er sat til Black Week, eller når automatisk skift er i Black Week-perioden."
     },
     {
       "type": "header",

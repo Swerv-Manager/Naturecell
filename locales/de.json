@@ -170,6 +170,14 @@
     "add_named": "{{ title }} in den Warenkorb legen",
     "rated": "Mit {{ rating }} von 5 bewertet",
     "ambassador": "Ambassador",
+    "rating_line_long": {
+      "one": "{{ rating }} von 5 · {{ count }} Bewertung",
+      "other": "{{ rating }} von 5 · {{ count }} Bewertungen"
+    },
+    "rating_line": {
+      "one": "{{ rating }} · {{ count }} Bewertung",
+      "other": "{{ rating }} · {{ count }} Bewertungen"
+    },
     "rating_summary": "{{ rating }}/5 · {{ count }} Bewertungen",
     "back_to": "Zurück zu {{ title }}"
   },

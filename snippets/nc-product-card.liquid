@@ -246,8 +246,14 @@
             <svg viewBox="0 0 24 24"{% if i > rating_round %} class="is-empty"{% endif %}><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z"/></svg>
           {%- endfor -%}
         </span>
-        <span>({{ rating_count }})</span>
-        <span class="nc-visually-hidden">{{ 'product.rated' | t: rating: rating_num }}</span>
+        {%- liquid
+          assign rating_1 = rating_num | round: 1 | append: ''
+          unless request.locale.iso_code == 'en'
+            assign rating_1 = rating_1 | replace: '.', ','
+          endunless
+        -%}
+        <span class="nc-product-card__rating-num" aria-hidden="true">{{ rating_1 }}</span><span aria-hidden="true">({{ rating_count }})</span>
+        <span class="nc-visually-hidden">{{ 'product.rating_line_long' | t: rating: rating_1, count: rating_count }}</span>
       </span>
     {%- else -%}
       <span class="nc-product-card__rating" aria-hidden="true"></span>

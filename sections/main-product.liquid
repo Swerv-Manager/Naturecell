@@ -107,10 +107,13 @@
   .nc-pdp__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3.7vw, 38px); line-height: 1.08; letter-spacing: -0.01em; color: var(--sage-700); }
   .nc-pdp__size { font-size: 15px; color: var(--ink-400); }
 
-  .nc-pdp__rating { display: inline-flex; align-items: center; gap: 7px; }
+  /* Stjerner 16.11 (Lizbeth): amber fyld + dyb guld-kant, ca. 20 px, tal i moerk tekst */
+  .nc-pdp__rating { display: inline-flex; align-items: center; gap: 8px; }
   .nc-pdp__rating .nc-pdp__stars { display: inline-flex; gap: 2px; }
-  .nc-pdp__rating svg { display: block; }
-  .nc-pdp__count { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-500); }
+  .nc-pdp__rating svg { display: block; width: 20px; height: 20px; }
+  .nc-pdp__rating svg path { fill: var(--nc-star-fill, #E39B00); stroke: var(--nc-star-stroke, #A86F00); stroke-width: 1.2; stroke-linejoin: round; }
+  .nc-pdp__rating svg.is-empty path { fill: none; stroke: var(--nc-star-stroke, #A86F00); }
+  .nc-pdp__count { font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--ink-900); }
   a.nc-pdp__rating { color: inherit; text-decoration: none; cursor: pointer; }
   a.nc-pdp__rating:hover .nc-pdp__count, a.nc-pdp__rating:focus-visible .nc-pdp__count { text-decoration: underline; }
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
@@ -275,18 +278,23 @@
         {%- endif -%}
 
         {%- if rating != blank and rating_count != blank -%}
-          {%- assign rating_round = rating.rating | default: rating | times: 1.0 | round -%}
-          <a class="nc-pdp__rating" href="#anmeldelser" aria-label="Se anmeldelser ({{ rating_count }})">
+          {%- liquid
+            assign rating_num = rating.rating | default: rating | times: 1.0
+            assign rating_round = rating_num | round
+            assign rating_1 = rating_num | round: 1 | append: ''
+            unless request.locale.iso_code == 'en'
+              assign rating_1 = rating_1 | replace: '.', ','
+            endunless
+            assign rating_line = 'product.rating_line' | t: rating: rating_1, count: rating_count
+            assign rating_aria = 'product.rating_line_long' | t: rating: rating_1, count: rating_count
+          -%}
+          <a class="nc-pdp__rating" href="#anmeldelser" aria-label="{{ rating_aria | escape }}">
             <span class="nc-pdp__stars" aria-hidden="true">
               {%- for i in (1..5) -%}
-                {%- if i <= rating_round -%}
-                  <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z" fill="var(--sage-500)" stroke="var(--sage-500)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                {%- else -%}
-                  <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z" fill="none" stroke="var(--ink-300)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                {%- endif -%}
+                <svg width="20" height="20" viewBox="0 0 24 24"{% if i > rating_round %} class="is-empty"{% endif %}><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.95 6.2 21.05l1.1-6.45L2.6 9.95l6.5-.95L12 2.6z"/></svg>
               {%- endfor -%}
             </span>
-            <span class="nc-pdp__count">({{ rating_count }})</span>
+            <span class="nc-pdp__count" aria-hidden="true">{{ rating_line }}</span>
           </a>
         {%- endif -%}
 
